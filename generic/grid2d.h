@@ -12,7 +12,7 @@
 //-----------------------------------------------------------------------------
 namespace Grid2D
 {
-    typedef pair<int, int> Coord;
+    typedef std::pair<int, int> Coord;
 };
 
 inline Grid2D::Coord
@@ -52,7 +52,7 @@ inline QDataStream &operator >>(QDataStream &s, Grid2D::Coord &c) {
 //-----------------------------------------------------------------------------
 namespace Grid2D
 {
-    typedef set<Coord, less<Coord> > CoordSet;
+    typedef std::set<Coord, std::less<Coord> > CoordSet;
 };
 
 inline QTextStream &operator <<(QTextStream &s, const Grid2D::CoordSet &set) {
@@ -102,7 +102,7 @@ class Generic
     }
 
     void fill(const Type &value) {
-        ::fill(_vector.begin(), _vector.end(), value);
+        std::fill(_vector.begin(), _vector.end(), value);
     }
 
     uint width() const  { return _width; }

@@ -40,7 +40,7 @@ namespace AdviseFast {
     QTextStream &operator <<(QTextStream &, Fact const &);
 
     /** A set of facts that can be generated out of Field */
-    class FactSet : public map<Coord, Fact> {
+    class FactSet : public std::map<Coord, Fact> {
     public:
         FactSet(BaseField *);
         BaseField const *getField() const { return _field;}
@@ -63,7 +63,7 @@ namespace AdviseFast {
 
     private:
         BaseField *_field;
-        map<Coord, CoordSet> _containingFacts;
+		std::map<Coord, CoordSet> _containingFacts;
         CoordSet _marked;
     };
     QTextStream &operator <<(QTextStream &, FactSet const &);
@@ -101,7 +101,7 @@ namespace AdviseFast {
             INTERSECT1,
             GENERAL};
 
-        typedef pair<RuleType, CoordSet> Entry;
+        typedef std::pair<RuleType, CoordSet> Entry;
 
         RuleSet(FactSet *);
         ~RuleSet();
@@ -127,7 +127,7 @@ namespace AdviseFast {
         FactSet *facts;
 
     private:
-        set<Entry> _rules;
+		std::set<Entry> _rules;
         CoordSet _surePoints;
 
         /** Fills _surePoints.
@@ -145,7 +145,7 @@ namespace AdviseFast {
 
 
 namespace AdviseFull {
-    typedef multimap<float, Coord> ProbabilityMap;
+    typedef std::multimap<float, Coord> ProbabilityMap;
 
     /** If there are sure free cells,
      * sets surePoints, otherwise sets probabilities */

@@ -20,6 +20,7 @@
 
 #include "adviseFast.h"
 
+using std::set;
 
 AdviseFast::RuleSet::RuleSet(FactSet *f) :
 	facts(f)
@@ -77,7 +78,7 @@ bool AdviseFast::RuleSet::apply()
 {
 	while(!_rules.empty()){
 		set<Entry>::iterator i = _rules.begin();
-		auto_ptr<Rule>  r (this->newRule(*i));
+		std::auto_ptr<Rule>  r (this->newRule(*i));
 		_rules.erase(i);
 
 		if(r->apply(&this->_surePoints)) return true;

@@ -29,17 +29,17 @@ namespace AdviseFull {
     class EquationSet {
     public: // Well, why is it necessary?
         struct Equation {
-            set<short> pointSets;
+			std::set<short> pointSets;
             short mines;
         };
-        typedef map<short, short> Solution;
+        typedef std::map<short, short> Solution;
 
     public:
         EquationSet();
         EquationSet(AdviseFast::FactSet const &facts);
 
-        list<Equation> _equations;
-        map<short, CoordSet> _pointSets;
+		std::list<Equation> _equations;
+		std::map<short, CoordSet> _pointSets;
 
         /** Make sure no _pointSets have
          * non-empty intersection */
@@ -48,12 +48,12 @@ namespace AdviseFull {
         /** Returns in *results a set of equation sets
          * which can be solved separately.
          * *this assumed normalized :) */
-        void separate(list<EquationSet> *results) const;
+        void separate(std::list<EquationSet> *results) const;
 
         /** Solves... returns _pointSets.
          * It's nice to have *this separated :) */
-        map<short, CoordSet> const &solve(
-            list<Solution> *results) const;
+		std::map<short, CoordSet> const &solve(
+            std::list<Solution> *results) const;
 
         void prettyprint() const;
 
@@ -64,18 +64,18 @@ namespace AdviseFull {
         /** Substitutes a pointSet in all equations */
         void substitute(
             short out,
-            set<short> const &in);
+			std::set<short> const &in);
     };
 
     bool surePoints(
-        map<short, CoordSet> const &m,
-        list<EquationSet::Solution> const &l,
+        std::map<short, CoordSet> const &m,
+		std::list<EquationSet::Solution> const &l,
         CoordSet *surePoints);
 
     /** The fourth argument is a fraction of mines in the "pool" */
     void getProbabilities(
-        map<short, CoordSet> const &m,
-        list<EquationSet::Solution> const &l,
+        std::map<short, CoordSet> const &m,
+		std::list<EquationSet::Solution> const &l,
         ProbabilityMap *probabilities,
         float fraction = 0);
 
@@ -84,7 +84,7 @@ namespace AdviseFull {
      * solutions */
     /** The fourth argument is a fraction of mines in the "pool" */
     float variantNumberFraction(
-        map<short, CoordSet> const &m,
+        std::map<short, CoordSet> const &m,
         EquationSet::Solution const &dividend,
         EquationSet::Solution const &divisor,
         float fraction = 0);

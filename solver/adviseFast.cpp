@@ -176,7 +176,7 @@ CoordSet const *AdviseFast::FactSet::getContainingFacts(
 	Coord const &point) const
 {
 	if(_containingFacts.count(point))
-		return &const_cast<map<Coord, CoordSet> &>(_containingFacts)
+		return &const_cast<std::map<Coord, CoordSet> &>(_containingFacts)
 			[point];
 	else return 0;
 }

@@ -21,7 +21,9 @@
 #include <stdio.h>
 #include <math.h>
 
-
+using std::list;
+using std::map;
+using std::set;
 using namespace AdviseFull;
 
 AdviseFull::EquationSet::EquationSet() :
@@ -276,7 +278,7 @@ map<short, CoordSet> const &AdviseFull::EquationSet::solve(
 	// Otherwise the first equation is not empty.
 	// Find the range for first element
 	short var = *EQS.begin()->pointSets.begin();
-	pair<short, short> range;
+	std::pair<short, short> range;
 	range.first = 0;
 	range.second = eqs._pointSets[var].size();
 
@@ -503,7 +505,7 @@ void AdviseFull::getProbabilities(
 		CoordSet::const_iterator k;
 		for(k=ps.begin(); k!=ps.end(); ++k)
 			probabilities->insert(
-				pair<float, Coord>(j->second, *k));
+				std::pair<float, Coord>(j->second, *k));
 	}
 
 	// That's it :)
