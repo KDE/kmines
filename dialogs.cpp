@@ -358,8 +358,8 @@ void OptionDialog::mainPage()
 
 	for (uint i=0; i<3; i++) {
 		cb[i]->insertItem(i18n("reveal"), 0);
-		cb[i]->insertItem(i18n("toggle mark"), 1);
-		cb[i]->insertItem(i18n("autoreveal"), 2);
+		cb[i]->insertItem(i18n("autoreveal"), 1);
+		cb[i]->insertItem(i18n("toggle mark"), 2);
 		cb[i]->insertItem(i18n("toggle ? mark"), 3);
 		cb[i]->setCurrentItem(readMouseBinding((MouseButton)i));
 	}
