@@ -21,12 +21,8 @@
 #define G_HIGHSCORES_ITEM_H
 
 #include <qvariant.h>
-#include <qdatastream.h>
-#include <qnamespace.h>
-#include <qdatetime.h>
 #include <qvaluevector.h>
-
-#include <klocale.h>
+#include <qnamespace.h>
 
 
 namespace KExtHighscores
@@ -157,8 +153,7 @@ class Item
 class ScoreItem : public Item
 {
  public:
-    ScoreItem()
-        : Item((uint)0, i18n("Score"), Qt::AlignRight) {}
+    ScoreItem();
 };
 
 /**
@@ -168,11 +163,7 @@ class ScoreItem : public Item
 class MeanScoreItem : public Item
 {
  public:
-    MeanScoreItem()
-        : Item((double)0, i18n("Mean score"), Qt::AlignRight) {
-            setPrettyFormat(OneDecimal);
-            setPrettySpecial(ZeroNotDefined);
-    }
+    MeanScoreItem();
 };
 
 /**
@@ -181,25 +172,17 @@ class MeanScoreItem : public Item
 class BestScoreItem : public Item
 {
  public:
-    BestScoreItem()
-        : Item((uint)0, i18n("Best score"), Qt::AlignRight) {
-            setPrettySpecial(ZeroNotDefined);
-    }
+    BestScoreItem();
 };
 
 //-----------------------------------------------------------------------------
 /**
  * Manage an array of datas each associated with @ref Item.
  */
-class DataArray : private QValueVector<QVariant>
+class DataArray
 {
  public:
-    /**
-     * @internal
-     * This constuctor is internal. You should never need to construct
-     * this class by yourself.
-     */
-    DataArray(const ItemArray &items);
+    DataArray &operator =(const DataArray &array);
 
     /**
      * @internal
@@ -228,12 +211,28 @@ class DataArray : private QValueVector<QVariant>
      */
     void setData(const QString &name, const QVariant &value);
 
+ protected:
+    /**
+     * @internal
+     * This constuctor is internal. You should never need to construct
+     * this class by yourself.
+     */
+    DataArray(const ItemArray &items);
+
  private:
-    const ItemArray &_items;
+    QValueVector<QVariant>  _data;
+    const ItemArray        &_items;
 
     class DataArrayPrivate;
     DataArrayPrivate *d;
+
+    friend QDataStream &operator <<(QDataStream &, const DataArray &);
+    friend QDataStream &operator >>(QDataStream &, DataArray &);
 };
+
+QDataStream &operator <<(QDataStream &stream, const DataArray &array);
+QDataStream &operator >>(QDataStream &stream, DataArray &array);
+
 
 //-----------------------------------------------------------------------------
 /**
@@ -246,18 +245,16 @@ enum ScoreType { Won = 0, Lost = -1, BlackMark = -2 };
 
 
 /**
- * This class contains data for a score.
- *
- * @see Highscores
+ * This class contains data for a score. You should not inherit from
+ * this class but reimplement the methods in @ref Highscores .
  */
 class Score : public DataArray
 {
  public:
     /**
-     * @internal
-     * You should not have to construct this class.
+     * Constructor.
      */
-    Score(const ScoreInfos &items, ScoreType type);
+    Score(ScoreType type = Won);
 
     /**
      * @return the game type.
@@ -265,16 +262,32 @@ class Score : public DataArray
     ScoreType type() const { return _type; }
 
     /**
+     * Set the game type.
+     */
+    void setType(ScoreType type) { _type = type; }
+
+    /**
      * @return the score value.
      */
     uint score() const { return data("score").toUInt(); }
+
+    /**
+     * Comparison operator. It uses @ref Highscores::isStrictlyWorse.
+     */
+    bool operator <(const Score &score) const;
 
  private:
     ScoreType _type;
 
     class ScorePrivate;
     ScorePrivate *d;
+
+    friend QDataStream &operator <<(QDataStream &stream, const Score &score);
+    friend QDataStream &operator >>(QDataStream &stream, Score &score);
 };
+
+QDataStream &operator <<(QDataStream &stream, const Score &score);
+QDataStream &operator >>(QDataStream &stream, Score &score);
 
 }; // namespace
 

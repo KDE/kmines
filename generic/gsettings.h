@@ -23,8 +23,6 @@
 #include <qptrvector.h>
 
 #include <kdialogbase.h>
-#include <klocale.h>
-#include <kconfig.h>
 #include <kcmodule.h>
 
 
@@ -42,7 +40,8 @@ class SettingsWidget : public KCModule
      * @param name the translated module name.
      * @param icon the name of the module icon.
      */
-    SettingsWidget(const QString &name, const QString &icon);
+    SettingsWidget(const QString &name, const QString &icon,
+                   QWidget *parent = 0, const char *qtname = 0);
 
     QString name() const { return _name; }
     QString icon() const { return _icon; }

@@ -34,7 +34,6 @@
 #include <kopenwith.h>
 #include <krun.h>
 
-#include "ghighscores.h"
 #include "ghighscores_internal.h"
 
 
@@ -70,9 +69,9 @@ void ScoresList::addLine(const ItemArray &items, int index, bool highlight)
 {
     QListViewItem *line = (index==-1 ? 0 : new ShowItem(this, highlight));
     int k = -1;
-    for (uint i=0; i<items().size(); i++) {
-        const ItemContainer &item = *items()[i];
-        if ( !item.item()->isVisible() ) continue;
+    for (uint i=0; i<items.size(); i++) {
+        const ItemContainer &item = *items[i];
+        if ( !item.item()->isVisible() || !showColumn(item) ) continue;
         k++;
         if (line) line->setText(k, itemText(item, index));
         else {
@@ -142,13 +141,13 @@ void HighscoresWidget::showURL(const QString &url) const
 }
 
 //-----------------------------------------------------------------------------
-MultipleScoresList::MultipleScoresList(const QPtrVector<Score> &scores,
+MultipleScoresList::MultipleScoresList(const ScoreList &scores,
                                        QWidget *parent)
     : ScoresList(parent), _scores(scores)
 {
     Q_ASSERT( scores.size()!=0 );
 
-    const ItemArray &items = scores[0]->items();
+    const ItemArray &items = scores[0].items();
     addLine(items, -1, false);
     for (uint i=0; i<scores.size(); i++) addLine(items, i, false);
 }
@@ -157,16 +156,21 @@ QString MultipleScoresList::itemText(const ItemContainer &item, uint row) const
 {
     QString name = item.name();
     if ( name=="rank" ) {
-        if ( _scores[row]->type()==Won ) return i18n("Winner");
+        if ( _scores[row].type()==Won ) return i18n("Winner");
         return QString::null;
     }
-    return item.item()->pretty(row, _scores[row]->data(name));
+    return item.item()->pretty(row, _scores[row].data(name));
+}
+
+bool MultipleScoresList::showColumn(const ItemContainer &item) const
+{
+    return ( item.name()!="date" );
 }
 
 //-----------------------------------------------------------------------------
 HighscoresSettingsWidget::HighscoresSettingsWidget(const PlayerInfos &infos,
-                                                   bool WWHSAvailable)
-    : SettingsWidget(i18n("Highscores"), "highscores"),
+                                           bool WWHSAvailable, QWidget *parent)
+    : SettingsWidget(i18n("Highscores"), "highscores", parent),
       _ok(true), _infos(infos), _WWHEnabled(0)
 {
     QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());

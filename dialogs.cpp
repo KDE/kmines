@@ -3,7 +3,6 @@
 
 #include <qpainter.h>
 #include <qpixmap.h>
-#include <qpushbutton.h>
 #include <qfont.h>
 #include <qvgroupbox.h>
 #include <qlayout.h>
@@ -12,8 +11,8 @@
 #include <qgrid.h>
 
 #include <kapplication.h>
-
-#include "generic/ghighscores.h"
+#include <klocale.h>
+#include <kconfig.h>
 
 #include "bitmaps/smile"
 #include "bitmaps/smile_happy"
@@ -52,13 +51,21 @@ void LCDNumber::setColor(QColor color)
 }
 
 //-----------------------------------------------------------------------------
-DigitalClock::DigitalClock(QWidget *parent, const char *name)
-: LCDNumber(parent, name)
+DigitalClock::DigitalClock(QWidget *parent)
+: LCDNumber(parent, "digital_clock")
 {}
 
-void DigitalClock::timerEvent( QTimerEvent *)
+KExtHighscores::Score DigitalClock::score() const
 {
- 	if ( stop ) return;
+    KExtHighscores::Score score(KExtHighscores::Won);
+    score.setData("score", 3600 - (_min*60 + _sec));
+    score.setData("nb_actions", _nbActions);
+    return score;
+}
+
+void DigitalClock::timerEvent(QTimerEvent *)
+{
+ 	if (_stop) return;
 
     if ( _min==59 && _sec==59 ) return; // waiting an hour do not restart timer
     _sec++;
@@ -68,9 +75,9 @@ void DigitalClock::timerEvent( QTimerEvent *)
     }
     showTime();
 
-    if ( score()<=_lastScore ) setColor(white);
-    else if ( score()<=_firstScore ) setColor(blue);
-    else setColor(red);
+    if ( _first<score() ) setColor(red);
+    else if ( _last<score() ) setColor(blue);
+    else setColor(white);
 }
 
 void DigitalClock::showTime()
@@ -84,12 +91,17 @@ void DigitalClock::showTime()
 	display(s);
 }
 
-void DigitalClock::zero()
+void DigitalClock::reset(const KExtHighscores::Score &first,
+                         const KExtHighscores::Score &last)
 {
 	killTimers();
 
-	stop = true;
-	_sec = 0; _min = 0;
+	_stop = true;
+	_sec = 0;
+    _min = 0;
+    _nbActions = 0;
+    _first = first;
+    _last = last;
 	startTimer(1000); // one second
 
 	setColor(white);
@@ -407,7 +419,7 @@ ExtSettingsDialog::ExtSettingsDialog(QWidget *parent)
 {
     addModule(new GameSettingsWidget);
     addModule(new AppearanceSettingsWidget);
-    addModule( kHighscores->createSettingsWidget() );
+    addModule( kHighscores->createSettingsWidget(this) );
 }
 
 Level ExtSettingsDialog::readLevel()

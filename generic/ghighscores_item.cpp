@@ -23,6 +23,7 @@
 #include <kglobal.h>
 
 #include "ghighscores_internal.h"
+#include "ghighscores.h"
 
 
 namespace KExtHighscores
@@ -129,54 +130,111 @@ QString Item::pretty(uint, const QVariant &value) const
 }
 
 //-----------------------------------------------------------------------------
+ScoreItem::ScoreItem()
+    : Item((uint)0, i18n("Score"), Qt::AlignRight)
+{}
+
+MeanScoreItem::MeanScoreItem()
+    : Item((double)0, i18n("Mean score"), Qt::AlignRight)
+{
+    setPrettyFormat(OneDecimal);
+    setPrettySpecial(ZeroNotDefined);
+}
+
+BestScoreItem::BestScoreItem()
+    : Item((uint)0, i18n("Best score"), Qt::AlignRight)
+{
+    setPrettySpecial(ZeroNotDefined);
+}
+
+//-----------------------------------------------------------------------------
 DataArray::DataArray(const ItemArray &items)
     : _items(items)
 {
-    resize( _items().size() );
-    for (uint i=0; i<size(); i++)
-        at(i) = _items()[i]->item()->defaultValue();
+    _data.resize( _items.size() );
+    for (uint i=0; i<_data.size(); i++)
+        _data[i] = _items[i]->item()->defaultValue();
+}
+
+DataArray &DataArray::operator =(const DataArray &array)
+{
+    _data = array._data;
+    return *this;
 }
 
 void DataArray::setData(const QString &name, const QVariant &value)
 {
-    Q_ASSERT( size()==_items().size() );
+    Q_ASSERT( _data.size()==_items.size() );
     int i = _items.findIndex(name);
     Q_ASSERT( i!=-1);
-    Q_ASSERT( value.type()==at(i).type() );
-    at(i) = value;
+    Q_ASSERT( value.type()==_data[i].type() );
+    _data[i] = value;
 }
 
 const QVariant &DataArray::data(const QString &name) const
 {
-    Q_ASSERT( size()==_items().size() );
+    Q_ASSERT( _data.size()==_items.size() );
     int i = _items.findIndex(name);
     Q_ASSERT( i!=-1 );
-    return at(i);
+    return _data[i];
 }
 
 void DataArray::read(uint k)
 {
-    Q_ASSERT( size()==_items().size() );
-    for (uint i=0; i<size(); i++) {
-        if ( !_items()[i]->isStored() ) continue;
-        at(i) = _items()[i]->read(k);
+    Q_ASSERT( _data.size()==_items.size() );
+    for (uint i=0; i<_data.size(); i++) {
+        if ( !_items[i]->isStored() ) continue;
+        _data[i] = _items[i]->read(k);
     }
 }
 
 void DataArray::write(uint k, uint nb) const
 {
-    Q_ASSERT( size()==_items().size() );
-    for (uint i=0; i<size(); i++) {
-        const ItemContainer *item = _items()[i];
+    Q_ASSERT( _data.size()==_items.size() );
+    for (uint i=0; i<_data.size(); i++) {
+        const ItemContainer *item = _items[i];
         if ( !item->isStored() ) continue;
         for (uint j=nb-1; j>k; j--)  item->write(j, item->read(j-1));
-        item->write(k, at(i));
+        item->write(k, _data[i]);
     }
 }
 
+QDataStream &operator <<(QDataStream &s, const DataArray &array)
+{
+    s << array._data;
+    return s;
+}
+
+QDataStream &operator >>(QDataStream &s, DataArray &array)
+{
+    s >> array._data;
+    return s;
+}
+
 //-----------------------------------------------------------------------------
-Score::Score(const ScoreInfos &items, ScoreType type)
-    : DataArray(items), _type(type)
+Score::Score(ScoreType type)
+    : DataArray(kHighscores->scoreInfos()), _type(type)
 {}
+
+bool Score::operator <(const Score &score) const
+{
+    return kHighscores->isStrictlyWorse(*this, score);
+}
+
+QDataStream &operator <<(QDataStream &s, const Score &score)
+{
+    s << (Q_UINT8)score.type();
+    s << (const DataArray &)score;
+    return s;
+}
+
+QDataStream &operator >>(QDataStream &s, Score &score)
+{
+    Q_UINT8 type;
+    s >> type;
+    score._type = (ScoreType)type;
+    s >> (DataArray &)score;
+    return s;
+}
 
 }; // namespace

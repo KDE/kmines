@@ -11,9 +11,9 @@
 #include <kapplication.h>
 #include <klocale.h>
 #include <kconfig.h>
+#include <ghighscores.h>
 
 #include "dialogs.h"
-#include "highscores.h"
 
 
 Status::Status(QWidget *parent, const char *name)
@@ -68,6 +68,7 @@ Status::Status(QWidget *parent, const char *name)
 			 smiley, SLOT(setMood(Smiley::Mood)) );
 	connect(field, SIGNAL(gameStateChanged(GameState)),
 			SLOT(gameStateChangedSlot(GameState)) );
+    connect(field, SIGNAL(incActions()), dg, SLOT(incActions()));
 	QWhatsThis::add(field, i18n("Mines field."));
 
 // resume button
@@ -96,14 +97,14 @@ void Status::initGame()
 	emit gameStateChanged(Stopped);
 	update(false);
 	smiley->setMood(Smiley::Normal);
-	Level::Type type = field->level().type();
-	if ( type!=Level::Custom ) {
-        KExtHighscores::Score fs = kHighscores->firstScore();
-        KExtHighscores::Score ls = kHighscores->lastScore();
-        dg->setBestScores(fs.score(), ls.score());
-    } else dg->setBestScores(0, 0);
 
-	dg->zero();
+    KExtHighscores::Score first(KExtHighscores::Won);
+    KExtHighscores::Score last(KExtHighscores::Won);
+	if ( field->level().type()!=Level::Custom ) {
+        first = kHighscores->firstScore();
+        last = kHighscores->lastScore();
+    }
+	dg->reset(first, last);
 }
 
 void Status::smileyClicked()
@@ -159,10 +160,7 @@ void Status::_endGame(bool won)
     smiley->setMood(won ? Smiley::Happy : Smiley::Sad);
 
     if ( field->level().type()==Level::Custom || !won ) return;
-    KExtHighscores::Score *score = kHighscores->newScore(KExtHighscores::Won);
-    score->setData("score", dg->score());
-    score->setData("nb_actions", field->nbActions());
-    kHighscores->submitScore(this);
+    kHighscores->submitScore(dg->score(), this);
 }
 
 void Status::print()

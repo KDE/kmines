@@ -197,7 +197,7 @@ PlayerInfos::PlayerInfos(bool trackLostGames, bool trackBlackMarks)
     setGroup("players");
 
     addItem("name", new NameItem);
-    addItem("nb games", new Item((uint)0, i18n("No. of games"),
+    addItem("nb games", new Item((uint)0, i18n("Games count"),
                                  Qt::AlignRight), true, true);
     if (trackLostGames)
         addItem("success", new SuccessPercentageItem, true, true);

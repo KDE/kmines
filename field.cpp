@@ -166,7 +166,6 @@ void Field::restart()
 
 	state = Playing;
 	firstReveal = true;
-	nb_actions = 0;
 	currentAction = None;
 	ic = _level.width()/2;
 	jc = _level.height()/2;
@@ -395,7 +394,7 @@ void Field::autoReveal()
 {
 	if ( state!=Playing ) return;
     if ( pfield(ic, jc).state!=Uncovered ) return;
-	nb_actions++;
+    emit incActions();
 
 	// number of mines around the case
 	uint nm = computeNeighbours(ic, jc);
@@ -489,7 +488,7 @@ void Field::right()
 void Field::reveal()
 {
 	if ( state!=Playing ) return;
-    nb_actions++;
+    emit incActions();
 	if (firstReveal) {
 		// set mines positions on field ; must avoid the first
 		// clicked case
@@ -514,7 +513,7 @@ void Field::reveal()
 void Field::mark()
 {
 	if ( state!=Playing ) return;
-	nb_actions++;
+    emit incActions();
 	switch (pfield(ic, jc).state) {
 	case Covered:   changeCaseState(ic, jc, Marked); break;
 	case Marked:    changeCaseState(ic, jc, (u_mark ? Uncertain : Covered));
@@ -527,7 +526,7 @@ void Field::mark()
 void Field::umark()
 {
 	if ( state!=Playing ) return;
-	nb_actions++;
+    emit incActions();
 	switch (pfield(ic, jc).state) {
 	case Covered:
 	case Marked:    changeCaseState(ic, jc, Uncertain); break;

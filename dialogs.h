@@ -11,8 +11,10 @@
 
 #include <knuminput.h>
 #include <kcolorbutton.h>
+#include <kdialogbase.h>
+#include <ghighscores.h>
+#include <gsettings.h>
 
-#include "generic/gsettings.h"
 #include "defines.h"
 
 
@@ -39,7 +41,7 @@ class LCDNumber : public QLCDNumber
  public:
 	LCDNumber(QWidget *parent, const char *name = 0);
 
-	void setColor(QColor);
+	void setColor(QColor color);
 };
 
 //-----------------------------------------------------------------------------
@@ -47,23 +49,25 @@ class DigitalClock : public LCDNumber
 {
  Q_OBJECT
  public:
-	DigitalClock(QWidget *parent, const char *name = 0);
+    DigitalClock(QWidget *parent);
 
-    void setBestScores(uint first, uint last)
-        { _firstScore = first; _lastScore = last; }
-    uint score() const { return 3600 - (_min*60 + _sec); }
+    void reset(const KExtHighscores::Score &first,
+               const KExtHighscores::Score &last);
+
+    KExtHighscores::Score score() const;
 
  protected:
-	void timerEvent( QTimerEvent * );
+	void timerEvent(QTimerEvent *);
 
  public slots:
-	void zero();
-	void freeze() { stop = true;  }
-	void start()  { stop = false; }
+	void freeze() { _stop = true;  }
+	void start()  { _stop = false; }
+    void incActions() { _nbActions++; }
 
  private:
-	uint _sec, _min, _firstScore, _lastScore;
-	bool stop;
+    KExtHighscores::Score _first, _last;
+	uint                  _sec, _min, _nbActions;
+	bool                  _stop;
 
 	void showTime();
 };

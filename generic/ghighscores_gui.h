@@ -30,16 +30,13 @@
 #include <klocale.h>
 
 #include "gsettings.h"
+#include "ghighscores.h"
 
 
 namespace KExtHighscores
 {
 
 class ItemContainer;
-class ItemArray;
-class Score;
-class ScoreInfos;
-class PlayerInfos;
 
 //-----------------------------------------------------------------------------
 class ShowItem : public KListViewItem
@@ -65,6 +62,7 @@ class ScoresList : public KListView
     // index==-1 : header
     void addLine(const ItemArray &, int index, bool highlight);
     virtual QString itemText(const ItemContainer &, uint row) const = 0;
+    virtual bool showColumn(const ItemContainer &) const { return true; }
 };
 
 //-----------------------------------------------------------------------------
@@ -96,12 +94,13 @@ class MultipleScoresList : public ScoresList
 {
  Q_OBJECT
  public:
-    MultipleScoresList(const QPtrVector<Score> &, QWidget *parent);
+    MultipleScoresList(const ScoreList &, QWidget *parent);
 
  private:
-    const QPtrVector<Score> &_scores;
+    const ScoreList &_scores;
 
     QString itemText(const ItemContainer &, uint row) const;
+    bool showColumn(const ItemContainer &) const;
 };
 
 //-----------------------------------------------------------------------------
@@ -109,7 +108,8 @@ class HighscoresSettingsWidget : public SettingsWidget
 {
  Q_OBJECT
  public:
-    HighscoresSettingsWidget(const PlayerInfos &infos, bool WWHSAvailable);
+    HighscoresSettingsWidget(const PlayerInfos &infos, bool WWHSAvailable,
+                             QWidget *parent);
 
     void load();
     void save();

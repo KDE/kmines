@@ -43,7 +43,6 @@ class Field : public QFrame, public KMines
 	void readSettings();
 	void setCaseSize(uint s);
 	uint caseSize() const { return cp.size; }
-	uint nbActions() const { return nb_actions; }
 
  public slots:
 	void resume();
@@ -56,6 +55,7 @@ class Field : public QFrame, public KMines
 	void startTimer();
 	void freezeTimer();
 	void gameStateChanged(GameState);
+    void incActions();
 
  protected:
 	void paintEvent(QPaintEvent *);
@@ -72,8 +72,7 @@ class Field : public QFrame, public KMines
 	KRandomSequence random;
 
 	GameState state;
-	uint      nb_actions;
-	bool      u_mark, cursor, firstReveal;
+	bool u_mark, cursor, firstReveal;
 
 	uint  ic, jc;              // current pos
 	MouseAction mb[3];         // mouse bindings

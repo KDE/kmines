@@ -22,6 +22,7 @@
 
 #include <kapplication.h>
 #include <kconfig.h>
+#include <klocale.h>
 
 #include "ghighscores_item.h"
 
@@ -113,7 +114,7 @@ class ItemContainer
  * Manage a bunch of @ref Item which are saved under the same group
  * in KHighscores config file.
  */
-class ItemArray : protected QMemArray<ItemContainer *>
+class ItemArray : public QMemArray<ItemContainer *>
 {
  public:
     ItemArray();
@@ -122,7 +123,7 @@ class ItemArray : protected QMemArray<ItemContainer *>
     virtual uint nbEntries() const = 0;
 
     const ItemContainer *item(const QString &name) const;
-    const QMemArray<ItemContainer *> &operator()() const { return *this; }
+
     void addItem(const QString &name, Item *, bool stored = true,
                  bool canHaveSubGroup = false);
     void setItem(const QString &name, Item *);

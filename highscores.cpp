@@ -13,15 +13,15 @@ ExtHighscores::ExtHighscores()
 {
     ScoreItem *scoreItem = new ScoreItem;
     scoreItem->setPrettyFormat(Item::MinuteTime);
-    setScoreItem(scoreItem);
+    setItem(RScore, scoreItem);
 
     MeanScoreItem *meanScoreItem = new MeanScoreItem;
     meanScoreItem->setPrettyFormat(Item::MinuteTime);
-    setMeanScoreItem(meanScoreItem);
+    setItem(RMeanScore, meanScoreItem);
 
     BestScoreItem *bestScoreItem = new BestScoreItem;
     bestScoreItem->setPrettyFormat(Item::MinuteTime);
-    setBestScoreItem(bestScoreItem);
+    setItem(RBestScore, bestScoreItem);
 
     addItemToScore("nb_actions",
                    new Item((uint)0, i18n("Clicks"), Qt::AlignRight));
@@ -57,10 +57,17 @@ void ExtHighscores::convertLegacy(uint gameType)
     uint seconds = cg.config()->readUnsignedNumEntry("Sec", 0);
     int score = 3600 - (minutes*60 + seconds);
     if ( score<=0 ) return;
-    Score *s = newScore(Won);
-    s->setData("score", score);
-    s->setData("name", name);
-    submitLegacyScore();
+    Score s(Won);
+    s.setData("score", score);
+    s.setData("name", name);
+    submitLegacyScore(s);
+}
+
+bool ExtHighscores::isStrictlyWorse(const Score &s1, const Score &s2) const
+{
+    if ( s1.score()==s2.score() )
+        return s1.data("nb_actions").toUInt()>s2.data("nb_actions").toUInt();
+    return Highscores::isStrictlyWorse(s1, s2);
 }
 
 };

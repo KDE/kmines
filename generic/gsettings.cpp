@@ -28,9 +28,9 @@
 
 
 //-----------------------------------------------------------------------------
-SettingsWidget::SettingsWidget(const QString &name,
-                               const QString &icon)
-    : _name(name), _icon(icon)
+SettingsWidget::SettingsWidget(const QString &name, const QString &icon,
+                               QWidget *parent, const char *qtname)
+    : KCModule(parent, qtname), _name(name), _icon(icon)
 {}
 
 //-----------------------------------------------------------------------------
