@@ -140,7 +140,7 @@ StatisticsTab::StatisticsTab(QWidget *parent)
     const PlayerInfos &pi = internal->playerInfos();
     uint nb = pi.nbEntries();
     _data.resize(nb+1);
-    for (uint i=0; i<_data.size(); i++) {
+    for (uint i=0; i<_data.size()-1; i++) {
         _data[i].count[Total] = pi.item("nb games")->read(i).toUInt();
         _data[i].count[Lost] = pi.item("nb lost games")->read(i).toUInt();
         _data[i].count[BlackMark] =
@@ -156,14 +156,15 @@ StatisticsTab::StatisticsTab(QWidget *parent)
 
     for (uint k=0; k<Nb_Counts; k++) _data[nb].count[k] = 0;
     for (uint k=0; k<Nb_Trends; k++) _data[nb].trend[k] = 0;
-    for (uint i=0; i<_data.size(); i++) {
+    for (uint i=0; i<_data.size()-1; i++) {
         for (uint k=0; k<Nb_Counts; k++)
             _data[nb].count[k] += _data[i].count[k];
         for (uint k=0; k<Nb_Trends; k++)
             _data[nb].trend[k] += _data[i].trend[k];
     }
     for (uint k=0; k<Nb_Trends; k++)
-        _data[nb].trend[k] = qRound(double(_data[nb].trend[k]) / _data.size());
+        _data[nb].trend[k] =
+            qRound(double(_data[nb].trend[k]) / _data.size()-1);
 
     init();
 }
@@ -223,35 +224,37 @@ HistogramTab::HistogramTab(QWidget *parent)
     }
 
     // read data
-    _counts.resize((pi.histoSize()-1) * (pi.nbEntries()+1));
-    _data.resize(pi.nbEntries()+1);
-    for (uint i=0; i<=pi.nbEntries(); i++) {
+    uint n = pi.nbEntries();
+    uint s = pi.histoSize() - 1;
+    _counts.resize((n+1) * s);
+    _data.resize(n+1);
+    for (uint i=0; i<_data.size(); i++) {
         _data[i].total = 0;
         _data[i].max = 0;
     }
-    for (uint k=1; k<pi.histoSize(); k++) {
-        _counts[pi.nbEntries()*(pi.histoSize()-1) + (k-1)] = 0;
-        for (uint i=0; i<pi.nbEntries(); i++) {
-            uint nb = pi.item(pi.histoName(k))->read(i).toUInt();
-            _counts[i*(pi.histoSize()-1) + (k-1)] = nb;
-            _counts[pi.nbEntries()*(pi.histoSize()-1) + (k-1)] += nb;
+    for (uint k=0; k<s; k++) {
+        _counts[n*s + k] = 0;
+        for (uint i=0; i<n; i++) {
+            uint nb = pi.item(pi.histoName(k+1))->read(i).toUInt();
+            _counts[i*s + k] = nb;
+            _counts[n*s + k] += nb;
             _data[i].total += nb;
-            _data[pi.nbEntries()].total += nb;
-            if ( k!=pi.histoSize()-1 )
-                _data[i].max = kMax(_data[i].max, double(nb) / delta(k));
+            _data[n].total += nb;
+            _data[i].max = kMax(_data[i].max, double(nb) / delta(k+1));
         }
     }
-    for (uint k=1; k<pi.histoSize(); k++)
-        if ( k!=pi.histoSize()-1 ) {
-            double v = double(_counts[pi.nbEntries() + (k-1)]) / delta(k);
-            _data[pi.nbEntries()].max = kMax(_data[pi.nbEntries()].max, v);
-        }
+    for (uint k=0; k<s; k++) {
+        double v = double(_counts[n*s + k]) / delta(k+1);
+        _data[n].max = kMax(_data[n].max, v);
+    }
 
     init();
 }
 
 uint HistogramTab::delta(uint k) const
 {
+    if ( !internal->scoreBound && k==internal->playerInfos().histoSize()-1 )
+        return 1;
     const QMemArray<uint> &sh = internal->scoreHistogram;
     return sh[k] - sh[k-1] + 1;
 }
@@ -260,15 +263,17 @@ void HistogramTab::display(uint i)
 {
     const PlayerInfos &pi = internal->playerInfos();
     QListViewItem *item = _list->firstChild();
-    for (uint k=pi.histoSize()-1; k>0; k--) {
-        uint nb = _counts[i*(pi.histoSize()-1) + (k-1)];
+    uint s = pi.histoSize() - 1;
+    for (int k=s-1; k>=0; k--) {
+        uint nb = _counts[i*s + k];
         item->setText(2, QString::number(nb));
         item->setText(3, percent(nb, _data[i].total));
-        if ( !internal->scoreBound && k==pi.histoSize()-1 )
+        if ( !internal->scoreBound
+             && k+1==internal->playerInfos().histoSize()-1 )
             item->setText(4, "--");
         else {
             uint width = (_data[i].max==0 ? 0
-                          : qRound(150.0 * nb / delta(k) / _data[i].max));
+                          : qRound(150.0 * nb / delta(k+1) / _data[i].max));
             QPixmap pixmap(width, 10);
             pixmap.fill(blue);
             item->setPixmap(4, pixmap);

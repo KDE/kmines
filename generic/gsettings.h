@@ -22,8 +22,8 @@
 
 #include <qvariant.h>
 #include <qvaluevector.h>
-#include <qptrlist.h>
 #include <qasciidict.h>
+#include <qguardedptr.h>
 
 #include <kdialogbase.h>
 
@@ -520,7 +520,11 @@ class KConfigCollection : public KConfigItemBase
     void setDefaultState();
 
  private:
-    QPtrList<KConfigItemBase> _list;
+    typedef QGuardedPtr<KConfigItemBase> Item;
+    typedef QValueList<Item> ItemList;
+    typedef ItemList::iterator Iterator;
+    typedef ItemList::const_iterator ConstIterator;
+    ItemList _list;
 
     class KConfigCollectionPrivate;
     KConfigCollectionPrivate *d;

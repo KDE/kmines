@@ -111,7 +111,7 @@ bool AdviseFast::FactSet::reveal(
 	if( !_field->isCovered(point) ) return true; // :)
 
 	CoordSet autorevealed;
-	if(_field->reveal(point, &autorevealed, 0) == false)
+	if(_field->doReveal(point, &autorevealed, 0) == false)
 		// Blew up :(
 		return false;
 
@@ -169,7 +169,7 @@ void AdviseFast::FactSet::mark(
 		_containingFacts.erase(point);
 	}
 
-	_field->setFlag(point);
+	_field->doMark(point);
 }
 
 CoordSet const *AdviseFast::FactSet::getContainingFacts(

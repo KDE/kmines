@@ -223,7 +223,7 @@ void GameConfig::magicRevealToggled()
 
 //-----------------------------------------------------------------------------
 AppearanceConfig::AppearanceConfig()
-    : KConfigWidget(i18n("Appearance"), "appearance")
+    : KConfigWidget(i18n("Appearance"), "colorize")
 {
     QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
 

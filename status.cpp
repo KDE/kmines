@@ -449,7 +449,7 @@ void Status::replayLog()
     f = _logRoot.namedItem("ActionList");
     _actions = f.toElement().elementsByTagName("Action");
     _index = 0;
-    _timer->start(1000);
+    _timer->start(500);
 }
 
 void Status::replayStep()
@@ -460,7 +460,7 @@ void Status::replayStep()
         return;
     }
 
-    _timer->changeInterval(500);
+    _timer->changeInterval(200);
     QDomElement a = _actions.item(_index).toElement();
     dg->setTime(a.attribute("time"));
     uint i = a.attribute("column").toUInt();

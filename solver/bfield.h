@@ -42,20 +42,17 @@ class BaseField : public Grid2D::Square<KMines::Case>, public KMines
 // --------------------------
 // interface used by the solver
     uint nbMines() const { return _nbMines; }
-
-    /**
-     * @return false if the case revealed contains a mine.
-     */
-	bool reveal(const Grid2D::Coord &c, Grid2D::CoordSet *autorevealed,
-                bool *caseUncovered);
-
     bool isCovered(const Grid2D::Coord &p) const
         { return ( state(p)!=KMines::Uncovered ); }
     uint nbMinesAround(const Grid2D::Coord &) const;
     void coveredNeighbours(const Grid2D::Coord &p, Grid2D::CoordSet &n) const;
-    bool isSolved() const
-        { return (size() - _nbUncovered)==_nbMines; }
-    void setFlag(const Grid2D::Coord &);
+    bool isSolved() const { return (size() - _nbUncovered)==_nbMines; }
+
+    // return false if the case revealed contains a mine.
+	virtual bool doReveal(const Grid2D::Coord &c,
+                          Grid2D::CoordSet *autorevealed, bool *caseUncovered)
+        { return reveal(c, autorevealed, caseUncovered); }
+    virtual void doMark(const Grid2D::Coord &);
 // -------------------------
 
     uint nbMarked() const { return _nbMarked; }
@@ -69,6 +66,8 @@ class BaseField : public Grid2D::Square<KMines::Case>, public KMines
         { return (*this)[p].state; }
     bool hasMine(const Grid2D::Coord &p) const { return (*this)[p].mine; }
     virtual void changeCase(const Grid2D::Coord &, KMines::CaseState);
+    bool reveal(const Grid2D::Coord &c,
+                Grid2D::CoordSet *autorevealed, bool *caseUncovered);
     bool autoReveal(const Grid2D::Coord &, bool *caseUncovered);
     void completeReveal();
 

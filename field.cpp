@@ -201,6 +201,7 @@ void Field::mouseReleaseEvent(QMouseEvent *e)
     case UMark:      doUmark(p); break;
 	case Reveal:     doReveal(p); break;
 	case AutoReveal: doAutoReveal(p); break;
+    case None:       Q_ASSERT(false); break;
 	}
 }
 
@@ -278,14 +279,17 @@ void Field::moveToEdge(Neighbour n)
     if ( inside(c) ) placeCursor(c);
 }
 
-void Field::doReveal(const Coord &c)
+bool Field::doReveal(const Coord &c, CoordSet *autorevealed,
+                     bool *caseUncovered)
 {
-	if ( !isActive() ) return;
+	if ( !isActive() ) return true;
     resetAdvised();
 
     if ( firstReveal() ) setState(Playing);
     emit addAction(c, Reveal);
-    doAction(Reveal, c, _completeReveal);
+    CaseState state =
+        doAction(Reveal, c, _completeReveal, autorevealed, caseUncovered);
+    return ( state!=Error );
 }
 
 void Field::doMark(const Coord &c)
@@ -321,18 +325,27 @@ void Field::doUmark(const Coord &c)
 }
 
 KMines::CaseState Field::doAction(ActionType type, const Coord &c,
-                                  bool complete)
+                                  bool complete, CoordSet *autorevealed,
+                                  bool *caseUncovered)
 {
     CaseState state = Error;
 
     switch (type) {
     case Reveal:
-        if ( !reveal(c, 0, 0) ) emit gameStateChanged(GameOver);
-        else if (complete) completeReveal();
+        if ( !reveal(c, autorevealed, caseUncovered) )
+            emit gameStateChanged(GameOver);
+        else {
+            state = Uncovered;
+            if (complete) completeReveal();
+        }
         break;
     case AutoReveal:
-        if ( !autoReveal(c, 0) ) emit gameStateChanged(GameOver);
-        else if (complete) completeReveal();
+        if ( !autoReveal(c, caseUncovered) )
+            emit gameStateChanged(GameOver);
+        else {
+            state = Uncovered;
+            if (complete) completeReveal();
+        }
         break;
     case SetFlag:
         state = Marked;
@@ -344,6 +357,9 @@ KMines::CaseState Field::doAction(ActionType type, const Coord &c,
         break;
     case SetUncertain:
         state = Uncertain;
+        break;
+    case Nb_Actions:
+        Q_ASSERT(false);
         break;
     }
 
