@@ -107,20 +107,6 @@ MainWidget::MainWidget()
 	for (uint i=0; i<levelAction.size(); i++)
 		levelAction[i]->setExclusiveGroup("level");
 
-	// Popup
-	popup = new KActionMenu(i18n("Popup"), actionCollection());
-	popup->insert(MENUBAR_ACTION);
-	popup->insert(SAVE_SETTINGS_ACTION);
-	popup->insert( new KActionSeparator(actionCollection()) );
-	popup->insert(actionCollection()->action("game_new"));
-	popup->insert(actionCollection()->action("game_pause"));
-	popup->insert( new KActionSeparator(actionCollection()) );
-	popup->insert(actionCollection()->action("game_highscores"));
-	popup->insert(actionCollection()->action("game_print"));
-	popup->insert( new KActionSeparator(actionCollection()) );
-	popup->insert(actionCollection()->action("game_quit"));
-
-	enableToolBar(KToolBar::Hide);
 	createGUI("ui_kmines.rc");
 	readSettings();
 	setView(status);
@@ -166,9 +152,11 @@ void MainWidget::changeLevel(uint i)
 
 bool MainWidget::eventFilter(QObject *, QEvent *e)
 {
+	QPopupMenu *popup;
 	switch (e->type()) {
 	 case QEvent::MouseButtonPress : 
 		if ( ((QMouseEvent *)e)->button()!=RightButton ) return FALSE;
+		popup = (QPopupMenu*)factory()->container("popup", this);
 		popup->popup(QCursor::pos());
 		return TRUE;
 	 default : return FALSE;

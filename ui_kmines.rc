@@ -17,4 +17,18 @@
 	<Action name="level_custom"/>
   </Menu>
 </MenuBar>
+<Menu name="popup">
+  <Action name="options_show_menubar"/>
+  <Action name="options_save_options"/>
+  <Separator/>
+  <Action name="game_new"/>
+  <Separator/>
+  <Action name="game_highscores"/>
+  <Separator/>
+  <Action name="game_pause"/>
+  <Action name="game_print"/>
+  <Separator/>
+  <Action name="game_quit"/>
+</Menu>
+<ToolBar name="mainToolBar" noMerge="1"/>
 </kpartgui>

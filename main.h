@@ -30,7 +30,6 @@ class MainWidget : public KTMainWindow
 
  private:
 	KAccel                  *kacc;
-	KActionMenu             *popup;
 	QArray<KRadioAction *>   levelAction;
 	Status                  *status;
 	
