@@ -53,8 +53,7 @@ KMines::KMines(QWidget *parent, const char *name)
 	options = new QPopupMenu;
 	options->setCheckable(TRUE);
 	um_id = options->insertItem(i18n("? mark"), this, SLOT(toggleUMark()) );
-	// options->insertItem(i18n("Keys"), this, SLOT(configKeys()) );
-	// How to do that with kaccel ?
+	options->insertItem(i18n("Keys"), this, SLOT(configKeys()) );
 	
 	QPopupMenu *level = new QPopupMenu;
 	level->insertItem(i18n("Easy"));

@@ -6,6 +6,7 @@
 
 #include <kconfig.h>
 #include <kaccel.h>
+#include <kkeydialog.h>
 #include <kapp.h>
 
 
@@ -33,7 +34,7 @@ class KMines : public QWidget
 	  *	height and number of mines
 	  */
 	void change_level(int level);
-	
+        void configKeys() { KKeyDialog::configureKeys( kacc ); }
 	void quit();
 	void toggleMenu();
 	void toggleUMark();
