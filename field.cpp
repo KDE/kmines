@@ -439,7 +439,7 @@ void Field::_endGame()
 
 void Field::pause()
 {
-	if (first_click) return;
+	if ( first_click || state==Stopped ) return;
 	
 	/* if already in pause : resume game */
 	if ( state==Paused ) resume();

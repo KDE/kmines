@@ -1,5 +1,5 @@
-#define VERSION	     "2.0.7"
-#define LONG_VERSION "2.0.7 (31 August 2000)"
+#define VERSION	     "2.0.8"
+#define LONG_VERSION "2.0.8 (6 September 2000)"
 #define COPYLEFT     "(c) 1996-2000, Nicolas Hadacek"
 #define EMAIL        "hadacek@kde.org"
 #define HOMEPAGE     "http://azhyd.free.fr/KDE/kmines.php3"

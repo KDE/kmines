@@ -71,7 +71,6 @@ void Status::setGameState(GameState s)
 	case Stopped: emit message(i18n("Game stopped")); break;
 	case Playing: emit message(i18n("Playing"));      break;
 	case Paused:  emit message(i18n("Game paused"));  break;
-	case GameOver:                                    break;
 	}
 	emit gameStateChanged(s);
 }
@@ -127,7 +126,7 @@ void Status::_endGame(bool win)
 	field->stop();
 	dg->freeze();
 	field->showMines();
-	setGameState(GameOver);
+	setGameState(Stopped);
 	
 	if (win) {
 		GameType type = field->level().type;

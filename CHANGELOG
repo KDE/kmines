@@ -1,3 +1,6 @@
+2.0.8
+ * fix bug that was pausing a stopped game when calling highscores
+
 2.0.7
  * fixed bug in mine field drawing with some styles [found by Gerard Delafond
    and Tobias Kretschmar] that induces a complete rewrite of the drawing code.

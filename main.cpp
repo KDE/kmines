@@ -191,9 +191,6 @@ void MainWidget::gameStateChanged(GameState s)
 		PAUSE_ACTION->setText(i18n("&Pause"));
 		PAUSE_ACTION->setEnabled(true);
 		break;
-    case GameOver:
-		PAUSE_ACTION->setEnabled(false);
-		break;
 	}
 }
 
