@@ -1,3 +1,4 @@
+#include "main.h"
 #include "main.moc"
 
 #include <qwhatsthis.h>
@@ -13,12 +14,13 @@
 #include <kstdaction.h>
 #include <kkeydialog.h>
 #include <kstatusbar.h>
+#include <kstdgameaction.h>
 
 #include "version.h"
 #include "status.h"
 
 MainWidget::MainWidget()
-: KMainWindow(0), levelAction(NbLevels)
+: KMainWindow(0), levelAction(NbLevels+1)
 {
 	installEventFilter(this);
 
@@ -32,15 +34,19 @@ MainWidget::MainWidget()
 			statusBar(), SLOT(message(const QString &)));
 
 	// Game & Popup
-	KStdAction::openNew(status, SLOT(restartGame()),
-						actionCollection(), "game_new");
-	(void)new KAction(i18n("Pause"), Key_P, status, SLOT(pauseGame()),
-					  actionCollection(), "game_pause");
-	(void)new KAction(i18n("High Scores..."), CTRL + Key_H,
-					  status, SLOT(showHighScores()),
-					  actionCollection(), "game_highscores");
-	KStdAction::print(status, SLOT(print()), actionCollection(), "game_print");
-	KStdAction::quit(qApp, SLOT(quit()), actionCollection(), "game_quit");
+	KStdGameAction::gameNew(status, SLOT(restartGame()), actionCollection());
+    KStdGameAction::pause(status, SLOT(pauseGame()), actionCollection());
+    KListAction *la = new KListAction(i18n("Show Highscores"), 0, 0, 0,
+                                      actionCollection(), "highscores");
+    QStringList list;
+    list.append("Easy");
+    list.append("Normal");
+    list.append("Expert");
+    la->setItems(list);
+    connect(la, SIGNAL(activated(int)), status, SLOT(showHighscores(int)));
+
+	KStdGameAction::print(status, SLOT(print()), actionCollection());
+	KStdGameAction::quit(qApp, SLOT(quit()), actionCollection());
 
 	// keyboard
 	QArray<KAction *> keyAction(7);
@@ -77,17 +83,18 @@ MainWidget::MainWidget()
 	KStdAction::keyBindings(this, SLOT(configureKeys()), actionCollection());
 
 	// Levels
-	levelAction[0]
+	levelAction[Easy]
 		= new KRadioAction(i18n("Easy"), 0, this, SLOT(easyLevel()),
 						   actionCollection(), "level_easy");
-	levelAction[1]
+	levelAction[Normal]
 		= new KRadioAction(i18n("Normal"), 0, this, SLOT(normalLevel()),
 						   actionCollection(), "level_normal");
-	levelAction[2]
+	levelAction[Expert]
 		= new KRadioAction(i18n("Expert"), 0, this, SLOT(expertLevel()),
 						   actionCollection(), "level_expert");
-	levelAction[3]
-		= new KRadioAction(i18n("Custom..."), 0, this, SLOT(customLevel()),
+	levelAction[Custom]
+		= new KRadioAction(i18n("Custom mine field ..."), 0,
+                           this, SLOT(customLevel()),
 						   actionCollection(), "level_custom");
 	for (uint i=0; i<levelAction.size(); i++)
 		levelAction[i]->setExclusiveGroup("level");
@@ -107,8 +114,8 @@ MainWidget::MainWidget()
 
 void MainWidget::readSettings()
 {
-	Level l = OptionDialog::readLevel();
-	if ( l.type!=Custom ) levelAction[l.type]->setChecked(true);
+	LevelData l = OptionDialog::readLevel();
+	if ( l.level!=Custom ) levelAction[l.level]->setChecked(true);
 	status->newGame(l);
 
 	bool visible = OptionDialog::readMenuVisible();
@@ -118,22 +125,21 @@ void MainWidget::readSettings()
 	setKeyboardEnabled( OptionDialog::readKeyboard() );
 }
 
-void MainWidget::changeLevel(uint i)
+void MainWidget::changeLevel(Level level)
 {
-	if ( !levelAction[i]->isChecked() ) return;
+	if ( !levelAction[level]->isChecked() ) return;
 
-	GameType type = (GameType)i;
-	Level l;
-	if ( type==Custom ) {
+	LevelData l;
+	if ( level==Custom ) {
 		levelAction[Custom]->setChecked(false);
 		l = status->currentLevel();
-		type = l.type;
+		level = l.level;
 		CustomDialog cu(l, this);
 		if ( !cu.exec() ) { // level unchanged
-			if ( type!=Custom ) levelAction[type]->setChecked(true);
+			if ( level!=Custom ) levelAction[level]->setChecked(true);
 			return;
 		}
-	} else l = LEVELS[i];
+	} else l = LEVELS[level];
 
 	status->newGame(l);
 	OptionDialog::writeLevel(l);

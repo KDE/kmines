@@ -11,15 +11,15 @@ class Status;
 class MainWidget : public KMainWindow
 {
   Q_OBJECT
-	
+
  public:
 	MainWidget();
 
  private slots:
-    void easyLevel()      { changeLevel(0); }
-	void normalLevel()    { changeLevel(1); }
-	void expertLevel()    { changeLevel(2); }
-	void customLevel()    { changeLevel(3); }
+    void easyLevel()            { changeLevel(Easy); }
+	void normalLevel()          { changeLevel(Normal); }
+	void expertLevel()          { changeLevel(Expert); }
+	void customLevel()          { changeLevel(Custom); }
 	void toggleMenubar();
     void configureKeys();
 	void setKeyboardEnabled(bool);
@@ -31,9 +31,9 @@ class MainWidget : public KMainWindow
  private:
 	QArray<KRadioAction *>   levelAction;
 	Status                  *status;
-	
+
 	void readSettings();
-	void changeLevel(uint i);
+	void changeLevel(Level);
 };
 
 #endif // MAIN_H

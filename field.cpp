@@ -1,3 +1,4 @@
+#include "field.h"
 #include "field.moc"
 
 #include <math.h>
@@ -25,7 +26,7 @@ Field::Field(QWidget *parent, const char *name)
 	top->addStretch(1);
 
 	dummy = new QPushButton(0);
-	
+
 	readSettings();
 }
 
@@ -47,7 +48,7 @@ void Field::setCaseProperties(const CaseProperties &_cp)
 {
 	cp = _cp;
 	dummy->resize(cp.size, cp.size);
-	
+
 	QBitmap mask;
 
 	flagPixmap(mask, true);
@@ -108,7 +109,7 @@ void Field::minePixmap(QPixmap &pix, bool mask, CaseState type) const
 	p.drawLine(5, 5, 16, 16);
 	p.drawLine(5, 15, 15, 5);
 	p.drawEllipse(5, 5, 11, 11);
-	
+
 	p.fillRect(8, 8, 2, 2, (mask ? color1 : white));
 
 	if ( type==Marked ) {
@@ -149,7 +150,7 @@ Case &Field::pfield(uint i, uint j)
 uint Field::computeNeighbours(uint i, uint j) const
 {
 	uint nm = 0;
-	
+
 	if (pfield(i-1,   j).mine) nm++;
 	if (pfield(i-1, j+1).mine) nm++;
 	if (pfield(i-1, j-1).mine) nm++;
@@ -158,11 +159,11 @@ uint Field::computeNeighbours(uint i, uint j) const
 	if (pfield(i+1,   j).mine) nm++;
 	if (pfield(i+1, j+1).mine) nm++;
 	if (pfield(i+1, j-1).mine) nm++;
-	
+
 	return nm;
 }
 
-void Field::setLevel(const Level &l)
+void Field::setLevel(const LevelData &l)
 {
 	lev = l;
 	restart(false);
@@ -184,8 +185,8 @@ void Field::restart(bool repaint)
 	jc = lev.height/2;
 
 	_pfield.resize( (lev.width+2) * (lev.height+2) );
-	
-	
+
+
 	for (uint i=0; i<lev.width+2; i++)
 		for (uint j=0; j<lev.height+2; j++) {
 			Case tmp;
@@ -403,7 +404,7 @@ void Field::autoReveal()
 	case Uncertain: return;
 	default:        break;
 	}
-	
+
 	/* number of mines around the case */
 	uint nm = computeNeighbours(ic, jc);
 	if M_OR_U(ic-1,   jc) nm--;
@@ -414,7 +415,7 @@ void Field::autoReveal()
 	if M_OR_U(ic+1,   jc) nm--;
 	if M_OR_U(ic+1, jc+1) nm--;
 	if M_OR_U(ic+1, jc-1) nm--;
-	
+
 	if (!nm) { /* the number of surrounding mines is equal */
 		       /* to the number of marks :) */
 		uncoverCase(ic+1, jc+1);
@@ -427,7 +428,7 @@ void Field::autoReveal()
 		uncoverCase(ic-1, jc-1);
 	}
 }
-	
+
 void Field::uncoverCase(uint i, uint j)
 {
 	if ( pfield(i, j).state==Covered ) {
@@ -456,7 +457,7 @@ void Field::_endGame()
 void Field::pause()
 {
 	if ( first_click || state==Stopped ) return;
-	
+
 	/* if already in pause : resume game */
 	if ( state==Paused ) resume();
 	else {
@@ -514,14 +515,14 @@ void Field::reveal()
 				j = random.getLong(lev.height);
 			} while ( pfield(i+1, j+1).mine
 					  || ((i+1)==(uint)ic && (j+1)==(uint)jc) );
-			
+
 			pfield(i+1, j+1).mine = true;
 		}
 		emit startTimer();
 		first_click = false;
 		emit gameStateChanged(Playing);
 	}
-	
+
 	uncoverCase(ic, jc);
 }
 
@@ -586,7 +587,7 @@ void Field::drawBox(uint i, uint j, bool pressed,
 	// draw text and pixmap
 	style().drawItem(&p, x, y, cp.size, cp.size, AlignCenter, colorGroup(),
 					 true, pixmap, text, -1, textColor);
-	
+
 	// draw cursor
 	if ( cursor && i==ic && j==jc ) {
 		QRect r = style().buttonRect(x+1, y+1, cp.size-2, cp.size-2);

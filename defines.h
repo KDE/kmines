@@ -9,21 +9,17 @@ struct Case {
 	CaseState state;
 };
 
-enum GameType    { Easy = 0, Normal, Expert, Custom, NbLevels };
+enum Level       { Easy = 0, Normal, Expert, NbLevels, Custom = NbLevels };
 enum GameState   { Stopped, Playing, Paused };
 enum MouseAction { Reveal = 0, AutoReveal, Mark, UMark, None };
 enum MouseButton { Left = 0, Mid, Right };
 
-struct Level {
-	uint     width, height, nbMines;
-	GameType type;
+struct LevelData {
+	uint        width, height, nbMines;
+    Level       level;
+    const char *label;
 };
-extern const Level LEVELS[NbLevels-1];
-
-struct Score {
-	uint     sec, min;
-	GameType type;
-};
+extern const LevelData LEVELS[NbLevels];
 
 #define NB_NUMBER_COLORS 8
 
@@ -32,5 +28,7 @@ struct CaseProperties {
 	QColor numberColors[NB_NUMBER_COLORS];
 	QColor flagColor, explosionColor, errorColor;
 };
+
+#define NB_HS_ENTRIES 10
 
 #endif // DEFINES_H

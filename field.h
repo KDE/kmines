@@ -13,20 +13,21 @@
 /* mines field widget */
 class Field : public QFrame
 {
-  Q_OBJECT
-	
+ Q_OBJECT
+
  public:
     Field(QWidget *parent, const char *name=0);
 	virtual ~Field();
 
 	QSize sizeHint() const;
 	QSizePolicy sizePolicy() const;
-	
+
 	void restart(bool repaint = true);
+    bool isPaused() const { return state==Paused; }
 	void pause();
 	void stop() { state = Stopped; }
 	void showMines();
-	
+
 	void up();
 	void down();
 	void left();
@@ -36,15 +37,15 @@ class Field : public QFrame
 	void umark();
 	void keyboardAutoReveal();
 
-	void setLevel(const Level &);
-	const Level &level() const { return lev; }
+	void setLevel(const LevelData &);
+	const LevelData &level() const { return lev; }
 	void readSettings();
-	
+
  public slots:
 	void resume();
-	
+
  signals:
-	void changeCase(CaseState, uint);
+	void changeCase(CaseState, int);
 	void updateStatus(bool);
 	void setMood(Smiley::Mood);
 	void endGame();
@@ -60,10 +61,10 @@ class Field : public QFrame
 
  private slots:
     void keyboardAutoRevealSlot();
-	
+
  private:
 	QArray<Case>    _pfield;
-	Level           lev;
+	LevelData       lev;
 	KRandomSequence random;
 
 	GameState state;

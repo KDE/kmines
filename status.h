@@ -15,25 +15,24 @@ class LCDNumber;
 
 class Status : public QWidget
 {
-  Q_OBJECT
-	
+ Q_OBJECT
  public :
 	Status(QWidget *parent=0, const char *name=0);
 
-	void newGame(const Level &);
-	const Level &currentLevel() const { return field->level(); }
+	void newGame(const LevelData &);
+	const LevelData &currentLevel() const { return field->level(); }
 
  signals:
 	void keyboardEnabled(bool);
 	void message(const QString &);
 	void gameStateChanged(GameState);
-	
+
  public slots:
 	void restartGame();
-	void changeCase(CaseState, uint inc);
+	void changeCase(CaseState, int inc);
 	void update(bool);
 	void endGame()        { _endGame(false); }
-	void showHighScores();
+	void showHighscores(int);
 	void pauseGame()      { field->pause(); }
 	void print();
 	void preferences();
@@ -50,13 +49,12 @@ class Status : public QWidget
  private:
 	uint     uncovered, marked, uncertain;  /* number of cases in each state */
 	Field    *field;
-	
+
 	Smiley       *smiley;
 	LCDNumber    *left;
 	DigitalClock *dg;
 
 	void exmesg(const QString &);
-	void highScores(const Score *);
 	void initGame();
 	void _endGame(bool win);
 };

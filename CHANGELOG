@@ -1,3 +1,8 @@
+2.0.12 (18 May 2001)
+ * use KStdGameAction
+ * big revamping of highscores
+ * use of KHighscore
+
 2.0.11 (14 March 2001)
  * changed highscores accelerator to CTRL + H (more standard)
  * better use of session-management

@@ -1,3 +1,4 @@
+#include "status.h"
 #include "status.moc"
 
 #include <qpainter.h>
@@ -12,6 +13,7 @@
 #include <kconfig.h>
 
 #include "dialogs.h"
+#include "highscores.h"
 
 #define BORDER   10
 #define SEP      10
@@ -22,7 +24,7 @@ Status::Status(QWidget *parent, const char *name)
 // top layout
 	QVBoxLayout *top = new QVBoxLayout(this, BORDER);
 	top->setResizeMode( QLayout::Fixed );
-	
+
 // status bar
 	QHBoxLayout *hbl = new QHBoxLayout(SEP);
 	top->addLayout(hbl);
@@ -33,7 +35,7 @@ Status::Status(QWidget *parent, const char *name)
 	QWhatsThis::add(left, i18n("Mines left"));
 	hbl->addWidget(left);
 	hbl->addStretch(1);
-	
+
 	// smiley
 	smiley = new Smiley(this);
 	connect( smiley, SIGNAL(clicked()), SLOT(restartGame()) );
@@ -48,11 +50,11 @@ Status::Status(QWidget *parent, const char *name)
 	dg->installEventFilter(parent);
 	QWhatsThis::add(dg, i18n("Time elapsed"));
 	hbl->addWidget(dg);
-	
-// mines field	
+
+// mines field
 	field = new Field(this);
-	connect( field, SIGNAL(changeCase(CaseState, uint)),
-			 SLOT(changeCase(CaseState, uint)) );
+	connect( field, SIGNAL(changeCase(CaseState, int)),
+			 SLOT(changeCase(CaseState, int)) );
 	connect( field, SIGNAL(updateStatus(bool)), SLOT(update(bool)) );
 	connect( field, SIGNAL(endGame()), SLOT(endGame()) );
 	connect( field, SIGNAL(startTimer()), dg, SLOT(start()) );
@@ -83,8 +85,12 @@ void Status::initGame()
 	setGameState(Stopped);
 	update(false);
 	smiley->setMood(Smiley::Normal);
-	GameType type = field->level().type;
-	if ( type!=Custom )	dg->setMaxTime( WHighScores::time(type) );
+	Level level = field->level().level;
+	if ( level!=Custom ) {
+        ExtScore score(level);
+        dg->setBestScores( score.firstScore(), score.lastScore() );
+    }
+
 	dg->zero();
 }
 
@@ -94,13 +100,13 @@ void Status::restartGame()
 	initGame();
 }
 
-void Status::newGame(const Level &l)
+void Status::newGame(const LevelData &l)
 {
 	field->setLevel(l);
 	initGame();
 }
-	
-void Status::changeCase(CaseState cs, uint inc)
+
+void Status::changeCase(CaseState cs, int inc)
 {
 	switch (cs) {
 	case Uncovered: uncovered += inc; break;
@@ -113,10 +119,11 @@ void Status::changeCase(CaseState cs, uint inc)
 void Status::update(bool mine)
 {
 	QString str;
-	const Level &l = field->level();
+	const LevelData &l = field->level();
 	int r = l.nbMines - marked;
 	int u = l.width*l.height - l.nbMines - uncovered; // cannot be negative
-	left->setState(r<0 && u!=0);
+    QColor color = (r<0 && u!=0 ? red : white);
+    left->setColor(color);
 	left->display(r);
 	if ( u==0 ) _endGame(!mine);
 }
@@ -127,38 +134,37 @@ void Status::_endGame(bool win)
 	dg->freeze();
 	field->showMines();
 	setGameState(Stopped);
-	
-	if (win) {
-		GameType type = field->level().type;
-		smiley->setMood(Smiley::Happy);
-		if ( type==Custom || dg->better() ) {
-			emit message(i18n("Yeeeesssssss!"));
-			if ( type!=Custom && dg->better() ) {
-				Score score;
-				score.sec  = dg->sec();
-				score.min  = dg->min();
-				score.type = type;
-				highScores(&score);
-			}
-		} else emit message(i18n("You did it ... but not in time."));
-	} else {
-		smiley->setMood(Smiley::Sad);
+
+	if ( !win ) {
+        smiley->setMood(Smiley::Sad);
 		emit message(i18n("Bad luck!"));
+        return;
 	}
+
+    Level level = field->level().level;
+    smiley->setMood(Smiley::Happy);
+    if ( level!=Custom ) {
+        ExtScore score(level, dg->score());
+        ExtPlayerInfos infos(level);
+        int localRank = infos.submitScore(score, this);
+        if ( localRank==-1 ) {
+            emit message(i18n("You did it ... but not in time."));
+            return;
+        }
+        ShowHighscores hs(localRank, this, score, infos);
+        hs.exec();
+    }
+    emit message(i18n("Yeeeesssssss!"));
 }
 
-void Status::showHighScores()
+void Status::showHighscores(int level)
 {
+	if ( !field->isPaused() ) field->pause();
+    ExtScore score((Level)level);
+    ExtPlayerInfos infos((Level)level);
+    ShowHighscores hs(-1, this, score, infos);
+	hs.exec();
 	field->pause();
-	WHighScores whs(this, 0);
-	whs.exec();
-	field->pause();
-}
-
-void Status::highScores(const Score *score)
-{
-	WHighScores whs(this, score);
-	whs.exec();
 }
 
 void Status::print()

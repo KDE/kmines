@@ -12,8 +12,10 @@
 #include <knuminput.h>
 #include <kconfig.h>
 #include <kcolorbtn.h>
+#include <klocale.h>
 
 #include "defines.h"
+#include "highscores.h"
 
 //-----------------------------------------------------------------------------
 class Smiley : public QPushButton
@@ -38,39 +40,34 @@ class LCDNumber : public QLCDNumber
 
  public:
 	LCDNumber(QWidget *parent, const char *name = 0);
-	void setState(bool state);
 
- private:
-	bool state;
+	void setColor(QColor);
 };
 
 //-----------------------------------------------------------------------------
 class DigitalClock : public LCDNumber
 {
  Q_OBJECT
-	
+
  public:
 	DigitalClock(QWidget *parent, const char *name = 0);
-	
-	uint sec() const { return _sec; }
-	uint min() const { return _min; }
-	bool better() const { return ( toSec(_sec, _min)<max_secs ); }
-	
-	static uint toSec(uint sec, uint min) { return sec + min*60; }
-	void setMaxTime(uint totalSecs) { max_secs = totalSecs; }
-	
+
+    void setBestScores(uint first, uint last)
+        { _firstScore = first; _lastScore = last; }
+    uint score() const { return 3600 - (_min*60 + _sec); }
+
  protected:
 	void timerEvent( QTimerEvent * );
-	
+
  public slots:
 	void zero();
 	void freeze() { stop = true;  }
 	void start()  { stop = false; }
-	
+
  private:
-	uint _sec, _min, max_secs;
+	uint _sec, _min, _firstScore, _lastScore;
 	bool stop;
-	
+
 	void showTime();
 };
 
@@ -78,9 +75,9 @@ class DigitalClock : public LCDNumber
 class CustomDialog : public KDialogBase
 {
  Q_OBJECT
-	
+
  public:
-	CustomDialog(Level &lev, QWidget *parent);
+	CustomDialog(LevelData &lev, QWidget *parent);
 
 	static uint maxNbMines(uint width, uint height);
 
@@ -91,27 +88,9 @@ class CustomDialog : public KDialogBase
 
  private:
 	KIntNumInput *km;
-	Level        &lev, initLev;
+	LevelData    &lev, initLev;
 
 	void updateNbMines();
-};
-
-//-----------------------------------------------------------------------------
-class WHighScores : public KDialogBase
-{
- Q_OBJECT
-	
- public:
-	WHighScores(QWidget *parent, const Score *score = 0);
-	static uint time(GameType);
-
- private slots:
-	void reject();
-
- private:
-	GameType   type;
-	QLineEdit *qle;
-	bool       _close;
 };
 
 //-----------------------------------------------------------------------------
@@ -122,32 +101,34 @@ class OptionDialog : public KDialogBase
  public:
 	OptionDialog(QWidget *parent);
 
+    static uint readCaseSize();
+    static bool readUMark();
+    static bool readKeyboard();
+    static MouseAction readMouseBinding(MouseButton);
+
+    static QColor readColor(const QString & key, QColor defaultColor);
+
 	static CaseProperties readCaseProperties();
-	static bool readUMark();
-	static bool readKeyboard();
-	static Level readLevel();
-	static void writeLevel(const Level &);
+	static LevelData readLevel();
+	static void writeLevel(const LevelData &);
 	static bool readMenuVisible();
 	static void writeMenuVisible(bool visible);
-	static MouseAction readMouseBinding(MouseButton);
 
  private slots:
 	void accept();
+    void slotDefault();
 
  private:
-	KIntNumInput *ni;
-	QCheckBox    *um, *keyb;
-	QComboBox    *cb[3];
-	KColorButton *flagButton, *explosionButton, *errorButton;
-	QArray<KColorButton *> numberButtons;
+    KIntNumInput *_caseSize;
+	QCheckBox    *_umark, *_keyb;
+	QComboBox    *_cb[3];
 
-	static KConfig *config();
-	static uint readCaseSize();
-	static QColor readColor(const QString & key, QColor defaultColor);
-	
-	void mainPage();
-	void casePage();
-	void slotDefault();
+    KColorButton *_flag, *_explosion, *_error;
+	QArray<KColorButton *> _numbers;
+
+    HighscoresOption *highscores;
+
+    static KConfig *config();
 };
 
 #endif // DIALOGS_H
