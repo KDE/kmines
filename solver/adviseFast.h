@@ -16,6 +16,9 @@
  * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+#ifndef adviseFast_h
+#define adviseFast_h
+
 #include "headerP.h"
 
 
@@ -63,3 +66,5 @@ namespace AdviseFast {
         Coord _bigger, _smaller;
 	};
 }
+
+#endif
