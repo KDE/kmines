@@ -14,6 +14,8 @@ kmines_SOURCES= dialogs.cpp field.cpp status.cpp main.cpp
 BUILTSOURCES = dialogs.moc field.moc status.moc main.moc
 DISTCLEANFILES = $(BUILTSOURCES)
 
+noinst_HEADERS = defines.h main.h status.h version.h field.h dialogs.h
+
 SUBDIRS = data
 
 messages:

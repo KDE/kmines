@@ -9,6 +9,8 @@ apps_DATA = kmines.kdelnk
 htmldir = $(kde_htmldir)/en/kmines
 html_DATA = index.html index-1.html index-2.html index-3.html logotp3.gif
 
+EXTRA_DIST = $(icon_DATA) $(apps_DATA) $(html_DATA) mini-kmines.xpm kmines.xpm
+
 install-data-local:
 	$(mkinstalldirs) $(minidir)
 	$(INSTALL_DATA) mini-kmines.xpm $(minidir)/kmines.xpm
