@@ -205,10 +205,11 @@ void MainWidget::gameStateChanged(GameState s)
 		PAUSE_ACTION->setEnabled(false);
         break;
 	case Paused:
-		PAUSE_ACTION->setText(i18n("&Resume"));
+		PAUSE_ACTION->setChecked(true);
 		break;
 	case Playing:
-		PAUSE_ACTION->setText(i18n("&Pause"));
+//		PAUSE_ACTION->setText(i18n("&Pause"));
+		PAUSE_ACTION->setChecked(false);
 		PAUSE_ACTION->setEnabled(true);
         setFocus();
 		break;
