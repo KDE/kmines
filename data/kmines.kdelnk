@@ -1,8 +1,0 @@
-# KDE Config File 
-[KDE Desktop Entry]
-Name=Minesweeper
-Icon=kmines.xpm
-Exec=kmines -caption "%c" %i %m
-Type=Application
-DocPath=kmines/index.html
-Comment=KDE replacement for xbombs
