@@ -1,7 +1,7 @@
 #include "highscores.h"
 
 #include <klocale.h>
-#include <kapp.h>
+#include <kapplication.h>
 
 
 //-----------------------------------------------------------------------------

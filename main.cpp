@@ -4,7 +4,7 @@
 #include <qcstring.h>
 #include <qwhatsthis.h>
 
-#include <kapp.h>
+#include <kapplication.h>
 #include <klocale.h>
 #include <kglobal.h>
 #include <kconfig.h>

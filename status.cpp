@@ -8,7 +8,7 @@
 #include <qwhatsthis.h>
 #include <qlayout.h>
 
-#include <kapp.h>
+#include <kapplication.h>
 #include <klocale.h>
 #include <kconfig.h>
 

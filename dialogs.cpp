@@ -11,7 +11,7 @@
 #include <qvbox.h>
 #include <qgrid.h>
 
-#include <kapp.h>
+#include <kapplication.h>
 #include <kiconloader.h>
 
 #include "bitmaps/smile"

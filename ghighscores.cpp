@@ -8,7 +8,7 @@
 #include <qfile.h>
 #include <qtextstream.h>
 
-#include <kapp.h>
+#include <kapplication.h>
 #include <kmessagebox.h>
 #include <kiconloader.h>
 #include <kmdcodec.h>
