@@ -65,7 +65,7 @@ QString ExtHighscores::gameTypeLabel(uint gameType, LabelType type) const
     case WW:       return data.wwLabel;
     }
     return QString::null;
-};
+}
 
 void ExtHighscores::convertLegacy(uint gameType)
 {
@@ -98,4 +98,4 @@ bool ExtHighscores::isStrictlyLess(const Score &s1, const Score &s2) const
     return Highscores::isStrictlyLess(s1, s2);
 }
 
-};
+}

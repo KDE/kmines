@@ -766,4 +766,4 @@ void HighscoresPrivate::exportHighscores(QTextStream &s)
     setGameType(tmp);
 }
 
-}; // namespace
+} // namespace

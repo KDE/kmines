@@ -265,6 +265,6 @@ class HighscoresPrivate
 
 #define internal HighscoresPrivate::self()
 
-}; // namespace
+} // namespace
 
 #endif

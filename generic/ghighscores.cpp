@@ -158,7 +158,7 @@ QString Highscores::gameTypeLabel(uint gameType, LabelType type) const
     case WW:       return "normal";
     }
     return QString::null;
-};
+}
 
 void Highscores::addToQueryURL(KURL &url, const QString &item,
                                const QString &content)
@@ -171,4 +171,4 @@ void Highscores::addToQueryURL(KURL &url, const QString &item,
 	url.setQuery(query);
 }
 
-}; // namescape
+} // namescape

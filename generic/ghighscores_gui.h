@@ -139,6 +139,6 @@ class ImplConfigWidget : public ConfigWidget
     KPushButton *_removeButton;
 };
 
-}; // namespace
+} // namespace
 
 #endif

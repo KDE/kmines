@@ -219,4 +219,4 @@ QDataStream &operator >>(QDataStream &s, Score &score)
     return s;
 }
 
-}; // namespace
+} // namespace

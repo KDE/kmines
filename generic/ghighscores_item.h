@@ -274,6 +274,6 @@ class Score : public DataArray
 QDataStream &operator <<(QDataStream &stream, const Score &score);
 QDataStream &operator >>(QDataStream &stream, Score &score);
 
-}; // namespace
+} // namespace
 
 #endif

@@ -368,4 +368,4 @@ bool ImplConfigWidget::save()
     return res;
 }
 
-}; // namespace
+} // namespace

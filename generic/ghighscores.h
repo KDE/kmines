@@ -342,6 +342,6 @@ class Highscores
     Highscores &operator =(const Highscores &);
 };
 
-}; // namespace
+} // namespace
 
 #endif

@@ -16,7 +16,7 @@ namespace Grid2D
      * This type represent coordinates on a bidimensionnal grid.
      */
     typedef std::pair<int, int> Coord;
-};
+}
 
 inline Grid2D::Coord
 operator +(const Grid2D::Coord &c1, const Grid2D::Coord &c2) {
@@ -65,7 +65,7 @@ namespace Grid2D
      * This type represents a set of @ref Coord.
      */
     typedef std::set<Coord, std::less<Coord> > CoordSet;
-};
+}
 
 inline QTextStream &operator <<(QTextStream &s, const Grid2D::CoordSet &set) {
     for(Grid2D::CoordSet::iterator i=set.begin(); i!=set.end(); ++i)
@@ -219,7 +219,7 @@ class Generic
     uint _width, _height;
     QValueVector<Type> _vector;
 };
-};
+}
 
 template <class Type>
 QDataStream &operator <<(QDataStream &s, const Grid2D::Generic<Type> &m) {
@@ -453,6 +453,6 @@ class Hexagonal : public Generic<Type>, public HexagonalBase
     }
 };
 
-}; // namespace
+} // namespace
 
 #endif
