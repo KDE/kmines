@@ -565,20 +565,21 @@ void Field::drawBox(QPainter &p, uint i, uint j, bool pressed,
 	p.translate(x, y);
 
 	QStyle::SFlags flags = QStyle::Style_Enabled;
-	if (pressed) flags |= QStyle::Style_Down;
-	else flags |= QStyle::Style_Raised;
-	if ( cursor && i==ic && j==jc ) flags |= QStyle::Style_HasFocus;
+    bool hasFocus = ( cursor && i==ic && j==jc );
+	if (hasFocus) flags |= QStyle::Style_HasFocus;
+    if (pressed) flags |= QStyle::Style_Sunken;
+    else flags |= QStyle::Style_Raised;
 
-	style().drawControl(QStyle::CE_PushButton, &p, &button, button.rect(),
-                        colorGroup(), flags);
-	style().drawControl(QStyle::CE_PushButtonLabel, &p, &button,
-                      style().subRect(QStyle::SR_PushButtonFocusRect, &button),
-                        colorGroup(), flags);
+    style().drawPrimitive(QStyle::PE_ButtonCommand, &p, button.rect(),
+                          colorGroup(), flags);
+    if (hasFocus) {
+        QRect fbr = style().subRect(QStyle::SR_PushButtonFocusRect, &button);
+        style().drawPrimitive(QStyle::PE_FocusRect, &p, fbr,
+                              colorGroup(), flags);
+    }
 
-	// we need to draw directly because the pushbutton control clips too much
-	// text and pixmap ...
 	p.resetXForm();
-	QRect r(x, y, cp.size, cp.size);
+	QRect r(QPoint(x, y), button.size());
 	style().drawItem(&p, r, AlignCenter, colorGroup(), true, pixmap,
                          text, -1, &textColor);
 }

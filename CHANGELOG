@@ -1,4 +1,8 @@
-2.1.4 (23 January 2001) [CVS 3.0 devel]
+2.1.4b (11 April 2001)
+ * hopefully fix the drawing of cases for all styles [bug reported
+   by kanthoney]
+
+2.1.4 (23 January 2001) [KDE 3.0 stable]
  * completely revamped API for highscores + dynamic library
  * revamped the settings (include Custom minefield)
  * fixed repaint of LCDs in inactive mode
