@@ -70,7 +70,7 @@ KUIConfigWidget *createConfigurationWidget(QWidget *parent)
 
 void showMultipleScores(const QValueList<Score> &scores, QWidget *parent)
 {
-    KDialogBase dialog(KDialogBase::Plain, i18n("Multiplayers scores"),
+    KDialogBase dialog(KDialogBase::Plain, i18n("Multiplayers Scores"),
                        KDialogBase::Close, KDialogBase::Close,
                        parent, "show_multiplayers_score", true, true);
     QVBoxLayout *vbox = new QVBoxLayout(dialog.plainPage());

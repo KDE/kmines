@@ -187,7 +187,7 @@ bool Solver::solveOneStep(BaseField &field)
 
 //-----------------------------------------------------------------------------
 SolvingRateDialog::SolvingRateDialog(const BaseField &field, QWidget *parent)
-    : KDialogBase(Plain, i18n("Compute solving rate..."), Ok|Close,
+    : KDialogBase(Plain, i18n("Compute Solving Rate..."), Ok|Close,
                   Close, parent, "compute_solving_rate", true, true),
       _refField(field)
 {
