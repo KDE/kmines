@@ -1,5 +1,5 @@
 <!DOCTYPE kpartgui>
-<kpartgui name="kmines">
+<kpartgui name="kmines" version="1">
 <MenuBar>
   <Menu name="game"><text>&amp;Game</text>
 	<Action name="game_pause"/>

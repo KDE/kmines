@@ -5,6 +5,8 @@
 #include <qpushbutton.h>
 #include <qfont.h>
 #include <qvgroupbox.h>
+#include <qlayout.h>
+#include <qhbox.h>
 
 #include <kapp.h>
 #include <klocale.h>
@@ -39,8 +41,8 @@ LCDNumber::LCDNumber(QWidget *parent, const char *name)
 	QPalette p = palette();
 	p.setColor(QColorGroup::Foreground, white);
 	setPalette(p);
-	state = TRUE;
-	setState(FALSE);
+	state = true;
+	setState(false);
 }
 
 void LCDNumber::setState(bool _state)
@@ -68,7 +70,7 @@ void DigitalClock::timerEvent( QTimerEvent *)
 			_sec = 0;
 		}
 		showTime();
-		if ( toSec(_sec, _min)==max_secs ) setState(TRUE);
+		if ( toSec(_sec, _min)==max_secs ) setState(true);
 	}
 }
 
@@ -87,41 +89,22 @@ void DigitalClock::zero()
 {
 	killTimers();
 	
-	stop = TRUE;
+	stop = true;
 	_sec = 0; _min = 0;
 	startTimer(1000); //  1 seconde
 
-	setState(FALSE);
+	setState(false);
 	showTime();
 }
 
 //-----------------------------------------------------------------------------
-DialogBase::DialogBase(const QString &caption, int buttonMask,
-					   ButtonCode defaultButton,
-					   QWidget *parent, const char *name)
-: KDialogBase(Plain, caption, buttonMask ,defaultButton, parent, name, TRUE,
-			  TRUE)
-{
-	// top layout
-	top = new QVBoxLayout(plainPage(), spacingHint());
-	top->setResizeMode(QLayout::Fixed);
-	
-	// title
-	QLabel *lab = new QLabel(caption, plainPage());
-	QFont f( font() );
-	f.setBold(TRUE);
-	lab->setFont(f);
-	lab->setAlignment(AlignCenter);
-	lab->setFrameStyle(QFrame::Panel | QFrame::Raised);
-	top->addWidget(lab);
-	top->addSpacing(2*spacingHint());
-}
-
-//-----------------------------------------------------------------------------
 CustomDialog::CustomDialog(Level &_lev, QWidget *parent)
-: DialogBase(i18n("Customize your game"), Ok|Cancel, Cancel, parent),
+: KDialogBase(Plain, i18n("Customize your game"), Ok|Cancel, Cancel,
+			  parent, 0, true, true),
   lev(_lev), initLev(_lev)
 {
+	QVBoxLayout *top = new QVBoxLayout(plainPage(), spacingHint());
+
 	// width
 	KIntNumInput *ki = new KIntNumInput(lev.width, plainPage());
 	ki->setLabel(i18n("Width"));
@@ -171,6 +154,12 @@ void CustomDialog::updateNbMines()
 }
 
 //-----------------------------------------------------------------------------
+const char *HS_NAME   = "Name";
+const char *HS_MIN    = "Min";
+const char *HS_SEC    = "Sec";
+const char *HS_GRP[NbLevels-1] =
+    { "Easy level", "Normal level", "Expert level" };
+
 uint WHighScores::time(GameType type)
 {
 	KConfig *conf = kapp->config();
@@ -184,7 +173,9 @@ uint WHighScores::time(GameType type)
 }
 
 WHighScores::WHighScores(QWidget *parent, const Score *score)
-: DialogBase(i18n("Hall of Fame"), Close, Close, parent), qle(0)
+: KDialogBase(Plain, i18n("Hall of Fame"), Close, Close,
+			  parent, 0, true, true),
+  qle(0)
 {
 	KConfig *conf = kapp->config();
 
@@ -198,7 +189,9 @@ WHighScores::WHighScores(QWidget *parent, const Score *score)
 
 	QLabel *lab;
 	QFont f( font() );
-	f.setBold(TRUE);
+	f.setBold(true);
+
+	QVBoxLayout *top = new QVBoxLayout(plainPage(), spacingHint());
 
 /* Grid layout */
 	QGridLayout *gl = new QGridLayout(3, 4, spacingHint());
@@ -221,7 +214,7 @@ WHighScores::WHighScores(QWidget *parent, const Score *score)
 		conf->setGroup(HS_GRP[k]);
 		int min = conf->readNumEntry(HS_MIN, 0);
 		int sec = conf->readNumEntry(HS_SEC, 0);
-		bool no_score = FALSE;
+		bool no_score = false;
 		
 		if ( !score || (k!=type) ) {
 			lab = new QLabel(plainPage());
@@ -262,7 +255,7 @@ WHighScores::WHighScores(QWidget *parent, const Score *score)
 		gl->addWidget(lab, k, 3);
 	}
 
-	if (score) enableButton(Close, FALSE);
+	if (score) enableButton(Close, false);
 }
 
 void WHighScores::writeName()
@@ -274,47 +267,85 @@ void WHighScores::writeName()
 	conf->sync();
 	str = conf->readEntry(HS_NAME);
 	qle->setText(str);
-	enableButton(Close, TRUE);
+	enableButton(Close, true);
 }
 
 void WHighScores::reject()
 {
 	if ( qle && qle->isEnabled() ) {
-		qle->setEnabled(FALSE);
-		focusNextPrevChild(TRUE); // sort of hack (wonder why its call in
-		                          // setEnabled(FALSE) does nothing ...)
-	} else DialogBase::reject();
+		qle->setEnabled(false);
+		focusNextPrevChild(true); // sort of hack (wonder why its call in
+		                          // setEnabled(false) does nothing ...)
+	} else KDialogBase::reject();
 }
 
 //-----------------------------------------------------------------------------
+const char *OP_GRP       = "Options";
+const char *OP_UMARK     = "? mark";
+const char *OP_MENUBAR   = "menubar visible";
+const char *OP_LEVEL     = "Level";
+const char *OP_CASE_SIZE = "case size";
+const char *OP_KEYBOARD  = "keyboard game";
+const char *OP_MOUSE_BINDINGS[3] =
+    { "mouse left", "mouse mid", "mouse right" };
+const char *OP_NUMBER_COLOR    = "color #";
+const char *OP_FLAG_COLOR      = "flag color";
+const char *OP_EXPLOSION_COLOR = "explosion color";
+const char *OP_ERROR_COLOR     = "error color";
+
+#define NCName(i) QString("%1%2").arg(OP_NUMBER_COLOR).arg(i)
+
+const uint MIN_CASE_SIZE     = 20;
+const uint DEFAULT_CASE_SIZE = MIN_CASE_SIZE;
+const uint MAX_CASE_SIZE     = 100;
+
+const QColor DEFAULT_NUMBER_COLORS[NB_NUMBER_COLORS] =
+   { Qt::blue, Qt::darkGreen, Qt::darkYellow, Qt::darkMagenta, Qt::red,
+	 Qt::darkRed, Qt::black, Qt::black };
+const QColor DEFAULT_FLAG_COLOR      = Qt::red;
+const QColor DEFAULT_EXPLOSION_COLOR = Qt::red;
+const QColor DEFAULT_ERROR_COLOR     = Qt::red;
+
+
 OptionDialog::OptionDialog(QWidget *parent)
-: DialogBase(i18n("Settings"), Ok|Cancel, Cancel, parent)
+: KDialogBase(Tabbed, i18n("Settings"), Ok|Cancel|Default, Cancel,
+			  parent, 0, true, true)
 {
-	ni = new KIntNumInput(readCaseSize(), plainPage());
+	mainPage();
+	casePage();
+}
+
+void OptionDialog::mainPage()
+{
+	QFrame *page = addPage(i18n("Main settings"));
+	QVBoxLayout *top = new QVBoxLayout(page, spacingHint());
+
+	ni = new KIntNumInput(readCaseSize(), page);
 	ni->setRange(MIN_CASE_SIZE, MAX_CASE_SIZE);
 	ni->setLabel(i18n("Case size"));
 	top->addWidget(ni);
 	top->addSpacing(spacingHint());
 
-	um = new QCheckBox(i18n("Enable ? mark"), plainPage());
+	um = new QCheckBox(i18n("Enable ? mark"), page);
 	um->setChecked(readUMark());
 	top->addWidget(um);
 	
-	keyb = new QCheckBox(i18n("Enable keyboard"), plainPage());
+	keyb = new QCheckBox(i18n("Enable keyboard"), page);
 	keyb->setChecked(readKeyboard());
 	top->addWidget(keyb);
 	top->addSpacing(spacingHint());
 
-	QVGroupBox *gb = new QVGroupBox(i18n("Mouse bindings"), plainPage());
+	QVGroupBox *gb = new QVGroupBox(i18n("Mouse bindings"), page);
 	top->addWidget(gb);
 	QGrid *grid = new QGrid(2, gb);
 	grid->setSpacing(spacingHint());
 	QLabel *lab = new QLabel(i18n("Left button"), grid);
-	cb[Left] = new QComboBox(FALSE, grid);
+	cb[Left] = new QComboBox(false, grid);
 	lab = new QLabel(i18n("Mid button"), grid);
-	cb[Mid] = new QComboBox(FALSE, grid);
+	cb[Mid] = new QComboBox(false, grid);
 	lab = new QLabel(i18n("Right button"), grid);
-	cb[Right] = new QComboBox(FALSE, grid);
+	cb[Right] = new QComboBox(false, grid);
+	top->addStretch(1);
 
 	for (uint i=0; i<3; i++) {
 		cb[i]->insertItem(i18n("reveal"), 0);
@@ -322,6 +353,38 @@ OptionDialog::OptionDialog(QWidget *parent)
 		cb[i]->insertItem(i18n("autoreveal"), 2);
 		cb[i]->insertItem(i18n("toggle ? mark"), 3);
 		cb[i]->setCurrentItem(readMouseBinding((MouseButton)i));
+	}
+}
+
+void OptionDialog::casePage()
+{
+	QFrame *page = addPage(i18n("Color settings"));
+	QVBoxLayout *top = new QVBoxLayout(page, spacingHint());
+
+	CaseProperties cp = readCaseProperties();
+	
+	QHBox *hbox = new QHBox(page);
+	top->addWidget(hbox);
+	(void)new QLabel(i18n("Flag color"), hbox);
+	flagButton = new KColorButton(cp.flagColor, hbox);
+	
+	hbox = new QHBox(page);
+	top->addWidget(hbox);
+	(void)new QLabel(i18n("Explosion color"), hbox);
+	explosionButton = new KColorButton(cp.explosionColor, hbox);
+	
+	hbox = new QHBox(page);
+	top->addWidget(hbox);
+	(void)new QLabel(i18n("Error color"), hbox);
+	errorButton = new KColorButton(cp.errorColor, hbox);
+
+	numberButtons.resize(NB_NUMBER_COLORS);
+	for (uint i=0; i<NB_NUMBER_COLORS; i++) {
+		hbox = new QHBox(page);
+		top->addWidget(hbox);
+		(void)new QLabel(i==0 ? i18n("One mine color")
+						 : i18n("%1 mines color").arg(i+1), hbox);
+		numberButtons[i] = new KColorButton(cp.numberColors[i], hbox);
 	}
 }
 
@@ -335,29 +398,28 @@ KConfig *OptionDialog::config()
 void OptionDialog::accept()
 {
 	KConfig *conf = config();
-	conf->writeEntry(OP_CASE_SIZE, ni->value());
 	conf->writeEntry(OP_UMARK, um->isChecked());
 	conf->writeEntry(OP_KEYBOARD, keyb->isChecked());
 	for (uint i=0; i<3; i++)
 		conf->writeEntry(OP_MOUSE_BINDINGS[i], cb[i]->currentItem());
+	conf->writeEntry(OP_CASE_SIZE, ni->value());
+	conf->writeEntry(OP_FLAG_COLOR, flagButton->color());
+	conf->writeEntry(OP_EXPLOSION_COLOR, explosionButton->color());
+	conf->writeEntry(OP_ERROR_COLOR, errorButton->color());
+	for (uint i=0; i<NB_NUMBER_COLORS; i++)
+		conf->writeEntry(NCName(i), numberButtons[i]->color());
 	
-	DialogBase::accept();
-}
-
-uint OptionDialog::readCaseSize()
-{
-	uint cs = config()->readUnsignedNumEntry(OP_CASE_SIZE, CASE_SIZE);
-	return QMAX(QMIN(cs, MAX_CASE_SIZE), MIN_CASE_SIZE);
+	KDialogBase::accept();
 }
 
 bool OptionDialog::readUMark()
 {
-	return config()->readBoolEntry(OP_UMARK, TRUE);
+	return config()->readBoolEntry(OP_UMARK, true);
 }
 
 bool OptionDialog::readKeyboard()
 {
-	return config()->readBoolEntry(OP_KEYBOARD, TRUE);
+	return config()->readBoolEntry(OP_KEYBOARD, true);
 }
 
 GameType OptionDialog::readLevel()
@@ -374,7 +436,7 @@ void OptionDialog::writeLevel(GameType lev)
 
 bool OptionDialog::readMenuVisible()
 {
-	return config()->readBoolEntry(OP_MENUBAR, TRUE);
+	return config()->readBoolEntry(OP_MENUBAR, true);
 }
 
 void OptionDialog::writeMenuVisible(bool visible)
@@ -387,4 +449,41 @@ MouseAction OptionDialog::readMouseBinding(MouseButton mb)
 	MouseAction ma = (MouseAction)config()
 		->readUnsignedNumEntry(OP_MOUSE_BINDINGS[mb], mb);
 	return ma>UMark ? Reveal : ma;
+}
+
+QColor OptionDialog::readColor(const char *key, QColor defaultColor)
+{
+	return config()->readColorEntry(key, &defaultColor);
+}
+
+uint OptionDialog::readCaseSize()
+{
+	uint cs = config()->readUnsignedNumEntry(OP_CASE_SIZE, DEFAULT_CASE_SIZE);
+	cs = QMAX(QMIN(cs, MAX_CASE_SIZE), MIN_CASE_SIZE);
+	return cs;
+}
+
+CaseProperties OptionDialog::readCaseProperties()
+{
+	CaseProperties cp;
+	cp.size = readCaseSize();
+	cp.flagColor = readColor(OP_FLAG_COLOR, DEFAULT_FLAG_COLOR);
+	cp.explosionColor = readColor(OP_EXPLOSION_COLOR, DEFAULT_EXPLOSION_COLOR);
+	cp.errorColor = readColor(OP_ERROR_COLOR, DEFAULT_ERROR_COLOR);
+	for (uint i=0; i<NB_NUMBER_COLORS; i++)
+		cp.numberColors[i] = readColor(NCName(i), DEFAULT_NUMBER_COLORS[i]);
+	return cp;
+}
+
+void OptionDialog::slotDefault()
+{
+	ni->setValue(DEFAULT_CASE_SIZE);
+	um->setChecked(true);
+	keyb->setChecked(true);
+	for (uint i=0; i<3; i++) cb[i]->setCurrentItem(i);
+	flagButton->setColor(DEFAULT_FLAG_COLOR);
+	explosionButton->setColor(DEFAULT_EXPLOSION_COLOR);
+	errorButton->setColor(DEFAULT_ERROR_COLOR);
+	for (uint i=0; i<NB_NUMBER_COLORS; i++)
+		numberButtons[i]->setColor(DEFAULT_NUMBER_COLORS[i]);
 }

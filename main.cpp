@@ -1,8 +1,6 @@
 #include "main.h"
 
-#include <time.h>
-
-#include <qdatetime.h>
+#include <qwhatsthis.h>
 
 #include <kapp.h>
 #include <klocale.h>
@@ -14,6 +12,7 @@
 #include <khelpmenu.h>
 #include <kstdaction.h>
 #include <kkeydialog.h>
+#include <kstatusbar.h>
 
 #include "version.h"
 #include "status.h"
@@ -29,8 +28,10 @@ MainWidget::MainWidget()
 			SLOT(setKeyboardEnabled(bool)));
 	connect(status, SIGNAL(gameStateChanged(GameState)),
 			SLOT(gameStateChanged(GameState)));
+	connect(status, SIGNAL(message(const QString &)),
+			SLOT(message(const QString &)));
 
-	// File & Popup
+	// Game & Popup
 	KStdAction::openNew(status, SLOT(restartGame()),
 						actionCollection(), "game_new");
 	(void)new KAction(i18n("Pause"), Key_P, status, SLOT(pauseGame()),
@@ -91,6 +92,9 @@ MainWidget::MainWidget()
 	for (uint i=0; i<levelAction.size(); i++)
 		levelAction[i]->setExclusiveGroup("level");
 
+	// status bar
+	QWhatsThis::add(statusBar(), i18n("Game status"));
+
 	createGUI();
 	readSettings();
 	setView(status);
@@ -98,16 +102,14 @@ MainWidget::MainWidget()
 }
 
 #define MENUBAR_ACTION \
-    ((KToggleAction *)actionCollection() \
-	 ->action(KStdAction::stdName(KStdAction::ShowMenubar)))
+    ((KToggleAction *)action(KStdAction::stdName(KStdAction::ShowMenubar)))
 
-#define PAUSE_ACTION \
-    ((KToggleAction *)actionCollection()->action("game_pause"))
+#define PAUSE_ACTION ((KToggleAction *)action("game_pause"))
 
 void MainWidget::readSettings()
 {
 	GameType type = OptionDialog::readLevel();
-	levelAction[type]->setChecked(TRUE);
+	levelAction[type]->setChecked(true);
 	status->newGame(type);
 
 	bool visible = OptionDialog::readMenuVisible();
@@ -122,7 +124,7 @@ void MainWidget::changeLevel(uint i)
 	if ( !levelAction[i]->isChecked() ) return;
 	GameType lev = (GameType)i;
 	if ( !status->newGame(lev) ) { // level unchanged
-		levelAction[lev]->setChecked(TRUE);
+		levelAction[lev]->setChecked(true);
 		return;
 	}
 	
@@ -134,11 +136,11 @@ bool MainWidget::eventFilter(QObject *, QEvent *e)
 	QPopupMenu *popup;
 	switch (e->type()) {
 	 case QEvent::MouseButtonPress :
-		if ( ((QMouseEvent *)e)->button()!=RightButton ) return FALSE;
+		if ( ((QMouseEvent *)e)->button()!=RightButton ) return false;
 		popup = (QPopupMenu*)factory()->container("popup", this);
-		popup->popup(QCursor::pos());
-		return TRUE;
-	 default : return FALSE;
+		if ( popup ) popup->popup(QCursor::pos());
+		return true;
+	 default : return false;
 	}
 }
 
@@ -175,19 +177,24 @@ void MainWidget::gameStateChanged(GameState s)
 {
 	switch (s) {
 	case Stopped:
-		PAUSE_ACTION->setEnabled(FALSE);
+		PAUSE_ACTION->setEnabled(false);
         break;
 	case Paused:
 		PAUSE_ACTION->setText(i18n("&Resume"));
 		break;
 	case Playing:
 		PAUSE_ACTION->setText(i18n("&Pause"));
-		PAUSE_ACTION->setEnabled(TRUE);
+		PAUSE_ACTION->setEnabled(true);
 		break;
     case GameOver:
-		PAUSE_ACTION->setEnabled(FALSE);
+		PAUSE_ACTION->setEnabled(false);
 		break;
 	}
+}
+
+void MainWidget::message(const QString &text)
+{
+	statusBar()->message(text);
 }
 
 //----------------------------------------------------------------------------

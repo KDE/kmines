@@ -5,6 +5,7 @@
 #include <qprinter.h>
 #include <qobjectlist.h>
 #include <qwhatsthis.h>
+#include <qlayout.h>
 
 #include <kapp.h>
 #include <klocale.h>
@@ -50,33 +51,27 @@ Status::Status(QWidget *parent, const char *name)
 	
 // mines field	
 	field = new Field(this);
-	connect( field, SIGNAL(changeCase(uint,uint)),
-			 SLOT(changeCase(uint,uint)) );
+	connect( field, SIGNAL(changeCase(CaseState, uint)),
+			 SLOT(changeCase(CaseState, uint)) );
 	connect( field, SIGNAL(updateStatus(bool)), SLOT(update(bool)) );
-	connect( field, SIGNAL(endGame(int)), SLOT(endGame(int)) );
+	connect( field, SIGNAL(endGame()), SLOT(endGame()) );
 	connect( field, SIGNAL(startTimer()), dg, SLOT(start()) );
 	connect( field, SIGNAL(freezeTimer()), dg, SLOT(freeze()) );
 	connect( field, SIGNAL(setMood(Smiley::Mood)),
 			 smiley, SLOT(setMood(Smiley::Mood)) );
-	QWhatsThis::add(field, i18n("Mines field"));
-	top->addWidget(field);
-
-	message = new QLabel(this);
-	message->installEventFilter(parent);
-	message->setAlignment(AlignCenter);
-	QWhatsThis::add(message, i18n("Game status"));
 	connect(field, SIGNAL(gameStateChanged(GameState)),
 			SLOT(setGameState(GameState)) );
-	top->addWidget(message);
+	QWhatsThis::add(field, i18n("Mines field"));
+	top->addWidget(field);
 }
 
 void Status::setGameState(GameState s)
 {
 	switch (s) {
-	case Stopped: message->setText(i18n("Game stopped")); break;
-	case Playing: message->setText(i18n("Playing"));      break;
-	case Paused:  message->setText(i18n("Game paused"));  break;
-	case GameOver:                                        break;
+	case Stopped: emit message(i18n("Game stopped")); break;
+	case Playing: emit message(i18n("Playing"));      break;
+	case Paused:  emit message(i18n("Game paused"));  break;
+	case GameOver:                                    break;
 	}
 	emit gameStateChanged(s);
 }
@@ -87,7 +82,7 @@ void Status::initGame()
 	uncertain = 0;
 	marked    = 0;
 	setGameState(Stopped);
-	update(FALSE);
+	update(false);
 	smiley->setMood(Smiley::Normal);
 	GameType type = field->level().type;
 	if ( type!=Custom )	dg->setMaxTime( WHighScores::time(type) );
@@ -108,22 +103,23 @@ bool Status::newGame(GameType &t)
 		CustomDialog cu(lev, this);
 		if ( !cu.exec() ) {
 			t = lev.type;
-			return FALSE;
+			return false;
 		}
 		lev.type = Custom;
 	} else lev = LEVELS[t];
 
 	field->setLevel(lev);
 	initGame();
-	return TRUE;
+	return true;
 }
 	
-void Status::changeCase(uint case_mode, uint inc)
+void Status::changeCase(CaseState cs, uint inc)
 {
-	switch(case_mode) {
-	 case UNCOVERED : uncovered += inc; break;
-	 case UNCERTAIN : uncertain += inc; break;
-	 case MARKED    : marked    += inc; break;
+	switch (cs) {
+	case Uncovered: uncovered += inc; break;
+	case Uncertain: uncertain += inc; break;
+	case Marked:    marked    += inc; break;
+	default:                          break;
 	}
 }
 
@@ -135,10 +131,10 @@ void Status::update(bool mine)
 	int u = l.width*l.height - l.nbMines - uncovered; // cannot be negative
 	left->setState(r<0 && u!=0);
 	left->display(r);
-	if ( u==0 ) endGame(!mine);
+	if ( u==0 ) _endGame(!mine);
 }
 
-void Status::endGame(int win)
+void Status::_endGame(bool win)
 {
 	field->stop();
 	dg->freeze();
@@ -149,7 +145,7 @@ void Status::endGame(int win)
 		GameType type = field->level().type;
 		smiley->setMood(Smiley::Happy);
 		if ( type==Custom || dg->better() ) {
-			message->setText(i18n("Yeeeesssssss!"));
+			emit message(i18n("Yeeeesssssss!"));
 			if ( type!=Custom && dg->better() ) {
 				Score score;
 				score.sec  = dg->sec();
@@ -157,10 +153,10 @@ void Status::endGame(int win)
 				score.type = type;
 				highScores(&score);
 			}
-		} else message->setText(i18n("You did it ... but not in time."));
+		} else emit message(i18n("You did it ... but not in time."));
 	} else {
 		smiley->setMood(Smiley::Sad);
-		message->setText(i18n("Bad luck!"));
+		emit message(i18n("Bad luck!"));
 	}
 }
 
@@ -176,7 +172,7 @@ void Status::print()
 	if ( !prt.setup() ) return;
 
 	// repaint all children widgets
-	repaint(FALSE);
+	repaint(false);
 	const QObjectList *ol = children();
 	QObjectListIt it(*ol);
 	QObject *o;
@@ -185,7 +181,7 @@ void Status::print()
 		++it;
 		if ( !o->isWidgetType()) continue;
 		w = (QWidget *)o;
-		w->repaint(FALSE);
+		w->repaint(false);
 	}
 
 	// write the screen region corresponding to the window

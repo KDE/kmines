@@ -5,13 +5,13 @@
 #include <qscrollbar.h>
 #include <qlineedit.h>
 #include <qlcdnumber.h>
-#include <qlayout.h>
 #include <qcheckbox.h>
 #include <qcombobox.h>
 
 #include <kdialogbase.h>
 #include <knuminput.h>
 #include <kconfig.h>
+#include <kcolorbtn.h>
 
 #include "defines.h"
 
@@ -64,8 +64,8 @@ class DigitalClock : public LCDNumber
 	
  public slots:
 	void zero();
-	void freeze() { stop = TRUE; }
-	void start()  { stop = FALSE; }
+	void freeze() { stop = true;  }
+	void start()  { stop = false; }
 	
  private:
 	uint _sec, _min, max_secs;
@@ -75,21 +75,7 @@ class DigitalClock : public LCDNumber
 };
 
 //-----------------------------------------------------------------------------
-class DialogBase : public KDialogBase
-{
- Q_OBJECT
-
- public:
-    DialogBase(const QString &caption, int buttonMask,
-			   ButtonCode defaultButton,
-			   QWidget *parent, const char *name = 0);
-
- protected:
-	QVBoxLayout *top;
-};
-
-//-----------------------------------------------------------------------------
-class CustomDialog : public DialogBase
+class CustomDialog : public KDialogBase
 {
  Q_OBJECT
 	
@@ -109,7 +95,7 @@ class CustomDialog : public DialogBase
 };
 
 //-----------------------------------------------------------------------------
-class WHighScores : public DialogBase
+class WHighScores : public KDialogBase
 {
  Q_OBJECT
 	
@@ -127,14 +113,14 @@ class WHighScores : public DialogBase
 };
 
 //-----------------------------------------------------------------------------
-class OptionDialog : public DialogBase
+class OptionDialog : public KDialogBase
 {
  Q_OBJECT
 
  public:
 	OptionDialog(QWidget *parent);
 
-	static uint readCaseSize();
+	static CaseProperties readCaseProperties();
 	static bool readUMark();
 	static bool readKeyboard();
 	static GameType readLevel();
@@ -150,8 +136,16 @@ class OptionDialog : public DialogBase
 	KIntNumInput *ni;
 	QCheckBox    *um, *keyb;
 	QComboBox    *cb[3];
+	KColorButton *flagButton, *explosionButton, *errorButton;
+	QArray<KColorButton *> numberButtons;
 
 	static KConfig *config();
+	static uint readCaseSize();
+	static QColor readColor(const char *key, QColor defaultColor);
+	
+	void mainPage();
+	void casePage();
+	void slotDefault();
 };
 
 #endif // DIALOGS_H

@@ -21,7 +21,7 @@ class Field : public QFrame
 	QSize sizeHint() const;
 	QSizePolicy sizePolicy() const;
 	
-	void restart(bool repaint = TRUE);
+	void restart(bool repaint = true);
 	void pause();
 	void stop() { state = Stopped; }
 	void showMines();
@@ -43,10 +43,10 @@ class Field : public QFrame
 	void resume();
 	
  signals:
-	void changeCase(uint, uint);
+	void changeCase(CaseState, uint);
 	void updateStatus(bool);
 	void setMood(Smiley::Mood);
-	void endGame(int);
+	void endGame();
 	void startTimer();
 	void freezeTimer();
 	void gameStateChanged(GameState);
@@ -61,7 +61,7 @@ class Field : public QFrame
     void keyboardAutoRevealSlot();
 	
  private:
-	QArray<uint>    _pfield;
+	QArray<Case>    _pfield;
 	Level           lev;
 	KRandomSequence random;
 
@@ -73,24 +73,26 @@ class Field : public QFrame
 	bool _reveal, _autoreveal; // mouse button pressed
 	MouseAction mb[3];         // mouse bindings
 
-	uint         _caseSize;
-	QPixmap      pm_flag, pm_mine, pm_exploded, pm_error, pm_cursor;
-	QPushButton *pb;
+	CaseProperties cp;
+	QPixmap        pm_flag, pm_mine, pm_exploded, pm_error, pm_cursor;
+	QPushButton   *pb;
 
 	uint computeNeighbours(uint, uint) const;
 	void uncover(uint, uint);
-	void changeCaseState(uint, uint, uint);
-	void minePixmap(QPixmap &, bool mask, uint type) const;
+	void changeCaseState(uint, uint, CaseState);
+	void minePixmap(QPixmap &, bool mask, CaseState) const;
 	void pressCase(uint, uint, bool, QPainter * = 0);
 	void pressClearFunction(uint, uint, bool);
 	void uncoverCase(uint, uint);
 	bool inside(int, int) const;
-	bool placeCursor(int, int, bool check = FALSE);
+	bool placeCursor(int, int, bool check = false);
 	void flagPixmap(QPixmap &, bool mask) const;
 	void cursorPixmap(QPixmap &, bool mask) const;
 	void autoReveal();
+	void _endGame();
 
-	uint &pfield(uint i, uint j) const;
+	const Case &pfield(uint i, uint j) const;
+	Case &pfield(uint i, uint j);
 	int xToI(int x) const;
 	int yToJ(int y) const;
 	int iToX(uint i) const;
@@ -104,7 +106,7 @@ class Field : public QFrame
 	void drawCursor(bool show, QPainter * = 0);
 
 	void setUMark(bool um) { u_mark = um; }
-	void setCaseSize(uint);
+	void setCaseProperties(const CaseProperties &);
 	void setCursor(bool show);
 	MouseAction mapMouseButton(QMouseEvent *e) const;
 };

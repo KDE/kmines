@@ -23,6 +23,7 @@ class MainWidget : public KTMainWindow
 	void toggleMenubar();
     void configureKeys();
 	void setKeyboardEnabled(bool);
+	void message(const QString &);
 	void gameStateChanged(GameState);
 
  protected:

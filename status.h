@@ -24,15 +24,16 @@ class Status : public QWidget
 
  signals:
 	void keyboardEnabled(bool);
+	void message(const QString &);
 	void gameStateChanged(GameState);
 	
  public slots:
 	void restartGame();
-	void changeCase(uint i, uint j);
+	void changeCase(CaseState, uint inc);
 	void update(bool);
-	void endGame(int);
+	void endGame()        { _endGame(false); }
 	void showHighScores() { highScores(0); }
-	void pauseGame() { field->pause(); }
+	void pauseGame()      { field->pause(); }
 	void print();
 	void preferences();
 	void setGameState(GameState);
@@ -51,12 +52,12 @@ class Status : public QWidget
 	
 	Smiley       *smiley;
 	LCDNumber    *left;
-	QLabel       *message;
 	DigitalClock *dg;
 
 	void exmesg(const QString &);
 	void highScores(const Score *);
 	void initGame();
+	void _endGame(bool win);
 };
 
 #endif // STATUS_H

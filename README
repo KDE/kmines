@@ -4,13 +4,12 @@ Copyright (c) 1996-2000 Nicolas HADACEK (hadacek@kde.org)
 Distributed under the GNU General Public License
 
 
-This is a very classical minesweeper written from scratch.
- 
- - 3 predefined levels :
-       Easy   : 8x8 with 10 mines
-       Normal : 16x16 with 40 mines
-       Expert : 30x16 with 99 mines
- - custom levels
+This is a very classical minesweeper written from scratch
+with three predefined levels + custom levels.
+
+ Easy   : 8x8 with 10 mines
+ Normal : 16x16 with 40 mines
+ Expert : 30x16 with 99 mines
 
 
 Requirements : uptodate KDE and QT libraries.

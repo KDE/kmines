@@ -1,7 +1,16 @@
+2.0.5
+ * default for mouse binding changed
+ * added color configuration for numbers, flag and explosion (for B&W monitors)
+ * moved around some things about configuration (cleaned up "defines.h")
+ * case state is now more clean (but some bugs might have crept in)
+ * properly mark all the flagged cases with no mine to error on game end
+
 2.0.4
  * hack to resize correctly when menu is hidden (due to bugs
    in KTMainWindow)
- * nicer (and simpler) custom level with KNumIntInput
+ * nicer (and simpler) custom level dialog with KNumIntInput
+ * kstatusbar in place of the label
+ * remove the title in dialogs (more consistent with other apps)
 
 2.0.3
  * use kkeydialog for actions

@@ -8,7 +8,7 @@
 
 Field::Field(QWidget *parent, const char *name)
 : QFrame(parent, name), lev(LEVELS[0]), random(0), state(Stopped),
-  u_mark(FALSE), cursor(FALSE), _reveal(FALSE), _autoreveal(FALSE)
+  u_mark(false), cursor(false), _reveal(false), _autoreveal(false)
 {
 	setFrameStyle( QFrame::Box | QFrame::Raised );
 	setLineWidth(2);
@@ -31,41 +31,41 @@ Field::Field(QWidget *parent, const char *name)
 
 void Field::readSettings()
 {
-	setCaseSize(OptionDialog::readCaseSize());
+	setCaseProperties(OptionDialog::readCaseProperties());
 	setUMark(OptionDialog::readUMark());
 	setCursor(OptionDialog::readKeyboard());
 	for (uint i=0; i<3; i++)
 		mb[i] = OptionDialog::readMouseBinding((MouseButton)i);
 }
 
-void Field::setCaseSize(uint cs)
+void Field::setCaseProperties(const CaseProperties &_cp)
 {
-	_caseSize = cs;
-
+	cp = _cp;
+	
 	QBitmap mask;
 
-	flagPixmap(mask, TRUE);
-	flagPixmap(pm_flag, FALSE);
+	flagPixmap(mask, true);
+	flagPixmap(pm_flag, false);
 	pm_flag.setMask(mask);
 
-	minePixmap(mask, TRUE, MINE);
-	minePixmap(pm_mine, FALSE, MINE);
+	minePixmap(mask, true, Covered);
+	minePixmap(pm_mine, false, Covered);
 	pm_mine.setMask(mask);
 
-	minePixmap(mask, TRUE, EXPLODED);
-	minePixmap(pm_exploded, FALSE, EXPLODED);
+	minePixmap(mask, true, Exploded);
+	minePixmap(pm_exploded, false, Exploded);
 	pm_exploded.setMask(mask);
 
-	minePixmap(mask, TRUE, ERROR);
-	minePixmap(pm_error, FALSE, ERROR);
+	minePixmap(mask, true, Marked);
+	minePixmap(pm_error, false, Marked);
 	pm_error.setMask(mask);
 
-	cursorPixmap(mask, TRUE);
-	cursorPixmap(pm_cursor, FALSE);
+	cursorPixmap(mask, true);
+	cursorPixmap(pm_cursor, false);
 	pm_cursor.setMask(mask);
 
 	QFont f = font();
-	f.setPointSize(cs-6);
+	f.setPointSize(cp.size-6);
 	setFont(f);
 
 	updateGeometry();
@@ -73,7 +73,7 @@ void Field::setCaseSize(uint cs)
 
 void Field::flagPixmap(QPixmap &pix, bool mask) const
 {
-	pix.resize(_caseSize, _caseSize);
+	pix.resize(cp.size, cp.size);
 	if (mask) pix.fill(color0);
 	QPainter p(&pix);
 	p.setWindow(0, 0, 16, 16);
@@ -82,14 +82,14 @@ void Field::flagPixmap(QPixmap &pix, bool mask) const
 	p.drawLine(8, 12, 12, 12);
 	p.drawLine(9, 11, 11, 11);
 	p.drawLine(10, 2, 10, 10);
-	if (!mask) p.setPen(red);
-	p.setBrush( (mask ? color1 : red) );
+	if (!mask) p.setPen(cp.flagColor);
+	p.setBrush( (mask ? color1 : cp.flagColor) );
 	p.drawRect(4, 3, 6, 5);
 }
 
 void Field::cursorPixmap(QPixmap &pix, bool mask) const
 {
-	pix.resize(_caseSize, _caseSize);
+	pix.resize(cp.size, cp.size);
 	if (mask) pix.fill(color0);
 	QPainter p(&pix);
 	p.setWindow(0, 0, 20, 20);
@@ -97,14 +97,15 @@ void Field::cursorPixmap(QPixmap &pix, bool mask) const
 	p.drawRect(2, 2, 16, 16);
 }
 
-void Field::minePixmap(QPixmap &pix, bool mask, uint type) const
+void Field::minePixmap(QPixmap &pix, bool mask, CaseState type) const
 {
-	pix.resize(_caseSize, _caseSize);
+	pix.resize(cp.size, cp.size);
 	if (mask) pix.fill(color0);
 	QPainter p(&pix);
 	p.setWindow(0, 0, 20, 20);
 
-	if ( type==EXPLODED ) p.fillRect(2, 2, 16, 16, (mask ? color1 : red));
+	if ( type==Exploded )
+		p.fillRect(2, 2, 16, 16, (mask ? color1 : cp.explosionColor));
 
 	QPen pen(mask ? color1 : black, 1);
 	p.setPen(pen);
@@ -117,9 +118,9 @@ void Field::minePixmap(QPixmap &pix, bool mask, uint type) const
 	
 	p.fillRect(8, 8, 2, 2, (mask ? color1 : white));
 
-	if ( type==ERROR ) {
+	if ( type==Marked ) {
 		if (!mask) {
-			pen.setColor(red);
+			pen.setColor(cp.errorColor);
 			p.setPen(pen);
 		}
 		p.drawLine(3, 3, 17, 17);
@@ -133,8 +134,8 @@ void Field::minePixmap(QPixmap &pix, bool mask, uint type) const
 
 QSize Field::sizeHint() const
 {
-	return QSize(2*frameWidth() + lev.width*_caseSize,
-				 2*frameWidth() + lev.height*_caseSize);
+	return QSize(2*frameWidth() + lev.width*cp.size,
+				 2*frameWidth() + lev.height*cp.size);
 }
 
 QSizePolicy Field::sizePolicy() const
@@ -142,7 +143,12 @@ QSizePolicy Field::sizePolicy() const
 	return QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 }
 
-uint &Field::pfield(uint i, uint j) const
+const Case &Field::pfield(uint i, uint j) const
+{
+	return _pfield[i + j*(lev.width+2)];
+}
+
+Case &Field::pfield(uint i, uint j)
 {
 	return _pfield[i + j*(lev.width+2)];
 }
@@ -151,14 +157,14 @@ uint Field::computeNeighbours(uint i, uint j) const
 {
 	uint nm = 0;
 	
-	if (pfield(i-1,   j) & MINE) nm++;
-	if (pfield(i-1, j+1) & MINE) nm++;
-	if (pfield(i-1, j-1) & MINE) nm++;
-	if (pfield(  i, j+1) & MINE) nm++;
-	if (pfield(  i, j-1) & MINE) nm++;
-	if (pfield(i+1,   j) & MINE) nm++;
-	if (pfield(i+1, j+1) & MINE) nm++;
-	if (pfield(i+1, j-1) & MINE) nm++;
+	if (pfield(i-1,   j).mine) nm++;
+	if (pfield(i-1, j+1).mine) nm++;
+	if (pfield(i-1, j-1).mine) nm++;
+	if (pfield(  i, j+1).mine) nm++;
+	if (pfield(  i, j-1).mine) nm++;
+	if (pfield(i+1,   j).mine) nm++;
+	if (pfield(i+1, j+1).mine) nm++;
+	if (pfield(i+1, j-1).mine) nm++;
 	
 	return nm;
 }
@@ -166,7 +172,7 @@ uint Field::computeNeighbours(uint i, uint j) const
 void Field::setLevel(const Level &l)
 {
 	lev = l;
-	restart(FALSE);
+	restart(false);
 	updateGeometry();
 }
 
@@ -179,7 +185,7 @@ void Field::restart(bool repaint)
 	}
 
 	state = Playing;
-	first_click = TRUE;
+	first_click = true;
 
 	_pfield.resize( (lev.width+2) * (lev.height+2) );
 	
@@ -187,17 +193,20 @@ void Field::restart(bool repaint)
 	if (repaint) p = new QPainter(this);
 	for (uint i=0; i<lev.width+2; i++)
 		for (uint j=0; j<lev.height+2; j++) {
-			uint tmp = (i==0 || i==lev.width+1 || j==0 || j==lev.height+1
-						? UNCOVERED : COVERED);
-			if ( pfield(i, j)==tmp ) continue;
+			Case tmp;
+			tmp.mine  = false;
+			tmp.state = (i==0 || i==lev.width+1 || j==0 || j==lev.height+1
+						 ? Uncovered : Covered);
+			if ( pfield(i, j).mine==false && pfield(i, j).state==tmp.state )
+				continue;
 			pfield(i, j) = tmp;
-			if (repaint && tmp==COVERED) drawCase(i, j, p);
+			if (repaint && tmp.state==Covered) drawCase(i, j, p);
 		}
 
-	if (repaint) drawCursor(FALSE, p);
+	if (repaint) drawCursor(false, p);
 	ic = lev.width/2;
 	jc = lev.height/2;
-	if ( repaint && cursor ) drawCursor(TRUE, p);
+	if ( repaint && cursor ) drawCursor(true, p);
 }
 
 void Field::paintEvent(QPaintEvent *e)
@@ -214,49 +223,43 @@ void Field::paintEvent(QPaintEvent *e)
 	    for (uint j=jmin; j<=jmax; j++) drawCase(i, j, &p);
 }
 
-void Field::changeCaseState(uint i, uint j, uint new_st)
+void Field::changeCaseState(uint i, uint j, CaseState new_st)
 {
-	if (pfield(i, j) & MINE) {
-		emit changeCase(pfield(i, j) ^ MINE, -1);
-		pfield(i, j) = MINE | new_st;
-	} else {
-		emit changeCase(pfield(i, j), -1);
-		pfield(i, j) = new_st;
-	}
-
+	emit changeCase(pfield(i, j).state, -1);
+	pfield(i, j).state = new_st;
 	emit changeCase(new_st, 1);
 	drawCase(i, j);
-	if ( state==Playing ) emit updateStatus(pfield(i, j) & MINE);
+	if ( state==Playing ) emit updateStatus(pfield(i, j).mine);
 }
 
 int Field::iToX(uint i) const
 {
-	return (i-1)*_caseSize + frameWidth();
+	return (i-1)*cp.size + frameWidth();
 }
 
 int Field::jToY(uint j) const
 {
-	return (j-1)*_caseSize + frameWidth();
+	return (j-1)*cp.size + frameWidth();
 }
 
 int Field::xToI(int x) const
 {
 	// the cast is necessary when x-frameWidth() is negative (??)
-	return (int)((float)(x - frameWidth())/_caseSize) + 1;
+	return (int)((double)(x - frameWidth())/cp.size) + 1;
 }
 
 int Field::yToJ(int y) const
 {
-	return (int)((float)(y - frameWidth())/_caseSize) + 1;
+	return (int)((double)(y - frameWidth())/cp.size) + 1;
 }
 
 void Field::uncover(uint i, uint j)
 {
-	if ( !(pfield(i, j) & COVERED) ) return;
+	if ( pfield(i, j).state!=Covered ) return;
 	uint nbs = computeNeighbours(i, j);
 
 	if (!nbs) {
-		changeCaseState(i,j,UNCOVERED);
+		changeCaseState(i, j, Uncovered);
 		uncover(i-1, j+1);
 		uncover(i-1,   j);
 		uncover(i-1, j-1);
@@ -265,7 +268,7 @@ void Field::uncover(uint i, uint j)
 		uncover(i+1, j+1);
 		uncover(i+1,   j);
 		uncover(i+1, j-1);
-	} else changeCaseState(i,j,UNCOVERED);
+	} else changeCaseState(i, j, Uncovered);
 }
 
 bool Field::inside(int i, int j) const
@@ -291,8 +294,8 @@ void Field::mousePressEvent(QMouseEvent *e)
 
 	switch ( mapMouseButton(e) ) {
 	case Reveal:
-		_reveal = TRUE;
-		if (inside) pressCase(ic, jc, FALSE);
+		_reveal = true;
+		if (inside) pressCase(ic, jc, false);
 		break;
 	case Mark:
 		if (inside) mark();
@@ -301,8 +304,8 @@ void Field::mousePressEvent(QMouseEvent *e)
 		if (inside) umark();
 		break;
 	case AutoReveal:
-		_autoreveal = TRUE;
-		if (inside) pressClearFunction(ic, jc, FALSE);
+		_autoreveal = true;
+		if (inside) pressClearFunction(ic, jc, false);
 		break;
 	}
 }
@@ -313,9 +316,9 @@ void Field::mouseReleaseEvent(QMouseEvent *e)
 	setMood(Smiley::Normal);
 
 	if ( inside(ic, jc) )
-		if (_autoreveal) pressClearFunction(ic, jc, TRUE);
-	_reveal = FALSE;
-	_autoreveal = FALSE;
+		if (_autoreveal) pressClearFunction(ic, jc, true);
+	_reveal = false;
+	_autoreveal = false;
 	if ( !placeCursor(xToI(e->pos().x()), yToJ(e->pos().y())) ) return;
 
 	switch ( mapMouseButton(e) ) {
@@ -336,29 +339,29 @@ void Field::mouseMoveEvent(QMouseEvent *e)
 	if ( state!=Playing ) return;
 
 	if ( inside(ic, jc) ) {
-		if (_reveal) pressCase(ic, jc, TRUE);
-		if (_autoreveal) pressClearFunction(ic, jc, TRUE);
+		if (_reveal) pressCase(ic, jc, true);
+		if (_autoreveal) pressClearFunction(ic, jc, true);
 	}
 
 	if ( !placeCursor(xToI(e->pos().x()), yToJ(e->pos().y())) ) return;
 
-	if (_reveal) pressCase(ic, jc, FALSE);
-	else if (_autoreveal) pressClearFunction(ic, jc, FALSE);
+	if (_reveal) pressCase(ic, jc, false);
+	else if (_autoreveal) pressClearFunction(ic, jc, false);
 }
 
 void Field::showMines()
 {
 	for(uint i=1; i<=lev.width; i++)
-		for(uint j=1; j<=lev.height; j++)
-		    if ( (pfield(i, j) & MINE) ) {
-				if ( !(pfield(i, j) & EXPLODED) && !(pfield(i, j) & MARKED) )
-					changeCaseState(i,j,UNCOVERED);
-			} else if (pfield(i, j) & MARKED) changeCaseState(i, j, ERROR);
+		for(uint j=1; j<=lev.height; j++) {
+		    if ( !pfield(i, j).mine ) continue;
+			if ( pfield(i, j).state!=Exploded && pfield(i, j).state!=Marked )
+				changeCaseState(i, j, Uncovered);
+		}
 }
 
 void Field::pressCase(uint i, uint j, bool pressed, QPainter *p)
 {
-	if (pfield(i, j) & COVERED) drawBox(iToX(i), jToY(j), pressed, p);
+	if ( pfield(i, j).state==Covered ) drawBox(iToX(i), jToY(j), pressed, p);
 }
 
 void Field::pressClearFunction(uint i, uint j, bool pressed)
@@ -375,25 +378,31 @@ void Field::pressClearFunction(uint i, uint j, bool pressed)
 	pressCase(i+1, j+1, pressed, &p);
 }
 
-#define M_OR_U(i, j) ( (pfield(i, j) & MARKED) || (pfield(i, j) & UNCERTAIN) )
+#define M_OR_U(i, j) ( pfield(i, j).state==Marked \
+					   || pfield(i, j).state==Uncertain )
 
 void Field::keyboardAutoReveal()
 {
-	pressClearFunction(ic, jc, FALSE);
+	pressClearFunction(ic, jc, false);
 	QTimer::singleShot(50, this, SLOT(keyboardAutoRevealSlot()));
 }
 
 void Field::keyboardAutoRevealSlot()
 {
-	pressClearFunction(ic, jc, TRUE);
-	drawCursor(TRUE);
+	pressClearFunction(ic, jc, true);
+	drawCursor(true);
 	autoReveal();
 }
 
 void Field::autoReveal()
 {
 	if ( state!=Playing ) return;
-	if ( pfield(ic, jc) & (COVERED|MARKED|UNCERTAIN) ) return;
+	switch (pfield(ic, jc).state) {
+	case Covered:
+	case Marked:
+	case Uncertain: return;
+	default:        break;
+	}
 	
 	/* number of mines around the case */
 	uint nm = computeNeighbours(ic, jc);
@@ -421,16 +430,27 @@ void Field::autoReveal()
 	
 void Field::uncoverCase(uint i, uint j)
 {
-	if (pfield(i, j) & COVERED) {
-		if (pfield(i, j) & MINE) changeCaseState(i, j, UNCOVERED);
+	if ( pfield(i, j).state==Covered ) {
+		if ( pfield(i, j).mine ) changeCaseState(i, j, Uncovered);
 		else uncover(i, j);
 	}
 
 	/* to enable multiple explosions ... */
-	if ( (pfield(i, j) & MINE) && (pfield(i, j) & UNCOVERED) ) {
-		changeCaseState(i, j, EXPLODED);
-		emit endGame(FALSE);
+	if ( pfield(i, j).mine && pfield(i, j).state==Uncovered ) {
+		changeCaseState(i, j, Exploded);
+		_endGame();
 	}
+}
+
+void Field::_endGame()
+{
+	if ( state==Stopped ) return;
+	/* find all errors */
+	for (uint ii=1; ii<lev.width+1; ii++)
+		for (uint jj=1; jj<lev.width+1; jj++)
+			if ( pfield(ii, jj).state==Marked && !pfield(ii, jj).mine )
+				changeCaseState(ii, jj, Error);
+	emit endGame();
 }
 
 void Field::pause()
@@ -460,22 +480,22 @@ void Field::resume()
 
 void Field::up()
 {
-	placeCursor(ic, jc-1, TRUE);
+	placeCursor(ic, jc-1, true);
 }
 
 void Field::down()
 {
-	placeCursor(ic, jc+1, TRUE);
+	placeCursor(ic, jc+1, true);
 }
 
 void Field::left()
 {
-	placeCursor(ic-1, jc, TRUE);
+	placeCursor(ic-1, jc, true);
 }
 
 void Field::right()
 {
-	placeCursor(ic+1, jc, TRUE);
+	placeCursor(ic+1, jc, true);
 }
 
 void Field::reveal()
@@ -489,14 +509,13 @@ void Field::reveal()
 			do {
 				i = random.getLong(lev.width);
 				j = random.getLong(lev.height);
-			}
-			while ( (pfield(i+1, j+1) & MINE)
-				   || ((i+1)==(uint)ic && (j+1)==(uint)jc) );
+			} while ( pfield(i+1, j+1).mine
+					  || ((i+1)==(uint)ic && (j+1)==(uint)jc) );
 			
-			pfield(i+1, j+1) |= MINE;
+			pfield(i+1, j+1).mine = true;
 		}
 		emit startTimer();
-		first_click = FALSE;
+		first_click = false;
 		emit gameStateChanged(Playing);
 	}
 	
@@ -506,36 +525,42 @@ void Field::reveal()
 void Field::mark()
 {
 	if ( state!=Playing ) return;
-	if (pfield(ic, jc) & COVERED) changeCaseState(ic, jc, MARKED);
-	else if (pfield(ic, jc) & MARKED)
-		changeCaseState(ic, jc, (u_mark ? UNCERTAIN : COVERED));
-	else if (pfield(ic, jc) & UNCERTAIN) changeCaseState(ic, jc, COVERED);
+	switch (pfield(ic, jc).state) {
+	case Covered:   changeCaseState(ic, jc, Marked); break;
+	case Marked:    changeCaseState(ic, jc, (u_mark ? Uncertain : Covered));
+		            break;
+	case Uncertain:	changeCaseState(ic, jc, Covered); break;
+	default:        break;
+	}
 }
 
 void Field::umark()
 {
 	if ( state!=Playing ) return;
-	if (pfield(ic, jc) & COVERED) changeCaseState(ic, jc, UNCERTAIN);
-	else if (pfield(ic, jc) & MARKED) changeCaseState(ic, jc, UNCERTAIN);
-	else if (pfield(ic, jc) & UNCERTAIN) changeCaseState(ic, jc, COVERED);
+	switch (pfield(ic, jc).state) {
+	case Covered:
+	case Marked:    changeCaseState(ic, jc, Uncertain); break;
+	case Uncertain: changeCaseState(ic, jc, Covered); break;
+	default:        break;
+	}
 }
 
 bool Field::placeCursor(int i, int j, bool check)
 {
-	if ( check && (state!=Playing || !inside(i, j)) ) return FALSE;
-	if ( cursor && inside(ic, jc) ) drawCursor(FALSE);
+	if ( check && (state!=Playing || !inside(i, j)) ) return false;
+	if ( cursor && inside(ic, jc) ) drawCursor(false);
 	ic = i;
 	jc = j;
-	if ( !inside(i, j) ) return FALSE;
-	if (cursor) drawCursor(TRUE);
-	return TRUE;
+	if ( !inside(i, j) ) return false;
+	if (cursor) drawCursor(true);
+	return true;
 }
 
 void Field::setCursor(bool show)
 {
 	if ( state==Playing && inside(ic, jc) ) {
-		if ( cursor && !show ) drawCursor(FALSE);
-		if ( !cursor && show) drawCursor(TRUE);
+		if ( cursor && !show ) drawCursor(false);
+		if ( !cursor && show) drawCursor(true);
 	}
 	cursor = show;
 }
@@ -554,8 +579,8 @@ void Field::end(QPainter *p, const QPainter *pt)
 void Field::drawBox(int x, int y, bool pressed, QPainter *pt)
 {
 	QPainter *p = begin(pt);
-	p->eraseRect(x, y, _caseSize, _caseSize);
-	qDrawWinPanel(p, x, y, _caseSize, _caseSize, colorGroup(), !pressed);
+	p->eraseRect(x, y, cp.size, cp.size);
+	qDrawWinPanel(p, x, y, cp.size, cp.size, colorGroup(), !pressed);
 	end(p, pt);
 }
 
@@ -564,40 +589,38 @@ void Field::drawCase(uint i, uint j, QPainter *pt)
 	QPainter *p = begin(pt);
 	int x = iToX(i);
 	int y = jToY(j);
-	bool covered =  pfield(i, j) & (COVERED | MARKED | UNCERTAIN | ERROR);
-	drawBox(x, y, covered, p);
 
-	if (covered) {
-		if (pfield(i, j) & MARKED) p->drawPixmap(x, y, pm_flag);
-		else if (pfield(i, j) & UNCERTAIN) {
-			p->setPen(black);
-			p->drawText(x, y, _caseSize, _caseSize, AlignCenter, "?");
-		} else if (pfield(i, j) & ERROR) p->drawPixmap(x, y, pm_error);
-	} else {
-		if (pfield(i, j) & MINE)
-			p->drawPixmap(x, y, (pfield(i, j) & EXPLODED ? pm_exploded
-								: pm_mine));
-		else {
-			uint nbs = computeNeighbours(i, j);
-			if (nbs) {
-				char nb[2] = "0";
-				nb[0] += nbs;
-				switch(nbs) {
-				 case 1: p->setPen(blue);        break;
-				 case 2: p->setPen(darkGreen);   break;
-				 case 3: p->setPen(darkYellow);  break;
-				 case 4: p->setPen(darkMagenta); break;
-				 case 5: p->setPen(red);         break;
-				 case 6: p->setPen(darkRed);     break;
-				 case 7:
-				 case 8: p->setPen(black);       break;
-				 }
-				p->drawText(x, y, _caseSize, _caseSize, AlignCenter, nb);
-				}
-		}
+	switch (pfield(i, j).state) {
+	case Covered:   drawBox(x, y, true, p);
+		            break;
+	case Marked:    drawBox(x, y, true, p);
+		            p->drawPixmap(x, y, pm_flag);
+		            break;
+	case Error:     drawBox(x, y, true, p);
+					p->drawPixmap(x, y, pm_error);
+		            break;
+	case Uncertain: drawBox(x, y, true, p);
+		            p->setPen(black);
+					p->drawText(x, y, cp.size, cp.size, AlignCenter, "?");
+					break;
+	case Exploded:  drawBox(x, y, false, p);
+		            p->drawPixmap(x, y, pm_exploded);
+					break;
+	case Uncovered: drawBox(x, y, false, p);
+		            if ( pfield(i, j).mine ) p->drawPixmap(x, y, pm_mine);
+					else {
+						uint n = computeNeighbours(i, j);
+						if (n) {
+							char nb[2] = "0";
+							nb[0] += n;
+							p->setPen(cp.numberColors[n-1]);
+							p->drawText(x, y, cp.size, cp.size,
+										AlignCenter, nb);
+						}
+					}
 	}
 
-	if ( cursor && (int)i==ic && (int)j==jc ) drawCursor(TRUE, p);
+	if ( cursor && (int)i==ic && (int)j==jc ) drawCursor(true, p);
 	end(p, pt);
 }
 
@@ -613,9 +636,9 @@ void Field::drawCursor(bool show, QPainter *pt)
 	if (show) p->drawPixmap(iToX(ic), jToY(jc), pm_cursor);
 	else {
 		bool b = cursor;
-		if (b) cursor = FALSE;
+		if (b) cursor = false;
 		drawCase(ic, jc, p);
-		if (b) cursor = TRUE;
+		if (b) cursor = true;
 	}
 	end(p, pt);
 }
