@@ -7,8 +7,10 @@
 #include "defines.h"
 #include "version.h"
 #include "status.h"
-
+#include <qdatetime.h>
 #include <time.h>
+#include <kmenubar.h>
+#include <kconfig.h>
 
 MainWidget::MainWidget()
 {
