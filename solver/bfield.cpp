@@ -217,16 +217,3 @@ QCString BaseField::string() const
         s[i] = (hasMine(coord(i)) ? '1' : '0');
     return s;
 }
-
-QTextStream &operator <<(QTextStream &s, const BaseField &f)
-{
-    for (uint j=0; j<f.height(); j++) {
-		for (uint i=0; i<f.width(); i++) {
-            Coord c(i, j);
-            if ( f.isCovered(c) ) s << "? ";
-            else s << f.nbMinesAround(c) << ' ';
-        }
-        s << endl;
-    }
-    return s;
-}

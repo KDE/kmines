@@ -57,9 +57,9 @@ Solver::Solver(QObject *parent)
 
 #ifdef DEBUG
 #define PRINT_ELAPSED(purpose) \
-    t = time(0); \
-	cout << "Spent " << t - t0 << " seconds on " purpose << endl; \
-	t0 = t;
+    d->t = time(0); \
+    cout << "Spent " << d->t - d->t0 << " seconds on " purpose << endl; \
+    d->t0 = d->t;
 
 #endif
 }
@@ -118,7 +118,7 @@ bool Solver::initSolve(bool oneStep, bool noGuess)
     delete d->rules;
     d->rules = new AdviseFast::RuleSet(d->facts);
 #ifdef DEBUG
-    t0 = time(0);
+    d->t0 = time(0);
 #endif
     return solveStep();
 }
@@ -158,7 +158,7 @@ bool Solver::solveStep()
 	} else if ( !_noGuess ) {
 #ifdef DEBUG
 	cout << "Applying heuristics!" << endl;
-	cout << *f << endl;
+	cout << *_field << endl;
 #endif
         // Minimum probability logic
         assert(!probabilities.empty());

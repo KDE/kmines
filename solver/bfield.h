@@ -80,6 +80,4 @@ class BaseField : public KGrid2D::Square<KMines::Case>, public KMines
     void changeState(KMines::CaseState, int increment);
 };
 
-QTextStream &operator <<(QTextStream &, const BaseField &);
-
 #endif

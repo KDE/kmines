@@ -19,25 +19,47 @@
 #ifndef __HEADERP_H
 #define __HEADERP_H
 
-//#define DEBUG 1
+//#define DEBUG 2
 
 #include <set>
 #include <list>
 #include <map>
 #include <memory>
+#include <iostream>
 
 #include "bfield.h"
 
 
 using namespace KGrid2D;
+using std::cout;
+using std::endl;
 
 typedef std::set<Coord, std::less<Coord> > CoordSet;
 
-inline QTextStream &operator <<(QTextStream &s, const CoordSet &set)
+inline std::ostream &operator <<(std::ostream &s, const Coord &c)
 {
-    for(CoordSet::const_iterator i=set.begin(); i!=set.end(); ++i)
-        s << *i;
-	return s;
+  s << '(' << c.first << ',' << c.second << ')' << endl;
+  return s;
+}
+
+inline std::ostream &operator <<(std::ostream &s, const CoordSet &set)
+{
+  for(CoordSet::const_iterator i=set.begin(); i!=set.end(); ++i)
+    s << *i;
+  return s;
+}
+
+inline std::ostream &operator <<(std::ostream &s, const BaseField &f)
+{
+  for (uint j=0; j<f.height(); j++) {
+    for (uint i=0; i<f.width(); i++) {
+      Coord c(i, j);
+      if ( f.isCovered(c) ) s << "? ";
+      else s << f.nbMinesAround(c) << ' ';
+    }
+    s << endl;
+  }
+  return s;
 }
 
 namespace AdviseFast {
@@ -47,7 +69,7 @@ namespace AdviseFast {
         CoordSet pointSet;
         short mines;
     };
-    QTextStream &operator <<(QTextStream &, Fact const &);
+    std::ostream &operator <<(std::ostream &, Fact const &);
 
     /** A set of facts that can be generated out of Field */
     class FactSet : public std::map<Coord, Fact> {
@@ -76,7 +98,7 @@ namespace AdviseFast {
 		std::map<Coord, CoordSet> _containingFacts;
         CoordSet _marked;
     };
-    QTextStream &operator <<(QTextStream &, FactSet const &);
+    std::ostream &operator <<(std::ostream &, FactSet const &);
 
     /** A Rule abstraction that can be applied.
      * Applying the rule results in either modifyling the

@@ -1,19 +1,19 @@
 /** A program to test advisory library */
 
 #include <assert.h>
-#include <stdlib.h>
 #include <time.h>
 
 #include "bfield.h"
 #include "solver.h"
+#include "headerP.h"
 
-int main(int argc, char *argv[]){
-
-	assert(argc >= 4);
+int main(int argc, char *argv[])
+{
+  if ( argc!=4 )
+    qFatal("Arguments: width height nbMines");
 
 	long seed = time(0);
-    QTextOStream out(stdout);
-    out << "seed = " << seed << endl;
+    cout << "seed = " << seed << endl;
 
 	short W, H, M;
 	W = atoi(argv[1]); assert(W > 0);
@@ -24,10 +24,10 @@ int main(int argc, char *argv[]){
     field.reset(W, H, M);
 
     Solver solver;
-    if( !solver.solveOneStep(field) ) out << "OOPS!!" << endl;
-    else out << "Solved!" << endl;
+    if( !solver.solveOneStep(field) ) cout << "OOPS!!" << endl;
+    else cout << "Solved!" << endl;
 
-    out << field << endl;
+    cout << field << endl;
 
 	return 0;
 }

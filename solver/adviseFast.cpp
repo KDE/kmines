@@ -23,8 +23,9 @@
 
 using namespace AdviseFast;
 
-QTextStream &AdviseFast::operator <<(QTextStream &s, Fact const &f){
-	return s << f.pointSet << "= " << f.mines;
+std::ostream &AdviseFast::operator <<(std::ostream &s, Fact const &f)
+{
+  return s << f.pointSet << "= " << f.mines;
 }
 
 AdviseFast::FactSet::FactSet(BaseField *field) :
@@ -186,7 +187,8 @@ CoordSet const *AdviseFast::FactSet::getContainingFacts(
 	else return 0;
 }
 
-QTextStream &AdviseFast::operator <<(QTextStream &s, FactSet const &fs){
+std::ostream &AdviseFast::operator <<(std::ostream &s, FactSet const &fs)
+{
 	FactSet::const_iterator i;
 	for(i=fs.begin(); i!=fs.end(); ++i)
         s << i->first << ": " << i->second << endl;

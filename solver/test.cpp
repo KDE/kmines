@@ -9,8 +9,7 @@
 int main(int argc, char *argv[])
 {
     long seed = (argc<2 ? time(0) : atoi(argv[1]));
-    QTextOStream out(stdout);
-    out << "seed = " << seed << endl;
+    cout << "seed = " << seed << endl;
 
 	BaseField f(seed);
     f.reset(W, H, 10);
@@ -38,8 +37,8 @@ int main(int argc, char *argv[])
     QString s;
 	for(uint i=0;i<H;++i) {
 		for(uint j=0;j<W;++j)
-            out << s.sprintf("%+.02f ", pic[i][j]).latin1();
-        out << endl;
+            cout << s.sprintf("%+.02f ", pic[i][j]).latin1();
+        cout << endl;
 	}
 
 	return 0;

@@ -9,8 +9,7 @@
 int main(int argc, char *argv[])
 {
     long seed = (argc < 2 ? time(0) : atoi(argv[1]));
-    QTextOStream out(stdout);
-    out << "seed = " << seed << endl;
+    cout << "seed = " << seed << endl;
 
     BaseField f(seed);
     f.reset(W, H, 10);
@@ -24,8 +23,8 @@ int main(int argc, char *argv[])
 
 	rules.solve();
 
-	out << f << endl;
-	if(!f.isSolved()) out << facts << endl;
+	cout << f << endl;
+	if(!f.isSolved()) cout << facts << endl;
 
 	return 0;
 }
