@@ -202,7 +202,7 @@ void Field::changeCaseState(uint i, uint j, uint new_st)
 
 void Field::drawCase(uint i, uint j, uint nbs)
 {
-	char nb[1];
+	char nb[2];
 	
 	pt->begin(this);
 	pt->eraseRect(ipos, jpos, CASE_W, CASE_W);
