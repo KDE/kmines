@@ -3,7 +3,6 @@
 #include "version.h"
 #include "status.h"
 #include "dialogs.h"
-#include "kstdaccel.h"
 
 #include "main.moc"
 
@@ -17,16 +16,15 @@ KMines::KMines(QWidget *parent, const char *name)
 	status = new KStatus(this);
 	status->installEventFilter(this);
 	
-	kacc = new KAccel( this ); 
-	KStdAccel stdacc; // Access to standard accelerators
+	kacc = new KAccel( this );
 	/* Kaccel initialization */
-	kacc->insertItem(i18n("Quit"), "Quit", stdacc.quit());
+	kacc->insertStdItem(KAccel::Quit );
 	kacc->insertItem(i18n("New game"), "New", "F2");
 	kacc->insertItem(i18n("Pause game"), "Pause", "P");
 	kacc->insertItem(i18n("High scores"), "HighScores", "H");
 
 	/* connections for kmines */
-	kacc->connectItem("Quit", this, SLOT(quit()));
+	kacc->connectItem(KAccel::Quit, this, SLOT(quit()));
 	kacc->connectItem("New", status, SLOT(restartGame()));
 	kacc->connectItem("Pause", status, SLOT(pauseGame()));
 	kacc->connectItem("HighScores", status, SLOT(showHighScores()));
@@ -43,13 +41,18 @@ KMines::KMines(QWidget *parent, const char *name)
 	tog_id = popup->insertItem(i18n("Hide menu bar"),
 							   this, SLOT(toggleMenu()) );
 	popup->insertSeparator();
-	popup->insertItem(i18n("New game"), status, SLOT(restartGame()) );
-	popup->insertItem(i18n("Pause game"), status, SLOT(pauseGame()) );
+	int id = popup->insertItem(i18n("New game"), status, SLOT(restartGame()) );
+	kacc->changeMenuAccel(popup, id, "New");
+	
+	id = popup->insertItem(i18n("Pause game"), status, SLOT(pauseGame()) );
+	kacc->changeMenuAccel(popup, id, "Pause");
 	popup->insertSeparator();
-	popup->insertItem(i18n("High scores"), status, SLOT(showHighScores()) );
+	id = popup->insertItem(i18n("High scores"), status, SLOT(showHighScores()) );
+	kacc->changeMenuAccel(popup, id, "HighScores");
 	popup->insertSeparator();
-	popup->insertItem(i18n("Quit"), this, SLOT(quit()) );
-  
+	id = popup->insertItem(i18n("Quit"), this, SLOT(quit()) );
+	kacc->changeMenuAccel(popup, id, KAccel::Quit);
+
 	options = new QPopupMenu;
 	options->setCheckable(TRUE);
 	um_id = options->insertItem(i18n("? mark"), this, SLOT(toggleUMark()) );
@@ -64,7 +67,7 @@ KMines::KMines(QWidget *parent, const char *name)
 	connect(level, SIGNAL(activated(int)), SLOT(change_level(int)));
 
 	QPopupMenu *help = kapp->getHelpMenu(true, QString(KMINES_NAME)
-                                         + " " + KMINES_VERSION 
+                                         + " " + KMINES_VERSION
 										 + " (" + KMINES_DATE + ")\n\n"
 										 + i18n("by") + " " + KMINES_AUTHOR);
 
@@ -113,7 +116,7 @@ void KMines::change_level(int lev)
 		Custom cu(&nb_w, &nb_h, &nb_m, this);
 		go = cu.exec();
 	} else {
-		nb_w = MODES[lev][0]; 
+		nb_w = MODES[lev][0];
 		nb_h = MODES[lev][1];
 		nb_m = MODES[lev][2];
 		go = TRUE;
@@ -121,7 +124,7 @@ void KMines::change_level(int lev)
 
 	if ( go ) {
 		changedSize();
-		newGame(nb_w, nb_h, nb_m); 
+		newGame(nb_w, nb_h, nb_m);
 	}
 }
 
@@ -174,7 +177,7 @@ void KMines::changedSize()
 	if (nb_w < MIN_W) {
 		aff_w = MIN_W;
 		aff_h = nb_h + (MIN_W - nb_w);
-	} else 
+	} else
 		aff_w = nb_w;
 	
 	int mh = 0;
