@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 
     KRandomSequence random(seed);
     Coord c(random.getLong(W), random.getLong(H));
-    f.reveal(c, 0, 0);
+    f.doReveal(c, 0, 0);
 
 	AdviseFast::FactSet facts(&f);
 	AdviseFast::RuleSet rules(&facts);
