@@ -35,6 +35,7 @@
 #include <kdebug.h>
 #include <knotifyclient.h>
 #include <knotifydialog.h>
+#include <khighscore.h>
 
 #include "status.h"
 #include "highscores.h"
@@ -235,6 +236,8 @@ static const char *DESCRIPTION
 
 int main(int argc, char **argv)
 {
+    KHighscore::init("kmines");
+
     KAboutData aboutData("kmines", I18N_NOOP("KMines"), LONG_VERSION,
 						 DESCRIPTION, KAboutData::License_GPL,
 						 COPYLEFT, 0, HOMEPAGE);
