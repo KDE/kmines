@@ -6,6 +6,7 @@
 #include <qbitmap.h>
 #include <qlayout.h>
 #include <qstyle.h>
+#include <qdrawutil.h>
 #include <qtimer.h>
 
 #include <klocale.h>
@@ -562,28 +563,19 @@ void Field::drawBox(QPainter &p, uint i, uint j, bool pressed,
 	int x = iToX(i);
 	int y = jToY(j);
 
-	p.translate(x, y);
+    qDrawShadePanel(&p, x, y, button.width(), button.height(),
+                    colorGroup(),  pressed, 2,
+                    &colorGroup().brush(QColorGroup::Background));
 
-	QStyle::SFlags flags = QStyle::Style_Enabled;
     bool hasFocus = ( cursor && i==ic && j==jc );
-	if (hasFocus) flags |= QStyle::Style_HasFocus;
-    if (pressed) {
-        flags |= QStyle::Style_Sunken;
-        flags |= QStyle::Style_Down;
-    } else {
-        flags |= QStyle::Style_Raised;
-        flags |= QStyle::Style_Up;
-    }
-
-    style().drawPrimitive(QStyle::PE_ButtonCommand, &p, button.rect(),
-                          colorGroup(), flags);
     if (hasFocus) {
+        p.translate(x, y);
         QRect fbr = style().subRect(QStyle::SR_PushButtonFocusRect, &button);
         style().drawPrimitive(QStyle::PE_FocusRect, &p, fbr,
-                              colorGroup(), flags);
+                              colorGroup(), QStyle::Style_Enabled);
+        p.resetXForm();
     }
 
-	p.resetXForm();
 	QRect r(QPoint(x, y), button.size());
 	style().drawItem(&p, r, AlignCenter, colorGroup(), true, pixmap,
                          text, -1, &textColor);
