@@ -95,22 +95,27 @@ MainWidget::MainWidget()
     _configCollection.plug("level", _levels);
 
     // Adviser
-    _advise = new KAction(i18n("Advise"), CTRL + Key_A,
+    _advise = new KAction(KGuiItem(i18n("Advise"), "idea"), CTRL + Key_A,
                           _status, SLOT(advise()),
                           actionCollection(), "advise");
-    _solve = new KAction(i18n("Solve"), 0, _status, SLOT(solve()),
+    _solve = new KAction(KGuiItem(i18n("Solve"), "run"), 0,
+                         _status, SLOT(solve()),
                          actionCollection(), "solve");
     (void)new KAction(i18n("Solving Rate..."), 0, _status, SLOT(solveRate()),
                       actionCollection(), "solve_rate");
 
     // Log
-    (void)new KAction(i18n("View Log"), 0, _status, SLOT(viewLog()),
+    (void)new KAction(KGuiItem(i18n("View Log"), "viewmag"), 0,
+                      _status, SLOT(viewLog()),
                       actionCollection(), "log_view");
-    (void)new KAction(i18n("Replay Log"), 0, _status, SLOT(replayLog()),
+    (void)new KAction(KGuiItem(i18n("Replay Log"), "player_play"),
+                      0, _status, SLOT(replayLog()),
                       actionCollection(), "log_replay");
-    (void)new KAction(i18n("Save Log..."), 0, _status, SLOT(saveLog()),
+    (void)new KAction(KGuiItem(i18n("Save Log..."), "filesave"), 0,
+                      _status, SLOT(saveLog()),
                       actionCollection(), "log_save");
-    (void)new KAction(i18n("Load Log..."), 0, _status, SLOT(loadLog()),
+    (void)new KAction(KGuiItem(i18n("Load Log..."), "fileopen"), 0,
+                      _status, SLOT(loadLog()),
                       actionCollection(), "log_load");
 
 	createGUI();
@@ -144,7 +149,7 @@ void MainWidget::readSettings()
 
 void MainWidget::showHighscores()
 {
-    KExtHighscores::showHighscores(this);
+    KExtHighscore::showHighscores(this);
 }
 
 bool MainWidget::eventFilter(QObject *, QEvent *e)
@@ -230,7 +235,7 @@ int main(int argc, char **argv)
     KApplication a;
     KGlobal::locale()->insertCatalogue("libkdegames");
     KGlobal::locale()->insertCatalogue("libkdehighscores");
-    KExtHighscores::ExtHighscores highscores;
+    KExtHighscore::ExtManager manager;
     if ( a.isRestored() ) RESTORE(MainWidget)
     else {
         MainWidget *mw = new MainWidget;

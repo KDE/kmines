@@ -136,14 +136,14 @@ void Status::newGame(const Level &level)
 {
     _timer->stop();
     if ( level.type()!=Level::Custom )
-        KExtHighscores::setGameType(level.type());
+        KExtHighscore::setGameType(level.type());
     field->setLevel(level);
 }
 
 bool Status::checkBlackMark()
 {
     bool bm = ( field->gameState()==Playing );
-    if (bm) KExtHighscores::submitScore(KExtHighscores::BlackMark, this);
+    if (bm) KExtHighscore::submitScore(KExtHighscore::BlackMark, this);
     return bm;
 }
 
@@ -192,8 +192,8 @@ void Status::setGameOver(bool won)
     field->setGameOver();
     dg->stop();
     if ( field->level().type()!=Level::Custom && !dg->cheating() ) {
-        if (won) KExtHighscores::submitScore(dg->score(), this);
-        else KExtHighscores::submitScore(KExtHighscores::Lost, this);
+        if (won) KExtHighscore::submitScore(dg->score(), this);
+        else KExtHighscore::submitScore(KExtHighscore::Lost, this);
     }
 
     // game log
@@ -216,11 +216,11 @@ void Status::setStopped()
 {
     smiley->setMood(Normal);
     update(false);
-    KExtHighscores::Score first(KExtHighscores::Won);
-    KExtHighscores::Score last(KExtHighscores::Won);
+    KExtHighscore::Score first(KExtHighscore::Won);
+    KExtHighscore::Score last(KExtHighscore::Won);
     if ( field->level().type()!=Level::Custom ) {
-        first = KExtHighscores::firstScore();
-        last = KExtHighscores::lastScore();
+        first = KExtHighscore::firstScore();
+        last = KExtHighscore::lastScore();
     }
     dg->reset(first, last);
     _advised = false;
@@ -268,6 +268,9 @@ void Status::gameStateChanged(GameState state, bool won)
         break;
     case Replaying:
         smiley->setMood(Normal);
+        break;
+    case NB_STATES:
+        Q_ASSERT(false);
         break;
     }
 
@@ -449,7 +452,7 @@ void Status::replayLog()
     f = _logRoot.namedItem("ActionList");
     _actions = f.toElement().elementsByTagName("Action");
     _index = 0;
-    _timer->start(1000);
+    _timer->start(500);
 }
 
 void Status::replayStep()
@@ -460,7 +463,7 @@ void Status::replayStep()
         return;
     }
 
-    _timer->changeInterval(500);
+    _timer->changeInterval(200);
     QDomElement a = _actions.item(_index).toElement();
     dg->setTime(a.attribute("time"));
     uint i = a.attribute("column").toUInt();

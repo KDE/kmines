@@ -21,6 +21,7 @@
 
 #include <qfile.h>
 #include <qlayout.h>
+#include <qdom.h>
 
 #include <kglobal.h>
 #include <kio/netaccess.h>
@@ -36,7 +37,7 @@
 #include "ghighscores_gui.h"
 
 
-namespace KExtHighscores
+namespace KExtHighscore
 {
 
 //-----------------------------------------------------------------------------
@@ -275,8 +276,11 @@ PlayerInfos::PlayerInfos()
     }
 }
 
-void PlayerInfos::createHistoItems()
+void PlayerInfos::createHistoItems(const QMemArray<uint> &scores, bool bound)
 {
+    Q_ASSERT( _histogram.size()==0 );
+    _bound = bound;
+    _histogram = scores;
     for (uint i=1; i<histoSize(); i++)
         addItem(histoName(i), new Item((uint)0), true, true);
 }
@@ -308,8 +312,8 @@ bool PlayerInfos::isWWEnabled() const
 
 QString PlayerInfos::histoName(uint i) const
 {
-    const QMemArray<uint> &sh = internal->scoreHistogram;
-    Q_ASSERT( i<sh.size() || (internal->scoreBound || i==sh.size()) );
+    const QMemArray<uint> &sh = _histogram;
+    Q_ASSERT( i<sh.size() || (_bound || i==sh.size()) );
     if ( i==sh.size() )
         return QString("nb scores greater than %1").arg(sh[sh.size()-1]);
     return QString("nb scores less than %1").arg(sh[i]);
@@ -317,7 +321,12 @@ QString PlayerInfos::histoName(uint i) const
 
 uint PlayerInfos::histoSize() const
 {
-     return internal->scoreHistogram.size() + (internal->scoreBound ? 0 : 1);
+     return _histogram.size() + (_bound ? 0 : 1);
+}
+
+bool PlayerInfos::isLastAndUnbound(uint i) const
+{
+    return ( !_bound && i==_histogram.size()-1 );
 }
 
 void PlayerInfos::submitScore(const Score &score) const
@@ -365,7 +374,7 @@ void PlayerInfos::submitScore(const Score &score) const
 
     // update histogram
     if ( !lost ) {
-        const QMemArray<uint> &sh = internal->scoreHistogram;
+        const QMemArray<uint> &sh = _histogram;
         for (uint i=1; i<histoSize(); i++)
             if ( i==sh.size() || score.score()<sh[i] ) {
                 item(histoName(i))->increment(_id);
@@ -415,17 +424,12 @@ void PlayerInfos::removeKey()
 }
 
 //-----------------------------------------------------------------------------
-HighscoresPrivate *HighscoresPrivate::_self = 0;
-
-HighscoresPrivate::HighscoresPrivate(uint nbGameTypes, uint maxNbEntries,
-                                     Highscores &highscores)
-    : showStatistics(false), trackLostGames(false), trackBlackMarks(false),
-      _first(true), _nbGameTypes(nbGameTypes), _gameType(0),
-      _highscores(highscores)
+ManagerPrivate::ManagerPrivate(uint nbGameTypes, uint maxNbEntries,
+                               Manager &m)
+    : manager(m), showStatistics(false), trackLostGames(false),
+      trackBlackMarks(false),
+      _first(true), _nbGameTypes(nbGameTypes), _gameType(0)
 {
-    if (_self) qFatal("A highscore object already exists");
-    _self = this;
-
     Q_ASSERT(nbGameTypes);
     Q_ASSERT(maxNbEntries);
 
@@ -433,14 +437,13 @@ HighscoresPrivate::HighscoresPrivate(uint nbGameTypes, uint maxNbEntries,
     _scoreInfos = new ScoreInfos(maxNbEntries, *_playerInfos);
 }
 
-HighscoresPrivate::~HighscoresPrivate()
+ManagerPrivate::~ManagerPrivate()
 {
     delete _scoreInfos;
     delete _playerInfos;
-    _self = 0;
 }
 
-KURL HighscoresPrivate::queryURL(QueryType type, const QString &newName) const
+KURL ManagerPrivate::queryURL(QueryType type, const QString &newName) const
 {
     KURL url = serverURL;
     QString nameItem = "nickname";
@@ -463,7 +466,7 @@ KURL HighscoresPrivate::queryURL(QueryType type, const QString &newName) const
             url.addPath("change.php");
             key = true;
             if ( newName!=name )
-                Highscores::addToQueryURL(url, "new_nickname", newName);
+                Manager::addToQueryURL(url, "new_nickname", newName);
             break;
         case Players:
             url.addPath("players.php");
@@ -477,12 +480,12 @@ KURL HighscoresPrivate::queryURL(QueryType type, const QString &newName) const
             break;
 	}
 
-    if (withVersion) Highscores::addToQueryURL(url, "version", version);
-    if ( !name.isEmpty() ) Highscores::addToQueryURL(url, nameItem, name);
-    if (key) Highscores::addToQueryURL(url, "key", _playerInfos->key());
+    if (withVersion) Manager::addToQueryURL(url, "version", version);
+    if ( !name.isEmpty() ) Manager::addToQueryURL(url, nameItem, name);
+    if (key) Manager::addToQueryURL(url, "key", _playerInfos->key());
     if (level) {
-        QString label = _highscores.gameTypeLabel(_gameType, Highscores::WW);
-        if ( !label.isEmpty() ) Highscores::addToQueryURL(url, "level", label);
+        QString label = manager.gameTypeLabel(_gameType, Manager::WW);
+        if ( !label.isEmpty() ) Manager::addToQueryURL(url, "level", label);
     }
 
     return url;
@@ -511,7 +514,7 @@ const char *DUMMY_STRINGS[] = {
 const char *UNABLE_TO_CONTACT =
     I18N_NOOP("Unable to contact world-wide highscore server");
 
-bool HighscoresPrivate::doQuery(const KURL &url, QWidget *parent,
+bool ManagerPrivate::doQuery(const KURL &url, QWidget *parent,
                                 QDomNamedNodeMap *map)
 {
     KIO::http_update_cache(url, true, 0); // remove cache !
@@ -561,7 +564,7 @@ bool HighscoresPrivate::doQuery(const KURL &url, QWidget *parent,
     return false;
 }
 
-bool HighscoresPrivate::getFromQuery(const QDomNamedNodeMap &map,
+bool ManagerPrivate::getFromQuery(const QDomNamedNodeMap &map,
                                      const QString &name, QString &value,
                                      QWidget *parent)
 {
@@ -576,7 +579,7 @@ bool HighscoresPrivate::getFromQuery(const QDomNamedNodeMap &map,
 	return true;
 }
 
-int HighscoresPrivate::rank(const Score &score) const
+int ManagerPrivate::rank(const Score &score) const
 {
     Score tmp(Won);
     uint nb = _scoreInfos->nbEntries();
@@ -588,7 +591,7 @@ int HighscoresPrivate::rank(const Score &score) const
 	return (i<_scoreInfos->maxNbEntries() ? (int)i : -1);
 }
 
-bool HighscoresPrivate::modifySettings(const QString &newName,
+bool ManagerPrivate::modifySettings(const QString &newName,
                                        const QString &comment, bool WWEnabled,
                                        QWidget *parent)
 {
@@ -604,7 +607,7 @@ bool HighscoresPrivate::modifySettings(const QString &newName,
         newPlayer = _playerInfos->key().isEmpty()
                     || _playerInfos->registeredName().isEmpty();
         KURL url = queryURL((newPlayer ? Register : Change), newName);
-        Highscores::addToQueryURL(url, "comment", comment);
+        Manager::addToQueryURL(url, "comment", comment);
 
         QDomNamedNodeMap map;
         bool ok = doQuery(url, parent, &map);
@@ -616,14 +619,14 @@ bool HighscoresPrivate::modifySettings(const QString &newName,
     return true;
 }
 
-void HighscoresPrivate::setGameType(uint type)
+void ManagerPrivate::setGameType(uint type)
 {
     if (_first) {
         _first = false;
         if ( _playerInfos->isNewPlayer() ) {
             for (uint i=0; i<_nbGameTypes; i++) {
                 setGameType(i);
-                _highscores.convertLegacy(i);
+                manager.convertLegacy(i);
             }
         }
     }
@@ -631,7 +634,7 @@ void HighscoresPrivate::setGameType(uint type)
     Q_ASSERT( type<_nbGameTypes );
     _gameType = kMin(type, _nbGameTypes-1);
     QString str = "scores";
-    QString lab = _highscores.gameTypeLabel(_gameType, Highscores::Standard);
+    QString lab = manager.gameTypeLabel(_gameType, Manager::Standard);
     if ( !lab.isEmpty() ) {
         _playerInfos->setSubGroup(lab);
         str += "_" + lab;
@@ -639,12 +642,12 @@ void HighscoresPrivate::setGameType(uint type)
     _scoreInfos->setGroup(str);
 }
 
-void HighscoresPrivate::checkFirst()
+void ManagerPrivate::checkFirst()
 {
     if (_first) setGameType(0);
 }
 
-void HighscoresPrivate::showHighscores(QWidget *parent, int rank)
+void ManagerPrivate::showHighscores(QWidget *parent, int rank)
 {
     uint tmp = _gameType;
 
@@ -654,8 +657,8 @@ void HighscoresPrivate::showHighscores(QWidget *parent, int rank)
         setGameType(i);
         QWidget *w;
         if (treeList) {
-            QString title = _highscores.gameTypeLabel(i, Highscores::I18N);
-            QString icon = _highscores.gameTypeLabel(i, Highscores::Icon);
+            QString title = manager.gameTypeLabel(i, Manager::I18N);
+            QString icon = manager.gameTypeLabel(i, Manager::Icon);
             w = hs.addPage(title, QString::null,
                             BarIcon(icon, KIcon::SizeLarge));
         } else w = hs.plainPage();
@@ -671,7 +674,7 @@ void HighscoresPrivate::showHighscores(QWidget *parent, int rank)
 	hs.exec();
 }
 
-void HighscoresPrivate::submitScore(const Score &ascore, QWidget *parent)
+void ManagerPrivate::submitScore(const Score &ascore, QWidget *parent)
 {
     checkFirst();
 
@@ -688,10 +691,10 @@ void HighscoresPrivate::submitScore(const Score &ascore, QWidget *parent)
         if ( rank!=-1 ) showHighscores(parent, rank);
     }
 
-    _highscores.scoreSubmitted(score);
+    manager.scoreSubmitted(score);
 }
 
-int HighscoresPrivate::submitLocal(const Score &score)
+int ManagerPrivate::submitLocal(const Score &score)
 {
     int r = rank(score);
     if ( r!=-1 ) {
@@ -702,24 +705,24 @@ int HighscoresPrivate::submitLocal(const Score &score)
     return r;
 }
 
-bool HighscoresPrivate::submitWorldWide(const Score &score,
+bool ManagerPrivate::submitWorldWide(const Score &score,
                                         QWidget *parent) const
 {
     if ( score.type()==Lost && !trackLostGames ) return true;
     if ( score.type()==BlackMark && !trackBlackMarks ) return true;
 
     KURL url = queryURL(Submit);
-    _highscores.additionnalQueryItems(url, score);
+    manager.additionnalQueryItems(url, score);
     int s = (score.type()==Won ? score.score() : (int)score.type());
     QString str =  QString::number(s);
-    Highscores::addToQueryURL(url, "score", str);
+    Manager::addToQueryURL(url, "score", str);
     KMD5 context(QString(_playerInfos->registeredName() + str).latin1());
-    Highscores::addToQueryURL(url, "check", context.hexDigest());
+    Manager::addToQueryURL(url, "check", context.hexDigest());
 
     return doQuery(url, parent);
 }
 
-Score HighscoresPrivate::lastScore()
+Score ManagerPrivate::lastScore()
 {
     checkFirst();
     Score score(Won);
@@ -727,7 +730,7 @@ Score HighscoresPrivate::lastScore()
     return score;
 }
 
-Score HighscoresPrivate::firstScore()
+Score ManagerPrivate::firstScore()
 {
     checkFirst();
     Score score(Won);
@@ -735,7 +738,12 @@ Score HighscoresPrivate::firstScore()
     return score;
 }
 
-void HighscoresPrivate::exportHighscores(QTextStream &s)
+void ManagerPrivate::additionnalTabs(QTabWidget *parent)
+{
+    manager.additionnalTabs(parent);
+}
+
+void ManagerPrivate::exportHighscores(QTextStream &s)
 {
     uint tmp = _gameType;
 
@@ -745,7 +753,7 @@ void HighscoresPrivate::exportHighscores(QTextStream &s)
             if ( i!=0 ) s << endl;
             s << "--------------------------------" << endl;
             s << "Game type: "
-              << _highscores.gameTypeLabel(_gameType, Highscores::I18N)
+              << manager.gameTypeLabel(_gameType, Manager::I18N)
               << endl;
             s << endl;
         }

@@ -83,8 +83,8 @@ bool KConfigItemBase::save()
 
 void KConfigItemBase::setDefault()
 {
-    // NB: we emit modified() by hand because some widget (like QComboBox)
-    // reports changes with a signal that only gets activated by user actions.
+    // NB: we emit modified() by hand because some widgets (like QComboBox)
+    // report changes with a signal that only gets activated by GUI actions.
     blockSignals(true);
     setDefaultState();
     blockSignals(false);

@@ -207,7 +207,7 @@ void BaseField::completeReveal()
     }
 }
 
-void BaseField::setFlag(const Coord &c)
+void BaseField::doMark(const Coord &c)
 {
     if ( state(c)!=Covered ) return;
     changeCase(c, Marked);

@@ -29,7 +29,7 @@
 class ConfigItem : public KConfigItemBase
 {
  public:
-    ConfigItem(KExtHighscores::ConfigWidget &cw)
+    ConfigItem(KExtHighscore::ConfigWidget &cw)
         : _cw(cw) {
         connect(&cw, SIGNAL(modified()), SLOT(modifiedSlot()));
     }
@@ -41,15 +41,14 @@ class ConfigItem : public KConfigItemBase
     bool hasDefault() const { return true; }
 
  private:
-    KExtHighscores::ConfigWidget &_cw;
+    KExtHighscore::ConfigWidget &_cw;
 };
 
 //-----------------------------------------------------------------------------
 HighscoresConfigWidget::HighscoresConfigWidget()
 {
     QVBoxLayout *top = new QVBoxLayout(this);
-    KExtHighscores::ConfigWidget *cw =
-        KExtHighscores::createConfigWidget(this);
+    KExtHighscore::ConfigWidget *cw = KExtHighscore::createConfigWidget(this);
     top->addWidget(cw);
 
     configCollection()->insert( new ConfigItem(*cw) );

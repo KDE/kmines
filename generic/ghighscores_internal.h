@@ -20,9 +20,6 @@
 #ifndef G_HIGHSCORES_INTERNAL_H
 #define G_HIGHSCORES_INTERNAL_H
 
-#include <qdom.h>
-#include <qtextstream.h>
-
 #include <kapplication.h>
 #include <kconfig.h>
 #include <klocale.h>
@@ -30,13 +27,17 @@
 
 #include "ghighscores_item.h"
 
+class QTextStream;
+class QTabWidget;
+class QDomNamedNodeMap;
 
-namespace KExtHighscores
+
+namespace KExtHighscore
 {
 
 class PlayerInfos;
 class Score;
-class Highscores;
+class Manager;
 
 //-----------------------------------------------------------------------------
 class RankItem : public Item
@@ -191,9 +192,11 @@ class PlayerInfos : public ItemArray
     QString key() const;
     uint id() const { return _id; }
 
-    void createHistoItems();
+    void createHistoItems(const QMemArray<uint> &scores, bool bound);
     QString histoName(uint i) const;
     uint histoSize() const;
+    const QMemArray<uint> &histogram() const { return _histogram; }
+    bool isLastAndUnbound(uint i) const;
 
     void submitScore(const Score &) const;
     void modifySettings(const QString &newName, const QString &comment,
@@ -201,19 +204,17 @@ class PlayerInfos : public ItemArray
     void removeKey();
 
  private:
-    bool _newPlayer;
+    bool _newPlayer, _bound;
     uint _id;
+    QMemArray<uint> _histogram;
 };
 
 //-----------------------------------------------------------------------------
-class HighscoresPrivate
+class ManagerPrivate
 {
  public:
-    HighscoresPrivate(uint nbGameTypes, uint maxNbentries,
-                      Highscores &highscores);
-    ~HighscoresPrivate();
-
-    static HighscoresPrivate *self() { return _self; }
+    ManagerPrivate(uint nbGameTypes, uint maxNbentries, Manager &manager);
+    ~ManagerPrivate();
 
     bool modifySettings(const QString &newName, const QString &comment,
                         bool WWEnabled, QWidget *parent);
@@ -230,25 +231,21 @@ class HighscoresPrivate
     bool isWWHSAvailable() const     { return !serverURL.isEmpty(); }
     ScoreInfos &scoreInfos() const   { return *_scoreInfos; }
     PlayerInfos &playerInfos() const { return *_playerInfos; }
-    Highscores &highscores() const   { return _highscores; }
 
+    void additionnalTabs(QTabWidget *parent);
     void exportHighscores(QTextStream &);
 
+    Manager &manager;
     KURL     serverURL;
     QString  version;
     bool     showStatistics, trackLostGames, trackBlackMarks;
-    bool     scoreBound;
-    QMemArray<uint> scoreHistogram;
 
  private:
-    static HighscoresPrivate *_self;
-
     PlayerInfos  *_playerInfos;
     ScoreInfos   *_scoreInfos;
     bool          _first;
     const uint    _nbGameTypes;
     uint          _gameType;
-    Highscores   &_highscores;
 
     enum QueryType { Submit, Register, Change, Players, Scores };
     KURL queryURL(QueryType type, const QString &newName=QString::null) const;
@@ -262,8 +259,6 @@ class HighscoresPrivate
     static bool getFromQuery(const QDomNamedNodeMap &map, const QString &name,
                              QString &value, QWidget *parent);
 };
-
-#define internal HighscoresPrivate::self()
 
 }; // namespace
 

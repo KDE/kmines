@@ -455,6 +455,7 @@ QVariant KConfigString::toVariant(const QString &s, const QVariant &def)
     case QVariant::ByteArray:
     case QVariant::BitArray:
     case QVariant::KeySequence:
+    case QVariant::Pen:
         break;
     }
 
@@ -636,6 +637,7 @@ QString KConfigString::from(const QVariant &v)
     case QVariant::ByteArray:
     case QVariant::BitArray:
     case QVariant::KeySequence:
+    case QVariant::Pen:
         break;
     }
 

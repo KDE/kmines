@@ -25,11 +25,10 @@
 #include <qnamespace.h>
 
 
-namespace KExtHighscores
+namespace KExtHighscore
 {
 
 class ItemArray;
-class ScoreInfos;
 
 //-----------------------------------------------------------------------------
 /**
@@ -176,17 +175,11 @@ class BestScoreItem : public Item
 
 //-----------------------------------------------------------------------------
 /**
- * Manage an array of data associated with @ref Item.
+ * Manage an array of data associated with an @ref Item.
  */
 class DataArray
 {
  public:
-     /**
-     * This constuctor is internal. You should never need to construct
-     * this class by yourself.
-     */
-    DataArray(const ItemArray &items);
-
     ~DataArray();
 
     /**
@@ -200,6 +193,12 @@ class DataArray
      * Item.
      */
     void setData(const QString &name, const QVariant &value);
+
+ protected:
+     /**
+      * @internal
+      */
+    DataArray(const ItemArray &items);
 
  private:
     QMap<QString, QVariant> _data;

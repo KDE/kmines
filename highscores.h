@@ -22,13 +22,13 @@
 #include "generic/ghighscores.h"
 
 
-namespace KExtHighscores
+namespace KExtHighscore
 {
 
-class ExtHighscores : public Highscores
+class ExtManager : public Manager
 {
  public:
-    ExtHighscores();
+    ExtManager();
 
  private:
     QString gameTypeLabel(uint gameTye, LabelType) const;

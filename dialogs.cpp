@@ -64,9 +64,9 @@ DigitalClock::DigitalClock(QWidget *parent)
     setDefaultColors(white, black);
 }
 
-KExtHighscores::Score DigitalClock::score() const
+KExtHighscore::Score DigitalClock::score() const
 {
-    KExtHighscores::Score score(KExtHighscores::Won);
+    KExtHighscore::Score score(KExtHighscore::Won);
     score.setData("score", 3600 - seconds());
     score.setData("nb_actions", _nbActions);
     return score;
@@ -88,8 +88,8 @@ void DigitalClock::start()
     if ( !_cheating ) setColor(red);
 }
 
-void DigitalClock::reset(const KExtHighscores::Score &first,
-                         const KExtHighscores::Score &last)
+void DigitalClock::reset(const KExtHighscore::Score &first,
+                         const KExtHighscore::Score &last)
 {
     _nbActions = 0;
     _first = first;

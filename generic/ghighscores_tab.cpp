@@ -31,10 +31,11 @@
 #include <kdebug.h>
 #include <kglobal.h>
 
+#include "ghighscores.h"
 #include "ghighscores_internal.h"
 
 
-namespace KExtHighscores
+namespace KExtHighscore
 {
 
 //-----------------------------------------------------------------------------
@@ -140,7 +141,7 @@ StatisticsTab::StatisticsTab(QWidget *parent)
     const PlayerInfos &pi = internal->playerInfos();
     uint nb = pi.nbEntries();
     _data.resize(nb+1);
-    for (uint i=0; i<_data.size(); i++) {
+    for (uint i=0; i<_data.size()-1; i++) {
         _data[i].count[Total] = pi.item("nb games")->read(i).toUInt();
         _data[i].count[Lost] = pi.item("nb lost games")->read(i).toUInt();
         _data[i].count[BlackMark] =
@@ -156,14 +157,15 @@ StatisticsTab::StatisticsTab(QWidget *parent)
 
     for (uint k=0; k<Nb_Counts; k++) _data[nb].count[k] = 0;
     for (uint k=0; k<Nb_Trends; k++) _data[nb].trend[k] = 0;
-    for (uint i=0; i<_data.size(); i++) {
+    for (uint i=0; i<_data.size()-1; i++) {
         for (uint k=0; k<Nb_Counts; k++)
             _data[nb].count[k] += _data[i].count[k];
         for (uint k=0; k<Nb_Trends; k++)
             _data[nb].trend[k] += _data[i].trend[k];
     }
     for (uint k=0; k<Nb_Trends; k++)
-        _data[nb].trend[k] = qRound(double(_data[nb].trend[k]) / _data.size());
+        _data[nb].trend[k] =
+            qRound(double(_data[nb].trend[k]) / (_data.size()-1));
 
     init();
 }
@@ -212,8 +214,8 @@ HistogramTab::HistogramTab(QWidget *parent)
     _list->addColumn(QString::null);
 
     const Item *sitem = internal->scoreInfos().item("score")->item();
-    const QMemArray<uint> &sh = internal->scoreHistogram;
     const PlayerInfos &pi = internal->playerInfos();
+    const QMemArray<uint> &sh = pi.histogram();
     for (uint k=1; k<pi.histoSize(); k++) {
         QString s1 = sitem->pretty(0, sh[k-1]);
         QString s2;
@@ -252,7 +254,7 @@ HistogramTab::HistogramTab(QWidget *parent)
 
 uint HistogramTab::delta(uint k) const
 {
-    const QMemArray<uint> &sh = internal->scoreHistogram;
+    const QMemArray<uint> &sh = internal->playerInfos().histogram();
     return sh[k] - sh[k-1] + 1;
 }
 
@@ -264,8 +266,7 @@ void HistogramTab::display(uint i)
         uint nb = _counts[i*(pi.histoSize()-1) + (k-1)];
         item->setText(2, QString::number(nb));
         item->setText(3, percent(nb, _data[i].total));
-        if ( !internal->scoreBound && k==pi.histoSize()-1 )
-            item->setText(4, "--");
+        if ( pi.isLastAndUnbound(k) ) item->setText(4, "--");
         else {
             uint width = (_data[i].max==0 ? 0
                           : qRound(150.0 * nb / delta(k) / _data[i].max));

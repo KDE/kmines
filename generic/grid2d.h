@@ -82,7 +82,8 @@ inline QDataStream &operator <<(QDataStream &s, const Grid2D::CoordSet &set) {
 
 inline QDataStream &operator >>(QDataStream &s, Grid2D::CoordSet &set) {
     set.clear();
-    Q_UINT32 nb = 0; // ??? what's that for
+    Q_UINT32 nb;
+    s >> nb;
     for (Q_UINT32 i=0; i<nb; i++) {
         Grid2D::Coord c;
         s >> c;
@@ -308,6 +309,7 @@ class SquareBase
         case LeftDown:  return c + Coord(-1,  1);
         case RightUp:   return c + Coord( 1, -1);
         case RightDown: return c + Coord( 1,  1);
+        case Nb_Neighbour: Q_ASSERT(false);
         }
         return c;
     }
@@ -354,6 +356,7 @@ class Square : public Generic<Type>, public SquareBase
         case LeftDown:  return Coord(0, height()-1);
         case RightUp:   return Coord(width()-1, 0);
         case RightDown: return Coord(width()-1, height()-1);
+        case Nb_Neighbour: Q_ASSERT(false);
         }
         return c;
     }

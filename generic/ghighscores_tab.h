@@ -27,7 +27,7 @@ class QLabel;
 class KListView;
 
 
-namespace KExtHighscores
+namespace KExtHighscore
 {
 
 //-----------------------------------------------------------------------------

@@ -33,7 +33,7 @@
 #include "ghighscores.h"
 
 
-namespace KExtHighscores
+namespace KExtHighscore
 {
 
 class ItemContainer;
@@ -107,10 +107,10 @@ class MultipleScoresList : public ScoresList
 {
  Q_OBJECT
  public:
-    MultipleScoresList(const QValueList<Score> &, QWidget *parent);
+    MultipleScoresList(const ScoreVector &, QWidget *parent);
 
  private:
-    const QValueList<Score> &_scores;
+    const ScoreVector _scores;
 
     QString itemText(const ItemContainer &, uint row) const;
     bool showColumn(const ItemContainer &) const;

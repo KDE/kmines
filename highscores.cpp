@@ -26,36 +26,37 @@
 #include "defines.h"
 
 
-namespace KExtHighscores
+namespace KExtHighscore
 {
 
-ExtHighscores::ExtHighscores()
-    : Highscores(Level::NbLevels)
+ExtManager::ExtManager()
+    : Manager(Level::NbLevels)
 {
     setWWHighscores(HOMEPAGE, VERSION);
     showStatistics(true);
-    uint RANGE[16] = {    1, 3120, 3180, 3240, 3300, 3360, 3420, 3480,
-                       3510, 3540, 3550, 3560, 3570, 3580, 3590, 3600 };
+    const uint RANGE[16] = {    1, 3120, 3180, 3240, 3300, 3360, 3420, 3480,
+                             3510, 3540, 3550, 3560, 3570, 3580, 3590, 3600  };
     QMemArray<uint> s;
     s.duplicate(RANGE, 16);
     setScoreHistogram(s, true);
 
     ScoreItem *scoreItem = new ScoreItem;
     scoreItem->setPrettyFormat(Item::MinuteTime);
-    setItem("score", scoreItem);
+    setScoreItem("score", scoreItem);
 
     MeanScoreItem *meanScoreItem = new MeanScoreItem;
     meanScoreItem->setPrettyFormat(Item::MinuteTime);
-    setItem("mean score", meanScoreItem);
+    setPlayerItem("mean score", meanScoreItem);
 
     BestScoreItem *bestScoreItem = new BestScoreItem;
     bestScoreItem->setPrettyFormat(Item::MinuteTime);
-    setItem("best score", bestScoreItem);
+    setPlayerItem("best score", bestScoreItem);
 
-    setItem("nb_actions", new Item((uint)0, i18n("Clicks"), Qt::AlignRight));
+    Item *item = new Item((uint)0, i18n("Clicks"), Qt::AlignRight);
+    setScoreItem("nb_actions", item);
 }
 
-QString ExtHighscores::gameTypeLabel(uint gameType, LabelType type) const
+QString ExtManager::gameTypeLabel(uint gameType, LabelType type) const
 {
     const Level::Data &data = Level::data((Level::Type)gameType);
     switch (type) {
@@ -67,7 +68,7 @@ QString ExtHighscores::gameTypeLabel(uint gameType, LabelType type) const
     return QString::null;
 };
 
-void ExtHighscores::convertLegacy(uint gameType)
+void ExtManager::convertLegacy(uint gameType)
 {
     QString group;
     switch ((Level::Type)gameType) {
@@ -91,11 +92,11 @@ void ExtHighscores::convertLegacy(uint gameType)
     submitLegacyScore(s);
 }
 
-bool ExtHighscores::isStrictlyLess(const Score &s1, const Score &s2) const
+bool ExtManager::isStrictlyLess(const Score &s1, const Score &s2) const
 {
     if ( s1.score()==s2.score() )
         return s1.data("nb_actions").toUInt()>s2.data("nb_actions").toUInt();
-    return Highscores::isStrictlyLess(s1, s2);
+    return Manager::isStrictlyLess(s1, s2);
 }
 
 };

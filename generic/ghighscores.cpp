@@ -26,20 +26,11 @@
 #include "ghighscores_gui.h"
 
 
-namespace KExtHighscores
+namespace KExtHighscore
 {
 
-Highscores::Highscores(uint nbGameTypes, uint maxNbEntries)
-{
-    Q_ASSERT(nbGameTypes);
-    Q_ASSERT(maxNbEntries);
-    (void)new HighscoresPrivate(nbGameTypes, maxNbEntries, *this);
-}
-
-Highscores::~Highscores()
-{
-    delete internal;
-}
+//-----------------------------------------------------------------------------
+ManagerPrivate *internal = 0;
 
 uint gameType()
 {
@@ -58,7 +49,7 @@ ConfigWidget *createConfigWidget(QWidget *parent)
     return new ImplConfigWidget(parent);
 }
 
-void showMultipleScores(const QValueList<Score> &scores, QWidget *parent)
+void showMultipleScores(const ScoreVector &scores, QWidget *parent)
 {
     KDialogBase dialog(KDialogBase::Plain, i18n("Multiplayers Scores"),
                        KDialogBase::Close, KDialogBase::Close,
@@ -80,22 +71,37 @@ void showHighscores(QWidget *parent)
     internal->showHighscores(parent, -1);
 }
 
-void Highscores::setTrackLostGames(bool track)
+//-----------------------------------------------------------------------------
+Manager::Manager(uint nbGameTypes, uint maxNbEntries)
+{
+    Q_ASSERT(nbGameTypes);
+    Q_ASSERT(maxNbEntries);
+    if (internal) qFatal("A highscore object already exists");
+    internal = new ManagerPrivate(nbGameTypes, maxNbEntries, *this);
+}
+
+Manager::~Manager()
+{
+    delete internal;
+    internal = 0;
+}
+
+void Manager::setTrackLostGames(bool track)
 {
     internal->trackLostGames = track;
 }
 
-void Highscores::setTrackBlackMarks(bool track)
+void Manager::setTrackBlackMarks(bool track)
 {
     internal->trackBlackMarks = track;
 }
 
-void Highscores::showStatistics(bool show)
+void Manager::showStatistics(bool show)
 {
     internal->showStatistics = show;
 }
 
-void Highscores::setWWHighscores(const KURL &url, const QString &version)
+void Manager::setWWHighscores(const KURL &url, const QString &version)
 {
     Q_ASSERT( url.isValid() );
     internal->serverURL = url;
@@ -107,35 +113,33 @@ void Highscores::setWWHighscores(const KURL &url, const QString &version)
     internal->version = version;
 }
 
-void Highscores::setScoreHistogram(const QMemArray<uint> &scores, bool bound)
+void Manager::setScoreHistogram(const QMemArray<uint> &scores, bool bound)
 {
-    Q_ASSERT( internal->scoreHistogram.size()==0 );
     Q_ASSERT( scores.size()>=2 );
     for (uint i=0; i<scores.size()-1; i++)
         Q_ASSERT( scores[i]<scores[i+1] );
-    internal->scoreHistogram = scores;
-    internal->scoreBound = bound;
-    internal->playerInfos().createHistoItems();
+    internal->playerInfos().createHistoItems(scores, bound);
 }
 
-void Highscores::submitLegacyScore(const Score &score) const
+void Manager::submitLegacyScore(const Score &score) const
 {
     internal->submitLocal(score);
 }
 
-bool Highscores::isStrictlyLess(const Score &s1, const Score &s2) const
+bool Manager::isStrictlyLess(const Score &s1, const Score &s2) const
 {
     return s1.score()<s2.score();
 }
 
-void Highscores::setItem(const QString &name, Item *item)
+void Manager::setScoreItem(const QString &name, Item *item)
 {
     if ( name=="score" ) internal->scoreInfos().setItem("score", item);
-    else if ( name=="mean score" )
-        internal->playerInfos().setItem("mean score", item);
-    else if ( name=="best score" )
-        internal->playerInfos().setItem("best score", item);
     else internal->scoreInfos().addItem(name, item, true);
+}
+
+void Manager::setPlayerItem(const QString &name, Item *item)
+{
+    internal->playerInfos().setItem(name, item);
 }
 
 Score lastScore()
@@ -148,7 +152,7 @@ Score firstScore()
     return internal->firstScore();
 }
 
-QString Highscores::gameTypeLabel(uint gameType, LabelType type) const
+QString Manager::gameTypeLabel(uint gameType, LabelType type) const
 {
     Q_ASSERT( gameType==0 );
     switch (type) {
@@ -160,7 +164,7 @@ QString Highscores::gameTypeLabel(uint gameType, LabelType type) const
     return QString::null;
 };
 
-void Highscores::addToQueryURL(KURL &url, const QString &item,
+void Manager::addToQueryURL(KURL &url, const QString &item,
                                const QString &content)
 {
     Q_ASSERT( !item.isEmpty() && url.queryItem(item).isNull() );

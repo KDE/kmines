@@ -41,7 +41,7 @@
 #include "ghighscores_tab.h"
 
 
-namespace KExtHighscores
+namespace KExtHighscore
 {
 
 //-----------------------------------------------------------------------------
@@ -149,11 +149,11 @@ HighscoresWidget::HighscoresWidget(int localRank, QWidget *parent,
     if ( internal->showStatistics )
         tw->addTab(new StatisticsTab(tw), i18n("Statistics"));
 
-    if ( internal->scoreHistogram.size()!=0 )
+    if ( p.histogram().size()!=0 )
         tw->addTab(new HistogramTab(tw), i18n("Histogram"));
 
     // additionnal tabs
-    internal->highscores().additionnalTabs(tw);
+    internal->additionnalTabs(tw);
 
     // url labels
     if ( internal->isWWHSAvailable() ) {
@@ -208,7 +208,7 @@ void HighscoresDialog::exportToText()
 }
 
 //-----------------------------------------------------------------------------
-MultipleScoresList::MultipleScoresList(const QValueList<Score> &scores,
+MultipleScoresList::MultipleScoresList(const ScoreVector &scores,
                                        QWidget *parent)
     : ScoresList(parent), _scores(scores)
 {
@@ -363,7 +363,7 @@ bool ImplConfigWidget::save()
         return true;
 
     bool res = internal->modifySettings(_nickname->text().lower(),
-                                          _comment->text(), enabled, this);
+                                        _comment->text(), enabled, this);
     if (res) load(); // need to update view when "apply" is clicked
     return res;
 }
