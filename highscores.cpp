@@ -35,7 +35,7 @@ ExtManager::ExtManager()
 {
     setScoreType(MinuteTime);
     setWWHighscores(KURL( HOMEPAGE ), VERSION);
-    showStatistics(true);
+    setShowStatistics(true);
     const uint RANGE[16] = {    1, 3120, 3180, 3240, 3300, 3360, 3420, 3480,
                              3510, 3540, 3550, 3560, 3570, 3580, 3590, 3600  };
     QMemArray<uint> s;
