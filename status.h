@@ -3,9 +3,9 @@
 
 #include <qwidget.h>
 #include <qframe.h>
-#include <qpushbt.h>
+#include <qpushbutton.h>
 #include <qlabel.h>
-#include <qlcdnum.h>
+#include <qlcdnumber.h>
 
 
 class Field;

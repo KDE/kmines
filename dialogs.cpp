@@ -4,7 +4,7 @@
 
 #include <qpainter.h>
 #include <qpixmap.h>
-#include <qpushbt.h>
+#include <qpushbutton.h>
 #include <qfont.h>
 
 #include "dialogs.moc"

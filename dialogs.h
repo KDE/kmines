@@ -3,9 +3,9 @@
 
 #include <qlabel.h>
 #include <qdialog.h>
-#include <qscrbar.h>
-#include <qlined.h>
-#include <qlcdnum.h>
+#include <qscrollbar.h>
+#include <qlineedit.h>
+#include <qlcdnumber.h>
 #include <qlayout.h>
 
 #include <kconfig.h>

@@ -3,7 +3,7 @@
 
 #include <qwidget.h>
 #include <qlabel.h>
-#include <qpushbt.h>
+#include <qpushbutton.h>
 
 
 /* mines field widget */

@@ -5,7 +5,7 @@
 #include <time.h>
 
 #include <qpainter.h>
-#include <qdrawutl.h>
+#include <qdrawutil.h>
 
 #include "field.moc"
 

@@ -133,7 +133,7 @@ void KMines::change_level(int lev)
 
 bool KMines::eventFilter(QObject *, QEvent *e)
 {
-	if ( e->type()!=Event_MouseButtonPress ) return FALSE;
+	if ( e->type()!=QEvent::MouseButtonPress ) return FALSE;
 	
 	QMouseEvent *em = (QMouseEvent*) e;
 	if ( em->button()!=RightButton ) return FALSE;
