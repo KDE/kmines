@@ -38,7 +38,7 @@ QString ItemBase::entryName() const
 
 QString ItemBase::read(uint i) const
 {
-    ASSERT( stored() );
+    Q_ASSERT( stored() );
     KHighscore hs;
     hs.setHighscoreGroup(_group);
     return hs.readEntry(i+1, entryName(), _default);
@@ -60,7 +60,7 @@ double ItemBase::readDouble(uint i) const
 
 void ItemBase::write(uint i, const QString &value) const
 {
-    ASSERT( stored() );
+    Q_ASSERT( stored() );
     KHighscore hs;
     hs.setHighscoreGroup(_group);
     hs.writeEntry(i+1, entryName(), value);
@@ -78,7 +78,7 @@ void ItemBase::write(uint i, double value) const
 
 void ItemBase::moveDown(uint newIndex) const
 {
-    ASSERT( newIndex!=0 );
+    Q_ASSERT( newIndex!=0 );
     write(newIndex, read(newIndex-1));
 }
 
@@ -100,7 +100,7 @@ void ItemContainer::addItem(const QString &key, ItemBase *item, bool stored)
 
 const ItemBase *ItemContainer::item(const QString &n) const
 {
-    QListIterator<ItemBase> it(_items);
+    QPtrListIterator<ItemBase> it(_items);
     it += name(n);
     return it.current();
 }
@@ -120,7 +120,7 @@ QString DataContainer::prettyData(const QString &name) const
         case QVariant::String: return va.toString();
         case QVariant::UInt:   return QString::number(va.toUInt());
         case QVariant::Double: return QString::number(va.toDouble(), 'f', 10);
-        default: ASSERT(false);
+        default: Q_ASSERT(false);
     }
     return QString::null;
 }
@@ -184,7 +184,7 @@ int Score::submit(QWidget *parent, bool warn) const
     if ( r!=-1 ) {
         uint n = nb();
         if ( n<NB_HS_ENTRIES ) n++;
-        QListIterator<ItemBase> it(items());
+        QPtrListIterator<ItemBase> it(items());
         while( it.current() ) {
             const ItemBase *item = it.current();
             ++it;
@@ -475,7 +475,7 @@ void ShowScores::addLine(QListView *list, const ItemContainer &container,
     QListViewItem *line
         = (index==-1 ? 0 : new ShowHighscoresItem(list, index, highlight));
     int i = -1;
-    QListIterator<ItemBase> it(container.items());
+    QPtrListIterator<ItemBase> it(container.items());
     while ( it.current() ) {
         const ItemBase *item = it.current();
         ++it;

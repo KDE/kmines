@@ -66,7 +66,7 @@ class Field : public QFrame
     void keyboardAutoRevealSlot();
 
  private:
-	QArray<Case>    _pfield;
+	QMemArray<Case>    _pfield;
 	LevelData       lev;
 	KRandomSequence random;
 

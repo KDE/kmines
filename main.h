@@ -31,7 +31,7 @@ class MainWidget : public KMainWindow
     void focusOutEvent(QFocusEvent *);
 
  private:
-	QArray<KRadioAction *>   levelAction;
+	QMemArray<KRadioAction *>   levelAction;
 	Status                  *status;
     bool                     pauseFocus;
     KSelectAction           *hs;

@@ -5,6 +5,8 @@
 
 #include <qbitmap.h>
 #include <qlayout.h>
+#include <qstyle.h>
+#include <qtimer.h>
 
 #include <klocale.h>
 
@@ -581,23 +583,26 @@ void Field::drawBox(uint i, uint j, bool pressed,
 	// draw button
 	p.translate(x, y);
 	dummy->setDown(pressed);
-	style().drawPushButton(dummy, &p);
+
+#warning ### fixme
+
+//	style().drawPushButton(dummy, &p); ###
 	p.resetXForm();
 
 	// draw text and pixmap
-	style().drawItem(&p, x, y, cp.size, cp.size, AlignCenter, colorGroup(),
-					 true, pixmap, text, -1, textColor);
+//	style().drawItem(&p, x, y, cp.size, cp.size, AlignCenter, colorGroup(),
+//					 true, pixmap, text, -1, textColor); ###
 
 	// draw cursor
 	if ( cursor && i==ic && j==jc ) {
-		QRect r = style().buttonRect(x+1, y+1, cp.size-2, cp.size-2);
-		style().drawFocusRect(&p, r, colorGroup());
+//		QRect r = style().buttonRect(x+1, y+1, cp.size-2, cp.size-2);
+//		style().drawFocusRect(&p, r, colorGroup()); ###
 	}
 }
 
 void Field::drawCase(uint i, uint j)
 {
-	ASSERT( inside(i, j) );
+	Q_ASSERT( inside(i, j) );
 	switch (pfield(i, j).state) {
 	case Covered:   drawBox(i, j, false);
 		            break;

@@ -22,7 +22,7 @@ ExtScore::ExtScore(Level level, uint score)
     : Score(score, QString("scores_") + LEVELS[level].label,
             new ExtScoreItemScore)
 {
-    ASSERT( level!=Custom );
+    Q_ASSERT( level!=Custom );
 }
 
 QString ExtScore::formatScore(uint n)

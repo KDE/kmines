@@ -125,7 +125,7 @@ class OptionDialog : public KDialogBase
 	QComboBox    *_cb[3];
 
     KColorButton *_flag, *_explosion, *_error;
-	QArray<KColorButton *> _numbers;
+	QMemArray<KColorButton *> _numbers;
 
     HighscoresOption *highscores;
 

@@ -6,6 +6,7 @@
 #include <qlineedit.h>
 #include <qlistview.h>
 #include <qdom.h>
+#include <qdict.h>
 
 #include <kdialogbase.h>
 #include <kconfig.h>
@@ -59,7 +60,7 @@ class ItemContainer
     virtual ~ItemContainer() {}
 
     virtual uint nb() const = 0;
-    const QList<ItemBase> &items() const { return _items; }
+    const QPtrList<ItemBase> &items() const { return _items; }
 
  protected:
     void addItem(const QString &key, ItemBase *, bool stored);
@@ -70,7 +71,7 @@ class ItemContainer
 
  private:
     QString         _group, _subGroup;
-    QList<ItemBase> _items;
+    QPtrList<ItemBase> _items;
     QDict<uint>     _names;
 
     ItemContainer(const ItemContainer &c);
