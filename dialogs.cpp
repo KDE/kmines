@@ -451,7 +451,7 @@ MouseAction OptionDialog::readMouseBinding(MouseButton mb)
 	return ma>UMark ? Reveal : ma;
 }
 
-QColor OptionDialog::readColor(const char *key, QColor defaultColor)
+QColor OptionDialog::readColor(const QString & key, QColor defaultColor)
 {
 	return config()->readColorEntry(key, &defaultColor);
 }

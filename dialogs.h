@@ -141,7 +141,7 @@ class OptionDialog : public KDialogBase
 
 	static KConfig *config();
 	static uint readCaseSize();
-	static QColor readColor(const char *key, QColor defaultColor);
+	static QColor readColor(const QString & key, QColor defaultColor);
 	
 	void mainPage();
 	void casePage();
