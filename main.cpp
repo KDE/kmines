@@ -29,6 +29,8 @@ KMines::KMines(QWidget *parent, const char *name)
 	kacc->connectItem("Pause", status, SLOT(pauseGame()));
 	kacc->connectItem("HighScores", status, SLOT(showHighScores()));
 	
+	kacc->readSettings();
+	
 	connect( this, SIGNAL(restartGame()), status, SLOT(restartGame()) );
 	connect( this, SIGNAL(newGame(uint, uint, uint)),
 			 status, SLOT(newGame(uint, uint, uint)) );
