@@ -1,3 +1,22 @@
+/*
+    This file is part of the KDE games library
+    Copyright (C) 2001 Nicolas Hadacek (hadacek@kde.org)
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Library General Public
+    License version 2 as published by the Free Software Foundation.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Library General Public License for more details.
+
+    You should have received a copy of the GNU Library General Public License
+    along with this library; see the file COPYING.LIB.  If not, write to
+    the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+    Boston, MA 02111-1307, USA.
+*/
+
 #include "ghighscores_gui.h"
 #include "ghighscores_gui.moc"
 
@@ -16,15 +35,19 @@
 #include <krun.h>
 
 #include "ghighscores.h"
+#include "ghighscores_internal.h"
 
+
+namespace KExtHighscores
+{
 
 //-----------------------------------------------------------------------------
-ShowHighscoresItem::ShowHighscoresItem(QListView *list, bool highlight)
+ShowItem::ShowItem(QListView *list, bool highlight)
     : KListViewItem(list), _highlight(highlight)
 {}
 
-void ShowHighscoresItem::paintCell(QPainter *p, const QColorGroup &cg,
-                                   int column, int width, int align)
+void ShowItem::paintCell(QPainter *p, const QColorGroup &cg,
+                         int column, int width, int align)
 {
     QColorGroup cgrp(cg);
     if (_highlight) cgrp.setColor(QColorGroup::Text, red);
@@ -32,7 +55,7 @@ void ShowHighscoresItem::paintCell(QPainter *p, const QColorGroup &cg,
 }
 
 //-----------------------------------------------------------------------------
-ShowScoresList::ShowScoresList(QWidget *parent)
+ScoresList::ScoresList(QWidget *parent)
     : KListView(parent)
 {
     setSelectionMode(QListView::NoSelection);
@@ -43,45 +66,42 @@ ShowScoresList::ShowScoresList(QWidget *parent)
     header()->setMovingEnabled(false);
 }
 
-void ShowScoresList::addLine(const ItemContainer &container, int index,
-                             bool highlight)
+void ScoresList::addLine(const ItemArray &items, int index, bool highlight)
 {
-    QListViewItem *line
-        = (index==-1 ? 0 : new ShowHighscoresItem(this, highlight));
-    int i = -1;
-    QPtrListIterator<ItemBase> it(container.items());
-    while ( it.current() ) {
-        const ItemBase *item = it.current();
-        ++it;
-        if ( !item->shown() || !showColumn(item) ) continue;
-        i++;
-        if (line) line->setText(i, itemText(item, index));
+    QListViewItem *line = (index==-1 ? 0 : new ShowItem(this, highlight));
+    int k = -1;
+    for (uint i=0; i<items().size(); i++) {
+        const ItemContainer &item = *items()[i];
+        if ( !item.item()->isVisible() ) continue;
+        k++;
+        if (line) line->setText(k, itemText(item, index));
         else {
-            addColumn( item->label() );
-            setColumnAlignment(i, item->alignment());
+            addColumn( item.item()->label() );
+            setColumnAlignment(k, item.item()->alignment());
         }
     }
 }
 
 //-----------------------------------------------------------------------------
-ShowHighscoresList::ShowHighscoresList(const ItemContainer &container,
-                                       int highlight, QWidget *parent)
-    : ShowScoresList(parent)
+HighscoresList::HighscoresList(const ItemArray &array, int highlight,
+                               QWidget *parent)
+    : ScoresList(parent)
 {
-    uint nb = container.nbEntries();
+    uint nb = array.nbEntries();
     for (int j=nb; j>=0; j--)
-        addLine(container, (j==(int)nb ? -1 : j), j==highlight);
+        addLine(array, (j==(int)nb ? -1 : j), j==highlight);
 }
 
-QString ShowHighscoresList::itemText(const ItemBase *item, uint row) const
+QString HighscoresList::itemText(const ItemContainer &item, uint row) const
 {
-    return item->pretty(row);
+    return item.pretty(row);
 }
 
 //-----------------------------------------------------------------------------
-ShowHighscoresWidget::ShowHighscoresWidget(int localRank,
-         QWidget *parent, const Score &score, const PlayerInfos &player,
-         int spacingHint)
+HighscoresWidget::HighscoresWidget(int localRank,
+         QWidget *parent, const ScoreInfos &score, const PlayerInfos &player,
+         int spacingHint, bool WWHSAvailable, const QString &highscoresURL,
+         const QString &playersURL)
     : QWidget(parent, "show_highscores_widget")
 {
     QVBoxLayout *vbox = new QVBoxLayout(this, spacingHint);
@@ -94,20 +114,20 @@ ShowHighscoresWidget::ShowHighscoresWidget(int localRank,
         QLabel *lab = new QLabel(i18n("no score entry"), this);
         lab->setAlignment(AlignCenter);
         w = lab;
-    } else w = new ShowHighscoresList(score, localRank, this);
+    } else w = new HighscoresList(score, localRank, this);
     tw->addTab(w, i18n("Best &scores"));
 
-    w = new ShowHighscoresList(player, player.id(), this);
+    w = new HighscoresList(player, player.id(), this);
     tw->addTab(w, i18n("&Players"));
 
-    if ( highscores().isWWHSAvailable() ) {
-        KURLLabel *urlLabel = new KURLLabel(highscores().highscoresURL(),
-                                 i18n("View world-wide highscores"), this);
+    if (WWHSAvailable) {
+        KURLLabel *urlLabel = new KURLLabel(highscoresURL,
+                                     i18n("View world-wide highscores"), this);
         connect(urlLabel, SIGNAL(leftClickedURL(const QString &)),
                 SLOT(showURL(const QString &)));
         vbox->addWidget(urlLabel);
 
-        urlLabel = new KURLLabel(highscores().playersURL(),
+        urlLabel = new KURLLabel(playersURL,
                                  i18n("View world-wide players"), this);
         connect(urlLabel, SIGNAL(leftClickedURL(const QString &)),
                 SLOT(showURL(const QString &)));
@@ -115,91 +135,81 @@ ShowHighscoresWidget::ShowHighscoresWidget(int localRank,
     }
 }
 
-void ShowHighscoresWidget::showURL(const QString &url) const
+void HighscoresWidget::showURL(const QString &url) const
 {
     KFileOpenWithHandler foo;
     (void)new KRun(KURL(url));
 }
 
 //-----------------------------------------------------------------------------
-ShowMultiScoresList::ShowMultiScoresList(const QPtrVector<Score> &scores,
-                                         QWidget *parent)
-    : ShowScoresList(parent), _scores(scores)
+MultipleScoresList::MultipleScoresList(const QPtrVector<Score> &scores,
+                                       QWidget *parent)
+    : ScoresList(parent), _scores(scores)
 {
-    addLine(*scores[0], -1, false);
-    for (uint i=0; i<scores.size(); i++)
-        addLine(*scores[i], i, false);
+    Q_ASSERT( scores.size()!=0 );
+
+    const ItemArray &items = scores[0]->items();
+    addLine(items, -1, false);
+    for (uint i=0; i<scores.size(); i++) addLine(items, i, false);
 }
 
-QString ShowMultiScoresList::itemText(const ItemBase *item, uint row) const
+QString MultipleScoresList::itemText(const ItemContainer &item, uint row) const
 {
-    return _scores[row]->prettyData(item->name());
-}
-
-bool ShowMultiScoresList::showColumn(const ItemBase *item) const
-{
-    return item->name()!="rank";
-}
-
-//-----------------------------------------------------------------------------
-ShowMultiScoresDialog::ShowMultiScoresDialog(const QPtrVector<Score> &scores,
-                                             QWidget *parent)
-: KDialogBase(Plain, i18n("Multiplayers scores"), Close, Close,
-			  parent, "show_multiplayers_score", true, true)
-{
-    QVBoxLayout *vbox = new QVBoxLayout(plainPage());
-    QWidget *list = new ShowMultiScoresList(scores, plainPage());
-    vbox->addWidget(list);
-
-    enableButtonSeparator(false);
+    QString name = item.name();
+    if ( name=="rank" ) {
+        if ( _scores[row]->type()==Won ) return i18n("Winner");
+        return QString::null;
+    }
+    return item.item()->pretty(row, _scores[row]->data(name));
 }
 
 //-----------------------------------------------------------------------------
-HighscoresSettingsWidget::HighscoresSettingsWidget(BaseSettingsDialog *parent,
-                                                   PlayerInfos *infos)
-    : BaseSettingsWidget(new BaseSettings(i18n("Highscores"), "highscores"),
-						 parent, "highscores_settings"),
-      _WWHEnabled(0)
+HighscoresSettingsWidget::HighscoresSettingsWidget(const PlayerInfos &infos,
+                                                   bool WWHSAvailable)
+    : SettingsWidget(i18n("Highscores"), "highscores"),
+      _ok(true), _infos(infos), _WWHEnabled(0)
 {
-    QVBoxLayout *top = new QVBoxLayout(this, parent->spacingHint());
+    QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
 
     QGrid *grid = new QGrid(2, this);
-    grid->setSpacing(parent->spacingHint());
+    grid->setSpacing(KDialog::spacingHint());
     top->addWidget(grid);
+
     (void)new QLabel(i18n("Nickname"), grid);
-    _isAnonymous = infos->isAnonymous();
-    _nickname
-        = new QLineEdit((_isAnonymous ? QString::null : infos->name()), grid);
+    _nickname = new QLineEdit(grid);
     _nickname->setMaxLength(16);
-    QString name = infos->registeredName();
-    if ( !infos->key().isEmpty() && !name.isEmpty() ) {
-        (void)new QLabel(i18n("Registered nickname :"), grid);
-        (void)new QLabel(name, grid);
-    }
 
     (void)new QLabel(i18n("Comment"), grid);
-    _comment = new QLineEdit(infos->comment(), grid);
+    _comment = new QLineEdit(grid);
     _comment->setMaxLength(50);
 
-    if ( highscores().isWWHSAvailable() ) {
+    if (WWHSAvailable) {
         _WWHEnabled
             = new QCheckBox(i18n("world-wide highscores enabled"), this);
-        _WWHEnabled->setChecked(infos->WWEnabled());
         top->addWidget(_WWHEnabled);
     }
 }
 
-bool HighscoresSettingsWidget::writeConfig()
+void HighscoresSettingsWidget::load()
+{
+    _nickname->setText(_infos.isAnonymous() ? QString::null : _infos.name());
+    _comment->setText(_infos.comment());
+    if (_WWHEnabled) _WWHEnabled->setChecked(_infos.isWWEnabled());
+}
+
+void HighscoresSettingsWidget::save()
 {
     bool enabled = (_WWHEnabled ? _WWHEnabled->isChecked() : false);
 
     // do not bother the user with "nickname empty" if he has not
     // messed with nickname settings ...
-    if ( _nickname->text().isEmpty() && !_isAnonymous && !enabled )
-        return true;
+    if ( _nickname->text().isEmpty() && !_infos.isAnonymous() && !enabled ) {
+        _ok = true;
+        return;
+    }
 
-    bool res =  highscores().modifySettings(_nickname->text().lower(),
-                               _comment->text(), enabled, (QWidget *)parent());
-    if ( !res ) emit showPage();
-    return res;
+    _ok = kHighscores->modifySettings(_nickname->text().lower(),
+                              _comment->text(), enabled, (QWidget *)parent());
 }
+
+}; // namespace

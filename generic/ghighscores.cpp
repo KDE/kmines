@@ -1,229 +1,97 @@
+/*
+    This file is part of the KDE games library
+    Copyright (C) 2001 Nicolas Hadacek (hadacek@kde.org)
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Library General Public
+    License version 2 as published by the Free Software Foundation.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Library General Public License for more details.
+
+    You should have received a copy of the GNU Library General Public License
+    along with this library; see the file COPYING.LIB.  If not, write to
+    the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+    Boston, MA 02111-1307, USA.
+*/
+
 #include "ghighscores.h"
 
 #include <qfile.h>
 #include <qlayout.h>
 
-#include <kapplication.h>
 #include <kmdcodec.h>
 #include <kio/netaccess.h>
-#include <khighscore.h>
 #include <kiconloader.h>
 #include <kmessagebox.h>
 
+#include "ghighscores_internal.h"
 #include "ghighscores_gui.h"
 
 
-//-----------------------------------------------------------------------------
-class ScoreNameItem : public NameItem
+namespace KExtHighscores
 {
- public:
-    ScoreNameItem(const ItemBase *idItem) : _idItem(idItem) {}
 
-    QString pretty(uint i) const {
-        uint id = _idItem->read(i).toUInt();
-        if ( id==0 ) return NameItem::pretty(i);
-        return highscores().prettyPlayerName(id-1);
-    }
+Highscores *Highscores::_highscores = 0L;
 
- private:
-    const ItemBase *_idItem;
-};
+const char *HS_WW_URL = "ww hs url";
 
-//-----------------------------------------------------------------------------
-Score::Score(uint score)
-    : DataContainer(highscores().scoreGroup(), QString::null)
-{
-    ItemBase *idItem = new ItemBase((uint)0);
-    addData("id", idItem, true, highscores().playerId()+1);
-    addData("rank", new RankItem, false, (uint)0);
-    addData("name", new ScoreNameItem(idItem), true, QString::null);
-    addData("score", highscores().scoreItem(), true, score);
-    addData("date", new DateItem, true, QDateTime::currentDateTime());
-}
-
-uint Score::nbEntries() const
-{
-    return highscores().nbScores();
-}
-
-//-----------------------------------------------------------------------------
-const char *HS_ID              = "player id";
-const char *HS_REGISTERED_NAME = "registered name";
-const char *HS_KEY             = "player key";
-const char *HS_WW_ENABLED      = "ww hs enabled";
-const char *HS_WW_URL          = "ww hs url";
-
-class ConfigGroup : public KConfigGroupSaver
-{
- public:
-    ConfigGroup() : KConfigGroupSaver(kapp->config(), QString::null) {}
-};
-
-//-----------------------------------------------------------------------------
-PlayerInfos::PlayerInfos()
-    : ItemContainer("players", highscores().playerSubGroup())
-{
-    addItem("name", new NameItem, true);
-    addItem("nb games", new ItemBase((uint)0, i18n("Nb of games"),
-                                     Qt::AlignRight, true), true);
-    if ( highscores().isLostGameEnabled() )
-        addItem("success", new SuccessPercentageItem, true);
-    addItem("mean score", highscores().meanScoreItem(), true);
-    addItem("best score", highscores().bestScoreItem(), true);
-    if ( highscores().isBlackMarkEnabled() )
-        addItem("black mark", new ItemBase((uint)0, i18n("Black mark"),
-                                           Qt::AlignRight, true), true);
-    addItem("date", new DateItem, true);
-    addItem("comment", new ItemBase(QString::null, i18n("Comment"),
-                                    Qt::AlignLeft), true);
-
-    if ( isNewPlayer() ) addPlayer();
-    else {
-        ConfigGroup cg;
-        _id = cg.config()->readUnsignedNumEntry(HS_ID);
-    }
-}
-
-bool PlayerInfos::isNewPlayer()
-{
-    ConfigGroup cg;
-    return !cg.config()->hasKey(HS_ID);
-}
-
-bool PlayerInfos::isAnonymous() const
-{
-    return ( name()==ItemBase::ANONYMOUS );
-}
-
-uint PlayerInfos::nbEntries() const
-{
-    KHighscore hs;
-    hs.setHighscoreGroup(group());
-    QStringList list = hs.readList("name", -1);
-    return list.count();
-}
-
-void PlayerInfos::addPlayer()
-{
-    ConfigGroup cg;
-    _id = nbEntries();
-    cg.config()->writeEntry(HS_ID, _id);
-    item("name").write(_id, QString(ItemBase::ANONYMOUS));
-}
-
-QString PlayerInfos::key() const
-{
-    ConfigGroup cg;
-    return cg.config()->readEntry(HS_KEY, QString::null);
-}
-
-bool PlayerInfos::WWEnabled() const
-{
-    ConfigGroup cg;
-    return cg.config()->readBoolEntry(HS_WW_ENABLED, false);
-}
-
-void PlayerInfos::submitScore(bool won, const Score &score) const
-{
-    uint nb = item("nb games").read(_id).toUInt();
-    uint nb_success = nb;
-    if ( highscores().isLostGameEnabled() ) {
-        double success = item("success").read(_id).toDouble();
-        if ( success!=-1 ) nb_success = (uint)(success * nb / 100);
-    }
-    double total_score = item("mean score").read(_id).toDouble() * nb_success;
-
-    nb++;
-    if (won) {
-        nb_success++;
-        total_score += score.score();
-    }
-    double mean = (nb_success==0 ? 0 : total_score / nb_success);
-
-    item("nb games").write(_id, nb);
-    item("mean score").write(_id, mean);
-    if ( highscores().isLostGameEnabled() ) {
-        double success = 100.0 * nb_success / nb;
-        item("success").write(_id, success);
-    }
-    if ( score.score()>item("best score").read(_id).toUInt() ) {
-        item("best score").write(_id, score.score());
-        item("date").write(_id, score.date());
-    }
-}
-
-void PlayerInfos::submitBlackMark() const
-{
-    Q_ASSERT( highscores().isBlackMarkEnabled() );
-    uint nb_bm = item("black mark").read(_id).toUInt();
-    item("black mark").write(_id, nb_bm+1);
-}
-
-void PlayerInfos::modifySettings(const QString &newName,
-                                 const QString &comment, bool WWEnabled,
-                                 const QString &newKey) const
-{
-    ConfigGroup cg;
-    item("name").write(_id, newName);
-    item("comment").write(_id, comment);
-    cg.config()->writeEntry(HS_WW_ENABLED, WWEnabled);
-    if ( !newKey.isEmpty() ) cg.config()->writeEntry(HS_KEY, newKey);
-    if (WWEnabled) cg.config()->writeEntry(HS_REGISTERED_NAME, newName);
-}
-
-QString PlayerInfos::registeredName() const
-{
-    ConfigGroup cg;
-    return cg.config()->readEntry(HS_REGISTERED_NAME, QString::null);
-}
-
-//-----------------------------------------------------------------------------
-Highscores::Highscores(const QString version, const KURL &baseURL,
-                       uint nbGameTypes, uint nbEntries)
+Highscores::Highscores(const QString &version, const KURL &baseURL,
+                       uint nbGameTypes, uint maxNbEntries,
+                       bool trackLostGames, bool trackBlackMarks)
     : _version(version), _baseURL(baseURL), _nbGameTypes(nbGameTypes),
-      _nbEntries(nbEntries), _gameType(0)
+      _gameType(0), _first(true), _currentScore(0)
 {
-    Q_ASSERT( nbGameTypes!=0 );
-    Q_ASSERT( nbEntries!=0 );
-    bool b = baseURL.isEmpty();
-    Q_ASSERT( b || (baseURL.isValid() && baseURL.fileName(false).isEmpty()) );
+    _playerInfos = new PlayerInfos(trackLostGames, trackBlackMarks);
+    _scoreInfos = new ScoreInfos(maxNbEntries, *_playerInfos);
 
+    if (_highscores) qFatal("A highscore object already exists");
+    _highscores = this;
+
+    Q_ASSERT(nbGameTypes && maxNbEntries);
+
+    bool b = baseURL.isEmpty();
+    Q_ASSERT( b || baseURL.isValid() );
     if ( !b ) {
         ConfigGroup cg;
         _baseURL = cg.config()->readEntry(HS_WW_URL, baseURL.url());
     }
+}
 
-    if ( !PlayerInfos::isNewPlayer() ) return;
-    uint tmp = _gameType;
-    for (uint i=0; i<_nbGameTypes; i++) {
-        _gameType = i;
-        convertLegacy(i);
-    }
-    _gameType = tmp;
+Highscores::~Highscores()
+{
+    delete _currentScore;
+    delete _scoreInfos;
+    delete _playerInfos;
 }
 
 void Highscores::setGameType(uint type)
 {
+    if (_first) {
+        _first = false;
+        if ( _playerInfos->isNewPlayer() ) {
+            for (uint i=0; i<_nbGameTypes; i++) {
+                setGameType(i);
+                convertLegacy(i);
+            }
+        }
+    }
+
     Q_ASSERT( type<_nbGameTypes );
     _gameType = type;
-}
-
-QString Highscores::scoreGroup() const
-{
     QString label = gameTypeLabel(_gameType, Standard);
-    if ( label.isEmpty() ) return "scores";
-    else return QString("scores_") + label;
+    QString str = "scores";
+    if ( !label.isEmpty() ) str += "_" + label;
+    _scoreInfos->setGroup(str);
+    _playerInfos->setSubGroup(label);
 }
 
-QString Highscores::playerSubGroup() const
+SettingsWidget *Highscores::createSettingsWidget()
 {
-    return gameTypeLabel(_gameType, Standard);
-}
-
-HighscoresSettingsWidget *
-Highscores::createSettingsWidget(BaseSettingsDialog *d) const
-{
-    return new HighscoresSettingsWidget(d, infos());
+    if (_first) setGameType(0);
+    return new HighscoresSettingsWidget(*_playerInfos, !_baseURL.isEmpty());
 }
 
 void Highscores::_showHighscores(QWidget *parent, int rank)
@@ -233,62 +101,84 @@ void Highscores::_showHighscores(QWidget *parent, int rank)
     KDialogBase hs(face, i18n("Highscores"),
                    KDialogBase::Close, KDialogBase::Close,
                    parent, "show_highscores", true, true);
+    bool WWHSAvailable = !_baseURL.isEmpty();
     for (uint i=0; i<_nbGameTypes; i++) {
-        _gameType = i;
-        Score *s = score();
-        PlayerInfos *info = infos();
+        setGameType(i);
         QWidget *w;
         if ( _nbGameTypes==1 ) w = hs.plainPage();
         else w = hs.addPage(gameTypeLabel(i, I18N), QString::null,
                             BarIcon(gameTypeLabel(i, Icon), KIcon::SizeLarge));
         QVBoxLayout *vbox = new QVBoxLayout(w);
-        w = new ShowHighscoresWidget(
-                (i==tmp ? rank : -1), w, *s, *info, hs.spacingHint());
+        setQueryURL(Scores, _playerInfos->registeredName());
+        if ( _nbGameTypes>1 )
+            addToQueryURL("level", gameTypeLabel(_gameType, WW));
+        QString highscoresURL = _url.url();
+        setQueryURL(Players, QString::null);
+        if ( !_playerInfos->registeredName().isEmpty() )
+            addToQueryURL("highlight", _playerInfos->registeredName());
+        QString playersURL = _url.url();
+        w = new HighscoresWidget(
+            (i==tmp ? rank : -1), w, *_scoreInfos, *_playerInfos,
+            hs.spacingHint(), WWHSAvailable, highscoresURL, playersURL);
         vbox->addWidget(w);
-        delete s;
-        delete info;
     }
-    _gameType = tmp;
+    setGameType(tmp);
+
     hs.resize( hs.calculateSize(500, 370) ); // hacky
     hs.showPage(_gameType);
     if ( _nbGameTypes==1 ) hs.enableButtonSeparator(false);
 	hs.exec();
 }
 
-void Highscores::submitScore(bool won, Score &score, QWidget *parent)
+void Highscores::showMultipleScores(const QPtrVector<Score> &scores,
+                                        QWidget *parent)
 {
-    Q_ASSERT( won || isLostGameEnabled() );
+    KDialogBase dialog(KDialogBase::Plain, i18n("Multiplayers scores"),
+                       KDialogBase::Close, KDialogBase::Close,
+                       parent, "show_multiplayers_score", true, true);
 
-    PlayerInfos *i = infos();
-    i->submitScore(won, score);
-    if ( i->WWEnabled() )
-        submitWorldWide((won ? Won : Lost), &score, *i, parent);
-    delete i;
+    QVBoxLayout *vbox = new QVBoxLayout(dialog.plainPage());
+    QWidget *list = new MultipleScoresList(scores, dialog.plainPage());
+    vbox->addWidget(list);
 
-    if (won) {
-        int rank = submitLocal(score, QString::null);
+    dialog.enableButtonSeparator(false);
+}
+
+Score *Highscores::newScore(ScoreType type)
+{
+    Q_ASSERT( _currentScore==0 );
+    _currentScore = new Score(*_scoreInfos, type);
+    return _currentScore;
+}
+
+void Highscores::submitScore(QWidget *parent)
+{
+    if (_first) setGameType(0);
+    Q_ASSERT(_currentScore);
+
+    _currentScore->setData("id", _playerInfos->id() + 1);
+    _currentScore->setData("date", QDateTime::currentDateTime());
+
+    _playerInfos->submitScore(*_currentScore);
+    if ( _playerInfos->isWWEnabled() ) submitWorldWide(parent);
+
+    if ( _currentScore->type()==Won ) {
+        int rank = submitLocal();
         if ( rank!=-1 ) _showHighscores(parent, rank);
     }
 
+    delete _currentScore;
+    _currentScore = 0;
 }
 
-void Highscores::submitBlackMark(QWidget *parent)
+int Highscores::submitLocal() const
 {
-    Q_ASSERT( isBlackMarkEnabled() );
-    PlayerInfos *i = infos();
-    i->submitBlackMark();
-    submitWorldWide(BlackMark, 0, *i, parent);
-    delete i;
-}
-
-int Highscores::submitLocal(Score &score, const QString &name) const
-{
-    score.setName(name);
-    int r = rank(score);
+    Q_ASSERT(_currentScore);
+    int r = rank();
     if ( r!=-1 ) {
-        uint nb = nbScores();
-        if ( nb<_nbEntries ) nb++;
-        score.write(r, nb);
+        uint nb = _scoreInfos->nbEntries();
+        if ( nb<_scoreInfos->maxNbEntries() ) nb++;
+        _currentScore->write(r, nb);
     }
     return r;
 }
@@ -298,61 +188,55 @@ bool Highscores::isStrictlyBetter(const Score &s1, const Score &s2) const
     return s1.score()>s2.score();
 }
 
-uint Highscores::nbScores() const
+void Highscores::addItemToScore(const QString &name, Item *item)
 {
-    Score *s = score();
-    uint i = 0;
-    for (; i<_nbEntries; i++) {
-        s->read(i);
-        if ( s->score()==0 ) break;
-    }
-    delete s;
-	return i;
+    _scoreInfos->addItem(name, item, true);
 }
 
-Score *Highscores::readScore(uint rank) const
+void Highscores::setScoreItem(Item *item)
 {
-    Score *s = score();
-    s->read(rank);
-    return s;
+    _scoreInfos->setItem("score", item);
 }
 
-Score *Highscores::lastScore() const
+void Highscores::setMeanScoreItem(Item *item)
 {
-    return readScore(_nbEntries - 1);
+    _playerInfos->setItem("mean score", item);
 }
 
-int Highscores::rank(const Score &s) const
+void Highscores::setBestScoreItem(Item *item)
 {
-    Score *tmp = score();
-    uint nb = nbScores();
+    _playerInfos->setItem("best score", item);
+}
+
+Score Highscores::lastScore() const
+{
+    Score score(*_scoreInfos, Won);
+    score.read(_scoreInfos->maxNbEntries() - 1);
+    return score;
+}
+
+Score Highscores::firstScore() const
+{
+    Score score(*_scoreInfos, Won);
+    score.read(0);
+    return score;
+}
+
+int Highscores::rank() const
+{
+    Q_ASSERT(_currentScore);
+
+    Score tmp(*_scoreInfos, Won);
+    uint nb = _scoreInfos->nbEntries();
     uint i = 0;
 	for (; i<nb; i++) {
-        tmp->read(i);
-		if ( isStrictlyBetter(s, (*tmp)) ) break;
+        tmp.read(i);
+		if ( isStrictlyBetter(*_currentScore, tmp) ) break;
     }
-    delete tmp;
-	return (i<_nbEntries ? (int)i : -1);
+	return (i<_scoreInfos->maxNbEntries() ? (int)i : -1);
 }
 
-uint Highscores::playerId() const
-{
-    PlayerInfos *i = infos();
-    uint id = i->id();
-    delete i;
-    return id;
-}
-
-QString Highscores::prettyPlayerName(uint id) const
-{
-    PlayerInfos *i = infos();
-    QString name = i->prettyName(id);
-    delete i;
-    return name;
-}
-
-void Highscores::setQueryURL(QueryType type, const QString &nickname,
-                             const Score *score)
+void Highscores::setQueryURL(QueryType type, const QString &nickname)
 {
     _url = _baseURL;
 	switch (type) {
@@ -363,34 +247,16 @@ void Highscores::setQueryURL(QueryType type, const QString &nickname,
         case Scores:   _url.addPath("highscores.php"); break;
 	}
     if ( !nickname.isEmpty() ) addToQueryURL("nickname", nickname);
-    additionnalQueryArgs(type, score);
+    if ( type==Submit ) additionnalQueryItems(*_currentScore);
 }
 
-QString Highscores::playersURL()
+void Highscores::addToQueryURL(const QString &item, const QString &content)
 {
-    PlayerInfos *i = infos();
-    setQueryURL(Players, QString::null);
-    if ( !i->registeredName().isEmpty() )
-        addToQueryURL("highlight", i->registeredName());
-    delete i;
-    return _url.url();
-}
+    Q_ASSERT( !item.isEmpty() && _url.queryItem(item).isNull() );
 
-QString Highscores::highscoresURL()
-{
-    PlayerInfos *i = infos();
-    setQueryURL(Scores, i->registeredName());
-    delete i;
-    if ( _nbGameTypes>1 ) addToQueryURL("level", gameTypeLabel(_gameType, WW));
-    return _url.url();
-}
-
-void Highscores::addToQueryURL(const QString &entry, const QString &content)
-{
-    if ( entry.isEmpty() ) return;
     QString query = _url.query();
     if ( !query.isEmpty() ) query += '&';
-	query += entry + '=' + KURL::encode_string(content);
+	query += item + '=' + KURL::encode_string(content);
 	_url.setQuery(query);
 }
 
@@ -414,50 +280,44 @@ const char *DUMMY_STRINGS[] = {
     I18N_NOOP("Invalid score.")
 };
 
-bool Highscores::_doQuery(QDomNamedNodeMap &attributes, QString &error) const
+QString Highscores::_doQuery(QDomNamedNodeMap &attributes) const
 {
     QString tmpFile;
-    if ( !KIO::NetAccess::download(_url, tmpFile) ) {
-  	    error = i18n("Unable to contact remote host.");
-	    return false;
-	}
+    if ( !KIO::NetAccess::download(_url, tmpFile) )
+  	    return i18n("Unable to contact world-wide highscore server (%1)")
+            .arg(_url.host());
+
 	QFile file(tmpFile);
-	if ( !file.open(IO_ReadOnly) ) {
-	    error = i18n("Unable to open temporary file.");
-	    return false;
-	}
+	if ( !file.open(IO_ReadOnly) )
+	    return i18n("Unable to open temporary file.");
+
 	QTextStream t(&file);
 	QString content = t.read().stripWhiteSpace();
 	file.close();
+    KIO::NetAccess::removeTempFile(tmpFile);
+
 	QDomDocument doc;
     if ( doc.setContent(content) ) {
         QDomElement root = doc.documentElement();
         QDomElement element = root.firstChild().toElement();
         attributes = element.attributes();
-        if ( element.tagName()=="success" ) return true;
+        if ( element.tagName()=="success" ) return QString::null;
         if ( element.tagName()=="error" ) {
             QDomAttr attr = attributes.namedItem("label").toAttr();
-            if ( !attr.isNull() ) {
-                error = i18n(attr.value().latin1());
-                return false;
-            }
+            if ( !attr.isNull() )
+                return i18n("Error returned by world-wide highscores server "
+                            ": %1")
+                    .arg(i18n(attr.value().latin1()));
         }
     }
-    file.close();
-    KIO::NetAccess::removeTempFile(tmpFile);
-    error = i18n("Invalid answer.");
-    return false;
+    return i18n("Invalid answer from world-wide highscores server.");
 }
 
 bool Highscores::doQuery(QDomNamedNodeMap &map, QWidget *parent) const
 {
-  QString error;
-  bool ok = _doQuery(map, error);
-  if ( !ok ) {
-      error = i18n("An error occured while contacting\n"
-                   "the world-wide highscores server :\n%1").arg(error);
-      KMessageBox::sorry(parent, error);
-  }
+  QString error = _doQuery(map);
+  bool ok = error.isNull();
+  if ( !ok ) KMessageBox::sorry(parent, error);
   return ok;
 }
 
@@ -467,23 +327,25 @@ bool Highscores::getFromQuery(const QDomNamedNodeMap &map,
 {
     QDomAttr attr = map.namedItem(name).toAttr();
     if ( attr.isNull() ) {
-	    KMessageBox::sorry(parent, i18n("Missing argument."));
+	    KMessageBox::sorry(parent,
+               i18n("Invalid answer from world-wide "
+                    "highscores server (missing item : %1).").arg(name));
 		return false;
 	}
 	value = attr.value();
 	return true;
 }
 
-void Highscores::submitWorldWide(ScoreType type, const Score *score,
-                                 const PlayerInfos &i, QWidget *parent)
+void Highscores::submitWorldWide(QWidget *parent)
 {
-    setQueryURL(Submit, i.registeredName(), score);
-    addToQueryURL("key", i.key());
+    setQueryURL(Submit, _playerInfos->registeredName());
+    addToQueryURL("key", _playerInfos->key());
     addToQueryURL("version", _version);
-    int s = (type==Won ? score->score() : (int)type);
+    int s = (_currentScore->type()==Won ? _currentScore->score()
+             : (int)_currentScore->type());
     QString str =  QString::number(s);
     addToQueryURL("score", str);
-    KMD5 context(QString(i.registeredName() + str).latin1());
+    KMD5 context(QString(_playerInfos->registeredName() + str).latin1());
     addToQueryURL("check", context.hexDigest());
     addToQueryURL("level", gameTypeLabel(_gameType, WW));
     QDomNamedNodeMap map;
@@ -501,29 +363,40 @@ bool Highscores::modifySettings(const QString &newName,
 
     QString newKey;
     bool newPlayer = false;
-    PlayerInfos *i = infos();
 
     if (WWEnabled) {
         KURL url;
-        newPlayer = i->key().isEmpty() || i->registeredName().isEmpty();
+        newPlayer = _playerInfos->key().isEmpty()
+                    || _playerInfos->registeredName().isEmpty();
         if (newPlayer) setQueryURL(Register, newName);
         else {
-            setQueryURL(Change, i->registeredName());
-            addToQueryURL("key", i->key());
-            if ( i->registeredName()!=newName )
+            setQueryURL(Change, _playerInfos->registeredName());
+            addToQueryURL("key", _playerInfos->key());
+            if ( _playerInfos->registeredName()!=newName )
                 addToQueryURL("new_nickname", newName);
         }
         addToQueryURL("comment", comment);
         addToQueryURL("version", _version);
         QDomNamedNodeMap map;
         if ( !doQuery(map, parent)
-             || (newPlayer && !getFromQuery(map, "key", newKey, parent)) ) {
-            delete i;
+             || (newPlayer && !getFromQuery(map, "key", newKey, parent)) )
             return false;
-        }
     }
 
-    i->modifySettings(newName, comment, WWEnabled, newKey);
-    delete i;
+    _playerInfos->modifySettings(newName, comment, WWEnabled, newKey);
     return true;
 }
+
+QString Highscores::gameTypeLabel(uint gameType, LabelType type) const
+{
+    Q_ASSERT( gameType==0 );
+    switch (type) {
+    case Icon:
+    case Standard:
+    case I18N:     break;
+    case WW:       return "normal";
+    }
+    return QString::null;
+};
+
+}; // namescape

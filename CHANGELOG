@@ -1,4 +1,7 @@
-2.1.3 (29 November 2001) [CVS 3.0 devel]
+2.1.4 (12 December 2001) [CVS 3.0 devel]
+ * completely revamped API for highscores + dynamic library
+
+2.1.3 (29 November 2001)
  * use KConfigGroupSaver everywhere
  * config entry for wwhs server url (just in case ...)
 

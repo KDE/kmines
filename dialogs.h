@@ -7,8 +7,10 @@
 #include <qlcdnumber.h>
 #include <qcheckbox.h>
 #include <qcombobox.h>
+#include <qpushbutton.h>
 
 #include <knuminput.h>
+#include <kcolorbutton.h>
 
 #include "generic/gsettings.h"
 #include "defines.h"
@@ -88,58 +90,53 @@ class CustomDialog : public KDialogBase, public KMines
 };
 
 //-----------------------------------------------------------------------------
-class GameSettingsWidget : public BaseGameSettingsWidget, public KMines
+class GameSettingsWidget : public SettingsWidget, public KMines
 {
  Q_OBJECT
  public:
-    GameSettingsWidget(BaseSettingsDialog *);
+    GameSettingsWidget();
 
-    void readConfig();
-    bool writeConfig();
+    void load();
+    void save();
+    void defaults();
 
     static bool readUMark();
     static bool readKeyboard();
     static bool readPauseFocus();
     static MouseAction readMouseBinding(MouseButton);
 
- public slots:
-    void setDefault();
-
  private:
     QCheckBox *_umark, *_keyb, *_focus;
 	QComboBox *_cb[3];
 };
 
-class AppearanceSettingsWidget : public BaseAppearanceSettingsWidget,
-                                 public KMines
+class AppearanceSettingsWidget : public SettingsWidget, public KMines
 {
  Q_OBJECT
  public:
-    AppearanceSettingsWidget(BaseSettingsDialog *);
+    AppearanceSettingsWidget();
 
-    void readConfig();
-    bool writeConfig();
+    void load();
+    void save();
+    void defaults();
 
     static CaseProperties readCaseProperties();
     static void writeCaseSize(uint size);
 
- public slots:
-    void setDefault();
-
  private:
-    KIntNumInput                 *_caseSize;
-    SettingsColorButton          *_flag, *_explosion, *_error;
-    QPtrVector<SettingsColorButton>  _numbers;
+    KIntNumInput             *_caseSize;
+    KColorButton             *_flag, *_explosion, *_error;
+    QPtrVector<KColorButton>  _numbers;
 
     static uint readCaseSize();
     static QColor readColor(const QString & key, QColor defaultColor);
 };
 
-class SettingsDialog : public BaseSettingsDialog, public KMines
+class ExtSettingsDialog : public SettingsDialog, public KMines
 {
  Q_OBJECT
  public:
-	SettingsDialog(QWidget *parent);
+	ExtSettingsDialog(QWidget *parent);
 
 	static Level readLevel();
 	static void writeLevel(const Level &);

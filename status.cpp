@@ -98,11 +98,9 @@ void Status::initGame()
 	smiley->setMood(Smiley::Normal);
 	Level::Type type = field->level().type();
 	if ( type!=Level::Custom ) {
-        Score *fs = highscores().firstScore();
-        Score *ls = highscores().lastScore();
-        dg->setBestScores( fs->score(), ls->score() );
-        delete fs;
-        delete ls;
+        KExtHighscores::Score fs = kHighscores->firstScore();
+        KExtHighscores::Score ls = kHighscores->lastScore();
+        dg->setBestScores(fs.score(), ls.score());
     } else dg->setBestScores(0, 0);
 
 	dg->zero();
@@ -122,7 +120,7 @@ void Status::restartGame()
 
 void Status::newGame(const Level &level)
 {
-    if ( level.type()!=Level::Custom ) highscores().setGameType(level.type());
+    if ( level.type()!=Level::Custom ) kHighscores->setGameType(level.type());
 	field->setLevel(level);
 	initGame();
     updateGeometry();
@@ -161,8 +159,10 @@ void Status::_endGame(bool won)
     smiley->setMood(won ? Smiley::Happy : Smiley::Sad);
 
     if ( field->level().type()==Level::Custom || !won ) return;
-    ExtScore score(dg->score(), field->nbActions());
-    highscores().submitScore(true, score, this);
+    KExtHighscores::Score *score = kHighscores->newScore(KExtHighscores::Won);
+    score->setData("score", dg->score());
+    score->setData("nb_actions", field->nbActions());
+    kHighscores->submitScore(this);
 }
 
 void Status::print()

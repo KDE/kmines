@@ -182,10 +182,10 @@ const char *OP_PAUSE_FOCUS       = "paused if lose focus";
 const char *OP_MOUSE_BINDINGS[3] =
     { "mouse left", "mouse mid", "mouse right" };
 
-GameSettingsWidget::GameSettingsWidget(BaseSettingsDialog *parent)
-    : BaseGameSettingsWidget(parent)
+GameSettingsWidget::GameSettingsWidget()
+    : SettingsWidget(i18n("Game"), "misc")
 {
-    QVBoxLayout *top = new QVBoxLayout(this, parent->spacingHint());
+    QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
 
     _umark = new QCheckBox(i18n("Enable ? mark"), this);
 	top->addWidget(_umark);
@@ -196,7 +196,7 @@ GameSettingsWidget::GameSettingsWidget(BaseSettingsDialog *parent)
     _focus = new QCheckBox(i18n("Pause if window lose focus"), this);
 	top->addWidget(_focus);
 
-	top->addSpacing( 2*parent->spacingHint() );
+	top->addSpacing( 2*KDialog::spacingHint() );
 
 	QVGroupBox *gb = new QVGroupBox(i18n("Mouse bindings"), this);
 	top->addWidget(gb);
@@ -243,7 +243,7 @@ KMines::MouseAction GameSettingsWidget::readMouseBinding(MouseButton mb)
 	return ma>UMark ? Reveal : ma;
 }
 
-void GameSettingsWidget::readConfig()
+void GameSettingsWidget::load()
 {
     _umark->setChecked( readUMark() );
     _keyb->setChecked( readKeyboard() );
@@ -252,7 +252,7 @@ void GameSettingsWidget::readConfig()
         _cb[i]->setCurrentItem( readMouseBinding((MouseButton)i) );
 }
 
-bool GameSettingsWidget::writeConfig()
+void GameSettingsWidget::save()
 {
     SettingsConfigGroup cg;
 	cg.config()->writeEntry(OP_UMARK, _umark->isChecked());
@@ -260,10 +260,9 @@ bool GameSettingsWidget::writeConfig()
     cg.config()->writeEntry(OP_PAUSE_FOCUS, _focus->isChecked());
 	for (uint i=0; i<3; i++)
 		cg.config()->writeEntry(OP_MOUSE_BINDINGS[i], _cb[i]->currentItem());
-    return true;
 }
 
-void GameSettingsWidget::setDefault()
+void GameSettingsWidget::defaults()
 {
     _umark->setChecked(true);
     _keyb->setChecked(false);
@@ -288,37 +287,42 @@ const QColor DEFAULT_FLAG_COLOR      = Qt::red;
 const QColor DEFAULT_EXPLOSION_COLOR = Qt::red;
 const QColor DEFAULT_ERROR_COLOR     = Qt::red;
 
-AppearanceSettingsWidget::AppearanceSettingsWidget(BaseSettingsDialog *parent)
-    : BaseAppearanceSettingsWidget(parent)
+AppearanceSettingsWidget::AppearanceSettingsWidget()
+    : SettingsWidget(i18n("Appearance"), "appearance")
 {
-    QVBoxLayout *top = new QVBoxLayout(this, parent->spacingHint());
+    QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
 
     QHBox *hbox = new QHBox(this);
-    hbox->setSpacing(parent->spacingHint());
+    hbox->setSpacing(KDialog::spacingHint());
     top->addWidget(hbox);
     (void)new QLabel(i18n("Case size"), hbox);
     _caseSize = new KIntNumInput(hbox);
 	_caseSize->setRange(MIN_CASE_SIZE, MAX_CASE_SIZE);
 
-    top->addSpacing( 2*parent->spacingHint() );
+    top->addSpacing( 2*KDialog::spacingHint() );
 
     QGrid *grid = new QGrid(2, this);
     top->addWidget(grid);
 
     (void)new QLabel(i18n("Flag color"), grid);
-	_flag = new SettingsColorButton(grid);
+	_flag = new KColorButton(grid);
+    _flag->setFixedWidth(100);
 
 	(void)new QLabel(i18n("Explosion color"), grid);
-	_explosion = new SettingsColorButton(grid);
+	_explosion = new KColorButton(grid);
+    _explosion->setFixedWidth(100);
 
 	(void)new QLabel(i18n("Error color"), grid);
-	_error = new SettingsColorButton(grid);
+	_error = new KColorButton(grid);
+    _error->setFixedWidth(100);
 
 	_numbers.resize(NB_NUMBER_COLORS);
 	for (uint i=0; i<NB_NUMBER_COLORS; i++) {
 		(void)new QLabel(i==0 ? i18n("One mine color")
 						 : i18n("%1 mines color").arg(i+1), grid);
-		_numbers.insert(i, new SettingsColorButton(grid));
+        KColorButton *b = new KColorButton(grid);
+        b->setFixedWidth(100);
+		_numbers.insert(i, b);
 	}
 }
 
@@ -359,7 +363,7 @@ KMines::CaseProperties AppearanceSettingsWidget::readCaseProperties()
 	return cp;
 }
 
-void AppearanceSettingsWidget::readConfig()
+void AppearanceSettingsWidget::load()
 {
     CaseProperties cp = readCaseProperties();
     _caseSize->setValue(cp.size);
@@ -370,7 +374,7 @@ void AppearanceSettingsWidget::readConfig()
         _numbers[i]->setColor(cp.numberColors[i]);
 }
 
-bool AppearanceSettingsWidget::writeConfig()
+void AppearanceSettingsWidget::save()
 {
     writeCaseSize( _caseSize->value() );
     SettingsConfigGroup cg;
@@ -379,10 +383,9 @@ bool AppearanceSettingsWidget::writeConfig()
 	cg.config()->writeEntry(OP_ERROR_COLOR, _error->color());
 	for (uint i=0; i<NB_NUMBER_COLORS; i++)
 		cg.config()->writeEntry(NCName(i), _numbers[i]->color());
-    return true;
 }
 
-void AppearanceSettingsWidget::setDefault()
+void AppearanceSettingsWidget::defaults()
 {
     _caseSize->setValue(DEFAULT_CASE_SIZE);
     _flag->setColor(DEFAULT_FLAG_COLOR);
@@ -399,15 +402,15 @@ const char *OP_CUSTOM_WIDTH    = "custom width";
 const char *OP_CUSTOM_HEIGHT   = "custom height";
 const char *OP_CUSTOM_MINES    = "custom mines";
 
-SettingsDialog::SettingsDialog(QWidget *parent)
-: BaseSettingsDialog(parent)
+ExtSettingsDialog::ExtSettingsDialog(QWidget *parent)
+    : SettingsDialog(parent)
 {
-    swallow(new GameSettingsWidget(this));
-    swallow(new AppearanceSettingsWidget(this));
-    swallow( highscores().createSettingsWidget(this) );
+    addModule(new GameSettingsWidget);
+    addModule(new AppearanceSettingsWidget);
+    addModule( kHighscores->createSettingsWidget() );
 }
 
-Level SettingsDialog::readLevel()
+Level ExtSettingsDialog::readLevel()
 {
     SettingsConfigGroup cg;
 	Level::Type type
@@ -421,7 +424,7 @@ Level SettingsDialog::readLevel()
     return Level(width, height, nbMines);
 }
 
-void SettingsDialog::writeLevel(const Level &level)
+void ExtSettingsDialog::writeLevel(const Level &level)
 {
     SettingsConfigGroup cg;
 	if ( level.type()==Level::Custom ) {
@@ -432,13 +435,13 @@ void SettingsDialog::writeLevel(const Level &level)
 	cg.config()->writeEntry(OP_LEVEL, (uint)level.type());
 }
 
-bool SettingsDialog::readMenuVisible()
+bool ExtSettingsDialog::readMenuVisible()
 {
     SettingsConfigGroup cg;
 	return cg.config()->readBoolEntry(OP_MENUBAR, true);
 }
 
-void SettingsDialog::writeMenuVisible(bool visible)
+void ExtSettingsDialog::writeMenuVisible(bool visible)
 {
     SettingsConfigGroup cg;
 	cg.config()->writeEntry(OP_MENUBAR, visible);

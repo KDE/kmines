@@ -1,3 +1,22 @@
+/*
+    This file is part of the KDE games library
+    Copyright (C) 2001 Nicolas Hadacek (hadacek@kde.org)
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Library General Public
+    License version 2 as published by the Free Software Foundation.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Library General Public License for more details.
+
+    You should have received a copy of the GNU Library General Public License
+    along with this library; see the file COPYING.LIB.  If not, write to
+    the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+    Boston, MA 02111-1307, USA.
+*/
+
 #ifndef G_SETTINGS_H
 #define G_SETTINGS_H
 
@@ -5,96 +24,58 @@
 
 #include <kdialogbase.h>
 #include <klocale.h>
-#include <kcolorbutton.h>
 #include <kconfig.h>
+#include <kcmodule.h>
 
 
 //-----------------------------------------------------------------------------
-class SettingsColorButton : public KColorButton
+/**
+ * Extends the @ref KCModule class.
+ */
+class SettingsWidget : public KCModule
 {
  Q_OBJECT
  public:
-    SettingsColorButton(QWidget *parent, const char *name = 0)
-        : KColorButton(parent, name) { setFixedWidth(100); }
-};
-
-//-----------------------------------------------------------------------------
-class BaseSettings
-{
- public:
-    BaseSettings(const QString &name, const QString &icon,
-				 const QString &group = QString::null)
-		: _name(name), _icon(icon), _group(group) {}
+    /**
+     * Constructor.
+     *
+     * @param name the translated module name.
+     * @param icon the name of the module icon.
+     */
+    SettingsWidget(const QString &name, const QString &icon);
 
     QString name() const { return _name; }
     QString icon() const { return _icon; }
-    QString group() const { return _group; }
+
+    /**
+     * @return true if the module has been saved. It is sometimes useful
+     * to have the possibility to fail to apply the settings (for e.g.
+     * when it implies contacting a remote server).
+     */
+    virtual bool isSaved() const { return true; }
 
  private:
-	const QString _name, _icon, _group;
+    QString _name, _icon;
 };
 
 //-----------------------------------------------------------------------------
-class BaseSettingsWidget : public QWidget
+/**
+ * This class is used to display one or several @ref SettingWidget.
+ */
+class SettingsDialog : public KDialogBase
 {
  Q_OBJECT
  public:
-    BaseSettingsWidget(BaseSettings *, QWidget *parent, const char *name);
-    virtual ~BaseSettingsWidget();
+	SettingsDialog(QWidget *parent);
 
-    const BaseSettings *settings() const { return _settings; }
-
-    virtual void readConfig() {}
-    virtual bool writeConfig() { return true; } // return true if ok
-
- public slots:
-    virtual void setDefault() {}
-
- signals:
-    void showPage();
-
- protected:
-    QString group() const { return _settings->group(); }
-
- private:
-    BaseSettings *_settings;
-};
-
-class BaseAppearanceSettingsWidget : public BaseSettingsWidget
-{
- Q_OBJECT
- public:
-    BaseAppearanceSettingsWidget(QWidget *parent)
-       : BaseSettingsWidget(new BaseSettings(i18n("Appearance"), "appearance"),
-                            parent, "appearance_settings") {}
-};
-
-class BaseGameSettingsWidget : public BaseSettingsWidget
-{
- Q_OBJECT
- public:
-    BaseGameSettingsWidget(QWidget *parent)
-        : BaseSettingsWidget(new BaseSettings(i18n("Game"), "misc"),
-                             parent, "game_settings") {}
-};
-
-
-//-----------------------------------------------------------------------------
-class BaseSettingsDialog : public KDialogBase
-{
- Q_OBJECT
- public:
-	BaseSettingsDialog(QWidget *parent);
-
- protected:
-    void swallow(BaseSettingsWidget *);
+    void addModule(SettingsWidget *);
 
  private slots:
     void accept();
-    void showPage();
+    void slotDefault();
 
  private:
-    QPtrVector<BaseSettingsWidget> _widgets;
+    QPtrVector<SettingsWidget> _widgets;
 };
 
 #endif

@@ -1,3 +1,22 @@
+/*
+    This file is part of the KDE games library
+    Copyright (C) 2001 Nicolas Hadacek (hadacek@kde.org)
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Library General Public
+    License version 2 as published by the Free Software Foundation.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Library General Public License for more details.
+
+    You should have received a copy of the GNU Library General Public License
+    along with this library; see the file COPYING.LIB.  If not, write to
+    the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+    Boston, MA 02111-1307, USA.
+*/
+
 #ifndef G_HIGHSCORES_GUI_H
 #define G_HIGHSCORES_GUI_H
 
@@ -11,17 +30,22 @@
 #include <klocale.h>
 
 #include "gsettings.h"
-#include "ghighscores_item.h"
 
 
+namespace KExtHighscores
+{
+
+class ItemContainer;
+class ItemArray;
 class Score;
+class ScoreInfos;
 class PlayerInfos;
 
 //-----------------------------------------------------------------------------
-class ShowHighscoresItem : public KListViewItem
+class ShowItem : public KListViewItem
 {
  public:
-    ShowHighscoresItem(QListView *, bool highlight);
+    ShowItem(QListView *, bool highlight);
 
  protected:
     virtual void paintCell(QPainter *, const QColorGroup &, int column,
@@ -31,75 +55,73 @@ class ShowHighscoresItem : public KListViewItem
     bool _highlight;
 };
 
-class ShowScoresList : public KListView
+class ScoresList : public KListView
 {
  Q_OBJECT
  public:
-    ShowScoresList(QWidget *parent);
+    ScoresList(QWidget *parent);
 
  protected:
     // index==-1 : header
-    void addLine(const ItemContainer &, int index, bool highlight);
-    virtual bool showColumn(const ItemBase *) const { return true; }
-    virtual QString itemText(const ItemBase *, uint row) const = 0;
+    void addLine(const ItemArray &, int index, bool highlight);
+    virtual QString itemText(const ItemContainer &, uint row) const = 0;
 };
 
 //-----------------------------------------------------------------------------
-class ShowHighscoresList : public ShowScoresList
+class HighscoresList : public ScoresList
 {
  Q_OBJECT
  public:
-    ShowHighscoresList(const ItemContainer &, int highlight, QWidget *parent);
+    HighscoresList(const ItemArray &, int highlight, QWidget *parent);
 
  protected:
-    QString itemText(const ItemBase *, uint row) const;
+    QString itemText(const ItemContainer &, uint row) const;
 };
 
-class ShowHighscoresWidget : public QWidget
+class HighscoresWidget : public QWidget
 {
  Q_OBJECT
  public:
-    ShowHighscoresWidget(int localRank, QWidget *parent, const Score &,
-                         const PlayerInfos &, int spacingHint);
+    HighscoresWidget(int localRank, QWidget *parent, const ScoreInfos &,
+                     const PlayerInfos &, int spacingHint,
+                     bool WWHSAvailable, const QString &highscoresURL,
+                     const QString &playersURL);
 
  private slots:
     void showURL(const QString &) const;
 };
 
 //-----------------------------------------------------------------------------
-class ShowMultiScoresList : public ShowScoresList
+class MultipleScoresList : public ScoresList
 {
  Q_OBJECT
  public:
-    ShowMultiScoresList(const QPtrVector<Score> &, QWidget *parent);
+    MultipleScoresList(const QPtrVector<Score> &, QWidget *parent);
 
  private:
-    const QPtrVector<Score> _scores;
+    const QPtrVector<Score> &_scores;
 
-    bool showColumn(const ItemBase *) const;
-    QString itemText(const ItemBase *, uint row) const;
-};
-
-class ShowMultiScoresDialog : public KDialogBase
-{
- Q_OBJECT
- public:
-    ShowMultiScoresDialog(const QPtrVector<Score> &, QWidget *parent);
+    QString itemText(const ItemContainer &, uint row) const;
 };
 
 //-----------------------------------------------------------------------------
-class HighscoresSettingsWidget : public BaseSettingsWidget
+class HighscoresSettingsWidget : public SettingsWidget
 {
  Q_OBJECT
  public:
-    HighscoresSettingsWidget(BaseSettingsDialog *parent, PlayerInfos *);
+    HighscoresSettingsWidget(const PlayerInfos &infos, bool WWHSAvailable);
 
-    bool writeConfig();
+    void load();
+    void save();
+    bool isSaved() const { return _ok; }
 
  private:
-    bool       _isAnonymous;
-    QCheckBox *_WWHEnabled;
-    QLineEdit *_nickname, *_comment;
+    bool               _ok;
+    const PlayerInfos &_infos;
+    QCheckBox         *_WWHEnabled;
+    QLineEdit         *_nickname, *_comment;
 };
+
+}; // namespace
 
 #endif

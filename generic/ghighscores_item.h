@@ -1,185 +1,281 @@
+/*
+    This file is part of the KDE games library
+    Copyright (C) 2001 Nicolas Hadacek (hadacek@kde.org)
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Library General Public
+    License version 2 as published by the Free Software Foundation.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Library General Public License for more details.
+
+    You should have received a copy of the GNU Library General Public License
+    along with this library; see the file COPYING.LIB.  If not, write to
+    the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+    Boston, MA 02111-1307, USA.
+*/
+
 #ifndef G_HIGHSCORES_ITEM_H
 #define G_HIGHSCORES_ITEM_H
 
 #include <qvariant.h>
 #include <qdatastream.h>
-#include <qdict.h>
 #include <qnamespace.h>
 #include <qdatetime.h>
+#include <qvaluevector.h>
 
 #include <klocale.h>
 
 
+namespace KExtHighscores
+{
+
+class ItemArray;
+class ScoreInfos;
+
 //-----------------------------------------------------------------------------
-class ItemBase
+/**
+ * This class defines how to convert and how to display
+ * a highscore element (such as the score, the date, ...) or a player
+ * info (such as the player name, the best score, ...).
+ */
+class Item
 {
  public:
-    enum Format { NoFormat, // no formatting
-                  OneDecimal, // double with one decimal
-                  Percentage, // double with one decimal + %
-                  Time, // MM:SS (3600 is 00:00, 1 is 59:59 and 0 is undefined)
-		          DateTime // date & time according to locale
-    };
-    enum Special { NoSpecial, // no special value
-                   ZeroNotDefined, // 0 is replaced by "--"
-                   NegativeNotDefined, // negative value are replaced by "--"
-                   Anonymous // replace special value by i18n("anonymous")
-                   // for DateTime format : a null date is replaced by "--"
-    };
+    /**
+     * Possible display format.
+     * <ul>
+     * <li> @p NoFormat : no formatting (default) </li>
+     * <li> @p OneDecimal : with one decimal (only for Double) </li>
+     * <li> @p Percentage : with one decimal + % (only for Double) </li>
+     * <li> @p MinuteTime : MM:SS ie 3600 is 00:00, 1 is 59:59 and 0 is
+     *      undefined ; this format is used by KMines (only for UInt, Int and
+     *      Double) </li>
+     * <li> @p DateTime : date and time according to locale (only for
+     *      DateTime) </li>
+     * </ul>
+     */
+    enum Format { NoFormat, OneDecimal, Percentage, MinuteTime,
+		          DateTime };
 
-    ItemBase() {}
-    ItemBase(const QVariant &def, const QString &label = QString::null,
-             int alignment = Qt::AlignRight,
-             bool canHaveSubGroup = false);
-    virtual ~ItemBase() {}
+    /**
+     * Possible special value for display format.
+     * <ul>
+     * <li> @p NoSpecial : no special value ; a null DateTime is replaced by
+     *      "--" (default) </li>
+     * <li> ZeroNotDefine : 0 is replaced by "--" (only for UInt, Int and
+     *      Double) </li>
+     * <li> @p NegativeNotDefined : negative values are replaced by "--" (only
+     *      for Int and Double) </li>
+     * <li> @p Anonymous : replace the special value @ref ItemBase::ANONYMOUS
+     *      by i18n("anonymous") (only for String) </li>
+     * </ul>
+     */
+    enum Special { NoSpecial, ZeroNotDefined, NegativeNotDefined,
+                   Anonymous };
 
-    void set(const QString &name, const QString &group,
-             const QString &subGroup = QString::null);
-    void setPrettyFormat(Format); // default is NoFormat
-    void setPrettySpecial(Special); // default is NoSpecial
+    /**
+     * Constructor.
+     *
+     * @param def default value ; the QVariant also gives the type of data.
+     * @param label the label corresponding to the item. If empty, the item
+     *              is not shown.
+     * @param alignment the alignment of the item.
+     */
+    Item(const QVariant &def = QVariant::Invalid,
+             const QString &label = QString::null,
+             int alignment = Qt::AlignRight);
+    virtual ~Item() {}
 
-    bool stored() const   { return !_group.isNull(); }
-    bool shown() const    { return !_label.isEmpty(); }
+    /**
+     * Set the display format.
+     * @see Format
+     */
+    void setPrettyFormat(Format);
+
+    /**
+     * Set the special value for display.
+     * @see Special
+     */
+    void setPrettySpecial(Special);
+
+    /**
+     * @return if the item is shown.
+     */
+    bool isVisible() const    { return !_label.isEmpty(); }
+
+    /**
+     * @return the label.
+     */
     QString label() const { return _label; }
+
+    /**
+     * @return the alignment.
+     */
     int alignment() const { return _alignment; }
-    QString name() const  { return _name; }
 
-	virtual QVariant read(uint i) const;
-	virtual QString pretty(uint i) const;
-	void write(uint i, const QVariant &) const;
+    /**
+     * @return the default value.
+     */
+    const QVariant &defaultValue() const { return _default; }
 
-    void moveDown(uint newIndex) const;
+    /**
+     * @return the converted value (by default the value is left
+     * unchanged) Most of the time you don't need to reimplement this method.
+     *
+     * @param i the element index ("rank" for score / "id" for player)
+     */
+	virtual QVariant read(uint i, const QVariant &value) const;
 
-    static const char *ANONYMOUS; // used to recognized anonymous players
+    /**
+     * @return the string to be displayed. You may need to reimplement this
+     * method for special formatting (different from the standard ones).
+     *
+     * @param i the element index ("rank" for score / "id" for player)
+     */
+	virtual QString pretty(uint i, const QVariant &value) const;
 
  private:
 	QVariant _default;
-    QString  _name, _label, _group, _subGroup;
+    QString  _label;
     int      _alignment;
     Format   _format;
     Special  _special;
-    bool     _canHaveSubGroup;
 
-    QString entryName() const;
+    class ItemPrivate;
+    ItemPrivate *d;
 
     static QString timeFormat(uint);
 };
 
 //-----------------------------------------------------------------------------
-class ItemContainer
-{
- public:
-    ItemContainer(const QString &group, const QString &subGroup);
-    virtual ~ItemContainer() {}
-
-    virtual uint nbEntries() const = 0;
-    const QPtrList<ItemBase> &items() const { return _items; }
-
- protected:
-    void addItem(const QString &key, ItemBase *, bool stored);
-    QString group() const { return _group; }
-
-    const ItemBase &item(const QString &name) const;
-    uint name(const QString &name) const { return *_names[name]; }
-
- private:
-    QString            _group, _subGroup;
-    QPtrList<ItemBase> _items;
-    QDict<uint>        _names;
-
-    ItemContainer(const ItemContainer &c);
-    void operator =(const ItemContainer &);
-};
-
-//-----------------------------------------------------------------------------
-class DataContainer : public ItemContainer
-{
- public:
-    DataContainer(const QString &group, const QString &subGroup)
-        : ItemContainer(group, subGroup) {}
-
-    void read(uint i);
-    void write(uint i, uint maxNbLines) const;
-    QString prettyData(const QString &name) const;
-
- protected:
-    const QVariant &data(const QString &n) const { return _data[name(n)]; }
-    QVariant &data(const QString &n)             { return _data[name(n)]; }
-    void addData(const QString &key, ItemBase *, bool stored, QVariant value);
-
- private:
-    QValueList<QVariant> _data;
-
-    friend QDataStream &operator >>(QDataStream &, DataContainer &);
-    friend QDataStream &operator <<(QDataStream &, const DataContainer &);
-};
-
-QDataStream &operator >>(QDataStream &, DataContainer &);
-QDataStream &operator <<(QDataStream &, const DataContainer &);
-
-//-----------------------------------------------------------------------------
-class RankItem : public ItemBase
-{
- public:
-    RankItem()
-        : ItemBase((uint)0, i18n("Rank"), Qt::AlignRight) {}
-
-    QVariant read(uint rank) const  { return rank; }
-    QString pretty(uint rank) const { return QString::number(rank+1); }
-};
-
-class ScoreItem : public ItemBase
+/**
+ * @ref Item for the score. By default no special formating.
+ */
+class ScoreItem : public Item
 {
  public:
     ScoreItem()
-        : ItemBase((uint)0, i18n("Score"), Qt::AlignRight) {}
+        : Item((uint)0, i18n("Score"), Qt::AlignRight) {}
 };
 
-class NameItem : public ItemBase
-{
- public:
-    NameItem()
-        : ItemBase(QString::null, i18n("Name"), Qt::AlignLeft) {
-            setPrettySpecial(Anonymous);
-    }
-};
-
-class DateItem : public ItemBase
-{
- public:
-    DateItem()
-        : ItemBase(QDateTime(), i18n("Date"), Qt::AlignRight) {
-            setPrettyFormat(DateTime);
-    }
-};
-
-class MeanScoreItem : public ItemBase
+/**
+ * @ref Item for mean score. By default, only show one decimal and
+ * 0 is shown "--"
+ */
+class MeanScoreItem : public Item
 {
  public:
     MeanScoreItem()
-        : ItemBase((double)0, i18n("Mean score"), Qt::AlignRight, true) {
+        : Item((double)0, i18n("Mean score"), Qt::AlignRight) {
             setPrettyFormat(OneDecimal);
             setPrettySpecial(ZeroNotDefined);
     }
 };
 
-class BestScoreItem : public ItemBase
+/**
+ * @ref Item for the best highscore. 0 is shown "--".
+ */
+class BestScoreItem : public Item
 {
  public:
     BestScoreItem()
-        : ItemBase((uint)0, i18n("Best score"), Qt::AlignRight, true) {
+        : Item((uint)0, i18n("Best score"), Qt::AlignRight) {
             setPrettySpecial(ZeroNotDefined);
     }
 };
 
-class SuccessPercentageItem : public ItemBase
+//-----------------------------------------------------------------------------
+/**
+ * Manage an array of datas each associated with @ref Item.
+ */
+class DataArray : private QValueVector<QVariant>
 {
  public:
-    SuccessPercentageItem()
-        : ItemBase((double)-1, i18n("Success"), Qt::AlignRight, true) {
-            setPrettyFormat(Percentage);
-            setPrettySpecial(NegativeNotDefined);
-    }
+    /**
+     * @internal
+     * This constuctor is internal. You should never need to construct
+     * this class by yourself.
+     */
+    DataArray(const ItemArray &items);
+
+    /**
+     * @internal
+     */
+    void read(uint i);
+
+    /**
+     * @internal
+     */
+    void write(uint i, uint maxNbLines) const;
+
+    /**
+     * @internal
+     */
+    const ItemArray &items() const { return _items; }
+
+    /**
+     * @return the data associated with the named @ref Item.
+     */
+    const QVariant &data(const QString &name) const;
+
+    /**
+     * Set the data associated with the named @ref Item. Note that the
+     * value should have the same type than the default value of the @ref
+     * Item.
+     */
+    void setData(const QString &name, const QVariant &value);
+
+ private:
+    const ItemArray &_items;
+
+    class DataArrayPrivate;
+    DataArrayPrivate *d;
 };
+
+//-----------------------------------------------------------------------------
+/**
+ * Possible score type.
+ * @p Won the game has been won.
+ * @p Lost the game has been lost.
+ * @p BlackMark the game has been aborted.
+ */
+enum ScoreType { Won = 0, Lost = -1, BlackMark = -2 };
+
+
+/**
+ * This class contains data for a score.
+ *
+ * @see Highscores
+ */
+class Score : public DataArray
+{
+ public:
+    /**
+     * @internal
+     * You should not have to construct this class.
+     */
+    Score(const ScoreInfos &items, ScoreType type);
+
+    /**
+     * @return the game type.
+     */
+    ScoreType type() const { return _type; }
+
+    /**
+     * @return the score value.
+     */
+    uint score() const { return data("score").toUInt(); }
+
+ private:
+    ScoreType _type;
+
+    class ScorePrivate;
+    ScorePrivate *d;
+};
+
+}; // namespace
 
 #endif

@@ -1,27 +1,45 @@
+/*
+    This file is part of the KDE games library
+    Copyright (C) 2001 Nicolas Hadacek (hadacek@kde.org)
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Library General Public
+    License version 2 as published by the Free Software Foundation.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Library General Public License for more details.
+
+    You should have received a copy of the GNU Library General Public License
+    along with this library; see the file COPYING.LIB.  If not, write to
+    the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+    Boston, MA 02111-1307, USA.
+*/
+
 #include "ghighscores_item.h"
 
 #include <khighscore.h>
 #include <kglobal.h>
 
+#include "ghighscores_internal.h"
+
+
+namespace KExtHighscores
+{
 
 //-----------------------------------------------------------------------------
-const char *ItemBase::ANONYMOUS = "_";
-
-ItemBase::ItemBase(const QVariant &def, const QString &label, int alignment,
-                   bool canHaveSubGroup)
+Item::Item(const QVariant &def, const QString &label, int alignment)
     : _default(def), _label(label), _alignment(alignment),
-      _format(NoFormat), _special(NoSpecial),
-      _canHaveSubGroup(canHaveSubGroup)
+      _format(NoFormat), _special(NoSpecial)
 {}
 
-void ItemBase::set(const QString &n, const QString &grp, const QString &sgrp)
+QVariant Item::read(uint, const QVariant &value) const
 {
-    _name = n;
-    _group = grp;
-    _subGroup = sgrp;
+    return value;
 }
 
-void ItemBase::setPrettyFormat(Format format)
+void Item::setPrettyFormat(Format format)
 {
     bool buint = ( _default.type()==QVariant::UInt );
     bool bdouble = ( _default.type()==QVariant::Double );
@@ -32,7 +50,7 @@ void ItemBase::setPrettyFormat(Format format)
     case Percentage:
         Q_ASSERT(bdouble);
         break;
-    case Time:
+    case MinuteTime:
         Q_ASSERT(bnum);
         break;
     case DateTime:
@@ -45,7 +63,7 @@ void ItemBase::setPrettyFormat(Format format)
     _format = format;
 }
 
-void ItemBase::setPrettySpecial(Special special)
+void Item::setPrettySpecial(Special special)
 {
     bool buint = ( _default.type()==QVariant::UInt );
     bool bdouble = ( _default.type()==QVariant::Double );
@@ -68,71 +86,7 @@ void ItemBase::setPrettySpecial(Special special)
      _special = special;
 }
 
-QString ItemBase::entryName() const
-{
-    if ( !_canHaveSubGroup || _subGroup.isEmpty() ) return _name;
-    return _name + "_" + _subGroup;
-}
-
-QVariant ItemBase::read(uint i) const
-{
-    Q_ASSERT( stored() );
-    KHighscore hs;
-    hs.setHighscoreGroup(_group);
-    if ( !hs.hasEntry(i+1, entryName()) ) return _default;
-    QVariant v = hs.readEntry(i+1, entryName());
-    if ( v.cast(_default.type()) ) return v;
-    return _default;
-}
-
-QString ItemBase::pretty(uint i) const
-{
-    switch (_special) {
-    case ZeroNotDefined:
-        if ( read(i).toUInt()==0 ) return "--";
-        break;
-    case NegativeNotDefined:
-        if ( read(i).toInt()<0 ) return "--";
-        break;
-    case Anonymous:
-        if ( read(i).toString()==ANONYMOUS ) return i18n("anonymous");
-        break;
-    case NoFormat:
-        break;
-    }
-
-    switch (_format) {
-    case OneDecimal:
-        return QString::number(read(i).toDouble(), 'f', 1);
-    case Percentage:
-        return QString::number(read(i).toDouble(), 'f', 1) + "%";
-    case Time:
-        return timeFormat(read(i).toUInt());
-    case DateTime:
-        if ( read(i).toDateTime().isNull() ) return "--";
-        return KGlobal::locale()->formatDateTime(read(i).toDateTime());
-    case NoSpecial:
-        break;
-    }
-
-    return read(i).toString();
-}
-
-void ItemBase::write(uint i, const QVariant &value) const
-{
-    Q_ASSERT( stored() );
-    KHighscore hs;
-    hs.setHighscoreGroup(_group);
-    hs.writeEntry(i+1, entryName(), value.toString());
-}
-
-void ItemBase::moveDown(uint newIndex) const
-{
-    Q_ASSERT( newIndex!=0 );
-    write(newIndex, read(newIndex-1));
-}
-
-QString ItemBase::timeFormat(uint n)
+QString Item::timeFormat(uint n)
 {
     Q_ASSERT( n<3600 && n!=0 );
     n = 3600 - n;
@@ -140,72 +94,89 @@ QString ItemBase::timeFormat(uint n)
         + QString::number(n % 60).rightJustify(2, '0');
 }
 
+QString Item::pretty(uint, const QVariant &value) const
+{
+    switch (_special) {
+    case ZeroNotDefined:
+        if ( value.toUInt()==0 ) return "--";
+        break;
+    case NegativeNotDefined:
+        if ( value.toInt()<0 ) return "--";
+        break;
+    case Anonymous:
+        if ( value.toString()==ItemContainer::ANONYMOUS )
+            return i18n("anonymous");
+        break;
+    case NoFormat:
+        break;
+    }
+
+    switch (_format) {
+    case OneDecimal:
+        return QString::number(value.toDouble(), 'f', 1);
+    case Percentage:
+        return QString::number(value.toDouble(), 'f', 1) + "%";
+    case MinuteTime:
+        return timeFormat(value.toUInt());
+    case DateTime:
+        if ( value.toDateTime().isNull() ) return "--";
+        return KGlobal::locale()->formatDateTime(value.toDateTime());
+    case NoSpecial:
+        break;
+    }
+
+    return value.toString();
+}
+
 //-----------------------------------------------------------------------------
-ItemContainer::ItemContainer(const QString &group, const QString &subGroup)
-    : _group(group), _subGroup(subGroup)
+DataArray::DataArray(const ItemArray &items)
+    : _items(items)
 {
-    _items.setAutoDelete(true);
-    _names.setAutoDelete(true);
+    resize( _items().size() );
+    for (uint i=0; i<size(); i++)
+        at(i) = _items()[i]->item()->defaultValue();
 }
 
-void ItemContainer::addItem(const QString &key, ItemBase *item, bool stored)
+void DataArray::setData(const QString &name, const QVariant &value)
 {
-    uint i = _items.count();
-    _names.insert(key, new uint(i));
-    _items.append(item);
-    _items.at(i)->set(key, (stored ? _group : QString::null), _subGroup);
+    Q_ASSERT( size()==_items().size() );
+    int i = _items.findIndex(name);
+    Q_ASSERT( i!=-1);
+    Q_ASSERT( value.type()==at(i).type() );
+    at(i) = value;
 }
 
-const ItemBase &ItemContainer::item(const QString &n) const
+const QVariant &DataArray::data(const QString &name) const
 {
-    QPtrListIterator<ItemBase> it(_items);
-    it += name(n);
-    return *it.current();
+    Q_ASSERT( size()==_items().size() );
+    int i = _items.findIndex(name);
+    Q_ASSERT( i!=-1 );
+    return at(i);
 }
 
-//-----------------------------------------------------------------------------
-void DataContainer::addData(const QString &key, ItemBase *item, bool stored,
-                            QVariant value)
+void DataArray::read(uint k)
 {
-    ItemContainer::addItem(key, item, stored);
-    _data.append(value);
-}
-
-QString DataContainer::prettyData(const QString &name) const
-{
-	return data(name).toString();
-}
-
-void DataContainer::read(uint i)
-{
-    QPtrListIterator<ItemBase> it(items());
-    while( it.current() ) {
-        const ItemBase *item = it.current();
-        data(item->name()) = item->read(i);
-        ++it;
+    Q_ASSERT( size()==_items().size() );
+    for (uint i=0; i<size(); i++) {
+        if ( !_items()[i]->isStored() ) continue;
+        at(i) = _items()[i]->read(k);
     }
 }
 
-void DataContainer::write(uint i, uint nb) const
+void DataArray::write(uint k, uint nb) const
 {
-    QPtrListIterator<ItemBase> it(items());
-    while( it.current() ) {
-        const ItemBase *item = it.current();
-        ++it;
-        if ( !item->stored() ) continue;
-        for (uint j=nb-1; j>i; j--) item->moveDown(j);
-        item->write(i, data(item->name()));
+    Q_ASSERT( size()==_items().size() );
+    for (uint i=0; i<size(); i++) {
+        const ItemContainer *item = _items()[i];
+        if ( !item->isStored() ) continue;
+        for (uint j=nb-1; j>k; j--)  item->write(j, item->read(j-1));
+        item->write(k, at(i));
     }
 }
 
-QDataStream &operator <<(QDataStream &stream, const DataContainer &c)
-{
-    stream << c._data;
-    return stream;
-}
+//-----------------------------------------------------------------------------
+Score::Score(const ScoreInfos &items, ScoreType type)
+    : DataArray(items), _type(type)
+{}
 
-QDataStream &operator >>(QDataStream &stream, DataContainer &c)
-{
-    stream >> c._data;
-    return stream;
-}
+}; // namespace

@@ -21,16 +21,9 @@
 #include "status.h"
 #include "highscores.h"
 
-
-ExtHighscores *HIGHSCORES;
-Highscores &highscores() { return *HIGHSCORES; }
-
-
 MainWidget::MainWidget()
     : KMainWindow(0)
 {
-    HIGHSCORES = new ExtHighscores;
-
 	installEventFilter(this);
 
 	status = new Status(this);
@@ -96,11 +89,6 @@ MainWidget::MainWidget()
 	setCentralWidget(status);
 }
 
-MainWidget::~MainWidget()
-{
-    delete HIGHSCORES;
-}
-
 #define MENUBAR_ACTION \
     ((KToggleAction *)action(KStdAction::stdName(KStdAction::ShowMenubar)))
 
@@ -108,12 +96,12 @@ MainWidget::~MainWidget()
 
 void MainWidget::readSettings()
 {
-	Level level = SettingsDialog::readLevel();
+	Level level = ExtSettingsDialog::readLevel();
 	if ( level.type()!=Level::Custom )
         levelAction[level.type()]->setChecked(true);
 	status->newGame(level);
 
-	bool visible = SettingsDialog::readMenuVisible();
+	bool visible = ExtSettingsDialog::readMenuVisible();
 	MENUBAR_ACTION->setChecked(visible);
 	toggleMenubar();
 
@@ -145,12 +133,12 @@ void MainWidget::changeLevel()
 	}
 
 	status->newGame(level);
-	SettingsDialog::writeLevel(level);
+	ExtSettingsDialog::writeLevel(level);
 }
 
 void MainWidget::showHighscores()
 {
-    highscores().showHighscores(this);
+    kHighscores->showHighscores(this);
 }
 
 bool MainWidget::eventFilter(QObject *, QEvent *e)
@@ -183,12 +171,12 @@ void MainWidget::toggleMenubar()
 	bool b = MENUBAR_ACTION->isChecked();
 	if (b) menuBar()->show();
 	else menuBar()->hide();
-	SettingsDialog::writeMenuVisible(b);
+	ExtSettingsDialog::writeMenuVisible(b);
 }
 
 void MainWidget::configureSettings()
 {
-	SettingsDialog od(this);
+	ExtSettingsDialog od(this);
 	if ( !od.exec() ) return;
     settingsChanged();
 }
@@ -243,6 +231,8 @@ int main(int argc, char **argv)
 
     KApplication a;
     KGlobal::locale()->insertCatalogue("libkdegames");
+    KGlobal::locale()->insertCatalogue("libkdehighscores");
+    KExtHighscores::ExtHighscores highscores;
     if ( a.isRestored() ) RESTORE(MainWidget)
     else {
         MainWidget *mw = new MainWidget;
