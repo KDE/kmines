@@ -2,6 +2,7 @@
 [KDE Desktop Entry]
 Name=Minesweeper
 Exec=kmines -caption "%c"
+Type=Application
 DocPath=kmines.html
 Info=KDE replacement for xbombs
 Info[de]=Das bekannte Spiel Bombenfinden
