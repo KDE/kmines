@@ -7,6 +7,7 @@
 #include <qfont.h>
 
 #include <kapp.h>
+#include <klocale.h>
 
 #include "defines.h"
 #include "version.h"

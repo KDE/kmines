@@ -1,3 +1,5 @@
+#include <klocale.h>
+
 #include "main.h"
 #include "main.moc"
 

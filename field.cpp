@@ -9,6 +9,7 @@
 #include <qpixmap.h>
 
 #include <kapp.h>
+#include <klocale.h>
 
 #include "defines.h"
 #include <klocale.h>
