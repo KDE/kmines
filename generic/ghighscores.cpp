@@ -478,7 +478,7 @@ void Highscores::submitWorldWide(int score, const PlayerInfos &i,
     addToURL(url, "version", _version);
     QString str =  QString::number(score);
     addToURL(url, "score", str);
-    KMD5 context(i.registeredName() + str);
+    KMD5 context(QString(i.registeredName() + str).latin1());
     addToURL(url, "check", context.hexDigest());
     if ( _nbGameTypes>1 ) addToURL(url, "level", gameTypeLabel(_gameType, WW));
     additionnalQueries(url, Submit);
