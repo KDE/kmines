@@ -1,3 +1,15 @@
+2.0.7
+ * fixed bug in mine field drawing with some styles [found by Gerard Delafond
+   and Tobias Kretschmar] that induces a complete rewrite of the drawing code.
+   now it honors the global style (beautiful in marble style) and it even
+   leads to code simplification !
+ * the keyboard cursor uses now the focus drawing method.
+ * fixed bug when field.width != field.height when exploding
+ * fixed font in the pause button (with non standard case size)
+ * fixed behaviour of button in highscores dialog when entering the winner name
+   [proposed by Lotta Inkovaara for ksirtet]
+ * keyboard is disabled by default
+
 2.0.6
  * use of KMainWindow (replace KTMainWindow) but this does not solve the
    resizing problems :(

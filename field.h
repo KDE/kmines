@@ -17,6 +17,7 @@ class Field : public QFrame
 	
  public:
     Field(QWidget *parent, const char *name=0);
+	virtual ~Field();
 
 	QSize sizeHint() const;
 	QSizePolicy sizePolicy() const;
@@ -69,25 +70,24 @@ class Field : public QFrame
 	bool      first_click;
 	bool      u_mark, cursor;
 
-	int  ic, jc;               // current pos
+	uint  ic, jc;              // current pos
 	bool _reveal, _autoreveal; // mouse button pressed
 	MouseAction mb[3];         // mouse bindings
 
 	CaseProperties cp;
-	QPixmap        pm_flag, pm_mine, pm_exploded, pm_error, pm_cursor;
-	QPushButton   *pb;
+	QPixmap        pm_flag, pm_mine, pm_exploded, pm_error;
+	QPushButton   *pb, *dummy;
 
 	uint computeNeighbours(uint, uint) const;
 	void uncover(uint, uint);
 	void changeCaseState(uint, uint, CaseState);
 	void minePixmap(QPixmap &, bool mask, CaseState) const;
-	void pressCase(uint, uint, bool, QPainter * = 0);
+	void pressCase(uint, uint, bool);
 	void pressClearFunction(uint, uint, bool);
 	void uncoverCase(uint, uint);
 	bool inside(int, int) const;
-	bool placeCursor(int, int, bool check = false);
+	bool placeCursor(int, int);
 	void flagPixmap(QPixmap &, bool mask) const;
-	void cursorPixmap(QPixmap &, bool mask) const;
 	void autoReveal();
 	void _endGame();
 
@@ -98,12 +98,12 @@ class Field : public QFrame
 	int iToX(uint i) const;
 	int jToY(uint j) const;
 
-	QPainter *begin(QPainter *);
-	void end(QPainter *, const QPainter *);
-	void drawCase(uint, uint, QPainter * = 0);
-	void drawBox(int, int, bool, QPainter * = 0);
+	void drawCase(uint, uint);
+	void drawBox(uint, uint, bool, const QString &text = QString::null,
+				 const QColor *color = 0, const QPixmap *pixmap = 0);
+	void drawBox(uint i, uint j, bool pressed, const QPixmap *pixmap)
+		{ drawBox(i, j, pressed, QString::null, 0, pixmap); }
 	void eraseField();
-	void drawCursor(bool show, QPainter * = 0);
 
 	void setUMark(bool um) { u_mark = um; }
 	void setCaseProperties(const CaseProperties &);

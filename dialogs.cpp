@@ -249,7 +249,6 @@ WHighScores::WHighScores(QWidget *parent, const Score *score)
 			qle->setMinimumSize(qle->fontMetrics().maxWidth()*10,
 								qle->sizeHint().height());
 			qle->setFocus();
-			connect(qle, SIGNAL(returnPressed()), SLOT(writeName()));
 			gl->addWidget(qle, k, 2);
 		}
 
@@ -265,28 +264,25 @@ WHighScores::WHighScores(QWidget *parent, const Score *score)
 		gl->addWidget(lab, k, 3);
 	}
 
-	if (score) enableButton(Close, false);
-}
-
-void WHighScores::writeName()
-{
-	KConfig *conf = kapp->config();
-	conf->setGroup(HS_GRP[type]);
-	QString str = qle->text();
-	if ( str.length() ) conf->writeEntry(HS_NAME, str);
-	conf->sync();
-	str = conf->readEntry(HS_NAME);
-	qle->setText(str);
-	enableButton(Close, true);
+	if (score) setButtonText(Close, i18n("Set name"));
+	_close = !score;
 }
 
 void WHighScores::reject()
 {
-	if ( qle && qle->isEnabled() ) {
+	if (_close) KDialogBase::reject();
+	else {
+		KConfig *conf = kapp->config();
+		conf->setGroup(HS_GRP[type]);
+		QString str = qle->text();
+		if ( str.length() ) conf->writeEntry(HS_NAME, str);
+		conf->sync();
+		str = conf->readEntry(HS_NAME);
+		qle->setText(str);
+		setButtonText(Close, i18n("Close"));
+		_close = true;
 		qle->setEnabled(false);
-		focusNextPrevChild(true); // sort of hack (wonder why its call in
-		                          // setEnabled(false) does nothing ...)
-	} else KDialogBase::reject();
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -432,7 +428,7 @@ bool OptionDialog::readUMark()
 
 bool OptionDialog::readKeyboard()
 {
-	return config()->readBoolEntry(OP_KEYBOARD, true);
+	return config()->readBoolEntry(OP_KEYBOARD, false);
 }
 
 Level OptionDialog::readLevel()

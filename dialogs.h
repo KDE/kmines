@@ -106,12 +106,12 @@ class WHighScores : public KDialogBase
 	static uint time(GameType);
 
  private slots:
-	void writeName();
 	void reject();
 
  private:
 	GameType   type;
 	QLineEdit *qle;
+	bool       _close;
 };
 
 //-----------------------------------------------------------------------------

@@ -207,7 +207,7 @@ int main(int argc, char **argv)
 						 DESCRIPTION, KAboutData::License_GPL,
 						 COPYLEFT, 0, HOMEPAGE);
     aboutData.addAuthor("Nicolas Hadacek", 0, EMAIL);
-	aboutData.addCredit("Andreas Zehender", /*I18N_NOOP(*/"Smiley pixmaps"/*)*/);
+	aboutData.addCredit("Andreas Zehender", I18N_NOOP("Smiley pixmaps"));
     KCmdLineArgs::init(argc, argv, &aboutData);
 
     KApplication a;
