@@ -70,8 +70,11 @@ bool AdviseFast::RuleSet::reveal(Coord what)
 void AdviseFast::RuleSet::solve()
 {
 	Coord p;
-	while(getSurePoint(&p))
-		assert(reveal(p));
+	while(getSurePoint(&p)) {
+          bool res = reveal(p);
+          assert(res);
+          Q_UNUSED(res);
+        }
 }
 
 bool AdviseFast::RuleSet::apply()
