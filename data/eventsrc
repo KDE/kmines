@@ -538,7 +538,7 @@ Comment[zh_TW]=遊戲失敗
 default_presentation=0
 
 [set_uncertain]
-Name=Set Question Mark
+Name=Set question mrk
 Name[bg]=Поставяне на въпросителна
 Name[da]=Sæt spørgsmålstegn
 Name[et]=Pane küsimärk
@@ -575,7 +575,7 @@ Comment[xx]=xxSet Question Markxx
 default_presentation=0
 
 [unset_uncertain]
-Name=Unset Question Mark
+Name=Unset question mark
 Name[bg]=Премахване на въпросителна
 Name[da]=Fjern spørgsmålstegn
 Name[et]=Eemalda küsimärk

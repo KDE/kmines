@@ -236,7 +236,7 @@ void MainWidget::pause()
 
 //----------------------------------------------------------------------------
 static const char *DESCRIPTION
-    = I18N_NOOP("KMines is a classic mine sweeper game.");
+    = I18N_NOOP("KMines is a classic mine sweeper game");
 
 int main(int argc, char **argv)
 {
