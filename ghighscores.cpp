@@ -80,7 +80,7 @@ void ItemContainer::addItem(const QString &key, ItemBase *item, bool stored)
 
 const ItemBase &ItemContainer::item(const QString &n) const
 {
-    QListIterator<ItemBase> it(_items);
+    QPtrListIterator<ItemBase> it(_items);
     it += name(n);
     return *it.current();
 }
@@ -100,7 +100,7 @@ QString DataContainer::prettyData(const QString &name) const
 
 void DataContainer::read(uint i)
 {
-    QListIterator<ItemBase> it(items());
+    QPtrListIterator<ItemBase> it(items());
     while( it.current() ) {
         const ItemBase *item = it.current();
         data(item->name()) = item->read(i);
@@ -110,7 +110,7 @@ void DataContainer::read(uint i)
 
 void DataContainer::write(uint i, uint nb) const
 {
-    QListIterator<ItemBase> it(items());
+    QPtrListIterator<ItemBase> it(items());
     while( it.current() ) {
         const ItemBase *item = it.current();
         ++it;
@@ -297,7 +297,7 @@ void ShowScoresList::addLine(const ItemContainer &container, int index,
     QListViewItem *line
         = (index==-1 ? 0 : new ShowHighscoresItem(this, highlight));
     int i = -1;
-    QListIterator<ItemBase> it(container.items());
+    QPtrListIterator<ItemBase> it(container.items());
     while ( it.current() ) {
         const ItemBase *item = it.current();
         ++it;
