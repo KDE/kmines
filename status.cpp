@@ -5,6 +5,8 @@
 
 #include <qpainter.h>
 #include <qpixmap.h>
+#include <qprinter.h>
+#include <qobjectlist.h>
 
 #include <kconfig.h>
 
@@ -246,3 +248,26 @@ int KStatus::setHighScore(int sec, int min, int mode)
 	WHighScores whs(FALSE, sec, min, mode, res, this);
 	return res;
 } 
+
+void KStatus::print()
+{
+	QPrinter prt;
+	if ( prt.setup() ) {
+		QPainter p(&prt);
+		QPixmap pi(width(), height());
+		bitBlt(&pi, 0, 0, this, 0, 0, width(), height(), CopyROP);
+		QObjectList *ol = queryList("QWidget");
+		QObjectListIt it(*ol);
+		QObject *obj;
+		QWidget *w;
+		while ( (obj=it.current()) != 0 ) { // for each found object...
+			++it;
+			w = (QWidget *)obj;
+			if ( !w->isVisible() ) continue;
+			bitBlt(&pi, w->x(), w->y(),
+				  w, 0, 0, w->width(), w->height(), CopyROP);
+		}
+		delete ol;    
+		p.drawPixmap(0, 0, pi);
+	}
+}

@@ -1,3 +1,11 @@
+1.0.1
+ * bug fix (when paused a game can be continued by changing desktops or 
+   iconifying/deiconifying without time consumption ...) -- thanx to 
+   François-Xavier Duranceau & ...
+ * add printing facility (well it seems hacky to me and certainly not perfect
+   but it works ...)
+   -- thanx for Tomislav Marsic which has suggested this feature.
+
 1.0.0
  * final cleanup before 1.0 !
 

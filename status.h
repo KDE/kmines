@@ -29,6 +29,7 @@ class KStatus : public QWidget
 	void getNumbers(uint *, uint *, uint *);
 	void showHighScores();
 	void pauseGame() { pause(); };
+	void print();
   
  signals:
 	/* field signals */

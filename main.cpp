@@ -22,12 +22,14 @@ KMines::KMines(QWidget *parent, const char *name)
 	kacc->insertItem(i18n("New game"), "New", "F2");
 	kacc->insertItem(i18n("Pause game"), "Pause", "P");
 	kacc->insertItem(i18n("High scores"), "HighScores", "H");
+	kacc->insertStdItem(KAccel::Print);
 
 	/* connections for kmines */
 	kacc->connectItem(KAccel::Quit, this, SLOT(quit()));
 	kacc->connectItem("New", status, SLOT(restartGame()));
 	kacc->connectItem("Pause", status, SLOT(pauseGame()));
 	kacc->connectItem("HighScores", status, SLOT(showHighScores()));
+	kacc->connectItem(KAccel::Print, status, SLOT(print()));
 	
 	kacc->readSettings();
 	
@@ -51,6 +53,8 @@ KMines::KMines(QWidget *parent, const char *name)
 	popup->insertSeparator();
 	id = popup->insertItem(i18n("&High scores"), status, SLOT(showHighScores()) );
 	kacc->changeMenuAccel(popup, id, "HighScores");
+	id = popup->insertItem(i18n("&Print"), status, SLOT(print()));
+	kacc->changeMenuAccel(popup, id, KAccel::Print);
 	popup->insertSeparator();
 	id = popup->insertItem(i18n("&Quit"), this, SLOT(quit()) );
 	kacc->changeMenuAccel(popup, id, KAccel::Quit);

@@ -175,6 +175,8 @@ void Field::start(uint nb_width, uint nb_height, uint nb_mines)
 
 void Field::paintEvent( QPaintEvent *)
 {
+	if (isPaused) return;		
+
 	for (uint i=1; i<=nb_w; i++)
 	    for (uint j=1; j<=nb_h; j++)
 		    drawCase(i, j, computeNeighbours(i,j));
@@ -270,7 +272,7 @@ void Field::uncover(uint i, uint j)
 
 void Field::mousePressEvent( QMouseEvent *e )
 {
-	if (_stop) return;
+	if ( _stop || isPaused ) return;
 
 	updateSmiley(STRESS);
 
@@ -300,7 +302,7 @@ void Field::mousePressEvent( QMouseEvent *e )
 
 void Field::mouseReleaseEvent( QMouseEvent *e )
 {
-	if (_stop) return;
+	if ( _stop || isPaused ) return;
 
 	/* if not out of the limits of the field */
 	if (ic>=1 && ic<=nb_w && jc>=1 && jc<=nb_h) {
