@@ -10,8 +10,8 @@ INCLUDES = $(all_includes)
 kmines_LDFLAGS = $(all_libraries) $(KDE_RPATH)
 kmines_LDADD = -lkdeui -lkdecore -lqt -lXext -lX11 $(LIBSOCKET)
 
-kmines_SOURCES= main.cpp status.cpp field.cpp dialogs.cpp
-BUILTSOURCES = main.moc status.moc field.moc dialogs.moc
+kmines_SOURCES= dialogs.cpp field.cpp status.cpp main.cpp
+BUILTSOURCES = dialogs.moc field.moc status.moc main.moc
 DISTCLEANFILES = $(BUILTSOURCES)
 
 messages:

@@ -16,19 +16,18 @@ class KStatus : public QWidget
 	
  public slots:
 	void restartGame();
-	void newGame(int, int, int);
-	void changeCase(int, int);
+	void newGame(uint, uint, uint);
+	void changeCase(uint, uint);
 	void update();
 	void updateSmiley(int);
 	void endGame(int);
-	void getNumbers(int *, int *, int *);
-	void options();
+	void getNumbers(uint *, uint *, uint *);
 	void showHighScores();
-	void pauseGame();
+	void pauseGame() { pause(); };
   
  signals:
 	/* field signals */
-	void newField(int, int, int);
+	void newField(uint, uint, uint);
 	void stopField();
   
 	/* update status signals */
@@ -37,7 +36,6 @@ class KStatus : public QWidget
 	void zeroTimer();
 	void startTimer();
 	void getTime(int *, int*);
-	void setUMark(int);
 	void pause();
 	
 	void quit();
@@ -45,8 +43,8 @@ class KStatus : public QWidget
  private:
 	QPixmap *s_ok, *s_stress, *s_happy, *s_ohno;
   
-	int nb_width, nb_height, nb_mines; /* mines field */
-	int uncovered, marked, uncertain;  /* number of cases in each state */
+	uint nb_width, nb_height, nb_mines; /* mines field */
+	uint uncovered, marked, uncertain;  /* number of cases in each state */
 
 	KConfig *kconf;
 	bool isConfigWritable;

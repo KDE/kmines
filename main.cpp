@@ -10,7 +10,7 @@
 
 #include "main.moc"
 
-KMines::KMines( QWidget *parent, const char *name )
+KMines::KMines(QWidget *parent, const char *name)
 : QWidget( parent, name )
 {
    	setCaption(kapp->getCaption());
@@ -20,68 +20,64 @@ KMines::KMines( QWidget *parent, const char *name )
 	status->installEventFilter(this);
 	
 	/* KKeyCode initialization */
-	kKeys->addKey(klocale->translate("Quit"), "CTRL+Q");
-	kKeys->addKey(klocale->translate("New game"), "F2");
-	kKeys->addKey(klocale->translate("Pause game"), "P");
-	kKeys->addKey(klocale->translate("Options"), "O");
-	kKeys->addKey(klocale->translate("High scores"), "H");
-	kKeys->addKey(klocale->translate("Close dialog"), "Return");
-	kKeys->addKey(klocale->translate("Ok dialog"), "Return");
-	kKeys->addKey(klocale->translate("Cancel dialog"), "Escape");
+	kKeys->addKey(i18n("Quit"), "CTRL+Q");
+	kKeys->addKey(i18n("New game"), "F2");
+	kKeys->addKey(i18n("Pause game"), "P");
+	kKeys->addKey(i18n("High scores"), "H");
+	kKeys->addKey(i18n("Close dialog"), "Return");
+	kKeys->addKey(i18n("Ok dialog"), "Return");
+	kKeys->addKey(i18n("Cancel dialog"), "Escape");
 
 	/* connections for kmines */
 	kKeys->registerWidget(K_KMINES, this);
-	kKeys->connectFunction(K_KMINES, klocale->translate("Quit"), this, SLOT(quit()));
-	kKeys->connectFunction(K_KMINES, klocale->translate("New game"), status, SLOT(restartGame()));
-	kKeys->connectFunction(K_KMINES, klocale->translate("Pause game"), status, SLOT(pauseGame()));
-	kKeys->connectFunction(K_KMINES, klocale->translate("Options"), status, SLOT(options()));
-	kKeys->connectFunction(K_KMINES, klocale->translate("High scores"), status, SLOT(showHighScores()));
+	kKeys->connectFunction(K_KMINES, i18n("Quit"), this, SLOT(quit()));
+	kKeys->connectFunction(K_KMINES, i18n("New game"), status, SLOT(restartGame()));
+	kKeys->connectFunction(K_KMINES, i18n("Pause game"), status, SLOT(pauseGame()));
+	kKeys->connectFunction(K_KMINES, i18n("High scores"), status, SLOT(showHighScores()));
 	
-	connect( this,   SIGNAL(restartGame()), 
-			 status, SLOT(restartGame()) );
-	connect( this,   SIGNAL(newGame(int, int, int)),
-			 status, SLOT(newGame(int, int, int)) );
-	connect( this,   SIGNAL(getNumbers(int *, int *, int *)),
-			 status, SLOT(getNumbers(int *, int *, int *)) );
-	connect( status, SIGNAL(quit()),
-			 this, SLOT(quit()) );
+	connect( this, SIGNAL(restartGame()), status, SLOT(restartGame()) );
+	connect( this, SIGNAL(newGame(uint, uint, uint)),
+			 status, SLOT(newGame(uint, uint, uint)) );
+	connect( this, SIGNAL(getNumbers(uint *, uint *, uint *)),
+			 status, SLOT(getNumbers(uint *, uint *, uint *)) );
+	connect( status, SIGNAL(quit()), this, SLOT(quit()) );
 
 	/* menu */
 	popup = new QPopupMenu;
-	tog_id = popup->insertItem(klocale->translate("Hide menu bar"), this, SLOT(toggleMenu()) );
+	tog_id = popup->insertItem(i18n("Hide menu bar"),
+							   this, SLOT(toggleMenu()) );
 	popup->insertSeparator();
-	popup->insertItem(klocale->translate("New game"), status, SLOT(restartGame()) );
-	popup->insertItem(klocale->translate("Pause game"), status, SLOT(pauseGame()) );
+	popup->insertItem(i18n("New game"), status, SLOT(restartGame()) );
+	popup->insertItem(i18n("Pause game"), status, SLOT(pauseGame()) );
 	popup->insertSeparator();
-	popup->insertItem(klocale->translate("High scores"), status, SLOT(showHighScores()) );
+	popup->insertItem(i18n("High scores"), status, SLOT(showHighScores()) );
 	popup->insertSeparator();
-	popup->insertItem(klocale->translate("Quit"), this, SLOT(quit()) );
+	popup->insertItem(i18n("Quit"), this, SLOT(quit()) );
   
-	QPopupMenu *options = new QPopupMenu;
-	options->insertItem(klocale->translate("? mark"), status, SLOT(options()) );
-	options->insertItem(klocale->translate("Keys"), this, SLOT(configKeys()) );
+	options = new QPopupMenu;
+	um_id = options->insertItem(i18n("? mark"), this, SLOT(toggleUMark()) );
+	options->insertItem(i18n("Keys"), this, SLOT(configKeys()) );
 	
 	QPopupMenu *level = new QPopupMenu;
-	level->insertItem(klocale->translate("Easy"));
-	level->insertItem(klocale->translate("Normal"));
-	level->insertItem(klocale->translate("Expert"));
+	level->insertItem(i18n("Easy"));
+	level->insertItem(i18n("Normal"));
+	level->insertItem(i18n("Expert"));
 	level->insertSeparator();
-	level->insertItem(klocale->translate("Custom"));
+	level->insertItem(i18n("Custom"));
 	connect(level, SIGNAL(activated(int)), SLOT(change_level(int)));
 
-    	QPopupMenu *help = kapp->getHelpMenu(true, QString(i18n("Minesweeper"))
-                                         + " " + KMINES_VERSION
+	QPopupMenu *help = kapp->getHelpMenu(true, QString(i18n("Minesweeper"))
+                                         + " " + KMINES_VERSION 
+										 + " (" + KMINES_DATE + ")"
                                          + i18n("\n\nby Nicolas Hadacek")
                                          + " (hadacek@kde.org)");  
 
-    	connect (help, SIGNAL (activated (int)), SLOT (menuCallback (int))); 
-
 	menu = new QMenuBar(this);
-	menu->insertItem(klocale->translate("File"), popup );
-	menu->insertItem(klocale->translate("Options"), options );
-	menu->insertItem(klocale->translate("Level"), level );
+	menu->insertItem(i18n("File"), popup );
+	menu->insertItem(i18n("Options"), options );
+	menu->insertItem(i18n("Level"), level );
 	menu->insertSeparator();
-	menu->insertItem(klocale->translate("Help"), help );
+	menu->insertItem(i18n("Help"), help );
 
 	/* read the menu visible/invisible config */
 	kconf = kapp->getConfig();
@@ -90,19 +86,19 @@ KMines::KMines( QWidget *parent, const char *name )
 		kconf->writeEntry(OP_MENUBAR_VIS, 1);
 	if ( kconf->readNumEntry(OP_MENUBAR_VIS)!=1 ) menu->show();
 	else menu->hide();
+
+	/* read uncertain mark option */
+	kconf->setGroup(OP_GRP);
+	if ( !kconf->hasKey(OP_UMARK_KEY) )
+		kconf->writeEntry(OP_UMARK_KEY, TRUE);
+	bool um = kconf->readBoolEntry(OP_UMARK_KEY);
+	options->setItemChecked(um_id, um);
+	emit UMarkChanged(um);
 	
 	/* begin easy game */
 	change_level(0);
 
 	toggleMenu();
-}
-
-void KMines::menuCallback(int item)
-{
-    switch (item) 
-    {   
-
-    }
 }
 
 void KMines::change_level(int lev)
@@ -127,11 +123,6 @@ void KMines::change_level(int lev)
 	}
 }
 
-void KMines::configKeys()
-{
-	kKeys->configureKeys(this);
-}
-
 bool KMines::eventFilter(QObject *, QEvent *e)
 {
 	if ( e->type()!=Event_MouseButtonPress ) return FALSE;
@@ -147,20 +138,29 @@ void KMines::quit()
 {
 	kconf->setGroup("");
 	kconf->writeEntry(OP_MENUBAR_VIS, menu->isVisible());
+	kconf->setGroup(OP_GRP);
+	kconf->writeEntry(OP_UMARK_KEY, options->isItemChecked(um_id));
 	kapp->quit();
 }
 
 void KMines::toggleMenu()
 {
 	if ( menu->isVisible() ) {
-		popup->changeItem(klocale->translate("Show menu bar"), tog_id);
+		popup->changeItem(i18n("Show menu bar"), tog_id);
 		menu->hide();
 	} else {
-		popup->changeItem(klocale->translate("Hide menu bar"), tog_id);
+		popup->changeItem(i18n("Hide menu bar"), tog_id);
 		menu->show();
 	}
 	
 	changedSize();
+}
+
+void KMines::toggleUMark()
+{
+	bool um = !options->isItemChecked(um_id);
+	options->setItemChecked(um_id, um);
+	emit UMarkChanged(um);
 }
 
 void KMines::changedSize()
@@ -190,7 +190,6 @@ int main( int argc, char ** argv )
 {
     KApplication a(argc, argv, NAME);
 	KMines *km = new KMines();
-	//km->setCaption(SNAME);
 
 	a.setMainWidget(km);
 	km->show();

@@ -2,88 +2,15 @@
 --- Copyright (c) 1996-97-98 Nicolas HADACEK (hadacek@kde.org)
 --- Distributed under the GNU General Public License
 
+
+
 This is a very classical minesweeper written almost from scratch.
 
---- REQUIREMENTS : --------------------------------------------------------
- - libkdecore-0.0.11 or higher
- - libkdeui-0.0.10 or higher
-
---- FEATURES : ------------------------------------------------------------
- - 3 levels : Easy   : 8x8   with 10 bombs
-              Normal : 16x16 with 40 bombs
- 	  	      Expert : 30x16 with 99 bombs
+ - 3 levels : Easy : 8x8 with 10 mines
+              Normal : 16x16 with 40 mines
+			  Expert : 30x16 with 99 mines
  - Custom levels
  - High Scores
 
---- CHANGELOG : ------------------------------------------------------------
-0.6.10
- - included in the CVS tree
 
-0.6.9
- - bugfix from Anders Widell (doesn't allow anymore to middle click on a flag)
-
-0.6.8
- - some polishing (game over message do not overwrite mines number & marked 
-   mines stay marked even when the game is lost : so you can completely analyse
-   why you have lost :) -- thanx to Christoph Rummel for pointing these to me.
-
-0.6.7
- - internationalization
-
-0.6.6
- - no more NULLs (for the sake of 64bits)
- - nicer dialog boxes
- - no mine on first click
-
-0.6.5
- - minor changes
- - "kexample 0.31" compliant
-
-0.6.4
- - adapted to libkdecore 0.7
- - hide/show menubar and popup
- - more compliant to the Style Guide
- 
-0.6.3
- - use kdehelp
- - updating of Makefile (use KDEDIR)
- - use kmsgbox
- 
-0.62
- - use KKeyCode to manage some keyboard shortcuts
-
-0.6
- - change the class name "Status" to "KStatus" as an include file present on my
-   system defines something called "Status"...
-
-0.5
- - use KApp for configuration and highscoring save (via KConfig)
- - better look of option & highscores windows
-
-0.4
- - minor bug fixe
- - 4 spaces tabs indentation
- - slight change in the "pause code"
-
-0.3
- - the random configuration seems to be a bit too repetitive ...
-   (fixed : silly me !)
- - a red cross must show where the marked cases have not contained mines
- - uncover case on button release, not on button push and also allow moving
-   the mouse with the left button pressed
- - clear function with the mid-button : it should be kool :)
- - a pause entry in the menu
- - QLCD for timer and mines left
- - cleaning of the highscore stuff (the highscore file is now in the home dir)
- - option : "'?' mark" on/off (the default behaviour is on : you can change
-   it by editing the defines.h file)
-
-0.2
- - some code reorganisation
- - timer starts at first click now
- - it is no more possible to click on a marked or uncertain case now
- - a small help
- - colored pixmaps
- - a better look (?)
- - highscoring
- - custom level
+Requirements : uptodate "libkdecore" & "libkdeui".

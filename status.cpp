@@ -25,20 +25,16 @@ KStatus::KStatus ( QWidget *parent, const char *name )
 	frame->setMidLineWidth(2);
 	
 	field = new Field(this);
-	
-	connect( this , SIGNAL(newField(int, int, int)),
-			 field, SLOT(Start(int, int, int)) );
-	connect( this,  SIGNAL(stopField()),
-		     field, SLOT(Stop()) );
-	connect( this, SIGNAL(pause()),
-			 field,  SLOT(pause()) );
   
-	connect( field, SIGNAL(changeCase(int,int)), SLOT(changeCase(int,int)));
-	connect( field, SIGNAL(updateStatus()), SLOT(update()));
-	connect( field, SIGNAL(endGame(int)), SLOT(endGame(int)));
+	connect( field, SIGNAL(changeCase(uint,uint)),
+			 SLOT(changeCase(uint,uint)) );
+	connect( field, SIGNAL(updateStatus()), SLOT(update()) );
+	connect( field, SIGNAL(endGame(int)), SLOT(endGame(int)) );
+	connect( parent, SIGNAL(UMarkChanged(bool)),
+			 field, SLOT(changeUMark(bool)) );
   
 	smiley = new QPushButton(this);
-	connect( smiley, SIGNAL(clicked()), SLOT(restartGame()));
+	connect( smiley, SIGNAL(clicked()), SLOT(restartGame()) );
 	smiley->installEventFilter(parent);
   
 	QPainter pt;
@@ -84,23 +80,15 @@ KStatus::KStatus ( QWidget *parent, const char *name )
 	
 	connect( this, SIGNAL(exleft(const char *)),
 			 left, SLOT(display(const char *)) );
-	connect( this, SIGNAL(freezeTimer()),
-			 dg,   SLOT(freeze()) );
+	connect( this, SIGNAL(freezeTimer()), dg, SLOT(freeze()) );
 	connect( this, SIGNAL(getTime(int *, int *)),
 		 	 dg,   SLOT(getTime(int *, int *)) );
 	
-	connect( field, SIGNAL(startTimer()),
-			 dg,    SLOT(start()) );
-	connect( field, SIGNAL(freezeTimer()),
-			 dg,    SLOT(freeze()) );
-	connect( this,  SIGNAL(zeroTimer()),
-			 dg,    SLOT(zero()) );
-	connect( this,  SIGNAL(startTimer()),
-		     dg,    SLOT(start()) );
-	connect( field, SIGNAL(updateSmiley(int)),
-			 this,  SLOT(updateSmiley(int)) );
-	connect( this,  SIGNAL(setUMark(int)),
-			 field, SLOT(setUMark(int)) );
+	connect( field, SIGNAL(startTimer()), dg, SLOT(start()) );
+	connect( field, SIGNAL(freezeTimer()), dg, SLOT(freeze()) );
+	connect( this,  SIGNAL(zeroTimer()), dg, SLOT(zero()) );
+	connect( this,  SIGNAL(startTimer()), dg, SLOT(start()) );
+	connect( field, SIGNAL(updateSmiley(int)), this, SLOT(updateSmiley(int)) );
 	
 	/* configuration & highscore initialisation */
 	kconf = kapp->getConfig();
@@ -109,23 +97,16 @@ KStatus::KStatus ( QWidget *parent, const char *name )
 	
 	/* if the entries do not exist : create them */
 	kconf->setGroup(OP_GRP);
-	if ( !kconf->hasKey(OP_UMARK_KEY) )
-		kconf->writeEntry(OP_UMARK_KEY, 0);
 	for (int i=0; i<3; i++) {
 		kconf->setGroup(HS_GRP[i]);
 		if ( !kconf->hasKey(HS_NAME_KEY) )
-			kconf->writeEntry(HS_NAME_KEY, klocale->translate("Anonymous"));
+			kconf->writeEntry(HS_NAME_KEY, i18n("Anonymous"));
 		if ( !kconf->hasKey(HS_MIN_KEY) )
 			kconf->writeEntry(HS_MIN_KEY, 59);
 		if ( !kconf->hasKey(HS_SEC_KEY) )
 			kconf->writeEntry(HS_SEC_KEY, 59);    
 	}
-	
-	/* read configuration */
-	kconf->setGroup(OP_GRP);
-	setUMark(kconf->readNumEntry(OP_UMARK_KEY));
 }
-
 
 void KStatus::createSmileyPixmap(QPixmap *pm, QPainter *pt)
 {
@@ -146,7 +127,6 @@ void KStatus::createSmileyPixmap(QPixmap *pm, QPainter *pt)
 	pt->drawLine(8,20,9,20); pt->drawLine(15,20,16,20);
 	pt->drawLine(10,21,14,21);
 }
-
 
 void KStatus::adjustSize()
 { 
@@ -169,7 +149,6 @@ void KStatus::adjustSize()
 					    nb_width*CASE_W, nb_height*CASE_W );
 }
 
-
 void KStatus::restartGame()
 {
 	uncovered = 0; uncertain = 0; marked = 0;
@@ -181,24 +160,20 @@ void KStatus::restartGame()
 	updateSmiley(OK);
 	
 	emit zeroTimer();
-	
 	emit newField( nb_width, nb_height, nb_mines);
 }
 
-
-void KStatus::newGame(int nb_w, int nb_h, int nb_m)
+void KStatus::newGame(uint nb_w, uint nb_h, uint nb_m)
 {
 	nb_width  = nb_w;
 	nb_height = nb_h;
 	nb_mines  = nb_m;
 	
 	adjustSize();
-  
 	restartGame();
 }
 
-
-void KStatus::changeCase( int case_mode, int inc)
+void KStatus::changeCase(uint case_mode, uint inc)
 {
 	switch(case_mode) {
 	 case UNCOVERED : uncovered += inc; break;
@@ -207,17 +182,14 @@ void KStatus::changeCase( int case_mode, int inc)
 	}
 }
 
-
 void KStatus::update()
 {
 	static char perc[5];
 	sprintf(perc,"%d", nb_mines - marked);
 	emit exleft(perc);
 	
-	if ( uncovered==(nb_width*nb_height - nb_mines) )
-		endGame(TRUE);
+	if ( uncovered==(nb_width*nb_height - nb_mines) ) endGame(TRUE);
 }
-
 
 void KStatus::updateSmiley(int mood)
 {
@@ -228,7 +200,6 @@ void KStatus::updateSmiley(int mood)
 	 case UNHAPPY : smiley->setPixmap(*s_ohno); break;
 	}
 }
-
 
 void KStatus::endGame(int win)
 {
@@ -248,29 +219,18 @@ void KStatus::endGame(int win)
 		else if (nb_width==MODES[2][0] && nb_height==MODES[2][1] && nb_mines==MODES[2][2])
 			res = setHighScore(t_sec,t_min,EXPERT);
 		
-		if ( res!=0 ) exmesg(klocale->translate("You did it ... but not in time."));
-		else exmesg(klocale->translate("Yeeessss !"));
+		if ( res!=0 ) exmesg(i18n("You did it ... but not in time."));
+		else exmesg(i18n("Yeeessss !"));
 	} else {
 		emit updateSmiley(UNHAPPY);
-		exmesg(klocale->translate("Bad luck !"));
+		exmesg(i18n("Bad luck !"));
 	}
 }
 
-
-void KStatus::getNumbers(int *nb_w, int *nb_h, int *nb_m)
+void KStatus::getNumbers(uint *nb_w, uint *nb_h, uint *nb_m)
 {
 	*nb_w = nb_width; *nb_h = nb_height; *nb_m = nb_mines;
 }
-
-
-void KStatus::options()
-{
-	Options::Options(this);
-
-	kconf->setGroup(OP_GRP);
-	emit setUMark(kconf->readNumEntry(OP_UMARK_KEY));
-}
-
 
 void KStatus::exmesg(const char *str)
 { 
@@ -281,13 +241,11 @@ void KStatus::exmesg(const char *str)
 	mesg->setText(str);
 }
 
-
 void KStatus::showHighScores()
 {
 	int dummy;
 	WHighScores whs(TRUE, 0, 0, 0, dummy, this);
 }
-
 
 int KStatus::setHighScore(int sec, int min, int mode)
 {
@@ -298,23 +256,16 @@ int KStatus::setHighScore(int sec, int min, int mode)
 		
 		/* save the new score in the file to be sure it won't be lost */
 		if (isConfigWritable) kconf->sync();
-	} else errorShow(klocale->translate("Highscore file is not writable !"));
+	} else errorShow(i18n("Highscore file is not writable !"));
 	
 	return res;
 } 
 
-
-void KStatus::pauseGame()
-{
-	emit pause();
-}
-
-
 void KStatus::errorShow(QString msg)
 {
 	QMessageBox ab;
-	ab.setCaption(klocale->translate("kmines : Error"));
+	ab.setCaption(i18n("kmines : Error"));
 	ab.setText(msg);
-	ab.setButtonText(klocale->translate("Ok"));
+	ab.setButtonText(i18n("Ok"));
 	ab.exec();
 }

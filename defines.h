@@ -7,8 +7,6 @@
 
 /* Version name and date */
 #define NAME "kmines"
-//#define SNAME "kmines 0.6.10 alpha"
-#define SDATE "21/01/98"
 
 /* Strings for the configuration file */
 #define OP_GRP "Options"
@@ -27,7 +25,7 @@ const QString HS_GRP[3] = {
 #define K_HS "highscores"
 #define K_OP "options"
 
-/* States of a case */
+/* States of a case (positive) */
 #define NOTHING    0
 #define MINE       1
 #define COVERED    2
@@ -67,7 +65,7 @@ const QString HS_GRP[3] = {
 #define EXPERT 2 
 
 /* (width, height, mines) */
-const int MODES[3][3] =
+const uint MODES[3][3] =
 {
 	  {8, 8, 10},
 	  {16, 16, 40},

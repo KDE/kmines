@@ -13,16 +13,16 @@ class Field : public QWidget
 	
  public:
 	Field( QWidget *parent=0, const char *name=0 );
-  
+	
  public slots:
-	void Start(int, int, int);
-	void Stop();
-	void setUMark(int);
+	void start(uint, uint, uint);
+	void stop() { _stop = TRUE; };
 	void pause();
 	void resume();
+	void changeUMark(bool um) { u_mark = um; };
 	
  signals:
-	void changeCase(int,int);
+	void changeCase(uint, uint);
 	void updateStatus();
 	void updateSmiley(int);
 	void endGame(int);
@@ -36,33 +36,33 @@ class Field : public QWidget
 	void mouseMoveEvent( QMouseEvent * );
 	
  private:
-	int  **pfield;           /* array of cases */
-	int  nb_w, nb_h, nb_m;
+	uint **pfield;         /* array of cases */
+	uint nb_w, nb_h, nb_m;
   
-	bool stop;             /* end of game ? */
+	bool _stop;             /* end of game ? */
 	bool noGame, isPaused;
 	bool first_click;
-	int  u_mark;
+	bool u_mark;
 
-	int  ic, jc;
-	int  left_down;        /* left button pressed */
-	int  mid_down;         /* mid button pressed */
+	uint ic, jc;
+	bool left_down;        /* left button pressed */
+	bool mid_down;         /* mid button pressed */
   
 	QPainter *pt;
 	QPixmap  *pm_flag, *pm_mine, *pm_exploded, *pm_error;
 	QLabel   *msg;
 	QPushButton *pb;
   
-	int  computeNeighbours(int, int);
-	void drawCase(int, int, int);
-	void uncover(int, int);
-	void showMines(int, int);
-	void changeCaseState(int, int, int);
+	uint  computeNeighbours(uint, uint);
+	void drawCase(uint, uint, uint);
+	void uncover(uint, uint);
+	void showMines(uint, uint);
+	void changeCaseState(uint, uint, uint);
 	void createMinePixmap();
-	void pressCase(int, int, int);
-	void pressClearFunction(int, int, int);
-	void clearFunction(int, int);
-	void uncoverCase(int, int);
+	void pressCase(uint, uint, uint);
+	void pressClearFunction(uint, uint, uint);
+	void clearFunction(uint, uint);
+	void uncoverCase(uint, uint);
 	void adjustSize();
 };
 

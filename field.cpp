@@ -12,19 +12,17 @@
 
 #include "field.moc"
 
-Field::Field( QWidget *parent, const char *name)
-: QWidget( parent, name )
+Field::Field(QWidget *parent, const char *name)
+: QWidget(parent, name), pfield(0), _stop(FALSE), isPaused(FALSE),
+  left_down(FALSE), mid_down(FALSE)
 {
-	initMetaObject();
+	srandom( time(0) );
+
+	connect( parent, SIGNAL(newField(uint, uint, uint)),
+			 SLOT(start(uint, uint, uint)) );
+	connect( parent, SIGNAL(stopField()), SLOT(stop()) );
+	connect( parent, SIGNAL(pause()), SLOT(pause()) );
 	
-	srandom(time(0));
-	
-	left_down = FALSE; 
-	mid_down  = FALSE;
-	stop = FALSE;
-	pfield = 0;
-	isPaused = FALSE;
-  
 	pt = new QPainter();
   
 	pm_flag = new QPixmap(16,16);
@@ -74,8 +72,7 @@ Field::Field( QWidget *parent, const char *name)
 
 	pb = new QPushButton(this);
 	pb->hide();
-	connect( pb, SIGNAL(clicked()),
-			 this, SLOT(resume()) );
+	connect(pb, SIGNAL(clicked()), this, SLOT(resume()));
 }
 
 void Field::adjustSize()
@@ -83,16 +80,16 @@ void Field::adjustSize()
 	int sw, sh, sw2, sh2;
 	
 	QFontMetrics fm = msg->fontMetrics();
-	sw = fm.width(klocale->translate("Game paused")) + LABEL_WC;
+	sw = fm.width(i18n("Game paused")) + LABEL_WC;
 	sh = fm.height() + LABEL_HC;
 	QFontMetrics fm2 = pb->fontMetrics();
-	sw2 = fm2.width(klocale->translate("Press to resume")) + LABEL_WC;
+	sw2 = fm2.width(i18n("Press to resume")) + LABEL_WC;
 	sh2 = fm2.height() + LABEL_HC;
 
 	msg->setGeometry((width() - sw)/2, (height() - sh-sh2)/3, sw,sh);
-	msg->setText(klocale->translate("Game paused"));
+	msg->setText(i18n("Game paused"));
 	pb->setGeometry((width() - sw2)/2, 2*(height() - sh-sh2)/3, sw2, sh2);
-	pb->setText(klocale->translate("Press to resume"));
+	pb->setText(i18n("Press to resume"));
 }
 
 void Field::createMinePixmap()
@@ -112,9 +109,9 @@ void Field::createMinePixmap()
 	pt->drawPoint(5,15); pt->drawLine(8,15,12,15); pt->drawPoint(15,15);
 }
 
-int Field::computeNeighbours(int i, int j)
+uint Field::computeNeighbours(uint i, uint j)
 {
-	int nm = 0;
+	uint nm = 0;
 	
 	if (pfield[i-1][j]   & MINE) nm++;
 	if (pfield[i-1][j+1] & MINE) nm++;
@@ -128,9 +125,9 @@ int Field::computeNeighbours(int i, int j)
 	return nm;
 }
 
-void Field::Start(int nb_width, int nb_height, int nb_mines)
+void Field::start(uint nb_width, uint nb_height, uint nb_mines)
 {
-	int i,j;
+	uint i,j;
 
 	/* if game is paused : resume */
 	if ( isPaused ) {
@@ -148,13 +145,13 @@ void Field::Start(int nb_width, int nb_height, int nb_mines)
 	nb_h = nb_height;
 	nb_m = nb_mines;
 	
-	stop = FALSE;
+	_stop = FALSE;
 	first_click = TRUE;
 	
 	/* reserve memory */
-	pfield = new int *[nb_w+2];
+	pfield = new uint *[nb_w+2];
 	for (i=0; i<nb_w+2; i++)   
-	    pfield[i] = new int [nb_h+2];
+	    pfield[i] = new uint [nb_h+2];
 	
 	/* initialize field */
 	for (i=1; i<=nb_w; i++)
@@ -178,12 +175,12 @@ void Field::Start(int nb_width, int nb_height, int nb_mines)
 
 void Field::paintEvent( QPaintEvent *)
 {
-	for (int i=1; i<=nb_w; i++)
-	    for (int j=1; j<=nb_h; j++)
+	for (uint i=1; i<=nb_w; i++)
+	    for (uint j=1; j<=nb_h; j++)
 		    drawCase(i, j, computeNeighbours(i,j));
 }
 
-void Field::changeCaseState(int i, int j, int new_st)
+void Field::changeCaseState(uint i, uint j, uint new_st)
 {
 	if (pfield[i][j] & MINE) {
 		emit changeCase(pfield[i][j] ^ MINE,-1);
@@ -195,13 +192,13 @@ void Field::changeCaseState(int i, int j, int new_st)
   
 	emit changeCase(new_st,1);
 	drawCase(i,j,computeNeighbours(i,j));
-	if (!stop) emit updateStatus();
+	if (!_stop) emit updateStatus();
 }
 
 #define ipos (i-1)*CASE_W
 #define jpos (j-1)*CASE_W
 
-void Field::drawCase(int i, int j, int nbs)
+void Field::drawCase(uint i, uint j, uint nbs)
 {
 	char nb[1];
 	
@@ -247,12 +244,11 @@ void Field::drawCase(int i, int j, int nbs)
     pt->end();
 }
 
-void Field::uncover(int i, int j)
+void Field::uncover(uint i, uint j)
 {
-	int nbs;
+	uint nbs;
 	
-	if ( !(pfield[i][j] & COVERED) )
-	    return;
+	if ( !(pfield[i][j] & COVERED) ) return;
 	nbs = computeNeighbours(i,j);
   
 	if (!nbs) {
@@ -265,7 +261,7 @@ void Field::uncover(int i, int j)
 		uncover(i+1,j+1);
 		uncover(i+1,j  );
 		uncover(i+1,j-1);
-	}else 
+	} else 
 	    changeCaseState(i,j,UNCOVERED);
 }
 
@@ -273,16 +269,14 @@ void Field::uncover(int i, int j)
 #define jcpos (jc-1)*CASE_W
 void Field::mousePressEvent( QMouseEvent *e )
 {
-	if (stop)
-	    return;
+	if (_stop) return;
 
 	updateSmiley(STRESS);
 
 	ic = e->pos().x() / CASE_W + 1;
 	jc = e->pos().y() / CASE_W + 1;
 	
-	if (first_click)
-		emit startTimer();
+	if (first_click) emit startTimer();
 
 	if (e->button()==LeftButton) {
 		left_down = TRUE;
@@ -305,8 +299,7 @@ void Field::mousePressEvent( QMouseEvent *e )
 
 void Field::mouseReleaseEvent( QMouseEvent *e )
 {
-	if (stop)
-		return;
+	if (_stop) return;
 
 	/* if not out of the limits of the field */
 	if (ic>=1 && ic<=nb_w && jc>=1 && jc<=nb_h) {
@@ -316,8 +309,8 @@ void Field::mouseReleaseEvent( QMouseEvent *e )
 			if ( first_click ) {
 				// set mines positions on field ; must avoid the first 
 				// clicked case
-				for(int k=0; k<nb_m; k++) {
-					int i, j;
+				for(uint k=0; k<nb_m; k++) {
+					uint i, j;
 					do {
 						i = random() % nb_w;
 						j = random() % nb_h;
@@ -337,14 +330,12 @@ void Field::mouseReleaseEvent( QMouseEvent *e )
 		}
 	}
   
-	if (!stop) 
-		updateSmiley(OK);
+	if (!_stop)	updateSmiley(OK);
 }
 
 void Field::mouseMoveEvent( QMouseEvent *e )
 {
-	if (stop)
-		return; 
+	if (_stop) return; 
 
 	/* if not out of the limits of the field */
 	if (ic>=1 && ic<=nb_w && jc>=1 && jc<=nb_h) {
@@ -367,10 +358,10 @@ void Field::mouseMoveEvent( QMouseEvent *e )
 }
 
 /* Shown mines on explosion */
-void Field::showMines(int i0, int j0)
+void Field::showMines(uint i0, uint j0)
 {
-	for(int i=1; i<=nb_w; i++)
-		for(int j=1; j<=nb_h; j++)
+	for(uint i=1; i<=nb_w; i++)
+		for(uint j=1; j<=nb_h; j++)
 		    if ( (pfield[i][j] & MINE) ) {
 				if ( !(pfield[i][j] & EXPLODED) && !(pfield[i][j] & MARKED) ) 
 					changeCaseState(i,j,UNCOVERED);
@@ -379,12 +370,7 @@ void Field::showMines(int i0, int j0)
 	changeCaseState(i0, j0, EXPLODED);
 }
 
-void Field::Stop()
-{
-	stop = TRUE;
-}
-
-void Field::pressCase(int i, int j, int state)
+void Field::pressCase(uint i, uint j, uint state)
 {
 	if (pfield[i][j] & COVERED) {
 		pt->begin(this);
@@ -394,7 +380,7 @@ void Field::pressCase(int i, int j, int state)
 	}
 }
 
-void Field::pressClearFunction(int i, int j, int state)
+void Field::pressClearFunction(uint i, uint j, uint state)
 {
 	pressCase(i-1, j+1, state);
 	pressCase(i-1, j  , state);
@@ -408,14 +394,13 @@ void Field::pressClearFunction(int i, int j, int state)
 }
 
 #define M_OR_U(i, j) ( (pfield[i][j] & MARKED) || (pfield[i][j] & UNCERTAIN) )
-void Field::clearFunction(int i, int j)
+void Field::clearFunction(uint i, uint j)
 {
 	pressClearFunction(i, j, FALSE);
 	
-	if (pfield[i][j] & (COVERED|MARKED|UNCERTAIN))
-		return; 
+	if ( pfield[i][j] & (COVERED|MARKED|UNCERTAIN) ) return; 
 	
-	int nm;
+	uint nm;
 	/* number of mines around the case */
 	nm = computeNeighbours(i, j);
 	
@@ -441,13 +426,11 @@ void Field::clearFunction(int i, int j)
 	}
 }
 	  
-void Field::uncoverCase(int i, int j)
+void Field::uncoverCase(uint i, uint j)
 {
 	if (pfield[i][j] & COVERED) {
-		if (pfield[i][j] & MINE)
-		    changeCaseState(i, j, UNCOVERED);
-		else
-			uncover(i, j);
+		if (pfield[i][j] & MINE) changeCaseState(i, j, UNCOVERED);
+		else uncover(i, j);
 	}
   
 	/* to enable multiple explosions ... */
@@ -457,15 +440,9 @@ void Field::uncoverCase(int i, int j)
 	}
 }
 
-void Field::setUMark(int um)
-{
-	u_mark = um;
-}
-
 void Field::pause()
 {
-	if (first_click || stop)
-		return;
+	if ( first_click || _stop ) return;
 	
 	/* if already in pause : resume game */
 	if ( isPaused ) {

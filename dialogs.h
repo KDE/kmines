@@ -41,18 +41,18 @@ class Custom : public QDialog
  Q_OBJECT
 	  
  public:
-	Custom(int *w, int *h, int *nb, QWidget *parent);
+	Custom(uint *w, uint *h, uint *nb, QWidget *parent);
   
  private slots:
-	void widthChanged(int);
-	void heightChanged(int);
-	void nbminesChanged(int);
+	void widthChanged(uint);
+	void heightChanged(uint);
+	void nbminesChanged(uint);
   
  private:
 	QScrollBar *sw, *sh, *sm;
 	QLabel *lw, *lh, *lm;
   
-	int  *nb_w, *nb_h, *nb_m;
+	uint  *nb_w, *nb_h, *nb_m;
 };
 
 

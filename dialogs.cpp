@@ -84,7 +84,7 @@ void DigitalClock::getTime(int  *t_sec, int *t_min)
 
 /********************/
 /* Customize dialog */
-Custom::Custom(int *nb_width, int *nb_height, int *nb_mines,
+Custom::Custom(uint *nb_width, uint *nb_height, uint *nb_mines,
 			   QWidget *parent)
 : QDialog(parent, 0, TRUE)
 {
@@ -94,7 +94,7 @@ Custom::Custom(int *nb_width, int *nb_height, int *nb_mines,
 	nb_h = nb_height;
 	nb_m = nb_mines;
   
-	setCaption(klocale->translate("Custom Level"));
+	setCaption(i18n("Custom Level"));
 
 	QFontMetrics fm = this->fontMetrics();
 	int frame_w = 7; int frame_h = 7;
@@ -105,13 +105,13 @@ Custom::Custom(int *nb_width, int *nb_height, int *nb_mines,
 	int H = 2*frame_h + 3*(label_h + dec1_h + scroll_h) 
 		    + 2*dec2_h + dec3_h + button_h;
 	
-	int text_label_w = QMAX(QMAX(fm.width(klocale->translate("Width :")),
-								 fm.width(klocale->translate("Height :"))),
-							fm.width(klocale->translate("Mines :")));
+	int text_label_w = QMAX(QMAX(fm.width(i18n("Width :")),
+								 fm.width(i18n("Height :"))),
+							fm.width(i18n("Mines :")));
 	int nb_label_w = 2*fm.maxWidth() + 2*1;
 	int nb2_label_w = 5*fm.maxWidth() + fm.width(" ie ") + fm.width("%") + 2*1;
-	int button_w = QMAX(fm.width(klocale->translate("Ok")),
-						fm.width(klocale->translate("Cancel"))) + 2*7;
+	int button_w = QMAX(fm.width(i18n("Ok")),
+						fm.width(i18n("Cancel"))) + 2*7;
 	
 	int minw_button = 2*button_w + 30;
 	int minw_label = text_label_w + nb2_label_w + 30;
@@ -121,31 +121,31 @@ Custom::Custom(int *nb_width, int *nb_height, int *nb_mines,
 	
 	int temp = frame_h; int dec = label_h+dec1_h;
 	QLabel *label;
-	ADD_LABEL( klocale->translate("Width :"), frame_w, temp, text_label_w, label_h );
+	ADD_LABEL( i18n("Width :"), frame_w, temp, text_label_w, label_h );
 	label->setAlignment( AlignCenter );
 	lw = new QLabel(this);
 	lw->setFrameStyle( QFrame::Panel | QFrame::Sunken );
 	lw->setAlignment( AlignCenter );
 	lw->setGeometry(W-nb_label_w-frame_w, temp, nb_label_w, label_h);
-	lw->setNum(*nb_w);
+	lw->setNum((int)*nb_w);
 	sw = new QScrollBar(8, 50, 1, 5, *nb_w,QScrollBar::Horizontal, this);
 	sw->setGeometry(frame_w, temp+dec, W-2*frame_w, scroll_h);
 	connect(sw, SIGNAL(valueChanged(int)), this, SLOT(widthChanged(int)));
 
 	temp += dec + scroll_h+dec2_h; 
-	ADD_LABEL( klocale->translate("Height :"), frame_w, temp, text_label_w, label_h);
+	ADD_LABEL( i18n("Height :"), frame_w, temp, text_label_w, label_h);
 	label->setAlignment( AlignCenter );
 	lh = new QLabel(this);
 	lh->setFrameStyle( QFrame::Panel | QFrame::Sunken );
 	lh->setAlignment( AlignCenter );
 	lh->setGeometry(W-nb_label_w-frame_w, temp, nb_label_w, label_h);
-	lh->setNum(*nb_h);
+	lh->setNum((int)*nb_h);
 	sh = new QScrollBar(8, 50, 1, 5, *nb_h,QScrollBar::Horizontal, this);
 	sh->setGeometry(frame_w, temp+dec, W-2*frame_w, scroll_h);
 	connect(sh, SIGNAL(valueChanged(int)), SLOT(heightChanged(int)));
 
 	temp += dec + scroll_h+dec2_h;
-	ADD_LABEL( klocale->translate("Mines :"), frame_w, temp, text_label_w, label_h);
+	ADD_LABEL( i18n("Mines :"), frame_w, temp, text_label_w, label_h);
 	label->setAlignment( AlignCenter );
 	lm = new QLabel(this);
 	lm->setFrameStyle( QFrame::Panel | QFrame::Sunken );
@@ -154,37 +154,38 @@ Custom::Custom(int *nb_width, int *nb_height, int *nb_mines,
 	sm = new QScrollBar(1, (*nb_w)*(*nb_h)-1, 1, 5,
 						*nb_m,QScrollBar::Horizontal, this);
 	sm->setGeometry(frame_w, temp+dec, W-2*frame_w, scroll_h);
-	nbminesChanged(*nb_m);
+	nbminesChanged((int)*nb_m);
 	connect(sm, SIGNAL(valueChanged(int)), SLOT(nbminesChanged(int)));
 
 	temp = (W-2*button_w)/3;
 	dec = H-frame_h-button_h;
 	QPushButton *ok = new QPushButton(this);
-	ok->setText(klocale->translate("Ok"));
+	ok->setText(i18n("Ok"));
 	ok->setGeometry(temp, dec, button_w, button_h);
 	connect(ok, SIGNAL(clicked()), SLOT(accept()));
 	QPushButton *cancel = new QPushButton(this);
-	cancel->setText(klocale->translate("Cancel"));
+	cancel->setText(i18n("Cancel"));
 	cancel->setGeometry(2*temp+button_w, dec, button_w, button_h);
 	connect(cancel, SIGNAL(clicked()), SLOT(reject()));
 
 	D_OKCANCEL_KEY(K_CUSTOM, this);
 }
 
-void Custom::widthChanged(int new_width)
+void Custom::widthChanged(uint new_width)
 {
 	*nb_w = new_width;
-	lw->setNum(*nb_w);
+	lw->setNum((int)*nb_w);
 	nbminesChanged(*nb_m);
 }
   
-void Custom::heightChanged(int new_height)
+void Custom::heightChanged(uint new_height)
 {
-	*nb_h = new_height;  lh->setNum(*nb_h);
+	*nb_h = new_height;
+	lh->setNum((int)*nb_h);
 	nbminesChanged(*nb_m);
 }
   
-void Custom::nbminesChanged(int new_nbmines)
+void Custom::nbminesChanged(uint new_nbmines)
 {
 	char str[30];
 	
@@ -219,7 +220,7 @@ int WHighScores::showHS( bool show, int new_sec, int new_min, int mode)
 		if ( (new_sec + new_min*60) >= res ) return res;
 	}
 	
-	setCaption(klocale->translate("High Scores"));
+	setCaption(i18n("High Scores"));
 
 	/* set dialog layout */
 	int frame_w = 10; int frame_h = 10;
@@ -229,10 +230,10 @@ int WHighScores::showHS( bool show, int new_sec, int new_min, int mode)
 	QFontMetrics fm1( f1 );
 	int level_label_w = QMAX(QMAX(fm1.width(HS_GRP[0]), fm1.width(HS_GRP[1])),
 							 fm1.width(HS_GRP[2])) +2*3;
-	int in_label_w = fm1.width(klocale->translate("in"));
-	int minutes_label_w = fm1.width(klocale->translate("minutes and "));
-	int seconds_label_w = fm1.width(klocale->translate("seconds."));
-	int button_w = fm1.width(klocale->translate("Close")) + 2*15;
+	int in_label_w = fm1.width(i18n("in"));
+	int minutes_label_w = fm1.width(i18n("minutes and "));
+	int seconds_label_w = fm1.width(i18n("seconds."));
+	int button_w = fm1.width(i18n("Close")) + 2*15;
 	int button_h = fm1.height() + 2*10;
 	int space_w = fm1.width(" ");
 
@@ -248,7 +249,7 @@ int WHighScores::showHS( bool show, int new_sec, int new_min, int mode)
 	f2.setPointSize(info.pointSize()+6);
 	f2.setBold(TRUE);
 	QFontMetrics fm3(f2);
-	int title_w = fm3.width(klocale->translate("Hall of Fame"));
+	int title_w = fm3.width(i18n("Hall of Fame"));
 	int title_h = fm3.height();
 	
 	int H = 2*frame_h + 4*label_h + dec1_h + 2*dec2_h + dec3_h + button_h;
@@ -258,7 +259,7 @@ int WHighScores::showHS( bool show, int new_sec, int new_min, int mode)
 	setFixedSize(W, H);
 	
 	QLabel *label;
-	ADD_LABEL(klocale->translate("Hall of Fame"), (W-title_w)/2, frame_h, title_w, title_h);
+	ADD_LABEL(i18n("Hall of Fame"), (W-title_w)/2, frame_h, title_w, title_h);
 	label->setFont(f2);
 	label->setAlignment(AlignCenter);
 	
@@ -292,7 +293,7 @@ int WHighScores::showHS( bool show, int new_sec, int new_min, int mode)
 		}
 		
 		temp2 += name_label_w + space_w;
-		ADD_LABEL(klocale->translate("in"), temp2, HDEC, in_label_w, label_h);
+		ADD_LABEL(i18n("in"), temp2, HDEC, in_label_w, label_h);
 		
 		if ( !show && i==mode )
 			kconf->writeEntry(HS_MIN_KEY, new_min);
@@ -303,7 +304,7 @@ int WHighScores::showHS( bool show, int new_sec, int new_min, int mode)
 					  nb_label_w, label_h);
 			label->setAlignment(AlignCenter);
 			label->setFont(f1);
-			ADD_LABEL(klocale->translate("minutes and "), temp2+nb_label_w+space_w, HDEC,
+			ADD_LABEL(i18n("minutes and "), temp2+nb_label_w+space_w, HDEC,
 					  minutes_label_w, label_h);
 		}
 		
@@ -316,12 +317,12 @@ int WHighScores::showHS( bool show, int new_sec, int new_min, int mode)
 		label->setAlignment(AlignCenter);
 		label->setFont(f1);
 		temp2 += nb2_label_w + space_w;
-		ADD_LABEL(klocale->translate("seconds."), temp2, HDEC, seconds_label_w, label_h);
+		ADD_LABEL(i18n("seconds."), temp2, HDEC, seconds_label_w, label_h);
 	}
 
 	temp2 = (W-button_w)/2;
 	pb = new QPushButton(this);
-	pb->setText(klocale->translate("Close"));
+	pb->setText(i18n("Close"));
 	pb->setGeometry(temp2, temp+2*dec+label_h+dec3_h, button_w, button_h);
 	connect(pb, SIGNAL(clicked()), SLOT(accept()));
 	
@@ -339,7 +340,7 @@ void WHighScores::writeName()
 {
 	QString str = qle->text();
 	if ( str.isNull() )
-	    str = klocale->translate("Anonymous");
+	    str = i18n("Anonymous");
 	
 	kconf->writeEntry(HS_NAME_KEY, str);
 	
@@ -358,15 +359,15 @@ Options::Options(QWidget *parent)
 	kconf->setGroup(OP_GRP);
 	um = kconf->readNumEntry(OP_UMARK_KEY);
 	
-	setCaption(klocale->translate("Options"));
+	setCaption(i18n("Options"));
 	
 	QFontMetrics fm = fontMetrics();
 	int frame_w = 10; int frame_h = 10;
-	int op1_w = fm.width(klocale->translate("Uncertain (?) mark"));
+	int op1_w = fm.width(i18n("Uncertain (?) mark"));
 	int label_h = fm.height();
-	int yes_w = fm.width(klocale->translate("Yes"));
-	int no_w = fm.width(klocale->translate("No"));
-	int button_w = fm.width(klocale->translate("Ok")) + 2*10;
+	int yes_w = fm.width(i18n("Yes"));
+	int no_w = fm.width(i18n("No"));
+	int button_w = fm.width(i18n("Ok")) + 2*10;
 	int button_h = fm.height() + 2*7;
 	int dec1_w = 10; int dec1_h = 15;
 	int dec2_h = 20;
@@ -376,13 +377,13 @@ Options::Options(QWidget *parent)
 	setFixedSize(W, H);
 	
 	QButtonGroup *bg = new QButtonGroup(this);
-	bg->setTitle(klocale->translate("Uncertain (?) mark"));
+	bg->setTitle(i18n("Uncertain (?) mark"));
 	bg->setGeometry(frame_w, frame_h, W-2*frame_w, 3*label_h+3*dec1_h);
 	QRadioButton *rby = new QRadioButton(bg);
-	rby->setText(klocale->translate("Yes"));
+	rby->setText(i18n("Yes"));
 	rby->setGeometry(dec1_w, label_h+dec1_h, yes_w+20, label_h);
 	QRadioButton *rbn = new QRadioButton(bg);
-	rbn->setText(klocale->translate("No"));
+	rbn->setText(i18n("No"));
 	rbn->setGeometry(dec1_w, 2*label_h+2*dec1_h, no_w+20, label_h);
 	connect(bg, SIGNAL(clicked(int)), SLOT(changeUMark(int)));
 
@@ -391,7 +392,7 @@ Options::Options(QWidget *parent)
 	else rbn->setChecked( TRUE );
   
 	QPushButton *pb = new QPushButton(this); 
-	pb->setText(klocale->translate("Ok"));
+	pb->setText(i18n("Ok"));
 	pb->setGeometry((W-button_w)/2, H-frame_h-button_h, button_w, button_h);
 	connect(pb, SIGNAL(clicked()), SLOT(accept()));
 
@@ -421,8 +422,8 @@ WReplay::WReplay(const QString &msg1, const QString &msg2,
 	if ( !msg2.isNull() ) label1_w = QMAX(label1_w, fm1.width(msg2));
 	label1_w += frame_dec;
 	
-	QString msgt = klocale->translate("Try again");
-	QString msgq = klocale->translate("Quit");
+	QString msgt = i18n("Try again");
+	QString msgq = i18n("Quit");
 	int button_w = happy.width();
 	int button_h = happy.height();
 	int label2_w = fm1.width(msgt);

@@ -1,3 +1,0 @@
-Version 0.6.11
-* [Robert Williams] Added kapp->getHelpMenu()
-* [Robert Williams] Added setCaption()
