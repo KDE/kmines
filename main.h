@@ -12,7 +12,7 @@ class MainWidget : public KTMainWindow
   Q_OBJECT
 	
  public:
-	MainWidget(const KAboutData *);
+	MainWidget();
 
  private slots:
     void easyLevel()      { changeLevel(0); }
@@ -20,7 +20,7 @@ class MainWidget : public KTMainWindow
 	void expertLevel()    { changeLevel(2); }
 	void customLevel()    { changeLevel(3); }
     void configKeys()     { KKeyDialog::configureKeys(kacc); }
-	void toggleMenu();
+	bool toggleMenubar();
 	bool toggleUMark();
 	bool toggleKeyboard();
 
@@ -33,7 +33,6 @@ class MainWidget : public KTMainWindow
 	KActionMenu             *popup;
 	QArray<KAction *>        keyAction;
 	QArray<KRadioAction *>   levelAction;
-	KAction                 *menuAction;
 	Status                  *status;
 	
 	bool toggle(const char *name);

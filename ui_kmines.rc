@@ -1,0 +1,20 @@
+<!DOCTYPE kpartgui>
+<kpartgui name="kmines">
+<MenuBar>
+  <Menu name="game"><text>&amp;Game</text>
+	<Action name="game_pause"/>
+	<Action name="game_print"/>
+  </Menu>
+  <Menu name="settings"><text>&amp;Settings</text>
+	<Action name="options_?_mark"/>
+	<Action name="options_enable_keyboard"/>
+  </Menu>
+  <Menu name="level"><text>&amp;Level</text>
+	<Action name="level_easy"/>
+	<Action name="level_normal"/>
+	<Action name="level_expert"/>
+	<Separator/>
+	<Action name="level_custom"/>
+  </Menu>
+</MenuBar>
+</kpartgui>

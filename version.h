@@ -1,2 +1,2 @@
-#define VERSION	     "2.0.1"
-#define LONG_VERSION "2.0.1 (19 Fev 2000)"
+#define VERSION	     "2.0.2"
+#define LONG_VERSION "2.0.2 (29 Fev 2000)"
