@@ -1,8 +1,5 @@
 #include "highscores.h"
 
-#include <qlabel.h>
-#include <qlayout.h>
-
 #include <klocale.h>
 #include <kapp.h>
 
@@ -14,23 +11,9 @@ class ExtScoreItemScore : public ScoreItemScore
     ExtScoreItemScore() {}
 
     QString pretty(uint i) const {
-        return ExtScore::formatScore( readUInt(i) );
+        return ExtHighscores::formatScore( read(i).toUInt() );
     }
 };
-
-ExtScore::ExtScore(Level level, uint score)
-    : Score(score, QString("scores_") + LEVELS[level].label,
-            new ExtScoreItemScore)
-{
-    Q_ASSERT( level!=Custom );
-}
-
-QString ExtScore::formatScore(uint n)
-{
-    n = 3600 - n;
-    return QString::number(n / 60).rightJustify(2, '0') + ':'
-        + QString::number(n % 60).rightJustify(2, '0');
-}
 
 //-----------------------------------------------------------------------------
 class ExtPlayerItemMeanScore : public PlayerItemMeanScore
@@ -39,9 +22,9 @@ class ExtPlayerItemMeanScore : public PlayerItemMeanScore
     ExtPlayerItemMeanScore() {}
 
     QString pretty(uint i) const {
-        double n = readDouble(i);
+        double n = read(i).toDouble();
         if ( n==0 ) return "--";
-        return ExtScore::formatScore( (uint)n );
+        return ExtHighscores::formatScore( (uint)n );
     }
 };
 
@@ -51,58 +34,67 @@ class ExtPlayerItemBestScore : public PlayerItemBestScore
     ExtPlayerItemBestScore() {}
 
     QString pretty(uint i) const {
-        uint n = readUInt(i);
+        uint n = read(i).toUInt();
         if ( n==0 ) return "--";
-        return ExtScore::formatScore(n);
+        return ExtHighscores::formatScore(n);
     }
 };
 
-ExtPlayerInfos::ExtPlayerInfos(Level level)
-    : PlayerInfos(LEVELS[level].label, new ExtPlayerItemBestScore,
-                  new ExtPlayerItemMeanScore), _level(level)
+//-----------------------------------------------------------------------------
+QString ExtHighscores::gameTypeLabel(uint level, LabelType type) const
 {
-    if ( !_newPlayer ) return;
-
-    // convert legacy highscores ...
-    convertLegacy(Easy, "Easy level");
-    convertLegacy(Normal, "Normal level");
-    convertLegacy(Expert, "Expert level");
-}
-
-QString ExtPlayerInfos::highscoresURL() const
-{
-    KURL url = URL(Highscores, registeredName());
-    addToURL(url, "level", LEVELS[_level].wwLabel);
-    return url.url();
-}
-
-QString ExtPlayerInfos::showHighscoresCaption() const
-{
-    return i18n("Highscores : %1").arg(i18n(LEVELS[_level].i18nLabel));
-}
-
-void ExtPlayerInfos::additionnalQueries(KURL &url, QueryType type) const
-{
+    const LevelData &data = LEVELS[level];
     switch (type) {
-        case Submit:
-            addToURL(url, "level", LEVELS[_level].wwLabel);
-            break;
-        default: break;
+    case Icon:
+    case Standard: return data.label;
+    case I18N:     return i18n(data.i18nLabel);
+    case WW:       return data.wwLabel;
     }
-}
+    ASSERT(false);
+    return QString::null;
+};
 
-void ExtPlayerInfos::convertLegacy(Level level, const QString &group) const
+void ExtHighscores::convertLegacy(uint level) const
 {
+    QString group;
+    switch ((Level)level) {
+    case Easy: group = "Easy level"; break;
+    case Normal: group = "Normal level"; break;
+    case Expert: group = "Expert level"; break;
+    case NbLevels: ASSERT(false);
+    }
+
     KConfig *config = kapp->config();
     config->setGroup(group);
     QString name = config->readEntry("Name", QString::null);
-    if ( !name.isNull() ) {
-        if ( name.isEmpty() ) name = i18n("anonymous");
-        uint minutes = config->readUnsignedNumEntry("Min", 0);
-        uint seconds = config->readUnsignedNumEntry("Sec", 0);
-        ExtScore es(level, 3600 - (minutes*60 + seconds));
-        es.setName(name);
-        es.submit(0, false);
-    }
+    if ( name.isNull() ) return;
+    if ( name.isEmpty() ) name = i18n("anonymous");
+    uint minutes = config->readUnsignedNumEntry("Min", 0);
+    uint seconds = config->readUnsignedNumEntry("Sec", 0);
+    int score = 3600 - (minutes*60 + seconds);
+    if ( score<=0 ) return;
+    Score s(score);
+    submitLocal(s, name);
 }
 
+QString ExtHighscores::formatScore(uint n)
+{
+    n = 3600 - n;
+    return QString::number(n / 60).rightJustify(2, '0') + ':'
+        + QString::number(n % 60).rightJustify(2, '0');
+}
+
+ItemBase *ExtHighscores::scoreItemScore() const
+{
+    return new ExtScoreItemScore;
+}
+
+ItemBase *ExtHighscores::playerItemBestScore() const
+{
+    return new ExtPlayerItemBestScore;
+}
+
+ItemBase *ExtHighscores::playerItemMeanScore() const
+{
+    return new ExtPlayerItemMeanScore;
+}

@@ -13,15 +13,15 @@
 #include "dialogs.h"
 
 
+//-----------------------------------------------------------------------------
 class Field : public QFrame, public KMines
 {
  Q_OBJECT
-
  public:
-    Field(QWidget *parent, const char *name=0);
+    Field(QWidget *parent);
 
 	QSize sizeHint() const;
-	QSizePolicy sizePolicy() const;
+    QSizePolicy sizePolicy() const;
 
 	void restart(bool repaint = true);
     bool isPaused() const { return state==Paused; }
@@ -41,6 +41,8 @@ class Field : public QFrame, public KMines
 	void setLevel(const LevelData &);
 	const LevelData &level() const { return lev; }
 	void readSettings();
+    void setCaseSize(uint s);
+    uint caseSize() const { return cp.size; }
 
  public slots:
 	void resume();
@@ -78,7 +80,6 @@ class Field : public QFrame, public KMines
 
 	CaseProperties cp;
 	QPixmap        pm_flag, pm_mine, pm_exploded, pm_error;
-	QPushButton   *pb;
 
 	uint computeNeighbours(uint, uint) const;
 	void uncover(uint, uint);

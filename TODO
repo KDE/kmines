@@ -1,13 +1,13 @@
-IDEAS:
+TODO:
 
- * 3 button mouse emulation [someone seems to need it for wheel mouse : I think
-   it should be done at a higher level ...]
- * messages from/to a named pipe for external AI + log of game
+ * messages from/to a named pipe for external AI + log of game [yawn ...]
+ * icons for easy/normal/expert
+ * new levels ...
 
  * do you have any idea ?
 
 
 KNOWN BUGS:
 
- * bug in Aqua theme (rectangle in the upper left part of the field : probably
-   a bug in the theme ...)
+ * changing case size something lead to incorrect window size (temporarily)
+ * please find one !

@@ -20,12 +20,12 @@ Status::Status(QWidget *parent, const char *name)
 : QWidget(parent, name)
 {
 // top layout
-	QVBoxLayout *top = new QVBoxLayout(this, 10);
-	top->setResizeMode(QLayout::Fixed);
+	QGridLayout *top = new QGridLayout(this, 2, 5, 10, 10);
+    top->setResizeMode(QLayout::Fixed);
+    top->setColStretch(1, 1);
+    top->setColStretch(3, 1);
 
 // status bar
-	QHBoxLayout *hbl = new QHBoxLayout(top);
-
 	// mines left LCD
 	left = new LCDNumber(this);
 	left->installEventFilter(parent);
@@ -33,17 +33,15 @@ Status::Status(QWidget *parent, const char *name)
                                "It turns <font color=\"red\">red</font> "
                                "when you have flagged more cases than "
                                "present mines.</qt>"));
-	hbl->addWidget(left);
-	hbl->addStretch(1);
+    top->addWidget(left, 0, 0);
 
 	// smiley
 	smiley = new Smiley(this);
-	connect( smiley, SIGNAL(clicked()), SLOT(restartGame()) );
+	connect(smiley, SIGNAL(clicked()), SLOT(smileyClicked()));
 	smiley->installEventFilter(parent);
 	smiley->setFocusPolicy(QWidget::NoFocus);
 	QWhatsThis::add(smiley, i18n("Press to start a new game"));
-	hbl->addWidget(smiley);
-	hbl->addStretch(1);
+    top->addWidget(smiley, 0, 2);
 
 	// digital clock LCD
 	dg = new DigitalClock(this);
@@ -53,14 +51,14 @@ Status::Status(QWidget *parent, const char *name)
                              "if it is a highscore "
                              "and <font color=\"red\">red</font> "
                              "if it is the best time.</qt>"));
-	hbl->addWidget(dg);
+    top->addWidget(dg, 0, 4);
 
 // mines field
-    hbl = new QHBoxLayout(top);
-    hbl->addStretch(1);
-
-	field = new Field(this);
-	connect( field, SIGNAL(changeCase(CaseState, int)),
+    _fieldContainer = new QWidget(this);
+    QGridLayout *g = new QGridLayout(_fieldContainer, 1, 1);
+    field = new Field(_fieldContainer);
+    g->addWidget(field, 0, 0, AlignCenter);
+    connect( field, SIGNAL(changeCase(CaseState, int)),
 			 SLOT(changeCase(CaseState, int)) );
 	connect( field, SIGNAL(updateStatus(bool)), SLOT(update(bool)) );
 	connect( field, SIGNAL(endGame()), SLOT(endGame()) );
@@ -69,10 +67,25 @@ Status::Status(QWidget *parent, const char *name)
 	connect( field, SIGNAL(setMood(Smiley::Mood)),
 			 smiley, SLOT(setMood(Smiley::Mood)) );
 	connect(field, SIGNAL(gameStateChanged(GameState)),
-			SIGNAL(gameStateChanged(GameState)) );
-	QWhatsThis::add(field, i18n("Mis field."));
-	hbl->addWidget(field);
-    hbl->addStretch(1);
+			SLOT(gameStateChangedSlot(GameState)) );
+	QWhatsThis::add(field, i18n("Mines field."));
+
+// resume button
+    _resumeContainer = new QWidget(this);
+    g = new QGridLayout(_resumeContainer, 1, 1);
+    QFont f = font();
+    f.setBold(true);
+    QPushButton *pb
+        = new QPushButton(i18n("Press to resume"), _resumeContainer);
+    pb->setFont(f);
+    connect(pb, SIGNAL(clicked()), field, SLOT(resume()));
+    g->addWidget(pb, 0, 0, AlignCenter);
+
+    _stack = new QWidgetStack(this);
+    _stack->addWidget(_fieldContainer);
+    _stack->addWidget(_resumeContainer);
+    _stack->raiseWidget(_fieldContainer);
+    top->addMultiCellWidget(_stack, 1, 1, 0, 4);
 }
 
 void Status::initGame()
@@ -85,11 +98,20 @@ void Status::initGame()
 	smiley->setMood(Smiley::Normal);
 	Level level = field->level().level;
 	if ( level!=Custom ) {
-        ExtScore score(level);
-        dg->setBestScores( score.firstScore(), score.lastScore() );
+        Score *fs = highscores().firstScore();
+        Score *ls = highscores().lastScore();
+        dg->setBestScores( fs->score(), ls->score() );
+        delete fs;
+        delete ls;
     }
 
 	dg->zero();
+}
+
+void Status::smileyClicked()
+{
+    if ( field->isPaused() ) field->resume();
+    else restartGame();
 }
 
 void Status::restartGame()
@@ -100,6 +122,7 @@ void Status::restartGame()
 
 void Status::newGame(const LevelData &l)
 {
+    if ( l.level!=Custom ) highscores().setGameType(l.level);
 	field->setLevel(l);
 	initGame();
 }
@@ -126,36 +149,17 @@ void Status::update(bool mine)
 	if ( u==0 ) _endGame(!mine);
 }
 
-void Status::_endGame(bool win)
+void Status::_endGame(bool won)
 {
 	field->stop();
 	dg->freeze();
 	field->showMines();
 	emit gameStateChanged(Stopped);
+    smiley->setMood(won ? Smiley::Happy : Smiley::Sad);
 
-	if ( !win ) {
-        smiley->setMood(Smiley::Sad);
-        return;
-	}
-
-    Level level = field->level().level;
-    smiley->setMood(Smiley::Happy);
-    if ( level!=Custom ) {
-        ExtScore score(level, dg->score());
-        ExtPlayerInfos infos(level);
-        int localRank = infos.submitScore(score, this);
-        if ( localRank==-1 ) return;
-        ShowHighscores hs(localRank, this, score, infos);
-        hs.exec();
-    }
-}
-
-void Status::showHighscores(int level)
-{
-    ExtScore score((Level)level);
-    ExtPlayerInfos infos((Level)level);
-    ShowHighscores hs(-1, this, score, infos);
-	hs.exec();
+    if ( field->level().level==Custom || !won ) return;
+    Score score(dg->score());
+    highscores().submitScore(true, score, this);
 }
 
 void Status::print()
@@ -179,4 +183,11 @@ void Status::print()
 	// write the screen region corresponding to the window
 	QPainter p(&prt);
 	p.drawPixmap(0, 0, QPixmap::grabWindow(winId()));
+}
+
+void Status::gameStateChangedSlot(GameState state)
+{
+    if ( state==Paused ) _stack->raiseWidget(_resumeContainer);
+    else _stack->raiseWidget(_fieldContainer);
+    emit gameStateChanged(state);
 }

@@ -1,5 +1,9 @@
 2.1.1 (08 September 2001) [in CVS]
  * port to Qt 3.0 completed (hopefully)
+ * some changes in highscores (nicer dialog)
+ * i18n error messages for wwhs (#### test them)
+ * new smiley pixmap for pause
+ * clicking smiley with game paused new resumes game
 
 2.1.0 (17 July 2001) 
  -- version to be released with KDE 2.2 --
@@ -13,8 +17,7 @@
    Bernhard Berger]
  * better default keys + fixed autoreveal display for keyboard game
  * use KStdGameAction
- * big revamping of highscores
- * use of KHighscore
+ * big revamping of highscores + use of KHighscores
  * removed status bar (ugly and not very useful)
 
 2.0.11 (14 March 2001)

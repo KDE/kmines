@@ -3,29 +3,23 @@
 
 #include "ghighscores.h"
 #include "defines.h"
+#include "version.h"
 
-//-----------------------------------------------------------------------------
-class ExtScore : public Score, public KMines
+
+class ExtHighscores : public Highscores, public KMines
 {
  public:
-    ExtScore(Level, uint score = 0);
+    ExtHighscores()
+        : Highscores(VERSION, WORLD_WIDE_HS_URL, NbLevels) {}
 
     static QString formatScore(uint);
-};
-
-//-----------------------------------------------------------------------------
-class ExtPlayerInfos : public PlayerInfos, public KMines
-{
- public:
-    ExtPlayerInfos(Level);
 
  private:
-    Level _level;
-
-    QString highscoresURL() const;
-    QString showHighscoresCaption() const;
-    void additionnalQueries(KURL &, QueryType) const;
-    void convertLegacy(Level, const QString &group) const;
+    QString gameTypeLabel(uint level, LabelType) const;
+    void convertLegacy(uint level) const;
+    ItemBase *scoreItemScore() const;
+    ItemBase *playerItemBestScore() const;
+    ItemBase *playerItemMeanScore() const;
 };
 
 #endif

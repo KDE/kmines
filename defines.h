@@ -23,17 +23,14 @@ class KMines
         Level       level;
         const char *label, *wwLabel, *i18nLabel;
     };
+    static const LevelData LEVELS[NbLevels+1];
 
-#define NB_NUMBER_COLORS 8
+    #define NB_NUMBER_COLORS 8
     struct CaseProperties {
         uint size;
         QColor numberColors[NB_NUMBER_COLORS];
         QColor flagColor, explosionColor, errorColor;
     };
-
-    static const LevelData LEVELS[NbLevels];
 };
 
-#define NB_HS_ENTRIES 10
-
-#endif // DEFINES_H
+#endif

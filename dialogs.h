@@ -8,36 +8,33 @@
 #include <qcheckbox.h>
 #include <qcombobox.h>
 
-#include <kdialogbase.h>
 #include <knuminput.h>
-#include <kconfig.h>
-#include <kcolorbtn.h>
-#include <klocale.h>
 
+#include "gsettings.h"
 #include "defines.h"
 #include "highscores.h"
+
 
 //-----------------------------------------------------------------------------
 class Smiley : public QPushButton
 {
  Q_OBJECT
-
  public:
-    Smiley(QWidget *parent, const char *name = 0);
-	enum Mood { Normal, Stressed, Happy, Sad };
+    Smiley(QWidget *parent, const char *name = 0)
+        : QPushButton(QString::null, parent, name) {}
+	enum Mood { Normal = 0, Stressed, Happy, Sad, Sleeping, NbPixmaps };
 
  public slots:
     void setMood(Smiley::Mood);
 
  private:
-	QPixmap normal, stressed, happy, sad;
+    static const char **XPM_NAMES[NbPixmaps];
 };
 
 //-----------------------------------------------------------------------------
 class LCDNumber : public QLCDNumber
 {
  Q_OBJECT
-
  public:
 	LCDNumber(QWidget *parent, const char *name = 0);
 
@@ -48,7 +45,6 @@ class LCDNumber : public QLCDNumber
 class DigitalClock : public LCDNumber
 {
  Q_OBJECT
-
  public:
 	DigitalClock(QWidget *parent, const char *name = 0);
 
@@ -75,7 +71,6 @@ class DigitalClock : public LCDNumber
 class CustomDialog : public KDialogBase, public KMines
 {
  Q_OBJECT
-
  public:
 	CustomDialog(LevelData &lev, QWidget *parent);
 
@@ -94,42 +89,64 @@ class CustomDialog : public KDialogBase, public KMines
 };
 
 //-----------------------------------------------------------------------------
-class OptionDialog : public KDialogBase, public KMines
+class GameSettingsWidget : public BaseSettingsWidget, public KMines
 {
  Q_OBJECT
-
  public:
-	OptionDialog(QWidget *parent);
+    GameSettingsWidget(BaseSettingsDialog *);
 
-    static uint readCaseSize();
+    void readConfig();
+    bool writeConfig();
+
     static bool readUMark();
     static bool readKeyboard();
     static bool readPauseFocus();
     static MouseAction readMouseBinding(MouseButton);
 
-    static QColor readColor(const QString & key, QColor defaultColor);
+ public slots:
+    void setDefault();
 
-	static CaseProperties readCaseProperties();
+ private:
+    QCheckBox *_umark, *_keyb, *_focus;
+	QComboBox *_cb[3];
+};
+
+class AppearanceSettingsWidget : public BaseSettingsWidget, public KMines
+{
+ Q_OBJECT
+ public:
+    AppearanceSettingsWidget(BaseSettingsDialog *);
+
+    void readConfig();
+    bool writeConfig();
+
+    static CaseProperties readCaseProperties();
+    static void writeCaseSize(uint size);
+
+ public slots:
+    void setDefault();
+
+ private:
+    KIntNumInput                 *_caseSize;
+    SettingsColorButton          *_flag, *_explosion, *_error;
+    QVector<SettingsColorButton>  _numbers;
+
+    static uint readCaseSize();
+    static QColor readColor(const QString & key, QColor defaultColor);
+};
+
+class SettingsDialog : public BaseSettingsDialog, public KMines
+{
+ Q_OBJECT
+ public:
+	SettingsDialog(QWidget *parent);
+
+    static KConfig *config();
+
 	static LevelData readLevel();
 	static void writeLevel(const LevelData &);
 	static bool readMenuVisible();
 	static void writeMenuVisible(bool visible);
-
- private slots:
-	void accept();
-    void slotDefault();
-
- private:
-    KIntNumInput *_caseSize;
-	QCheckBox    *_umark, *_keyb, *_focus;
-	QComboBox    *_cb[3];
-
-    KColorButton *_flag, *_explosion, *_error;
-	QMemArray<KColorButton *> _numbers;
-
-    HighscoresOption *highscores;
-
-    static KConfig *config();
 };
 
-#endif // DIALOGS_H
+#endif

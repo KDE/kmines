@@ -6,9 +6,11 @@
 #include <qpushbutton.h>
 #include <qlabel.h>
 #include <qlcdnumber.h>
+#include <qwidgetstack.h>
 
 #include "field.h"
 #include "defines.h"
+
 
 class DigitalClock;
 class LCDNumber;
@@ -32,7 +34,6 @@ class Status : public QWidget, public KMines
 	void changeCase(CaseState, int inc);
 	void update(bool);
 	void endGame()        { _endGame(false); }
-	void showHighscores(int);
 	void pauseGame()      { field->pause(); }
 	void print();
 
@@ -44,9 +45,16 @@ class Status : public QWidget, public KMines
 	void mark()       { field->mark(); }
 	void autoReveal() { field->keyboardAutoReveal(); }
 
+ private slots:
+    void gameStateChangedSlot(GameState);
+    void smileyClicked();
+
  private:
-	uint     uncovered, marked, uncertain;  /* number of cases in each state */
-	Field    *field;
+	uint uncovered, marked, uncertain;  /* number of cases in each state */
+
+	Field        *field;
+    QWidget      *_fieldContainer, *_resumeContainer;
+    QWidgetStack *_stack;
 
 	Smiley       *smiley;
 	LCDNumber    *left;

@@ -4,21 +4,25 @@
 #include <qdatastream.h>
 #include <qcheckbox.h>
 #include <qlineedit.h>
-#include <qlistview.h>
 #include <qdom.h>
+#include <qtabwidget.h>
 #include <qdict.h>
 
+#include <klistview.h>
 #include <kdialogbase.h>
 #include <kconfig.h>
 #include <kurl.h>
 #include <klocale.h>
+
+#include "gsettings.h"
+
 
 //-----------------------------------------------------------------------------
 class ItemBase
 {
  public:
     ItemBase() {}
-    ItemBase(const QString &def, const QString &label, int alignment,
+    ItemBase(const QVariant &def, const QString &label, int alignment,
              bool canHaveSubGroup = false)
         : _default(def), _label(label), _alignment(alignment),
           _canHaveSubGroup(canHaveSubGroup) {}
@@ -33,21 +37,17 @@ class ItemBase
     int alignment() const { return _alignment; }
     QString name() const  { return _name; }
 
-    virtual QString read(uint i) const;
-    uint readUInt(uint i) const;
-    double readDouble(uint i) const;
-    virtual QString pretty(uint i) const { return read(i); }
-
-    void write(uint i, const QString &value) const;
-    void write(uint i, uint value) const;
-    void write(uint i, double value) const;
+	virtual QVariant read(uint i) const;
+	virtual QString pretty(uint i) const;
+	void write(uint i, const QVariant &) const;
 
     void moveDown(uint newIndex) const;
 
  private:
-    QString _default, _name, _label, _group, _subGroup;
-    int     _alignment;
-    bool    _canHaveSubGroup;
+	QVariant _default;
+    QString  _name, _label, _group, _subGroup;
+    int      _alignment;
+    bool     _canHaveSubGroup;
 
     QString entryName() const;
 };
@@ -59,40 +59,40 @@ class ItemContainer
     ItemContainer(const QString &group, const QString &subGroup);
     virtual ~ItemContainer() {}
 
-    virtual uint nb() const = 0;
-    const QPtrList<ItemBase> &items() const { return _items; }
+    virtual uint nbEntries() const = 0;
+    const QList<ItemBase> &items() const { return _items; }
 
  protected:
     void addItem(const QString &key, ItemBase *, bool stored);
     QString group() const { return _group; }
 
-    const ItemBase *item(const QString &n) const;
+    const ItemBase &item(const QString &name) const;
     uint name(const QString &name) const { return *_names[name]; }
 
  private:
     QString         _group, _subGroup;
-    QPtrList<ItemBase> _items;
+    QList<ItemBase> _items;
     QDict<uint>     _names;
 
     ItemContainer(const ItemContainer &c);
     void operator =(const ItemContainer &);
 };
 
+//-----------------------------------------------------------------------------
 class DataContainer : public ItemContainer
 {
  public:
     DataContainer(const QString &group, const QString &subGroup)
         : ItemContainer(group, subGroup) {}
 
-    QString prettyData(const QString &) const;
+    void read(uint i);
+    void write(uint i, uint maxNbLines) const;
+    QString prettyData(const QString &name) const;
 
  protected:
+    const QVariant &data(const QString &n) const { return _data[name(n)]; }
+    QVariant &data(const QString &n)             { return _data[name(n)]; }
     void addData(const QString &key, ItemBase *, bool stored, QVariant value);
-
-    const QVariant &data(const QString &n) const
-        { return _data[name(n)]; }
-    QVariant &data(const QString &n)
-        { return _data[name(n)]; }
 
  private:
     QValueList<QVariant> _data;
@@ -105,22 +105,23 @@ QDataStream &operator >>(QDataStream &, DataContainer &);
 QDataStream &operator <<(QDataStream &, const DataContainer &);
 
 //-----------------------------------------------------------------------------
-#define ANONYMOUS "_" // used to recognized anonymous players
+extern const char *ANONYMOUS; // used to recognized anonymous players
 
 class ScoreItemRank : public ItemBase
 {
  public:
     ScoreItemRank()
-        : ItemBase("0", i18n("Rank"), Qt::AlignRight) {}
+        : ItemBase((uint)0, i18n("Rank"), Qt::AlignRight) {}
 
-    QString read(uint rank) const { return QString::number(rank+1); }
+    QVariant read(uint rank) const  { return rank; }
+    QString pretty(uint rank) const { return QString::number(rank+1); }
 };
 
 class ScoreItemScore : public ItemBase
 {
  public:
     ScoreItemScore()
-        : ItemBase("0", i18n("Score"), Qt::AlignRight) {}
+        : ItemBase((uint)0, i18n("Score"), Qt::AlignRight) {}
 };
 
 class PlayerItemName : public ItemBase
@@ -130,7 +131,7 @@ class PlayerItemName : public ItemBase
         : ItemBase(QString::null, i18n("Name"), Qt::AlignLeft) {}
 
     virtual QString pretty(uint i) const {
-        QString name = read(i);
+        QString name = ItemBase::pretty(i);
         if ( name==ANONYMOUS ) return i18n("anonymous");
         return name;
     }
@@ -140,12 +141,12 @@ class PlayerItemMeanScore : public ItemBase
 {
  public:
     PlayerItemMeanScore()
-        : ItemBase("0", i18n("Mean score"), Qt::AlignRight, true) {}
+        : ItemBase((double)0, i18n("Mean score"), Qt::AlignRight, true) {}
 
     virtual QString pretty(uint i) const {
-        double mean = readDouble(i);
+        double mean = read(i).toDouble();
         if ( mean==0 ) return "--";
-        return QString::number(mean, 'f', 2);
+        return QString::number(mean, 'f', 1);
     }
 };
 
@@ -153,12 +154,25 @@ class PlayerItemBestScore : public ItemBase
 {
  public:
     PlayerItemBestScore()
-        : ItemBase("0", i18n("Best score"), Qt::AlignRight, true) {}
+        : ItemBase((uint)0, i18n("Best score"), Qt::AlignRight, true) {}
 
     virtual QString pretty(uint i) const {
-        uint best = readUInt(i);
-        if ( best==0 ) return "--";
-        return QString::number(best);
+		QString best = ItemBase::pretty(i);
+        if ( best=="0" ) return "--";
+        return best;
+    }
+};
+
+class PlayerItemWin : public ItemBase
+{
+ public:
+    PlayerItemWin()
+        : ItemBase((double)-1, i18n("Success"), Qt::AlignRight, true) {}
+
+    QString pretty(uint i) const {
+        double win = read(i).toDouble();
+        if ( win==-1 ) return "--";
+        return QString::number(win, 'f', 1) + " %";
     }
 };
 
@@ -167,63 +181,193 @@ class Score : public DataContainer
 {
  public:
     // a higher value is a better score
-    Score(uint score, const QString &group = "scores",
-          ItemBase *scoreItem = 0);
+    // 0 is a valid score but it cannot enter highscores list.
+    Score(uint score = 0);
 
-    uint score() const             { return data("score").toUInt(); }
-    void setName(const QString &n) { data("name") = n; }
-    QString name() const           { return data("name").toString(); }
-    uint nb() const;
-    uint firstScore() const        { return score(0); }
-    uint lastScore() const;
-
-    int submit(QWidget *parent, bool warn) const;
-
- private:
-    uint score(uint rank) const { return item("score")->readUInt(rank); }
-    int rank() const; // return -1 is not a best local
+    uint nbEntries() const;
+    uint score() const { return data("score").toUInt(); }
+    void setName(const QString &name) { data("name") = name; }
 };
 
 //-----------------------------------------------------------------------------
 class PlayerInfos : public ItemContainer
 {
  public:
-    PlayerInfos(const QString &subGroup = QString::null,
-                ItemBase *bestScoreItem = 0,
-                ItemBase *meanScoreItem = 0);
+    PlayerInfos();
 
-    uint nb() const;
-    QString name() const       { return item("name")->read(_id); }
+    static bool isNewPlayer();
+    uint nbEntries() const;
+    QString name() const       { return item("name").read(_id).toString(); }
     bool isAnonymous() const;
-    QString prettyName() const { return item("name")->pretty(_id); }
+    QString prettyName() const { return item("name").pretty(_id); }
     QString registeredName() const;
-    QString comment() const    { return item("comment")->read(_id); }
+    QString comment() const    { return item("comment").pretty(_id); }
     bool WWEnabled() const;
     QString key() const;
     uint id() const            { return _id; }
 
-    int submitScore(Score &, QWidget *parent) const;
-    bool modifySettings(const QString &newName,
-                        const QString &comment, bool WWEnabled,
-                        QWidget *parent) const;
-
-    virtual QString playersURL() const;
-    virtual QString highscoresURL() const;
-    virtual QString showHighscoresCaption() const;
-
- protected:
-    enum QueryType { Submit, Register, Change, Players, Highscores };
-    bool _newPlayer;
-
-    virtual void additionnalQueries(KURL &, QueryType) const {}
-    static KURL URL(QueryType, const QString &nickname);
-    static void addToURL(KURL &, const QString &entry, const QString &content);
+    void submitScore(bool won, const Score &) const;
+    void submitBlackMark() const;
+    void modifySettings(const QString &newName, const QString &comment,
+                        bool WWEnabled, const QString &newKey) const;
 
  private:
     uint _id;
 
-    KConfig *config() const;
+    static KConfig *config();
     void addPlayer();
+};
+
+//-----------------------------------------------------------------------------
+class ShowHighscoresItem : public KListViewItem
+{
+ public:
+    ShowHighscoresItem(QListView *, bool highlight);
+
+ protected:
+    virtual void paintCell(QPainter *, const QColorGroup &, int column,
+						   int width, int align);
+
+ private:
+    bool _highlight;
+};
+
+class ShowScoresList : public KListView
+{
+ Q_OBJECT
+ public:
+    ShowScoresList(QWidget *parent);
+
+ protected:
+    // index==-1 : header
+    void addLine(const ItemContainer &, int index, bool highlight);
+    virtual bool showColumn(const ItemBase *) const { return true; }
+    virtual QString itemText(const ItemBase *, uint row) const = 0;
+};
+
+//-----------------------------------------------------------------------------
+class ShowHighscoresList : public ShowScoresList
+{
+ Q_OBJECT
+ public:
+    ShowHighscoresList(const ItemContainer &, int highlight, QWidget *parent);
+
+ protected:
+    QString itemText(const ItemBase *, uint row) const;
+};
+
+class ShowHighscoresWidget : public QWidget
+{
+ Q_OBJECT
+ public:
+    ShowHighscoresWidget(int localRank, QWidget *parent, const Score &,
+                         const PlayerInfos &, int spacingHint);
+
+ private slots:
+    void showURL(const QString &) const;
+};
+
+//-----------------------------------------------------------------------------
+class ShowMultiScoresList : public ShowScoresList
+{
+ Q_OBJECT
+ public:
+    ShowMultiScoresList(const QVector<Score> &, QWidget *parent);
+
+ private:
+    const QVector<Score> _scores;
+
+    bool showColumn(const ItemBase *) const;
+    QString itemText(const ItemBase *, uint row) const;
+};
+
+class ShowMultiScoresDialog : public KDialogBase
+{
+ Q_OBJECT
+ public:
+    ShowMultiScoresDialog(const QVector<Score> &, QWidget *parent);
+};
+
+//-----------------------------------------------------------------------------
+class HighscoresSettingsWidget : public BaseSettingsWidget
+{
+ Q_OBJECT
+ public:
+    HighscoresSettingsWidget(BaseSettingsDialog *parent, PlayerInfos *);
+
+    bool writeConfig();
+
+ private:
+    QCheckBox *_WWHEnabled;
+    QLineEdit *_nickname, *_comment;
+};
+
+//-----------------------------------------------------------------------------
+class Highscores
+{
+ public:
+    // empty baseURL means WWW HS not available
+    Highscores(const QString version, const KURL &baseURL = KURL(),
+               uint nbGameTypes = 1, uint nbEntries = 10);
+    virtual ~Highscores() {}
+    void init();
+    void setGameType(uint);
+
+    HighscoresSettingsWidget *createSettingsWidget(BaseSettingsDialog *) const;
+    void showHighscores(QWidget *parent) { _showHighscores(parent, -1); }
+    void submitScore(bool won, Score &, QWidget *parent);
+    void submitBlackMark(QWidget *parent) const;
+    bool modifySettings(const QString &newName, const QString &comment,
+                        bool WWEnabled, QWidget *parent) const;
+
+    uint nbScores() const;
+    Score *firstScore() const { return readScore(0); }
+    Score *lastScore() const;
+    virtual bool isStrictlyBetter(const Score &, const Score &) const;
+
+    QString scoreGroup() const;
+    virtual ItemBase *scoreItemScore() const { return new ScoreItemScore; }
+
+    QString playerSubGroup() const;
+    virtual ItemBase *playerItemBestScore() const
+        { return new PlayerItemBestScore; }
+    virtual ItemBase *playerItemMeanScore() const
+        { return new PlayerItemMeanScore; }
+    virtual QString playersURL() const;
+    virtual QString highscoresURL() const;
+
+    virtual bool isLostGameEnabled() const  { return false; }
+    virtual bool isBlackMarkEnabled() const { return false; }
+    virtual bool isWWHSAvailable() const    { return !_baseURL.isEmpty(); }
+
+ protected:
+    enum LabelType { Standard, I18N, WW, Icon };
+    virtual QString gameTypeLabel(uint /*gameType*/, LabelType) const
+        { return QString::null; }
+    virtual Score *score() const { return new Score; }
+    virtual PlayerInfos *infos() const { return new PlayerInfos; }
+    virtual void convertLegacy(uint /*gameType*/) {}
+    int submitLocal(Score &, const QString &name) const;
+
+    enum QueryType { Submit, Register, Change, Players, Scores };
+    virtual void additionnalQueries(KURL &, QueryType) const {}
+    KURL URL(QueryType, const QString &nickname) const;
+    static void addToURL(KURL &, const QString &entry, const QString &content);
+
+ private:
+    const QString _version;
+    const KURL    _baseURL;
+    const uint    _nbGameTypes, _nbEntries;
+    uint          _gameType;
+
+    void _showHighscores(QWidget *parent, int rank);
+    Score *readScore(uint rank) const;
+    int rank(const Score &) const; // return -1 if not a local best
+
+    static const int LOST_GAME_ID;
+    static const int BLACK_MARK_ID;
+    void submitWorldWide(int score, const PlayerInfos &,
+                         QWidget *parent) const;
 
     static bool _doQuery(const KURL &url, QDomNamedNodeMap &attributes,
                          QString &error);
@@ -233,64 +377,6 @@ class PlayerInfos : public ItemContainer
                              QString &value, QWidget *parent);
 };
 
-//-----------------------------------------------------------------------------
-class ShowHighscoresItem : public QListViewItem
-{
- public:
-    ShowHighscoresItem(QListView *, uint index, bool highlight);
-
- protected:
-    virtual void paintCell (QPainter *, const QColorGroup &, int column,
-                            int width, int align);
-
- private:
-    uint _index;
-    bool _highlight;
-};
-
-class ShowScores
-{
- public:
-    ShowScores() {}
-
- protected:
-    QListView *createList(QWidget *parent) const;
-    void addLine(QListView *, const ItemContainer &, int index,
-                 bool highlight) const; // index==-1 : header
-    virtual bool showColumn(const ItemBase *) const { return true; }
-    virtual QString itemText(const ItemBase *, uint row) const = 0;
-};
-
-class ShowHighscores : public KDialogBase, public ShowScores
-{
- Q_OBJECT
- public:
-    ShowHighscores(int localRank, QWidget *parent, const Score &scoreDummy,
-                   const PlayerInfos &playerDummy);
-
- private slots:
-    void showURL(const QString &) const;
-
-  private:
-    QListView *_bestList, *_playersList;
-
-    void fillList(QListView *, const ItemContainer &, int highlight) const;
-    QString itemText(const ItemBase *, uint row) const;
-};
-
-//-----------------------------------------------------------------------------
-class HighscoresOption
-{
- public:
-    HighscoresOption(KDialogBase *);
-
-    bool accept();
-
- private:
-    KDialogBase *_dialog;
-    int          _pageIndex;
-    QCheckBox   *_WWHEnabled;
-    QLineEdit   *_nickname, *_comment;
-};
+Highscores &highscores();
 
 #endif

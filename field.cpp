@@ -11,40 +11,31 @@
 #include <klocale.h>
 
 
-Field::Field(QWidget *parent, const char *name)
-: QFrame(parent, name), lev(LEVELS[0]), random(0), state(Stopped),
+//-----------------------------------------------------------------------------
+Field::Field(QWidget *parent)
+: QFrame(parent, "field"), lev(LEVELS[0]), random(0), state(Stopped),
   u_mark(false), cursor(false)
 {
 	setFrameStyle( QFrame::Box | QFrame::Raised );
 	setLineWidth(2);
 	setMidLineWidth(2);
 
-    QVBoxLayout *top = new QVBoxLayout(this);
-    top->addStretch(1);
-    QFont f = font();
-    f.setBold(true);
-    pb = new QPushButton(i18n("Press to resume"), this);
-    pb->setFont(f);
-    top->addWidget(pb, 0, AlignCenter);
-    connect(pb, SIGNAL(clicked()), this, SLOT(resume()));
-    pb->hide();
-    top->addStretch(1);
-
 	readSettings();
 }
 
 void Field::readSettings()
 {
-	setCaseProperties(OptionDialog::readCaseProperties());
-	setUMark(OptionDialog::readUMark());
-	setCursor(OptionDialog::readKeyboard());
+	setCaseProperties( AppearanceSettingsWidget::readCaseProperties() );
+	setUMark( GameSettingsWidget::readUMark() );
+	setCursor( GameSettingsWidget::readKeyboard() );
 	for (uint i=0; i<3; i++)
-		mb[i] = OptionDialog::readMouseBinding((MouseButton)i);
+		mb[i] = GameSettingsWidget::readMouseBinding((MouseButton)i);
 }
 
 void Field::setCaseProperties(const CaseProperties &_cp)
 {
 	cp = _cp;
+    updateGeometry();
 
 	QBitmap mask;
 
@@ -68,8 +59,6 @@ void Field::setCaseProperties(const CaseProperties &_cp)
 	f.setPointSize(cp.size-6);
 	f.setBold(true);
 	setFont(f);
-
-	updateGeometry();
 }
 
 void Field::flagPixmap(QPixmap &pix, bool mask) const
@@ -131,7 +120,7 @@ QSize Field::sizeHint() const
 
 QSizePolicy Field::sizePolicy() const
 {
-	return QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    return QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 }
 
 const KMines::Case &Field::pfield(uint i, uint j) const
@@ -164,7 +153,7 @@ void Field::setLevel(const LevelData &l)
 {
 	lev = l;
 	restart(false);
-	updateGeometry();
+    updateGeometry();
 }
 
 void Field::restart(bool repaint)
@@ -455,13 +444,11 @@ void Field::pause()
 {
 	if ( first_click || state==Stopped ) return;
 
-	/* if already in pause : resume game */
-	if ( state==Paused ) resume();
+	if ( state==Paused ) resume(); // if already paused : resume game
 	else {
 		emit freezeTimer();
-        pb->show();
-        pb->setFocus();
 		state = Paused;
+        emit setMood(Smiley::Sleeping);
 		emit gameStateChanged(Paused);
 		update();
 	}
@@ -470,8 +457,8 @@ void Field::pause()
 void Field::resume()
 {
 	state = Playing;
+    emit setMood(Smiley::Normal);
 	emit gameStateChanged(Playing);
-    pb->hide();
 	emit startTimer();
 	update();
 }

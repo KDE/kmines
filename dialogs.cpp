@@ -9,31 +9,28 @@
 #include <qlayout.h>
 #include <qhbox.h>
 #include <qvbox.h>
+#include <qgrid.h>
 
 #include <kapp.h>
-#include <klocale.h>
 #include <kiconloader.h>
 
 #include "bitmaps/smile"
 #include "bitmaps/smile_happy"
 #include "bitmaps/smile_ohno"
 #include "bitmaps/smile_stress"
+#include "bitmaps/smile_sleep"
 
 
 //-----------------------------------------------------------------------------
-Smiley::Smiley(QWidget *parent, const char *name)
-: QPushButton("", parent, name), normal(smile_xpm), stressed(smile_stress_xpm),
-  happy(smile_happy_xpm), sad(smile_ohno_xpm)
-{}
+const char **Smiley::XPM_NAMES[Smiley::NbPixmaps] = {
+    smile_xpm, smile_stress_xpm, smile_happy_xpm, smile_ohno_xpm,
+    smile_sleep_xpm
+};
 
 void Smiley::setMood(Mood mood)
 {
-	switch (mood) {
-	case Normal:   setPixmap(normal);   break;
-	case Stressed: setPixmap(stressed); break;
-	case Happy:    setPixmap(happy);    break;
-	case Sad:      setPixmap(sad);      break;
-	}
+    QPixmap p(XPM_NAMES[mood]);
+    setPixmap(p);
 }
 
 //-----------------------------------------------------------------------------
@@ -165,24 +162,108 @@ uint CustomDialog::maxNbMines(uint width, uint height)
 }
 
 //-----------------------------------------------------------------------------
-const char *OP_GRP = "Options";
 const char *OP_UMARK             = "? mark";
-const char *OP_CASE_SIZE         = "case size";
 const char *OP_KEYBOARD          = "keyboard game";
 const char *OP_PAUSE_FOCUS       = "paused if lose focus";
 const char *OP_MOUSE_BINDINGS[3] =
     { "mouse left", "mouse mid", "mouse right" };
 
+GameSettingsWidget::GameSettingsWidget(BaseSettingsDialog *parent)
+    : BaseSettingsWidget(new BaseSettings(i18n("Game"), "misc"),
+						 parent, "game_settings")
+{
+    QVBoxLayout *top = new QVBoxLayout(this, parent->spacingHint());
+
+    _umark = new QCheckBox(i18n("Enable ? mark"), this);
+	top->addWidget(_umark);
+
+	_keyb = new QCheckBox(i18n("Enable keyboard"), this);
+	top->addWidget(_keyb);
+
+    _focus = new QCheckBox(i18n("Pause if window lose focus"), this);
+	top->addWidget(_focus);
+
+	top->addSpacing( 2*parent->spacingHint() );
+
+	QVGroupBox *gb = new QVGroupBox(i18n("Mouse bindings"), this);
+	top->addWidget(gb);
+	QGrid *grid = new QGrid(2, gb);
+	grid->setSpacing(10);
+	(void)new QLabel(i18n("Left button"), grid);
+	_cb[KMines::Left] = new QComboBox(false, grid);
+	(void)new QLabel(i18n("Mid button"), grid);
+	_cb[KMines::Mid] = new QComboBox(false, grid);
+	(void)new QLabel(i18n("Right button"), grid);
+	_cb[KMines::Right] = new QComboBox(false, grid);
+
+	for (uint i=0; i<3; i++) {
+		_cb[i]->insertItem(i18n("reveal"), 0);
+		_cb[i]->insertItem(i18n("autoreveal"), 1);
+		_cb[i]->insertItem(i18n("toggle flag"), 2);
+		_cb[i]->insertItem(i18n("toggle ? mark"), 3);
+	}
+}
+
+bool GameSettingsWidget::readUMark()
+{
+	return SettingsDialog::config()->readBoolEntry(OP_UMARK, true);
+}
+
+bool GameSettingsWidget::readKeyboard()
+{
+	return SettingsDialog::config()->readBoolEntry(OP_KEYBOARD, false);
+}
+
+bool GameSettingsWidget::readPauseFocus()
+{
+	return SettingsDialog::config()->readBoolEntry(OP_PAUSE_FOCUS, true);
+}
+
+KMines::MouseAction GameSettingsWidget::readMouseBinding(MouseButton mb)
+{
+	MouseAction ma = (MouseAction)SettingsDialog::config()
+                     ->readUnsignedNumEntry(OP_MOUSE_BINDINGS[mb], mb);
+	return ma>UMark ? Reveal : ma;
+}
+
+void GameSettingsWidget::readConfig()
+{
+    _umark->setChecked( readUMark() );
+    _keyb->setChecked( readKeyboard() );
+    _focus->setChecked( readPauseFocus() );
+    for (uint i=0; i<3; i++)
+        _cb[i]->setCurrentItem( readMouseBinding((MouseButton)i) );
+}
+
+bool GameSettingsWidget::writeConfig()
+{
+    KConfig *conf = SettingsDialog::config();
+	conf->writeEntry(OP_UMARK, _umark->isChecked());
+	conf->writeEntry(OP_KEYBOARD, _keyb->isChecked());
+    conf->writeEntry(OP_PAUSE_FOCUS, _focus->isChecked());
+	for (uint i=0; i<3; i++)
+		conf->writeEntry(OP_MOUSE_BINDINGS[i], _cb[i]->currentItem());
+    return true;
+}
+
+void GameSettingsWidget::setDefault()
+{
+    _umark->setChecked(true);
+    _keyb->setChecked(false);
+    _focus->setChecked(true);
+    for (uint i=0; i<3; i++) _cb[i]->setCurrentItem(i);
+}
+
+//-----------------------------------------------------------------------------
+const char *OP_CASE_SIZE         = "case size";
 const uint MIN_CASE_SIZE     = 20;
 const uint DEFAULT_CASE_SIZE = MIN_CASE_SIZE;
 const uint MAX_CASE_SIZE     = 100;
-
 const char *OP_NUMBER_COLOR    = "color #";
 const char *OP_FLAG_COLOR      = "flag color";
 const char *OP_EXPLOSION_COLOR = "explosion color";
 const char *OP_ERROR_COLOR     = "error color";
 #define NCName(i) QString("%1%2").arg(OP_NUMBER_COLOR).arg(i)
-
 const QColor DEFAULT_NUMBER_COLORS[NB_NUMBER_COLORS] =
    { Qt::blue, Qt::darkGreen, Qt::darkYellow, Qt::darkMagenta, Qt::red,
 	 Qt::darkRed, Qt::black, Qt::black };
@@ -190,129 +271,102 @@ const QColor DEFAULT_FLAG_COLOR      = Qt::red;
 const QColor DEFAULT_EXPLOSION_COLOR = Qt::red;
 const QColor DEFAULT_ERROR_COLOR     = Qt::red;
 
-const char *OP_MENUBAR         = "menubar visible";
-const char *OP_LEVEL           = "Level";
-const char *OP_CUSTOM_WIDTH    = "custom width";
-const char *OP_CUSTOM_HEIGHT   = "custom height";
-const char *OP_CUSTOM_MINES    = "custom mines";
-
-OptionDialog::OptionDialog(QWidget *parent)
-: KDialogBase(IconList, i18n("Configure"), Ok|Cancel|Default, Ok,
-			  parent, "option_dialog", true, true)
+AppearanceSettingsWidget::AppearanceSettingsWidget(BaseSettingsDialog *parent)
+    : BaseSettingsWidget(new BaseSettings(i18n("Appearance"), "appearance"),
+						 parent, "appearance_settings")
 {
-    // game
-    QFrame *page = addPage(i18n("Game"), QString::null,
-                           BarIcon("misc", KIcon::SizeLarge));
-	QVBoxLayout *top = new QVBoxLayout(page, spacingHint());
+    QVBoxLayout *top = new QVBoxLayout(this, parent->spacingHint());
 
-    _caseSize = new KIntNumInput(readCaseSize(), page);
+    QHBox *hbox = new QHBox(this);
+    hbox->setSpacing(parent->spacingHint());
+    top->addWidget(hbox);
+    (void)new QLabel(i18n("Case size"), hbox);
+    _caseSize = new KIntNumInput(hbox);
 	_caseSize->setRange(MIN_CASE_SIZE, MAX_CASE_SIZE);
-	_caseSize->setLabel(i18n("Case size"));
-	top->addWidget(_caseSize);
-	top->addSpacing(10);
 
-	_umark = new QCheckBox(i18n("Enable ? mark"), page);
-	_umark->setChecked(readUMark());
-	top->addWidget(_umark);
+    top->addSpacing( 2*parent->spacingHint() );
 
-	_keyb = new QCheckBox(i18n("Enable keyboard"), page);
-	_keyb->setChecked(readKeyboard());
-	top->addWidget(_keyb);
+    QGrid *grid = new QGrid(2, this);
+    top->addWidget(grid);
 
-    _focus = new QCheckBox(i18n("Pause if window lose focus"), page);
-	_focus->setChecked(readPauseFocus());
-	top->addWidget(_focus);
-	top->addSpacing(10);
+    (void)new QLabel(i18n("Flag color"), grid);
+	_flag = new SettingsColorButton(grid);
 
-	QVGroupBox *gb = new QVGroupBox(i18n("Mouse bindings"), page);
-	top->addWidget(gb);
-	QGrid *grid = new QGrid(2, gb);
-	grid->setSpacing(10);
-	QLabel *lab = new QLabel(i18n("Left button"), grid);
-	_cb[KMines::Left] = new QComboBox(false, grid);
-	lab = new QLabel(i18n("Mid button"), grid);
-	_cb[KMines::Mid] = new QComboBox(false, grid);
-	lab = new QLabel(i18n("Right button"), grid);
-	_cb[KMines::Right] = new QComboBox(false, grid);
-	top->addStretch(1);
+	(void)new QLabel(i18n("Explosion color"), grid);
+	_explosion = new SettingsColorButton(grid);
 
-	for (uint i=0; i<3; i++) {
-		_cb[i]->insertItem(i18n("reveal"), 0);
-		_cb[i]->insertItem(i18n("autoreveal"), 1);
-		_cb[i]->insertItem(i18n("toggle mark"), 2);
-		_cb[i]->insertItem(i18n("toggle ? mark"), 3);
-		_cb[i]->setCurrentItem(readMouseBinding((MouseButton)i));
-	}
-
-    // colors
-    page = addPage(i18n("Colors"), QString::null,
-                   BarIcon("colorize", KIcon::SizeLarge));
-	top = new QVBoxLayout(page, spacingHint());
-
-    CaseProperties cp = OptionDialog::readCaseProperties();
-
-	QHBox *hbox = new QHBox(page);
-	top->addWidget(hbox);
-	(void)new QLabel(i18n("Flag color"), hbox);
-	_flag = new KColorButton(cp.flagColor, hbox);
-
-	hbox = new QHBox(page);
-	top->addWidget(hbox);
-	(void)new QLabel(i18n("Explosion color"), hbox);
-	_explosion = new KColorButton(cp.explosionColor, hbox);
-
-	hbox = new QHBox(page);
-	top->addWidget(hbox);
-	(void)new QLabel(i18n("Error color"), hbox);
-	_error = new KColorButton(cp.errorColor, hbox);
+	(void)new QLabel(i18n("Error color"), grid);
+	_error = new SettingsColorButton(grid);
 
 	_numbers.resize(NB_NUMBER_COLORS);
 	for (uint i=0; i<NB_NUMBER_COLORS; i++) {
-		hbox = new QHBox(page);
-		top->addWidget(hbox);
 		(void)new QLabel(i==0 ? i18n("One mine color")
-						 : i18n("%1 mines color").arg(i+1), hbox);
-		_numbers[i] = new KColorButton(cp.numberColors[i], hbox);
+						 : i18n("%1 mines color").arg(i+1), grid);
+		_numbers.insert(i, new SettingsColorButton(grid));
 	}
-
-    // highscores
-    highscores = new HighscoresOption(this);
 }
 
-KConfig *OptionDialog::config()
+uint AppearanceSettingsWidget::readCaseSize()
 {
-	KConfig *conf = kapp->config();
-	conf->setGroup(OP_GRP);
-	return conf;
+	uint cs = SettingsDialog::config()
+              ->readUnsignedNumEntry(OP_CASE_SIZE, DEFAULT_CASE_SIZE);
+	cs = QMAX(QMIN(cs, MAX_CASE_SIZE), MIN_CASE_SIZE);
+	return cs;
 }
 
-void OptionDialog::accept()
+void AppearanceSettingsWidget::writeCaseSize(uint size)
 {
-    if ( !highscores->accept() ) return;
+    KConfig *conf = SettingsDialog::config();
+    conf->writeEntry(OP_CASE_SIZE, size);
+}
 
-    KConfig *conf = config();
-	conf->writeEntry(OP_CASE_SIZE, _caseSize->value());
-	conf->writeEntry(OP_UMARK, _umark->isChecked());
-	conf->writeEntry(OP_KEYBOARD, _keyb->isChecked());
-    conf->writeEntry(OP_PAUSE_FOCUS, _focus->isChecked());
-	for (uint i=0; i<3; i++)
-		conf->writeEntry(OP_MOUSE_BINDINGS[i], _cb[i]->currentItem());
+QColor AppearanceSettingsWidget::readColor(const QString & key,
+                                           QColor defaultColor)
+{
+	return SettingsDialog::config()->readColorEntry(key, &defaultColor);
+}
 
+KMines::CaseProperties AppearanceSettingsWidget::readCaseProperties()
+{
+	CaseProperties cp;
+	cp.size = readCaseSize();
+	cp.flagColor = readColor(OP_FLAG_COLOR, DEFAULT_FLAG_COLOR);
+	cp.explosionColor
+        = readColor(OP_EXPLOSION_COLOR, DEFAULT_EXPLOSION_COLOR);
+	cp.errorColor
+        = readColor(OP_ERROR_COLOR, DEFAULT_ERROR_COLOR);
+	for (uint i=0; i<NB_NUMBER_COLORS; i++)
+		cp.numberColors[i]
+            = readColor(NCName(i), DEFAULT_NUMBER_COLORS[i]);
+	return cp;
+}
+
+void AppearanceSettingsWidget::readConfig()
+{
+    CaseProperties cp = readCaseProperties();
+    _caseSize->setValue(cp.size);
+    _flag->setColor(cp.flagColor);
+    _explosion->setColor(cp.explosionColor);
+    _error->setColor(cp.errorColor);
+    for (uint i=0; i<NB_NUMBER_COLORS; i++)
+        _numbers[i]->setColor(cp.numberColors[i]);
+}
+
+bool AppearanceSettingsWidget::writeConfig()
+{
+    writeCaseSize( _caseSize->value() );
+    KConfig *conf = SettingsDialog::config();
     conf->writeEntry(OP_FLAG_COLOR, _flag->color());
 	conf->writeEntry(OP_EXPLOSION_COLOR, _explosion->color());
 	conf->writeEntry(OP_ERROR_COLOR, _error->color());
 	for (uint i=0; i<NB_NUMBER_COLORS; i++)
 		conf->writeEntry(NCName(i), _numbers[i]->color());
-
-    KDialogBase::accept();
+    return true;
 }
 
-void OptionDialog::slotDefault()
+void AppearanceSettingsWidget::setDefault()
 {
     _caseSize->setValue(DEFAULT_CASE_SIZE);
-    _umark->setChecked(true);
-    _keyb->setChecked(false);
-
     _flag->setColor(DEFAULT_FLAG_COLOR);
 	_explosion->setColor(DEFAULT_EXPLOSION_COLOR);
 	_error->setColor(DEFAULT_ERROR_COLOR);
@@ -320,7 +374,29 @@ void OptionDialog::slotDefault()
 		_numbers[i]->setColor(DEFAULT_NUMBER_COLORS[i]);
 }
 
-KMines::LevelData OptionDialog::readLevel()
+//-----------------------------------------------------------------------------
+const char *OP_MENUBAR         = "menubar visible";
+const char *OP_LEVEL           = "Level";
+const char *OP_CUSTOM_WIDTH    = "custom width";
+const char *OP_CUSTOM_HEIGHT   = "custom height";
+const char *OP_CUSTOM_MINES    = "custom mines";
+
+SettingsDialog::SettingsDialog(QWidget *parent)
+: BaseSettingsDialog(parent)
+{
+    swallow(new GameSettingsWidget(this));
+    swallow(new AppearanceSettingsWidget(this));
+    swallow( highscores().createSettingsWidget(this) );
+}
+
+KConfig *SettingsDialog::config()
+{
+	KConfig *conf = kapp->config();
+	conf->setGroup("Options");
+	return conf;
+}
+
+KMines::LevelData SettingsDialog::readLevel()
 {
 	LevelData l;
 	l.level = (Level)config()->readUnsignedNumEntry(OP_LEVEL, 0);
@@ -339,7 +415,7 @@ KMines::LevelData OptionDialog::readLevel()
 	return l;
 }
 
-void OptionDialog::writeLevel(const LevelData &l)
+void SettingsDialog::writeLevel(const LevelData &l)
 {
 	if ( l.level==Custom ) {
 		config()->writeEntry(OP_CUSTOM_WIDTH, l.width);
@@ -349,62 +425,12 @@ void OptionDialog::writeLevel(const LevelData &l)
 	config()->writeEntry(OP_LEVEL, (uint)l.level);
 }
 
-bool OptionDialog::readMenuVisible()
+bool SettingsDialog::readMenuVisible()
 {
 	return config()->readBoolEntry(OP_MENUBAR, true);
 }
 
-void OptionDialog::writeMenuVisible(bool visible)
+void SettingsDialog::writeMenuVisible(bool visible)
 {
 	config()->writeEntry(OP_MENUBAR, visible);
-}
-
-KMines::CaseProperties OptionDialog::readCaseProperties()
-{
-	CaseProperties cp;
-	cp.size = readCaseSize();
-	cp.flagColor = readColor(OP_FLAG_COLOR, DEFAULT_FLAG_COLOR);
-	cp.explosionColor
-        = readColor(OP_EXPLOSION_COLOR, DEFAULT_EXPLOSION_COLOR);
-	cp.errorColor
-        = readColor(OP_ERROR_COLOR, DEFAULT_ERROR_COLOR);
-	for (uint i=0; i<NB_NUMBER_COLORS; i++)
-		cp.numberColors[i]
-            = readColor(NCName(i), DEFAULT_NUMBER_COLORS[i]);
-	return cp;
-}
-
-bool OptionDialog::readUMark()
-{
-	return config()->readBoolEntry(OP_UMARK, true);
-}
-
-bool OptionDialog::readKeyboard()
-{
-	return config()->readBoolEntry(OP_KEYBOARD, false);
-}
-
-bool OptionDialog::readPauseFocus()
-{
-	return config()->readBoolEntry(OP_PAUSE_FOCUS, true);
-}
-
-KMines::MouseAction OptionDialog::readMouseBinding(MouseButton mb)
-{
-	MouseAction ma = (MouseAction)config()
-                     ->readUnsignedNumEntry(OP_MOUSE_BINDINGS[mb], mb);
-	return ma>UMark ? Reveal : ma;
-}
-
-uint OptionDialog::readCaseSize()
-{
-	uint cs = config()
-              ->readUnsignedNumEntry(OP_CASE_SIZE, DEFAULT_CASE_SIZE);
-	cs = QMAX(QMIN(cs, MAX_CASE_SIZE), MIN_CASE_SIZE);
-	return cs;
-}
-
-QColor OptionDialog::readColor(const QString & key, QColor defaultColor)
-{
-	return config()->readColorEntry(key, &defaultColor);
 }

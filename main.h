@@ -1,6 +1,8 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+#include <qvector.h>
+
 #include <kmainwindow.h>
 #include <kaction.h>
 
@@ -10,34 +12,28 @@ class Status;
 
 class MainWidget : public KMainWindow, public KMines
 {
-  Q_OBJECT
-
+ Q_OBJECT
  public:
 	MainWidget();
 
  private slots:
-    void easyLevel()            { changeLevel(Easy); }
-	void normalLevel()          { changeLevel(Normal); }
-	void expertLevel()          { changeLevel(Expert); }
-	void customLevel()          { changeLevel(Custom); }
+    void changeLevel();
 	void toggleMenubar();
     void configureKeys();
     void configureSettings();
 	void gameStateChanged(GameState);
-    void showHighscores(int);
+    void showHighscores();
 
  protected:
 	bool eventFilter(QObject *, QEvent *);
     void focusOutEvent(QFocusEvent *);
 
  private:
-	QMemArray<KRadioAction *>  levelAction;
-	Status                    *status;
-    bool                       pauseFocus;
-    KSelectAction             *hs;
+	QVector<KRadioAction>  levelAction;
+	Status                *status;
+    bool                   pauseFocus;
 
 	void readSettings();
-	void changeLevel(Level);
     void settingsChanged();
 };
 
