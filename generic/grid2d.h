@@ -82,7 +82,7 @@ inline QDataStream &operator <<(QDataStream &s, const Grid2D::CoordSet &set) {
 
 inline QDataStream &operator >>(QDataStream &s, Grid2D::CoordSet &set) {
     set.clear();
-    Q_UINT32 nb;
+    Q_UINT32 nb = 0; // ??? what's that for
     for (Q_UINT32 i=0; i<nb; i++) {
         Grid2D::Coord c;
         s >> c;
