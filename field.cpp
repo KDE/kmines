@@ -283,6 +283,7 @@ bool Field::doReveal(const Coord &c, CoordSet *autorevealed,
                      bool *caseUncovered)
 {
 	if ( !isActive() ) return true;
+    if ( state(c)!=Covered ) return true;
     resetAdvised();
 
     if ( firstReveal() ) setState(Playing);
