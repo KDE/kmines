@@ -10,6 +10,6 @@ Maintained-by:  hadacek@kde.org (Nicolas HADACEK)
 Primary-site:   KDE CVS
 Alternate-site: 
 Original-site:
-Platform:       Unix
+Platform:       Unix, Qt
 Copying-policy: GPL
 End
