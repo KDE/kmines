@@ -539,11 +539,17 @@ default_presentation=0
 
 [set_uncertain]
 Name=Set question mark
+Name[et]=Pane küsimärk
+Name[nl]=Vraagteken instellen
+Name[pt]=Colocar um ponto de interrogação
+Name[pt_BR]=Colocar um ponto de interrogação
+Name[sv]=Placerade frågetecken
 Comment=Set question mark
 Comment[et]=Pane küsimärk
 Comment[nl]=Vraagteken instellen
 Comment[pt]=Colocar um ponto de interrogação
 Comment[pt_BR]=Colocar um ponto de interrogação
+Comment[sv]=Placerade frågetecken
 default_presentation=0
 
 [unset_uncertain]
@@ -552,9 +558,11 @@ Name[et]=Eemalda küsimärk
 Name[nl]=Vraagteken weghalen
 Name[pt]=Retirar um ponto de interrogação
 Name[pt_BR]=Retirar um ponto de interrogação
+Name[sv]=Tog bort frågetecken
 Comment=Unset question mark
 Comment[et]=Eemalda küsimärk
 Comment[nl]=Vraagteken weghalen
 Comment[pt]=Retirar um ponto de interrogação
 Comment[pt_BR]=Retirar um ponto de interrogação
+Comment[sv]=Tog bort frågetecken
 default_presentation=0
