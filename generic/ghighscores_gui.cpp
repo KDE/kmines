@@ -114,7 +114,7 @@ HighscoresWidget::HighscoresWidget(int localRank,
         lab->setAlignment(AlignCenter);
         w = lab;
     } else w = new HighscoresList(score, localRank, this);
-    tw->addTab(w, i18n("Best &scores"));
+    tw->addTab(w, i18n("Best &Scores"));
 
     w = new HighscoresList(player, player.id(), this);
     tw->addTab(w, i18n("&Players"));
