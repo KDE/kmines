@@ -114,7 +114,7 @@ StatisticsTab::StatisticsTab(QWidget *parent)
 
     QHBoxLayout *hbox = new QHBoxLayout(top);
     QVBoxLayout *vbox = new QVBoxLayout(hbox);
-    QVGroupBox *group = new QVGroupBox(i18n("Games Counts"), this);
+    QVGroupBox *group = new QVGroupBox(i18n("Game Counts"), this);
     vbox->addWidget(group);
     QGrid *grid = new QGrid(3, group);
     grid->setSpacing(KDialogBase::spacingHint());
