@@ -76,10 +76,12 @@ bool KConfigItemBase::save()
     return success;
 }
 
-void KConfigItemBase::setDefault()
+bool KConfigItemBase::setDefault()
 {
+    if ( hasDefault() ) return false;
     setDefaultState();
     setModified();
+    return true;
 }
 
 void KConfigItemBase::setModified()
@@ -379,8 +381,8 @@ uint KConfigItem::objectType() const
 
 //-----------------------------------------------------------------------------
 KSimpleConfigItem::KSimpleConfigItem(QVariant::Type type,
-                                     const QCString &group,
-                                     const QCString &key, const QVariant &def)
+                                    const QCString &group, const QCString &key,
+                                    const QVariant &def)
     : KConfigItem(Simple, type, group, key, def)
 {}
 
@@ -653,9 +655,12 @@ bool KConfigCollection::saveState()
 void KConfigCollection::setDefaultState()
 {
     Iterator it = _list.begin();
-    blockSignals(true); // emit modified() only once
-    for (; it!=_list.end(); ++it) (*it)->setDefault();
-    blockSignals(false);
+    for (; it!=_list.end(); ++it) {
+        blockSignals(true); // emit modified() only once
+        bool mod = (*it)->setDefault();
+        blockSignals(false);
+        if (mod) emit modified((*it));
+    }
     emit modified();
 }
 
@@ -697,10 +702,11 @@ void KConfigCollection::modifiedSlot()
     for (; iter!=_list.end(); ++iter)
         if ( (*iter)->object()==sender() ) {
             (*iter)->setModified();
-            break;
+            setModified();
+            emit modified((*iter));
+            emit modified();
+            return;
         }
-    setModified();
-    emit modified();
 }
 
 void KConfigCollection::unplug(const char *name)
@@ -757,7 +763,7 @@ QVariant KConfigCollection::minValue(const char *name)
 #define ENTRY_NAMED "entry named \"" << name << "\" : "
 
 KConfigItem *KConfigCollection::createItem(QDomElement &group,
-                                          QDomElement &entry, const char *name)
+                                      QDomElement &entry, const QCString &name)
 {
     // read common attributes
     QCString groupKey = group.attribute("name").utf8();

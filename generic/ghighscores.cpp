@@ -64,15 +64,56 @@ void showMultipleScores(const ScoreVector &scores, QWidget *parent)
     dialog.exec();
 }
 
+void show(QWidget *parent, int rank)
+{
+    HighscoresDialog *hd = new HighscoresDialog(rank, parent);
+	hd->exec();
+    delete hd;
+}
+
 void submitScore(const Score &score, QWidget *parent)
 {
-    internal->submitScore(score, parent);
+    int rank = internal->submitScore(score, parent);
+
+    switch (internal->showMode) {
+    case Manager::AlwaysShow:
+        show(parent, -1);
+        break;
+    case Manager::ShowForHigherScore:
+        if ( rank!=-1) show(parent, rank);
+        break;
+    case Manager::ShowForHighestScore:
+        if ( rank==0 )
+            show(parent, rank);
+        break;
+    case Manager::NeverShow:
+        break;
+    }
 }
 
 void show(QWidget *parent)
 {
-    internal->showHighscores(parent, -1);
+    internal->checkFirst();
+    show(parent, -1);
 }
+
+Score lastScore()
+{
+    internal->checkFirst();
+    Score score(Won);
+    uint nb = internal->scoreInfos().maxNbEntries();
+    internal->scoreInfos().read(nb - 1, score);
+    return score;
+}
+
+Score firstScore()
+{
+    internal->checkFirst();
+    Score score(Won);
+    internal->scoreInfos().read(0, score);
+    return score;
+}
+
 
 //-----------------------------------------------------------------------------
 Manager::Manager(uint nbGameTypes, uint maxNbEntries)
@@ -94,11 +135,6 @@ void Manager::setTrackLostGames(bool track)
     internal->trackLostGames = track;
 }
 
-void Manager::setTrackBlackMarks(bool track)
-{
-    internal->trackBlackMarks = track;
-}
-
 void Manager::showStatistics(bool show)
 {
     internal->showStatistics = show;
@@ -116,12 +152,40 @@ void Manager::setWWHighscores(const KURL &url, const QString &version)
     internal->version = version;
 }
 
-void Manager::setScoreHistogram(const QMemArray<uint> &scores, bool bound)
+void Manager::setScoreHistogram(const QMemArray<uint> &scores,
+                                ScoreTypeBound type)
 {
     Q_ASSERT( scores.size()>=2 );
     for (uint i=0; i<scores.size()-1; i++)
         Q_ASSERT( scores[i]<scores[i+1] );
-    internal->playerInfos().createHistoItems(scores, bound);
+    internal->playerInfos().createHistoItems(scores, type==ScoreBound);
+}
+
+void Manager::setShowMode(ShowMode mode)
+{
+    internal->showMode = mode;
+}
+
+void Manager::setScoreType(ScoreType type)
+{
+    switch (type) {
+    case Normal:
+        return;
+    case MinuteTime: {
+        ScoreItem *scoreItem = new ScoreItem;
+        scoreItem->setPrettyFormat(Item::MinuteTime);
+        setScoreItem("score", scoreItem);
+
+        MeanScoreItem *meanScoreItem = new MeanScoreItem;
+        meanScoreItem->setPrettyFormat(Item::MinuteTime);
+        setPlayerItem("mean score", meanScoreItem);
+
+        BestScoreItem *bestScoreItem = new BestScoreItem;
+        bestScoreItem->setPrettyFormat(Item::MinuteTime);
+        setPlayerItem("best score", bestScoreItem);
+        return;
+    }
+    }
 }
 
 void Manager::submitLegacyScore(const Score &score) const
@@ -143,16 +207,6 @@ void Manager::setScoreItem(const QString &name, Item *item)
 void Manager::setPlayerItem(const QString &name, Item *item)
 {
     internal->playerInfos().setItem(name, item);
-}
-
-Score lastScore()
-{
-    return internal->lastScore();
-}
-
-Score firstScore()
-{
-    return internal->firstScore();
 }
 
 QString Manager::gameTypeLabel(uint gameType, LabelType type) const

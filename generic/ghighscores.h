@@ -197,14 +197,6 @@ class Manager
     void setTrackLostGames(bool track);
 
     /**
-     * Set if the number of black marks should be tracked for the world-wide
-     * highscores statistics. By default, there is no tracking.
-     *
-     * Note: should be called at construction time.
-     */
-    void setTrackBlackMarks(bool track);
-
-    /**
      * Set if the statistics tab should be shown in the highscores dialog.
      * You only want to show this tab if it makes sense to lose or to win the
      * game (for e.g. it makes no sense for a tetris game but it does for a
@@ -214,12 +206,36 @@ class Manager
      */
     void showStatistics(bool show);
 
+    enum ScoreTypeBound { ScoreNotBound, ScoreBound };
     /**
      * Set the ranges for the score histogram.
      *
      * Note: should be called at construction time.
      */
-    void setScoreHistogram(const QMemArray<uint> &scores, bool bound);
+    void setScoreHistogram(const QMemArray<uint> &scores, ScoreTypeBound type);
+
+    enum ShowMode { AlwaysShow, NeverShow, ShowForHigherScore,
+                    ShowForHighestScore };
+    /**
+     * Set how the highscores dialog is shown at game end.
+     * By default, the mode is @ref ShowAtHigherScore.
+     *
+     * Note: should be called at construction time.
+     */
+    void setShowMode(ShowMode mode);
+
+    /**
+     * Score type (@see setScoreType).
+     * @p Normal default score (unsigned integer without upper bound)
+     * @p MinuteTime score by time bound at 3599 seconds (for e.g. kmines)
+     */
+    enum ScoreType { Normal, MinuteTime };
+    /**
+     * Set score type. Helper method to quickly set the type of score.
+     *
+     * Note: should be called at construction time.
+     */
+    void setScoreType(ScoreType type);
 
     /**
      * @return true is the first score is strictly worse than the second one.
@@ -310,18 +326,6 @@ class Manager
      */
     static void addToQueryURL(KURL &url, const QString &item,
                               const QString &content);
-
-    /**
-     * Called when a score has been submitted. By default, this method
-     * does nothing. It's there for future extensions.
-     */
-    virtual void scoreSubmitted(const Score &score) { Q_UNUSED(score); }
-
-    /**
-     * Called before the highscores are shown. By default it does nothing.
-     * It's there for future extensions.
-     */
-    virtual void additionnalTabs(QTabWidget *widget) { Q_UNUSED(widget); }
 
     friend class HighscoresDialog;
     friend class ManagerPrivate;

@@ -58,8 +58,8 @@ void ShowItem::paintCell(QPainter *p, const QColorGroup &cg,
 }
 
 //-----------------------------------------------------------------------------
-ScoresList::ScoresList(const ItemArray &items, QWidget *parent)
-    : KListView(parent), _items(items)
+ScoresList::ScoresList(QWidget *parent)
+    : KListView(parent)
 {
     setSelectionMode(QListView::NoSelection);
     setItemMargin(3);
@@ -69,23 +69,25 @@ ScoresList::ScoresList(const ItemArray &items, QWidget *parent)
     header()->setMovingEnabled(false);
 }
 
-void ScoresList::addHeader()
+void ScoresList::addHeader(const ItemArray &items)
 {
-    addLine(0, static_cast<QListViewItem *>(0));
+    addLine(items, 0, static_cast<QListViewItem *>(0));
 }
 
-QListViewItem *ScoresList::addLine(uint index, bool highlight)
+QListViewItem *ScoresList::addLine(const ItemArray &items,
+                                   uint index, bool highlight)
 {
     QListViewItem *item = new ShowItem(this, highlight);
-    addLine(index, item);
+    addLine(items, index, item);
     return item;
 }
 
-void ScoresList::addLine(uint index, QListViewItem *line)
+void ScoresList::addLine(const ItemArray &items,
+                         uint index, QListViewItem *line)
 {
     uint k = 0;
-    for (uint i=0; i<_items.size(); i++) {
-        const ItemContainer &container = *_items[i];
+    for (uint i=0; i<items.size(); i++) {
+        const ItemContainer &container = *items[i];
         if ( !container.item()->isVisible() || !showColumn(container) )
             continue;
         if (line) line->setText(k, itemText(container, index));
@@ -97,48 +99,31 @@ void ScoresList::addLine(uint index, QListViewItem *line)
     }
 }
 
-void ScoresList::reload()
-{
-    uint index = 0;
-    QListViewItem *item = firstChild();
-    while (item) {
-        uint k = 0;
-        for (uint i=0; i<_items.size(); i++) {
-            const ItemContainer &container = *_items[i];
-            if ( !container.item()->isVisible() || !showColumn(container) )
-                continue;
-            item->setText(k, itemText(container, index));
-            k++;
-        }
-        index++;
-        item = item->nextSibling();
-    }
-}
-
 //-----------------------------------------------------------------------------
-HighscoresList::HighscoresList(const ItemArray &items, int highlight,
-                               QWidget *parent)
-    : ScoresList(items, parent)
-{
-    addHeader();
-
-    QListViewItem *line = 0;
-    for (int j=items.nbEntries()-1; j>=0; j--) {
-        QListViewItem *item = addLine(j, j==highlight);
-        if ( j==highlight ) line = item;
-    }
-    if (line) ensureItemVisible(line);
-}
+HighscoresList::HighscoresList(QWidget *parent)
+    : ScoresList(parent)
+{}
 
 QString HighscoresList::itemText(const ItemContainer &item, uint row) const
 {
     return item.pretty(row);
 }
 
+void HighscoresList::load(const ItemArray &items, int highlight)
+{
+    clear();
+    QListViewItem *line = 0;
+    for (int j=items.nbEntries()-1; j>=0; j--) {
+        QListViewItem *item = addLine(items, j, j==highlight);
+        if ( j==highlight ) line = item;
+    }
+    if (line) ensureItemVisible(line);
+}
+
 //-----------------------------------------------------------------------------
-HighscoresWidget::HighscoresWidget(int localRank, QWidget *parent)
+HighscoresWidget::HighscoresWidget(QWidget *parent)
     : QWidget(parent, "show_highscores_widget"), _scoresList(0), _scoresUrl(0),
-      _playersUrl(0)
+      _playersUrl(0), _statsTab(0), _histoTab(0)
 {
     const ScoreInfos &s = internal->scoreInfos();
     const PlayerInfos &p = internal->playerInfos();
@@ -157,24 +142,28 @@ HighscoresWidget::HighscoresWidget(int localRank, QWidget *parent)
         w = lab;
         _scoresList = 0;
     } else {
-        _scoresList = new HighscoresList(s, localRank, _tw);
+        _scoresList = new HighscoresList(_tw);
+        _scoresList->addHeader(s);
         w = _scoresList;
     }
     _tw->addTab(w, i18n("Best &Scores"));
 
     // players tab
-    _playersList = new HighscoresList(p, p.id(), _tw);
+    _playersList = new HighscoresList(_tw);
+    _playersList->addHeader(p);
     _tw->addTab(_playersList, i18n("&Players"));
 
     // statistics tab
-    if ( internal->showStatistics )
-        _tw->addTab(new StatisticsTab(_tw), i18n("Statistics"));
+    if ( internal->showStatistics ) {
+        _statsTab = new StatisticsTab(_tw);
+        _tw->addTab(_statsTab, i18n("Statistics"));
+    }
 
-    if ( p.histogram().size()!=0 )
-        _tw->addTab(new HistogramTab(_tw), i18n("Histogram"));
-
-    // additionnal tabs
-    internal->additionnalTabs(_tw);
+    // histogram tab
+    if ( p.histogram().size()!=0 ) {
+        _histoTab = new HistogramTab(_tw);
+        _tw->addTab(_histoTab, i18n("Histogram"));
+    }
 
     // url labels
     if ( internal->isWWHSAvailable() ) {
@@ -206,67 +195,71 @@ void HighscoresWidget::showURL(const QString &url) const
     (void)new KRun(KURL(url));
 }
 
-void HighscoresWidget::reload()
+void HighscoresWidget::load(int rank)
 {
-    if (_scoresList)
-        _scoresList->reload();
-    _playersList->reload();
+    if (_scoresList) _scoresList->load(internal->scoreInfos(), rank);
+    _playersList->load(internal->playerInfos(), internal->playerInfos().id());
     if (_scoresUrl)
         _scoresUrl->setURL(internal->queryURL(ManagerPrivate::Scores).url());
     if (_playersUrl)
         _playersUrl->setURL(internal->queryURL(ManagerPrivate::Players).url());
+    if (_statsTab) _statsTab->load();
+    if (_histoTab) _histoTab->load();
 }
 
 //-----------------------------------------------------------------------------
-HighscoresDialog::HighscoresDialog(uint nbGameTypes, int rank, QWidget *parent)
-    : KDialogBase(nbGameTypes>1 ? TreeList : Plain, i18n("Highscores"),
-                  Close|User1|User2, Close,
-                  parent, "show_highscores", true, true)
+HighscoresDialog::HighscoresDialog(int rank, QWidget *parent)
+    : KDialogBase(internal->nbGameTypes()>1 ? TreeList : Plain,
+                  i18n("Highscores"), Close|User1|User2, Close,
+                  parent, "show_highscores", true, true,
+                  KGuiItem(i18n("Configure..."), "configure"),
+                  KGuiItem(i18n("Export..."))), _rank(rank), _tab(0)
 {
-    bool several = ( nbGameTypes>1 );
-    uint type = internal->gameType();
-    for (uint i=0; i<nbGameTypes; i++) {
-        internal->setGameType(i);
-        QWidget *w;
-        if (several) {
+    _widgets.resize(internal->nbGameTypes(), 0);
+
+    if ( internal->nbGameTypes()>1 ) {
+        for (uint i=0; i<internal->nbGameTypes(); i++) {
             QString title = internal->manager.gameTypeLabel(i, Manager::I18N);
             QString icon = internal->manager.gameTypeLabel(i, Manager::Icon);
-            w = addPage(title, QString::null, BarIcon(icon, KIcon::SizeLarge));
-        } else w = plainPage();
-        QVBoxLayout *vbox = new QVBoxLayout(w);
-        HighscoresWidget *hw = new HighscoresWidget((i==type ? rank : -1), w);
-        connect(hw, SIGNAL(tabChanged(int)), SLOT(tabChanged(int)));
-        vbox->addWidget(hw);
-        _widgets.append(hw);
+            QWidget *w = addVBoxPage(title, QString::null,
+                                     BarIcon(icon, KIcon::SizeLarge));
+            if ( i==internal->gameType() ) createPage(w);
+        }
+
+        connect(this, SIGNAL(aboutToShowPage(QWidget *)),
+                SLOT(createPage(QWidget *)));
+        showPage(internal->gameType());
+    } else {
+        QVBoxLayout *vbox = new QVBoxLayout(plainPage());
+        createPage(plainPage());
+        vbox->addWidget(_widgets[0]);
+        setMainWidget(_widgets[0]);
     }
-    setGameType(type);
-    if (several) showPage(type);
-
-    setButtonText(User1, i18n("Export..."));
-    connect(this, SIGNAL(user1Clicked()), SLOT(exportToText()));
-    setButtonText(User2, i18n("Configure..."));
-    connect(this, SIGNAL(user2Clicked()), SLOT(configure()));
-    enableButtonSeparator(several);
 }
 
-void HighscoresDialog::tabChanged(int k)
+void HighscoresDialog::createPage(QWidget *page)
 {
-    for (uint i=0; i<_widgets.size(); i++)
-        _widgets[i]->changeTab(k);
+    _current = page;
+    bool several = ( internal->nbGameTypes()>1 );
+    int i = (several ? pageIndex(page) : 0);
+    if ( _widgets[i]==0 ) {
+        _widgets[i] = new HighscoresWidget(page);
+        connect(_widgets[i], SIGNAL(tabChanged(int)), SLOT(tabChanged(int)));
+    }
+    uint type = internal->gameType();
+    if (several) internal->setGameType(i);
+    _widgets[i]->load(uint(i)==type ? _rank : -1);
+    if (several) setGameType(type);
+    _widgets[i]->changeTab(_tab);
 }
 
-void HighscoresDialog::configure()
+void HighscoresDialog::slotUser1()
 {
-    if ( KExtHighscore::configure(this) ) reload();
+    if ( KExtHighscore::configure(this) )
+        createPage(_current);
 }
 
-void HighscoresDialog::reload()
-{
-    for (uint i=0; i<_widgets.size(); i++)
-        _widgets[i]->reload();
-}
-
-void HighscoresDialog::exportToText()
+void HighscoresDialog::slotUser2()
 {
     KURL url = KFileDialog::getSaveURL(QString::null, QString::null, this);
     if ( url.isEmpty() ) return;
@@ -288,13 +281,14 @@ void HighscoresDialog::exportToText()
 //-----------------------------------------------------------------------------
 MultipleScoresList::MultipleScoresList(const ScoreVector &scores,
                                        QWidget *parent)
-    : ScoresList(internal->scoreInfos(), parent), _scores(scores)
+    : ScoresList(parent), _scores(scores)
 {
     Q_ASSERT( scores.size()!=0 );
 
-    addHeader();
+    const ScoreInfos &s = internal->scoreInfos();
+    addHeader(s);
     for (uint i=0; i<scores.size(); i++)
-        addLine(i, false);
+        addLine(s, i, false);
 }
 
 QString MultipleScoresList::itemText(const ItemContainer &item, uint row) const

@@ -23,7 +23,6 @@
 
 #include "khighscore.h"
 #include "ghighscores_internal.h"
-#include "ghighscores.h"
 
 
 namespace KExtHighscore
@@ -150,6 +149,13 @@ BestScoreItem::BestScoreItem()
     setPrettySpecial(ZeroNotDefined);
 }
 
+ElapsedTimeItem::ElapsedTimeItem()
+    : Item((uint)0, i18n("Elapsed Time"), Qt::AlignRight)
+{
+    setPrettyFormat(MinuteTime);
+    setPrettySpecial(ZeroNotDefined);
+}
+
 //-----------------------------------------------------------------------------
 DataArray::DataArray(const ItemArray &items)
 {
@@ -196,6 +202,12 @@ Score::~Score()
 bool Score::operator <(const Score &score) const
 {
     return internal->manager.isStrictlyLess(*this, score);
+}
+
+bool Score::isTheWorst() const
+{
+    Score s;
+    return score()==s.score();
 }
 
 QDataStream &operator <<(QDataStream &s, const Score &score)

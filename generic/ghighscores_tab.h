@@ -53,6 +53,8 @@ class AdditionalTab : public QWidget
  public:
     AdditionalTab(QWidget *parent, const char *name);
 
+    virtual void load() = 0;
+
  private slots:
     void playerSelected(uint i) { display(i) ; }
     void allSelected();
@@ -73,8 +75,10 @@ class StatisticsTab : public AdditionalTab
  public:
     StatisticsTab(QWidget *parent);
 
+    void load();
+
  private:
-    enum Count { Total = 0, Won, Lost, BlackMark, Nb_Counts };
+    enum Count { Total = 0, Won, Lost, Nb_Counts };
     static const char *COUNT_LABELS[Nb_Counts];
     enum Trend { CurrentTrend = 0, WonTrend, LostTrend, Nb_Trends };
     static const char *TREND_LABELS[Nb_Trends];
@@ -95,6 +99,8 @@ class HistogramTab : public AdditionalTab
  Q_OBJECT
  public:
     HistogramTab(QWidget *parent);
+
+    void load();
 
  private:
     struct Data {

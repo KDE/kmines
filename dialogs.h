@@ -100,7 +100,7 @@ class GameConfig : public KConfigWidget, public KMines
     GameConfig();
 
  private slots:
-    void magicRevealToggled(bool);
+    void modified(KConfigItem *);
 
  private:
     KConfigItem *_magic;

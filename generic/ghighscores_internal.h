@@ -25,7 +25,7 @@
 #include <klocale.h>
 #include <kurl.h>
 
-#include "ghighscores_item.h"
+#include "ghighscores.h"
 
 class QTextStream;
 class QTabWidget;
@@ -221,26 +221,24 @@ class ManagerPrivate
 
     void setGameType(uint type);
     void checkFirst();
-    void showHighscores(QWidget *parent, int rank);
     int submitLocal(const Score &score);
-    void submitScore(const Score &score, QWidget *parent);
-    Score lastScore();
-    Score firstScore();
+    int submitScore(const Score &score, QWidget *parent);
 
     uint gameType() const            { return _gameType; }
+    uint nbGameTypes() const         { return _nbGameTypes; }
     bool isWWHSAvailable() const     { return !serverURL.isEmpty(); }
     ScoreInfos &scoreInfos() const   { return *_scoreInfos; }
     PlayerInfos &playerInfos() const { return *_playerInfos; }
     enum QueryType { Submit, Register, Change, Players, Scores };
     KURL queryURL(QueryType type, const QString &newName=QString::null) const;
 
-    void additionnalTabs(QTabWidget *parent);
     void exportHighscores(QTextStream &);
 
     Manager &manager;
     KURL     serverURL;
     QString  version;
-    bool     showStatistics, trackLostGames, trackBlackMarks;
+    bool     showStatistics, trackLostGames;
+    Manager::ShowMode showMode;
 
  private:
     PlayerInfos  *_playerInfos;

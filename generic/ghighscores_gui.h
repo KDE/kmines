@@ -39,6 +39,7 @@ namespace KExtHighscore
 class ItemContainer;
 class ItemArray;
 class Score;
+class AdditionalTab;
 
 //-----------------------------------------------------------------------------
 class ShowItem : public KListViewItem
@@ -58,20 +59,17 @@ class ScoresList : public KListView
 {
  Q_OBJECT
  public:
-    ScoresList(const ItemArray &, QWidget *parent);
+    ScoresList(QWidget *parent);
 
-    void reload();
+    void addHeader(const ItemArray &);
 
  protected:
-    void addHeader();
-    QListViewItem *addLine(uint index, bool highlight);
+    QListViewItem *addLine(const ItemArray &, uint index, bool highlight);
     virtual QString itemText(const ItemContainer &, uint row) const = 0;
     virtual bool showColumn(const ItemContainer &) const { return true; }
 
  private:
-    const ItemArray &_items;
-
-    void addLine(uint index, QListViewItem *item);
+    void addLine(const ItemArray &, uint index, QListViewItem *item);
 };
 
 //-----------------------------------------------------------------------------
@@ -79,7 +77,9 @@ class HighscoresList : public ScoresList
 {
  Q_OBJECT
  public:
-    HighscoresList(const ItemArray &, int highlight, QWidget *parent);
+    HighscoresList(QWidget *parent);
+
+    void load(const ItemArray &, int highlight);
 
  protected:
     QString itemText(const ItemContainer &, uint row) const;
@@ -89,9 +89,9 @@ class HighscoresWidget : public QWidget
 {
  Q_OBJECT
  public:
-    HighscoresWidget(int localRank, QWidget *parent);
+    HighscoresWidget(QWidget *parent);
 
-    void reload();
+    void load(int rank);
 
  signals:
     void tabChanged(int i);
@@ -107,23 +107,25 @@ class HighscoresWidget : public QWidget
     QTabWidget     *_tw;
     HighscoresList *_scoresList, *_playersList;
     KURLLabel      *_scoresUrl, *_playersUrl;
+    AdditionalTab  *_statsTab, *_histoTab;
 };
 
 class HighscoresDialog : public KDialogBase
 {
  Q_OBJECT
  public:
-    HighscoresDialog(uint nbGameTypes, int rank, QWidget *parent);
+    HighscoresDialog(int rank, QWidget *parent);
 
  private slots:
-    void exportToText();
-    void configure();
-    void tabChanged(int i);
+    void slotUser1();
+    void slotUser2();
+    void tabChanged(int i) { _tab = i; }
+    void createPage(QWidget *);
 
  private:
+    int _rank, _tab;
+    QWidget *_current;
     QValueVector<HighscoresWidget *> _widgets;
-
-    void reload();
 };
 
 //-----------------------------------------------------------------------------

@@ -92,22 +92,18 @@ MainWidget::MainWidget()
 	KStdAction::keyBindings(this, SLOT(configureKeys()), actionCollection());
     KStdAction::configureNotifications(this, SLOT(configureNotifications()),
                                        actionCollection());
-    (void)new KAction(i18n("Configure Highscores..."), 0,
-                      this, SLOT(configureHighscores()),
-                      actionCollection(), "configure_highscores");
+    KStdGameAction::configureHighscores(this, SLOT(configureHighscores()),
+                                        actionCollection());
 
 	// Levels
-    _levels = new KSelectAction(actionCollection(), "levels");
+    _levels = KStdGameAction::chooseGameType(0, 0, actionCollection());
     connect(_levels, SIGNAL(activated(int)), _status, SLOT(newGame(int)));
     _configCollection.plug("level", _levels);
 
     // Adviser
-    _advise = new KAction(KGuiItem(i18n("Advise"), "idea"), CTRL + Key_A,
-                          _status, SLOT(advise()),
-                          actionCollection(), "advise");
-    _solve = new KAction(KGuiItem(i18n("Solve"), "run"), 0,
-                         _status, SLOT(solve()),
-                         actionCollection(), "solve");
+    _advise =
+        KStdGameAction::hint(_status, SLOT(advise()), actionCollection());
+    _solve = KStdGameAction::solve(_status, SLOT(solve()), actionCollection());
     (void)new KAction(i18n("Solving Rate..."), 0, _status, SLOT(solveRate()),
                       actionCollection(), "solve_rate");
 
@@ -250,8 +246,9 @@ int main(int argc, char **argv)
 
     KApplication a;
     KGlobal::locale()->insertCatalogue("libkdegames");
-    KGlobal::locale()->insertCatalogue("libkdehighscores");
+    KGlobal::locale()->insertCatalogue("libkdehighscores"); // #### REMOVE ME
     KExtHighscore::ExtManager manager;
+
     if ( a.isRestored() ) RESTORE(MainWidget)
     else {
         MainWidget *mw = new MainWidget;

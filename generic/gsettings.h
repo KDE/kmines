@@ -57,8 +57,9 @@ class KConfigItemBase
 
     /**
      * Set the setting to its default.
+     * @return false if the value is already the default value.
      */
-    void setDefault();
+    bool setDefault();
 
     /**
      * @return true if the setting has its default state.
@@ -221,7 +222,7 @@ class KConfigItem : public KConfigItemBase
     uint objectType() const;
 
  private:
-    const QCString _group, _key;
+    const QCString  _group, _key;
     QVariant       _def;
     QString        _text, _whatsthis, _tooltip;
     QLabel        *_label;
@@ -256,6 +257,7 @@ class KSimpleConfigItem : public KConfigItem
      * @param group the configuration entry group.
      * @param key the configuration entry key.
      * @param def the default value (should be of type @param type).
+     * @param name the name of the item.
      */
     KSimpleConfigItem(QVariant::Type type,
                       const QCString &group, const QCString &key,
@@ -285,13 +287,14 @@ class KRangedConfigItem : public KConfigItem
      * @param group the configuration entry group.
      * @param key the configuration entry key.
      * @param def the default value (should be of type @param type).
+     * @param name the name of the item.
      * @param min the minimum value (should be of type @param type).
      * @param max the maximum value (should be of type @param type).
      */
     KRangedConfigItem(QVariant::Type type,
                       const QCString &group, const QCString &key,
-                      const QVariant &def, const QVariant &min,
-                      const QVariant &max);
+                      const QVariant &def,
+                      const QVariant &min, const QVariant &max);
 
     ~KRangedConfigItem();
 
@@ -346,7 +349,7 @@ class KMultiConfigItem : public KConfigItem
      * @param group the configuration entry group.
      * @param key the configuration entry key.
      * @param def the default value (should be of type QString).
-     * @param text the text shown to the user.
+     * @param name the name of the item.
      */
     KMultiConfigItem(uint nbItems, const QCString &group, const QCString &key,
                      const QVariant &def);
@@ -480,6 +483,11 @@ class KConfigCollection : public QObject, public KConfigItemBase
      */
     void modified();
 
+    /**
+     * Emitted for each modified item.
+     */
+    void modified(KConfigItem *item);
+
  protected:
     /**
      * @reimplemented
@@ -510,7 +518,7 @@ class KConfigCollection : public QObject, public KConfigItemBase
 
     static QAsciiDict<KConfigItem> *_items;
     static KConfigItem *createItem(QDomElement &group, QDomElement &entry,
-                                   const char *name);
+                                   const QCString &name);
     void remove(KConfigItem *item);
 };
 

@@ -74,6 +74,7 @@ class Item
      * Constructor.
      *
      * @param def default value ; the QVariant also gives the type of data.
+     * Be sure to cast the value to the required type (for e.g. with uint).
      * @param label the label corresponding to the item. If empty, the item
      *              is not shown.
      * @param alignment the alignment of the item.
@@ -151,7 +152,7 @@ class Item
 class ScoreItem : public Item
 {
  public:
-    ScoreItem(uint minScore = 0);
+    ScoreItem(uint worstScore = 0);
 };
 
 /**
@@ -171,6 +172,15 @@ class BestScoreItem : public Item
 {
  public:
     BestScoreItem();
+};
+
+/**
+ * Optionnal @ref Item for elapsed time (maximum value is 3599 seconds).
+ */
+class ElapsedTimeItem : public Item
+{
+ public:
+    ElapsedTimeItem();
 };
 
 //-----------------------------------------------------------------------------
@@ -206,6 +216,7 @@ class DataArray
     class DataArrayPrivate;
     DataArrayPrivate *d;
 
+
     friend QDataStream &operator <<(QDataStream &, const DataArray &);
     friend QDataStream &operator >>(QDataStream &, DataArray &);
 };
@@ -218,11 +229,9 @@ QDataStream &operator >>(QDataStream &stream, DataArray &array);
 /**
  * Possible score type.
  * @p Won the game has been won.
- * @p Lost the game has been lost.
- * @p BlackMark the game has been aborted.
+ * @p Lost the game has been lost or has been aborted.
  */
-enum ScoreType { Won = 0, Lost = -1, BlackMark = -2 };
-
+enum ScoreType { Won = 0, Lost = -1 };
 
 /**
  * This class contains data for a score. You should not inherit from
@@ -253,6 +262,12 @@ class Score : public DataArray
      * @return the score value.
      */
     uint score() const { return data("score").toUInt(); }
+
+    /**
+     * @return true if this is the worst possible score (ie the default
+     * argument of @ref ScoreItem).
+     */
+    bool isTheWorst() const;
 
     /**
      * Convenience comparison operator equivalent to

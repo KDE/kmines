@@ -33,25 +33,14 @@ namespace KExtHighscore
 ExtManager::ExtManager()
     : Manager(Level::NbLevels)
 {
+    setScoreType(MinuteTime);
     setWWHighscores(HOMEPAGE, VERSION);
     showStatistics(true);
     const uint RANGE[16] = {    1, 3120, 3180, 3240, 3300, 3360, 3420, 3480,
                              3510, 3540, 3550, 3560, 3570, 3580, 3590, 3600  };
     QMemArray<uint> s;
     s.duplicate(RANGE, 16);
-    setScoreHistogram(s, true);
-
-    ScoreItem *scoreItem = new ScoreItem;
-    scoreItem->setPrettyFormat(Item::MinuteTime);
-    setScoreItem("score", scoreItem);
-
-    MeanScoreItem *meanScoreItem = new MeanScoreItem;
-    meanScoreItem->setPrettyFormat(Item::MinuteTime);
-    setPlayerItem("mean score", meanScoreItem);
-
-    BestScoreItem *bestScoreItem = new BestScoreItem;
-    bestScoreItem->setPrettyFormat(Item::MinuteTime);
-    setPlayerItem("best score", bestScoreItem);
+    setScoreHistogram(s, ScoreBound);
 
     Item *item = new Item((uint)0, i18n("Clicks"), Qt::AlignRight);
     setScoreItem("nb_actions", item);

@@ -258,7 +258,7 @@ PlayerInfos::PlayerInfos()
                                 Qt::AlignLeft));
 
     // statistics items
-    addItem("nb black marks", new Item((uint)0), true, true);
+    addItem("nb black marks", new Item((uint)0), true, true); // legacy
     addItem("nb lost games", new Item((uint)0), true, true);
     addItem("current trend", new Item((int)0), true, true);
     addItem("max lost trend", new Item((uint)0), true, true);
@@ -333,9 +333,6 @@ void PlayerInfos::submitScore(const Score &score) const
     uint nbGames = item("nb games")->increment(_id);
     bool lost = true;
     switch (score.type()) {
-    case BlackMark:
-        item("nb black marks")->increment(_id);
-        break;
     case Lost:
         item("nb lost games")->increment(_id);
         break;
@@ -346,7 +343,8 @@ void PlayerInfos::submitScore(const Score &score) const
 
     // update mean
     if ( !lost ) {
-        uint nbWonGames = nbGames - item("nb lost games")->read(_id).toUInt();
+        uint nbWonGames = nbGames - item("nb lost games")->read(_id).toUInt()
+                       - item("nb black marks")->read(_id).toUInt(); // legacy
         double mean = item("mean score")->read(_id).toDouble();
         mean += (double(score.score()) - mean) / nbWonGames;
         item("mean score")->write(_id, mean);
@@ -429,7 +427,7 @@ void PlayerInfos::removeKey()
 ManagerPrivate::ManagerPrivate(uint nbGameTypes, uint maxNbEntries,
                                Manager &m)
     : manager(m), showStatistics(false), trackLostGames(false),
-      trackBlackMarks(false),
+      showMode(Manager::ShowForHigherScore),
       _first(true), _nbGameTypes(nbGameTypes), _gameType(0)
 {
     Q_ASSERT(nbGameTypes);
@@ -649,14 +647,7 @@ void ManagerPrivate::checkFirst()
     if (_first) setGameType(0);
 }
 
-void ManagerPrivate::showHighscores(QWidget *parent, int rank)
-{
-    HighscoresDialog *hd = new HighscoresDialog(_nbGameTypes, rank, parent);
-	hd->exec();
-    delete hd;
-}
-
-void ManagerPrivate::submitScore(const Score &ascore, QWidget *parent)
+int ManagerPrivate::submitScore(const Score &ascore, QWidget *parent)
 {
     checkFirst();
 
@@ -668,12 +659,10 @@ void ManagerPrivate::submitScore(const Score &ascore, QWidget *parent)
     if ( _playerInfos->isWWEnabled() )
         submitWorldWide(score, parent);
 
-    if ( score.type()==Won ) {
-        int rank = submitLocal(score);
-        if ( rank!=-1 ) showHighscores(parent, rank);
-    }
-
-    manager.scoreSubmitted(score);
+    int rank = -1;
+    if ( score.type()==Won )
+        rank = submitLocal(score);
+    return rank;
 }
 
 int ManagerPrivate::submitLocal(const Score &score)
@@ -688,10 +677,9 @@ int ManagerPrivate::submitLocal(const Score &score)
 }
 
 bool ManagerPrivate::submitWorldWide(const Score &score,
-                                        QWidget *parent) const
+                                     QWidget *parent) const
 {
     if ( score.type()==Lost && !trackLostGames ) return true;
-    if ( score.type()==BlackMark && !trackBlackMarks ) return true;
 
     KURL url = queryURL(Submit);
     manager.additionnalQueryItems(url, score);
@@ -702,27 +690,6 @@ bool ManagerPrivate::submitWorldWide(const Score &score,
     Manager::addToQueryURL(url, "check", context.hexDigest());
 
     return doQuery(url, parent);
-}
-
-Score ManagerPrivate::lastScore()
-{
-    checkFirst();
-    Score score(Won);
-    _scoreInfos->read(_scoreInfos->maxNbEntries() - 1, score);
-    return score;
-}
-
-Score ManagerPrivate::firstScore()
-{
-    checkFirst();
-    Score score(Won);
-    _scoreInfos->read(0, score);
-    return score;
-}
-
-void ManagerPrivate::additionnalTabs(QTabWidget *parent)
-{
-    manager.additionnalTabs(parent);
 }
 
 void ManagerPrivate::exportHighscores(QTextStream &s)
