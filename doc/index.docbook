@@ -1,9 +1,9 @@
-<!DOCTYPE book PUBLIC  "-//KDE//DTD DocBook V3.1-Based Variant V1.0//EN" [
+<?xml version="1.0" ?><!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.1-Based Variant V1.0//EN" "dtd/kdex.dtd" [
   <!ENTITY kappname "&kmines;">
   <!ENTITY % addindex "IGNORE">
-  <!ENTITY % English "INCLUDE" -- change language only here --> 
-  <!ENTITY % ents PUBLIC "-//KDE//ENTITIES Documentation V1.0//EN">
-  %ents; 
+  <!ENTITY % English "INCLUDE" > <!-- change language only here --> 
+  
+   
 ]>
 
 <book lang="&language;">
@@ -121,7 +121,7 @@ linkend="prefs">Game Options</link>.</para></note>
 <screenshot>
 <screeninfo>The &kmines; Screen</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kmines1.png" format="PNG"></imageobject>
+<imageobject><imagedata fileref="kmines1.png" format="PNG"/></imageobject>
 </mediaobject>
 </screenshot>   
 
@@ -155,7 +155,7 @@ from the menubar.  This will bring up a dialog box.</para>
 <screenshot>
 <screeninfo>&kmines; Preferences</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kmines2.png" format="PNG"></imageobject>
+<imageobject><imagedata fileref="kmines2.png" format="PNG"/></imageobject>
 </mediaobject>
 </screenshot>  
 
@@ -354,7 +354,7 @@ directly entering them into the text boxes.</para></listitem>
 
 <variablelist>
 <varlistentry>
-<term><anchor id="contents"><menuchoice>
+<term><anchor id="contents"/><menuchoice>
 <shortcut><keycombo action="simul"><keycap>F1</keycap></keycombo></shortcut>
 <guimenu><accel>H</accel>elp</guimenu><guimenuitem><accel>C</accel>ontents</guimenuitem></menuchoice></term>
 <listitem>
@@ -364,7 +364,7 @@ document).</para>
 </varlistentry>
 
 <varlistentry>
-<term><anchor id="bug"><menuchoice>
+<term><anchor id="bug"/><menuchoice>
 <shortcut><keycombo action="simul"><keycap>Shift</keycap><keycap>F1</keycap></keycombo></shortcut>
 <guimenu><accel>H</accel>elp</guimenu><guimenuitem>What's <accel>T</accel>his?</guimenuitem></menuchoice></term>
 <listitem><para>This changes the mouse cursor to a combination arrow and
@@ -373,7 +373,7 @@ window (if one exists for the particular item) explaining the item's
 function.</para></listitem>
 </varlistentry>
 <varlistentry>
-<term><anchor id="whats-this"><menuchoice>
+<term><anchor id="whats-this"/><menuchoice>
 <guimenu><accel>H</accel>elp</guimenu><guimenuitem><accel>R</accel>eport
 Bug...</guimenuitem></menuchoice></term>
 <listitem>
@@ -383,7 +383,7 @@ author.</para>
 </listitem>
 </varlistentry>
 <varlistentry>
-<term><anchor id="about-kmines"><menuchoice>
+<term><anchor id="about-kmines"/><menuchoice>
 <guimenu><accel>H</accel>elp</guimenu><guimenuitem>About
 <accel>K</accel>Mines</guimenuitem></menuchoice></term>
 <listitem>
@@ -392,7 +392,7 @@ author.</para>
 </varlistentry>
 
 <varlistentry>
-<term><anchor id="about-kde"><menuchoice>
+<term><anchor id="about-kde"/><menuchoice>
 <guimenu><accel>H</accel>elp</guimenu><guimenuitem>About
 <accel>K</accel>DE</guimenuitem></menuchoice></term>
 <listitem>
@@ -491,4 +491,5 @@ sgml-omittag: nil
 sgml-shorttag: t
 End:
 -->
+
 
