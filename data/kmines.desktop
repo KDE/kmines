@@ -21,6 +21,7 @@ Exec=kmines -caption "%c" %i %m
 Type=Application
 DocPath=kmines/index.html
 GenericName=Logic Game
+GenericName[af]=logika speletjie
 GenericName[ar]=لعبة تكتيكية
 GenericName[be]=Лягічная гульня
 GenericName[bg]=Логическа Игра
