@@ -48,7 +48,7 @@ APPSDIR= $(prefix)/share/applnk/Games
 OBJECTS =	kmines.o status.o field.o dialogs.o
 SRCMETA =	kmines.moc status.moc field.moc dialogs.moc
 TARGET	=	kmines
-DOC	=	kmines.html
+DOC	=	index.html
 
 ######### build rules ################
 
