@@ -76,8 +76,8 @@ KStatus::KStatus(QWidget *parent, const char *name)
 	mesg->setFrameStyle(  QFrame::Panel | QFrame::Sunken );
 	mesg->installEventFilter(parent);
 	
-	connect( this, SIGNAL(exleft(const char *)),
-			 left, SLOT(display(const char *)) );
+	connect( this, SIGNAL(exleft(int)),
+			 left, SLOT(display(int)) );
 	connect( this, SIGNAL(freezeTimer()), dg, SLOT(freeze()) );
 	connect( this, SIGNAL(getTime(int *, int *)),
 		 	 dg,   SLOT(getTime(int *, int *)) );
@@ -180,9 +180,7 @@ void KStatus::changeCase(uint case_mode, uint inc)
 
 void KStatus::update(bool mine)
 {
-	static char perc[5];
-	sprintf(perc,"%d", nb_mines - marked);
-	emit exleft(perc);
+	emit exleft(nb_mines - marked);
 	
 	if ( uncovered==(nb_width*nb_height - nb_mines) ) endGame(!mine);
 }

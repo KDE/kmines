@@ -37,7 +37,7 @@ class KStatus : public QWidget
 	void stopField();
   
 	/* update status signals */
-	void exleft(const char *);
+	void exleft(int);
 	void freezeTimer();
 	void zeroTimer();
 	void startTimer();

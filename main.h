@@ -27,19 +27,20 @@ class KMines : public QWidget
 
         virtual ~KMines ();
 
- private slots:
-	/** menu slot : change level
-	  * initialize a new game for default level ( with the constant MODES)
-	  *	or launch the custom dialog with the current value of width,
-	  *	height and number of mines
-	  */
-	void change_level(int level);
-    void configKeys() { KKeyDialog::configureKeys(kacc); }
-	void quit();
-	void toggleMenu();
-	void toggleUMark();
+private slots:
+ /** menu slot : change level
+  * initialize a new game for default level ( with the constant MODES)
+  *	or launch the custom dialog with the current value of width,
+  *	height and number of mines
+  */
+  void change_level(int level);
+  void configKeys() { KKeyDialog::configureKeys(kacc); }
+  void quit();
+  void toggleMenu();
+  void toggleUMark();
+  void menuMoved();
 
- signals:
+signals:
 	/** signal : start a new game */
 	void newGame(uint width, uint height, uint nb_mines);
 	/** signal : restart the game */
@@ -56,6 +57,7 @@ class KMines : public QWidget
 	KAccel * kacc;
 	
 	KMenuBar *menu;
+        QPopupMenu *level;
 	QPopupMenu* popup, *options;
 	int tog_id;
 	int um_id;

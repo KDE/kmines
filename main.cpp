@@ -18,7 +18,7 @@ KMines::KMines(QWidget *parent, const char *name)
 	connect( this, SIGNAL(newGame(uint, uint, uint)),
 			 status, SLOT(newGame(uint, uint, uint)) );
 	connect( this, SIGNAL(getNumbers(uint *, uint *, uint *)),
-			 status, SLOT(getNumbers(uint *, uint *, uint *)) );
+		 status, SLOT(getNumbers(uint *, uint *, uint *)) );
 	connect( status, SIGNAL(quit()), this, SLOT(quit()) );
 	
 	kacc = new KAccel( this );
@@ -61,12 +61,13 @@ KMines::KMines(QWidget *parent, const char *name)
 	um_id = options->insertItem(i18n("? mark"), this, SLOT(toggleUMark()) );
 	options->insertItem(i18n("Keys"), this, SLOT(configKeys()) );
 	
-	QPopupMenu *level = new QPopupMenu;
-	level->insertItem(i18n("Easy"));
-	level->insertItem(i18n("Normal"));
-	level->insertItem(i18n("Expert"));
+	level = new QPopupMenu;
+	level->setCheckable(true);
+	level->insertItem(i18n("Easy"), 1);
+	level->insertItem(i18n("Normal"), 2);
+	level->insertItem(i18n("Expert"), 3);
 	level->insertSeparator();
-	level->insertItem(i18n("Custom"));
+	level->insertItem(i18n("Custom"), 4);
 	connect(level, SIGNAL(activated(int)), SLOT(change_level(int)));
 
 	QString s;
@@ -75,9 +76,11 @@ KMines::KMines(QWidget *parent, const char *name)
 	QPopupMenu *help = kapp->getHelpMenu(true, s);
 
 	menu = new KMenuBar(this);
+	connect(menu, SIGNAL(moved(menuPosition)),
+		this, SLOT(menuMoved()));
 	menu->insertItem(i18n("&File"), popup );
-	menu->insertItem(i18n("&Options"), options );
 	menu->insertItem(i18n("&Level"), level );
+	menu->insertItem(i18n("&Options"), options );
 	menu->insertSeparator();
 	menu->insertItem(i18n("&Help"), help );
 
@@ -98,7 +101,7 @@ KMines::KMines(QWidget *parent, const char *name)
 	emit UMarkChanged(um);
 	
 	/* begin easy game */
-	change_level(0);
+	change_level(1);
 
 	toggleMenu();
 }
@@ -112,11 +115,17 @@ KMines::~KMines ()
 void KMines::change_level(int lev)
 {
 	bool go;
-	
-	if (lev==4) {
+
+	for(int i = 1; i < 6; i++)
+	  if(i != 4)
+	    level->setItemChecked(i, i == lev);
+
+	lev--; // level counting begins with 0
+
+	if (lev == 3) {
 		emit getNumbers(&nb_w, &nb_h, &nb_m);
 		
-		Custom cu(&nb_w, &nb_h, &nb_m, this);
+		Custom cu(&nb_w, &nb_h, &nb_m, this);		
 		go = cu.exec();
 	} else {
 		nb_w = MODES[lev][0];
@@ -177,6 +186,7 @@ void KMines::changedSize()
 	
 	/* if under the minimum size for application */
 	aff_h = nb_h;
+
 	if (nb_w < MIN_W) {
 		aff_w = MIN_W;
 		aff_h = nb_h + (MIN_W - nb_w);
@@ -184,12 +194,20 @@ void KMines::changedSize()
 		aff_w = nb_w;
 	
 	int mh = 0;
-    if ( menu->isVisible() ) mh += menu->height();
-	
-	setFixedSize( aff_w*CASE_W + 2*FRAME_W,
-		      mh + STAT_H + LABEL_H + aff_h*CASE_W + 2*FRAME_W);
+    if ( menu->isVisible() && 
+	 (menu->menuBarPos() == KMenuBar::Top ||
+	  menu->menuBarPos() == KMenuBar::Bottom)) 
+      mh += menu->height();
+	    
+    setFixedSize( aff_w*CASE_W + 2*FRAME_W,
+		  mh + STAT_H + LABEL_H + aff_h*CASE_W + 2*FRAME_W);
     status->setGeometry( 0, mh, aff_w*CASE_W + 2*FRAME_W,
 			 STAT_H + LABEL_H + aff_h*CASE_W + 2*FRAME_W );
+}
+
+
+void KMines::menuMoved() {
+  changedSize();
 }
 
 

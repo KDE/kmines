@@ -1,3 +1,10 @@
+1.0.3: (Mario Weilguni <mweilguni@kde.org>)
+ * fixed the bug in the level selection (showed up with Qt 2.0)
+ * fixed layout for Qt 2.0
+ * fixed signal/slot handling for Qt 2.0
+ * fixed layout with floating menubar
+ * level menu items are now checked
+
 1.0.2:
  * bug fix : argh! a "brown bag" one (bug report by Szokovacs Robert)  
 

@@ -212,7 +212,7 @@ Custom::Custom(uint *nbWidth, uint *nbHeight, uint *nbMines,
 	hbl->addStretch(1);
 	
 	top->activate();
-	resize(0, 0); // get the minimum size
+	resize(top->minimumSize()); // get the minimum size
 }
 
 void Custom::widthChanged(int newWidth)
@@ -372,7 +372,8 @@ WHighScores::WHighScores(bool show, int newSec, int newMin, uint Mode,
 	if ( !show ) pb->hide();
 
 	top->activate();
-	resize(0, 0);
+
+	resize(top->minimumSize());
 	
 	exec();
 	res = 0;
