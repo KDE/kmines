@@ -17,7 +17,7 @@ DISTCLEANFILES = $(BUILTSOURCES)
 SUBDIRS = data
 
 messages:
-	$(XGETTEXT) -C -ktranslate -x ../../kdelibs/po/kde.pot $(kmines_SOURCES) && mv messages.po ../po/kmines.pot
+	$(XGETTEXT) -C -ktranslate -ki18n -x ../../kdelibs/po/kde.pot $(kmines_SOURCES) && mv messages.po ../po/kmines.pot
 
 ## ##############
 ## # MOC building

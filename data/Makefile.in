@@ -1,6 +1,6 @@
-# Makefile.in generated automatically by automake 1.2c from Makefile.am
+# Makefile.in generated automatically by automake 1.3 from Makefile.am
 
-# Copyright (C) 1994, 1995, 1996, 1997 Free Software Foundation, Inc.
+# Copyright (C) 1994, 1995, 1996, 1997, 1998 Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
@@ -32,6 +32,8 @@ mandir = @mandir@
 includedir = @includedir@
 oldincludedir = /usr/include
 
+DISTDIR =
+
 pkgdatadir = $(datadir)/@PACKAGE@
 pkglibdir = $(libdir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
@@ -49,12 +51,12 @@ INSTALL_DATA = @INSTALL_DATA@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 transform = @program_transform_name@
 
-NORMAL_INSTALL = true
-PRE_INSTALL = true
-POST_INSTALL = true
-NORMAL_UNINSTALL = true
-PRE_UNINSTALL = true
-POST_UNINSTALL = true
+NORMAL_INSTALL = :
+PRE_INSTALL = :
+POST_INSTALL = :
+NORMAL_UNINSTALL = :
+PRE_UNINSTALL = :
+POST_UNINSTALL = :
 build_alias = @build_alias@
 build_triplet = @build@
 host_alias = @host_alias@
@@ -67,6 +69,7 @@ CXX = @CXX@
 GLINC = @GLINC@
 GLLIB = @GLLIB@
 GMSGFMT = @GMSGFMT@
+IDL = @IDL@
 KDE_EXTRA_RPATH = @KDE_EXTRA_RPATH@
 KDE_INCLUDES = @KDE_INCLUDES@
 KDE_LDFLAGS = @KDE_LDFLAGS@
@@ -77,12 +80,17 @@ LIBCRYPT = @LIBCRYPT@
 LIBDL = @LIBDL@
 LIBJPEG = @LIBJPEG@
 LIBKHTMLW = @LIBKHTMLW@
+LIBMICO = @LIBMICO@
 LIBOBJS = @LIBOBJS@
+LIBPTHREAD = @LIBPTHREAD@
+LIBPYTHON = @LIBPYTHON@
 LIBSOCKET = @LIBSOCKET@
 LIBTOOL = @LIBTOOL@
 LIBUCB = @LIBUCB@
 LN_S = @LN_S@
 MAKEINFO = @MAKEINFO@
+MICO_INCLUDES = @MICO_INCLUDES@
+MICO_LDFLAGS = @MICO_LDFLAGS@
 MOC = @MOC@
 MSGFMT = @MSGFMT@
 NM = @NM@
@@ -90,15 +98,17 @@ PACKAGE = @PACKAGE@
 PAMINC = @PAMINC@
 PAMLIBPATHS = @PAMLIBPATHS@
 PAMLIBS = @PAMLIBS@
+PYTHONINC = @PYTHONINC@
+PYTHONLIB = @PYTHONLIB@
 QT_INCLUDES = @QT_INCLUDES@
 QT_LDFLAGS = @QT_LDFLAGS@
 RANLIB = @RANLIB@
-TOPSUBDIRS = @TOPSUBDIRS@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 XGETTEXT = @XGETTEXT@
 XPMINC = @XPMINC@
 XPMLIB = @XPMLIB@
+X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_INCLUDES = @X_INCLUDES@
 X_LDFLAGS = @X_LDFLAGS@
 all_includes = @all_includes@
@@ -145,72 +155,72 @@ DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
 TAR = tar
 GZIP = --best
-default: all
+all: Makefile $(DATA)
 
 .SUFFIXES:
-$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4)
 	cd $(top_srcdir) && $(AUTOMAKE) --gnu kmines/data/Makefile
 
-Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status $(BUILT_SOURCES)
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
 	cd $(top_builddir) \
 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 
 install-appsDATA: $(apps_DATA)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(appsdir)
+	$(mkinstalldirs) $(DESTDIR)$(appsdir)
 	@list='$(apps_DATA)'; for p in $$list; do \
 	  if test -f $(srcdir)/$$p; then \
-	    echo " $(INSTALL_DATA) $(srcdir)/$$p $(appsdir)/$$p"; \
-	    $(INSTALL_DATA) $(srcdir)/$$p $(appsdir)/$$p; \
+	    echo " $(INSTALL_DATA) $(srcdir)/$$p $(DESTDIR)$(appsdir)/$$p"; \
+	    $(INSTALL_DATA) $(srcdir)/$$p $(DESTDIR)$(appsdir)/$$p; \
 	  else if test -f $$p; then \
-	    echo " $(INSTALL_DATA) $$p $(appsdir)/$$p"; \
-	    $(INSTALL_DATA) $$p $(appsdir)/$$p; \
+	    echo " $(INSTALL_DATA) $$p $(DESTDIR)$(appsdir)/$$p"; \
+	    $(INSTALL_DATA) $$p $(DESTDIR)$(appsdir)/$$p; \
 	  fi; fi; \
 	done
 
 uninstall-appsDATA:
-	$(NORMAL_UNINSTALL)
+	@$(NORMAL_UNINSTALL)
 	list='$(apps_DATA)'; for p in $$list; do \
-	  rm -f $(appsdir)/$$p; \
+	  rm -f $(DESTDIR)$(appsdir)/$$p; \
 	done
 
 install-htmlDATA: $(html_DATA)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(htmldir)
+	$(mkinstalldirs) $(DESTDIR)$(htmldir)
 	@list='$(html_DATA)'; for p in $$list; do \
 	  if test -f $(srcdir)/$$p; then \
-	    echo " $(INSTALL_DATA) $(srcdir)/$$p $(htmldir)/$$p"; \
-	    $(INSTALL_DATA) $(srcdir)/$$p $(htmldir)/$$p; \
+	    echo " $(INSTALL_DATA) $(srcdir)/$$p $(DESTDIR)$(htmldir)/$$p"; \
+	    $(INSTALL_DATA) $(srcdir)/$$p $(DESTDIR)$(htmldir)/$$p; \
 	  else if test -f $$p; then \
-	    echo " $(INSTALL_DATA) $$p $(htmldir)/$$p"; \
-	    $(INSTALL_DATA) $$p $(htmldir)/$$p; \
+	    echo " $(INSTALL_DATA) $$p $(DESTDIR)$(htmldir)/$$p"; \
+	    $(INSTALL_DATA) $$p $(DESTDIR)$(htmldir)/$$p; \
 	  fi; fi; \
 	done
 
 uninstall-htmlDATA:
-	$(NORMAL_UNINSTALL)
+	@$(NORMAL_UNINSTALL)
 	list='$(html_DATA)'; for p in $$list; do \
-	  rm -f $(htmldir)/$$p; \
+	  rm -f $(DESTDIR)$(htmldir)/$$p; \
 	done
 
 install-iconDATA: $(icon_DATA)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(icondir)
+	$(mkinstalldirs) $(DESTDIR)$(icondir)
 	@list='$(icon_DATA)'; for p in $$list; do \
 	  if test -f $(srcdir)/$$p; then \
-	    echo " $(INSTALL_DATA) $(srcdir)/$$p $(icondir)/$$p"; \
-	    $(INSTALL_DATA) $(srcdir)/$$p $(icondir)/$$p; \
+	    echo " $(INSTALL_DATA) $(srcdir)/$$p $(DESTDIR)$(icondir)/$$p"; \
+	    $(INSTALL_DATA) $(srcdir)/$$p $(DESTDIR)$(icondir)/$$p; \
 	  else if test -f $$p; then \
-	    echo " $(INSTALL_DATA) $$p $(icondir)/$$p"; \
-	    $(INSTALL_DATA) $$p $(icondir)/$$p; \
+	    echo " $(INSTALL_DATA) $$p $(DESTDIR)$(icondir)/$$p"; \
+	    $(INSTALL_DATA) $$p $(DESTDIR)$(icondir)/$$p; \
 	  fi; fi; \
 	done
 
 uninstall-iconDATA:
-	$(NORMAL_UNINSTALL)
+	@$(NORMAL_UNINSTALL)
 	list='$(icon_DATA)'; for p in $$list; do \
-	  rm -f $(icondir)/$$p; \
+	  rm -f $(DESTDIR)$(icondir)/$$p; \
 	done
 tags: TAGS
 TAGS:
@@ -248,12 +258,11 @@ install: install-exec install-data all
 
 uninstall: uninstall-appsDATA uninstall-htmlDATA uninstall-iconDATA uninstall-local
 
-all: Makefile $(DATA)
-
 install-strip:
 	$(MAKE) INSTALL_PROGRAM='$(INSTALL_PROGRAM) -s' INSTALL_SCRIPT='$(INSTALL_PROGRAM)' install
 installdirs:
-	$(mkinstalldirs)  $(appsdir) $(htmldir) $(icondir)
+	$(mkinstalldirs)  $(DATADIR)$(appsdir) $(DATADIR)$(htmldir) \
+		$(DATADIR)$(icondir)
 
 
 mostlyclean-generic:
@@ -282,7 +291,7 @@ maintainer-clean:  maintainer-clean-generic distclean
 	@echo "This command is intended for maintainers to use;"
 	@echo "it deletes files that may require special tools to rebuild."
 
-.PHONY: default uninstall-appsDATA install-appsDATA uninstall-htmlDATA \
+.PHONY: uninstall-appsDATA install-appsDATA uninstall-htmlDATA \
 install-htmlDATA uninstall-iconDATA install-iconDATA tags distdir info \
 dvi installcheck install-exec install-data install uninstall all \
 installdirs mostlyclean-generic distclean-generic clean-generic \
