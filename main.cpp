@@ -77,7 +77,7 @@ MainWidget::MainWidget()
 	QString sdate = KGlobal::locale()->formatDate(date);
 	QString s = i18n("%1 %2 (%3)\n\nby %4").arg(KMINES_NAME)
    		        .arg(KMINES_VERSION).arg(sdate).arg(KMINES_AUTHOR);
-	QPopupMenu *help = kapp->helpMenu(true, s);
+	QPopupMenu *help = helpMenu(s);
 
 	menuBar()->insertItem(i18n("&File"), popup );
 	menuBar()->insertItem(i18n("&Level"), level );
