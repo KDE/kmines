@@ -68,7 +68,7 @@ MainWidget::MainWidget()
 	// Settings
 	menu = KStdAction::showMenubar(this, SLOT(toggleMenubar()),
                                    actionCollection());
-    collection.plug(menu, OP_GROUP, "menubar visible", true);
+    settings.plug(menu, OP_GROUP, "menubar visible", true);
 	KStdAction::preferences(this, SLOT(configureSettings()),
                             actionCollection());
 	KStdAction::keyBindings(this, SLOT(configureKeys()), actionCollection());
@@ -76,12 +76,12 @@ MainWidget::MainWidget()
 	// Levels
     levels = new KSelectAction(i18n("Choose &Level"), 0,
                    0, 0, actionCollection(), "levels");
-    collection.plug(levels, OP_GROUP, "Level", Level::data(Level::Easy).label);
+    settings.plug(levels, OP_GROUP, "Level", Level::data(Level::Easy).label);
     connect(levels, SIGNAL(activated(int)), status, SLOT(newGame(int)));
     QStringList list;
     for (uint i=0; i<Level::NbLevels+1; i++) {
         list.append(i18n(Level::data((Level::Type)i).i18nLabel));
-        collection.map(levels, i, Level::data((Level::Type)i).label);
+        settings.map(levels, i, Level::data((Level::Type)i).label);
     }
     levels->setItems(list);
 
@@ -92,13 +92,13 @@ MainWidget::MainWidget()
 
 bool MainWidget::queryExit()
 {
-    collection.save();
+    settings.save();
     return true;
 }
 
 void MainWidget::readSettings()
 {
-    collection.load();
+    settings.load();
 
     status->newGame( levels->currentItem() );
 	toggleMenubar();
@@ -144,6 +144,7 @@ void MainWidget::toggleMenubar()
 void MainWidget::configureSettings()
 {
 	SettingsDialog od(this);
+    connect(&od, SIGNAL(settingsSaved()), SLOT(settingsChanged()));
     od.exec();
 }
 

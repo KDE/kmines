@@ -29,7 +29,6 @@
 #include <qbuttongroup.h>
 #include <qradiobutton.h>
 #include <qobjectlist.h>
-#include <qguardedptr.h>
 #include <qtextedit.h>
 #include <qdial.h>
 #include <qdatetimeedit.h>
@@ -48,48 +47,91 @@
 
 
 //-----------------------------------------------------------------------------
-KSettingProxy::KSettingProxy()
-    : QObject(0, "KSettingProxy")
+KSettingGeneric::KSettingGeneric(QObject *parent)
+    : QObject(parent), _modified(false)
 {}
 
-//-----------------------------------------------------------------------------
-KSettingGeneric::KSettingGeneric()
+KSettingGeneric::~KSettingGeneric()
 {}
 
-//-----------------------------------------------------------------------------
-KSettingList::KSettingList()
+void KSettingGeneric::load()
 {
-    _settings.setAutoDelete(true);
+    blockSignals(true); // do not emit hasBeenModified
+    loadState();
+    blockSignals(false);
+    _modified = false;
 }
 
-void KSettingList::plug(KSettingGeneric *setting)
+bool KSettingGeneric::save()
 {
-    QObject::connect(setting->proxy(), SIGNAL(changed()),
-                     proxy(), SIGNAL(changed()));
+    if ( !_modified ) return true;
+    bool success = saveState();
+    if (success) {
+        _modified = false;
+        emit hasBeenSaved();
+    }
+    return success;
+}
+
+void KSettingGeneric::setDefaults()
+{
+    // NB: we emit hasBeenModified by hand because some widget (like QComboBox)
+    // reports changes with a signal that only gets activated by user changes.
+    blockSignals(true);
+    setDefaultsState();
+    blockSignals(false);
+    hasBeenModifiedSlot();
+}
+
+void KSettingGeneric::hasBeenModifiedSlot()
+{
+    _modified = true;
+    emit hasBeenModified();
+}
+
+//-----------------------------------------------------------------------------
+KSettingList::KSettingList(QObject *parent)
+    : KSettingGeneric(parent)
+{}
+
+KSettingList::~KSettingList()
+{
+    QPtrListIterator<KSettingGeneric> it(_settings);
+    for (; it.current()!=0; ++it) {
+        it.current()->disconnect(this, SLOT(settingDestroyed(QObject *)));
+        delete it.current();
+    }
+}
+
+void KSettingList::append(KSettingGeneric *setting)
+{
+    connect(setting, SIGNAL(hasBeenModified()), SLOT(hasBeenModifiedSlot()));
+    connect(setting, SIGNAL(destroyed(QObject *)),
+            SLOT(settingDestroyed(QObject *)));
     _settings.append(setting);
 }
 
-void KSettingList::load()
+void KSettingList::remove(KSettingGeneric *setting)
+{
+    delete setting;
+}
+
+void KSettingList::loadState()
 {
     QPtrListIterator<KSettingGeneric> it(_settings);
     for (; it.current()!=0; ++it) it.current()->load();
 }
 
-void KSettingList::save()
+bool KSettingList::saveState()
 {
     QPtrListIterator<KSettingGeneric> it(_settings);
-    for (; it.current()!=0; ++it) it.current()->save();
-}
-
-bool KSettingList::isSaved() const
-{
-    QPtrListIterator<KSettingGeneric> it(_settings);
+    bool ok = true;
     for (; it.current()!=0; ++it)
-        if ( !it.current()->isSaved() ) return false;
-    return true;
+        if ( !it.current()->save() ) ok = false;
+    return ok;
 }
 
-void KSettingList::setDefaults()
+void KSettingList::setDefaultsState()
 {
     QPtrListIterator<KSettingGeneric> it(_settings);
     for (; it.current()!=0; ++it) it.current()->setDefaults();
@@ -101,6 +143,11 @@ bool KSettingList::hasDefaults() const
     for (; it.current()!=0; ++it)
         if ( !it.current()->hasDefaults() ) return false;
     return true;
+}
+
+void KSettingList::settingDestroyed(QObject *object)
+{
+    _settings.removeRef(static_cast<KSettingGeneric *>(object));
 }
 
 //-----------------------------------------------------------------------------
@@ -118,12 +165,13 @@ class KSettingItem : public KSettingGeneric
     QVariant read() const;
     int readId() const;
 
-    void load();
-    void save();
-    void setDefaults();
-    bool hasDefaults() const;
-
     bool contains(const QObject *object) const { return object==_obj; }
+
+ protected:
+    void loadState();
+    bool saveState();
+    void setDefaultsState();
+    bool hasDefaults() const;
 
  private:
     enum Type { CheckBox = 0, ToggleAction,
@@ -144,7 +192,6 @@ class KSettingItem : public KSettingGeneric
     static const Data DATA[NB_TYPES];
 
     const QString         _group, _key;
-    QGuardedPtr<QObject>  _gobj;
     QObject              *_obj;
     Type                  _type;
     QVariant              _def;
@@ -190,7 +237,7 @@ const KSettingItem::Data KSettingItem::DATA[KSettingItem::NB_TYPES] = {
 
 KSettingItem::KSettingItem(QObject *o, const QString &group,
     const QString &key, const QVariant &def)
-    : _group(group), _key(key), _gobj(o), _obj(o), _def(def)
+    : _group(group), _key(key), _obj(o), _def(def)
 {
     uint i = 0;
     for (; i<NB_TYPES; i++)
@@ -206,7 +253,7 @@ KSettingItem::KSettingItem(QObject *o, const QString &group,
         kdWarning() << k_funcinfo << "cannot cast default value to type : "
                     << def.typeName() << endl;
 
-    QObject::connect(o, DATA[_type].signal, proxy(), SIGNAL(changed()));
+    connect(o, DATA[_type].signal, SLOT(hasBeenModifiedSlot()));
 
     // create the entry in config file if not there
     KConfigGroupSaver cg(kapp->config(), group);
@@ -408,35 +455,30 @@ QVariant KSettingItem::loadValue() const
     return cg.config()->readPropertyEntry(_key, _def);
 }
 
-void KSettingItem::load()
+void KSettingItem::loadState()
 {
-    if ( _gobj.isNull() ) return; // object destroyed
     setCurrentValue(loadValue());
 }
 
-void KSettingItem::save()
+bool KSettingItem::saveState()
 {
-    if ( _gobj.isNull() ) return; // object destroyed
     KConfigGroupSaver cg(kapp->config(), _group);
     cg.config()->writeEntry(_key, currentValue());
+    return true;
 }
 
-void KSettingItem::setDefaults()
+void KSettingItem::setDefaultsState()
 {
-    if ( _gobj.isNull() ) return; // object destroyed
     setCurrentValue(_def);
-    proxy()->emitChanged();
 }
 
 bool KSettingItem::hasDefaults() const
 {
-    if ( _gobj.isNull() ) return true; // object destroyed
     return ( currentValue()==_def );
 }
 
 QVariant KSettingItem::read() const
 {
-    if ( _gobj.isNull() ) return QVariant(); // object destroyed
     QVariant v = loadValue();
     int i;
     double d;
@@ -467,7 +509,6 @@ QVariant KSettingItem::read() const
 
 int KSettingItem::readId() const
 {
-    if ( _gobj.isNull() ) return 0; // object destroyed
     if (  !isMulti() ) {
         kdError() << k_funcinfo
                   << "it makes no sense to use this method for this object"
@@ -497,9 +538,15 @@ class KSettingCollectionPrivate
     QPtrList<KSettingItem> _items;
 };
 
-KSettingCollection::KSettingCollection()
+KSettingCollection::KSettingCollection(QObject *parent)
+    : KSettingList(parent)
 {
     d = new KSettingCollectionPrivate;
+}
+
+KSettingCollection::~KSettingCollection()
+{
+    delete d;
 }
 
 void KSettingCollection::plug(QObject *o, const QString &group,
@@ -510,8 +557,26 @@ void KSettingCollection::plug(QObject *o, const QString &group,
         delete item;
         return;
     }
-    KSettingList::plug(item);
+    append(item);
     d->_items.append(item);
+    connect(o, SIGNAL(destroyed(QObject *)), SLOT(objectDestroyed(QObject *)));
+}
+
+void KSettingCollection::unplug(QObject *o)
+{
+    KSettingItem *item = d->find(o);
+    if ( item==0 ) {
+        kdError() << k_funcinfo << "you need to plug the object before"
+                  << endl;
+        return;
+    }
+    remove(item);
+    d->_items.remove(item);
+}
+
+void KSettingCollection::objectDestroyed(QObject *o)
+{
+    unplug(o);
 }
 
 void KSettingCollection::map(const QObject *o, int id, const QString &entry)
@@ -553,6 +618,9 @@ KSettingWidget::KSettingWidget(const QString &title, const QString &icon,
     : QWidget(parent, name), _title(title), _icon(icon)
 {}
 
+KSettingWidget::~KSettingWidget()
+{}
+
 //-----------------------------------------------------------------------------
 KSettingDialog::KSettingDialog(QWidget *parent, const char *name)
     : KDialogBase(IconList, i18n("Configure..."),
@@ -564,6 +632,9 @@ KSettingDialog::KSettingDialog(QWidget *parent, const char *name)
     enableButtonApply(false);
 }
 
+KSettingDialog::~KSettingDialog()
+{}
+
 void KSettingDialog::append(KSettingWidget *w)
 {
     QFrame *page = addPage(w->title(), QString::null,
@@ -573,50 +644,42 @@ void KSettingDialog::append(KSettingWidget *w)
     vbox->addWidget(w);
     vbox->addStretch(1);
     _widgets.append(w);
-    _changed.append(false);
 
-    w->load();
-    connect(w->proxy(), SIGNAL(changed()), SLOT(changed()));
+    w->settings().load();
+    connect(&w->settings(), SIGNAL(hasBeenModified()), SLOT(changed()));
     if ( pageIndex(page)==0 ) aboutToShowPage(page);
 }
 
 void KSettingDialog::slotDefault()
 {
     int i = activePageIndex();
-    _widgets.at(i)->setDefaults();
+    _widgets.at(i)->settings().setDefaults();
 }
 
 void KSettingDialog::accept()
 {
-    if ( apply() ) KDialogBase::accept();
+    if ( apply() ) {
+        KDialogBase::accept();
+        kapp->config()->sync(); // #### REMOVE when fixed in kdelibs
+                                // creating a KPushButton will lose all
+                                // unsaved data ...
+    }
 }
 
 void KSettingDialog::changed()
 {
     int i = activePageIndex();
-    _changed[i] = true;
-    bool hasDefaults = _widgets.at(i)->hasDefaults();
+    bool hasDefaults = _widgets.at(i)->settings().hasDefaults();
     enableButton(Default, !hasDefaults);
-
     enableButtonApply(true);
 }
 
 bool KSettingDialog::apply()
 {
-    bool changed = false;
     bool ok = true;
-
-    for (uint i=0; i<_widgets.count(); i++) {
-        if ( !_changed[i] ) continue;
-        _widgets.at(i)->save();
-        if ( !_widgets.at(i)->isSaved() ) ok = false;
-        else {
-            changed = true;
-            _changed[i] = false;
-        }
-    }
-
-    if (changed) emit settingsSaved();
+    for (uint i=0; i<_widgets.count(); i++)
+        if ( !_widgets.at(i)->settings().save() ) ok = false;
+    emit settingsSaved();
     return ok;
 }
 
@@ -628,6 +691,6 @@ void KSettingDialog::slotApply()
 void KSettingDialog::slotAboutToShowPage(QWidget *page)
 {
     int i = pageIndex(page);
-    bool hasDefaults = _widgets.at(i)->hasDefaults();
+    bool hasDefaults = _widgets.at(i)->settings().hasDefaults();
     enableButton(Default, !hasDefaults);
 }

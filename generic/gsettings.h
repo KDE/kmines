@@ -21,75 +21,81 @@
 #define G_SETTINGS_H
 
 #include <qvariant.h>
-#include <qguardedptr.h>
 
 #include <kdialogbase.h>
-
-class QButtonGroup;
 
 
 //-----------------------------------------------------------------------------
 /**
- * @internal
- *
- * This class is used as a private member of the @ref KSettingGeneric class
- * so that @ref KSettingGeneric does not need to inherit from @ref QObject.
+ * The abstract class for loading and saving a setting.
  */
-class KSettingProxy : public QObject
+class KSettingGeneric : public QObject
 {
  Q_OBJECT
  public:
-    KSettingProxy();
-
-    void emitChanged() { emit changed(); }
-
- signals:
-    void changed();
-};
-
-/**
- * The abstract class for loading and saving a setting.
- */
-class KSettingGeneric
-{
- public:
-    KSettingGeneric();
-    virtual ~KSettingGeneric() {}
+    KSettingGeneric(QObject *parent = 0);
+    virtual ~KSettingGeneric();
 
     /**
      * Load the setting.
      */
-    virtual void load() = 0;
+    void load();
 
     /**
      * Save the setting.
-     */
-    virtual void save() = 0;
-
-    /**
+     *
      * @return true if the setting has been saved successfully. It is
      * sometimes useful to have the possibility to fail (for e.g.
      * when it implies contacting a remote server).
      */
-    virtual bool isSaved() const { return true; }
+    bool save();
 
     /**
      * Set the setting to its default.
      */
-    virtual void setDefaults() = 0;
+    void setDefaults();
 
     /**
-     * @return true if the setting has it default.
+     * @return true if the setting has its default state.
      */
     virtual bool hasDefaults() const = 0;
 
+ public slots:
     /**
-     * @internal
+     * Should be called when state has been modified.
      */
-    KSettingProxy *proxy() { return &_proxy; }
+    void hasBeenModifiedSlot();
+
+ signals:
+    /**
+     * Emitted when the setting state has been modified.
+     */
+    void hasBeenModified();
+
+    /**
+     * Emitted when the setting state has been saved.
+     */
+    void hasBeenSaved();
+
+ protected:
+    /**
+     * Implement this method to load the setting.
+     */
+    virtual void loadState() = 0;
+
+    /**
+     * Implement this method to save the setting.
+     * @return true on success.
+     */
+    virtual bool saveState() = 0;
+
+    /**
+     * Implement this method to set the default state.
+     */
+    virtual void setDefaultsState() = 0;
 
  private:
-    KSettingProxy _proxy;
+    bool _modified;
 
     class KSettingGenericPrivate;
     KSettingGenericPrivate *d;
@@ -101,21 +107,34 @@ class KSettingGeneric
  */
 class KSettingList : public KSettingGeneric
 {
+ Q_OBJECT
  public:
-    KSettingList();
+    KSettingList(QObject *parent = 0);
+    ~KSettingList();
 
     /**
-     * Plug a @ref KSettingGeneric.
+     * Append the given @ref KSettingGeneric.
      *
-     * Note : the setting will be deleted at destruction time.
+     * Note : the given object will be deleted at destruction time.
      */
-    void plug(KSettingGeneric *setting);
+    void append(KSettingGeneric *setting);
 
-    void load();
-    void save();
-    bool isSaved() const;
-    void setDefaults();
+    /**
+     * Remove the given @ref KSettingGeneric.
+     *
+     * Note : the given object will be deleted.
+     */
+    void remove(KSettingGeneric *setting);
+
     bool hasDefaults() const;
+
+ protected:
+    void loadState();
+    bool saveState();
+    void setDefaultsState();
+
+ private slots:
+    void settingDestroyed(QObject *object);
 
  private:
     QPtrList<KSettingGeneric> _settings;
@@ -130,8 +149,11 @@ class KSettingCollectionPrivate;
  */
 class KSettingCollection : public KSettingList
 {
+ Q_OBJECT
  public:
-    KSettingCollection();
+    KSettingCollection(QObject *parent = 0);
+
+    ~KSettingCollection();
 
     /**
      * Plug an object (QWidget or KAction).
@@ -172,6 +194,11 @@ class KSettingCollection : public KSettingList
               const QVariant &def);
 
     /**
+     * Unplug an object.
+     */
+    void unplug(QObject *object);
+
+    /**
      * Set the entry string that will be saved in the config file when the
      * item is selected (this is needed only for ComboBox, QButtonGroup and
      * KSelectAction).
@@ -193,7 +220,8 @@ class KSettingCollection : public KSettingList
      * to the given object. It does not modify its current value.
      *
      * NB: if the object has a range (KIntNumInput, KDoubleNumInput,
-     * QSpinBox, QSlider, QDial, KSelector), the value returned is constrained to its range.
+     * QSpinBox, QSlider, QDial, KSelector), the value returned is constrained
+     * to its range.
      */
     QVariant readValue(const QObject *o) const;
 
@@ -203,6 +231,9 @@ class KSettingCollection : public KSettingList
      * have multiple choices (for eg QComboBox).
      */
     int readId(const QObject *o) const;
+
+ private slots:
+    void objectDestroyed(QObject *object);
 
  private:
     KSettingCollectionPrivate *d;
@@ -222,22 +253,22 @@ class KSettingCollection : public KSettingList
  *
  *     QCheckBox *ws = new QCheckBox(i18n("Boat with sails"), this);
  *     top->addWidget(ws);
- *     plug(ws, "Options", "with sails", true);
+ *     settings().plug(ws, "Options", "with sails", true);
  *
  *     KIntNumInput *l = new KIntNumInput(i18n("Length"), this);
  *     top->addWidget(l);
- *     plug(l, "Options", "length", 30);
+ *     settings().plug(l, "Options", "length", 30);
  *
  *     QHBox *hbox = new QHBox(top);
  *     (void)new QLabel(i18n("Type"), hbox)
  *     QComboBox *t = new QComboBox(hbox);
- *     plug(t, "Options", "type", "catmaran");
+ *     settings().plug(t, "Options", "type", "catmaran");
  *     t->insertItem(i18n("single hull"), 0);
- *     map(t, 0, "single hull");
+ *     settings().map(t, 0, "single hull");
  *     t->insertItem(i18n("catamaran"), 1);
- *     map(t, 1, "catamaran");
+ *     settings().map(t, 1, "catamaran");
  *     t->insertItem(i18n("trimaran", 2);
- *     map(t, 2, "trimaran");
+ *     settings().map(t, 2, "trimaran");
  * }
  *
  * ...
@@ -253,7 +284,7 @@ class KSettingCollection : public KSettingList
  * That's it : all the loading/saving/defaulting is done automagically.
  *
  */
-class KSettingWidget : public QWidget, public KSettingCollection
+class KSettingWidget : public QWidget
 {
  Q_OBJECT
  public:
@@ -266,12 +297,19 @@ class KSettingWidget : public QWidget, public KSettingCollection
     KSettingWidget(const QString &title = QString::null,
                    const QString &icon = QString::null,
                    QWidget *parent = 0, const char *name = 0);
+    ~KSettingWidget();
 
     QString title() const { return _title; }
     QString icon() const { return _icon; }
 
+    /**
+     * @return the @ref KSettingCollection.
+     */
+    KSettingCollection &settings() { return _collection; }
+
  private:
-    QString _title, _icon;
+    KSettingCollection _collection;
+    QString            _title, _icon;
 
     class KSettingWidgetPrivate;
     KSettingWidgetPrivate *d;
@@ -288,15 +326,16 @@ class KSettingDialog : public KDialogBase
  Q_OBJECT
  public:
 	KSettingDialog(QWidget *parent, const char *name = 0);
+    ~KSettingDialog();
 
     /**
-     * Append a @KSettingWidget to the dialog.
+     * Append the given @KSettingWidget to the dialog.
      */
     void append(KSettingWidget *widget);
 
  signals:
     /**
-     * Emitted when some settings have been modified and saved (with
+     * Emitted when some settings have been saved (with
      * Apply button or with Ok button).
      */
     void settingsSaved();
@@ -310,7 +349,6 @@ class KSettingDialog : public KDialogBase
 
  private:
     QPtrList<KSettingWidget> _widgets;
-    QValueList<bool>         _changed;
 
     class KSettingDialogPrivate;
     KSettingDialogPrivate *d;

@@ -91,7 +91,7 @@ class GameSettings : public KSettingWidget, public KMines
     static QCheckBox *createUMark(KSettingWidget *);
     static QCheckBox *createKeyboard(KSettingWidget *);
     static QCheckBox *createPauseFocus(KSettingWidget *);
-    static QComboBox *createMouseBinding(KSettingCollection *, QWidget *,
+    static QComboBox *createMouseBinding(KSettingCollection &, QWidget *,
                                          MouseButton);
 };
 
@@ -105,8 +105,8 @@ class AppearanceSettings : public KSettingWidget, public KMines
 
  private:
     static KIntNumInput *createCaseSize(KSettingWidget *);
-    static KColorButton *createColor(KSettingCollection *, QWidget *, uint i);
-    static KColorButton *createNumberColor(KSettingCollection *, QWidget *,
+    static KColorButton *createColor(KSettingCollection &, QWidget *, uint i);
+    static KColorButton *createNumberColor(KSettingCollection &, QWidget *,
                                            uint i);
 };
 

@@ -168,11 +168,30 @@ bool MultipleScoresList::showColumn(const ItemContainer &item) const
 }
 
 //-----------------------------------------------------------------------------
+class HighscoresSetting : public KSettingGeneric
+{
+ public:
+    HighscoresSetting(HighscoresSettingsWidget *hsw)
+        : KSettingGeneric(), _hsw(hsw) {}
+
+ protected:
+    void loadState() { _hsw->load(); }
+    bool saveState() { return _hsw->save(); }
+    void setDefaultsState() {}
+    bool hasDefaults() const { return true; }
+
+ private:
+    HighscoresSettingsWidget *_hsw;
+};
+
 HighscoresSettingsWidget::HighscoresSettingsWidget(const PlayerInfos &infos,
                                            bool WWHSAvailable, QWidget *parent)
     : KSettingWidget(i18n("Highscores"), "highscores", parent),
-      _ok(true), _infos(infos), _WWHEnabled(0)
+      _infos(infos), _WWHEnabled(0)
 {
+    KSettingGeneric *sg = new HighscoresSetting(this);
+    settings().append(sg);
+
     QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
 
     QGrid *grid = new QGrid(2, this);
@@ -182,20 +201,20 @@ HighscoresSettingsWidget::HighscoresSettingsWidget(const PlayerInfos &infos,
     (void)new QLabel(i18n("Nickname"), grid);
     _nickname = new QLineEdit(grid);
     connect(_nickname, SIGNAL(textChanged(const QString &)),
-            proxy(), SIGNAL(changed()));
+            sg, SLOT(hasBeenModifiedSlot()));
     _nickname->setMaxLength(16);
 
     (void)new QLabel(i18n("Comment"), grid);
     _comment = new QLineEdit(grid);
     connect(_comment, SIGNAL(textChanged(const QString &)),
-            proxy(), SIGNAL(changed()));
+            sg, SLOT(hasBeenModifiedSlot()));
     _comment->setMaxLength(50);
 
     if (WWHSAvailable) {
         _WWHEnabled
             = new QCheckBox(i18n("World-wide highscores enabled"), this);
         connect(_WWHEnabled, SIGNAL(toggled(bool)),
-                proxy(), SIGNAL(changed()));
+                sg, SLOT(hasBeenModifiedSlot()));
         top->addWidget(_WWHEnabled);
     }
 }
@@ -207,19 +226,17 @@ void HighscoresSettingsWidget::load()
     if (_WWHEnabled) _WWHEnabled->setChecked(_infos.isWWEnabled());
 }
 
-void HighscoresSettingsWidget::save()
+bool HighscoresSettingsWidget::save()
 {
     bool enabled = (_WWHEnabled ? _WWHEnabled->isChecked() : false);
 
     // do not bother the user with "nickname empty" if he has not
     // messed with nickname settings ...
-    if ( _nickname->text().isEmpty() && !_infos.isAnonymous() && !enabled ) {
-        _ok = true;
-        return;
-    }
+    if ( _nickname->text().isEmpty() && !_infos.isAnonymous() && !enabled )
+        return true;
 
-    _ok = kHighscores->modifySettings(_nickname->text().lower(),
-                              _comment->text(), enabled, (QWidget *)parent());
+    return kHighscores->modifySettings(_nickname->text().lower(),
+                               _comment->text(), enabled, (QWidget *)parent());
 }
 
 }; // namespace

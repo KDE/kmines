@@ -112,13 +112,9 @@ class HighscoresSettingsWidget : public KSettingWidget
                              QWidget *parent);
 
     void load();
-    void save();
-    bool isSaved() const { return _ok; }
-    void setDefaults() {}
-    bool hasDefaults() const { return true; }
+    bool save();
 
  private:
-    bool               _ok;
     const PlayerInfos &_infos;
     QCheckBox         *_WWHEnabled;
     QLineEdit         *_nickname, *_comment;

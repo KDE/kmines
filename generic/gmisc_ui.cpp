@@ -32,6 +32,7 @@ void LCD::setDefaultColors(const QColor &fgColor, const QColor &bgColor)
 void LCD::setLeadString(const QString &s)
 {
     _lead = s;
+    showValue(0);
 }
 
 void LCD::resetColor()
@@ -60,7 +61,7 @@ void LCD::highlight()
 
 void LCD::highlight(bool light)
 {
-    if (light) setColor(yellow);
+    if (light) setColor(darkYellow);
     else resetColor();
 }
 

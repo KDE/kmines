@@ -3,11 +3,12 @@ TODO:
  * messages from/to a named pipe for external AI + log of game [yawn ...]
  * icons for easy/normal/expert
  * new levels ...
+ * integrate solver
 
  * do you have any idea ?
 
 
 KNOWN BUGS:
 
- * changing case size something lead to incorrect window size (temporarily)
+ * changing case size leads to incorrect window size (temporarily)
  * please find one !

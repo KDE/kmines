@@ -35,6 +35,9 @@ Item::Item(const QVariant &def, const QString &label, int alignment)
       _format(NoFormat), _special(NoSpecial)
 {}
 
+Item::~Item()
+{}
+
 QVariant Item::read(uint, const QVariant &value) const
 {
     return value;
@@ -156,6 +159,9 @@ DataArray::DataArray(const ItemArray &items)
         _data[i] = _items[i]->item()->defaultValue();
 }
 
+DataArray::~DataArray()
+{}
+
 DataArray &DataArray::operator =(const DataArray &array)
 {
     _data = array._data;
@@ -214,6 +220,9 @@ QDataStream &operator >>(QDataStream &s, DataArray &array)
 //-----------------------------------------------------------------------------
 Score::Score(ScoreType type)
     : DataArray(kHighscores->scoreInfos()), _type(type)
+{}
+
+Score::~Score()
 {}
 
 bool Score::operator <(const Score &score) const

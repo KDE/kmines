@@ -32,7 +32,7 @@ class MainWidget : public KMainWindow, public KMines
  private:
 	Status             *status;
     bool                pauseFocus;
-    KSettingCollection  collection;
+    KSettingCollection  settings;
     KToggleAction      *menu, *pause;
     KSelectAction      *levels;
 

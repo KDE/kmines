@@ -83,7 +83,7 @@ class Item
     Item(const QVariant &def = QVariant::Invalid,
              const QString &label = QString::null,
              int alignment = Qt::AlignRight);
-    virtual ~Item() {}
+    virtual ~Item();
 
     /**
      * Set the display format.
@@ -183,6 +183,7 @@ class DataArray
 {
  public:
     DataArray &operator =(const DataArray &array);
+    ~DataArray();
 
     /**
      * @internal
@@ -251,10 +252,8 @@ enum ScoreType { Won = 0, Lost = -1, BlackMark = -2 };
 class Score : public DataArray
 {
  public:
-    /**
-     * Constructor.
-     */
     Score(ScoreType type = Won);
+    ~Score();
 
     /**
      * @return the game type.
