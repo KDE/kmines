@@ -60,7 +60,8 @@ DigitalClock::DigitalClock(QWidget *parent)
 : KGameLCDClock(parent, "digital_clock")
 {
     setFrameStyle(Panel | Sunken);
-    setDefaultColors(white, black);
+    setDefaultBackgroundColor(black);
+    setDefaultColor(white);
 }
 
 KExtHighscore::Score DigitalClock::score() const

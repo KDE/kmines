@@ -44,13 +44,24 @@ KGameLCD::KGameLCD(uint nbDigits, QWidget *parent, const char *name)
     displayInt(0);
 }
 
-void KGameLCD::setDefaultColors(const QColor &fgColor, const QColor &bgColor)
+void KGameLCD::setDefaultBackgroundColor(const QColor &color)
 {
-    _fgColor = fgColor;
     QPalette p = palette();
-    p.setColor(QColorGroup::Foreground, fgColor);
-    p.setColor(QColorGroup::Background, bgColor);
+    p.setColor(QColorGroup::Background, color);
     setPalette(p);
+}
+
+void KGameLCD::setDefaultColor(const QColor &color)
+{
+    _fgColor = color;
+    QPalette p = palette();
+    p.setColor(QColorGroup::Foreground, color);
+    setPalette(p);
+}
+
+void KGameLCD::setHighlightColor(const QColor &color)
+{
+    _hlColor = color;
 }
 
 void KGameLCD::setLeadingString(const QString &s)

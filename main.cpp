@@ -59,7 +59,6 @@ const MainWidget::KeyData MainWidget::KEY_DATA[NB_KEYS] = {
 MainWidget::MainWidget()
 {
     KNotifyClient::startDaemon();
-
 	installEventFilter(this);
     KConfigCollection::init();
 

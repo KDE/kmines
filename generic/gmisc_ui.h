@@ -44,10 +44,19 @@ class KGameLCD : public QLCDNumber
     KGameLCD(uint nbDigits, QWidget *parent = 0, const char *name = 0);
 
     /**
-     * Set the default foreground and background colors.
+     * Set the default background color.
      */
-    void setDefaultColors(const QColor &foregroundColor,
-                          const QColor &backgroundColor);
+    void setDefaultBackgroundColor(const QColor &color);
+
+    /**
+     * Set the default foreground color.
+     */
+    void setDefaultColor(const QColor &color);
+
+    /**
+     * Set highlight color.
+     */
+    void setHighlightColor(const QColor &color);
 
     /**
      * Set the string that will be displayed before the integer number to be

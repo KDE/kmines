@@ -63,7 +63,8 @@ Status::Status(QWidget *parent)
 	// mines left LCD
 	left = new KGameLCD(5, this);
     left->setFrameStyle(QFrame::Panel | QFrame::Sunken);
-    left->setDefaultColors(white, black);
+    left->setDefaultBackgroundColor(black);
+    left->setDefaultColor(white);
 	QWhatsThis::add(left, i18n("<qt>Mines left.<br/>"
                                "It turns <font color=\"red\">red</font> "
                                "when you have flagged more cases than "
