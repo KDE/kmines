@@ -81,7 +81,7 @@ Custom::Custom(uint *nbWidth, uint *nbHeight, uint *nbMines,
 : QDialog(parent, 0, TRUE), nbW(nbWidth), nbH(nbHeight), nbM(nbMines)
 {
 	QString str = i18n("Customize Game");
-	setCaption(i18n("%1 : %2").arg(KMINES_TR_NAME).arg(str));
+	setCaption(i18n("kmines: %1").arg(str));
 
 /* top layout */
 	QVBoxLayout *top = new QVBoxLayout(this, BORDER);
@@ -239,7 +239,7 @@ WHighScores::WHighScores(bool show, int newSec, int newMin, uint Mode,
 	}
 
 	QString str = i18n("Hall of Fame");
-	setCaption(i18n("%1 : %2").arg(KMINES_TR_NAME).arg(str));
+	setCaption(i18n("kmines: %1").arg(str));
 
 /* top layout */
 	top = new QVBoxLayout(this, BORDER);
