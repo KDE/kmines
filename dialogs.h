@@ -74,7 +74,7 @@ class DigitalClock : public LCDClock
 };
 
 //-----------------------------------------------------------------------------
-class CustomConfig : public KUIConfigWidget, public KMines
+class CustomConfig : public KConfigWidget, public KMines
 {
  Q_OBJECT
  public:
@@ -87,37 +87,29 @@ class CustomConfig : public KUIConfigWidget, public KMines
     void typeChosen(int);
 
  private:
-	KRangedUIConfig *_width, *_height, *_mines;
-    KComboBox       *_gameType;
+	KConfigItem *_width, *_height, *_mines;
+    KComboBox   *_gameType;
 };
 
 //-----------------------------------------------------------------------------
-class GameConfig : public KUIConfigWidget, public KMines
+class GameConfig : public KConfigWidget, public KMines
 {
  Q_OBJECT
  public:
     GameConfig();
 
-    static bool readUMark();
-    static bool readKeyboard();
-    static bool readPauseFocus();
-    static bool readMagicReveal();
-    static MouseAction readMouseBinding(MouseButton);
-
  private slots:
     void magicRevealToggled();
 
  private:
-    KUIConfig *_magic;
+    KConfigItem *_magic;
 };
 
-class AppearanceConfig : public KUIConfigWidget, public KMines
+class AppearanceConfig : public KConfigWidget, public KMines
 {
  Q_OBJECT
  public:
     AppearanceConfig();
-
-    static CaseProperties readCaseProperties();
 };
 
 #endif

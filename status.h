@@ -37,6 +37,7 @@ class Status : public QWidget, public KMines
 	Status(QWidget *parent);
 
 	const Level &currentLevel() const { return field->level(); }
+    bool isPlaying() const            { return field->isPlaying(); }
     bool isPaused() const             { return field->isPaused(); }
     void settingsChanged();
 
@@ -81,6 +82,7 @@ class Status : public QWidget, public KMines
 	LCD          *left;
 	DigitalClock *dg;
     Solver       *_solver;
+    bool          _advised, _solved;
 
     QDomDocument  _log;
     QDomElement   _logRoot, _logList;

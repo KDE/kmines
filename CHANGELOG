@@ -1,6 +1,6 @@
-2.1.6 (23 April 2002) [CVS 3.1 devel]
+2.1.6 (24 April 2002) [CVS 3.1 devel]
  * mark/unmark actions on mouse release [patch by Thomas Capricelli]
- * "magic reveal" : a new option that leave only the non trivial cases to
+ * "magic reveal" : a new option that leave only the non-trivial cases to
    solve [patch by Thomas Capricelli]
  * fix obscure flicker condition : keyboard play and moving pressed mouse
    outside field :)

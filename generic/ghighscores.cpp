@@ -62,7 +62,7 @@ void setGameType(uint type)
     HighscoresPrivate::setGameType(type);
 }
 
-KUIConfigWidget *createConfigurationWidget(QWidget *parent)
+KConfigWidget *createConfigWidget(QWidget *parent)
 {
     HighscoresPrivate::checkFirst();
     return new HighscoresConfigWidget(parent);

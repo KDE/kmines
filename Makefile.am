@@ -9,7 +9,7 @@ kmines_SOURCES     = defines.cpp highscores.cpp \
 kmines_METASOURCES = dialogs.moc field.moc status.moc main.moc
 
 rcdir   = $(kde_datadir)/kmines
-rc_DATA = kminesui.rc
+rc_DATA = kminesui.rc kminesconfig.rc
 
 messages: rc.cpp
 	$(XGETTEXT) rc.cpp `find . -name \*.h -o -name \*.cpp` -o $(podir)/kmines.pot

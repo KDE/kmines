@@ -194,10 +194,10 @@ bool MultipleScoresList::showColumn(const ItemContainer &item) const
 }
 
 //-----------------------------------------------------------------------------
-class HighscoresUIConfig : public KUIConfigBase
+class HighscoresConfigItem : public KConfigItemBase
 {
  public:
-    HighscoresUIConfig(HighscoresConfigWidget *hsw)
+    HighscoresConfigItem(HighscoresConfigWidget *hsw)
         : _hsw(hsw) {}
 
  protected:
@@ -211,11 +211,10 @@ class HighscoresUIConfig : public KUIConfigBase
 };
 
 HighscoresConfigWidget::HighscoresConfigWidget(QWidget *parent)
-    : KUIConfigWidget(i18n("Highscores"), "highscore", parent),
-      _WWHEnabled(0)
+    : KConfigWidget(i18n("Highscores"), "highscore", parent), _WWHEnabled(0)
 {
-    KUIConfigBase *sg = new HighscoresUIConfig(this);
-    UIConfigCollection()->insert(sg);
+    KConfigItemBase *sg = new HighscoresConfigItem(this);
+    configCollection()->insert(sg);
 
     QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
 

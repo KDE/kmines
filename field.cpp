@@ -44,12 +44,15 @@ Field::Field(QWidget *parent)
 
 void Field::readSettings()
 {
-	_uMark = GameConfig::readUMark();
-    _cursorShown = GameConfig::readKeyboard();
+    _uMark = KConfigCollection::configItemValue("uncertain_mark").toBool();
+    _cursorShown =
+        KConfigCollection::configItemValue("keyboard_game").toBool();
     if ( inside(_cursor) ) placeCursor(_cursor);
-	for (uint i=0; i<3; i++)
-		_mb[i] = GameConfig::readMouseBinding((MouseButton)i);
-    _completeReveal = GameConfig::readMagicReveal();
+	for (uint i=0; i<NB_MOUSE_BUTTONS; i++)
+		_mb[i] =
+        (MouseAction)KConfigCollection::configItemIndex(MOUSE_CONFIG_NAMES[i]);
+    _completeReveal =
+        KConfigCollection::configItemValue("magic_reveal").toBool();
     if (_completeReveal) emit setCheating();
 
     FieldFrame::readSettings();
@@ -138,7 +141,7 @@ KMines::MouseAction Field::mapMouseButton(QMouseEvent *e) const
 	case Qt::LeftButton:  return _mb[KMines::LeftButton];
 	case Qt::MidButton:   return _mb[KMines::MidButton];
 	case Qt::RightButton: return _mb[KMines::RightButton];
-	default:          return Mark;
+	default:              return Mark;
 	}
 }
 
@@ -212,7 +215,7 @@ void Field::pressCase(const Coord &c, bool pressed)
 {
 	if ( state(c)==Covered ) {
         QPainter painter(this);
-        drawBox(painter, toPoint(c), pressed);
+        drawCase(painter, c, pressed);
     }
 }
 
@@ -223,7 +226,7 @@ void Field::pressClearFunction(const Coord &p, bool pressed)
     coveredNeighbours(p, n);
     QPainter painter(this);
     for (CoordSet::iterator it=n.begin(); it!=n.end(); ++it)
-        drawBox(painter, toPoint(*it), pressed);
+        drawCase(painter, *it, pressed);
 }
 
 void Field::keyboardAutoReveal()
@@ -290,6 +293,7 @@ void Field::doMark(const Coord &c)
     CaseState old = state(c);
     mark(c);
     addMarkAction(c, old);
+    if (_completeReveal) completeReveal();
 }
 
 void Field::doUmark(const Coord &c)
@@ -351,11 +355,10 @@ void Field::setAdvised(const Coord &c, double proba)
     }
 }
 
-void Field::drawCase(QPainter &painter, const Coord &c) const
+void Field::drawCase(QPainter &painter, const Coord &c, bool pressed) const
 {
 	Q_ASSERT( inside(c) );
 
-    bool pressed = false;
     QString text;
     uint nbMines = 0;
     PixmapType type = NoPixmap;
@@ -365,6 +368,7 @@ void Field::drawCase(QPainter &painter, const Coord &c) const
         break;
 	case Marked:
         type = FlagPixmap;
+        pressed = false;
         break;
 	case Error:
         type = ErrorPixmap;
@@ -372,6 +376,7 @@ void Field::drawCase(QPainter &painter, const Coord &c) const
         break;
 	case Uncertain:
         text = '?';
+        pressed = false;
         break;
 	case Exploded:
         type = ExplodedPixmap;

@@ -17,8 +17,15 @@ FieldFrame::FieldFrame(QWidget *parent)
 
 void FieldFrame::readSettings()
 {
-    _cp = AppearanceConfig::readCaseProperties();
-    _button.resize(_cp.size, _cp.size);
+    _caseSize = KConfigCollection::configItemValue("case_size").toUInt();
+    for (uint i=0; i<NB_COLORS; i++)
+        _colors[i] =
+          KConfigCollection::configItemValue(COLOR_CONFIG_NAMES[i]).toColor();
+    for (uint i=0; i<NB_N_COLORS; i++)
+        _numberColors[i] =
+         KConfigCollection::configItemValue(N_COLOR_CONFIG_NAMES[i]).toColor();
+
+    _button.resize(_caseSize, _caseSize);
 
     QBitmap mask;
 
@@ -34,14 +41,14 @@ void FieldFrame::readSettings()
     }
 
     QFont f = font();
-	f.setPointSize(_cp.size-6);
+	f.setPointSize(_caseSize-6);
 	f.setBold(true);
 	setFont(f);
 }
 
 void FieldFrame::initPixmap(QPixmap &pix, bool mask) const
 {
-    pix.resize(_cp.size, _cp.size);
+    pix.resize(_caseSize, _caseSize);
     if (mask) pix.fill(color0);
 }
 
@@ -58,14 +65,14 @@ void FieldFrame::drawPixmap(QPixmap &pix, PixmapType type, bool mask) const
         p.drawLine(9, 11, 11, 11);
         p.drawLine(10, 2, 10, 10);
         if (!mask) p.setPen(black);
-        p.setBrush( (mask ? color1 : _cp.colors[FlagColor]) );
+        p.setBrush( (mask ? color1 : _colors[FlagColor]) );
         p.drawRect(4, 3, 6, 5);
         return;
     }
 
     p.setWindow(0, 0, 20, 20);
 	if ( type==ExplodedPixmap )
-		p.fillRect(2, 2, 16, 16, (mask ? color1 : _cp.colors[ExplosionColor]));
+		p.fillRect(2, 2, 16, 16, (mask ? color1 : _colors[ExplosionColor]));
 	QPen pen(mask ? color1 : black, 1);
 	p.setPen(pen);
 	p.setBrush(mask ? color1 : black);
@@ -77,7 +84,7 @@ void FieldFrame::drawPixmap(QPixmap &pix, PixmapType type, bool mask) const
 	p.fillRect(8, 8, 2, 2, (mask ? color1 : white));
 	if ( type==ErrorPixmap ) {
 		if (!mask) {
-			pen.setColor(_cp.colors[ErrorColor]);
+			pen.setColor(_colors[ErrorColor]);
 			p.setPen(pen);
 		}
 		p.drawLine(3, 3, 17, 17);
@@ -94,7 +101,7 @@ void FieldFrame::drawAdvised(QPixmap &pix, uint i, bool mask) const
     initPixmap(pix, mask);
     QPainter p(&pix);
     p.setWindow(0, 0, 16, 16);
-    p.setPen( QPen((mask ? color1 : _cp.numberColors[i]), 2) );
+    p.setPen( QPen((mask ? color1 : _numberColors[i]), 2) );
     p.drawRect(3, 3, 11, 11);
 }
 
@@ -126,7 +133,7 @@ void FieldFrame::drawBox(QPainter &painter, const QPoint &p,
 	painter.resetXForm();
     QRect r(p, _button.size());
     const QPixmap *pixmap = (type==NoPixmap ? 0 : &_pixmaps[type]);
-    QColor color = (nbMines==0 ? black : _cp.numberColors[nbMines-1]);
+    QColor color = (nbMines==0 ? black : _numberColors[nbMines-1]);
     style().drawItem(&painter, r, AlignCenter, colorGroup(), true, pixmap,
                      text, -1, &color);
     if ( advised!=-1 )

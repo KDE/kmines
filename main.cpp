@@ -32,6 +32,7 @@
 #include <kstdgameaction.h>
 #include <kcmenumngr.h>
 #include <kaction.h>
+#include <kdebug.h>
 
 #include "status.h"
 #include "highscores.h"
@@ -84,10 +85,7 @@ MainWidget::MainWidget()
 	// Settings
 	_menu = KStdAction::showMenubar(this, SLOT(toggleMenubar()),
                                    actionCollection());
-    KUIConfig *uc = new KSimpleUIConfig(KSimpleUIConfig::ToggleAction,
-                                        OP_GROUP, "menubar visible", true,
-                                        &_UIConfigCollection);
-    uc->associate(_menu);
+    _configCollection.createConfigItem("menubar_visible", _menu);
 	KStdAction::preferences(this, SLOT(configureSettings()),
                             actionCollection());
 	KStdAction::keyBindings(this, SLOT(configureKeys()), actionCollection());
@@ -95,14 +93,7 @@ MainWidget::MainWidget()
 	// Levels
     _levels = new KSelectAction(actionCollection(), "levels");
     connect(_levels, SIGNAL(activated(int)), _status, SLOT(newGame(int)));
-    KMultiUIConfig *muc =
-        new KMultiUIConfig(KMultiUIConfig::SelectAction, Level::NbLevels+1,
-                           OP_GROUP, "Level", Level::data(Level::Easy).label,
-                           &_UIConfigCollection, i18n("Choose &Level"));
-    muc->associate(_levels);
-    for (uint i=0; i<Level::NbLevels+1; i++)
-        muc->map(i, Level::data((Level::Type)i).label,
-                 i18n(Level::data((Level::Type)i).i18nLabel));
+    _configCollection.createConfigItem("level", _levels);
 
     // Adviser
     _advise = new KAction(i18n("Advise"), CTRL + Key_A,
@@ -124,13 +115,13 @@ MainWidget::MainWidget()
 
 bool MainWidget::queryExit()
 {
-    _UIConfigCollection.save();
+    _configCollection.save();
     return true;
 }
 
 void MainWidget::readSettings()
 {
-    _UIConfigCollection.load();
+    _configCollection.load();
     _status->newGame( _levels->currentItem() );
 	toggleMenubar();
     settingsChanged();
@@ -153,7 +144,7 @@ bool MainWidget::eventFilter(QObject *, QEvent *e)
 void MainWidget::focusOutEvent(QFocusEvent *e)
 {
     if (  _pauseIfFocusLost && e->reason()==QFocusEvent::ActiveWindow
-          && !_status->isPaused() ) pause();
+          && _status->isPlaying() ) pause();
     KMainWindow::focusOutEvent(e);
 }
 
@@ -165,11 +156,11 @@ void MainWidget::toggleMenubar()
 
 void MainWidget::configureSettings()
 {
-    KUIConfigDialog d(this);
+    KConfigDialog d(this);
     d.setIconListAllVisible(true);
     d.append(new GameConfig);
     d.append(new AppearanceConfig);
-    d.append( KExtHighscores::createConfigurationWidget(this) );
+    d.append( KExtHighscores::createConfigWidget(this) );
     d.append(new CustomConfig);
     connect(&d, SIGNAL(saved()), SLOT(settingsChanged()));
     d.exec();
@@ -177,13 +168,15 @@ void MainWidget::configureSettings()
 
 void MainWidget::settingsChanged()
 {
-    bool enabled = GameConfig::readKeyboard();
+    bool enabled =
+        KConfigCollection::configItemValue("keyboard_game").toBool();
 	QValueList<KAction *> list = actionCollection()->actions("keyboard_group");
 	QValueList<KAction *>::Iterator it;
 	for (it = list.begin(); it!=list.end(); ++it)
 		(*it)->setEnabled(enabled);
 
-    _pauseIfFocusLost = GameConfig::readPauseFocus();
+    _pauseIfFocusLost =
+        KConfigCollection::configItemValue("pause_focus").toBool();
     _status->settingsChanged();
 }
 

@@ -106,7 +106,7 @@ class MultipleScoresList : public ScoresList
 };
 
 //-----------------------------------------------------------------------------
-class HighscoresConfigWidget : public KUIConfigWidget
+class HighscoresConfigWidget : public KConfigWidget
 {
  Q_OBJECT
  public:

@@ -43,11 +43,12 @@ class Field : public FieldFrame, public BaseField
 
 	void reset();
 
+    bool isPlaying() const { return _state==Playing; }
     bool isActive() const { return _state==Playing || _state==Stopped; }
 	bool isPaused() const { return _state==Paused; }
 	void pause();
 	void gameOver() { _state = GameOver; }
-    bool completeReveal() const { return _completeReveal; }
+    bool hasCompleteReveal() const { return _completeReveal; }
 
     void moveCursor(Neighbour);
     void moveToEdge(Neighbour);
@@ -100,7 +101,8 @@ class Field : public FieldFrame, public BaseField
     QPoint toPoint(const Grid2D::Coord &) const;
     Grid2D::Coord fromPoint(const QPoint &) const;
 
-	void drawCase(QPainter &, const Grid2D::Coord &) const;
+	void drawCase(QPainter &, const Grid2D::Coord &,
+                  bool forcePressed = false) const;
 
 	MouseAction mapMouseButton(QMouseEvent *) const;
     void resetAdvised();

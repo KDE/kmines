@@ -20,9 +20,6 @@
 
 #include <klocale.h>
 
-const uint Level::MAX_CUSTOM_SIZE = 50;
-const uint Level::MIN_CUSTOM_SIZE = 5;
-
 const Level::Data Level::DATA[Level::NbLevels+1] = {
 	{ 8,  8, 10, "easy",   "8x8x10",   I18N_NOOP("Easy")   },
 	{16, 16, 40, "normal", "16x16x40", I18N_NOOP("Normal") },
@@ -41,14 +38,8 @@ Level::Level(Type type)
 Level::Level(uint width, uint height, uint nbMines)
     : _width(width), _height(height), _nbMines(nbMines)
 {
-    if ( type()==Custom ) {
-        _width   = QMIN(QMAX(_width, MIN_CUSTOM_SIZE), MAX_CUSTOM_SIZE);
-        _height  = QMIN(QMAX(_height, MIN_CUSTOM_SIZE), MAX_CUSTOM_SIZE);
-        _nbMines = QMIN(QMAX(_nbMines, 1), maxNbMines());
-    } else {
-        Q_ASSERT( width>=2 && height>=2 );
-        Q_ASSERT( nbMines>0 && nbMines<=maxNbMines() );
-    }
+    Q_ASSERT( width>=2 && height>=2 );
+    Q_ASSERT( nbMines>0 && nbMines<=maxNbMines() );
 }
 
 Level::Type Level::type() const
@@ -61,4 +52,13 @@ Level::Type Level::type() const
 
 const char *KMines::STATES[NB_STATES] =
     { "playing", "paused", "gameover", "stopped" };
-const char *KMines::OP_GROUP = "Options";
+
+const char *KMines::MOUSE_CONFIG_NAMES[NB_MOUSE_BUTTONS] =
+    { "mouse_left", "mouse_mid", "mouse_right" };
+
+const char *KMines::COLOR_CONFIG_NAMES[NB_COLORS] =
+    { "flag_color", "explosion_color", "error_color" };
+
+const char *KMines::N_COLOR_CONFIG_NAMES[NB_N_COLORS] =
+    { "color_#0", "color_#1", "color_#2", "color_#3", "color_#4", "color_#5",
+      "color_#6", "color_#7" };

@@ -33,6 +33,7 @@ class FieldFrame : public QFrame, public KMines
  public:
     FieldFrame(QWidget *parent);
 
+ protected:
     virtual void readSettings();
 
     enum PixmapType { FlagPixmap = 0, MinePixmap, ExplodedPixmap,
@@ -41,14 +42,15 @@ class FieldFrame : public QFrame, public KMines
     enum Advised { Nb_Advised = 5 };
 
     void drawBox(QPainter &, const QPoint &, bool pressed,
-                 PixmapType = NoPixmap, const QString &text = QString::null,
-                 uint nbMines = 0, int advised = -1,
-                 bool hasFocus = false) const;
+                 PixmapType, const QString &text,
+                 uint nbMines, int advised, bool hasFocus) const;
 
-    uint caseSize() const { return _cp.size; }
+    uint caseSize() const { return _caseSize; }
 
  private:
-    CaseProperties _cp;
+    uint           _caseSize;
+    QColor         _colors[NB_COLORS];
+    QColor         _numberColors[NB_N_COLORS];
     QPushButton    _button;
     QPixmap        _pixmaps[Nb_Pixmap_Types];
     QPixmap        _advised[Nb_Advised];

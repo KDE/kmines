@@ -51,12 +51,12 @@ class MainWidget : public KMainWindow, public KMines
     bool queryExit();
 
  private:
-	Status              *_status;
-    KUIConfigCollection  _UIConfigCollection;
-    KToggleAction       *_menu, *_pause;
-    KSelectAction       *_levels;
-    KAction             *_advise, *_solve;
-    bool                 _pauseIfFocusLost;
+	Status            *_status;
+    KConfigCollection  _configCollection;
+    KToggleAction     *_menu, *_pause;
+    KSelectAction     *_levels;
+    KAction           *_advise, *_solve;
+    bool               _pauseIfFocusLost;
 
     struct KeyData {
         const char *label, *name;

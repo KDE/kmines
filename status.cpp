@@ -162,16 +162,23 @@ void Status::setGameOver(bool won)
     field->gameOver();
     smiley->setMood(won ? Happy : Sad);
     dg->stop();
+
     if ( field->level().type()!=Level::Custom && won && !dg->cheating() )
         KExtHighscores::submitScore(dg->score(), this);
     _logList.setAttribute("nb", dg->nbActions());
-    if ( field->completeReveal() )
-        _logRoot.setAttribute("CompleteReveal", "CompleteReveal");
+
+    if ( field->hasCompleteReveal() )
+        _logRoot.setAttribute("CompleteReveal", 1);
+    QString sa = "None";
+    if (_solved) sa = "Solving";
+    else if (_advised) sa = "Advising";
+    _logRoot.setAttribute("SolverAction", sa);
+
     QDomElement f = _log.createElement("Field");
     _logRoot.appendChild(f);
     QDomText data = _log.createTextNode(field->string());
     f.appendChild(data);
-//    kdDebug() << _log.toString() << endl; // #### REMOVE ME
+    kdDebug() << _log.toString() << endl; // #### REMOVE ME
 }
 
 void Status::setStopped()
@@ -186,6 +193,8 @@ void Status::setStopped()
         last = KExtHighscores::lastScore();
     }
     dg->reset(first, last);
+    _advised = false;
+    _solved = false;
 
     _log = QDomDocument("kmineslog");
     _logRoot = _log.createElement("KMinesLog");
@@ -247,12 +256,14 @@ void Status::advise()
     float probability;
     Grid2D::Coord c = _solver->advise(*field, probability);
     field->setAdvised(c, probability);
+    _advised = true;
 }
 
 void Status::solve()
 {
     dg->setCheating();
     _solver->solve(*field, false);
+    _solved = true;
 }
 
 void Status::solvingDone(bool success)

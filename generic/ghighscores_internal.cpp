@@ -552,7 +552,7 @@ void HighscoresPrivate::setGameType(uint type)
     }
 
     Q_ASSERT( type<_nbGameTypes );
-    _gameType = type;
+    _gameType = kMin(type, _nbGameTypes-1);
     QString str = "scores";
     QString lab = _highscores->gameTypeLabel(_gameType, Highscores::Standard);
     if ( !lab.isEmpty() ) {

@@ -35,8 +35,6 @@ class Level
     Level(uint width, uint height, uint nbMines);
 
     static const Data &data(Type type) { return DATA[type]; }
-    static QCString actionName(Type type)
-        { return QCString("level_") + data(type).label; }
 
     uint width() const   { return _width; }
     uint height() const  { return _height; }
@@ -44,9 +42,6 @@ class Level
     Type type() const;
     const Data &data() const { return data(type()); }
     uint maxNbMines() const  { return _width*_height - 2; }
-
-    static const uint MAX_CUSTOM_SIZE;
-    static const uint MIN_CUSTOM_SIZE;
 
  private:
     static const Data DATA[NbLevels+1];
@@ -59,7 +54,9 @@ class KMines
     enum GameState   { Playing = 0, Paused, GameOver, Stopped, NB_STATES };
     static const char *STATES[NB_STATES];
     enum MouseAction { Reveal = 0, AutoReveal, Mark, UMark, None };
-    enum MouseButton { LeftButton = 0, MidButton, RightButton };
+    enum MouseButton { LeftButton = 0, MidButton, RightButton,
+                       NB_MOUSE_BUTTONS };
+    static const char *MOUSE_CONFIG_NAMES[NB_MOUSE_BUTTONS];
 
     enum CaseState { Covered, Uncovered, Uncertain, Marked, Exploded, Error };
     struct Case {
@@ -68,16 +65,10 @@ class KMines
     };
 
     enum Color { FlagColor = 0, ExplosionColor, ErrorColor, NB_COLORS };
-    enum NumberColor { NB_NUMBER_COLORS = 8 };
+    static const char *COLOR_CONFIG_NAMES[NB_COLORS];
+    enum NumberColor { NB_N_COLORS = 8 };
+    static const char *N_COLOR_CONFIG_NAMES[NB_N_COLORS];
     enum Mood { Normal = 0, Stressed, Happy, Sad, Sleeping, NbMoods };
-
-    struct CaseProperties {
-        uint size;
-        QColor numberColors[NB_NUMBER_COLORS];
-        QColor colors[NB_COLORS];
-    };
-
-    static const char *OP_GROUP;
 };
 
 #endif
