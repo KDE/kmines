@@ -10,12 +10,14 @@ Name[es]=Revelar el caso
 Name[hu]=Mező felfedése
 Name[pt_BR]=Caso Revelação
 Name[sv]=Avslöja ruta
+Name[zh_CN]=揭开盒盖
 Comment=Reveal case
 Comment[da]=Vis felt
 Comment[es]=Revelar el caso
 Comment[hu]=Mező felfedése
 Comment[pt_BR]=Caso Revelação
 Comment[sv]=Avslöja ruta
+Comment[zh_CN]=揭开盒盖
 default_presentation=0
 
 [autoreveal]
@@ -25,12 +27,14 @@ Name[es]=Autorevelar el caso
 Name[hu]=Mező automatikus felfedése
 Name[pt_BR]=Caso de Auto-revelação
 Name[sv]=Avslöja ruta automatiskt
+Name[zh_CN]=自动揭开盒盖
 Comment=Autoreveal case
 Comment[da]=Vis felt automatisk
 Comment[es]=Autorevelar el caso
 Comment[hu]=Mező automatikus felfedése
 Comment[pt_BR]=Caso de Auto-revelação
 Comment[sv]=Avslöja ruta automatiskt
+Comment[zh_CN]=自动揭开盒盖
 default_presentation=0
 
 [mark]
@@ -40,12 +44,14 @@ Name[es]=Marcar el caso
 Name[hu]=Mező megjelölése
 Name[pt_BR]=Márcar caso
 Name[sv]=Markera ruta
+Name[zh_CN]=标记盒子
 Comment=Mark case
 Comment[da]=Markér felt
 Comment[es]=Marcar el caso
 Comment[hu]=Mező megjelölése
 Comment[pt_BR]=Marcar caso
 Comment[sv]=Markera ruta
+Comment[zh_CN]=标记盒子
 default_presentation=0
 
 [unmark]
@@ -55,12 +61,14 @@ Name[es]=Desmarcar el caso
 Name[hu]=Mező kijelölésének megszüntetése
 Name[pt_BR]=Desmarcar caso
 Name[sv]=Avmarkera ruta
+Name[zh_CN]=不标记盒子
 Comment=Unmark case
 Comment[da]=Afmarkér felt
 Comment[es]=Desmarcar el caso
 Comment[hu]=Mező megjelölésének megszüntetése
 Comment[pt_BR]=Desmarcar caso
 Comment[sv]=Avmarkera ruta
+Comment[zh_CN]=不标记盒子
 default_presentation=0
 
 [explosion]
@@ -69,11 +77,13 @@ Name[da]=Eksplosion
 Name[es]=Explosión
 Name[hu]=Robbanás
 Name[pt_BR]=Explosão
+Name[zh_CN]=爆炸
 Comment=Explosion
 Comment[da]=Eksplosion
 Comment[es]=Explosión
 Comment[hu]=Robbanás
 Comment[pt_BR]=Explosão
+Comment[zh_CN]=爆炸
 default_presentation=0
 
 [won]
@@ -83,12 +93,14 @@ Name[es]=Partida ganada
 Name[hu]=Győzelem
 Name[pt_BR]=Jogo Ganho
 Name[sv]=Du vann spelet
+Name[zh_CN]=你赢了游戏
 Comment=Game won
 Comment[da]=Spil vundet
 Comment[es]=Partida ganada
 Comment[hu]=Győzelem
 Comment[pt_BR]=Jogo Ganho
 Comment[sv]=Du vann spelet
+Comment[zh_CN]=你赢了游戏
 default_presentation=0
 
 [lost]
@@ -98,10 +110,12 @@ Name[es]=Partida perdida
 Name[hu]=Vereség
 Name[pt_BR]=Jogo perdido
 Name[sv]=Du förlorade spelet
+Name[zh_CN]=你输了游戏
 Comment=Game lost
 Comment[da]=Spil tabt
 Comment[es]=Partida perdida
 Comment[hu]=Vereség
 Comment[pt_BR]=Jogo perdido
 Comment[sv]=Du förlorade spelet
+Comment[zh_CN]=你输了游戏
 default_presentation=0
