@@ -110,7 +110,7 @@ void DigitalClock::reset(const KExtHighscores::Score &first,
 
 //-----------------------------------------------------------------------------
 CustomDialog::CustomDialog(Level &level, QWidget *parent)
-: KDialogBase(Plain, i18n("Customize your game"), Ok|Cancel, Cancel,
+: KDialogBase(Plain, i18n("Customize Your Game"), Ok|Cancel, Cancel,
 			  parent, 0, true, true), _level(level)
 {
 	QVBoxLayout *top = new QVBoxLayout(plainPage(), spacingHint());
