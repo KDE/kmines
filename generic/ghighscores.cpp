@@ -32,6 +32,9 @@ namespace KExtHighscores
 Highscores::Highscores(const QString &version, const KURL &baseURL,
                        uint nbGameTypes, uint maxNbEntries)
 {
+    Q_ASSERT(nbGameTypes);
+    Q_ASSERT(maxNbEntries);
+
     KURL burl = baseURL;
     if ( !baseURL.isEmpty() ) {
         Q_ASSERT( baseURL.isValid() );
@@ -39,7 +42,7 @@ Highscores::Highscores(const QString &version, const KURL &baseURL,
         ConfigGroup cg;
         if ( cg.config()->hasKey(HS_WW_URL) )
             burl = cg.config()->readEntry(HS_WW_URL);
-        else cg.config()->writeEntry(HS_WW_URL, burl.url());
+        else cg.config()->writeEntry(HS_WW_URL, baseURL.url());
     }
 
     (void)new HighscoresPrivate(version, burl, nbGameTypes, maxNbEntries,
@@ -105,8 +108,7 @@ void Highscores::showStatistics(bool show)
     internal->showStatistics = show;
 }
 
-void Highscores::setScoreHistogram(const QMemArray<uint> &scores, bool bound,
-                                   bool showMaxPixmap)
+void Highscores::setScoreHistogram(const QMemArray<uint> &scores, bool bound)
 {
     Q_ASSERT( internal->scoreHistogram.size()==0 );
     Q_ASSERT( scores.size()>=2 );
@@ -114,7 +116,6 @@ void Highscores::setScoreHistogram(const QMemArray<uint> &scores, bool bound,
         Q_ASSERT( scores[i]<scores[i+1] );
     internal->scoreHistogram = scores;
     internal->scoreBound = bound;
-    internal->showMaxPixmap = showMaxPixmap;
     internal->playerInfos().createHistoItems();
 }
 

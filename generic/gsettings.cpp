@@ -717,11 +717,37 @@ uint KConfigCollection::configItemIndex(const char *name)
     uint i = 0;
     if (item) {
         KMultiConfigItem *mci =
-            (KMultiConfigItem *)item->qt_cast("KMultiConfigItem");
+            static_cast<KMultiConfigItem *>(item->qt_cast("KMultiConfigItem"));
         if (mci) i = mci->configIndex();
         delete item;
     }
     return i;
+}
+
+QVariant KConfigCollection::configItemMaxValue(const char *name)
+{
+    KConfigItem *item = createConfigItem(name, 0, 0);
+    QVariant v;
+    if (item) {
+        KRangedConfigItem *rci =
+          static_cast<KRangedConfigItem *>(item->qt_cast("KRangedConfigItem"));
+        if (rci) v = rci->maxValue();
+        delete item;
+    }
+    return v;
+}
+
+QVariant KConfigCollection::configItemMinValue(const char *name)
+{
+    KConfigItem *item = createConfigItem(name, 0, 0);
+    QVariant v;
+    if (item) {
+        KRangedConfigItem *rci =
+          static_cast<KRangedConfigItem *>(item->qt_cast("KRangedConfigItem"));
+        if (rci) v = rci->minValue();
+        delete item;
+    }
+    return v;
 }
 
 void KConfigCollection::readConfigFile()
@@ -801,7 +827,7 @@ KConfigItem *KConfigCollection::createConfigItem(const char *name,
 
     // recognize value type
     QString stype = entry.attribute("vtype");
-    QVariant::Type vtype;
+    QVariant::Type vtype = QVariant::String;
     if ( type==KConfigItem::Multi ) {
         if ( !stype.isEmpty() && stype!="QString" )
             kdWarning() << ENTRY_NAME

@@ -39,12 +39,12 @@ const char *Field::ACTION_NAMES[Nb_Actions] = {
 };
 
 Field::Field(QWidget *parent)
-    : FieldFrame(parent), _state(Stopped), _level(Level::Easy)
+    : FieldFrame(parent), _state(Init), _level(Level::Easy)
 {}
 
 void Field::readSettings()
 {
-    _uMark = KConfigCollection::configItemValue("uncertain mark").toBool();
+    _umark = KConfigCollection::configItemValue("uncertain mark").toBool();
     _cursorShown =
         KConfigCollection::configItemValue("keyboard game").toBool();
     if ( inside(_cursor) ) placeCursor(_cursor);
@@ -75,19 +75,27 @@ void Field::setLevel(const Level &level)
 {
     _level = level;
     updateGeometry();
-    reset();
+    reset(false);
+}
+
+void Field::setReplayField(const QString &field)
+{
+    setState(Replaying);
+    initReplay(field);
 }
 
 void Field::setState(GameState state)
 {
+    Q_ASSERT( state!=GameOver );
     _state = state;
-    emit gameStateChanged(state, false);
+    emit gameStateChanged(state);
 }
 
-void Field::reset()
+void Field::reset(bool init)
 {
     BaseField::reset(_level.width(), _level.height(), _level.nbMines());
-    setState(Stopped);
+    if ( init || _state==Init ) setState(Init);
+    else setState(Stopped);
     if (_completeReveal) emit setCheating();
 	_currentAction = None;
     _reveal = false;
@@ -247,16 +255,14 @@ void Field::doAutoReveal(const Coord &c)
 
     if ( state(c)==Uncovered ) emit addAction(c, AutoReveal);
     resetAdvised();
-    bool ok = autoReveal(c, 0);
-    if ( !ok ) setState(GameOver);
-    else if (_completeReveal) completeReveal();
+    doAction(AutoReveal, c, _completeReveal);
 }
 
 void Field::pause()
 {
     switch (_state) {
     case Paused:  setState(Playing); break;
-    case Playing: setState(Paused);  break;
+    case Playing: setState(Paused); break;
     default: return;
     }
     update();
@@ -277,43 +283,84 @@ void Field::moveToEdge(Neighbour n)
 void Field::doReveal(const Coord &c)
 {
 	if ( !isActive() ) return;
-    emit addAction(c, Reveal);
     resetAdvised();
 
     if ( firstReveal() ) setState(Playing);
-    bool ok = reveal(c, 0, 0);
-    if (!ok) setState(GameOver);
-    else if (_completeReveal) completeReveal();
+    emit addAction(c, Reveal);
+    doAction(Reveal, c, _completeReveal);
 }
 
 void Field::doMark(const Coord &c)
 {
 	if ( !isActive() ) return;
     resetAdvised();
-    CaseState old = state(c);
-    mark(c);
-    addMarkAction(c, old);
-    if (_completeReveal) completeReveal();
+    ActionType action;
+    CaseState oldState = state(c);
+    switch (oldState) {
+	case Covered:   action = SetFlag; break;
+	case Marked:    action = (_umark ? SetUncertain : UnsetFlag); break;
+	case Uncertain:	action = UnsetUncertain; break;
+	default:        Q_ASSERT(false); break;
+	}
+    CaseState newState = doAction(action, c, _completeReveal);
+    addMarkAction(c, newState, oldState);
 }
 
 void Field::doUmark(const Coord &c)
 {
 	if ( !isActive() ) return;
     resetAdvised();
-    CaseState old = state(c);
-    umark(c);
-    addMarkAction(c, old);
+    ActionType action;
+    CaseState oldState = state(c);
+    switch (oldState) {
+	case Covered:
+	case Marked:    action = SetUncertain; break;
+	case Uncertain: action = UnsetUncertain; break;
+	default:        Q_ASSERT(false); break;
+	}
+    CaseState newState = doAction(action, c, _completeReveal);
+    addMarkAction(c, newState, oldState);
 }
 
-void Field::addMarkAction(const Coord &c, CaseState old)
+KMines::CaseState Field::doAction(ActionType type, const Coord &c,
+                                  bool complete)
 {
-    CaseState s = state(c);
-    switch (s) {
+    CaseState state = Error;
+
+    switch (type) {
+    case Reveal:
+        if ( !reveal(c, 0, 0) ) emit gameStateChanged(GameOver);
+        else if (complete) completeReveal();
+        break;
+    case AutoReveal:
+        if ( !autoReveal(c, 0) ) emit gameStateChanged(GameOver);
+        else if (complete) completeReveal();
+        break;
+    case SetFlag:
+        state = Marked;
+        if (complete) completeReveal();
+        break;
+    case UnsetFlag:
+    case UnsetUncertain:
+        state = Covered;
+        break;
+    case SetUncertain:
+        state = Uncertain;
+        break;
+    }
+
+    if ( state!=Error ) changeCase(c, state);
+    return state;
+}
+
+void Field::addMarkAction(const Coord &c, CaseState newS, CaseState oldS)
+{
+    switch (newS) {
     case Marked:    emit addAction(c, SetFlag); return;
     case Uncertain: emit addAction(c, SetUncertain); return;
     default: break;
     }
-    switch (old) {
+    switch (oldS) {
     case Marked:    emit addAction(c, UnsetFlag); return;
     case Uncertain: emit addAction(c, UnsetUncertain); return;
     default: break;

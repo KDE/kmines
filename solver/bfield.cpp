@@ -58,6 +58,30 @@ void BaseField::reset(uint width, uint height, uint nbMines)
     fill(tmp);
 }
 
+bool BaseField::checkField(uint w, uint h, uint nb, const QString &s)
+{
+    if ( s.length()!=w*h ) return false;
+    uint n = 0;
+    for (uint i=0; i<s.length(); i++)
+        if ( s[i]=="1" ) n++;
+        else if ( s[i]!="0" ) return false;
+    return ( n==nb );
+}
+
+void BaseField::initReplay(const QString &s)
+{
+    Q_ASSERT( checkField(width(), height(), _nbMines, s) );
+
+    _firstReveal = false;
+
+    Case tmp;
+    tmp.state = Covered;
+    for (uint i=0; i<s.length(); i++) {
+        tmp.mine = ( s[i]=="1" );
+        at(i) = tmp;
+    }
+}
+
 void BaseField::changeState(KMines::CaseState state, int inc)
 {
     switch (state) {
@@ -183,24 +207,10 @@ void BaseField::completeReveal()
     }
 }
 
-void BaseField::mark(const Coord &p)
+void BaseField::setFlag(const Coord &c)
 {
-	switch ( state(p) ) {
-	case Covered:   changeCase(p, Marked); break;
-	case Marked:    changeCase(p, (_uMark ? Uncertain : Covered)); break;
-	case Uncertain:	changeCase(p, Covered); break;
-	default:        break;
-	}
-}
-
-void BaseField::umark(const Coord &p)
-{
-	switch ( state(p) ) {
-	case Covered:
-	case Marked:    changeCase(p, Uncertain); break;
-	case Uncertain: changeCase(p, Covered); break;
-	default:        break;
-	}
+    if ( state(c)!=Covered ) return;
+    changeCase(c, Marked);
 }
 
 QCString BaseField::string() const

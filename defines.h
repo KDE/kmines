@@ -41,7 +41,7 @@ class Level
     uint nbMines() const { return _nbMines; }
     Type type() const;
     const Data &data() const { return data(type()); }
-    uint maxNbMines() const  { return _width*_height - 2; }
+    static uint maxNbMines(uint width, uint height) { return width*height - 2;}
 
  private:
     static const Data DATA[NbLevels+1];
@@ -51,7 +51,8 @@ class Level
 class KMines
 {
  public:
-    enum GameState   { Playing = 0, Paused, GameOver, Stopped, NB_STATES };
+    enum GameState   { Playing = 0, Paused, GameOver, Stopped, Replaying,
+                       Init, NB_STATES };
     static const char *STATES[NB_STATES];
     enum MouseAction { Reveal = 0, AutoReveal, Mark, UMark, None };
     enum MouseButton { LeftButton = 0, MidButton, RightButton,

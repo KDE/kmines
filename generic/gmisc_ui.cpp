@@ -24,6 +24,8 @@
 #include <qlabel.h>
 #include <qtimer.h>
 
+#include <kglobal.h>
+
 
 //-----------------------------------------------------------------------------
 KGameLCD::KGameLCD(uint nbDigits, QWidget *parent, const char *name)
@@ -146,6 +148,22 @@ void KGameLCDClock::stop()
 uint KGameLCDClock::seconds() const
 {
     return _min*60 + _sec;
+}
+
+void KGameLCDClock::setTime(uint sec)
+{
+    Q_ASSERT( sec<3600 );
+    _sec = sec % 60;
+    _min = sec / 60;
+    showTime();
+}
+
+void KGameLCDClock::setTime(const QString &s)
+{
+    Q_ASSERT( s.length()==5 && s[2]==':' );
+    uint min = kMin(s.section(':', 0, 0).toUInt(), uint(59));
+    uint sec = kMin(s.section(':', 1, 1).toUInt(), uint(59));
+    setTime(sec + min*60);
 }
 
 

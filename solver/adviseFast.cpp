@@ -169,7 +169,7 @@ void AdviseFast::FactSet::mark(
 		_containingFacts.erase(point);
 	}
 
-	_field->mark(point);
+	_field->setFlag(point);
 }
 
 CoordSet const *AdviseFast::FactSet::getContainingFacts(

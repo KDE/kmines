@@ -325,7 +325,9 @@ void ImplConfigWidget::load()
         _WWHEnabled->setChecked(infos.isWWEnabled());
         if ( !infos.key().isEmpty() ) {
             _registeredName->setText(infos.registeredName());
+            _registeredName->home(false);
             _key->setText(infos.key());
+            _key->home(false);
         }
         _removeButton->setEnabled(!infos.key().isEmpty());
     }

@@ -417,11 +417,12 @@ void PlayerInfos::removeKey()
 //-----------------------------------------------------------------------------
 HighscoresPrivate *HighscoresPrivate::_self = 0;
 
-HighscoresPrivate::HighscoresPrivate(const QString &version, const KURL &burl,
+HighscoresPrivate::HighscoresPrivate(const QString &version, const KURL &url,
                    uint nbGameTypes, uint maxNbEntries, Highscores &highscores)
     : showStatistics(false), trackLostGames(false), trackBlackMarks(false),
-      _baseURL(burl), _version(version), _first(true),
-      _nbGameTypes(nbGameTypes), _gameType(0), _highscores(highscores)
+      _version(version), _serverURL(url),
+      _first(true), _nbGameTypes(nbGameTypes), _gameType(0),
+      _highscores(highscores)
 {
     if (_self) qFatal("A highscore object already exists");
     _self = this;
@@ -442,7 +443,7 @@ HighscoresPrivate::~HighscoresPrivate()
 
 KURL HighscoresPrivate::queryURL(QueryType type, const QString &newName) const
 {
-    KURL url = _baseURL;
+    KURL url = _serverURL;
     QString nameItem = "nickname";
     QString name = _playerInfos->registeredName();
     bool version = true;

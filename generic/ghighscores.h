@@ -239,8 +239,7 @@ class Highscores
      *
      * Note: should be called at construction time.
      */
-    void setScoreHistogram(const QMemArray<uint> &scores, bool bound,
-                           bool showMaxPixmap = true);
+    void setScoreHistogram(const QMemArray<uint> &scores, bool bound);
 
     /**
      * @return true is the first score is strictly worse than the second one.

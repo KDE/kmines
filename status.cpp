@@ -24,6 +24,8 @@
 #include <qwhatsthis.h>
 #include <qlayout.h>
 #include <qwidgetstack.h>
+#include <qtextedit.h>
+#include <qtimer.h>
 
 #include <kapplication.h>
 #include <klocale.h>
@@ -31,6 +33,9 @@
 #include <kmessagebox.h>
 #include <kaction.h>
 #include <kdebug.h>
+#include <kfiledialog.h>
+#include <ktempfile.h>
+#include <kio/netaccess.h>
 
 #include "generic/ghighscores.h"
 #include "solver/solver.h"
@@ -39,8 +44,11 @@
 
 
 Status::Status(QWidget *parent)
-    : QWidget(parent, "status")
+    : QWidget(parent, "status"), _oldLevel(Level::Easy)
 {
+    _timer  = new QTimer(this);
+    connect(_timer, SIGNAL(timeout()), SLOT(replayStep()));
+
     _solver = new Solver(this);
     connect(_solver, SIGNAL(solvingDone(bool)), SLOT(solvingDone(bool)));
 
@@ -84,8 +92,8 @@ Status::Status(QWidget *parent)
     field->readSettings();
     g->addWidget(field, 0, 0, AlignCenter);
 	connect( field, SIGNAL(updateStatus(bool)), SLOT(update(bool)) );
-	connect(field, SIGNAL(gameStateChanged(GameState, bool)),
-			SLOT(gameStateChanged(GameState, bool)) );
+	connect(field, SIGNAL(gameStateChanged(GameState)),
+			SLOT(gameStateChangedSlot(GameState)) );
     connect(field, SIGNAL(setMood(Mood)), smiley, SLOT(setMood(Mood)));
     connect(field, SIGNAL(setCheating()), dg, SLOT(setCheating()));
     connect(field,SIGNAL(addAction(const Grid2D::Coord &, Field::ActionType)),
@@ -112,31 +120,43 @@ Status::Status(QWidget *parent)
 
 void Status::smileyClicked()
 {
-    if ( field->isPaused() ) emit pause();
+    if ( field->gameState()==Paused ) emit pause();
     else restartGame();
 }
 
 void Status::newGame(int t)
 {
-    if ( field->isPaused() ) emit pause();
+    if ( field->gameState()==Paused ) emit pause();
     Level::Type type = (Level::Type)t;
-    if ( type!=Level::Custom ) {
-        KExtHighscores::setGameType(type);
-        field->setLevel(Level(type));
-    } else field->setLevel(CustomConfig::readLevel());
+    if ( type!=Level::Custom ) newGame( Level(type) );
+    else newGame( CustomConfig::readLevel() );
 }
 
-void Status::checkBlackMark()
+void Status::newGame(const Level &level)
 {
-    if ( field->isPlaying() )
-        KExtHighscores::submitScore(KExtHighscores::BlackMark, this);
+    _timer->stop();
+    if ( level.type()!=Level::Custom )
+        KExtHighscores::setGameType(level.type());
+    field->setLevel(level);
+}
+
+bool Status::checkBlackMark()
+{
+    bool bm = ( field->gameState()==Playing );
+    if (bm) KExtHighscores::submitScore(KExtHighscores::BlackMark, this);
+    return bm;
 }
 
 void Status::restartGame()
 {
-    if ( field->isPaused() ) emit pause();
-    checkBlackMark();
-    field->reset();
+    if ( field->gameState()==Paused ) emit pause();
+    else if ( field->gameState()==Replaying ) {
+        _timer->stop();
+        field->setLevel(_oldLevel);
+    } else {
+        bool bm = checkBlackMark();
+        field->reset(bm);
+    }
 }
 
 void Status::settingsChanged()
@@ -148,7 +168,7 @@ void Status::settingsChanged()
     Level l = CustomConfig::readLevel();
     if ( l.width()==current.width() && l.height()==current.height()
          && l.nbMines()==current.nbMines() ) return;
-    if ( field->isPaused() ) emit pause();
+    if ( field->gameState()==Paused ) emit pause();
     field->setLevel(l);
 }
 
@@ -166,28 +186,30 @@ void Status::update(bool mine)
 void Status::setGameOver(bool won)
 {
     field->showAllMines();
-    field->gameOver();
     smiley->setMood(won ? Happy : Sad);
-    dg->stop();
+    if ( field->gameState()==Replaying ) return;
 
+    field->setGameOver();
+    dg->stop();
     if ( field->level().type()!=Level::Custom && !dg->cheating() ) {
         if (won) KExtHighscores::submitScore(dg->score(), this);
         else KExtHighscores::submitScore(KExtHighscores::Lost, this);
     }
-    _logList.setAttribute("nb", dg->nbActions());
+
+    // game log
+    _logRoot.setAttribute("count", dg->nbActions());
 
     if ( field->hasCompleteReveal() )
-        _logRoot.setAttribute("CompleteReveal", "true");
-    QString sa = "None";
-    if (_solved) sa = "Solving";
-    else if (_advised) sa = "Advising";
-    _logRoot.setAttribute("SolverAction", sa);
+        _logRoot.setAttribute("complete_reveal", "true");
+    QString sa = "none";
+    if (_solved) sa = "solving";
+    else if (_advised) sa = "advising";
+    _logRoot.setAttribute("solver", sa);
 
     QDomElement f = _log.createElement("Field");
     _logRoot.appendChild(f);
     QDomText data = _log.createTextNode(field->string());
     f.appendChild(data);
-//    kdDebug() << _log.toString() << endl; // #### REMOVE ME
 }
 
 void Status::setStopped()
@@ -196,20 +218,26 @@ void Status::setStopped()
     update(false);
     KExtHighscores::Score first(KExtHighscores::Won);
     KExtHighscores::Score last(KExtHighscores::Won);
-    const Level &level = field->level();
-    if ( level.type()!=Level::Custom ) {
+    if ( field->level().type()!=Level::Custom ) {
         first = KExtHighscores::firstScore();
         last = KExtHighscores::lastScore();
     }
     dg->reset(first, last);
     _advised = false;
     _solved = false;
+}
 
+void Status::setPlaying()
+{
+    smiley->setMood(Normal);
+    dg->start();
+
+    const Level &level = field->level();
     _log = QDomDocument("kmineslog");
-    _logRoot = _log.createElement("KMinesLog");
+    _logRoot = _log.createElement("kmineslog");
     _logRoot.setAttribute("version", VERSION);
     QDateTime date = QDateTime::currentDateTime();
-    _logRoot.setAttribute("date", date.toString());
+    _logRoot.setAttribute("date", date.toString(Qt::ISODate));
     _logRoot.setAttribute("width", level.width());
     _logRoot.setAttribute("height", level.height());
     _logRoot.setAttribute("mines", level.nbMines());
@@ -220,32 +248,36 @@ void Status::setStopped()
 
 void Status::gameStateChanged(GameState state, bool won)
 {
+    QWidget *w = _fieldContainer;
+
     switch (state) {
     case Playing:
-        smiley->setMood(Smiley::Normal);
-        dg->start();
+        setPlaying();
         break;
     case GameOver:
         setGameOver(won);
         break;
     case Paused:
-        smiley->setMood(Smiley::Sleeping);
+        smiley->setMood(Sleeping);
         dg->stop();
+        w = _resumeContainer;
         break;
     case Stopped:
+    case Init:
         setStopped();
+        break;
+    case Replaying:
+        smiley->setMood(Normal);
         break;
     }
 
-    if ( state==Paused ) _stack->raiseWidget(_resumeContainer);
-    else _stack->raiseWidget(_fieldContainer);
+    _stack->raiseWidget(w);
     emit gameStateChangedSignal(state);
 }
 
 void Status::addAction(const Grid2D::Coord &c, Field::ActionType type)
 {
     QDomElement action = _log.createElement("Action");
-    action.setAttribute("index", dg->nbActions());
     action.setAttribute("time", dg->pretty());
     action.setAttribute("column", c.first);
     action.setAttribute("line", c.second);
@@ -285,3 +317,164 @@ void Status::solveRate()
     SolvingRateDialog sd(*field, this);
     sd.exec();
 }
+
+void Status::viewLog()
+{
+    KDialogBase d(this, "view_log", true, i18n("View game log"),
+                  KDialogBase::Close, KDialogBase::Close);
+    QTextEdit *view = new QTextEdit(&d);
+    view->setReadOnly(true);
+    view->setTextFormat(PlainText);
+    view->setText(_log.toString());
+    d.setMainWidget(view);
+    d.resize(500, 400);
+    d.exec();
+}
+
+void Status::saveLog()
+{
+    KURL url = KFileDialog::getSaveURL(QString::null, QString::null, this);
+    if ( url.isEmpty() ) return;
+    if ( KIO::NetAccess::exists(url) ) {
+        KGuiItem gi = KStdGuiItem::save();
+        gi.setText(i18n("Overwrite"));
+        int res = KMessageBox::warningYesNo(this,
+                                 i18n("The file already exists. Overwrite ?"),
+                                 i18n("Save..."), gi, KStdGuiItem::cancel());
+        if ( res==KMessageBox::No ) return;
+    }
+    KTempFile tmp;
+    (*tmp.textStream()) << _log.toString();
+    tmp.close();
+    KIO::NetAccess::upload(tmp.name(), url);
+    tmp.unlink();
+}
+
+void Status::loadLog()
+{
+    KURL url = KFileDialog::getOpenURL(QString::null, QString::null, this);
+    if ( url.isEmpty() ) return;
+    QString tmpFile;
+    bool success = false;
+    QDomDocument doc;
+    if( KIO::NetAccess::download(url, tmpFile) ) {
+        QFile file(tmpFile);
+        if ( file.open(IO_ReadOnly) ) {
+            int errorLine;
+            bool ok = doc.setContent(&file, 0, &errorLine);
+            if ( !ok ) {
+               KMessageBox::sorry(this, i18n("Cannot read XML file on line %1")
+                                  .arg(errorLine));
+               return;
+            }
+            success = true;
+        }
+        KIO::NetAccess::removeTempFile(tmpFile);
+
+    }
+    if ( !success ) {
+        KMessageBox::sorry(this, i18n("Cannot load file."));
+        return;
+    }
+
+    if ( !checkLog(doc) )
+        KMessageBox::sorry(this, i18n("Log file not recognized."));
+    else {
+        _log = doc;
+        _logRoot = doc.namedItem("kmineslog").toElement();
+        emit gameStateChangedSignal(GameOver);
+    }
+}
+
+bool Status::checkLog(const QDomDocument &doc)
+{
+    // check root element
+    if ( doc.doctype().name()!="kmineslog" ) return false;
+    QDomElement root = doc.namedItem("kmineslog").toElement();
+    if ( root.isNull() ) return false;
+    bool ok;
+    uint w = root.attribute("width").toUInt(&ok);
+    if ( !ok
+         || w>KConfigCollection::configItemMaxValue("custom width").toUInt()
+         || w<KConfigCollection::configItemMinValue("custom height").toUInt() )
+        return false;
+    uint h = root.attribute("height").toUInt(&ok);
+    if ( !ok
+         || h>KConfigCollection::configItemMaxValue("custom height").toUInt()
+         || h<KConfigCollection::configItemMinValue("custom height").toUInt() )
+        return false;
+    uint nb = root.attribute("mines").toUInt(&ok);
+    if ( !ok || nb==0 || nb>Level::maxNbMines(w, h) ) return false;
+
+    // check field
+    QDomElement field = root.namedItem("Field").toElement();
+    if ( field.isNull() ) return false;
+    QString ftext = field.text();
+    if ( !BaseField::checkField(w, h, nb, ftext) ) return false;
+
+    // check action list
+    QDomElement list = root.namedItem("ActionList").toElement();
+    if ( list.isNull() ) return false;
+    QDomNodeList actions = list.elementsByTagName("Action");
+    if ( actions.count()==0 ) return false;
+    for (uint i=0; i<actions.count(); i++) {
+        QDomElement a = actions.item(i).toElement();
+        if ( a.isNull() ) return false;
+        uint i = a.attribute("line").toUInt(&ok);
+        if ( !ok || i>=w ) return false;
+        uint j = a.attribute("column").toUInt(&ok);
+        if ( !ok || j>=h ) return false;
+        QString type = a.attribute("type");
+        uint k = 0;
+        for (; k<Field::Nb_Actions; k++)
+            if ( type==Field::ACTION_NAMES[k] ) break;
+        if ( k==Field::Nb_Actions ) return false;
+    }
+
+    return true;
+}
+
+
+void Status::replayLog()
+{
+    uint w = _logRoot.attribute("width").toUInt();
+    uint h = _logRoot.attribute("height").toUInt();
+    uint n = _logRoot.attribute("mines").toUInt();
+    Level level(w, h, n);
+    QDomNode f = _logRoot.namedItem("Field");
+    _oldLevel = field->level();
+    newGame(level);
+    field->setReplayField(f.toElement().text());
+    QString s = _logRoot.attribute("complete_reveal");
+    _completeReveal = ( s=="true" );
+
+    f = _logRoot.namedItem("ActionList");
+    _actions = f.toElement().elementsByTagName("Action");
+    _index = 0;
+    _timer->start(1000);
+}
+
+void Status::replayStep()
+{
+    if ( _index>=_actions.count() ) {
+        _timer->stop();
+        _actions = QDomNodeList();
+        return;
+    }
+
+    _timer->changeInterval(500);
+    QDomElement a = _actions.item(_index).toElement();
+    dg->setTime(a.attribute("time"));
+    uint i = a.attribute("column").toUInt();
+    uint j = a.attribute("line").toUInt();
+    QString type = a.attribute("type");
+    for (uint k=0; k<Field::Nb_Actions; k++)
+        if ( type==Field::ACTION_NAMES[k] ) {
+            field->doAction((Field::ActionType)k,
+                            Grid2D::Coord(i, j), _completeReveal);
+            break;
+        }
+    _index++;
+}
+
+

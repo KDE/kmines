@@ -125,6 +125,16 @@ class KGameLCDClock : public KGameLCD
      */
     QString pretty() const;
 
+    /**
+     * Set the time.
+     */
+    void setTime(uint seconds);
+
+    /**
+     * Set the time (format should be "mm:ss".
+     */
+    void setTime(const QString &s);
+
  public slots:
     /**
      * Stop the clock but do not reset it to zero.

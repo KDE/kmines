@@ -102,6 +102,16 @@ MainWidget::MainWidget()
     (void)new KAction(i18n("Solving rate..."), 0, _status, SLOT(solveRate()),
                       actionCollection(), "solve_rate");
 
+    // Log
+    (void)new KAction(i18n("View log..."), 0, _status, SLOT(viewLog()),
+                      actionCollection(), "log_view");
+    (void)new KAction(i18n("Replay log"), 0, _status, SLOT(replayLog()),
+                      actionCollection(), "log_replay");
+    (void)new KAction(i18n("Save log..."), 0, _status, SLOT(saveLog()),
+                      actionCollection(), "log_save");
+    (void)new KAction(i18n("Load log..."), 0, _status, SLOT(loadLog()),
+                      actionCollection(), "log_load");
+
 	createGUI();
 	readSettings();
 	setCentralWidget(_status);

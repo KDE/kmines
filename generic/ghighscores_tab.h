@@ -98,13 +98,15 @@ class HistogramTab : public AdditionalTab
 
  private:
     struct Data {
-        uint total, max;
+        uint total;
+        double max;
     };
     QMemArray<uint> _counts;
     QMemArray<Data> _data;
     KListView       *_list;
 
     void display(uint i);
+    uint delta(uint k) const;
 };
 
 }; // namespace

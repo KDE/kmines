@@ -29,6 +29,7 @@ class KGameLCD;
 class DigitalClock;
 class Solver;
 class QWidgetStack;
+class QTimer;
 
 class Status : public QWidget, public KMines
 {
@@ -37,11 +38,10 @@ class Status : public QWidget, public KMines
 	Status(QWidget *parent);
 
 	const Level &currentLevel() const { return field->level(); }
-    bool isPlaying() const            { return field->isPlaying(); }
-    bool isPaused() const             { return field->isPaused(); }
+    bool isPlaying() const            { return field->gameState()==Playing; }
     void settingsChanged();
 
-    void checkBlackMark();
+    bool checkBlackMark();
 
  signals:
     void pause();
@@ -70,10 +70,17 @@ class Status : public QWidget, public KMines
     void solveRate();
     void addAction(const Grid2D::Coord &, Field::ActionType type);
 
+    void viewLog();
+    void replayLog();
+    void saveLog();
+    void loadLog();
+
  private slots:
-    void gameStateChanged(GameState, bool won);
+    void gameStateChangedSlot(GameState state)
+        { gameStateChanged(state, false); }
     void smileyClicked();
     void solvingDone(bool success);
+    void replayStep();
 
  private:
 	Field        *field;
@@ -88,9 +95,18 @@ class Status : public QWidget, public KMines
 
     QDomDocument  _log;
     QDomElement   _logRoot, _logList;
+    QDomNodeList  _actions;
+    uint          _index;
+    bool          _completeReveal;
+    Level         _oldLevel;
+    QTimer       *_timer;
 
     void setGameOver(bool won);
     void setStopped();
+    void setPlaying();
+    void newGame(const Level &);
+    void gameStateChanged(GameState, bool won);
+    static bool checkLog(const QDomDocument &);
 };
 
 #endif // STATUS_H

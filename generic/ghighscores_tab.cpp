@@ -237,16 +237,23 @@ HistogramTab::HistogramTab(QWidget *parent)
             _counts[pi.nbEntries()*(pi.histoSize()-1) + (k-1)] += nb;
             _data[i].total += nb;
             _data[pi.nbEntries()].total += nb;
-            if ( internal->showMaxPixmap || k!=pi.histoSize()-1 )
-                _data[i].max = kMax(_data[i].max, nb);
+            if ( k!=pi.histoSize()-1 )
+                _data[i].max = kMax(_data[i].max, double(nb) / delta(k));
         }
     }
     for (uint k=1; k<pi.histoSize(); k++)
-        if ( internal->showMaxPixmap || k!=pi.histoSize()-1 )
-            _data[pi.nbEntries()].max =
-              kMax(_data[pi.nbEntries()].max, _counts[pi.nbEntries() + (k-1)]);
+        if ( k!=pi.histoSize()-1 ) {
+            double v = double(_counts[pi.nbEntries() + (k-1)]) / delta(k);
+            _data[pi.nbEntries()].max = kMax(_data[pi.nbEntries()].max, v);
+        }
 
     init();
+}
+
+uint HistogramTab::delta(uint k) const
+{
+    const QMemArray<uint> &sh = internal->scoreHistogram;
+    return sh[k] - sh[k-1] + 1;
 }
 
 void HistogramTab::display(uint i)
@@ -257,10 +264,11 @@ void HistogramTab::display(uint i)
         uint nb = _counts[i*(pi.histoSize()-1) + (k-1)];
         item->setText(2, QString::number(nb));
         item->setText(3, percent(nb, _data[i].total));
-        if ( !internal->showMaxPixmap && k==pi.histoSize()-1 )
+        if ( !internal->scoreBound && k==pi.histoSize()-1 )
             item->setText(4, "--");
         else {
-            uint width = (_data[i].max==0 ? 0 : 150 * nb / _data[i].max);
+            uint width = (_data[i].max==0 ? 0
+                          : qRound(150.0 * nb / delta(k) / _data[i].max));
             QPixmap pixmap(width, 10);
             pixmap.fill(blue);
             item->setPixmap(4, pixmap);

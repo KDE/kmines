@@ -519,9 +519,30 @@ class KConfigCollection : public KConfigItemList
      * the configuration file (the config item should be a
      * @ref KMultiConfigItem). If the collection already contains the
      * @ref KConfigItem, it is more efficient to use
-     * <pre>static_cast<KMultiConfigItem *>(configItem(name))->configIndex()</pre>
+     * <pre>static_cast<KMultiConfigItem *>(configItem(name))->configIndex()
+     * </pre>
      */
     static uint configItemIndex(const char *name);
+
+    /**
+     * @return the max value of the config item of the given name as stored
+     * in the configuraton file (the config item should be a
+     * @ref KRangedConfigItem). If the collection  already contains the
+     * @ref KConfigItem, it is more efficient to use
+     * <pre>static_cast<KRangedConfigItem *>(configItem(name))->maxValue()
+     * </pre>
+     */
+    static QVariant configItemMaxValue(const char *name);
+
+    /**
+     * @return the min value of the config item of the given name as stored
+     * in the configuraton file (the config item should be a
+     * @ref KRangedConfigItem). If the collection  already contains the
+     * @ref KConfigItem, it is more efficient to use
+     * <pre>static_cast<KRangedConfigItem *>(configItem(name))->minValue()
+     * </pre>
+     */
+    static QVariant configItemMinValue(const char *name);
 
     /**
      * Create a @ref KConfigItem from the XML config file and associate it

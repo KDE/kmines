@@ -1,5 +1,5 @@
 <!DOCTYPE kpartgui>
-<kpartgui name="kmines" version="14">
+<kpartgui name="kmines" version="16">
 
 <MenuBar>
   <Menu name="game"><text>&amp;Game</text>
@@ -9,6 +9,11 @@
     <Action name="advise" />
     <Action name="solve" />
     <Action name="solve_rate" />
+    <Separator/>
+    <Action name="log_view" />
+	<Action name="log_replay" />
+    <Action name="log_save" />
+    <Action name="log_load" />
   </Menu>
 </MenuBar>
 
@@ -28,12 +33,22 @@
   <enable>
     <Action name="advise" />
     <Action name="solve" />
+    <Action name="log_view" />
+    <Action name="log_replay" />
+    <Action name="log_load" />
+    <Action name="log_save" />
   </enable>
   <disable>
     <Action name="game_pause" />
   </disable>
 </State>
 <State name="gameover">
+  <enable>
+    <Action name="log_view" />
+    <Action name="log_replay" />
+    <Action name="log_load" />
+    <Action name="log_save" />
+  </enable>
   <disable>
     <Action name="advise" />
     <Action name="solve" />
@@ -46,11 +61,41 @@
     <Action name="solve" />
     <Action name="game_pause" />
   </enable>
+  <disable>
+    <Action name="log_view" />
+    <Action name="log_replay" />
+    <Action name="log_load" />
+    <Action name="log_save" />
+  </disable>
 </State>
 <State name="paused">
   <disable>
     <Action name="advise" />
     <Action name="solve" />
+  </disable>
+</State>
+<State name="replaying">
+  <disable>
+    <Action name="advise" />
+    <Action name="solve" />
+    <Action name="game_pause" />
+    <Action name="log_view" />
+    <Action name="log_replay" />
+    <Action name="log_load" />
+    <Action name="log_save" />
+  </disable>
+</State>
+<State name="init">
+  <enable>
+    <Action name="advise" />
+    <Action name="solve" />
+    <Action name="log_load" />
+  </enable>
+  <disable>
+    <Action name="game_pause" />
+    <Action name="log_view" />
+    <Action name="log_replay" />
+    <Action name="log_save" />
   </disable>
 </State>
 

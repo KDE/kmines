@@ -39,15 +39,14 @@ class Field : public FieldFrame, public BaseField
 	QSizePolicy sizePolicy() const;
 
     void setLevel(const Level &level);
+    void setReplayField(const QString &field);
     const Level &level() const { return _level; }
+	void reset(bool init);
 
-	void reset();
-
-    bool isPlaying() const { return _state==Playing; }
-    bool isActive() const { return _state==Playing || _state==Stopped; }
-	bool isPaused() const { return _state==Paused; }
+    GameState gameState() const { return _state; }
+    bool isActive() const { return _state!=Paused && _state!=GameOver; }
 	void pause();
-	void gameOver() { _state = GameOver; }
+	void setGameOver() { _state = GameOver; }
     bool hasCompleteReveal() const { return _completeReveal; }
 
     void moveCursor(Neighbour);
@@ -56,6 +55,8 @@ class Field : public FieldFrame, public BaseField
 	void doMark()   { doMark(_cursor); }
 	void doUmark()  { doUmark(_cursor); }
 	void keyboardAutoReveal();
+    CaseState doAction(ActionType type, const Grid2D::Coord &c,
+                       bool completeReveal);
 
 	void readSettings();
 
@@ -63,7 +64,7 @@ class Field : public FieldFrame, public BaseField
 
  signals:
 	void updateStatus(bool);
-	void gameStateChanged(GameState, bool won);
+	void gameStateChanged(GameState);
     void setMood(Mood);
     void setCheating();
     void addAction(const Grid2D::Coord &, Field::ActionType);
@@ -79,7 +80,7 @@ class Field : public FieldFrame, public BaseField
 
  private:
 	GameState      _state;
-	bool           _cursorShown, _reveal, _completeReveal;
+	bool           _cursorShown, _reveal, _completeReveal, _umark;
     Grid2D::Coord  _cursor, _advised;
     double         _advisedProba;
 	MouseAction    _mb[3];
@@ -96,7 +97,7 @@ class Field : public FieldFrame, public BaseField
     void doMark(const Grid2D::Coord &);
     void doUmark(const Grid2D::Coord &);
     void changeCase(const Grid2D::Coord &, CaseState newState);
-    void addMarkAction(const Grid2D::Coord &, CaseState old);
+    void addMarkAction(const Grid2D::Coord &, CaseState newS, CaseState oldS);
 
     QPoint toPoint(const Grid2D::Coord &) const;
     Grid2D::Coord fromPoint(const QPoint &) const;
