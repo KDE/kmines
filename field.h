@@ -21,10 +21,9 @@ class Field : public QFrame
 	QSize sizeHint() const;
 	QSizePolicy sizePolicy() const;
 	
-	void start(const Level &);
 	void restart(bool repaint = TRUE);
 	void pause();
-	void stop() { stopped = TRUE; }
+	void stop() { state = Stopped; }
 	void showMines();
 	
 	void up();
@@ -33,13 +32,12 @@ class Field : public QFrame
 	void right();
 	void reveal();
 	void mark();
-	void autoReveal();
+	void umark();
+	void keyboardAutoReveal();
 
+	void setLevel(const Level &);
 	const Level &level() const { return lev; }
-	void setUMark(bool um) { u_mark = um; }
-	uint caseSize() const { return _caseSize; }
-	void setCaseSize(uint);
-	void setCursor(bool show);
+	void readSettings();
 	
  public slots:
 	void resume();
@@ -51,31 +49,34 @@ class Field : public QFrame
 	void endGame(int);
 	void startTimer();
 	void freezeTimer();
-	void putMsg(const QString &);
-  
+	void gameStateChanged(GameState);
+
  protected:
 	void paintEvent(QPaintEvent *);
 	void mousePressEvent(QMouseEvent *);
 	void mouseReleaseEvent(QMouseEvent *);
 	void mouseMoveEvent(QMouseEvent *);
+
+ private slots:
+    void keyboardAutoRevealSlot();
 	
  private:
 	QArray<uint>    _pfield;
 	Level           lev;
 	KRandomSequence random;
-  
-	bool paused, stopped;
-	bool first_click;
-	bool u_mark, cursor;
 
-	int  ic, jc;    // current pos
-	bool left_down; // left button pressed
-	bool mid_down;  // mid button pressed
-  
+	GameState state;
+	bool      first_click;
+	bool      u_mark, cursor;
+
+	int  ic, jc;               // current pos
+	bool _reveal, _autoreveal; // mouse button pressed
+	MouseAction mb[3];         // mouse bindings
+
 	uint         _caseSize;
 	QPixmap      pm_flag, pm_mine, pm_exploded, pm_error, pm_cursor;
 	QPushButton *pb;
-  
+
 	uint computeNeighbours(uint, uint) const;
 	void uncover(uint, uint);
 	void changeCaseState(uint, uint, uint);
@@ -87,7 +88,7 @@ class Field : public QFrame
 	bool placeCursor(int, int, bool check = FALSE);
 	void flagPixmap(QPixmap &, bool mask) const;
 	void cursorPixmap(QPixmap &, bool mask) const;
-	bool locked() const { return stopped || paused; }
+	void autoReveal();
 
 	uint &pfield(uint i, uint j) const;
 	int xToI(int x) const;
@@ -101,6 +102,11 @@ class Field : public QFrame
 	void drawBox(int, int, bool, QPainter * = 0);
 	void eraseField();
 	void drawCursor(bool show, QPainter * = 0);
+
+	void setUMark(bool um) { u_mark = um; }
+	void setCaseSize(uint);
+	void setCursor(bool show);
+	MouseAction mapMouseButton(QMouseEvent *e) const;
 };
 
 #endif // FIELD_H

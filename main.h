@@ -1,9 +1,10 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include <kkeydialog.h>
 #include <ktmainwindow.h>
 #include <kaction.h>
+
+#include "defines.h"
 
 class Status;
 
@@ -19,17 +20,15 @@ class MainWidget : public KTMainWindow
 	void normalLevel()    { changeLevel(1); }
 	void expertLevel()    { changeLevel(2); }
 	void customLevel()    { changeLevel(3); }
-    void configKeys()     { KKeyDialog::configureKeys(kacc); }
 	void toggleMenubar();
-    void toggleUMark();
-	void toggleKeyboard();
-	void saveSettings();
+    void configureKeys();
+	void setKeyboardEnabled(bool);
+	void gameStateChanged(GameState);
 
  protected:
 	bool eventFilter(QObject *, QEvent *);
 
  private:
-	KAccel                  *kacc;
 	QArray<KRadioAction *>   levelAction;
 	Status                  *status;
 	

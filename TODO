@@ -1,5 +1,9 @@
-- better case scaling can be obtained with QPAinter::scale(double) ??
-- layout bug when changing level/case size (fvwm specific ?)
-- configuration for mouse buttons' actions
-- disable "pause game" when game stopped 
-  + change to "resume game" when game paused
+IDEAS:
+
+ * do you have any idea ?
+
+
+KNOWN BUGS:
+
+ * layout bug when changing level/case size/menubar visible
+   [fvwm specific ? -> no !]

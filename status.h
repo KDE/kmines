@@ -21,8 +21,10 @@ class Status : public QWidget
 	Status(QWidget *parent=0, const char *name=0);
 
 	bool newGame(GameType &);
-	void setUMark(bool b)  { field->setUMark(b); }
-	void setCursor(bool b) { field->setCursor(b); }
+
+ signals:
+	void keyboardEnabled(bool);
+	void gameStateChanged(GameState);
 	
  public slots:
 	void restartGame();
@@ -32,7 +34,8 @@ class Status : public QWidget
 	void showHighScores() { highScores(0); }
 	void pauseGame() { field->pause(); }
 	void print();
-	void options();
+	void preferences();
+	void setGameState(GameState);
 
 	void moveUp()     { field->up(); }
 	void moveDown()   { field->down(); }
@@ -40,18 +43,17 @@ class Status : public QWidget
 	void moveRight()  { field->right(); }
 	void reveal()     { field->reveal(); }
 	void mark()       { field->mark(); }
-	void autoReveal() { field->autoReveal(); }
+	void autoReveal() { field->keyboardAutoReveal(); }
 
  private:
 	uint     uncovered, marked, uncertain;  /* number of cases in each state */
 	Field    *field;
-	GameType _type;
 	
 	Smiley       *smiley;
 	LCDNumber    *left;
 	QLabel       *message;
 	DigitalClock *dg;
-  
+
 	void exmesg(const QString &);
 	void highScores(const Score *);
 	void initGame();

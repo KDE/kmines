@@ -6,20 +6,17 @@
 	<Action name="game_print"/>
   </Menu>
   <Menu name="settings"><text>&amp;Settings</text>
-	<Action name="options_?_mark"/>
-	<Action name="options_enable_keyboard"/>
-  </Menu>
-  <Menu name="level"><text>&amp;Level</text>
+	<Menu name="test"><text>&amp;Level</text>
 	<Action name="level_easy"/>
 	<Action name="level_normal"/>
 	<Action name="level_expert"/>
 	<Separator/>
 	<Action name="level_custom"/>
+	</Menu>
   </Menu>
 </MenuBar>
 <Menu name="popup">
   <Action name="options_show_menubar"/>
-  <Action name="options_save_options"/>
   <Separator/>
   <Action name="game_new"/>
   <Separator/>

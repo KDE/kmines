@@ -1,3 +1,10 @@
+2.0.3
+ * use kkeydialog for actions
+ * rationalize settings (much better now)
+ * animate autoreveal with keyboard
+ * enable/disable and change text for pause in menu
+ * configuration of mouse bindings [idea of FX Duranceau]
+
 2.0.2
  * XMLify the GUI
 
@@ -20,7 +27,7 @@
 
 1.0.6
  * slightly better highscores dialog
- * fixed a bug in flagged mines display (cannot be negative) 
+ * fixed a bug in flagged mines display (cannot be negative)
  * the LCDs gets red when there are more flagged cases than mines
    and when you have used more time than the better player.
  * use of a status bar.
@@ -42,7 +49,7 @@
  * level menu items are now checked
 
 1.0.2
- * bug fix : argh! a "brown paper bag" one (bug report by Szokovacs Robert)  
+ * bug fix : argh! a "brown paper bag" one (bug report by Szokovacs Robert)
 
 1.0.1
  * bug fix : when paused a game can be continued by changing desktops or
@@ -70,7 +77,7 @@
  * bugfix from Anders Widell (doesn't allow anymore to middle click on a flag)
 
 0.6.8
- * some polishing (game over message do not overwrite mines number & marked 
+ * some polishing (game over message do not overwrite mines number & marked
    mines stay marked even when the game is lost : so you can completely analyse
    why you have lost :) -- thanx to Christoph Rummel for pointing these to me.
 
@@ -90,12 +97,12 @@
  * adapted to libkdecore 0.7
  * hide/show menubar and popup
  * more compliant to the Style Guide
- 
+
 0.6.3
  * use kdehelp
  * updating of Makefile (use KDEDIR)
  * use kmsgbox
- 
+
 0.62
  * use KKeyCode to manage some keyboard shortcuts
 

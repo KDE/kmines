@@ -6,8 +6,12 @@
 #include <qlineedit.h>
 #include <qlcdnumber.h>
 #include <qlayout.h>
+#include <qcheckbox.h>
+#include <qcombobox.h>
 
 #include <kdialogbase.h>
+#include <knuminput.h>
+#include <kconfig.h>
 
 #include "defines.h"
 
@@ -79,7 +83,7 @@ class DialogBase : public KDialogBase
     DialogBase(const QString &caption, int buttonMask,
 			   ButtonCode defaultButton,
 			   QWidget *parent, const char *name = 0);
- 
+
  protected:
 	QVBoxLayout *top;
 };
@@ -88,10 +92,10 @@ class DialogBase : public KDialogBase
 class CustomDialog : public DialogBase
 {
  Q_OBJECT
-	  
+	
  public:
 	CustomDialog(Level &lev, QWidget *parent);
-  
+
  private slots:
 	void widthChanged(int);
 	void heightChanged(int);
@@ -101,7 +105,7 @@ class CustomDialog : public DialogBase
 	void setWidth(int);
 	void setHeight(int);
 	void setNbMines(const QString &);
-  
+
  private:
 	QScrollBar *sm;
 	Level      *lev;
@@ -111,7 +115,7 @@ class CustomDialog : public DialogBase
 class WHighScores : public DialogBase
 {
  Q_OBJECT
-	  
+	
  public:
 	WHighScores(QWidget *parent, const Score *score = 0);
 	static uint time(GameType);
@@ -119,9 +123,9 @@ class WHighScores : public DialogBase
  private slots:
 	void writeName();
 	void reject();
-  
+
  private:
-	uint mode;
+	GameType   type;
 	QLineEdit *qle;
 };
 
@@ -131,15 +135,26 @@ class OptionDialog : public DialogBase
  Q_OBJECT
 
  public:
-	OptionDialog(uint &caseSize, QWidget *parent);
-	static uint caseSize();
+	OptionDialog(QWidget *parent);
+
+	static uint readCaseSize();
+	static bool readUMark();
+	static bool readKeyboard();
+	static GameType readLevel();
+	static void writeLevel(GameType);
+	static bool readMenuVisible();
+	static void writeMenuVisible(bool visible);
+	static MouseAction readMouseBinding(MouseButton);
 
  private slots:
-    void changed(int);
 	void accept();
 
  private:
-	uint &cs;
+	KIntNumInput *ni;
+	QCheckBox    *um, *keyb;
+	QComboBox    *cb[3];
+
+	static KConfig *config();
 };
 
 #endif // DIALOGS_H

@@ -10,6 +10,7 @@ extern const char *OP_MENUBAR;
 extern const char *OP_LEVEL;
 extern const char *OP_CASE_SIZE;
 extern const char *OP_KEYBOARD;
+extern const char *OP_MOUSE_BINDINGS[3];
 
 extern const char *HS_NAME;
 extern const char *HS_MIN;
@@ -23,19 +24,28 @@ extern const char *HS_SEC;
 #define MARKED     8
 #define UNCOVERED  16
 #define EXPLODED   32
-#define ERROR      64                        
+#define ERROR      64
 
 /* Default case size */
 extern const uint CASE_SIZE;
 extern const uint MIN_CASE_SIZE;
 extern const uint MAX_CASE_SIZE;
 
-/* Predefined levels */
-enum GameType { Easy = 0, Normal, Expert, Custom, NbLevels };
-typedef struct { uint width, height, nbMines; } Level;
+enum GameType    { Easy = 0, Normal, Expert, Custom, NbLevels };
+enum GameState   { Stopped, Playing, Paused, GameOver };
+enum MouseAction { Reveal = 0, Mark, AutoReveal, UMark };
+enum MouseButton { Left = 0, Mid, Right };
+
+struct Level {
+	uint     width, height, nbMines;
+	GameType type;
+};
 extern const Level LEVELS[NbLevels-1];
 extern const char *HS_GRP[NbLevels-1];
 
-typedef struct { uint sec, min, mode; } Score;
+struct Score {
+	uint     sec, min;
+	GameType type;
+};
 
 #endif // DEFINES_H

@@ -50,7 +50,6 @@ Status::Status(QWidget *parent, const char *name)
 	
 // mines field	
 	field = new Field(this);
-	field->setCaseSize(OptionDialog::caseSize());
 	connect( field, SIGNAL(changeCase(uint,uint)),
 			 SLOT(changeCase(uint,uint)) );
 	connect( field, SIGNAL(updateStatus(bool)), SLOT(update(bool)) );
@@ -63,11 +62,23 @@ Status::Status(QWidget *parent, const char *name)
 	top->addWidget(field);
 
 	message = new QLabel(this);
+	message->installEventFilter(parent);
 	message->setAlignment(AlignCenter);
 	QWhatsThis::add(message, i18n("Game status"));
-	connect( field, SIGNAL(putMsg(const QString &)),
-			 message, SLOT(setText(const QString &)) );
+	connect(field, SIGNAL(gameStateChanged(GameState)),
+			SLOT(setGameState(GameState)) );
 	top->addWidget(message);
+}
+
+void Status::setGameState(GameState s)
+{
+	switch (s) {
+	case Stopped: message->setText(i18n("Game stopped")); break;
+	case Playing: message->setText(i18n("Playing"));      break;
+	case Paused:  message->setText(i18n("Game paused"));  break;
+	case GameOver:                                        break;
+	}
+	emit gameStateChanged(s);
 }
 
 void Status::initGame()
@@ -75,10 +86,11 @@ void Status::initGame()
 	uncovered = 0;
 	uncertain = 0;
 	marked    = 0;
-	message->setText(i18n("Game stopped"));
+	setGameState(Stopped);
 	update(FALSE);
 	smiley->setMood(Smiley::Normal);
-	if ( _type!=Custom ) dg->setMaxTime( WHighScores::time(_type) );
+	GameType type = field->level().type;
+	if ( type!=Custom )	dg->setMaxTime( WHighScores::time(type) );
 	dg->zero();
 }
 
@@ -95,13 +107,13 @@ bool Status::newGame(GameType &t)
 		lev = field->level();
 		CustomDialog cu(lev, this);
 		if ( !cu.exec() ) {
-			t = _type;
+			t = lev.type;
 			return FALSE;
 		}
+		lev.type = Custom;
 	} else lev = LEVELS[t];
 
-	_type = t;
-	field->start(lev);
+	field->setLevel(lev);
 	initGame();
 	return TRUE;
 }
@@ -131,16 +143,18 @@ void Status::endGame(int win)
 	field->stop();
 	dg->freeze();
 	field->showMines();
+	setGameState(GameOver);
 	
 	if (win) {
+		GameType type = field->level().type;
 		smiley->setMood(Smiley::Happy);
-		if ( _type==Custom || dg->better() ) {
+		if ( type==Custom || dg->better() ) {
 			message->setText(i18n("Yeeeesssssss!"));
-			if ( _type!=Custom && dg->better() ) {
+			if ( type!=Custom && dg->better() ) {
 				Score score;
-				score.sec = dg->sec();
-				score.min = dg->min();
-				score.mode = _type;
+				score.sec  = dg->sec();
+				score.min  = dg->min();
+				score.type = type;
 				highScores(&score);
 			}
 		} else message->setText(i18n("You did it ... but not in time."));
@@ -154,7 +168,7 @@ void Status::highScores(const Score *score)
 {
 	WHighScores whs(this, score);
 	whs.exec();
-} 
+}
 
 void Status::print()
 {
@@ -176,13 +190,14 @@ void Status::print()
 
 	// write the screen region corresponding to the window
 	QPainter p(&prt);
-	p.drawPixmap(0, 0, QPixmap::grabWindow(winId())); 
+	p.drawPixmap(0, 0, QPixmap::grabWindow(winId()));
 }
 
-void Status::options()
+void Status::preferences()
 {
-	uint cs = field->caseSize();
-	OptionDialog od(cs, this);
-	if ( !od.exec() || cs==field->caseSize() ) return;
-	field->setCaseSize(cs);
+	OptionDialog od(this);
+	if ( od.exec() ) {
+		field->readSettings();
+		emit keyboardEnabled(OptionDialog::readKeyboard());
+	}
 }

@@ -4,10 +4,11 @@
 #include <qpixmap.h>
 #include <qpushbutton.h>
 #include <qfont.h>
+#include <qvgroupbox.h>
+
 #include <kapp.h>
 #include <klocale.h>
-#include <kconfig.h>
-#include <knuminput.h>
+
 #include "bitmaps/smile"
 #include "bitmaps/smile_happy"
 #include "bitmaps/smile_ohno"
@@ -216,14 +217,14 @@ void CustomDialog::widthChanged(int n)
 	emit setWidth(n);
 	nbMinesChanged(lev->nbMines);
 }
-  
+
 void CustomDialog::heightChanged(int n)
 {
 	lev->height = (uint)n;
 	emit setHeight(n);
 	nbMinesChanged(lev->nbMines);
 }
-  
+
 void CustomDialog::nbMinesChanged(int n)
 {
 	lev->nbMines = (uint)n;
@@ -252,8 +253,8 @@ WHighScores::WHighScores(QWidget *parent, const Score *score)
 	KConfig *conf = kapp->config();
 
 	if (score) { // set highscores
-		mode = score->mode;
-		conf->setGroup(HS_GRP[mode]);
+		type = score->type;
+		conf->setGroup(HS_GRP[type]);
 		conf->writeEntry(HS_NAME, i18n("Anonymous")); // default
 		conf->writeEntry(HS_MIN, score->min);
 		conf->writeEntry(HS_SEC, score->sec);
@@ -269,7 +270,7 @@ WHighScores::WHighScores(QWidget *parent, const Score *score)
 
 	/* level names */
 	QString str;
-	for(uint k=0; k<3; k++) {
+	for(int k=0; k<3; k++) {
 		if ( k==0 ) str = i18n("Easy");
 		else if ( k==1 ) str = i18n("Normal");
 		else str = i18n("Expert");
@@ -286,7 +287,7 @@ WHighScores::WHighScores(QWidget *parent, const Score *score)
 		int sec = conf->readNumEntry(HS_SEC, 0);
 		bool no_score = FALSE;
 		
-		if ( !score || (k!=mode) ) {
+		if ( !score || (k!=type) ) {
 			lab = new QLabel(plainPage());
 			lab->setFont(f);
 			QString name = conf->readEntry(HS_NAME, "");
@@ -331,7 +332,7 @@ WHighScores::WHighScores(QWidget *parent, const Score *score)
 void WHighScores::writeName()
 {
 	KConfig *conf = kapp->config();
-	conf->setGroup(HS_GRP[mode]);
+	conf->setGroup(HS_GRP[type]);
 	QString str = qle->text();
 	if ( str.length() ) conf->writeEntry(HS_NAME, str);
 	conf->sync();
@@ -350,35 +351,104 @@ void WHighScores::reject()
 }
 
 //-----------------------------------------------------------------------------
-OptionDialog::OptionDialog(uint &caseSize, QWidget *parent)
-: DialogBase(i18n("Game settings"), Ok|Cancel, Cancel, parent),
-  cs(caseSize)
+OptionDialog::OptionDialog(QWidget *parent)
+: DialogBase(i18n("Settings"), Ok|Cancel, Cancel, parent)
 {
-	KIntNumInput *ni = new KIntNumInput(0, caseSize, plainPage(), 10);
+	ni = new KIntNumInput(0, readCaseSize(), plainPage(), 10);
 	ni->setRange(MIN_CASE_SIZE, MAX_CASE_SIZE, 1, true);
 	ni->setLabel(i18n("Case size"));
 	top->addWidget(ni);
-	connect(ni, SIGNAL(valueChanged(int)), SLOT(changed(int)));
+	top->addSpacing(spacingHint());
+
+	um = new QCheckBox(i18n("Enable ? mark"), plainPage());
+	um->setChecked(readUMark());
+	top->addWidget(um);
+	
+	keyb = new QCheckBox(i18n("Enable keyboard"), plainPage());
+	keyb->setChecked(readKeyboard());
+	top->addWidget(keyb);
+	top->addSpacing(spacingHint());
+
+	QVGroupBox *gb = new QVGroupBox(i18n("Mouse bindings"), plainPage());
+	top->addWidget(gb);
+	QGrid *grid = new QGrid(2, gb);
+	grid->setSpacing(spacingHint());
+	QLabel *lab = new QLabel(i18n("Left button"), grid);
+	cb[Left] = new QComboBox(FALSE, grid);
+	lab = new QLabel(i18n("Mid button"), grid);
+	cb[Mid] = new QComboBox(FALSE, grid);
+	lab = new QLabel(i18n("Right button"), grid);
+	cb[Right] = new QComboBox(FALSE, grid);
+
+	for (uint i=0; i<3; i++) {
+		cb[i]->insertItem(i18n("reveal"), 0);
+		cb[i]->insertItem(i18n("toggle mark"), 1);
+		cb[i]->insertItem(i18n("autoreveal"), 2);
+		cb[i]->insertItem(i18n("toggle ? mark"), 3);
+		cb[i]->setCurrentItem(readMouseBinding((MouseButton)i));
+	}
 }
 
-void OptionDialog::changed(int nb)
+KConfig *OptionDialog::config()
 {
-	cs = nb;
+	KConfig *conf = kapp->config();
+	conf->setGroup(OP_GRP);
+	return conf;
 }
 
 void OptionDialog::accept()
 {
-	KConfig *conf = kapp->config();
-	conf->setGroup(OP_GRP);
-	conf->writeEntry(OP_CASE_SIZE, cs);
+	KConfig *conf = config();
+	conf->writeEntry(OP_CASE_SIZE, ni->value());
+	conf->writeEntry(OP_UMARK, um->isChecked());
+	conf->writeEntry(OP_KEYBOARD, keyb->isChecked());
+	for (uint i=0; i<3; i++)
+		conf->writeEntry(OP_MOUSE_BINDINGS[i], cb[i]->currentItem());
+	
 	DialogBase::accept();
 }
 
-uint OptionDialog::caseSize()
+uint OptionDialog::readCaseSize()
 {
-	KConfig *conf = kapp->config();
-	conf->setGroup(OP_GRP);
-	uint cs = conf->readUnsignedNumEntry(OP_CASE_SIZE, CASE_SIZE);
-	cs = QMAX(QMIN(cs, MAX_CASE_SIZE), MIN_CASE_SIZE);
-	return cs;
+	uint cs = config()->readUnsignedNumEntry(OP_CASE_SIZE, CASE_SIZE);
+	return QMAX(QMIN(cs, MAX_CASE_SIZE), MIN_CASE_SIZE);
+}
+
+bool OptionDialog::readUMark()
+{
+	return config()->readBoolEntry(OP_UMARK, TRUE);
+}
+
+bool OptionDialog::readKeyboard()
+{
+	return config()->readBoolEntry(OP_KEYBOARD, TRUE);
+}
+
+GameType OptionDialog::readLevel()
+{
+	GameType lev = (GameType)config()->readUnsignedNumEntry(OP_LEVEL, 0);
+	return lev>=Custom ? Easy : lev;
+}
+
+void OptionDialog::writeLevel(GameType lev)
+{
+	if ( lev>=Custom ) return;
+	config()->writeEntry(OP_LEVEL, (uint)lev);
+}
+
+bool OptionDialog::readMenuVisible()
+{
+	return config()->readBoolEntry(OP_MENUBAR, TRUE);
+}
+
+void OptionDialog::writeMenuVisible(bool visible)
+{
+	config()->writeEntry(OP_MENUBAR, visible);
+}
+
+MouseAction OptionDialog::readMouseBinding(MouseButton mb)
+{
+	MouseAction ma = (MouseAction)config()
+		->readUnsignedNumEntry(OP_MOUSE_BINDINGS[mb], mb);
+	return ma>UMark ? Reveal : ma;
 }

@@ -6,6 +6,8 @@ const char *OP_MENUBAR   = "menubar visible";
 const char *OP_LEVEL     = "Level";
 const char *OP_CASE_SIZE = "case size";
 const char *OP_KEYBOARD  = "keyboard game";
+const char *OP_MOUSE_BINDINGS[3]
+    = { "mouse left", "mouse mid", "mouse right" };
 
 const char *HS_NAME   = "Name";
 const char *HS_MIN    = "Min";
@@ -17,7 +19,7 @@ const uint MIN_CASE_SIZE = 20;
 const uint MAX_CASE_SIZE = 100;
 
 const Level LEVELS[NbLevels-1] = {
-	{8,   8, 10}, // Easy
-	{16, 16, 40}, // Normal
-	{30, 16, 99}  // Expert
+	{8,   8, 10, Easy  },
+	{16, 16, 40, Normal},
+	{30, 16, 99, Expert}
 };
