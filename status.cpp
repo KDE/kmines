@@ -130,20 +130,14 @@ void Status::restartGame()
 bool Status::newGame(uint l)
 {
 	_type = (GameType)l;
-	uint nb_w, nb_h, nb_m;
+	Level lev;
 	if ( _type==Custom ) {
-		nb_w = field->nbWidth();
-		nb_h = field->nbHeight();
-		nb_m = field->nbMines();
-		CustomDialog cu(&nb_w, &nb_h, &nb_m, this);
+		lev = field->level();
+		CustomDialog cu(lev, this);
 		if ( !cu.exec() ) return FALSE;
-	} else {
-		nb_w = MODES[l][0];
-		nb_h = MODES[l][1];
-		nb_m = MODES[l][2];
-	}
+	} else lev = LEVELS[l];
 	
-	field->start(nb_w, nb_h, nb_m);
+	field->start(lev);
 	initGame();
 	return TRUE;
 }
@@ -160,10 +154,10 @@ void Status::changeCase(uint case_mode, uint inc)
 void Status::update(bool mine)
 {
 	QString str;
-	str.setNum(field->nbMines() - marked);
+	const Level &l = field->level();
+	str.setNum(l.nbMines - marked);
 	left->display(str);
-	
-	if ( uncovered==(field->nbWidth()*field->nbHeight() - field->nbMines()) ) endGame(!mine);
+	if ( uncovered==(l.width*l.height - l.nbMines) ) endGame(!mine);
 }
 
 void Status::updateSmiley(int mood)
@@ -183,30 +177,22 @@ void Status::endGame(int win)
 	
 	if (win) {
 		emit updateSmiley(HAPPY);
-		int res = 0;
-		if ( _type!=Custom ) res = setHighScore(dg->sec(), dg->min(), _type);
-		if (res) setMsg(i18n("You did it ... but not in time."));
-		else setMsg(i18n("Yeeessss !"));
+		if ( _type!=Custom && !setHighScore(dg->sec(), dg->min(), _type) ) {
+			setMsg(i18n("You did it ... but not in time."));
+			return;
+		}
+		setMsg(i18n("Yeeessss !"));
 	} else {
 		emit updateSmiley(UNHAPPY);
 		setMsg(i18n("Bad luck !"));
 	}
 }
 
-void Status::showHighScores()
+bool Status::setHighScore(int sec, int min, int mode)
 {
-	int dummy;
-	WHighScores whs(TRUE, 0, 0, 0, dummy, this);
-	whs.show();
-}
-
-int Status::setHighScore(int sec, int min, int mode)
-{
-	int res;
-	WHighScores whs(FALSE, sec, min, mode, res, this);
-	if (res) return res;
-	whs.show();
-	return 0;
+	bool better;
+	WHighScores whs(FALSE, sec, min, mode, &better, this);
+	return better;
 } 
 
 void Status::print()

@@ -7,13 +7,13 @@
 
 #include <kapp.h>
 #include <klocale.h>
+#include <kconfig.h>
 
-#include "defines.h"
 #include "version.h"
 
 #define BORDER   10
-#define TBORDER  5
-#define PS_INC    4
+#define TBORDER   5
+#define PS_INC    2
 
 /** Digital Clock ************************************************************/
 DigitalClock::DigitalClock(QWidget *parent)
@@ -27,10 +27,10 @@ void DigitalClock::timerEvent( QTimerEvent *)
  	if (!stop) {
 		time_sec++;
 		if (time_sec==60) {
-			time_min++; time_sec = 0;
+			/* so waiting one hour don't do a restart timer at 00:00 */
+			if ( time_min<60 ) time_min++;
+			time_sec = 0;
 		}
-		/* so waiting one hour don't do a restart timer at 00:00 */
-		if (time_min==60) time_min = 60;
 		showTime();
 	}
 }
@@ -70,10 +70,13 @@ void DigitalClock::freeze()
 }
 
 /** Customize dialog *********************************************************/
-CustomDialog::CustomDialog(uint *nbWidth, uint *nbHeight, uint *nbMines,
-			   QWidget *parent)
-: QDialog(parent, 0, TRUE), nbW(nbWidth), nbH(nbHeight), nbM(nbMines)
+CustomDialog::CustomDialog(Level &_lev, QWidget *parent)
+: QDialog(parent, 0, TRUE), lev(&_lev)
 {
+	QLabel      *lab;
+	QScrollBar  *scb;
+	QHBoxLayout *hbl;
+		
 	QString str = i18n("Customize Game");
 	setCaption(i18n("kmines: %1").arg(str));
 
@@ -81,22 +84,19 @@ CustomDialog::CustomDialog(uint *nbWidth, uint *nbHeight, uint *nbMines,
 	QVBoxLayout *top = new QVBoxLayout(this, BORDER);
 	
 /* title */
-	QLabel *title = new QLabel(str, this);
-	QFont f( title->font() );
+	lab = new QLabel(str, this);
+	QFont f( lab->font() );
 	QFontInfo fi(f);
 	f.setPointSize(fi.pointSize()+PS_INC);
 	f.setBold(TRUE);
-	title->setFont(f);
-	title->setAlignment(AlignCenter);
-	title->setFrameStyle(QFrame::Panel | QFrame::Sunken);
-	title->setFixedSize( title->sizeHint() + QSize(2*TBORDER, TBORDER) );
-	title->setBackgroundMode( QWidget::PaletteMidlight );
-	top->addWidget(title);
+	lab->setFont(f);
+	lab->setAlignment(AlignCenter);
+	lab->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+	lab->setFixedSize( lab->sizeHint() + QSize(2*TBORDER, TBORDER) );
+	lab->setBackgroundMode( QWidget::PaletteMidlight );
+	top->addWidget(lab);
 	top->addSpacing(2*BORDER); // some additional space
 	top->addStretch(1);
-
-	QHBoxLayout *hbl;
-	QLabel *lab;
 
 /* Width */
 	/* labels */
@@ -108,18 +108,19 @@ CustomDialog::CustomDialog(uint *nbWidth, uint *nbHeight, uint *nbMines,
 	hbl->addWidget(lab);
 	hbl->addStretch(1);
 	
-	lw = new QLabel(this);
-	lw->setNum((int)*nbW);
-	lw->setAlignment( AlignRight );
-	lw->setFixedSize( lw->fontMetrics().maxWidth()*2, lw->sizeHint().height());
-	hbl->addWidget(lw);
+	lab = new QLabel(this);
+	lab->setNum((int)_lev.width);
+	lab->setAlignment( AlignRight );
+	lab->setFixedSize( lab->fontMetrics().maxWidth()*2, lab->sizeHint().height());
+	connect(this, SIGNAL(setWidth(int)), lab, SLOT(setNum(int)));
+	hbl->addWidget(lab);
 
 	/* scrollbar */
-	sw = new QScrollBar(8, 50, 1, 5, *nbW,QScrollBar::Horizontal, this);
-	sw->setMinimumWidth( sw->sizeHint().width() );
-	sw->setFixedHeight( sw->sizeHint().height() );
-	connect(sw, SIGNAL(valueChanged(int)), SLOT(widthChanged(int)));
-	top->addWidget(sw);
+	scb = new QScrollBar(8, 50, 1, 5, _lev.width, QScrollBar::Horizontal, this);
+	scb->setMinimumWidth( scb->sizeHint().width() );
+	scb->setFixedHeight( scb->sizeHint().height() );
+	connect(scb, SIGNAL(valueChanged(int)), SLOT(widthChanged(int)));
+	top->addWidget(scb);
 	top->addSpacing(2*BORDER);
 	top->addStretch(1);
 	
@@ -133,18 +134,19 @@ CustomDialog::CustomDialog(uint *nbWidth, uint *nbHeight, uint *nbMines,
 	hbl->addWidget(lab);
 	hbl->addStretch(1);
 	
-	lh = new QLabel(this);
-	lh->setNum((int)*nbH);
-	lh->setAlignment( AlignRight );
-	lh->setFixedSize( lh->fontMetrics().maxWidth()*2, lh->sizeHint().height());
-	hbl->addWidget(lh);
+	lab = new QLabel(this);
+	lab->setNum((int)_lev.height);
+	lab->setAlignment( AlignRight );
+	lab->setFixedSize( lab->fontMetrics().maxWidth()*2, lab->sizeHint().height());
+	connect(this, SIGNAL(setHeight(int)), lab, SLOT(setNum(int)));
+	hbl->addWidget(lab);
 
 	/* scrollbar */
-	sh = new QScrollBar(8, 50, 1, 5, *nbH ,QScrollBar::Horizontal, this);
-	sh->setMinimumWidth( sh->sizeHint().width() );
-	sh->setFixedHeight( sh->sizeHint().height() );
-	connect(sh, SIGNAL(valueChanged(int)), SLOT(heightChanged(int)));
-    top->addWidget(sh);
+	scb = new QScrollBar(8, 50, 1, 5, _lev.height, QScrollBar::Horizontal, this);
+	scb->setMinimumWidth( scb->sizeHint().width() );
+	scb->setFixedHeight( scb->sizeHint().height() );
+	connect(scb, SIGNAL(valueChanged(int)), SLOT(heightChanged(int)));
+    top->addWidget(scb);
 	top->addSpacing(2*BORDER);
 	top->addStretch(1);
 
@@ -158,14 +160,15 @@ CustomDialog::CustomDialog(uint *nbWidth, uint *nbHeight, uint *nbMines,
 	hbl->addWidget(lab);
 	hbl->addStretch(1);
 	
-	lm = new QLabel(" ", this);
-	lm->setAlignment( AlignRight );
-	lm->setFixedSize(lm->fontMetrics().maxWidth()*11, lm->sizeHint().height());
-	hbl->addWidget(lm);
+	lab = new QLabel(" ", this);
+	lab->setAlignment( AlignRight );
+	lab->setFixedSize(lab->fontMetrics().maxWidth()*11, lab->sizeHint().height());
+	connect(this, SIGNAL(setNbMines(const QString &)), lab, SLOT(setText(const QString &)));
+	hbl->addWidget(lab);
 
 	/* scrollbar */
-	sm = new QScrollBar(1, (*nbW)*(*nbH), 1, 5, *nbM,
-						QScrollBar::Horizontal, this);
+	sm = new QScrollBar(1, _lev.width*_lev.height, 1, 5, _lev.nbMines,
+						 QScrollBar::Horizontal, this);
 	sm->setMinimumWidth( sm->sizeHint().width() );
 	sm->setFixedHeight( sm->sizeHint().height() );
 	connect(sm, SIGNAL(valueChanged(int)), SLOT(nbMinesChanged(int)));
@@ -173,7 +176,7 @@ CustomDialog::CustomDialog(uint *nbWidth, uint *nbHeight, uint *nbMines,
 	top->addSpacing(2*BORDER);
 	top->addStretch(1);
 
-	nbMinesChanged((int)*nbM);
+	nbMinesChanged(_lev.nbMines);
 	
 /* buttons */
 	hbl = new QHBoxLayout(BORDER);
@@ -194,66 +197,72 @@ CustomDialog::CustomDialog(uint *nbWidth, uint *nbHeight, uint *nbMines,
 	hbl->addStretch(1);
 }
 
-void CustomDialog::widthChanged(int newWidth)
+void CustomDialog::widthChanged(int n)
 {
-	*nbW = (uint)newWidth;
-	lw->setNum(newWidth);
-	nbMinesChanged(*nbM);
+	lev->width = (uint)n;
+	emit setWidth(n);
+	nbMinesChanged(lev->nbMines);
 }
   
-void CustomDialog::heightChanged(int newHeight)
+void CustomDialog::heightChanged(int n)
 {
-	*nbH = (uint)newHeight;
-	lh->setNum(newHeight);
-	nbMinesChanged(*nbM);
+	lev->height = (uint)n;
+	emit setHeight(n);
+	nbMinesChanged(lev->nbMines);
 }
   
-void CustomDialog::nbMinesChanged(int newNbMines)
+void CustomDialog::nbMinesChanged(int n)
 {
-	*nbM = (uint)newNbMines;
-	sm->setRange(1, (*nbW)*(*nbH)-2);
-	lm->setText(i18n("%1 (%2%%)").arg(newNbMines)
-				.arg(100*newNbMines/((*nbW)*(*nbH))));
+	lev->nbMines = (uint)n;
+	uint nb = lev->width * lev->height;
+	sm->setRange(1, nb - 2);
+	emit setNbMines(i18n("%1 (%2%%)").arg(n).arg(100*n/nb));
 }
 
 /** HighScore dialog *********************************************************/
 WHighScores::WHighScores(bool show, int newSec, int newMin, uint Mode,
-						 int &res, QWidget *parent)
-: QDialog(parent, 0, TRUE), mode(Mode)
+						 bool *res, QWidget *parent)
+: KDialog(parent, 0, TRUE), mode(Mode)
 {
 	KConfig *conf = kapp->getConfig();
+	conf->setGroup(HS_GRP[mode]);
 
 	/* set highscore ? */
 	if ( !show ) {
-		conf->setGroup(HS_GRP[mode]);
-		/* a better time ? */
-		res = conf->readNumEntry(HS_SEC, 59)
-			  + 60*conf->readNumEntry(HS_MIN, 59);
-		if ( (newSec + newMin*60)>=res ) return;
-		res = 0;
+		ASSERT( newSec || newMin );
+		int r = conf->readNumEntry(HS_SEC, 59)
+			    + 60*conf->readNumEntry(HS_MIN, 59);
+		bool better = ( (newSec + newMin*60)<r );
+		if (res) *res = better;
+		if ( !better ) return;
+		
+		conf->writeEntry(HS_NAME, i18n("Anonymous")); // default
+		conf->writeEntry(HS_MIN, newMin);
+		conf->writeEntry(HS_SEC, newSec);
 	}
 
+	QLabel *lab;
 	QString str = i18n("Hall of Fame");
-	setCaption(i18n("kmines: %1").arg(str));
+	setCaption(i18n("%1: %2").arg(KMINES_NAME).arg(str));
 
 /* top layout */
 	QVBoxLayout *top = new QVBoxLayout(this, BORDER);
+	top->setResizeMode( QLayout::Fixed );
 	
 /* title */
-	QLabel *title = new QLabel(str, this);
-	QFont f( title->font() );
+	lab = new QLabel(str, this);
+	QFont f( lab->font() );
 	QFontInfo fi(f);
 	f.setPointSize(fi.pointSize()+PS_INC);
 	f.setBold(TRUE);
-	title->setFont(f);
-	title->setAlignment(AlignCenter);
-	title->setFrameStyle(QFrame::Panel | QFrame::Sunken);
-	title->setFixedSize( title->sizeHint()+QSize(2*TBORDER, TBORDER) );
-	title->setBackgroundMode( QWidget::PaletteMidlight );
-	top->addWidget(title);
+	lab->setFont(f);
+	lab->setAlignment(AlignCenter);
+	lab->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+	lab->setFixedSize( lab->sizeHint()+QSize(2*TBORDER, TBORDER) );
+	lab->setBackgroundMode( QWidget::PaletteMidlight );
+	top->addWidget(lab);
 	top->addSpacing(2*BORDER); // some additional space
 
-	QLabel *lab;
 	f = font();
 	f.setBold(TRUE);
 	
@@ -266,19 +275,34 @@ WHighScores::WHighScores(bool show, int newSec, int newMin, uint Mode,
 		if ( k==0 ) str = i18n("Easy");
 		else if ( k==1 ) str = i18n("Normal");
 		else str = i18n("Expert");
-		str += " :";
 		lab = new QLabel(str, this);
 		lab->setMinimumSize( lab->sizeHint() );
 		gl->addWidget(lab, k, 0);
 
+		lab = new QLabel(":", this);
+		lab->setMinimumSize( lab->sizeHint() );
+		gl->addWidget(lab, k, 1);
+		
 		conf->setGroup(HS_GRP[k]);
+		int min = conf->readNumEntry(HS_MIN, 0);
+		int sec = conf->readNumEntry(HS_SEC, 0);
+		bool no_score = FALSE;
 		
 		if ( show || (k!=mode) ) {
-			lab = new QLabel(conf->readEntry(HS_NAME, i18n("Anonymous")), this);
-			lab->setAlignment(AlignCenter);
+			lab = new QLabel(this);
 			lab->setFont(f);
-			lab->setMinimumSize( lab->sizeHint() );
-			gl->addWidget(lab, k, 2);
+			QString name = conf->readEntry(HS_NAME, "");
+			no_score = name.isEmpty() || (!min && !sec);
+			
+			if (no_score) { // no score for this level
+				lab->setText(i18n("no score for this level"));
+				lab->setMinimumSize( lab->sizeHint() );
+				gl->addMultiCellWidget(lab, k, k, 2, 8);
+			} else {
+				lab->setText(name);
+				lab->setMinimumSize( lab->sizeHint() );
+				gl->addWidget(lab, k, 2);
+			}
 		} else {
 			qle = new QLineEdit(this);
 			qle->setMaxLength(10);
@@ -288,22 +312,17 @@ WHighScores::WHighScores(bool show, int newSec, int newMin, uint Mode,
 			qle->setFocus();
 			connect(qle, SIGNAL(returnPressed()), SLOT(writeName()));
 			gl->addWidget(qle, k, 2);
+		}
 
-			conf->writeEntry(HS_NAME, i18n("Anonymous")); // default
-			conf->writeEntry(HS_MIN, newMin);
-			conf->writeEntry(HS_SEC, newSec);
+		if ( !no_score ) {
+			lab = new QLabel(i18n("in"), this);
+			lab->setAlignment(AlignCenter);
+			lab->setMinimumSize( lab->sizeHint() );
+			gl->addWidget(lab, k, 3);
 		}
 		
-		lab = new QLabel(i18n("in"), this);
-		lab->setAlignment(AlignCenter);
-		lab->setMinimumSize( lab->sizeHint() );
-		gl->addWidget(lab, k, 3);
-		
-		int min = conf->readNumEntry(HS_MIN, 59);
-		int sec = conf->readNumEntry(HS_SEC, 59);
-		
 		if (min) {
-			lab = new QLabel(conf->readEntry(HS_MIN, "59"), this);
+			lab = new QLabel(conf->readEntry(HS_MIN), this);
 			lab->setFont(f);
 			lab->setAlignment(AlignCenter);
 			lab->setMinimumSize( lab->sizeHint() );
@@ -325,7 +344,7 @@ WHighScores::WHighScores(bool show, int newSec, int newMin, uint Mode,
 				gl->addWidget(lab, k, 6);
 			}
 			
-			lab = new QLabel(conf->readEntry(HS_SEC, "59"), this);
+			lab = new QLabel(conf->readEntry(HS_SEC), this);
 			lab->setFont(f);
 			lab->setAlignment(AlignCenter);
 			lab->setMinimumSize( lab->sizeHint() );
@@ -337,39 +356,34 @@ WHighScores::WHighScores(bool show, int newSec, int newMin, uint Mode,
 			gl->addWidget(lab, k, 8);
 		}	
 	}
-	top->addSpacing(2*BORDER);
 
 /* button */
-	QHBoxLayout *hbl = new QHBoxLayout(BORDER);
-	top->addLayout(hbl);
 	pb = new QPushButton(i18n("Close"), this);
 	pb->setFixedSize( pb->sizeHint() );
 	connect(pb, SIGNAL(clicked()), SLOT(accept()));
-	hbl->addStretch(1);
-	hbl->addWidget(pb);
-	hbl->addStretch(1);
-
-	if ( !show ) pb->hide();
-	else pb->setFocus();
+	if (show) pb->setFocus();
+	else pb->setEnabled(FALSE);
+	top->addSpacing(2*BORDER);
+	top->addWidget(pb);
+	
+	exec();
 }
 
 void WHighScores::writeName()
 {
-	kapp->getConfig()->setGroup(HS_GRP[mode]);
+	KConfig *conf = kapp->getConfig();
+	conf->setGroup(HS_GRP[mode]);
 	QString str = qle->text();
-	if ( str.length() ) kapp->getConfig()->writeEntry(HS_NAME, str);
+	if ( str.length() ) conf->writeEntry(HS_NAME, str);
 	
-	/* show the entered highscore */
-	qle->hide();
-	QFont f( font() );
-	f.setBold(TRUE);
-	QLabel *lab = new QLabel(str, this);
-	lab->setFont(f);
-	lab->setAlignment(AlignCenter);
-	lab->setMinimumSize( lab->sizeHint() );
-	gl->addWidget(lab, mode, 2);
-	lab->show();
+	// show the entered highscore
+	str = conf->readEntry(HS_NAME);
+	qle->setText(str);
+	qle->setEnabled(FALSE);
+	qle->clearFocus();
+	qle->setMinimumSize( qle->fontMetrics().boundingRect(str).width(),
+						 qle->sizeHint().height() );
 
-	pb->show();
-	//	pb->setFocus(); // if I set the focus : it closes the dialog !?
+	pb->setEnabled(TRUE);
+	pb->setFocus(); //cannot set focus here ... it quits ...
 }

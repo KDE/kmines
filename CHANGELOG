@@ -1,5 +1,5 @@
 1.0.5
- * fixed layout handling (all those "updateGeometry" and "LayoutHint" stuff)
+ * fixed layout handling (all this "updateGeometry" and "LayoutHint" stuff)
  * space bar hit cannot restart game anymore
  * clean code (config) + level is saved
 

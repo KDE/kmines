@@ -27,7 +27,7 @@ class Status : public QWidget
 	void update(bool);
 	void updateSmiley(int);
 	void endGame(int);
-	void showHighScores();
+	void showHighScores() { WHighScores(TRUE, 0, 0, 0, 0, this); }
 	void pauseGame() { field->pause(); }
 	void print();
 	void setMsg(const QString &s) { mesg->setText(s); }
@@ -51,7 +51,7 @@ class Status : public QWidget
   
 	void createSmileyPixmap(QPixmap *, QPainter *);
 	void exmesg(const QString &str);
-	int  setHighScore(int, int, int);
+	bool setHighScore(int, int, int);
 	void initGame();
 };
 

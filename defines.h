@@ -1,6 +1,8 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
+#include <qglobal.h>
+
 void initRandomWithTime();
 int randomInt(int min, int max);
 
@@ -37,11 +39,9 @@ enum SmileyState { OK = 0, STRESS, HAPPY, UNHAPPY };
 #define SMILEY_W 29
 #define SMILEY_H 29
 
-#define MIN_W    12
-#define MIN_H    12
-
 /* Predefined levels */
-const unsigned int MODES[3][3] = { /* (width, height, mines) */
+typedef struct { uint width, height, nbMines; } Level;
+const Level LEVELS[3] = {
 		{8,   8, 10}, // Easy
 		{16, 16, 40}, // Normal
 		{30, 16, 99}  // Expert

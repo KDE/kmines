@@ -64,10 +64,9 @@ MainWidget::MainWidget()
 	level->insertItem(i18n("Custom"), 3);
 	connect(level, SIGNAL(activated(int)), SLOT(changeLevel(int)));
 
-	QPopupMenu *help = kapp->getHelpMenu(true, i18n("%1 %2 (%3)\n\nby %4")
-										 .arg(KMINES_NAME).arg(KMINES_VERSION)
-										 .arg(KMINES_DATE)
-										 .arg(KMINES_AUTHOR));
+	QString s = i18n("%1 %2 (%3)\n\nby %4").arg(KMINES_NAME)
+		.arg(KMINES_VERSION).arg(KMINES_DATE).arg(KMINES_AUTHOR);
+	QPopupMenu *help = kapp->getHelpMenu(true, s);
 
 	menuBar()->insertItem(i18n("&File"), popup );
 	menuBar()->insertItem(i18n("&Level"), level );
@@ -84,27 +83,32 @@ void MainWidget::changeLevel(int lev)
 {
 	KConfig *conf = kapp->getConfig();
 	conf->setGroup(OP_GRP);
-	if ( lev<0 ) lev = conf->readUnsignedNumEntry(OP_LEVEL, 0);
-	if ( lev<0 || lev>3 ) lev = 0; // paranoia
+	if ( lev==-1 ) {
+		lev = conf->readUnsignedNumEntry(OP_LEVEL, 0);
+		if ( lev<0 || lev>2 ) lev = 0;
+	}
 	conf->writeEntry(OP_LEVEL, lev);
 	if ( !status->newGame(lev) ) return;
 	for(int i = 0; i<4; i++) level->setItemChecked(i, i==lev);
 }
 
-bool MainWidget::eventFilter(QObject *o, QEvent *e)
+bool MainWidget::eventFilter(QObject *, QEvent *e)
 {
-	if ( !o->isWidgetType() ) return FALSE;
-	
 	switch (e->type()) {
-	 case QEvent::LayoutHint :
-		if ( ((QWidget *)o)!=this ) return FALSE;
-		updateRects();
-		return TRUE;
 	 case QEvent::MouseButtonPress : 
 		if ( ((QMouseEvent *)e)->button()!=RightButton ) return FALSE;
 		popup->popup(QCursor::pos());
 		return TRUE;
 	 default : return FALSE;
+	}
+}
+
+bool MainWidget::event(QEvent *e)
+{
+	if ( QWidget::event(e) ) return TRUE;
+	switch (e->type()) {
+//	 case QEvent::LayoutHint: updateRects(); return TRUE;
+	 default: return FALSE;
 	}
 }
 

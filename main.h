@@ -23,6 +23,7 @@ class MainWidget : public KTMainWindow
 
  protected:
 	bool eventFilter(QObject *, QEvent *);
+	bool event(QEvent *e);
 
  private:
 	KAccel       *kacc;

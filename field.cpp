@@ -5,10 +5,8 @@
 
 #include <klocale.h>
 
-#include "defines.h"
-
 Field::Field(QWidget *parent, const char *name)
-: QFrame(parent, name), nb_w(0), nb_h(0), nb_m(1),
+: QFrame(parent, name), lev(LEVELS[0]),
   _stop(FALSE), isPaused(FALSE), left_down(FALSE), mid_down(FALSE),
   pt(this)
 {
@@ -70,8 +68,8 @@ Field::Field(QWidget *parent, const char *name)
 
 QSize Field::sizeHint() const
 {
-	return QSize(2*frameWidth() + nbWidth()*CASE_W,
-				 2*frameWidth() + nbHeight()*CASE_H);
+	return QSize(2*frameWidth() + lev.width*CASE_W,
+				 2*frameWidth() + lev.height*CASE_H);
 }
 
 QSizePolicy Field::sizePolicy() const
@@ -98,7 +96,7 @@ void Field::createMinePixmap(QPainter &p) const
 
 uint &Field::pfield(uint i, uint j) const
 {
-	return _pfield[i + j*(nb_w+2)];
+	return _pfield[i + j*(lev.width+2)];
 }
 
 uint Field::computeNeighbours(uint i, uint j) const
@@ -117,11 +115,9 @@ uint Field::computeNeighbours(uint i, uint j) const
 	return nm;
 }
 
-void Field::start(uint nb_width, uint nb_height, uint nb_mines)
+void Field::start(const Level &l)
 {
-	nb_w = nb_width;
-	nb_h = nb_height;
-	nb_m = nb_mines;
+	lev = l;
 	restart(FALSE);
 	updateGeometry();
 }
@@ -137,12 +133,12 @@ void Field::restart(bool repaint)
 	_stop = FALSE;
 	first_click = TRUE;
 
-	_pfield.resize((nb_w+2) * (nb_h+2));
+	_pfield.resize( (lev.width+2) * (lev.height+2) );
 	
 	uint tmp;
-	for (uint i=0; i<nb_w+2; i++)
-		for (uint j=0; j<nb_h+2; j++) {
-			tmp = (i==0 || i==nb_w+1 || j==0 || j==nb_h+1 ? UNCOVERED : COVERED);
+	for (uint i=0; i<lev.width+2; i++)
+		for (uint j=0; j<lev.height+2; j++) {
+			tmp = (i==0 || i==lev.width+1 || j==0 || j==lev.height+1 ? UNCOVERED : COVERED);
 			if ( pfield(i, j)==tmp ) continue;
 			pfield(i, j) = tmp;
 			if (repaint && tmp==COVERED) drawCase(i, j);
@@ -154,8 +150,8 @@ void Field::paintEvent(QPaintEvent *)
 	if (isPaused) return;		
 
 	drawFrame(&pt);
-	for (uint i=1; i<=nb_w; i++)
-	    for (uint j=1; j<=nb_h; j++) drawCase(i, j);
+	for (uint i=1; i<=lev.width; i++)
+	    for (uint j=1; j<=lev.height; j++) drawCase(i, j);
 }
 
 void Field::changeCaseState(uint i, uint j, uint new_st)
@@ -292,18 +288,18 @@ void Field::mouseReleaseEvent( QMouseEvent *e )
 	if ( _stop || isPaused ) return;
 
 	/* if not out of the limits of the field */
-	if (ic>=1 && ic<=nb_w && jc>=1 && jc<=nb_h) {
+	if (ic>=1 && ic<=lev.width && jc>=1 && jc<=lev.height) {
 		if (e->button()==LeftButton) {
 			left_down = FALSE;
 			
 			if ( first_click ) {
 				// set mines positions on field ; must avoid the first 
 				// clicked case
-				for(uint k=0; k<nb_m; k++) {
+				for(uint k=0; k<lev.nbMines; k++) {
 					uint i, j;
 					do {
-						i = randomInt(0, nb_w-1);
-						j = randomInt(0, nb_h-1);
+						i = randomInt(0, lev.width-1);
+						j = randomInt(0, lev.height-1);
 					}
 					while ( (pfield(i+1, j+1) & MINE)
 						    || ((i+1)==ic && (j+1)==jc) );
@@ -329,7 +325,7 @@ void Field::mouseMoveEvent( QMouseEvent *e )
 	if (_stop) return; 
 
 	/* if not out of the limits of the field */
-	if (ic>=1 && ic<=nb_w && jc>=1 && jc<=nb_h) {
+	if (ic>=1 && ic<=lev.width && jc>=1 && jc<=lev.height) {
 		if (left_down)
 			pressCase(ic, jc, FALSE);
 		else if (mid_down)
@@ -340,7 +336,7 @@ void Field::mouseMoveEvent( QMouseEvent *e )
 	jc = yToJ(e->pos().y());
 
 	/* if not out of the limits of the field */
-	if (ic>=1 && ic<=nb_w && jc>=1 && jc<=nb_h) {
+	if (ic>=1 && ic<=lev.width && jc>=1 && jc<=lev.height) {
 		if (left_down)
 			pressCase(ic, jc, TRUE);
 		else if (mid_down)
@@ -351,8 +347,8 @@ void Field::mouseMoveEvent( QMouseEvent *e )
 /* Shown mines on explosion */
 void Field::showMines(uint i0, uint j0)
 {
-	for(uint i=1; i<=nb_w; i++)
-		for(uint j=1; j<=nb_h; j++)
+	for(uint i=1; i<=lev.width; i++)
+		for(uint j=1; j<=lev.height; j++)
 		    if ( (pfield(i, j) & MINE) ) {
 				if ( !(pfield(i, j) & EXPLODED) && !(pfield(i, j) & MARKED) ) 
 					changeCaseState(i,j,UNCOVERED);

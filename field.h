@@ -7,6 +7,8 @@
 #include <qpainter.h>
 #include <qpixmap.h>
 
+#include "defines.h"
+
 /* mines field widget */
 class Field : public QFrame
 {
@@ -18,14 +20,12 @@ class Field : public QFrame
 	QSize sizeHint() const;
 	QSizePolicy sizePolicy() const;
 	
-	void start(uint w, uint h, uint nb);
+	void start(const Level &lev);
 	void restart(bool repaint = TRUE);
 	void pause();
 	void stop() { _stop = TRUE; }
-	
-	uint nbWidth() const  { return nb_w; }
-	uint nbHeight() const { return nb_h; }
-	uint nbMines() const  { return nb_m; }
+
+	const Level &level() const { return lev; }
 	
 	void changeUMark(bool um) { u_mark = um; }
 	
@@ -49,7 +49,7 @@ class Field : public QFrame
 	
  private:
 	QArray<uint> _pfield;
-	uint nb_w, nb_h, nb_m;
+	Level lev;
   
 	bool _stop;             /* end of game ? */
 	bool noGame, isPaused;

@@ -7,8 +7,9 @@
 #include <qlineedit.h>
 #include <qlcdnumber.h>
 #include <qlayout.h>
+#include <kdialog.h>
 
-#include <kconfig.h>
+#include "defines.h"
 
 /**** digital clock widget ***************************************************/
 class DigitalClock : public QLCDNumber
@@ -42,47 +43,41 @@ class CustomDialog : public QDialog
  Q_OBJECT
 	  
  public:
-	CustomDialog(uint *w, uint *h, uint *nb, QWidget *parent);
+	CustomDialog(Level &lev, QWidget *parent);
   
  private slots:
 	void widthChanged(int);
 	void heightChanged(int);
 	void nbMinesChanged(int);
+	
+ signals:
+	void setWidth(int);
+	void setHeight(int);
+	void setNbMines(const QString &);
   
  private:
-	QScrollBar *sw, *sh, *sm;
-	QLabel *lw, *lh, *lm;
-  
-	uint  *nbW, *nbH, *nbM;
+	QScrollBar *sm;
+	Level      *lev;
 };
 
 
 /**** highscores dialog ******************************************************/
-class WHighScores : public QDialog
+class WHighScores : public KDialog
 {
  Q_OBJECT
 	  
  public:
-	WHighScores(bool show, int sec, int min, uint mode, int &res, QWidget *parent);
+	WHighScores(bool show, int sec, int min, uint mode, bool *res,
+				QWidget *parent);
 
  private slots:
 	void writeName();
   
  private:
 	uint mode;
-	QLineEdit *qle;
-	QPushButton *pb;
+	QLineEdit   *qle;
 	QGridLayout *gl;
+	QPushButton *pb;
 };
 
 #endif // DIALOGS_H
-
-
-
-
-
-
-
-
-
-
