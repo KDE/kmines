@@ -53,6 +53,7 @@ Name[uk]=Відкриття комірки
 Name[zh_CN]=揭开盒盖
 Name[zh_TW]=開挖方格
 Comment=Reveal case
+Comment[ar]=حالة الكشف
 Comment[bg]=Разкриване
 Comment[bn]=মাইন প্রদর্শন করো
 Comment[bs]=Otkrij polja
@@ -94,6 +95,7 @@ default_presentation=0
 
 [autoreveal]
 Name=Autoreveal case
+Name[ar]=حالة الكشف التلقائي
 Name[bg]=Автоматично разкриване
 Name[bn]=স্বয়ংক্রিয়ভাবে মাইন প্রদর্শন করো
 Name[bs]=Automatski otkrij polja
@@ -132,6 +134,7 @@ Name[uk]=Автоматичне відкрити комірки
 Name[zh_CN]=自动揭开盒盖
 Name[zh_TW]=周圍自動開挖方格
 Comment=Autoreveal case
+Comment[ar]=حالة الكشف التلقائي
 Comment[bg]=Автоматично разкриване
 Comment[bn]=স্বয়ংক্রিয়ভাবে মাইন প্রদর্শন করো
 Comment[bs]=Automatski otkrij polja
@@ -173,6 +176,7 @@ default_presentation=0
 
 [mark]
 Name=Mark case
+Name[ar]=تعليم الحالة
 Name[bg]=Поставяне на флаг
 Name[bn]=মাইন-এ চিহ্ন দাও
 Name[bs]=Označi polje
@@ -211,6 +215,7 @@ Name[uk]=Позначення комірки
 Name[zh_CN]=标记盒子
 Name[zh_TW]=標記方格
 Comment=Mark case
+Comment[ar]=تعليم الحالة
 Comment[bg]=Поставяне на флаг
 Comment[bn]=সম্ভাব্য মাইন-এ চিহ্ন দাও
 Comment[bs]=Označi polje
@@ -252,6 +257,7 @@ default_presentation=0
 
 [unmark]
 Name=Unmark case
+Name[ar]=عدم تعليم الحالة
 Name[bg]=Премахване на флаг
 Name[bn]=মাইন-এ দেওয়া চিহ্ন মুছে ফেল
 Name[bs]=Odznači polje
@@ -290,6 +296,7 @@ Name[uk]=Зняття помітки з комірки
 Name[zh_CN]=不标记盒子
 Name[zh_TW]=去標記方格
 Comment=Unmark case
+Comment[ar]=عدم تعليم الحالة
 Comment[bg]=Премахване на флаг
 Comment[bn]=মাইন-এ দেওয়া চিহ্ন মুছে ফেল
 Comment[bs]=Odznači polje
@@ -503,6 +510,7 @@ Name=Game lost
 Name[ar]=خسرت اللعبة
 Name[bg]=Загубихте
 Name[bn]=খেলায় হেরে গিয়েছেন
+Name[br]=Kollet eo ar c'hoari
 Name[bs]=Poraz
 Name[ca]=Partida perduda
 Name[cs]=Prohraná hra
@@ -545,6 +553,7 @@ Comment=Game lost
 Comment[ar]=خسرت اللعبة
 Comment[bg]=Загубихте
 Comment[bn]=খেলায় হেরে গিয়েছেন
+Comment[br]=Koll eo ar c'hoari
 Comment[bs]=Poraz
 Comment[ca]=Partida perduda
 Comment[cs]=Prohraná hra
@@ -587,6 +596,7 @@ default_presentation=0
 
 [set_uncertain]
 Name=Set question mark
+Name[ar]=إعداد علامة الاستفهام
 Name[bg]=Поставяне на въпросителна
 Name[bs]=Postavi upitnik
 Name[ca]=Marca amb un interrogant
@@ -616,6 +626,7 @@ Name[tg]=Танзим кардани нишони савол
 Name[uk]=Поставити знак питання
 Name[zh_CN]=设置了问号
 Comment=Set question mark
+Comment[ar]=إعداد علامة الاستفهام
 Comment[bg]=Поставяне на въпросителна
 Comment[bs]=Postavi upitnik
 Comment[ca]=Marca amb interrogant
@@ -648,6 +659,7 @@ default_presentation=0
 
 [unset_uncertain]
 Name=Unset question mark
+Name[ar]=أخرجْ علامةَ إستفهام
 Name[bg]=Премахване на въпросителна
 Name[bs]=Isključi upitnik
 Name[ca]=Desmarca l'interrogant
@@ -677,6 +689,7 @@ Name[tg]=Танзим накардани нишони савол
 Name[uk]=Зняти знак питання
 Name[zh_CN]=取消了问号
 Comment=Unset question mark
+Comment[ar]=عدم إعداد علامة الاستفهام
 Comment[bg]=Премахване на въпросителна
 Comment[bs]=Isključi upitnik
 Comment[ca]=Desmarca l'interrogant
