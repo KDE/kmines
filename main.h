@@ -1,7 +1,7 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include <qvector.h>
+#include <qptrvector.h>
 
 #include <kmainwindow.h>
 #include <kaction.h>
@@ -29,7 +29,7 @@ class MainWidget : public KMainWindow, public KMines
     void focusOutEvent(QFocusEvent *);
 
  private:
-	QVector<KRadioAction>  levelAction;
+	QPtrVector<KRadioAction>  levelAction;
 	Status                *status;
     bool                   pauseFocus;
 

@@ -1,7 +1,7 @@
 #ifndef G_SETTINGS_H
 #define G_SETTINGS_H
 
-#include <qvector.h>
+#include <qptrvector.h>
 
 #include <kdialogbase.h>
 #include <klocale.h>
@@ -75,7 +75,7 @@ class BaseSettingsDialog : public KDialogBase
     void showPage();
 
  private:
-    QVector<BaseSettingsWidget> _widgets;
+    QPtrVector<BaseSettingsWidget> _widgets;
 };
 
 #endif

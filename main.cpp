@@ -46,7 +46,7 @@ MainWidget::MainWidget()
 	KStdGameAction::quit(qApp, SLOT(quit()), actionCollection());
 
 	// keyboard
-	QVector<KAction> keyAction(7);
+	QPtrVector<KAction> keyAction(7);
 	keyAction.insert(0, new KAction(i18n("Move up"), Key_Up,
 							   status, SLOT(moveUp()),
 							   actionCollection(), "keyboard_moveup"));

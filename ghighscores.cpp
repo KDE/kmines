@@ -370,7 +370,7 @@ void ShowHighscoresWidget::showURL(const QString &url) const
 }
 
 //-----------------------------------------------------------------------------
-ShowMultiScoresList::ShowMultiScoresList(const QVector<Score> &scores,
+ShowMultiScoresList::ShowMultiScoresList(const QPtrVector<Score> &scores,
                                          QWidget *parent)
     : ShowScoresList(parent), _scores(scores)
 {
@@ -390,7 +390,7 @@ bool ShowMultiScoresList::showColumn(const ItemBase *item) const
 }
 
 //-----------------------------------------------------------------------------
-ShowMultiScoresDialog::ShowMultiScoresDialog(const QVector<Score> &scores,
+ShowMultiScoresDialog::ShowMultiScoresDialog(const QPtrVector<Score> &scores,
                                              QWidget *parent)
 : KDialogBase(Plain, i18n("Multiplayers scores"), Close, Close,
 			  parent, "show_multiplayers_score", true, true)

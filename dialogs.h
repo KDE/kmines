@@ -129,7 +129,7 @@ class AppearanceSettingsWidget : public BaseSettingsWidget, public KMines
  private:
     KIntNumInput                 *_caseSize;
     SettingsColorButton          *_flag, *_explosion, *_error;
-    QVector<SettingsColorButton>  _numbers;
+    QPtrVector<SettingsColorButton>  _numbers;
 
     static uint readCaseSize();
     static QColor readColor(const QString & key, QColor defaultColor);

@@ -272,10 +272,10 @@ class ShowMultiScoresList : public ShowScoresList
 {
  Q_OBJECT
  public:
-    ShowMultiScoresList(const QVector<Score> &, QWidget *parent);
+    ShowMultiScoresList(const QPtrVector<Score> &, QWidget *parent);
 
  private:
-    const QVector<Score> _scores;
+    const QPtrVector<Score> _scores;
 
     bool showColumn(const ItemBase *) const;
     QString itemText(const ItemBase *, uint row) const;
@@ -285,7 +285,7 @@ class ShowMultiScoresDialog : public KDialogBase
 {
  Q_OBJECT
  public:
-    ShowMultiScoresDialog(const QVector<Score> &, QWidget *parent);
+    ShowMultiScoresDialog(const QPtrVector<Score> &, QWidget *parent);
 };
 
 //-----------------------------------------------------------------------------
