@@ -1,6 +1,6 @@
 /*
     This file is part of the KDE games library
-    Copyright (C) 2001 Nicolas Hadacek (hadacek@kde.org)
+    Copyright (C) 2001-02 Nicolas Hadacek (hadacek@kde.org)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -152,57 +152,25 @@ BestScoreItem::BestScoreItem()
 
 //-----------------------------------------------------------------------------
 DataArray::DataArray(const ItemArray &items)
-    : _items(items)
 {
-    _data.resize( _items.size() );
-    for (uint i=0; i<_data.size(); i++)
-        _data[i] = _items[i]->item()->defaultValue();
+    for (uint i=0; i<items.size(); i++)
+        _data[items[i]->name()] = items[i]->item()->defaultValue();
 }
 
 DataArray::~DataArray()
 {}
 
-DataArray &DataArray::operator =(const DataArray &array)
-{
-    _data = array._data;
-    return *this;
-}
-
 void DataArray::setData(const QString &name, const QVariant &value)
 {
-    Q_ASSERT( _data.size()==_items.size() );
-    int i = _items.findIndex(name);
-    Q_ASSERT( i!=-1);
-    Q_ASSERT( value.type()==_data[i].type() );
-    _data[i] = value;
+    Q_ASSERT( _data.contains(name) );
+    Q_ASSERT( _data[name].type()==value.type() );
+    _data[name] = value;
 }
 
 const QVariant &DataArray::data(const QString &name) const
 {
-    Q_ASSERT( _data.size()==_items.size() );
-    int i = _items.findIndex(name);
-    Q_ASSERT( i!=-1 );
-    return _data[i];
-}
-
-void DataArray::read(uint k)
-{
-    Q_ASSERT( _data.size()==_items.size() );
-    for (uint i=0; i<_data.size(); i++) {
-        if ( !_items[i]->isStored() ) continue;
-        _data[i] = _items[i]->read(k);
-    }
-}
-
-void DataArray::write(uint k, uint nb) const
-{
-    Q_ASSERT( _data.size()==_items.size() );
-    for (uint i=0; i<_data.size(); i++) {
-        const ItemContainer *item = _items[i];
-        if ( !item->isStored() ) continue;
-        for (uint j=nb-1; j>k; j--)  item->write(j, item->read(j-1));
-        item->write(k, _data[i]);
-    }
+    Q_ASSERT( _data.contains(name) );
+    return _data[name];
 }
 
 QDataStream &operator <<(QDataStream &s, const DataArray &array)

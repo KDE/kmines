@@ -11,6 +11,7 @@ LCD::LCD(uint nbDigits, QWidget *parent, const char *name)
 {
     const QPalette &p = palette();
     _fgColor = p.color(QPalette::Active, QColorGroup::Foreground);
+    _hlColor = p.color(QPalette::Active, QColorGroup::HighlightedText);
 
     connect(&_timer, SIGNAL(timeout()), SLOT(timeout()));
 
@@ -58,12 +59,12 @@ void LCD::showValue(uint v)
 void LCD::highlight()
 {
     highlight(true);
-    _timer.start(1000, true);
+    _timer.start(800, true);
 }
 
 void LCD::highlight(bool light)
 {
-    if (light) setColor(darkYellow);
+    if (light) setColor(_hlColor);
     else resetColor();
 }
 

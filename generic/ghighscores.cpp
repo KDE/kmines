@@ -1,6 +1,6 @@
 /*
     This file is part of the KDE games library
-    Copyright (C) 2001 Nicolas Hadacek (hadacek@kde.org)
+    Copyright (C) 2001-02 Nicolas Hadacek (hadacek@kde.org)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -49,6 +49,12 @@ Highscores::Highscores(const QString &version, const KURL &baseURL,
 Highscores::~Highscores()
 {
     delete d;
+}
+
+uint gameType()
+{
+    HighscoresPrivate::checkFirst();
+    return HighscoresPrivate::gameType();
 }
 
 void setGameType(uint type)
@@ -107,18 +113,12 @@ void Highscores::setItem(const QString &name, Item *item)
 
 Score lastScore()
 {
-    HighscoresPrivate::checkFirst();
-    Score score(Won);
-    score.read(HighscoresPrivate::scoreInfos().maxNbEntries() - 1);
-    return score;
+    return HighscoresPrivate::lastScore();
 }
 
 Score firstScore()
 {
-    HighscoresPrivate::checkFirst();
-    Score score(Won);
-    score.read(0);
-    return score;
+    return HighscoresPrivate::firstScore();
 }
 
 QString Highscores::gameTypeLabel(uint gameType, LabelType type) const

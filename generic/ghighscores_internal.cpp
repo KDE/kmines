@@ -1,6 +1,6 @@
 /*
     This file is part of the KDE games library
-    Copyright (C) 2001 Nicolas Hadacek (hadacek@kde.org)
+    Copyright (C) 2001-02 Nicolas Hadacek (hadacek@kde.org)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -157,6 +157,23 @@ void ItemArray::setSubGroup(const QString &subGroup)
         if ( at(i)->canHaveSubGroup() ) at(i)->setSubGroup(subGroup);
 }
 
+void ItemArray::read(uint k, DataArray &data) const
+{
+    for (uint i=0; i<size(); i++) {
+        if ( !at(i)->isStored() ) continue;
+        data.setData(at(i)->name(), at(i)->read(k));
+    }
+}
+
+void ItemArray::write(uint k, const DataArray &data, uint nb) const
+{
+    for (uint i=0; i<size(); i++) {
+        if ( !at(i)->isStored() ) continue;
+        for (uint j=nb-1; j>k; j--)  at(i)->write(j, at(i)->read(j-1));
+        at(i)->write(k, data.data(at(i)->name()));
+    }
+}
+
 //-----------------------------------------------------------------------------
 class ScoreNameItem : public NameItem
 {
@@ -297,9 +314,9 @@ void PlayerInfos::modifySettings(const QString &newName,
                                  const QString &comment, bool WWEnabled,
                                  const QString &newKey) const
 {
-    ConfigGroup cg;
     item("name")->write(_id, newName);
     item("comment")->write(_id, comment);
+    ConfigGroup cg;
     cg.config()->writeEntry(HS_WW_ENABLED, WWEnabled);
     if ( !newKey.isEmpty() ) cg.config()->writeEntry(HS_KEY, newKey);
     if (WWEnabled) cg.config()->writeEntry(HS_REGISTERED_NAME, newName);
@@ -488,7 +505,7 @@ int HighscoresPrivate::rank(const Score &score)
     uint nb = _scoreInfos->nbEntries();
     uint i = 0;
 	for (; i<nb; i++) {
-        tmp.read(i);
+        _scoreInfos->read(i, tmp);
 		if ( tmp<score ) break;
     }
 	return (i<_scoreInfos->maxNbEntries() ? (int)i : -1);
@@ -597,6 +614,8 @@ void HighscoresPrivate::submitScore(const Score &ascore, QWidget *parent)
         int rank = submitLocal(score);
         if ( rank!=-1 ) showHighscores(parent, rank);
     }
+
+    _highscores->scoreSubmitted(score);
 }
 
 int HighscoresPrivate::submitLocal(const Score &score)
@@ -605,7 +624,7 @@ int HighscoresPrivate::submitLocal(const Score &score)
     if ( r!=-1 ) {
         uint nb = _scoreInfos->nbEntries();
         if ( nb<_scoreInfos->maxNbEntries() ) nb++;
-        score.write(r, nb);
+        _scoreInfos->write(r, score, nb);
     }
     return r;
 }
@@ -622,6 +641,22 @@ bool HighscoresPrivate::submitWorldWide(const Score &score, QWidget *parent)
 
     qDebug("%s", url.url().latin1());
     return doQuery(url, parent);
+}
+
+Score HighscoresPrivate::lastScore()
+{
+    checkFirst();
+    Score score(Won);
+    _scoreInfos->read(_scoreInfos->maxNbEntries() - 1, score);
+    return score;
+}
+
+Score HighscoresPrivate::firstScore()
+{
+    checkFirst();
+    Score score(Won);
+    _scoreInfos->read(0, score);
+    return score;
 }
 
 }; // namespace

@@ -1,6 +1,6 @@
 /*
     This file is part of the KDE games library
-    Copyright (C) 2001 Nicolas Hadacek (hadacek@kde.org)
+    Copyright (C) 2001-02 Nicolas Hadacek (hadacek@kde.org)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -35,6 +35,7 @@
 #include <krun.h>
 
 #include "ghighscores_internal.h"
+#include "ghighscores.h"
 
 
 namespace KExtHighscores
@@ -131,14 +132,16 @@ HighscoresWidget::HighscoresWidget(int localRank, QWidget *parent,
 
     QWidget *w;
     if ( s.nbEntries()==0 ) {
-        QLabel *lab = new QLabel(i18n("no score entry"), this);
+        QLabel *lab = new QLabel(i18n("no score entry"), tw);
         lab->setAlignment(AlignCenter);
         w = lab;
-    } else w = new HighscoresList(s, localRank, this);
+    } else w = new HighscoresList(s, localRank, tw);
     tw->addTab(w, i18n("Best &Scores"));
 
-    w = new HighscoresList(p, p.id(), this);
+    w = new HighscoresList(p, p.id(), tw);
     tw->addTab(w, i18n("&Players"));
+
+    HighscoresPrivate::highscores().additionnalTabs(tw);
 
     if ( HighscoresPrivate::isWWHSAvailable() ) {
         KURLLabel *urlLabel =
@@ -168,9 +171,9 @@ MultipleScoresList::MultipleScoresList(const QValueList<Score> &scores,
 {
     Q_ASSERT( scores.size()!=0 );
 
-    const ItemArray &items = scores[0].items();
-    addHeader(items);
-    for (uint i=0; i<scores.size(); i++) addLine(items, i, false);
+    addHeader(HighscoresPrivate::scoreInfos());
+    for (uint i=0; i<scores.size(); i++)
+        addLine(HighscoresPrivate::scoreInfos(), i, false);
 }
 
 QString MultipleScoresList::itemText(const ItemContainer &item, uint row) const

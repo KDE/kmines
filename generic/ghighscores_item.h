@@ -1,6 +1,6 @@
 /*
     This file is part of the KDE games library
-    Copyright (C) 2001 Nicolas Hadacek (hadacek@kde.org)
+    Copyright (C) 2001-02 Nicolas Hadacek (hadacek@kde.org)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -21,7 +21,7 @@
 #define G_HIGHSCORES_ITEM_H
 
 #include <qvariant.h>
-#include <qvaluevector.h>
+#include <qmap.h>
 #include <qnamespace.h>
 
 
@@ -81,8 +81,8 @@ class Item
      * @param alignment the alignment of the item.
      */
     Item(const QVariant &def = QVariant::Invalid,
-             const QString &label = QString::null,
-             int alignment = Qt::AlignRight);
+         const QString &label = QString::null, int alignment = Qt::AlignRight);
+
     virtual ~Item();
 
     /**
@@ -119,7 +119,7 @@ class Item
 
     /**
      * @return the converted value (by default the value is left
-     * unchanged) Most of the time you don't need to reimplement this method.
+     * unchanged). Most of the time you don't need to reimplement this method.
      *
      * @param i the element index ("rank" for score / "id" for player)
      */
@@ -177,28 +177,12 @@ class BestScoreItem : public Item
 
 //-----------------------------------------------------------------------------
 /**
- * Manage an array of datas each associated with @ref Item.
+ * Manage an array of datas associated with @ref Item.
  */
 class DataArray
 {
  public:
-    DataArray &operator =(const DataArray &array);
     ~DataArray();
-
-    /**
-     * @internal
-     */
-    void read(uint i);
-
-    /**
-     * @internal
-     */
-    void write(uint i, uint maxNbLines) const;
-
-    /**
-     * @internal
-     */
-    const ItemArray &items() const { return _items; }
 
     /**
      * @return the data associated with the named @ref Item.
@@ -207,7 +191,7 @@ class DataArray
 
     /**
      * Set the data associated with the named @ref Item. Note that the
-     * value should have the same type than the default value of the @ref
+     * value should have the type of the default value of the @ref
      * Item.
      */
     void setData(const QString &name, const QVariant &value);
@@ -221,8 +205,7 @@ class DataArray
     DataArray(const ItemArray &items);
 
  private:
-    QValueVector<QVariant>  _data;
-    const ItemArray        &_items;
+    QMap<QString, QVariant> _data;
 
     class DataArrayPrivate;
     DataArrayPrivate *d;

@@ -1,6 +1,6 @@
 /*
     This file is part of the KDE games library
-    Copyright (C) 2001 Nicolas Hadacek (hadacek@kde.org)
+    Copyright (C) 2001-02 Nicolas Hadacek (hadacek@kde.org)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -350,8 +350,7 @@ QVariant KSettingItem::currentValue() const
     case ColorComboBox:
         return static_cast<const KColorCombo *>(_obj)->color();
     case DatePicker:
-        // #### KDatePicker::getDate should be const
-        return static_cast<KDatePicker *>(_obj)->getDate();
+        return static_cast<const KDatePicker *>(_obj)->getDate();
     case DateTimeEdit:
         return static_cast<QDateTimeEdit *>(_obj)->dateTime();
     case FontAction:

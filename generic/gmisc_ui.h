@@ -36,7 +36,7 @@ class LCD : public QLCDNumber
     void timeout() { highlight(false); }
 
  private:
-    QColor  _fgColor;
+    QColor  _fgColor, _hlColor;
     QString _lead;
     QTimer  _timer;
 
