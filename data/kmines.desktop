@@ -94,4 +94,4 @@ Comment[uk]=KDE-версія "xbombs"
 Comment[vi]=Trò chơi thay thế của xbombs 
 Comment[xh]=Ubuyiselo lwe KDE lweziqhushumbisi ze x
 Comment[zh_CN.GB2312]=KDE 的 xbombs
-KDE-X-StartupNotify=true
+X-KDE-StartupNotify=true
