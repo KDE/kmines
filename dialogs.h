@@ -21,9 +21,10 @@
 
 #include <qpushbutton.h>
 
+#include <kgamelcd.h>
+
 #include "generic/ghighscores.h"
 #include "generic/gsettings.h"
-#include "generic/gmisc_ui.h"
 
 #include "defines.h"
 

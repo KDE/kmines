@@ -22,8 +22,8 @@
 #include <qcstring.h>
 
 #include <krandomsequence.h>
+#include <kgrid2d.h>
 
-#include "generic/grid2d.h"
 #include "defines.h"
 
 

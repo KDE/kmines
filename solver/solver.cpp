@@ -229,7 +229,7 @@ void SolvingRateDialog::slotOk()
 void SolvingRateDialog::step()
 {
     if ( _i==NB_STEPS ) {
-        slotApply();
+        enableButtonOK(true);
         return;
     }
     _i++;

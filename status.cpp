@@ -145,7 +145,7 @@ void Status::newGame(const Level &level)
 bool Status::checkBlackMark()
 {
     bool bm = ( field->gameState()==Playing );
-    if (bm) KExtHighscore::submitScore(KExtHighscore::BlackMark, this);
+    if (bm) KExtHighscore::submitScore(KExtHighscore::Lost, this);
     return bm;
 }
 
