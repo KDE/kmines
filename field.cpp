@@ -567,8 +567,13 @@ void Field::drawBox(QPainter &p, uint i, uint j, bool pressed,
 	QStyle::SFlags flags = QStyle::Style_Enabled;
     bool hasFocus = ( cursor && i==ic && j==jc );
 	if (hasFocus) flags |= QStyle::Style_HasFocus;
-    if (pressed) flags |= QStyle::Style_Sunken;
-    else flags |= QStyle::Style_Raised;
+    if (pressed) {
+        flags |= QStyle::Style_Sunken;
+        flags |= QStyle::Style_Down;
+    } else {
+        flags |= QStyle::Style_Raised;
+        flags |= QStyle::Style_Up;
+    }
 
     style().drawPrimitive(QStyle::PE_ButtonCommand, &p, button.rect(),
                           colorGroup(), flags);
