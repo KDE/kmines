@@ -20,22 +20,21 @@ class MainWidget : public KTMainWindow
 	void expertLevel()    { changeLevel(2); }
 	void customLevel()    { changeLevel(3); }
     void configKeys()     { KKeyDialog::configureKeys(kacc); }
-	bool toggleMenubar();
-	bool toggleUMark();
-	bool toggleKeyboard();
+	void toggleMenubar();
+    void toggleUMark();
+	void toggleKeyboard();
+	void saveSettings();
 
  protected:
 	bool eventFilter(QObject *, QEvent *);
 
  private:
-	bool                     init;
 	KAccel                  *kacc;
 	KActionMenu             *popup;
-	QArray<KAction *>        keyAction;
 	QArray<KRadioAction *>   levelAction;
 	Status                  *status;
 	
-	bool toggle(const char *name);
+	void readSettings();
 	void changeLevel(uint i);
 };
 

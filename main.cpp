@@ -18,8 +18,18 @@
 #include "version.h"
 #include "status.h"
 
+#define MENUBAR_ACTION \
+    ((KToggleAction *)actionCollection() \
+	 ->action(KStdAction::stdName(KStdAction::ShowMenubar)))
+#define SAVE_SETTINGS_ACTION \
+    actionCollection()->action(KStdAction::stdName(KStdAction::SaveOptions))
+#define UMARK_ACTION \
+    ((KToggleAction *)actionCollection()->action("options_?_mark"))
+#define KEYBOARD_ACTION \
+    ((KToggleAction *)actionCollection()->action("options_enable_keyboard"))
+
 MainWidget::MainWidget()
-: keyAction(7), levelAction(NbLevels)
+: levelAction(NbLevels)
 {
 	installEventFilter(this);
 
@@ -27,67 +37,57 @@ MainWidget::MainWidget()
 	status->installEventFilter(this);
 	kacc = new KAccel(this);
 
-	// Popup
-	popup = new KActionMenu(i18n("Popup"), this);
-	KToggleAction *menuAction
-		= KStdAction::showMenubar(this, SLOT(toggleMenubar()),
-								  actionCollection());
-	popup->insert(menuAction);
-	popup->insert( new KActionSeparator(this) );
-
 	// File & Popup
-	KAction *action = KStdAction::openNew(status, SLOT(restartGame()),
-										  actionCollection(), "game_new");
-	popup->insert(action);
-	action = new KAction(i18n("&Pause game"), Key_P, status, SLOT(pauseGame()),
-						 actionCollection(), "game_pause");
+	KStdAction::openNew(status, SLOT(restartGame()),
+						actionCollection(), "game_new");
+	KAction *action
+		= new KAction(i18n("&Pause game"), Key_P, status, SLOT(pauseGame()),
+					  actionCollection(), "game_pause");
 	action->plugAccel(kacc);
-	popup->insert(action);
-	popup->insert( new KActionSeparator(this) );
 	action = new KAction(i18n("&High scores..."), Key_H,
 						 status, SLOT(showHighScores()),
 						 actionCollection(), "game_highscores");
 	action->plugAccel(kacc);
-	popup->insert(action);
-	action = KStdAction::print(status, SLOT(print()),
-							   actionCollection(), "game_print");
-	popup->insert(action);
-	popup->insert( new KActionSeparator(this) );
-	action = KStdAction::quit(qApp, SLOT(quit()),
-							  actionCollection(), "game_quit");
-	popup->insert(action);
+	KStdAction::print(status, SLOT(print()), actionCollection(), "game_print");
+	KStdAction::quit(qApp, SLOT(quit()), actionCollection(), "game_quit");
 
 	// keyboard
+	QArray<KAction *> keyAction(7);
 	keyAction[0] = new KAction(i18n("Move up"), Key_Up, 
-							   status, SLOT(moveUp()), this, "moveup");
-	keyAction[0]->plugAccel(kacc);
+							   status, SLOT(moveUp()),
+							   actionCollection(), "keyboard_moveup");
 	keyAction[1] = new KAction(i18n("Move down"), Key_Down,
-							   status, SLOT(moveDown()), this, "movedown");
-	keyAction[1]->plugAccel(kacc);
+							   status, SLOT(moveDown()),
+							   actionCollection(), "keyboard_movedown");
 	keyAction[2] = new KAction(i18n("Move left"), Key_Left,
-							   status, SLOT(moveLeft()), this, "moveleft");
-	keyAction[2]->plugAccel(kacc);
+							   status, SLOT(moveLeft()),
+							   actionCollection(), "keyboard_moveleft");
 	keyAction[3] = new KAction(i18n("Move right"), Key_Right,
-							   status, SLOT(moveRight()), this, "moveright");
-	keyAction[3]->plugAccel(kacc);
+							   status, SLOT(moveRight()),
+							   actionCollection(), "keyboard_moveright");
 	keyAction[4] = new KAction(i18n("Reveal mine"), Key_Shift,
-							   status, SLOT(reveal()), this, "revealmine");
-	keyAction[4]->plugAccel(kacc);
+							   status, SLOT(reveal()),
+							   actionCollection(), "keyboard_revealmine");
 	keyAction[5] = new KAction(i18n("Mark mine"), Key_Space,
-							   status, SLOT(mark()), this, "markmine");
-	keyAction[5]->plugAccel(kacc);
+							   status, SLOT(mark()),
+							   actionCollection(), "keyboard_markmine");
 	keyAction[6] = new KAction(i18n("Automatic reveal"), Key_Control,
-							   status, SLOT(autoReveal()), this, "autoreveal");
-	keyAction[6]->plugAccel(kacc);
+							   status, SLOT(autoReveal()),
+							   actionCollection(), "keyboard_autoreveal");
+	for (uint i=0; i<keyAction.size(); i++) {
+		keyAction[i]->setGroup("keyboard_group");
+		keyAction[i]->plugAccel(kacc);
+		keyAction[i]->setEnabled(FALSE);
+	}
 
 	// Settings
+	KStdAction::showMenubar(this, SLOT(toggleMenubar()), actionCollection());
+	KStdAction::saveOptions(this, SLOT(saveSettings()), actionCollection());
 	KStdAction::preferences(status, SLOT(options()), actionCollection());
 	KStdAction::keyBindings(this, SLOT(configKeys()), actionCollection());
-	KToggleAction *markAction
-		= new KToggleAction(i18n("? &mark"), 0, this, SLOT(toggleUMark()),
+	(void)new KToggleAction(i18n("? &mark"), 0, this, SLOT(toggleUMark()),
 							actionCollection(), "options_?_mark");
-	KToggleAction *keyboardAction
-		= new KToggleAction(i18n("&Enable keyboard"),	0,
+	(void)new KToggleAction(i18n("&Enable keyboard"),	0,
 							this, SLOT(toggleKeyboard()),
 							actionCollection(), "options_enable_keyboard");
 
@@ -107,36 +107,60 @@ MainWidget::MainWidget()
 	for (uint i=0; i<levelAction.size(); i++)
 		levelAction[i]->setExclusiveGroup("level");
 
-	kacc->readSettings();
+	// Popup
+	popup = new KActionMenu(i18n("Popup"), actionCollection());
+	popup->insert(MENUBAR_ACTION);
+	popup->insert(SAVE_SETTINGS_ACTION);
+	popup->insert( new KActionSeparator(actionCollection()) );
+	popup->insert(actionCollection()->action("game_new"));
+	popup->insert(actionCollection()->action("game_pause"));
+	popup->insert( new KActionSeparator(actionCollection()) );
+	popup->insert(actionCollection()->action("game_highscores"));
+	popup->insert(actionCollection()->action("game_print"));
+	popup->insert( new KActionSeparator(actionCollection()) );
+	popup->insert(actionCollection()->action("game_quit"));
+
 	enableToolBar(KToolBar::Hide);
 	createGUI("ui_kmines.rc");
-
-	// init
-	init = TRUE;
-	changeLevel(0);
-	menuAction->setChecked( toggleMenubar() );
-	markAction->setChecked( toggleUMark() );
-	keyboardAction->setChecked( toggleKeyboard() );
-	init = FALSE;
-
+	readSettings();
 	setView(status);
+}
+
+void MainWidget::readSettings()
+{
+	kacc->readSettings();
+
+	KConfig *conf = kapp->config();
+	conf->setGroup(OP_GRP);
+	GameType lev = (GameType)conf->readUnsignedNumEntry(OP_LEVEL, 0);
+	if ( lev>=Custom ) lev = Easy;
+	bool visible = conf->readBoolEntry(OP_MENUBAR, TRUE);
+	bool umark = conf->readBoolEntry(OP_UMARK, TRUE);
+	bool keyboard = conf->readBoolEntry(OP_KEYBOARD, TRUE);
+
+	levelAction[lev]->setChecked(TRUE);
+	MENUBAR_ACTION->setChecked(visible);
+	UMARK_ACTION->setChecked(umark);
+	KEYBOARD_ACTION->setChecked(keyboard);
+}
+
+void MainWidget::saveSettings()
+{
+	KConfig *conf = kapp->config();
+	conf->setGroup(OP_GRP);
+	uint i = 0;
+	for (; i<levelAction.size(); i++)
+		if ( levelAction[i]->isChecked() ) break;
+	if ( (GameType)i<Custom ) conf->writeEntry(OP_LEVEL, i);
+	conf->writeEntry(OP_MENUBAR, MENUBAR_ACTION->isChecked());
+	conf->writeEntry(OP_UMARK, UMARK_ACTION->isChecked());
+	conf->writeEntry(OP_KEYBOARD, KEYBOARD_ACTION->isChecked());
 }
 
 void MainWidget::changeLevel(uint i)
 {
-	if ( !init && !levelAction[i]->isChecked() ) return;
-	KConfig *conf = kapp->config();
-	conf->setGroup(OP_GRP);
-	GameType lev;
-	if (init) {
-		lev = (GameType)conf->readUnsignedNumEntry(OP_LEVEL, 0);
-		if ( lev>=Custom ) lev = Easy;
-		levelAction[lev]->setChecked(TRUE);
-	} else {
-		lev = (GameType)i;
-		if ( lev<Custom ) conf->writeEntry(OP_LEVEL, (uint)lev);
-	}
-
+	if ( !levelAction[i]->isChecked() ) return;
+	GameType lev = (GameType)i;
 	if ( !status->newGame(lev) ) levelAction[lev]->setChecked(TRUE);
 }
 
@@ -151,38 +175,25 @@ bool MainWidget::eventFilter(QObject *, QEvent *e)
 	}
 }
 
-bool MainWidget::toggle(const char *name)
+void MainWidget::toggleMenubar()
 {
-	KConfig *conf = kapp->config();
-	conf->setGroup(OP_GRP);
-	bool res = conf->readBoolEntry(name, TRUE);
-	if ( !init ) {
-		res = !res;
-		conf->writeEntry(name, res);
-	}
-	return res;
+	if ( MENUBAR_ACTION->isChecked() ) menuBar()->show();
+	else menuBar()->hide();
 }
 
-bool MainWidget::toggleMenubar()
+void MainWidget::toggleUMark()
 {
-	bool show = toggle(OP_MENUBAR);
-	if (show) menuBar()->show(); else menuBar()->hide();
-	return show;
+	status->setUMark(UMARK_ACTION->isChecked());
 }
 
-bool MainWidget::toggleUMark()
+void MainWidget::toggleKeyboard()
 {
-	bool mark = toggle(OP_UMARK);
-	status->setUMark(mark);
-	return mark;
-}
-
-bool MainWidget::toggleKeyboard()
-{
-	bool keyb = toggle(OP_KEYBOARD);
-	for (uint i=0; i<keyAction.size(); i++) keyAction[i]->setEnabled(keyb);
-	status->setCursor(keyb);
-	return keyb;
+	bool keyboard = KEYBOARD_ACTION->isChecked();
+	QValueList<QAction *> list = actionCollection()->actions("keyboard_group");
+	QValueList<QAction *>::Iterator it;
+	for (it = list.begin(); it!=list.end(); ++it)
+		(*it)->setEnabled(keyboard);
+	status->setCursor(keyboard);
 }
 
 //----------------------------------------------------------------------------

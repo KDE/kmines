@@ -8,7 +8,7 @@
 
 Field::Field(QWidget *parent, const char *name)
 : QFrame(parent, name), lev(LEVELS[0]), random(0),
-  paused(FALSE), stopped(FALSE),
+  paused(FALSE), stopped(FALSE), u_mark(FALSE), cursor(FALSE),
   left_down(FALSE), mid_down(FALSE)
 {
 	setFrameStyle( QFrame::Box | QFrame::Raised );
