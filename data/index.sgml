@@ -1,10 +1,10 @@
-<!doctype kdedoc system>
+<!doctype linuxdoc system>
 
 <article>
 <title>The KMines Handbook
 <author>Nicolas Hadacek
-<date>Version 0.6.10, 17 February 1998
-<abstract>This documentation was last updated for kmines version 0.6.10. 
+<date>Version 1.0.0, 19 June 1998
+<abstract>This documentation was last updated for kmines version 1.0.0. 
 Please make any comments and additions to the author.
 </abstract>
 
@@ -13,28 +13,56 @@ Please make any comments and additions to the author.
 <sect>Introduction
 <p>
 
-KMines is the classical Minesweeper game. 
+KMines is the classical Minesweeper game. You must uncover all the empty cases
+without blowing on a mine.
 
-You must discover all the cases without a mine to win: 
+When you uncover a case, a number appears : it indicates how many mines
+surround this case. If there is no number the neighbour cases are
+automatically uncovered.
+In your process of uncovering secure cases, it is <em>very</em> useful to put
+a flag on the cases which contain a mine.
+
+<sect>How to play
+<p>
+
+You have to use the mouse and its three buttons (with two-buttonned mouses,
+clicking the middle button is generally achieved by simultaneously pressing
+the left and the right buttons) to uncover or to flag the cases. Here is the
+details :
 
 <itemize>
-<item>Left-button will uncover a case. 
-<item>Right-button will mark a case as containing a mine or as being uncertain. 
-<item>Middle-button will try to clear the eigth surrounding cases if there are the right number of cases already marked as containing a mine. 
-<item>Pressing the smiley will start a new game.
+<item>The <em>left button</em> will uncover a case. Note that left-clicking on
+a flagged case is secure and do nothing.
+
+<item>The <em>right-button</em> will mark a case as containing a mine (draw a
+red flag) or, if the option is set, as being uncertain (draw a question mark).
+The uncertain tag can be useful when you are puzzled about the positions of
+mines.
+
+<item>The <em>middle-button</em> will clear the surrounding cases if
+there is the right number of cases already flagged. It is very
+useful since it is much quicker than uncovering all individual cases. Note
+that if your flags are not properly positionned, you will explode on a bomb.
+
+<item>Pressing the <em>yellow smiley</em> will start a new game.
 </itemize>
 
 
 <sect>Epilogue
 <p>
 
+<sect1>Developer
+<p>
+<tt><htmlurl url="mailto:hadacek@kde.org" 
+name="Nicolas Hadacek"></tt><p>
+
 <sect1>Authors
 <p>
 <tt><htmlurl url="mailto:hadacek@kde.org" 
 name="Nicolas Hadacek"></tt><p>
 
-<tt><htmlurl url="mailto:rwilliam@kde.org" 
-name="Robert Williams"></tt> editor<p>
+<tt><htmlurl url="mailto:rwilliams@kde.org" 
+name="Robert Williams"></tt> - Editor<p>
 
 
 </article>

@@ -7,7 +7,7 @@ minidir = $(kde_minidir)
 appsdir = $(kde_appsdir)/Games
 apps_DATA = kmines.kdelnk
 htmldir = $(kde_htmldir)/en/kmines
-html_DATA = index.html index-1.html index-2.html logotp3.gif
+html_DATA = index.html index-1.html index-2.html index-3.html logotp3.gif
 
 install-data-local:
 	$(mkinstalldirs) $(minidir)

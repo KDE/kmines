@@ -1,4 +1,4 @@
-kmines : version 1.0.0 (18/06/1998)
+KMINES : version 1.0.0 (18/06/1998)
 -----------------------------------
 Copyright (c) 1996-97-98 Nicolas HADACEK (hadacek@kde.org)
 Distributed under the GNU General Public License
@@ -15,4 +15,4 @@ This is a very classical minesweeper written from scratch.
 
 
 
-Requirements : up-to-date "libkdecore" & "libkdeui".
+Requirements : uptodate "libkdecore" & "libkdeui".

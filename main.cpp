@@ -61,7 +61,7 @@ KMines::KMines(QWidget *parent, const char *name)
 	level->insertItem(i18n("Custom"));
 	connect(level, SIGNAL(activated(int)), SLOT(change_level(int)));
 
-	QPopupMenu *help = kapp->getHelpMenu(true, QString(i18n("Minesweeper"))
+	QPopupMenu *help = kapp->getHelpMenu(true, QString(KMINES_NAME)
                                          + " " + KMINES_VERSION 
 										 + " (" + KMINES_DATE + ")\n\n"
 										 + i18n("by") + " " + KMINES_AUTHOR);

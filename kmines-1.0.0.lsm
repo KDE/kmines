@@ -1,15 +1,15 @@
-Begin
+Begin3
 Title:          kmines
 Version:        1.0.0
 Entered-date:   06/18/98
 Home-page:      http://www.via.ecp.fr/~hadacek/KDE/kmines.html
-Description:    Qt based Minesweeper Game
-Keywords:       kde game minesweeper X11 Qt
-Author:         Nicolas Hadacek <hadacek@kde.org>
-Maintained-by:  Nicolas Hadacek <hadacek@kde.org>
+Description:    QT/KDE based Minesweeper Game
+Keywords:       minesweeper game KDE QT X11
+Author:         hadacek@kde.org (Nicolas HADACEK)
+Maintained-by:  hadacek@kde.org (Nicolas HADACEK)
 Primary-site:   ftp://fiwi02.wiwi.uni-tuebingen.de/pub/kde/apps/games/
 Alternate-site: 
-Original-site:  ftp://fiwi02.wiwi.uni-tuebingen.de/pub/kde/apps/games/
+Original-site:
 Platform:       unix (only tested on linux)
 Copying-policy: GPL
 End
