@@ -202,8 +202,6 @@ void Field::changeCaseState(uint i, uint j, uint new_st)
 
 void Field::drawCase(uint i, uint j, uint nbs)
 {
-	char nb[1];
-	
 	pt->begin(this);
 	pt->eraseRect(ipos, jpos, CASE_W, CASE_W);
   
@@ -214,9 +212,8 @@ void Field::drawCase(uint i, uint j, uint nbs)
 		bitBlt( this, ipos+2, jpos+2, pm_flag );
 	} else if (pfield[i][j] & UNCERTAIN) {
 		qDrawWinPanel(pt, ipos, jpos, CASE_W, CASE_W, colorGroup());
-		nb[0] = '?'; nb[1] = 0;
 		pt->setPen(black);
-		pt->drawText(ipos, jpos, CASE_W, CASE_W, AlignCenter, nb);
+		pt->drawText(ipos, jpos, CASE_W, CASE_W, AlignCenter, "?");
 	} else if (pfield[i][j] & ERROR)
 	    bitBlt( this, ipos, jpos, pm_error );
 	else {
@@ -227,20 +224,21 @@ void Field::drawCase(uint i, uint j, uint nbs)
 			    bitBlt( this, ipos, jpos, pm_mine);
 		} else {
 			qDrawWinPanel(pt, ipos, jpos, CASE_W, CASE_W, colorGroup(), TRUE);
-			if (nbs!=0) {
-				nb[0] = nbs + '0'; nb[1] = 0;
-				switch(nb[0]) {
-				 case '1'  : pt->setPen(blue);        break;
-				 case '2'  : pt->setPen(darkGreen);   break;
-				 case '3'  : pt->setPen(darkYellow);  break;
-				 case '4'  : pt->setPen(darkMagenta); break;
-				 case '5'  : pt->setPen(red);         break;
-				 case '6'  : pt->setPen(darkRed);     break;
-				 case '7'  :
-				 case '8'  : pt->setPen(black);       break;
-				}
+			if (nbs) {
+				char nb[2] = "0";
+				nb[0] += nbs;
+				switch(nbs) {
+				 case 1 : pt->setPen(blue);        break;
+				 case 2 : pt->setPen(darkGreen);   break;
+				 case 3 : pt->setPen(darkYellow);  break;
+				 case 4 : pt->setPen(darkMagenta); break;
+				 case 5 : pt->setPen(red);         break;
+				 case 6 : pt->setPen(darkRed);     break;
+				 case 7 :
+				 case 8 : pt->setPen(black);       break;
+				 }
 				pt->drawText(ipos, jpos, CASE_W, CASE_W, AlignCenter, nb);
-			}
+				}
 		}
 	}
     pt->end();
