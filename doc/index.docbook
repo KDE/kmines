@@ -69,7 +69,7 @@ game.</para></abstract>
 cases without blowing on a mine.</para>
 
 <para>When you uncover a case, a number appears: it indicates how many mines
-surround this case. If there is no number the neighbour cases are automatically
+surround this case. If there is no number the neighbor cases are automatically
 uncovered.  In your process of uncovering secure cases, it is
 <emphasis>very</emphasis> useful to put a flag on the cases which contain a
 mine.</para>
