@@ -35,6 +35,7 @@ class MainWidget : public KMainWindow, public KMines
  Q_OBJECT
  public:
 	MainWidget();
+    ~MainWidget();
 
  private slots:
 	void toggleMenubar();

@@ -394,14 +394,12 @@ bool Status::checkLog(const QDomDocument &doc)
     if ( root.isNull() ) return false;
     bool ok;
     uint w = root.attribute("width").toUInt(&ok);
-    if ( !ok
-         || w>KConfigCollection::configItemMaxValue("custom width").toUInt()
-         || w<KConfigCollection::configItemMinValue("custom height").toUInt() )
+    if ( !ok || w>KConfigCollection::maxValue("custom width").toUInt()
+         || w<KConfigCollection::minValue("custom height").toUInt() )
         return false;
     uint h = root.attribute("height").toUInt(&ok);
-    if ( !ok
-         || h>KConfigCollection::configItemMaxValue("custom height").toUInt()
-         || h<KConfigCollection::configItemMinValue("custom height").toUInt() )
+    if ( !ok || h>KConfigCollection::maxValue("custom height").toUInt()
+         || h<KConfigCollection::minValue("custom height").toUInt() )
         return false;
     uint nb = root.attribute("mines").toUInt(&ok);
     if ( !ok || nb==0 || nb>Level::maxNbMines(w, h) ) return false;

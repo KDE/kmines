@@ -194,19 +194,24 @@ class Highscores
     /**
      * Constructor
      *
-     * @param version the game version which is sent to the web server (it can
-     *        be useful for backward compatibility on the server side).
-     * @param baseURL the web server url (an empty url means that world-wide
-     *        highscores are not available)
-     * @param nbGameTypes the number of different game types (usually one) ;
-     *        for e.g. KMines has easy, normal and expert levels.
+     * @param nbGameTypes the number of different game types (usually one).
+     *        For example KMines has easy, normal and expert levels.
      * @param maxNbEntries the maximum numbers of highscores entries (by game
      *        types)
      */
-    Highscores(const QString &version = QString::null,
-               const KURL &baseURL = KURL(),
-               uint nbGameTypes = 1, uint maxNbEntries = 10);
+    Highscores(uint nbGameTypes = 1, uint maxNbEntries = 10);
     virtual ~Highscores();
+
+    /**
+     * Set the world-wide highscores.
+     *
+     * Note: should be called at construction time.
+     *
+     * @param url the web server url
+     * @param version the game version which is sent to the wrb server (it can
+     * be useful for backward compatibility on the server side).
+     */
+    void setWWHighscores(const KURL &url, const QString &version);
 
     /**
      * Set if the number of lost games should be track for the world-wide

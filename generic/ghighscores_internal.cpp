@@ -417,10 +417,9 @@ void PlayerInfos::removeKey()
 //-----------------------------------------------------------------------------
 HighscoresPrivate *HighscoresPrivate::_self = 0;
 
-HighscoresPrivate::HighscoresPrivate(const QString &version, const KURL &url,
-                   uint nbGameTypes, uint maxNbEntries, Highscores &highscores)
+HighscoresPrivate::HighscoresPrivate(uint nbGameTypes, uint maxNbEntries,
+                                     Highscores &highscores)
     : showStatistics(false), trackLostGames(false), trackBlackMarks(false),
-      _version(version), _serverURL(url),
       _first(true), _nbGameTypes(nbGameTypes), _gameType(0),
       _highscores(highscores)
 {
@@ -443,10 +442,10 @@ HighscoresPrivate::~HighscoresPrivate()
 
 KURL HighscoresPrivate::queryURL(QueryType type, const QString &newName) const
 {
-    KURL url = _serverURL;
+    KURL url = serverURL;
     QString nameItem = "nickname";
     QString name = _playerInfos->registeredName();
-    bool version = true;
+    bool withVersion = true;
     bool key = false;
     bool level = false;
 
@@ -469,16 +468,16 @@ KURL HighscoresPrivate::queryURL(QueryType type, const QString &newName) const
         case Players:
             url.addPath("players.php");
             nameItem = "highlight";
-            version = false;
+            withVersion = false;
             break;
         case Scores:
             url.addPath("highscores.php");
-            version = false;
+            withVersion = false;
             if ( _nbGameTypes>1 ) level = true;
             break;
 	}
 
-    if (version) Highscores::addToQueryURL(url, "version", _version);
+    if (withVersion) Highscores::addToQueryURL(url, "version", version);
     if ( !name.isEmpty() ) Highscores::addToQueryURL(url, nameItem, name);
     if (key) Highscores::addToQueryURL(url, "key", _playerInfos->key());
     if (level) {

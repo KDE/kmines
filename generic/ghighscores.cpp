@@ -29,24 +29,11 @@
 namespace KExtHighscores
 {
 
-Highscores::Highscores(const QString &version, const KURL &baseURL,
-                       uint nbGameTypes, uint maxNbEntries)
+Highscores::Highscores(uint nbGameTypes, uint maxNbEntries)
 {
     Q_ASSERT(nbGameTypes);
     Q_ASSERT(maxNbEntries);
-
-    KURL burl = baseURL;
-    if ( !baseURL.isEmpty() ) {
-        Q_ASSERT( baseURL.isValid() );
-        const char *HS_WW_URL = "ww hs url";
-        ConfigGroup cg;
-        if ( cg.config()->hasKey(HS_WW_URL) )
-            burl = cg.config()->readEntry(HS_WW_URL);
-        else cg.config()->writeEntry(HS_WW_URL, baseURL.url());
-    }
-
-    (void)new HighscoresPrivate(version, burl, nbGameTypes, maxNbEntries,
-                                *this);
+    (void)new HighscoresPrivate(nbGameTypes, maxNbEntries, *this);
 }
 
 Highscores::~Highscores()
@@ -106,6 +93,18 @@ void Highscores::setTrackBlackMarks(bool track)
 void Highscores::showStatistics(bool show)
 {
     internal->showStatistics = show;
+}
+
+void Highscores::setWWHighscores(const KURL &url, const QString &version)
+{
+    Q_ASSERT( url.isValid() );
+    internal->serverURL = url;
+    const char *HS_WW_URL = "ww hs url";
+    ConfigGroup cg;
+    if ( cg.config()->hasKey(HS_WW_URL) )
+        internal->serverURL = cg.config()->readEntry(HS_WW_URL);
+    else cg.config()->writeEntry(HS_WW_URL, url.url());
+    internal->version = version;
 }
 
 void Highscores::setScoreHistogram(const QMemArray<uint> &scores, bool bound)

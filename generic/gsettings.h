@@ -22,8 +22,12 @@
 
 #include <qvariant.h>
 #include <qvaluevector.h>
+#include <qptrlist.h>
+#include <qasciidict.h>
 
 #include <kdialogbase.h>
+
+class QDomElement;
 
 
 //-----------------------------------------------------------------------------
@@ -106,65 +110,6 @@ class KConfigItemBase : public QObject
 };
 
 //-----------------------------------------------------------------------------
-/**
- * This class manages a list of @ref KConfigItemBase.
- */
-class KConfigItemList : public KConfigItemBase
-{
- Q_OBJECT
-
- public:
-    KConfigItemList(QObject *parent = 0, const char *name = 0);
-
-    ~KConfigItemList();
-
-    /**
-     * Append the given @ref KConfigItemBase to the list.
-     * Note: the list takes ownership of the given @ref KConfigItemBase
-     * (it will delete it at destruction time).
-     */
-    void insert(KConfigItemBase *uiconfig);
-
-    /**
-     * Remove the given @ref KSettingGeneric.
-     * It deletes the given @ref KConfigItemBase.
-     */
-    void remove(KConfigItemBase *uiconfig);
-
-    /**
-     * @reimplemented
-     */
-    bool hasDefault() const;
-
- protected:
-    /**
-     * @reimplemented
-     */
-    void loadState();
-
-    /**
-     * @reimplemented
-     */
-    bool saveState();
-
-    /**
-     * @reimplemented
-     */
-    void setDefaultState();
-
-    /**
-     * @return the @ref KConfigItemBase list.
-     */
-    const QPtrList<KConfigItemBase> &list() const { return _list; }
-
- private slots:
-    void itemDestroyed(QObject *object);
-
- private:
-   QPtrList<KConfigItemBase> _list;
-};
-
-//-----------------------------------------------------------------------------
 class KConfigCollection;
 class KConfigBase;
 class QLabel;
@@ -191,16 +136,18 @@ class KConfigItem : public KConfigItemBase
      /**
      * @internal
      *
-     * The @ref KConfigBase used to load/save the state is taken from the
-     * collection. If @param collection is null, the application
-     * @ref KConfigBase is used.
+     * The @ref KConfigBase used to load/save the state is application one.
      */
-     KConfigItem(Type type, QVariant::Type valueType, QObject *object,
-                 const QString &group, const QString &key,
-                 const QVariant &def, const QString &text,
-                 KConfigCollection *collection, const char *name);
+     KConfigItem(Type type, QVariant::Type valueType,
+                 const QCString &group, const QCString &key,
+                 const QVariant &def, QObject *parent, const char *name);
 
     ~KConfigItem();
+
+    /**
+     * Set the managed object.
+     */
+    void setObject(QObject *object);
 
     /**
      * Set the text shown to the user.
@@ -243,7 +190,7 @@ class KConfigItem : public KConfigItemBase
      */
     virtual QVariant value() const;
     /**
-     * @return the value read from the @ref KConfigBase.
+     * @return the value read from the config file.
      * It does not modify the current value.
      */
     virtual QVariant configValue() const;
@@ -256,6 +203,11 @@ class KConfigItem : public KConfigItemBase
      * @return the managed object.
      */
     QObject *object() const;
+
+    /**
+     * @reimplemented
+     */
+    bool hasDefault() const;
 
  protected:
     /**
@@ -274,17 +226,14 @@ class KConfigItem : public KConfigItemBase
     void setDefaultState();
 
     /**
-     * @reimplemented
+     * @internal
      */
-    bool hasDefault() const;
+    void checkType(const QVariant &) const;
 
     /**
      * @internal
      */
-    bool checkType(const QVariant &) const;
-
- private slots:
-    void objectDestroyed();
+    virtual void initObject() {}
 
  protected:
     /**
@@ -293,14 +242,12 @@ class KConfigItem : public KConfigItemBase
     uint objectType() const;
 
  private:
-    const QString  _group, _key;
+    const QCString _group, _key;
     QVariant       _def;
     QString        _text, _whatsthis, _tooltip;
     QLabel        *_label;
 
     KConfigItemPrivate *d;
-
-    KConfigBase *config() const;
 };
 
 /**
@@ -323,16 +270,14 @@ class KSimpleConfigItem : public KConfigItem
      * Constructor.
      *
      * @param type the value type.
-     * @param object the managed control.
      * @param group the configuration entry group.
      * @param key the configuration entry key.
      * @param def the default value (should be of type @param type).
-     * @param text the text shown to the user.
      */
-    KSimpleConfigItem(QVariant::Type type, QObject *object,
-                      const QString &group, const QString &key,
-                      const QVariant &def, const QString &text = QString::null,
-                      KConfigCollection *collection = 0, const char *name = 0);
+    KSimpleConfigItem(QVariant::Type type,
+                      const QCString &group, const QCString &key,
+                      const QVariant &def,
+                      QObject *parent = 0, const char *name = 0);
 
     ~KSimpleConfigItem();
 
@@ -356,19 +301,17 @@ class KRangedConfigItem : public KConfigItem
      * Constructor.
      *
      * @param type the value type.
-     * @param object the managed control.
      * @param group the configuration entry group.
      * @param key the configuration entry key.
      * @param def the default value (should be of type @param type).
      * @param min the minimum value (should be of type @param type).
      * @param max the maximum value (should be of type @param type).
-     * @param text the text shown to the user.
      */
-    KRangedConfigItem(QVariant::Type type, QObject *object,
-                      const QString &group, const QString &key,
+    KRangedConfigItem(QVariant::Type type,
+                      const QCString &group, const QCString &key,
                       const QVariant &def, const QVariant &min,
-                      const QVariant &max, const QString &text = QString::null,
-                      KConfigCollection *collection = 0, const char *name = 0);
+                      const QVariant &max,
+                      QObject *parent = 0, const char *name = 0);
 
     ~KRangedConfigItem();
 
@@ -404,6 +347,8 @@ class KRangedConfigItem : public KConfigItem
 
     class KRangedConfigItemPrivate;
     KRangedConfigItemPrivate *d;
+
+    void initObject();
 };
 
 /**
@@ -418,17 +363,15 @@ class KMultiConfigItem : public KConfigItem
     /**
      * Constructor.
      *
-     * @param object the managed control.
      * @param nbItems the number of items (@ref map).
      * @param group the configuration entry group.
      * @param key the configuration entry key.
      * @param def the default value (should be of type QString).
      * @param text the text shown to the user.
      */
-    KMultiConfigItem(QObject *object, uint nbItems,
-                     const QString &group, const QString &key,
-                     const QVariant &def, const QString &text = QString::null,
-                     KConfigCollection *collection = 0, const char *name = 0);
+    KMultiConfigItem(uint nbItems, const QCString &group, const QCString &key,
+                     const QVariant &def,
+                     QObject *parent = 0, const char *name = 0);
 
     ~KMultiConfigItem();
 
@@ -446,7 +389,7 @@ class KMultiConfigItem : public KConfigItem
      * given entries, the class will try to convert it to an index and set the
      * corresponding item.
      */
-    void map(int index, const char *entry, const QString &text);
+    void map(uint index, const char *entry, const QString &text);
 
     /**
      * @reimplemented
@@ -465,7 +408,7 @@ class KMultiConfigItem : public KConfigItem
     int configIndex() const;
 
  private:
-    QValueVector<QString> _entries;
+    QValueVector<QString> _entries, _items;
 
     class KMultiConfigItemPrivate;
     KMultiConfigItemPrivate *d;
@@ -473,93 +416,119 @@ class KMultiConfigItem : public KConfigItem
     int mapToId(const char *entry) const;
     int simpleMapToId(const char *entry) const;
     uint findRadioButtonId(const QButtonGroup *) const;
+    void initObject();
 };
 
 //-----------------------------------------------------------------------------
-class QDomDocument;
-
 /**
  * This class manages a list of @ref KConfigItem.
  */
-class KConfigCollection : public KConfigItemList
+class KConfigCollection : public KConfigItemBase
 {
  Q_OBJECT
  public:
     /**
      * Constructor.
-     *
-     * @param config the @ref KConfigBase object used to load/save entries.
-     * If null, it uses <pre>kapp->config()</pre>.
      */
-    KConfigCollection(KConfigBase *config = 0, QObject *parent = 0,
-                      const char *name = 0);
+    KConfigCollection(QObject *parent = 0, const char *name = 0);
 
     ~KConfigCollection();
 
     /**
-     * @return the @ref KConfigBase object.
+     * Should be called once for a given application before accessing any
+     * @ref KConfigItem. It reads the XML config file and creates the
+     * @ref KConfigItem.
      */
-    KConfigBase *config() const;
+    static void init();
+
+    /**
+     * Should be called at application destruction. It deletes the @ref
+     * KConfigItem.
+     */
+    static void cleanUp();
 
     /**
      * @return the @ref KConfigItem of the given name.
      */
-    KConfigItem *configItem(const char *name) const;
+    static KConfigItem *item(const char *name);
 
     /**
-     * @return the value of config item of the given name as stored in the
-     * configuration file. If the collection already contains the
-     * @ref KConfigItem, it is more efficient to use
-     * <pre>configItem(name)->configValue()</pre>
+     * Insert a @ref KConfigItemBase in the collection. Use this method
+     * only if you know what you are doing.
      */
-    static QVariant configItemValue(const char *name);
+    void insert(KConfigItemBase *item);
 
     /**
-     * @return the index of the config item of the given name as stored in
-     * the configuration file (the config item should be a
-     * @ref KMultiConfigItem). If the collection already contains the
-     * @ref KConfigItem, it is more efficient to use
-     * <pre>static_cast<KMultiConfigItem *>(configItem(name))->configIndex()
-     * </pre>
+     * Remove a @ref KConfigItemBase from the collection. Use this method
+     * only if you know what you are doing.
      */
-    static uint configItemIndex(const char *name);
+    void remove(KConfigItemBase *item);
 
     /**
-     * @return the max value of the config item of the given name as stored
-     * in the configuraton file (the config item should be a
-     * @ref KRangedConfigItem). If the collection  already contains the
-     * @ref KConfigItem, it is more efficient to use
-     * <pre>static_cast<KRangedConfigItem *>(configItem(name))->maxValue()
-     * </pre>
+     * Associate a @ref KConfigItem with this collection and the given
+     * @ref QObject.
      */
-    static QVariant configItemMaxValue(const char *name);
+    KConfigItem *plug(const char *name, QObject *object);
 
     /**
-     * @return the min value of the config item of the given name as stored
-     * in the configuraton file (the config item should be a
-     * @ref KRangedConfigItem). If the collection  already contains the
-     * @ref KConfigItem, it is more efficient to use
-     * <pre>static_cast<KRangedConfigItem *>(configItem(name))->minValue()
-     * </pre>
+     * Dissociate a @ref KConfigItem.
      */
-    static QVariant configItemMinValue(const char *name);
+    void unplug(const char *name);
 
     /**
-     * Create a @ref KConfigItem from the XML config file and associate it
-     * with the given object.
+     * Short hand for <code>item(name)->configValue()</code>
      */
-    KConfigItem *createConfigItem(const char *name, QObject *object);
+    static QVariant configValue(const char *name);
 
-    static KConfigItem *createConfigItem(const char *name, QObject *object,
-                                         KConfigCollection *collection);
+    /**
+     * Short hand for
+     * <code>static_cast<KMultiConfigItem *>(item(name))->configItem()</code>
+     */
+    static uint configIndex(const char *name);
+
+    /**
+     * Short hand for
+     * <code>static_cast<KRangedConfigItem *>(item(name))->maxValue()</code>
+     */
+    static QVariant maxValue(const char *name);
+
+    /**
+     * Short hand for
+     * <code>static_cast<KRangedConfigItem *>(item(name))->minValue()</code>
+     */
+    static QVariant minValue(const char *name);
+
+    /**
+     * @reimplemented
+     */
+    bool hasDefault() const;
+
+ protected:
+    /**
+     * @reimplemented
+     */
+    void loadState();
+
+    /**
+     * @reimplemented
+     */
+    bool saveState();
+
+    /**
+     * @reimplemented
+     */
+    void setDefaultState();
+
  private:
-    KConfigBase  *_config;
-    static QDomDocument *_xml;
-
-    static void readConfigFile();
+    QPtrList<KConfigItemBase> _list;
 
     class KConfigCollectionPrivate;
     KConfigCollectionPrivate *d;
+
+    static QAsciiDict<KConfigItem> *_items;
+    static KConfigItem *createItem(QDomElement &group, QDomElement &entry,
+                                   const char *name);
+    void _remove(KConfigItemBase *item);
 };
 
 //-----------------------------------------------------------------------------
@@ -601,23 +570,22 @@ class KConfigCollection : public KConfigItemList
  *     QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
  *
  *     QCheckBox *cb = new QCheckBox(this);
- *     configCollection()->createConfigItem("with_sails", cb);
+ *     configCollection()->plug("with_sails", cb);
  *     top->addWidget(cb);
  *
  *     KIntNumInput *l = new KIntNumInput(this);
- *     configCollection()->createConfigItem("boat_length", l);
+ *     configCollection()->plug("boat_length", l);
  *     top->addWidget(l);
  *
  *     QHBox *hbox = new QHBox(top);
  *     QLabel *label = new QLabel(hbox)
  *     KComboBox *t = new KComboBox(hbox);
- *     KMultiConfigItem *mci =
- *         configCollection()->createConfigItem("boat_type", t);
+ *     KConfigItem *mci = configCollection()->plug("boat_type", t);
  *     mci->setProxyLabel(label);
  * }
- *
- * ...
- *
+ * </pre>
+ * and some slot connected to the configure menu entry :
+ * <pre>
  * void configureSettings()
  * {
  *     KConfigDialog dialog(this);
@@ -626,6 +594,10 @@ class KConfigCollection : public KConfigItemList
  *     dialog.exec();
  * }
  * </pre>
+ *
+ * Your main widget constructor should also contain
+ * <pre>KConfigCollection::init()</pre> and the destructor
+ * <pre>KConfigCollection::cleanUp()</pre>
  *
  * That's it : all the loading/saving/defaulting is done automagically.
  */
@@ -638,13 +610,10 @@ class KConfigWidget : public QWidget
      *
      * @param title the title used by @ref KConfigDialog.
      * @param icon the icon used by @ref KConfigDialog.
-     * @param config the @rf KConfigBase object passed to
-     * @ref KConfigCollection.
      */
     KConfigWidget(const QString &title = QString::null,
                   const QString &icon = QString::null,
-                  QWidget *parent = 0, const char *name = 0,
-                  KConfigBase *config = 0);
+                  QWidget *parent = 0, const char *name = 0);
 
     ~KConfigWidget();
 

@@ -58,6 +58,7 @@ const MainWidget::KeyData MainWidget::KEY_DATA[NB_KEYS] = {
 MainWidget::MainWidget()
 {
 	installEventFilter(this);
+    KConfigCollection::init();
 
 	_status = new Status(this);
 	connect(_status, SIGNAL(gameStateChangedSignal(KMines::GameState)),
@@ -83,7 +84,7 @@ MainWidget::MainWidget()
 	// Settings
 	_menu = KStdAction::showMenubar(this, SLOT(toggleMenubar()),
                                    actionCollection());
-    _configCollection.createConfigItem("menubar visible", _menu);
+    _configCollection.plug("menubar visible", _menu);
 	KStdAction::preferences(this, SLOT(configureSettings()),
                             actionCollection());
 	KStdAction::keyBindings(this, SLOT(configureKeys()), actionCollection());
@@ -91,7 +92,7 @@ MainWidget::MainWidget()
 	// Levels
     _levels = new KSelectAction(actionCollection(), "levels");
     connect(_levels, SIGNAL(activated(int)), _status, SLOT(newGame(int)));
-    _configCollection.createConfigItem("level", _levels);
+    _configCollection.plug("level", _levels);
 
     // Adviser
     _advise = new KAction(i18n("Advise"), CTRL + Key_A,
@@ -119,6 +120,11 @@ MainWidget::MainWidget()
     QPopupMenu *popup =
         static_cast<QPopupMenu *>(factory()->container("popup", this));
     if (popup) KContextMenuManager::insert(this, popup);
+}
+
+MainWidget::~MainWidget()
+{
+    KConfigCollection::cleanUp();
 }
 
 bool MainWidget::queryExit()
@@ -177,15 +183,13 @@ void MainWidget::configureSettings()
 
 void MainWidget::settingsChanged()
 {
-    bool enabled =
-        KConfigCollection::configItemValue("keyboard game").toBool();
+    bool enabled = KConfigCollection::configValue("keyboard game").toBool();
 	QValueList<KAction *> list = _keybCollection->actions();
 	QValueList<KAction *>::Iterator it;
 	for (it = list.begin(); it!=list.end(); ++it)
 		(*it)->setEnabled(enabled);
 
-    _pauseIfFocusLost =
-        KConfigCollection::configItemValue("pause focus").toBool();
+    _pauseIfFocusLost = KConfigCollection::configValue("pause focus").toBool();
     _status->settingsChanged();
 }
 

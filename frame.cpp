@@ -18,13 +18,13 @@ FieldFrame::FieldFrame(QWidget *parent)
 
 void FieldFrame::readSettings()
 {
-    _caseSize = KConfigCollection::configItemValue("case size").toUInt();
+    _caseSize = KConfigCollection::configValue("case size").toUInt();
     for (uint i=0; i<NB_COLORS; i++)
         _colors[i] =
-          KConfigCollection::configItemValue(COLOR_CONFIG_NAMES[i]).toColor();
+            KConfigCollection::configValue(COLOR_CONFIG_NAMES[i]).toColor();
     for (uint i=0; i<NB_N_COLORS; i++)
         _numberColors[i] =
-         KConfigCollection::configItemValue(N_COLOR_CONFIG_NAMES[i]).toColor();
+         KConfigCollection::configValue(N_COLOR_CONFIG_NAMES[i]).toColor();
 
     _button.resize(_caseSize, _caseSize);
 

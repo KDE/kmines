@@ -209,8 +209,7 @@ class PlayerInfos : public ItemArray
 class HighscoresPrivate
 {
  public:
-    HighscoresPrivate(const QString &version, const KURL &serverURL,
-                      uint nbGameTypes, uint maxNbentries,
+    HighscoresPrivate(uint nbGameTypes, uint maxNbentries,
                       Highscores &highscores);
     ~HighscoresPrivate();
 
@@ -228,15 +227,17 @@ class HighscoresPrivate
     Score firstScore();
 
     uint gameType() const            { return _gameType; }
-    bool isWWHSAvailable() const     { return !_serverURL.isEmpty(); }
+    bool isWWHSAvailable() const     { return !serverURL.isEmpty(); }
     ScoreInfos &scoreInfos() const   { return *_scoreInfos; }
     PlayerInfos &playerInfos() const { return *_playerInfos; }
     Highscores &highscores() const   { return _highscores; }
 
     void exportHighscores(QTextStream &);
 
-    bool showStatistics, trackLostGames, trackBlackMarks;
-    bool scoreBound;
+    KURL     serverURL;
+    QString  version;
+    bool     showStatistics, trackLostGames, trackBlackMarks;
+    bool     scoreBound;
     QMemArray<uint> scoreHistogram;
 
  private:
@@ -244,8 +245,6 @@ class HighscoresPrivate
 
     PlayerInfos  *_playerInfos;
     ScoreInfos   *_scoreInfos;
-    const QString _version;
-    const KURL    _serverURL;
     bool          _first;
     const uint    _nbGameTypes;
     uint          _gameType;
