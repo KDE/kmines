@@ -39,6 +39,7 @@
 #include <knotifyclient.h>
 #include <kexthighscore.h>
 
+#include "settings.h"
 #include "solver/solver.h"
 #include "dialogs.h"
 #include "version.h"
@@ -130,9 +131,9 @@ void Status::newGame(int t)
 {
     if ( field->gameState()==Paused ) emit pause();
     Level::Type type = (Level::Type)t;
-    GameConfig::saveLevel(type);
+    Settings::setLevel(type);
     if ( type!=Level::Custom ) newGame( Level(type) );
-    else newGame( CustomConfig::level() );
+    else newGame( Settings::customLevel() );
 }
 
 void Status::newGame(const Level &level)
@@ -166,8 +167,8 @@ void Status::settingsChanged()
 {
     field->readSettings();
 
-    if ( GameConfig::level()!=Level::Custom ) return;
-    Level l = CustomConfig::level();
+    if ( Settings::level()!=Level::Custom ) return;
+    Level l = Settings::customLevel();
     if ( l==field->level() ) return;
     if ( field->gameState()==Paused ) emit pause();
     field->setLevel(l);

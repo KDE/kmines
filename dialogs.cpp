@@ -39,6 +39,8 @@
 #include <kapplication.h>
 #include <kdialogbase.h>
 
+#include "settings.h"
+
 #include "bitmaps/smile"
 #include "bitmaps/smile_happy"
 #include "bitmaps/smile_ohno"
@@ -111,15 +113,7 @@ void DigitalClock::setCheating()
 }
 
 //-----------------------------------------------------------------------------
-class ConfigGroupSaver : public KConfigGroupSaver
-{
-public:
-    ConfigGroupSaver() : KConfigGroupSaver(kapp->config(), "Options") {}
-};
 
-const uint CustomConfig::defaultWidth = 10;
-const uint CustomConfig::defaultHeight = 10;
-const uint CustomConfig::defaultNbMines = 20;
 const uint CustomConfig::maxWidth = 50;
 const uint CustomConfig::minWidth = 5;
 const uint CustomConfig::maxHeight = 50;
@@ -130,24 +124,21 @@ CustomConfig::CustomConfig()
 {
     QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
 
-    _width = new KIntNumInput(this, "custom width");
+    _width = new KIntNumInput(this, "kcfg_CustomWidth");
     _width->setLabel(i18n("Width:"));
     _width->setRange(minWidth, maxWidth);
-    _width->setValue(defaultWidth);
     connect(_width, SIGNAL(valueChanged(int)), SLOT(updateNbMines()));
     top->addWidget(_width);
 
-    _height = new KIntNumInput(this, "custom height");
+    _height = new KIntNumInput(this, "kcfg_CustomHeight");
     _height->setLabel(i18n("Height:"));
     _height->setRange(minWidth, maxWidth);
-    _height->setValue(defaultHeight);
     connect(_height, SIGNAL(valueChanged(int)), SLOT(updateNbMines()));
     top->addWidget(_height);
 
-    _mines = new KIntNumInput(this, "custom mines");
+    _mines = new KIntNumInput(this, "kcfg_CustomMines");
     _mines->setLabel(i18n("No. of mines:"));
     _mines->setRange(1, Level::maxNbMines(maxWidth, maxHeight));
-    _mines->setValue(defaultNbMines);
     connect(_mines, SIGNAL(valueChanged(int)), SLOT(updateNbMines()));
     top->addWidget(_mines);
 
@@ -174,7 +165,7 @@ void CustomConfig::updateNbMines()
     Level l(_width->value(), _height->value(), _mines->value());
     _mines->setRange(1, Level::maxNbMines(l.width(), l.height()));
     _mines->setLabel(i18n("Mines (%1%):")
-                     .arg(100*l.nbMines()/l.width()/l.height()));
+                     .arg( (100*l.nbMines()) / (l.width() * l.height()) ));
     _gameType->setCurrentItem(l.type());
     _block = false;
 }
@@ -185,10 +176,11 @@ void CustomConfig::typeChosen(int i)
     _block = true;
     Level::Type type = (Level::Type)i;
     if ( type==Level::Custom ) {
-        _width->setValue(defaultWidth);
-        _height->setValue(defaultHeight);
-        _mines->setRange(1, Level::maxNbMines(defaultWidth, defaultHeight));
-        _mines->setValue(defaultNbMines);
+        Level level = Settings::customLevel();
+        _width->setValue(level.width());
+        _height->setValue(level.height());
+        _mines->setRange(1, Level::maxNbMines(level.width(), level.height()));
+        _mines->setValue(level.nbMines());
     } else {
         Level level(type);
         _width->setValue(level.width());
@@ -200,27 +192,18 @@ void CustomConfig::typeChosen(int i)
     updateNbMines();
 }
 
-Level CustomConfig::level()
-{
-    ConfigGroupSaver cg;
-    uint w = cg.config()->readUnsignedNumEntry("custom width", defaultWidth);
-    w = kMin(kMax(w, minWidth), maxWidth);
-    uint h = cg.config()->readUnsignedNumEntry("custom height", defaultHeight);
-    h = kMin(kMax(h, minHeight), maxHeight);
-    uint n = cg.config()->readUnsignedNumEntry("custom mines", defaultNbMines);
-    n = kMin(kMax(n, (uint)1), Level::maxNbMines(w, h));
-    return Level(w, h, n);
-}
-
 //-----------------------------------------------------------------------------
-const char *GameConfig::MOUSE_BUTTON_LABELS[NB_MOUSE_BUTTONS] = {
+static const char *MOUSE_BUTTON_LABELS[Settings::EnumButton::COUNT] = {
     I18N_NOOP("Left button:"), I18N_NOOP("Middle button:"),
     I18N_NOOP("Right button:")
 };
-const char *GameConfig::MOUSE_CONFIG_NAMES[NB_MOUSE_BUTTONS] = {
-    "mouse left", "mouse mid", "mouse right"
+
+static const char *MOUSE_CONFIG_NAMES[Settings::EnumButton::COUNT] = {
+    "kcfg_leftMouseAction", "kcfg_midMouseAction", 
+    "kcfg_rightMouseAction"
 };
-const char *GameConfig::MOUSE_ACTION_LABELS[NB_MOUSE_ACTIONS] = {
+
+static const char *MOUSE_ACTION_LABELS[Settings::EnumMouseAction::COUNT-1] = {
     I18N_NOOP("Reveal"), I18N_NOOP("Autoreveal"),
     I18N_NOOP("Toggle Flag"), I18N_NOOP("Toggle ? Flag")
 };
@@ -230,21 +213,17 @@ GameConfig::GameConfig()
 {
     QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
 
-    QCheckBox *cb = new QCheckBox(i18n("Enable ? mark"), this, "uncertain mark");
-    cb->setChecked(true);
+    QCheckBox *cb = new QCheckBox(i18n("Enable ? mark"), this, "kcfg_UncertainMark");
     top->addWidget(cb);
 
-    cb = new QCheckBox(i18n("Enable keyboard"), this, "keyboard game");
-    cb->setChecked(false);
+    cb = new QCheckBox(i18n("Enable keyboard"), this, "kcfg_KeyboardGame");
     top->addWidget(cb);
 
-    cb = new QCheckBox(i18n("Pause if windows lose focus"), this, "pause focus");
-    cb->setChecked(true);
+    cb = new QCheckBox(i18n("Pause if windows lose focus"), this, "kcfg_PauseFocus");
     top->addWidget(cb);
 
-    cb = new QCheckBox(i18n("\"Magic\" reveal"), this, "magic reveal");
+    cb = new QCheckBox(i18n("\"Magic\" reveal"), this, "kcfg_MagicReveal");
     QWhatsThis::add(cb, i18n("Set flags and reveal cases where they are trivial."));
-    cb->setChecked(false);
     connect(cb, SIGNAL(toggled(bool)), SLOT(magicModified(bool)));
     top->addWidget(cb);
 
@@ -255,10 +234,10 @@ GameConfig::GameConfig()
     hbox->addWidget(gb);
     QGrid *grid = new QGrid(2, gb);
     grid->setSpacing(KDialog::spacingHint());
-    for (uint i=0; i<NB_MOUSE_BUTTONS; i++) {
+    for (uint i=0; i< Settings::EnumButton::COUNT; i++) {
         (void)new QLabel(i18n(MOUSE_BUTTON_LABELS[i]), grid);
         QComboBox *cb = new QComboBox(false, grid, MOUSE_CONFIG_NAMES[i]);
-        for (uint k=0; k<NB_MOUSE_ACTIONS; k++)
+        for (uint k=0; k< (Settings::EnumMouseAction::COUNT-1); k++)
             cb->insertItem(i18n(MOUSE_ACTION_LABELS[k]));
         cb->setCurrentItem(i);
     }
@@ -273,69 +252,20 @@ void GameConfig::magicModified(bool on)
     KMessageBox::information(this, i18n("When the \"magic\" reveal is on, you lose the ability to enter the highscores."), QString::null, "magic_reveal_warning");
 }
 
-bool GameConfig::isUncertainMarkEnabled()
-{
-    ConfigGroupSaver cg;
-    return cg.config()->readBoolEntry("uncertain mark", true);
-}
-
-bool GameConfig::isKeyboardEnabled()
-{
-    ConfigGroupSaver cg;
-    return cg.config()->readBoolEntry("keyboard game", false);
-}
-
-bool GameConfig::isPauseFocusEnabled()
-{
-    ConfigGroupSaver cg;
-    return cg.config()->readBoolEntry("pause focus", true);
-}
-
-bool GameConfig::isMagicRevealEnabled()
-{
-    ConfigGroupSaver cg;
-    return cg.config()->readBoolEntry("magic reveal", false);
-}
-
-KMines::MouseAction GameConfig::mouseAction(MouseButton button)
-{
-    ConfigGroupSaver cg;
-    int a =
-        cg.config()->readUnsignedNumEntry(MOUSE_CONFIG_NAMES[button], button);
-    return (MouseAction)kMin(a, NB_MOUSE_ACTIONS-1);
-}
-
-Level::Type GameConfig::level()
-{
-    ConfigGroupSaver cg;
-    uint l = cg.config()->readUnsignedNumEntry("level", Level::Easy);
-    return kMin((Level::Type)l, Level::NB_TYPES);
-}
-
-void GameConfig::saveLevel(Level::Type level)
-{
-    ConfigGroupSaver cg;
-    cg.config()->writeEntry("level", level);
-}
-
 //-----------------------------------------------------------------------------
-const char *AppearanceConfig::COLOR_LABELS[NB_COLORS] = {
+static const char *COLOR_LABELS[Settings::EnumType::COUNT] = {
     I18N_NOOP("Flag color:"), I18N_NOOP("Explosion color:"),
     I18N_NOOP("Error color:")
 };
-const char *AppearanceConfig::COLOR_CONFIG_NAMES[NB_COLORS] = {
-    "flag color", "explosion color", "error color"
+
+static const char *COLOR_CONFIG_NAMES[Settings::EnumType::COUNT] = {
+    "kcfg_flagColor", "kcfg_explosionColor", "kcfg_errorColor"
 };
-const char *AppearanceConfig::COLOR_DEFAULTS[NB_COLORS] = {
-    "#FF0000", "#FF0000", "#FF0000"
-};
-const char *AppearanceConfig::N_COLOR_CONFIG_NAMES[NB_N_COLORS] = {
-    "color #0", "color #1", "color #2", "color #3", "color #4", "color #5",
-    "color #6", "color #7"
-};
-const char *AppearanceConfig::N_COLOR_DEFAULTS[NB_N_COLORS] = {
-    "#0000FF", "#008800", "#888800", "#880088", "#FF0000", "#880000",
-    "#000000", "#000000"
+
+static const char *N_COLOR_CONFIG_NAMES[KMines::NB_N_COLORS] = {
+    "kcfg_MineColor0", "kcfg_MineColor1", "kcfg_MineColor2", 
+    "kcfg_MineColor3", "kcfg_MineColor4", "kcfg_MineColor5", 
+    "kcfg_MineColor6", "kcfg_MineColor7"
 };
 
 AppearanceConfig::AppearanceConfig()
@@ -343,10 +273,9 @@ AppearanceConfig::AppearanceConfig()
 {
     QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
 
-    KIntNumInput *in = new KIntNumInput(this, "case size");
+    KIntNumInput *in = new KIntNumInput(this, "kcfg_CaseSize");
     in->setLabel(i18n("Case size:"));
     in->setRange(4, 100);
-    in->setValue(20);
     top->addWidget(in);
 
     top->addSpacing(2 * KDialog::spacingHint());
@@ -355,52 +284,18 @@ AppearanceConfig::AppearanceConfig()
     QGrid *grid = new QGrid(2, this);
     grid->setSpacing(KDialog::spacingHint());
     hbox->addWidget(grid);
-    for (uint i=0; i<NB_COLORS; i++) {
+    for (uint i=0; i<Settings::EnumType::COUNT; i++) {
         (void)new QLabel(i18n(COLOR_LABELS[i]), grid);
         KColorButton *cb = new KColorButton(grid, COLOR_CONFIG_NAMES[i]);
         cb->setFixedWidth(100);
-        cb->setColor(COLOR_DEFAULTS[i]);
     }
     for (uint i=0; i<NB_N_COLORS; i++) {
         (void)new QLabel(i18n("%n mine color:", "%n mines color:", i+1), grid);
         KColorButton *cb = new KColorButton(grid, N_COLOR_CONFIG_NAMES[i]);
         cb->setFixedWidth(100);
-        cb->setColor(N_COLOR_DEFAULTS[i]);
     }
     hbox->addStretch(1);
 
     top->addStretch(1);
 }
 
-uint AppearanceConfig::caseSize()
-{
-    ConfigGroupSaver cg;
-    int n = cg.config()->readUnsignedNumEntry("case size", 20);
-    return kMin(kMax(4, n), 100);
-}
-
-QColor AppearanceConfig::color(Color c)
-{
-    ConfigGroupSaver cg;
-    QColor def(COLOR_DEFAULTS[c]);
-    return cg.config()->readColorEntry(COLOR_CONFIG_NAMES[c], &def);
-}
-
-QColor AppearanceConfig::nColor(uint i)
-{
-    ConfigGroupSaver cg;
-    QColor def(N_COLOR_DEFAULTS[i]);
-    return cg.config()->readColorEntry(N_COLOR_CONFIG_NAMES[i], &def);
-}
-
-bool AppearanceConfig::isMenubarVisible()
-{
-    ConfigGroupSaver cg;
-    return cg.config()->readBoolEntry("menubar visible", true);
-}
-
-void AppearanceConfig::saveMenubarVisible(bool visible)
-{
-    ConfigGroupSaver cg;
-    cg.config()->writeEntry("menubar visible", visible);
-}

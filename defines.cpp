@@ -43,7 +43,8 @@ Level::Level(uint width, uint height, uint nbMines)
     : _width(width), _height(height), _nbMines(nbMines)
 {
     Q_ASSERT( width>=2 && height>=2 );
-    Q_ASSERT( nbMines>0 && nbMines<=maxNbMines(width, height) );
+    if (_nbMines > maxNbMines(width, height) )
+      _nbMines = maxNbMines(width, height);
 }
 
 Level::Type Level::type() const

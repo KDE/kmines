@@ -4,7 +4,7 @@ INCLUDES = -I$(top_srcdir)/libkdegames -I$(top_srcdir)/libkdegames/highscore $(a
 bin_PROGRAMS       = kmines
 kmines_LDFLAGS     = $(all_libraries) $(KDE_RPATH)
 kmines_LDADD       = ./solver/libsolver.la $(LIB_KDEGAMES)
-kmines_SOURCES     = defines.cpp highscores.cpp \
+kmines_SOURCES     = defines.cpp highscores.cpp settings.kcfgc \
                      dialogs.cpp frame.cpp field.cpp status.cpp main.cpp
 kmines_METASOURCES = dialogs.moc field.moc status.moc main.moc
 
@@ -43,3 +43,4 @@ install-exec-hook:
 	&& chmod 0660 $(DESTSCORES)) \
 	|| echo "Error: Could not create system-wide highscore file with correct permissions !!" \
 	)) || true
+

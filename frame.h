@@ -49,8 +49,6 @@ class FieldFrame : public QFrame, public KMines
 
  private:
     uint           _caseSize;
-    QColor         _colors[NB_COLORS];
-    QColor         _numberColors[NB_N_COLORS];
     QPushButton    _button;
     QPixmap        _pixmaps[Nb_Pixmap_Types];
     QPixmap        _advised[Nb_Advised];

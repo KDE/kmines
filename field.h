@@ -81,12 +81,11 @@ class Field : public FieldFrame, public BaseField
 
  private:
 	GameState      _state;
-	bool           _cursorShown, _reveal, _completeReveal, _umark;
-    KGrid2D::Coord  _cursor, _advised;
-    double         _advisedProba;
-	MouseAction    _mb[3];
-	MouseAction    _currentAction;
-    Level          _level;
+	bool           _reveal, _completeReveal;
+	KGrid2D::Coord  _cursor, _advised;
+	double         _advisedProba;
+	int            _currentAction;
+	Level          _level;
 
 	void pressCase(const KGrid2D::Coord &, bool);
 	void pressClearFunction(const KGrid2D::Coord &, bool);
@@ -104,10 +103,10 @@ class Field : public FieldFrame, public BaseField
     QPoint toPoint(const KGrid2D::Coord &) const;
     KGrid2D::Coord fromPoint(const QPoint &) const;
 
-	void drawCase(QPainter &, const KGrid2D::Coord &,
+    void drawCase(QPainter &, const KGrid2D::Coord &,
                   bool forcePressed = false) const;
 
-	MouseAction mapMouseButton(QMouseEvent *) const;
+    int mapMouseButton(QMouseEvent *) const;
     void resetAdvised();
     void setState(GameState);
 };

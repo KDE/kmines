@@ -57,10 +57,6 @@ class KMines
     enum GameState   { Playing = 0, Paused, GameOver, Stopped, Replaying,
                        Init, NB_STATES };
     static const char *STATES[NB_STATES];
-    enum MouseAction { Reveal = 0, AutoReveal, Mark, UMark, NB_MOUSE_ACTIONS,
-                       None = NB_MOUSE_ACTIONS };
-    enum MouseButton { LeftButton = 0, MidButton, RightButton,
-                       NB_MOUSE_BUTTONS };
 
     enum CaseState { Covered, Uncovered, Uncertain, Marked, Exploded, Error };
     struct Case {
@@ -68,7 +64,6 @@ class KMines
         CaseState state;
     };
 
-    enum Color { FlagColor = 0, ExplosionColor, ErrorColor, NB_COLORS };
     enum NumberColor { NB_N_COLORS = 8 };
     enum Mood { Normal = 0, Stressed, Happy, Sad, Sleeping, NbMoods };
 };

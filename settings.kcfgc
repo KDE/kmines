@@ -1,0 +1,7 @@
+# Code generation options for kconfig_compiler
+File=kmines.kcfg
+IncludeFiles=defines.h
+ClassName=Settings
+Singleton=true
+Mutators=true
+CustomAdditions=true

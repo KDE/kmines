@@ -23,7 +23,7 @@
 #include <qstyle.h>
 #include <qdrawutil.h>
 
-#include "dialogs.h"
+#include "settings.h"
 
 
 FieldFrame::FieldFrame(QWidget *parent)
@@ -36,11 +36,7 @@ FieldFrame::FieldFrame(QWidget *parent)
 
 void FieldFrame::readSettings()
 {
-    _caseSize = AppearanceConfig::caseSize();
-    for (uint i=0; i<NB_COLORS; i++)
-        _colors[i] = AppearanceConfig::color((Color)i);
-    for (uint i=0; i<NB_N_COLORS; i++)
-        _numberColors[i] = AppearanceConfig::nColor(i);
+    _caseSize = Settings::caseSize();
 
     _button.resize(_caseSize, _caseSize);
 
@@ -82,14 +78,14 @@ void FieldFrame::drawPixmap(QPixmap &pix, PixmapType type, bool mask) const
         p.drawLine(9, 11, 11, 11);
         p.drawLine(10, 2, 10, 10);
         if (!mask) p.setPen(black);
-        p.setBrush( (mask ? color1 : _colors[FlagColor]) );
+        p.setBrush( (mask ? color1 : Settings::color(Settings::EnumType::flag)) );
         p.drawRect(4, 3, 6, 5);
         return;
     }
 
     p.setWindow(0, 0, 20, 20);
 	if ( type==ExplodedPixmap )
-		p.fillRect(2, 2, 16, 16, (mask ? color1 : _colors[ExplosionColor]));
+		p.fillRect(2, 2, 16, 16, (mask ? color1 : Settings::color(Settings::EnumType::explosion)));
 	QPen pen(mask ? color1 : black, 1);
 	p.setPen(pen);
 	p.setBrush(mask ? color1 : black);
@@ -101,7 +97,7 @@ void FieldFrame::drawPixmap(QPixmap &pix, PixmapType type, bool mask) const
 	p.fillRect(8, 8, 2, 2, (mask ? color1 : white));
 	if ( type==ErrorPixmap ) {
 		if (!mask) {
-			pen.setColor(_colors[ErrorColor]);
+			pen.setColor(Settings::color(Settings::EnumType::error));
 			p.setPen(pen);
 		}
 		p.drawLine(3, 3, 17, 17);
@@ -118,7 +114,7 @@ void FieldFrame::drawAdvised(QPixmap &pix, uint i, bool mask) const
     initPixmap(pix, mask);
     QPainter p(&pix);
     p.setWindow(0, 0, 16, 16);
-    p.setPen( QPen((mask ? color1 : _numberColors[i]), 2) );
+    p.setPen( QPen((mask ? color1 : Settings::mineColor(i), 2)) );
     p.drawRect(3, 3, 11, 11);
 }
 
@@ -140,7 +136,7 @@ void FieldFrame::drawBox(QPainter &painter, const QPoint &p,
 
 	QRect r(p, _button.size());
     const QPixmap *pixmap = (type==NoPixmap ? 0 : &_pixmaps[type]);
-    QColor color = (nbMines==0 ? black : _numberColors[nbMines-1]);
+    QColor color = (nbMines==0 ? black : Settings::mineColor(nbMines-1));
     style().drawItem(&painter, r, AlignCenter, colorGroup(), true, pixmap,
                      text, -1, &color);
     if ( advised!=-1 )

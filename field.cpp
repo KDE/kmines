@@ -27,6 +27,7 @@
 
 #include <klocale.h>
 
+#include "settings.h"
 #include "solver/solver.h"
 #include "dialogs.h"
 
@@ -44,16 +45,11 @@ Field::Field(QWidget *parent)
 
 void Field::readSettings()
 {
-    _umark = GameConfig::isUncertainMarkEnabled();
-    _cursorShown = GameConfig::isKeyboardEnabled();
     if ( inside(_cursor) ) {
         QPainter p(this);
         drawCase(p, _cursor);
     }
-    for (uint i=0; i<NB_MOUSE_BUTTONS; i++)
-        _mb[i] = GameConfig::mouseAction((MouseButton)i);
-    _completeReveal = GameConfig::isMagicRevealEnabled();
-    if (_completeReveal) emit setCheating();
+    if (Settings::magicReveal()) emit setCheating();
 
     FieldFrame::readSettings();
     updateGeometry();
@@ -96,13 +92,13 @@ void Field::reset(bool init)
     BaseField::reset(_level.width(), _level.height(), _level.nbMines());
     if ( init || _state==Init ) setState(Init);
     else setState(Stopped);
-    if (_completeReveal) emit setCheating();
-	_currentAction = None;
+    if (Settings::magicReveal()) emit setCheating();
+    _currentAction = Settings::EnumMouseAction::None;
     _reveal = false;
     _cursor.first = _level.width()/2;
     _cursor.second = _level.height()/2;
     _advised = Coord(-1, -1);
-	update();
+    update();
 }
 
 void Field::paintEvent(QPaintEvent *e)
@@ -143,13 +139,13 @@ Coord Field::fromPoint(const QPoint &qp) const
     return Coord((int)floor(i), (int)floor(j));
 }
 
-KMines::MouseAction Field::mapMouseButton(QMouseEvent *e) const
+int Field::mapMouseButton(QMouseEvent *e) const
 {
 	switch (e->button()) {
-	case Qt::LeftButton:  return _mb[KMines::LeftButton];
-	case Qt::MidButton:   return _mb[KMines::MidButton];
-	case Qt::RightButton: return _mb[KMines::RightButton];
-	default:              return Mark;
+	case Qt::LeftButton:  return Settings::mouseAction(Settings::EnumButton::left);
+	case Qt::MidButton:   return Settings::mouseAction(Settings::EnumButton::mid);
+	case Qt::RightButton: return Settings::mouseAction(Settings::EnumButton::right);
+	default:              return Settings::EnumMouseAction::ToggleFlag;
 	}
 }
 
@@ -172,26 +168,26 @@ void Field::revealActions(bool press)
 
 void Field::mousePressEvent(QMouseEvent *e)
 {
-	if ( !isActive() || _currentAction!=None ) return;
+    if ( !isActive() || (_currentAction!=Settings::EnumMouseAction::None) ) return;
 
     emit setMood(Stressed);
-	_currentAction = mapMouseButton(e);
+    _currentAction = mapMouseButton(e);
 
     Coord p = fromPoint(e->pos());
     if ( !inside(p) ) return;
     placeCursor(p);
-	revealActions(true);
+    revealActions(true);
 }
 
 void Field::mouseReleaseEvent(QMouseEvent *e)
 {
-	if ( !isActive() ) return;
+    if ( !isActive() ) return;
 
-    MouseAction tmp = _currentAction;
+    int tmp = _currentAction;
     emit setMood(Normal);
-	revealActions(false);
-    MouseAction ma = mapMouseButton(e);
-    _currentAction = None;
+    revealActions(false);
+    int ma = mapMouseButton(e);
+    _currentAction = Settings::EnumMouseAction::None;
     if ( ma!=tmp ) return;
 
     Coord p = fromPoint(e->pos());
@@ -199,11 +195,11 @@ void Field::mouseReleaseEvent(QMouseEvent *e)
     placeCursor(p);
 
     switch (ma) {
-    case Mark:       doMark(p); break;
-    case UMark:      doUmark(p); break;
-    case Reveal:     doReveal(p); break;
-    case AutoReveal: doAutoReveal(p); break;
-    case NB_MOUSE_ACTIONS: Q_ASSERT(false); break;
+    case Settings::EnumMouseAction::ToggleFlag:          doMark(p); break;
+    case Settings::EnumMouseAction::ToggleUncertainFlag: doUmark(p); break;
+    case Settings::EnumMouseAction::Reveal:              doReveal(p); break;
+    case Settings::EnumMouseAction::AutoReveal:          doAutoReveal(p); break;
+    default: break;
     }
 }
 
@@ -255,7 +251,7 @@ void Field::doAutoReveal(const Coord &c)
     if ( state(c)!=Uncovered ) return;
     emit addAction(c, AutoReveal);
     resetAdvised();
-    doAction(AutoReveal, c, _completeReveal);
+    doAction(AutoReveal, c, Settings::magicReveal());
 }
 
 void Field::pause()
@@ -287,7 +283,7 @@ bool Field::doReveal(const Coord &c, CoordList *autorevealed,
     if ( state(c)!=Covered ) return true;
     if ( firstReveal() ) setState(Playing);
     CaseState state =
-        doAction(Reveal, c, _completeReveal, autorevealed, caseUncovered);
+        doAction(Reveal, c, Settings::magicReveal(), autorevealed, caseUncovered);
     emit addAction(c, Reveal);
     return ( state!=Error );
 }
@@ -299,11 +295,11 @@ void Field::doMark(const Coord &c)
     CaseState oldState = state(c);
     switch (oldState) {
 	case Covered:   action = SetFlag; break;
-	case Marked:    action = (_umark ? SetUncertain : UnsetFlag); break;
+	case Marked:    action = (Settings::uncertainMark() ? SetUncertain : UnsetFlag); break;
 	case Uncertain:	action = UnsetUncertain; break;
 	default:        return;
 	}
-    CaseState newState = doAction(action, c, _completeReveal);
+    CaseState newState = doAction(action, c, Settings::magicReveal());
     addMarkAction(c, newState, oldState);
 }
 
@@ -318,7 +314,7 @@ void Field::doUmark(const Coord &c)
 	case Uncertain: action = UnsetUncertain; break;
 	default:        return;
 	}
-    CaseState newState = doAction(action, c, _completeReveal);
+    CaseState newState = doAction(action, c, Settings::magicReveal());
     addMarkAction(c, newState, oldState);
 }
 
@@ -387,7 +383,7 @@ void Field::placeCursor(const Coord &p)
     Q_ASSERT( inside(p) );
     Coord old = _cursor;
     _cursor = p;
-    if ( _cursorShown ) {
+    if ( Settings::keyboardGame() ) {
         QPainter painter(this);
         drawCase(painter, old);
         drawCase(painter, _cursor);
@@ -460,6 +456,6 @@ void Field::drawCase(QPainter &painter, const Coord &c, bool pressed) const
         else i = 4;
     }
 
-    bool hasFocus = ( _cursorShown && c==_cursor );
+    bool hasFocus = ( Settings::keyboardGame() && (c==_cursor) );
     drawBox(painter, toPoint(c), pressed, type, text, nbMines, i, hasFocus);
 }

@@ -36,8 +36,9 @@
 #include <knotifyclient.h>
 #include <knotifydialog.h>
 #include <khighscore.h>
-#include <kautoconfigdialog.h>
+#include <kconfigdialog.h>
 
+#include "settings.h"
 #include "status.h"
 #include "highscores.h"
 #include "version.h"
@@ -135,16 +136,17 @@ MainWidget::MainWidget()
 bool MainWidget::queryExit()
 {
     _status->checkBlackMark();
-    AppearanceConfig::saveMenubarVisible(_menu->isChecked());
+    Settings::setMenubarVisible(_menu->isChecked());
+    Settings::writeConfig();
     return true;
 }
 
 void MainWidget::readSettings()
 {
     settingsChanged();
-    _menu->setChecked( AppearanceConfig::isMenubarVisible() );
+    _menu->setChecked( Settings::menubarVisible() );
     toggleMenubar();
-    Level::Type type = GameConfig::level();
+    Level::Type type = (Level::Type) Settings::level();
     _levels->setCurrentItem(type);
     _status->newGame(type);
 }
@@ -165,7 +167,7 @@ bool MainWidget::eventFilter(QObject *, QEvent *e)
 
 void MainWidget::focusOutEvent(QFocusEvent *e)
 {
-    if (  _pauseIfFocusLost && e->reason()==QFocusEvent::ActiveWindow
+    if ( Settings::pauseFocus() && e->reason()==QFocusEvent::ActiveWindow
           && _status->isPlaying() ) pause();
     KMainWindow::focusOutEvent(e);
 }
@@ -178,14 +180,14 @@ void MainWidget::toggleMenubar()
 
 void MainWidget::configureSettings()
 {
-    if ( KAutoConfigDialog::showDialog("settings") ) return;
+    if ( KConfigDialog::showDialog("settings") ) return;
 
-    KAutoConfigDialog *dialog = new KAutoConfigDialog(this, "settings");
+    KConfigDialog *dialog = new KConfigDialog(this, "settings", Settings::self());
     GameConfig *gc = new GameConfig;
-    dialog->addPage(gc, i18n("Game"), "Options", "package_system");
-    dialog->addPage(new AppearanceConfig, i18n("Appearance"), "Options", "style");
+    dialog->addPage(gc, i18n("Game"), "package_system");
+    dialog->addPage(new AppearanceConfig, i18n("Appearance"), "style");
     CustomConfig *cc = new CustomConfig;
-    dialog->addPage(cc, i18n("Custom Game"), "Options", "package_settings");
+    dialog->addPage(cc, i18n("Custom Game"), "package_settings");
     connect(dialog, SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
     dialog->show();
     cc->init();
@@ -199,13 +201,12 @@ void MainWidget::configureHighscores()
 
 void MainWidget::settingsChanged()
 {
-    bool enabled = GameConfig::isKeyboardEnabled();
+    bool enabled = Settings::keyboardGame();
     QValueList<KAction *> list = _keybCollection->actions();
     QValueList<KAction *>::Iterator it;
     for (it = list.begin(); it!=list.end(); ++it)
         (*it)->setEnabled(enabled);
 
-    _pauseIfFocusLost = GameConfig::isPauseFocusEnabled();
     _status->settingsChanged();
 }
 

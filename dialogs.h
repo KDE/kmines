@@ -25,7 +25,7 @@
 #include <kexthighscore.h>
 
 #include "defines.h"
-
+#include "settings.h"
 
 class KComboBox;
 class KIntNumInput;
@@ -79,7 +79,6 @@ class CustomConfig : public QWidget, public KMines
  public:
     CustomConfig();
 
-    static Level level();
     static const uint maxWidth;
     static const uint minWidth;
     static const uint maxHeight;
@@ -95,10 +94,6 @@ class CustomConfig : public QWidget, public KMines
     bool _block;
     KIntNumInput *_width, *_height, *_mines;
     KComboBox    *_gameType;
-
-    static const uint defaultWidth;
-    static const uint defaultHeight;
-    static const uint defaultNbMines;
 };
 
 //-----------------------------------------------------------------------------
@@ -108,13 +103,6 @@ class GameConfig : public QWidget, public KMines
  public:
     GameConfig();
 
-    static bool isUncertainMarkEnabled();
-    static bool isKeyboardEnabled();
-    static bool isPauseFocusEnabled();
-    static bool isMagicRevealEnabled();
-    static MouseAction mouseAction(MouseButton);
-
-    static Level::Type level();
     static void saveLevel(Level::Type);
 
     void init() { _magicDialogEnabled = true; }
@@ -125,9 +113,6 @@ class GameConfig : public QWidget, public KMines
  private:
     bool _magicDialogEnabled;
 
-    static const char *MOUSE_BUTTON_LABELS[NB_MOUSE_BUTTONS];
-    static const char *MOUSE_CONFIG_NAMES[NB_MOUSE_BUTTONS];
-    static const char *MOUSE_ACTION_LABELS[NB_MOUSE_ACTIONS];
 };
 
 class AppearanceConfig : public QWidget, public KMines
@@ -135,20 +120,6 @@ class AppearanceConfig : public QWidget, public KMines
  Q_OBJECT
  public:
     AppearanceConfig();
-
-    static uint caseSize();
-    static QColor color(Color);
-    static QColor nColor(uint);
-
-    static bool isMenubarVisible();
-    static void saveMenubarVisible(bool visible);
-
- private:
-    static const char *COLOR_LABELS[NB_COLORS];
-    static const char *COLOR_CONFIG_NAMES[NB_COLORS];
-    static const char *COLOR_DEFAULTS[NB_COLORS];
-    static const char *N_COLOR_CONFIG_NAMES[NB_N_COLORS];
-    static const char *N_COLOR_DEFAULTS[NB_N_COLORS];
 };
 
 #endif
