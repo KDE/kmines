@@ -30,7 +30,7 @@
       <default>true</default>
     </entry>
     <entry name="KeyboardGame" type="Bool" key="keyboard game">
-      <label>Whether the game can be played with the keyboard.</label>
+      <label>Whether the game can be played using the keyboard.</label>
       <default>false</default>
     </entry>
     <entry name="PauseFocus" type="Bool" key="pause focus">
