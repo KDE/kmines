@@ -538,7 +538,7 @@ Comment[zh_TW]=遊戲失敗
 default_presentation=0
 
 [set_uncertain]
-Name=Set question mrk
+Name=Set question mark
 Comment=Set question mark
 default_presentation=0
 
