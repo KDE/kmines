@@ -95,22 +95,10 @@ void Status::restartGame()
 	initGame();
 }
 
-bool Status::newGame(GameType &t)
+void Status::newGame(const Level &l)
 {
-	Level lev;
-	if ( t==Custom ) {
-		lev = field->level();
-		CustomDialog cu(lev, this);
-		if ( !cu.exec() ) {
-			t = lev.type;
-			return false;
-		}
-		lev.type = Custom;
-	} else lev = LEVELS[t];
-
-	field->setLevel(lev);
+	field->setLevel(l);
 	initGame();
-	return true;
 }
 	
 void Status::changeCase(CaseState cs, uint inc)
@@ -158,6 +146,14 @@ void Status::_endGame(bool win)
 		smiley->setMood(Smiley::Sad);
 		emit message(i18n("Bad luck!"));
 	}
+}
+
+void Status::showHighScores()
+{
+	field->pause();
+	WHighScores whs(this, 0);
+	whs.exec();
+	field->pause();
 }
 
 void Status::highScores(const Score *score)

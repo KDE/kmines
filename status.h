@@ -20,7 +20,8 @@ class Status : public QWidget
  public :
 	Status(QWidget *parent=0, const char *name=0);
 
-	bool newGame(GameType &);
+	void newGame(const Level &);
+	const Level &currentLevel() const { return field->level(); }
 
  signals:
 	void keyboardEnabled(bool);
@@ -32,7 +33,7 @@ class Status : public QWidget
 	void changeCase(CaseState, uint inc);
 	void update(bool);
 	void endGame()        { _endGame(false); }
-	void showHighScores() { highScores(0); }
+	void showHighScores();
 	void pauseGame()      { field->pause(); }
 	void print();
 	void preferences();

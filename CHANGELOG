@@ -1,9 +1,21 @@
+2.0.6
+ * use of KMainWindow (replace KTMainWindow) but this does not solve the
+   resizing problems :(
+ * pause game when high scores requested
+ * custom game settings are saved [feature suggested by Toan Nguyen,
+   Williaw Barnes and François-Xavier Duranceau]
+ * solve the resizing problems by intercepting the Layout Hint event ...
+   (due to limitations in K/QMainWindow IMHO)
+
 2.0.5
  * default for mouse binding changed
- * added color configuration for numbers, flag and explosion (for B&W monitors)
+ * added color configuration for numbers, flag and explosion (for B&W monitors
+   and few-colors themes) [feature suggested by Hume Smith and François-Xavier
+   Duranceau]
  * moved around some things about configuration (cleaned up "defines.h")
  * case state is now more clean (but some bugs might have crept in)
  * properly mark all the flagged cases with no mine to error on game end
+ * versioning the XMLGUI file
 
 2.0.4
  * hack to resize correctly when menu is hidden (due to bugs

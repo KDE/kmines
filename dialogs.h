@@ -82,6 +82,8 @@ class CustomDialog : public KDialogBase
  public:
 	CustomDialog(Level &lev, QWidget *parent);
 
+	static uint maxNbMines(uint width, uint height);
+
  private slots:
 	void widthChanged(int);
 	void heightChanged(int);
@@ -123,8 +125,8 @@ class OptionDialog : public KDialogBase
 	static CaseProperties readCaseProperties();
 	static bool readUMark();
 	static bool readKeyboard();
-	static GameType readLevel();
-	static void writeLevel(GameType);
+	static Level readLevel();
+	static void writeLevel(const Level &);
 	static bool readMenuVisible();
 	static void writeMenuVisible(bool visible);
 	static MouseAction readMouseBinding(MouseButton);

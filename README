@@ -5,7 +5,7 @@ Distributed under the GNU General Public License
 
 
 This is a very classical minesweeper written from scratch
-with three predefined levels + custom levels.
+with three predefined levels and custom levels.
 
  Easy   : 8x8 with 10 mines
  Normal : 16x16 with 40 mines

@@ -1,7 +1,14 @@
 IDEAS:
 
+ * 3 button mouse emulation [someone needed it for wheel mouse : I think
+   it should be done at a higher level ...]
+
  * do you have any idea ?
+
 
 KNOWN BUGS:
 
  * none !
+ * remove the comment around the I18N_NOOP call in main.cpp after 2.0
+
+

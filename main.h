@@ -1,14 +1,14 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include <ktmainwindow.h>
+#include <kmainwindow.h>
 #include <kaction.h>
 
 #include "defines.h"
 
 class Status;
 
-class MainWidget : public KTMainWindow
+class MainWidget : public KMainWindow
 {
   Q_OBJECT
 	
@@ -23,7 +23,6 @@ class MainWidget : public KTMainWindow
 	void toggleMenubar();
     void configureKeys();
 	void setKeyboardEnabled(bool);
-	void message(const QString &);
 	void gameStateChanged(GameState);
 
  protected:

@@ -18,7 +18,7 @@
 #include "status.h"
 
 MainWidget::MainWidget()
-: levelAction(NbLevels)
+: KMainWindow(0), levelAction(NbLevels)
 {
 	installEventFilter(this);
 
@@ -29,7 +29,7 @@ MainWidget::MainWidget()
 	connect(status, SIGNAL(gameStateChanged(GameState)),
 			SLOT(gameStateChanged(GameState)));
 	connect(status, SIGNAL(message(const QString &)),
-			SLOT(message(const QString &)));
+			statusBar(), SLOT(message(const QString &)));
 
 	// Game & Popup
 	KStdAction::openNew(status, SLOT(restartGame()),
@@ -97,8 +97,7 @@ MainWidget::MainWidget()
 
 	createGUI();
 	readSettings();
-	setView(status);
-	updateRects(); // #### should be in KTMainWindow::setView
+	setCentralWidget(status);
 }
 
 #define MENUBAR_ACTION \
@@ -108,9 +107,9 @@ MainWidget::MainWidget()
 
 void MainWidget::readSettings()
 {
-	GameType type = OptionDialog::readLevel();
-	levelAction[type]->setChecked(true);
-	status->newGame(type);
+	Level l = OptionDialog::readLevel();
+	if ( l.type!=Custom ) levelAction[l.type]->setChecked(true);
+	status->newGame(l);
 
 	bool visible = OptionDialog::readMenuVisible();
 	MENUBAR_ACTION->setChecked(visible);
@@ -122,25 +121,39 @@ void MainWidget::readSettings()
 void MainWidget::changeLevel(uint i)
 {
 	if ( !levelAction[i]->isChecked() ) return;
-	GameType lev = (GameType)i;
-	if ( !status->newGame(lev) ) { // level unchanged
-		levelAction[lev]->setChecked(true);
-		return;
-	}
-	
-	OptionDialog::writeLevel(lev);
+
+	GameType type = (GameType)i;
+	Level l;
+	if ( type==Custom ) {
+		levelAction[Custom]->setChecked(false);
+		l = status->currentLevel();
+		type = l.type;
+		CustomDialog cu(l, this);
+		if ( !cu.exec() ) { // level unchanged
+			if ( type!=Custom ) levelAction[type]->setChecked(true);
+			return;
+		}
+	} else l = LEVELS[i];
+
+	status->newGame(l);
+	OptionDialog::writeLevel(l);
 }
 
 bool MainWidget::eventFilter(QObject *, QEvent *e)
 {
 	QPopupMenu *popup;
 	switch (e->type()) {
-	 case QEvent::MouseButtonPress :
+	case QEvent::MouseButtonPress :
 		if ( ((QMouseEvent *)e)->button()!=RightButton ) return false;
 		popup = (QPopupMenu*)factory()->container("popup", this);
 		if ( popup ) popup->popup(QCursor::pos());
 		return true;
-	 default : return false;
+	case QEvent::LayoutHint:
+		setFixedSize(minimumSize()); // because QMainWindow and KMainWindow
+		                             // do not manage fixed central widget and
+		                             // hidden menubar ...
+		return false;
+	default : return false;
 	}
 }
 
@@ -148,15 +161,7 @@ void MainWidget::toggleMenubar()
 {
 	bool b = MENUBAR_ACTION->isChecked();
 	if (b) menuBar()->show();
-	else {
-		menuBar()->hide();
-	
-		// #### sort of hack : because KTMainWindow does not manage correctly
-		// main widget with a fixed layout
-		updateRects();
-		adjustSize();
-	}
-
+	else menuBar()->hide();
 	OptionDialog::writeMenuVisible(b);
 }
 
@@ -192,11 +197,6 @@ void MainWidget::gameStateChanged(GameState s)
 	}
 }
 
-void MainWidget::message(const QString &text)
-{
-	statusBar()->message(text);
-}
-
 //----------------------------------------------------------------------------
 static const char *DESCRIPTION
     = I18N_NOOP("KMines is a classical mine sweeper game.");
@@ -206,8 +206,8 @@ int main(int argc, char **argv)
     KAboutData aboutData("kmines", I18N_NOOP("KMines"), LONG_VERSION,
 						 DESCRIPTION, KAboutData::License_GPL,
 						 COPYLEFT, 0, HOMEPAGE);
-    aboutData.addAuthor("Nicolas Hadacek", 0, "hadacek@kde.org");
-	aboutData.addCredit("Andreas Zehender", "Smiley pixmaps");
+    aboutData.addAuthor("Nicolas Hadacek", 0, EMAIL);
+	aboutData.addCredit("Andreas Zehender", /*I18N_NOOP(*/"Smiley pixmaps"/*)*/);
     KCmdLineArgs::init(argc, argv, &aboutData);
 
     KApplication a;

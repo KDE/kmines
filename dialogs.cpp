@@ -98,24 +98,29 @@ void DigitalClock::zero()
 }
 
 //-----------------------------------------------------------------------------
+const uint MIN_CUSTOM_SIZE = 8;
+const uint MAX_CUSTOM_SIZE = 50;
+
 CustomDialog::CustomDialog(Level &_lev, QWidget *parent)
 : KDialogBase(Plain, i18n("Customize your game"), Ok|Cancel, Cancel,
 			  parent, 0, true, true),
   lev(_lev), initLev(_lev)
 {
+	lev.type = Custom;
+
 	QVBoxLayout *top = new QVBoxLayout(plainPage(), spacingHint());
 
 	// width
 	KIntNumInput *ki = new KIntNumInput(lev.width, plainPage());
 	ki->setLabel(i18n("Width"));
-	ki->setRange(8, 50);
+	ki->setRange(MIN_CUSTOM_SIZE, MAX_CUSTOM_SIZE);
 	connect(ki, SIGNAL(valueChanged(int)), SLOT(widthChanged(int)));
 	top->addWidget(ki);
 
 	// height
 	ki = new KIntNumInput(lev.height, plainPage());
 	ki->setLabel(i18n("Height"));
-	ki->setRange(8, 50);
+	ki->setRange(MIN_CUSTOM_SIZE, MAX_CUSTOM_SIZE);
 	connect(ki, SIGNAL(valueChanged(int)), SLOT(heightChanged(int)));
 	top->addWidget(ki);
 
@@ -146,11 +151,16 @@ void CustomDialog::nbMinesChanged(int n)
 
 void CustomDialog::updateNbMines()
 {
+	km->setRange(1, maxNbMines(lev.width, lev.height));
 	uint nb = lev.width * lev.height;
-	km->setRange(1, nb - 2);
 	km->setLabel(i18n("Mines (%1%)").arg(100*lev.nbMines/nb));
 	enableButton(Ok, lev.width!=initLev.width || lev.height!=initLev.height
 				 || lev.nbMines!=initLev.nbMines);
+}
+
+uint CustomDialog::maxNbMines(uint width, uint height)
+{
+	return width*height - 2;
 }
 
 //-----------------------------------------------------------------------------
@@ -280,12 +290,15 @@ void WHighScores::reject()
 }
 
 //-----------------------------------------------------------------------------
-const char *OP_GRP       = "Options";
-const char *OP_UMARK     = "? mark";
-const char *OP_MENUBAR   = "menubar visible";
-const char *OP_LEVEL     = "Level";
-const char *OP_CASE_SIZE = "case size";
-const char *OP_KEYBOARD  = "keyboard game";
+const char *OP_GRP             = "Options";
+const char *OP_UMARK           = "? mark";
+const char *OP_MENUBAR         = "menubar visible";
+const char *OP_LEVEL           = "Level";
+const char *OP_CUSTOM_WIDTH    = "custom width";
+const char *OP_CUSTOM_HEIGHT   = "custom height";
+const char *OP_CUSTOM_MINES    = "custom mines";
+const char *OP_CASE_SIZE       = "case size";
+const char *OP_KEYBOARD        = "keyboard game";
 const char *OP_MOUSE_BINDINGS[3] =
     { "mouse left", "mouse mid", "mouse right" };
 const char *OP_NUMBER_COLOR    = "color #";
@@ -422,16 +435,33 @@ bool OptionDialog::readKeyboard()
 	return config()->readBoolEntry(OP_KEYBOARD, true);
 }
 
-GameType OptionDialog::readLevel()
+Level OptionDialog::readLevel()
 {
-	GameType lev = (GameType)config()->readUnsignedNumEntry(OP_LEVEL, 0);
-	return lev>=Custom ? Easy : lev;
+	Level l;
+	l.type = (GameType)config()->readUnsignedNumEntry(OP_LEVEL, 0);
+	if ( l.type>Custom ) l.type = Easy;
+
+	if ( l.type==Custom ) {
+		l.width  = config()->readUnsignedNumEntry(OP_CUSTOM_WIDTH, 0);
+		l.width  = QMAX(QMIN(l.width, MAX_CUSTOM_SIZE), MIN_CUSTOM_SIZE);
+		l.height = config()->readUnsignedNumEntry(OP_CUSTOM_HEIGHT, 0);		
+		l.height = QMAX(QMIN(l.height, MAX_CUSTOM_SIZE), MIN_CUSTOM_SIZE);
+		l.nbMines  = config()->readUnsignedNumEntry(OP_CUSTOM_MINES, 0);
+		l.nbMines  = QMAX(QMIN(l.nbMines,
+							  CustomDialog::maxNbMines(l.width, l.height)), 1);
+	} else l = LEVELS[l.type];
+		
+	return l;
 }
 
-void OptionDialog::writeLevel(GameType lev)
+void OptionDialog::writeLevel(const Level &l)
 {
-	if ( lev>=Custom ) return;
-	config()->writeEntry(OP_LEVEL, (uint)lev);
+	if ( l.type==Custom ) {
+		config()->writeEntry(OP_CUSTOM_WIDTH, l.width);
+		config()->writeEntry(OP_CUSTOM_HEIGHT, l.height);
+		config()->writeEntry(OP_CUSTOM_MINES, l.nbMines);
+	}
+	config()->writeEntry(OP_LEVEL, (uint)l.type);
 }
 
 bool OptionDialog::readMenuVisible()
