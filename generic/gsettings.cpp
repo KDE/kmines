@@ -9,14 +9,6 @@
 
 
 //-----------------------------------------------------------------------------
-KConfig *BaseSettings::config() const
-{
-    KConfig *c = kapp->config();
-    c->setGroup(_group);
-    return c;
-}
-
-//-----------------------------------------------------------------------------
 BaseSettingsWidget::BaseSettingsWidget(BaseSettings *settings,
                                        QWidget *parent, const char *name)
     : QWidget(parent, name), _settings(settings)
@@ -64,6 +56,5 @@ void BaseSettingsDialog::accept()
 void BaseSettingsDialog::showPage()
 {
     QWidget *page = (QWidget *)sender()->parent();
-    qDebug("showPage %i", pageIndex(page));
     KDialogBase::showPage( pageIndex(page) );
 }

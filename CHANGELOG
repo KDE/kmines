@@ -1,11 +1,14 @@
-2.1.2 (19 November 2001) [CVS]
+2.1.3 (29 November 2001) [CVS 3.0 devel]
+ * use KConfigGroupSaver everywhere
+ * config entry for wwhs server url (just in case ...)
+
+2.1.2 (19 November 2001)
  * date for each highscores and for best highscore [proposed by Jenne]
  * some more reorganisation
  * better custom dialog
  * slightly modify the init/repaint at game start : more clean & repaint could
    leak some infos about mines position (?)
- * fix a nasty bug : uncorrect flag was not shown at game over in certain
-   cases [thanx for the bug reports from Viira and from an unnamed admin :)]
+ * forward port the bug fix from 2.1.0b (in 2.2.x branch)
  * do not bother people who want to stay anonymous with message boxes
    [suggestion from Bernhard Berger]
  * autoreveal does not take "?" flag into account anymore
@@ -22,13 +25,17 @@
    forbidden as keys now ...
  * count nb of clicks (reveal, autoreveal, mark) and display it in highscores.
 
-2.1.0 (17 July 2001) [KDE 2.2]
+2.1.0b (19 November 2001) [SF 2.2 stable]
+ * fix a nasty bug : uncorrect flag was not shown at game over in certain
+   cases [thanx for the bug reports from Viira and from an anonymous admin :)]
+
+2.1.0 (17 July 2001) [KDE 2.2 stable]
  * fixed checked entry in "show highscores" submenu
 
-2.0.13 (10 June 2001) [SF]
+2.0.13 (10 June 2001) [SF 2.2 devel]
  * enable world-wide highscores !!
 
-2.0.12 (09 June 2001) [SF]
+2.0.12 (09 June 2001) [SF 2.2 devel]
  * option to put the game in pause mode if the window loses focus [proposed by
    Bernhard Berger]
  * better default keys + fixed autoreveal display for keyboard game
@@ -40,10 +47,10 @@
  * changed highscores accelerator to CTRL + H (more standard)
  * better use of session-management
 
-2.0.10 (23 October 2000)
+2.0.10 (23 October 2000) [KDE 2.1 stable]
  * fixed mouse action in settings (autoreveal and toggle mark were inversed)
 
-2.0.9
+2.0.9 (21 September 2000) [KDE 2.0 stable]
  * fix obscure bug reported by Tobias Oed (was crashing version 1.0.1a !)
    : mouse buttons were messing things when pressed simultaneously.
  * in the same move : simplified some code and correct a small buglet due to
@@ -51,10 +58,10 @@
    column case was pressed when the mouse was moved just outside the top and
    left side of the field).
 
-2.0.8
+2.0.8 (7 September 2000)
  * fix bug that was pausing a stopped game when calling highscores
 
-2.0.7
+2.0.7 (4 September 2000)
  * fixed bug in mine field drawing with some styles [found by Gerard Delafond
    and Tobias Kretschmar] that induces a complete rewrite of the drawing code.
    now it honors the global style (beautiful in marble style) and it even
@@ -66,7 +73,7 @@
    [proposed by Lotta Inkovaara for ksirtet]
  * keyboard is disabled by default
 
-2.0.6
+2.0.6 (23 August 2000)
  * use of KMainWindow (replace KTMainWindow) but this does not solve the
    resizing problems :(
  * pause game when high scores requested
@@ -75,7 +82,7 @@
  * solve the resizing problems by intercepting the Layout Hint event ...
    (due to limitations in K/QMainWindow IMHO)
 
-2.0.5
+2.0.5 (14 June 2000)
  * default for mouse binding changed
  * added color configuration for numbers, flag and explosion (for B&W monitors
    and few-colors themes) [feature suggested by Hume Smith and François-Xavier
@@ -85,24 +92,24 @@
  * properly mark all the flagged cases with no mine to error on game end
  * versioning the XMLGUI file
 
-2.0.4
+2.0.4 (11 April 2000)
  * hack to resize correctly when menu is hidden (due to bugs
    in KTMainWindow)
  * nicer (and simpler) custom level dialog with KNumIntInput
  * kstatusbar in place of the label
  * remove the title in dialogs (more consistent with other apps)
 
-2.0.3
+2.0.3 (6 April 2000)
  * use kkeydialog for actions
  * rationalize settings (much better now)
  * animate autoreveal with keyboard
  * enable/disable and change text for pause in menu
  * configuration of mouse bindings [idea of FX Duranceau]
 
-2.0.2
+2.0.2 (28 February 2000)
  * XMLify the GUI
 
-2.0.1
+2.0.1 (19 February 2000)
  * KAction/KAccel integrated
  * keyboard play
  * can choose case size (font is scaled)
@@ -110,7 +117,7 @@
    uint thing)
  * fix the pixmaps drawing so that they are not too bad in custom case sizes
 
-2.0.0
+2.0.0 (14 December 1999)
  * use of KDialogBase and KAboutData/KAboutDialog
  * unflagged mines are shown at game's end
  * hack for focus handling in highscores dialog ...
@@ -119,7 +126,7 @@
  * small fixes for custom games
  * "What's This" added.
 
-1.0.6
+1.0.6 (21 July 1999)
  * slightly better highscores dialog
  * fixed a bug in flagged mines display (cannot be negative)
  * the LCDs gets red when there are more flagged cases than mines
@@ -127,35 +134,36 @@
  * use of a status bar.
  * the smiley moods are now XPMs [made by Andreas Zehender]
 
-1.0.5
+1.0.5 (6 July 1999)
  * fixed layout handling (all this "updateGeometry" and "LayoutHint" stuff)
  * space bar hit cannot restart game anymore
  * clean code (config) + level is saved
 
-1.0.4
+1.0.4 (12 March 1999)
  * porting to QT 2.0
 
-1.0.3 (Mario Weilguni <mweilguni@kde.org>)
+1.0.3 (10 March 1999)
+Mario Weilguni <mweilguni@kde.org>
  * fixed the bug in the level selection (showed up with Qt 2.0)
  * fixed layout for Qt 2.0
  * fixed signal/slot handling for Qt 2.0
  * fixed layout with floating menubar
  * level menu items are now checked
 
-1.0.2
+1.0.2 (23 February 1999)
  * bug fix : argh! a "brown paper bag" one [bug report by Szokovacs Robert]
 
-1.0.1
+1.0.1 (2 Junuary 1999) [KDE 1.1 stable]
  * bug fix : when paused a game can be continued by changing desktops or
    iconifying/deiconifying without time consumption ... [bug report by
    François-Xavier Duranceau, Frank Pieczynski & Oliver Eiden]
  * add printing facility : well it seems hacky to me and certainly not perfect
    but it works ... [feature suggested by Tomislav Marsic]
 
-1.0.0
+1.0.0 (18 June 1998) [KDE 1.0 stable]
  * final cleanup before 1.0 !
 
-0.6.12
+0.6.12 (9 June 1998)
  * use QLayout for "custom level dialog" and "highscore dialog"
  * some cleanup
  * and a fix ! (yes there was a bug still lurking : when only two

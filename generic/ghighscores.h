@@ -13,7 +13,6 @@ class Score : public DataContainer
 {
  public:
     // a higher value is a better score
-    // 0 is a valid score but it cannot enter highscores list.
     Score(uint score = 0);
 
     uint nbEntries() const;
@@ -49,7 +48,6 @@ class PlayerInfos : public ItemContainer
  private:
     uint _id;
 
-    static KConfig *config();
     void addPlayer();
 };
 
@@ -61,15 +59,14 @@ class Highscores
     Highscores(const QString version, const KURL &baseURL = KURL(),
                uint nbGameTypes = 1, uint nbEntries = 10);
     virtual ~Highscores() {}
-    void init();
     void setGameType(uint);
 
     HighscoresSettingsWidget *createSettingsWidget(BaseSettingsDialog *) const;
     void showHighscores(QWidget *parent) { _showHighscores(parent, -1); }
     void submitScore(bool won, Score &, QWidget *parent);
-    void submitBlackMark(QWidget *parent) const;
+    void submitBlackMark(QWidget *parent);
     bool modifySettings(const QString &newName, const QString &comment,
-                        bool WWEnabled, QWidget *parent) const;
+                        bool WWEnabled, QWidget *parent);
 
     uint nbScores() const;
     Score *firstScore() const { return readScore(0); }
@@ -84,8 +81,8 @@ class Highscores
     QString playerSubGroup() const;
     virtual ItemBase *bestScoreItem() const { return new BestScoreItem; }
     virtual ItemBase *meanScoreItem() const { return new MeanScoreItem; }
-    virtual QString playersURL() const;
-    virtual QString highscoresURL() const;
+    virtual QString playersURL();
+    virtual QString highscoresURL();
 
     virtual bool isLostGameEnabled() const  { return false; }
     virtual bool isBlackMarkEnabled() const { return false; }
@@ -93,37 +90,33 @@ class Highscores
 
  protected:
     enum LabelType { Standard, I18N, WW, Icon };
-    virtual QString gameTypeLabel(uint /*gameType*/, LabelType) const
-        { return QString::null; }
+    virtual QString gameTypeLabel(uint gameType, LabelType) const = 0;
     virtual Score *score() const { return new Score; }
     virtual PlayerInfos *infos() const { return new PlayerInfos; }
     virtual void convertLegacy(uint /*gameType*/) {}
     int submitLocal(Score &, const QString &name) const;
 
     enum QueryType { Submit, Register, Change, Players, Scores };
-    virtual void additionnalQueries(KURL &, QueryType) const {}
-    KURL URL(QueryType, const QString &nickname) const;
-    static void addToURL(KURL &, const QString &entry, const QString &content);
+    virtual void additionnalQueryArgs(QueryType, const Score *) {}
+    void addToQueryURL(const QString &entry, const QString &content);
 
  private:
+    enum ScoreType { Won = 0, Lost = -1, BlackMark = -2 };
     const QString _version;
-    const KURL    _baseURL;
+    KURL          _baseURL;
     const uint    _nbGameTypes, _nbEntries;
     uint          _gameType;
+    KURL          _url;
 
     void _showHighscores(QWidget *parent, int rank);
     Score *readScore(uint rank) const;
     int rank(const Score &) const; // return -1 if not a local best
 
-    static const int LOST_GAME_ID;
-    static const int BLACK_MARK_ID;
-    void submitWorldWide(int score, const PlayerInfos &,
-                         QWidget *parent) const;
-
-    static bool _doQuery(const KURL &url, QDomNamedNodeMap &attributes,
-                         QString &error);
-    static bool doQuery(const KURL &url, QDomNamedNodeMap &map,
-                        QWidget *parent);
+    void submitWorldWide(ScoreType, const Score *, const PlayerInfos &,
+                         QWidget *parent);
+    void setQueryURL(QueryType, const QString &nickname, const Score * = 0);
+    bool _doQuery(QDomNamedNodeMap &attributes, QString &error) const;
+    bool doQuery(QDomNamedNodeMap &map, QWidget *parent) const;
     static bool getFromQuery(const QDomNamedNodeMap &map, const QString &name,
                              QString &value, QWidget *parent);
 };

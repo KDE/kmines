@@ -22,14 +22,14 @@
 #include "highscores.h"
 
 
-ExtHighscores HIGHSCORES;
-Highscores &highscores() { return HIGHSCORES; }
+ExtHighscores *HIGHSCORES;
+Highscores &highscores() { return *HIGHSCORES; }
 
 
 MainWidget::MainWidget()
     : KMainWindow(0)
 {
-    HIGHSCORES.init();
+    HIGHSCORES = new ExtHighscores;
 
 	installEventFilter(this);
 
@@ -96,6 +96,11 @@ MainWidget::MainWidget()
 	setCentralWidget(status);
 }
 
+MainWidget::~MainWidget()
+{
+    delete HIGHSCORES;
+}
+
 #define MENUBAR_ACTION \
     ((KToggleAction *)action(KStdAction::stdName(KStdAction::ShowMenubar)))
 
@@ -145,7 +150,7 @@ void MainWidget::changeLevel()
 
 void MainWidget::showHighscores()
 {
-    HIGHSCORES.showHighscores(this);
+    highscores().showHighscores(this);
 }
 
 bool MainWidget::eventFilter(QObject *, QEvent *e)

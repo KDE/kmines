@@ -141,8 +141,6 @@ class SettingsDialog : public BaseSettingsDialog, public KMines
  public:
 	SettingsDialog(QWidget *parent);
 
-    static KConfig *config();
-
 	static Level readLevel();
 	static void writeLevel(const Level &);
 	static bool readMenuVisible();

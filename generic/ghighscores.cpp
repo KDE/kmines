@@ -51,7 +51,15 @@ const char *HS_ID              = "player id";
 const char *HS_REGISTERED_NAME = "registered name";
 const char *HS_KEY             = "player key";
 const char *HS_WW_ENABLED      = "ww hs enabled";
+const char *HS_WW_URL          = "ww hs url";
 
+class ConfigGroup : public KConfigGroupSaver
+{
+ public:
+    ConfigGroup() : KConfigGroupSaver(kapp->config(), QString::null) {}
+};
+
+//-----------------------------------------------------------------------------
 PlayerInfos::PlayerInfos()
     : ItemContainer("players", highscores().playerSubGroup())
 {
@@ -70,24 +78,21 @@ PlayerInfos::PlayerInfos()
                                     Qt::AlignLeft), true);
 
     if ( isNewPlayer() ) addPlayer();
-    else _id = config()->readUnsignedNumEntry(HS_ID);
+    else {
+        ConfigGroup cg;
+        _id = cg.config()->readUnsignedNumEntry(HS_ID);
+    }
 }
 
 bool PlayerInfos::isNewPlayer()
 {
-    return !config()->hasKey(HS_ID);
+    ConfigGroup cg;
+    return !cg.config()->hasKey(HS_ID);
 }
 
 bool PlayerInfos::isAnonymous() const
 {
     return ( name()==ItemBase::ANONYMOUS );
-}
-
-KConfig *PlayerInfos::config()
-{
-    KConfig *config = kapp->config();
-    config->setGroup(QString::null);
-    return config;
 }
 
 uint PlayerInfos::nbEntries() const
@@ -100,19 +105,22 @@ uint PlayerInfos::nbEntries() const
 
 void PlayerInfos::addPlayer()
 {
+    ConfigGroup cg;
     _id = nbEntries();
-    config()->writeEntry(HS_ID, _id);
+    cg.config()->writeEntry(HS_ID, _id);
     item("name").write(_id, QString(ItemBase::ANONYMOUS));
 }
 
 QString PlayerInfos::key() const
 {
-    return config()->readEntry(HS_KEY, QString::null);
+    ConfigGroup cg;
+    return cg.config()->readEntry(HS_KEY, QString::null);
 }
 
 bool PlayerInfos::WWEnabled() const
 {
-    return config()->readBoolEntry(HS_WW_ENABLED, false);
+    ConfigGroup cg;
+    return cg.config()->readBoolEntry(HS_WW_ENABLED, false);
 }
 
 void PlayerInfos::submitScore(bool won, const Score &score) const
@@ -155,22 +163,21 @@ void PlayerInfos::modifySettings(const QString &newName,
                                  const QString &comment, bool WWEnabled,
                                  const QString &newKey) const
 {
+    ConfigGroup cg;
     item("name").write(_id, newName);
     item("comment").write(_id, comment);
-    config()->writeEntry(HS_WW_ENABLED, WWEnabled);
-    if ( !newKey.isEmpty() ) config()->writeEntry(HS_KEY, newKey);
-    if (WWEnabled) config()->writeEntry(HS_REGISTERED_NAME, newName);
+    cg.config()->writeEntry(HS_WW_ENABLED, WWEnabled);
+    if ( !newKey.isEmpty() ) cg.config()->writeEntry(HS_KEY, newKey);
+    if (WWEnabled) cg.config()->writeEntry(HS_REGISTERED_NAME, newName);
 }
 
 QString PlayerInfos::registeredName() const
 {
-    return config()->readEntry(HS_REGISTERED_NAME, QString::null);
+    ConfigGroup cg;
+    return cg.config()->readEntry(HS_REGISTERED_NAME, QString::null);
 }
 
 //-----------------------------------------------------------------------------
-const int Highscores::LOST_GAME_ID  = -1;
-const int Highscores::BLACK_MARK_ID = -2;
-
 Highscores::Highscores(const QString version, const KURL &baseURL,
                        uint nbGameTypes, uint nbEntries)
     : _version(version), _baseURL(baseURL), _nbGameTypes(nbGameTypes),
@@ -178,12 +185,14 @@ Highscores::Highscores(const QString version, const KURL &baseURL,
 {
     Q_ASSERT( nbGameTypes!=0 );
     Q_ASSERT( nbEntries!=0 );
-    Q_ASSERT( baseURL.isEmpty()
-            || (baseURL.isValid() && baseURL.fileName(false).isEmpty()) );
-}
+    bool b = baseURL.isEmpty();
+    Q_ASSERT( b || (baseURL.isValid() && baseURL.fileName(false).isEmpty()) );
 
-void Highscores::init()
-{
+    if ( !b ) {
+        ConfigGroup cg;
+        _baseURL = cg.config()->readEntry(HS_WW_URL, baseURL.url());
+    }
+
     if ( !PlayerInfos::isNewPlayer() ) return;
     uint tmp = _gameType;
     for (uint i=0; i<_nbGameTypes; i++) {
@@ -252,7 +261,8 @@ void Highscores::submitScore(bool won, Score &score, QWidget *parent)
 
     PlayerInfos *i = infos();
     i->submitScore(won, score);
-    submitWorldWide((won ? (int)score.score() : LOST_GAME_ID), *i, parent);
+    if ( i->WWEnabled() )
+        submitWorldWide((won ? Won : Lost), &score, *i, parent);
     delete i;
 
     if (won) {
@@ -262,12 +272,12 @@ void Highscores::submitScore(bool won, Score &score, QWidget *parent)
 
 }
 
-void Highscores::submitBlackMark(QWidget *parent) const
+void Highscores::submitBlackMark(QWidget *parent)
 {
     Q_ASSERT( isBlackMarkEnabled() );
     PlayerInfos *i = infos();
     i->submitBlackMark();
-    submitWorldWide(BLACK_MARK_ID, *i, parent);
+    submitWorldWide(BlackMark, 0, *i, parent);
     delete i;
 }
 
@@ -341,50 +351,47 @@ QString Highscores::prettyPlayerName(uint id) const
     return name;
 }
 
-KURL Highscores::URL(QueryType type, const QString &nickname) const
+void Highscores::setQueryURL(QueryType type, const QString &nickname,
+                             const Score *score)
 {
-    KURL url(_baseURL);
+    _url = _baseURL;
 	switch (type) {
-        case Submit:   url.addPath("submit.php");     break;
-        case Register: url.addPath("register.php");   break;
-        case Change:   url.addPath("change.php");     break;
-        case Players:  url.addPath("players.php");    break;
-        case Scores:   url.addPath("highscores.php"); break;
+        case Submit:   _url.addPath("submit.php");     break;
+        case Register: _url.addPath("register.php");   break;
+        case Change:   _url.addPath("change.php");     break;
+        case Players:  _url.addPath("players.php");    break;
+        case Scores:   _url.addPath("highscores.php"); break;
 	}
-    if ( !nickname.isEmpty() ) {
-        QString query = "nickname=" + KURL::encode_string(nickname);
-        url.setQuery(query);
-    }
-	return url;
+    if ( !nickname.isEmpty() ) addToQueryURL("nickname", nickname);
+    additionnalQueryArgs(type, score);
 }
 
-QString Highscores::playersURL() const
+QString Highscores::playersURL()
 {
     PlayerInfos *i = infos();
-    KURL url = URL(Players, QString::null);
+    setQueryURL(Players, QString::null);
     if ( !i->registeredName().isEmpty() )
-        addToURL(url, "highlight", i->registeredName());
+        addToQueryURL("highlight", i->registeredName());
     delete i;
-    return url.url();
+    return _url.url();
 }
 
-QString Highscores::highscoresURL() const
+QString Highscores::highscoresURL()
 {
     PlayerInfos *i = infos();
-    KURL url = URL(Scores, i->registeredName());
+    setQueryURL(Scores, i->registeredName());
     delete i;
-    if ( _nbGameTypes>1 ) addToURL(url, "level", gameTypeLabel(_gameType, WW));
-    return url.url();
+    if ( _nbGameTypes>1 ) addToQueryURL("level", gameTypeLabel(_gameType, WW));
+    return _url.url();
 }
 
-void Highscores::addToURL(KURL &url, const QString &entry,
-                          const QString &content)
+void Highscores::addToQueryURL(const QString &entry, const QString &content)
 {
     if ( entry.isEmpty() ) return;
-    QString query = url.query();
+    QString query = _url.query();
     if ( !query.isEmpty() ) query += '&';
 	query += entry + '=' + KURL::encode_string(content);
-	url.setQuery(query);
+	_url.setQuery(query);
 }
 
 // strings that needs to be translated (coming from the highscores server)
@@ -407,11 +414,10 @@ const char *DUMMY_STRINGS[] = {
     I18N_NOOP("Invalid score.")
 };
 
-bool Highscores::_doQuery(const KURL &url, QDomNamedNodeMap &attributes,
-                          QString &error)
+bool Highscores::_doQuery(QDomNamedNodeMap &attributes, QString &error) const
 {
     QString tmpFile;
-    if ( !KIO::NetAccess::download(url, tmpFile) ) {
+    if ( !KIO::NetAccess::download(_url, tmpFile) ) {
   	    error = i18n("Unable to contact remote host.");
 	    return false;
 	}
@@ -443,11 +449,10 @@ bool Highscores::_doQuery(const KURL &url, QDomNamedNodeMap &attributes,
     return false;
 }
 
-bool Highscores::doQuery(const KURL &url, QDomNamedNodeMap &map,
-                         QWidget *parent)
+bool Highscores::doQuery(QDomNamedNodeMap &map, QWidget *parent) const
 {
   QString error;
-  bool ok = _doQuery(url, map, error);
+  bool ok = _doQuery(map, error);
   if ( !ok ) {
       error = i18n("An error occured while contacting\n"
                    "the world-wide highscores server :\n%1").arg(error);
@@ -469,26 +474,25 @@ bool Highscores::getFromQuery(const QDomNamedNodeMap &map,
 	return true;
 }
 
-void Highscores::submitWorldWide(int score, const PlayerInfos &i,
-                                 QWidget *parent) const
+void Highscores::submitWorldWide(ScoreType type, const Score *score,
+                                 const PlayerInfos &i, QWidget *parent)
 {
-    if ( !i.WWEnabled() ) return;
-    KURL url = URL(Submit, i.registeredName());
-    addToURL(url, "key", i.key());
-    addToURL(url, "version", _version);
-    QString str =  QString::number(score);
-    addToURL(url, "score", str);
+    setQueryURL(Submit, i.registeredName(), score);
+    addToQueryURL("key", i.key());
+    addToQueryURL("version", _version);
+    int s = (type==Won ? score->score() : (int)type);
+    QString str =  QString::number(s);
+    addToQueryURL("score", str);
     KMD5 context(QString(i.registeredName() + str).latin1());
-    addToURL(url, "check", context.hexDigest());
-    if ( _nbGameTypes>1 ) addToURL(url, "level", gameTypeLabel(_gameType, WW));
-    additionnalQueries(url, Submit);
+    addToQueryURL("check", context.hexDigest());
+    addToQueryURL("level", gameTypeLabel(_gameType, WW));
     QDomNamedNodeMap map;
-    doQuery(url, map, parent);
+    doQuery(map, parent);
 }
 
 bool Highscores::modifySettings(const QString &newName,
                                 const QString &comment, bool WWEnabled,
-                                QWidget *parent) const
+                                QWidget *parent)
 {
     if ( newName.isEmpty() ) {
         KMessageBox::sorry(parent,i18n("Please choose a non empty nickname."));
@@ -502,17 +506,17 @@ bool Highscores::modifySettings(const QString &newName,
     if (WWEnabled) {
         KURL url;
         newPlayer = i->key().isEmpty() || i->registeredName().isEmpty();
-        if (newPlayer) url = URL(Register, newName);
+        if (newPlayer) setQueryURL(Register, newName);
         else {
-            url = URL(Change, i->registeredName());
-            addToURL(url, "key", i->key());
+            setQueryURL(Change, i->registeredName());
+            addToQueryURL("key", i->key());
             if ( i->registeredName()!=newName )
-                addToURL(url, "new_nickname", newName);
+                addToQueryURL("new_nickname", newName);
         }
-        addToURL(url, "comment", comment);
-        addToURL(url, "version", _version);
+        addToQueryURL("comment", comment);
+        addToQueryURL("version", _version);
         QDomNamedNodeMap map;
-        if ( !doQuery(url, map, parent)
+        if ( !doQuery(map, parent)
              || (newPlayer && !getFromQuery(map, "key", newKey, parent)) ) {
             delete i;
             return false;

@@ -28,7 +28,7 @@ class BaseSettings
 
     QString name() const { return _name; }
     QString icon() const { return _icon; }
-    KConfig *config() const;
+    QString group() const { return _group; }
 
  private:
 	const QString _name, _icon, _group;
@@ -54,7 +54,7 @@ class BaseSettingsWidget : public QWidget
     void showPage();
 
  protected:
-    KConfig *config() const { return _settings->config(); }
+    QString group() const { return _settings->group(); }
 
  private:
     BaseSettings *_settings;

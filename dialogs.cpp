@@ -170,6 +170,12 @@ void CustomDialog::typeChosen(int i)
 }
 
 //-----------------------------------------------------------------------------
+class SettingsConfigGroup : public KConfigGroupSaver
+{
+ public:
+    SettingsConfigGroup() : KConfigGroupSaver(kapp->config(), "Options") {}
+};
+
 const char *OP_UMARK             = "? mark";
 const char *OP_KEYBOARD          = "keyboard game";
 const char *OP_PAUSE_FOCUS       = "paused if lose focus";
@@ -213,22 +219,26 @@ GameSettingsWidget::GameSettingsWidget(BaseSettingsDialog *parent)
 
 bool GameSettingsWidget::readUMark()
 {
-	return SettingsDialog::config()->readBoolEntry(OP_UMARK, true);
+    SettingsConfigGroup cg;
+	return cg.config()->readBoolEntry(OP_UMARK, true);
 }
 
 bool GameSettingsWidget::readKeyboard()
 {
-	return SettingsDialog::config()->readBoolEntry(OP_KEYBOARD, false);
+    SettingsConfigGroup cg;
+	return cg.config()->readBoolEntry(OP_KEYBOARD, false);
 }
 
 bool GameSettingsWidget::readPauseFocus()
 {
-	return SettingsDialog::config()->readBoolEntry(OP_PAUSE_FOCUS, true);
+    SettingsConfigGroup cg;
+	return cg.config()->readBoolEntry(OP_PAUSE_FOCUS, true);
 }
 
 KMines::MouseAction GameSettingsWidget::readMouseBinding(MouseButton mb)
 {
-	MouseAction ma = (MouseAction)SettingsDialog::config()
+    SettingsConfigGroup cg;
+	MouseAction ma = (MouseAction)cg.config()
                      ->readUnsignedNumEntry(OP_MOUSE_BINDINGS[mb], mb);
 	return ma>UMark ? Reveal : ma;
 }
@@ -244,12 +254,12 @@ void GameSettingsWidget::readConfig()
 
 bool GameSettingsWidget::writeConfig()
 {
-    KConfig *conf = SettingsDialog::config();
-	conf->writeEntry(OP_UMARK, _umark->isChecked());
-	conf->writeEntry(OP_KEYBOARD, _keyb->isChecked());
-    conf->writeEntry(OP_PAUSE_FOCUS, _focus->isChecked());
+    SettingsConfigGroup cg;
+	cg.config()->writeEntry(OP_UMARK, _umark->isChecked());
+	cg.config()->writeEntry(OP_KEYBOARD, _keyb->isChecked());
+    cg.config()->writeEntry(OP_PAUSE_FOCUS, _focus->isChecked());
 	for (uint i=0; i<3; i++)
-		conf->writeEntry(OP_MOUSE_BINDINGS[i], _cb[i]->currentItem());
+		cg.config()->writeEntry(OP_MOUSE_BINDINGS[i], _cb[i]->currentItem());
     return true;
 }
 
@@ -314,22 +324,24 @@ AppearanceSettingsWidget::AppearanceSettingsWidget(BaseSettingsDialog *parent)
 
 uint AppearanceSettingsWidget::readCaseSize()
 {
-	uint cs = SettingsDialog::config()
-              ->readUnsignedNumEntry(OP_CASE_SIZE, DEFAULT_CASE_SIZE);
+    SettingsConfigGroup cg;
+	uint cs
+        = cg.config()->readUnsignedNumEntry(OP_CASE_SIZE, DEFAULT_CASE_SIZE);
 	cs = QMAX(QMIN(cs, MAX_CASE_SIZE), MIN_CASE_SIZE);
 	return cs;
 }
 
 void AppearanceSettingsWidget::writeCaseSize(uint size)
 {
-    KConfig *conf = SettingsDialog::config();
-    conf->writeEntry(OP_CASE_SIZE, size);
+    SettingsConfigGroup cg;
+    cg.config()->writeEntry(OP_CASE_SIZE, size);
 }
 
 QColor AppearanceSettingsWidget::readColor(const QString & key,
                                            QColor defaultColor)
 {
-	return SettingsDialog::config()->readColorEntry(key, &defaultColor);
+    SettingsConfigGroup cg;
+	return cg.config()->readColorEntry(key, &defaultColor);
 }
 
 KMines::CaseProperties AppearanceSettingsWidget::readCaseProperties()
@@ -361,12 +373,12 @@ void AppearanceSettingsWidget::readConfig()
 bool AppearanceSettingsWidget::writeConfig()
 {
     writeCaseSize( _caseSize->value() );
-    KConfig *conf = SettingsDialog::config();
-    conf->writeEntry(OP_FLAG_COLOR, _flag->color());
-	conf->writeEntry(OP_EXPLOSION_COLOR, _explosion->color());
-	conf->writeEntry(OP_ERROR_COLOR, _error->color());
+    SettingsConfigGroup cg;
+    cg.config()->writeEntry(OP_FLAG_COLOR, _flag->color());
+	cg.config()->writeEntry(OP_EXPLOSION_COLOR, _explosion->color());
+	cg.config()->writeEntry(OP_ERROR_COLOR, _error->color());
 	for (uint i=0; i<NB_NUMBER_COLORS; i++)
-		conf->writeEntry(NCName(i), _numbers[i]->color());
+		cg.config()->writeEntry(NCName(i), _numbers[i]->color());
     return true;
 }
 
@@ -395,42 +407,39 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     swallow( highscores().createSettingsWidget(this) );
 }
 
-KConfig *SettingsDialog::config()
-{
-	KConfig *conf = kapp->config();
-	conf->setGroup("Options");
-	return conf;
-}
-
 Level SettingsDialog::readLevel()
 {
+    SettingsConfigGroup cg;
 	Level::Type type
-        = (Level::Type)config()->readUnsignedNumEntry(OP_LEVEL, 0);
+        = (Level::Type)cg.config()->readUnsignedNumEntry(OP_LEVEL, 0);
     if ( type>Level::Custom ) type = Level::Easy;
     if ( type!=Level::Custom ) return Level(type);
 
-    uint width = config()->readUnsignedNumEntry(OP_CUSTOM_WIDTH, 0);
-    uint height = config()->readUnsignedNumEntry(OP_CUSTOM_HEIGHT, 0);
-    uint nbMines = config()->readUnsignedNumEntry(OP_CUSTOM_MINES, 0);
+    uint width = cg.config()->readUnsignedNumEntry(OP_CUSTOM_WIDTH, 0);
+    uint height = cg.config()->readUnsignedNumEntry(OP_CUSTOM_HEIGHT, 0);
+    uint nbMines = cg.config()->readUnsignedNumEntry(OP_CUSTOM_MINES, 0);
     return Level(width, height, nbMines);
 }
 
 void SettingsDialog::writeLevel(const Level &level)
 {
+    SettingsConfigGroup cg;
 	if ( level.type()==Level::Custom ) {
-		config()->writeEntry(OP_CUSTOM_WIDTH, level.width());
-		config()->writeEntry(OP_CUSTOM_HEIGHT, level.height());
-		config()->writeEntry(OP_CUSTOM_MINES, level.nbMines());
+		cg.config()->writeEntry(OP_CUSTOM_WIDTH, level.width());
+		cg.config()->writeEntry(OP_CUSTOM_HEIGHT, level.height());
+		cg.config()->writeEntry(OP_CUSTOM_MINES, level.nbMines());
 	}
-	config()->writeEntry(OP_LEVEL, (uint)level.type());
+	cg.config()->writeEntry(OP_LEVEL, (uint)level.type());
 }
 
 bool SettingsDialog::readMenuVisible()
 {
-	return config()->readBoolEntry(OP_MENUBAR, true);
+    SettingsConfigGroup cg;
+	return cg.config()->readBoolEntry(OP_MENUBAR, true);
 }
 
 void SettingsDialog::writeMenuVisible(bool visible)
 {
-	config()->writeEntry(OP_MENUBAR, visible);
+    SettingsConfigGroup cg;
+	cg.config()->writeEntry(OP_MENUBAR, visible);
 }

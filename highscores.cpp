@@ -36,13 +36,12 @@ void ExtHighscores::convertLegacy(uint level) const
     case Level::NbLevels: Q_ASSERT(false);
     }
 
-    KConfig *config = kapp->config();
-    config->setGroup(group);
-    QString name = config->readEntry("Name", QString::null);
+    KConfigGroupSaver cg(kapp->config(), group);
+    QString name = cg.config()->readEntry("Name", QString::null);
     if ( name.isNull() ) return;
     if ( name.isEmpty() ) name = i18n("anonymous");
-    uint minutes = config->readUnsignedNumEntry("Min", 0);
-    uint seconds = config->readUnsignedNumEntry("Sec", 0);
+    uint minutes = cg.config()->readUnsignedNumEntry("Min", 0);
+    uint seconds = cg.config()->readUnsignedNumEntry("Sec", 0);
     int score = 3600 - (minutes*60 + seconds);
     if ( score<=0 ) return;
     Score s(score);
