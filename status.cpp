@@ -5,7 +5,6 @@
 #include <qpixmap.h>
 #include <qprinter.h>
 #include <qobjectlist.h>
-#include <qpicture.h>
 
 #include <kapp.h>
 #include <klocale.h>
@@ -14,8 +13,6 @@
 #include "defines.h"
 #include "field.h"
 #include "dialogs.h"
-#include <klocale.h>
-
 
 KMinesStatus::KMinesStatus(QWidget *parent, const char *name)
 : QWidget(parent, name)

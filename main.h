@@ -6,7 +6,6 @@
 #include <kconfig.h>
 #include <kaccel.h>
 #include <kkeydialog.h>
-#include <kapp.h>
 #include <kmenubar.h>
 #include <ktmainwindow.h>
 

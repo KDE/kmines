@@ -1,3 +1,4 @@
+#include <kapp.h>
 #include <klocale.h>
 
 #include "main.h"
@@ -7,8 +8,6 @@
 #include "version.h"
 #include "status.h"
 #include "dialogs.h"
-#include <klocale.h>
-
 
 MainWidget::MainWidget()
 {
