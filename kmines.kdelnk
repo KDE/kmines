@@ -3,6 +3,7 @@
 Name=Minesweeper
 Name[pl]=Saper
 Name[fi]=Miinaharava
+Name[pt]=Minas e Armadilhas
 Icon=kmines.xpm
 Exec=kmines -caption "%c"
 Type=Application
@@ -11,3 +12,4 @@ Comment=KDE replacement for xbombs
 Comment[de]=Das bekannte Spiel Bombenfinden
 Comment[pl]=Wersja KDE popularnego sapera.
 Comment[fi]=Tunnettu miinaharavapeli
+Comment[pt]=Um jogo muito popular
