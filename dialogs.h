@@ -88,7 +88,7 @@ class CustomDialog : public KDialogBase, public KMines
 };
 
 //-----------------------------------------------------------------------------
-class GameSettingsWidget : public BaseSettingsWidget, public KMines
+class GameSettingsWidget : public BaseGameSettingsWidget, public KMines
 {
  Q_OBJECT
  public:
@@ -110,7 +110,8 @@ class GameSettingsWidget : public BaseSettingsWidget, public KMines
 	QComboBox *_cb[3];
 };
 
-class AppearanceSettingsWidget : public BaseSettingsWidget, public KMines
+class AppearanceSettingsWidget : public BaseAppearanceSettingsWidget,
+                                 public KMines
 {
  Q_OBJECT
  public:

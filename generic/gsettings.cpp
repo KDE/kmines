@@ -63,5 +63,7 @@ void BaseSettingsDialog::accept()
 
 void BaseSettingsDialog::showPage()
 {
-    KDialogBase::showPage( pageIndex((QWidget *)sender()) );
+    QWidget *page = (QWidget *)sender()->parent();
+    qDebug("showPage %i", pageIndex(page));
+    KDialogBase::showPage( pageIndex(page) );
 }

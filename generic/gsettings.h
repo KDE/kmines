@@ -25,7 +25,7 @@ class BaseSettings
     BaseSettings(const QString &name, const QString &icon,
 				 const QString &group = QString::null)
 		: _name(name), _icon(icon), _group(group) {}
-	
+
     QString name() const { return _name; }
     QString icon() const { return _icon; }
     KConfig *config() const;
@@ -59,6 +59,25 @@ class BaseSettingsWidget : public QWidget
  private:
     BaseSettings *_settings;
 };
+
+class BaseAppearanceSettingsWidget : public BaseSettingsWidget
+{
+ Q_OBJECT
+ public:
+    BaseAppearanceSettingsWidget(QWidget *parent)
+       : BaseSettingsWidget(new BaseSettings(i18n("Appearance"), "appearance"),
+                            parent, "appearance_settings") {}
+};
+
+class BaseGameSettingsWidget : public BaseSettingsWidget
+{
+ Q_OBJECT
+ public:
+    BaseGameSettingsWidget(QWidget *parent)
+        : BaseSettingsWidget(new BaseSettings(i18n("Game"), "misc"),
+                             parent, "game_settings") {}
+};
+
 
 //-----------------------------------------------------------------------------
 class BaseSettingsDialog : public KDialogBase

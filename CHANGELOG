@@ -1,15 +1,16 @@
 2.1.2 (18 October 2001) [in CVS]
  * some more reorganisation
  * better custom dialog
+ * #### test i18n error msg
 
 2.1.1 (16 October 2001)
  * port to Qt 3.0 completed (hopefully)
  * some changes in highscores (nicer dialog)
- * i18n error messages for wwhs (#### test them)
+ * i18n error messages for wwhs
  * new smiley pixmap for pause
  * clicking smiley resumes when game paused
  * changes in keyboard accelators since Ctrl and Shift seems to be
-   forbidden as keys now ... (#### investigate that)
+   forbidden as keys now ...
  * count nb of clicks (reveal, autoreveal, mark) and display it in highscores.
 
 2.1.0 (17 July 2001) 

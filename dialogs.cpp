@@ -178,8 +178,7 @@ const char *OP_MOUSE_BINDINGS[3] =
     { "mouse left", "mouse mid", "mouse right" };
 
 GameSettingsWidget::GameSettingsWidget(BaseSettingsDialog *parent)
-    : BaseSettingsWidget(new BaseSettings(i18n("Game"), "misc"),
-						 parent, "game_settings")
+    : BaseGameSettingsWidget(parent)
 {
     QVBoxLayout *top = new QVBoxLayout(this, parent->spacingHint());
 
@@ -281,8 +280,7 @@ const QColor DEFAULT_EXPLOSION_COLOR = Qt::red;
 const QColor DEFAULT_ERROR_COLOR     = Qt::red;
 
 AppearanceSettingsWidget::AppearanceSettingsWidget(BaseSettingsDialog *parent)
-    : BaseSettingsWidget(new BaseSettings(i18n("Appearance"), "appearance"),
-						 parent, "appearance_settings")
+    : BaseAppearanceSettingsWidget(parent)
 {
     QVBoxLayout *top = new QVBoxLayout(this, parent->spacingHint());
 
