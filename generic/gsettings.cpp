@@ -158,29 +158,164 @@ void KConfigItemList::itemDestroyed(QObject *object)
 }
 
 //-----------------------------------------------------------------------------
-KConfigItem::KConfigItem(const Data &data, QObject *object,
+class KConfigItemPrivate
+{
+ public:
+    struct Data {
+        const char *typeName, *className, *signal, *property, *labelProperty;
+        QVariant::Type type;
+    };
+
+    KConfigItemPrivate(KConfigItem::Type type, QVariant::Type valueType,
+                       QObject *object)
+        : _type(type), _object(0) {
+        if ( object==0 ) return;
+
+        for (uint i=0; i<DATA[type].nb; i++) {
+            const Data &data = DATA[type].data[i];
+            if ( valueType==data.type && object->inherits(data.className) ) {
+                _objectType = i;
+                _object = object;
+                return;
+            }
+        }
+        kdError() << "object not supported for type \"" << DATA[type].name
+                  << "\" and value type \"" << QVariant::typeToName(valueType)
+                  << endl;
+    }
+
+    QObject *object() const { return _object; }
+    uint objectType() const {
+        Q_ASSERT(_object);
+        return _objectType;
+    }
+
+    static const char *name(KConfigItem::Type type) {
+        return DATA[type].name;
+    }
+
+    const Data &data() const {
+        Q_ASSERT(_object);
+        return DATA[_type].data[_objectType];
+    }
+
+    enum SimpleType {
+        CheckBox = 0, LineEdit, ColorButton, ToggleAction,
+        ColorComboBox, EditableComboBox, DatePicker, FontAction,
+        FontSizeAction, DateTimeEdit, TextEdit, NB_SIMPLE_TYPES
+    };
+    enum RangedType {
+        IntInput = 0, DoubleInput, SpinBox, Slider, Dial,
+        Selector, NB_RANGED_TYPES
+    };
+    enum MultiType {
+        ReadOnlyComboBox = 0, RadioButtonGroup, SelectAction, NB_MULTI_TYPES
+    };
+
+ private:
+    KConfigItem::Type _type;
+    int      _objectType;
+    QObject *_object;
+
+    static const Data SIMPLE_DATA[NB_SIMPLE_TYPES];
+    static const Data RANGED_DATA[NB_RANGED_TYPES];
+    static const Data MULTI_DATA[NB_MULTI_TYPES];
+
+     struct ItemData {
+         uint nb;
+         const Data *data;
+         const char *name;
+    };
+    static const ItemData DATA[KConfigItem::NB_ITEM_TYPES];
+};
+
+const KConfigItemPrivate::Data
+KConfigItemPrivate::SIMPLE_DATA[NB_SIMPLE_TYPES] = {
+    {"CheckBox", "QCheckBox", SIGNAL(toggled(bool)),
+     "checked",     "text", QVariant::Bool},
+    {"LineEdit", "QLineEdit", SIGNAL(textChanged(const QString &)),
+     "text",        0,      QVariant::String},
+    {"ColorButton", "KColorButton", SIGNAL(changed(const QColor &)),
+     "color",       0,      QVariant::Color},
+    {"ToggleAction", "KToggleAction", SIGNAL(toggled(bool)),
+     "checked",     "text", QVariant::Bool},
+    // KColorComboBox must to be before QComboBox
+    {"ColorComboBox", "KColorCombo", SIGNAL(activated(const QString &)),
+     "color",       0,      QVariant::UInt},
+    {"ComboBox", "QComboBox", SIGNAL(activated(const QString &)),
+     "currentText", 0,      QVariant::UInt},
+    {"DatePicker", "KDatePicker", SIGNAL(dateChanged(QDate)),
+     "date",        0,      QVariant::Date},
+    {"FontAction", "KFontAction", SIGNAL(activated(int)),
+     "font",        "text", QVariant::String},
+    {"FontSizeAction", "KFontSizeAction", SIGNAL(activated(int)),
+     "fontSize",    "text", QVariant::Int},
+    {"DateTimeEdit", "QDateTimeEdit", SIGNAL(valueChanged(const QDateTime &)),
+     "dateTime",    0,      QVariant::DateTime},
+    {"TextEdit", "QTextEdit", SIGNAL(textChanged(const QString &)),
+     "text",        0,      QVariant::String}
+};
+
+const KConfigItemPrivate::Data
+KConfigItemPrivate::RANGED_DATA[NB_RANGED_TYPES] = {
+    {"IntInput", "KIntNumInput", SIGNAL(valueChanged(int)),
+     "value", "label", QVariant::Int},
+    {"DoubleInput", "KDoubleNumInput", SIGNAL(valueChanged(double)),
+     "value", "label", QVariant::Double},
+    {"SpinBox", "QSpinBox", SIGNAL(valueChanged(int)),
+     "value", 0, QVariant::Int},
+    {"Slider", "QSlider", SIGNAL(valueChanged(int)),
+     "value", 0, QVariant::Int},
+    {"Dial", "QDial", SIGNAL(valueChanged(int)),
+     "value", 0, QVariant::Int},
+    {"Selector", "KSelector", SIGNAL(valueChanged(int)),
+     "value", 0, QVariant::Int}
+};
+
+const KConfigItemPrivate::Data
+KConfigItemPrivate::MULTI_DATA[NB_MULTI_TYPES] = {
+    {"ReadOnlyComboBox", "QComboBox", SIGNAL(activated(const QString &)),
+     "currentText", 0, QVariant::String},
+    {"RadioButtonGroup", "QButtonGroup", SIGNAL(clicked(int)),
+     0, "text", QVariant::String},
+    {"SelectAction", "KSelectAction", SIGNAL(activated(int)),
+     "currentText", "text", QVariant::String}
+};
+
+const KConfigItemPrivate::ItemData
+KConfigItemPrivate::DATA[KConfigItem::NB_ITEM_TYPES] = {
+    { NB_SIMPLE_TYPES, SIMPLE_DATA, "simple" },
+    { NB_RANGED_TYPES, RANGED_DATA, "ranged" },
+    { NB_MULTI_TYPES,  MULTI_DATA,  "multi"  }
+};
+
+//-----------------------------------------------------------------------------
+KConfigItem::KConfigItem(Type type, QVariant::Type valueType,
+                         QObject *object,
                          const QString &group, const QString &key,
                          const QVariant &def, const QString &text,
                          KConfigCollection *col, const char *name)
-    : KConfigItemBase(col, name), _data(data),
-      _group(group), _key(key), _def(def), _text(text), _label(0)
+    : KConfigItemBase(col, name), _group(group), _key(key),
+      _def(def), _text(text), _label(0)
 {
-    if ( !_def.cast(data.type) )
+    d = new KConfigItemPrivate(type, valueType, object);
+
+    if ( !_def.cast(valueType) )
         kdWarning() << k_funcinfo << "cannot cast default value to type : "
-                    << QVariant::typeToName(data.type) << endl;
+                    << QVariant::typeToName(valueType) << endl;
     if (col) col->insert(this);
 
-    _object = object;
-    if (object) {
-        if ( !object->inherits(data.className) ) {
-            kdError() << k_funcinfo << "unsupported object type" << endl;
-            return;
-        }
-        QObject::connect(object, data.signal, SLOT(modifiedSlot()));
+    if ( d->object() ) {
+        QObject::connect(object, d->data().signal, SLOT(modifiedSlot()));
         QObject::connect(object, SIGNAL(destroyed(QObject *)),
                          SLOT(objectDestroyed()));
         if ( !text.isNull() ) setText(text);
     }
+}
+
+KConfigItem::~KConfigItem()
+{
+    delete d;
 }
 
 void KConfigItem::objectDestroyed()
@@ -203,30 +338,34 @@ void KConfigItem::setProxyLabel(QLabel *label)
         if ( !_tooltip.isEmpty() ) QToolTip::add(_label, _tooltip);
     }
 
-    if (_object) {
+    if ( d->object() ) {
         QString text = (label ? QString::null : _text);
-        const char *p = _data.labelProperty;
-        if (p) _object->setProperty(p, text);
+        const char *p = d->data().labelProperty;
+        if (p) d->object()->setProperty(p, text);
     }
 }
 
 void KConfigItem::setWhatsThis(const QString &text)
 {
     _whatsthis = text;
-    if ( _object->inherits("QWidget") )
-        QWhatsThis::add(static_cast<QWidget *>(_object), text);
-    else if ( _object->inherits("KAction") )
-        static_cast<KAction *>(_object)->setWhatsThis(text);
+    if ( d->object() ) {
+        if ( d->object()->inherits("QWidget") )
+            QWhatsThis::add(static_cast<QWidget *>(d->object()), text);
+        else if ( d->object()->inherits("KAction") )
+            static_cast<KAction *>(d->object())->setWhatsThis(text);
+    }
     if (_label) QWhatsThis::add(_label, text);
 }
 
 void KConfigItem::setToolTip(const QString &text)
 {
     _tooltip = text;
-    if ( _object->inherits("QWidget") )
-        QToolTip::add(static_cast<QWidget *>(_object), text);
-    else if ( _object->inherits("KAction") )
-        static_cast<KAction *>(_object)->setToolTip(text);
+    if ( d->object() ) {
+        if ( d->object()->inherits("QWidget") )
+            QToolTip::add(static_cast<QWidget *>(d->object()), text);
+        else if ( d->object()->inherits("KAction") )
+            static_cast<KAction *>(d->object())->setToolTip(text);
+    }
     if (_label) QToolTip::add(_label, text);
 }
 
@@ -275,98 +414,61 @@ bool KConfigItem::checkType(const QVariant &v) const
 
 void KConfigItem::setValue(const QVariant &v)
 {
-    Q_ASSERT(_object);
+    Q_ASSERT( d->object() );
     checkType(v);
 
-    bool ok = false;
-    const char *p = _data.property;
+    const char *p = d->data().property;
     Q_ASSERT(p);
-    ok = _object->setProperty(p, v);
+    bool ok = d->object()->setProperty(p, v);
     Q_ASSERT(ok);
 }
 
 QVariant KConfigItem::value() const
 {
-    Q_ASSERT(_object);
+    Q_ASSERT( d->object() );
 
-    const char *p = _data.property;
+    const char *p = d->data().property;
     Q_ASSERT(p);
-    QVariant v = _object->property(p);
+    QVariant v = d->object()->property(p);
     Q_ASSERT(v.isValid());
     return v;
 }
 
-//-----------------------------------------------------------------------------
-const KConfigItem::Data KSimpleConfigItem::DATA[NB_TYPES] = {
-    {"CheckBox", "QCheckBox", SIGNAL(toggled(bool)),
-     "checked",     "text", QVariant::Bool},
-    {"LineEdit", "QLineEdit", SIGNAL(textChanged(const QString &)),
-     "text",        0,      QVariant::String},
-    {"ColorButton", "KColorButton", SIGNAL(changed(const QColor &)),
-     "color",       0,      QVariant::Color},
-    {"ToggleAction", "KToggleAction", SIGNAL(toggled(bool)),
-     "checked",     "text", QVariant::Bool},
-    // KColorComboBox must to be before QComboBox
-    {"ColorComboBox", "KColorCombo", SIGNAL(activated(const QString &)),
-     "color",       0,      QVariant::UInt},
-    {"ComboBox", "QComboBox", SIGNAL(activated(const QString &)),
-     "currentText", 0,      QVariant::UInt},
-    {"DatePicker", "KDatePicker", SIGNAL(dateChanged(QDate)),
-     "date",        0,      QVariant::Date},
-    {"FontAction", "KFontAction", SIGNAL(activated(int)),
-     "font",        "text", QVariant::String},
-    {"FontSizeAction", "KFontSizeAction", SIGNAL(activated(int)),
-     "fontSize",    "text", QVariant::Int},
-    {"DateTimeEdit", "QDateTimeEdit", SIGNAL(valueChanged(const QDateTime &)),
-     "dateTime",    0,      QVariant::DateTime},
-    {"TextEdit", "QTextEdit", SIGNAL(textChanged(const QString &)),
-     "text",        0,      QVariant::String},
-    { 0, 0, 0, 0, 0, QVariant::Invalid },
-    { 0, 0, 0, 0, 0, QVariant::Invalid },
-    { 0, 0, 0, 0, 0, QVariant::Invalid },
-    { 0, 0, 0, 0, 0, QVariant::Invalid },
-    { 0, 0, 0, 0, 0, QVariant::Invalid }
-};
+QObject *KConfigItem::object() const
+{
+    return d->object();
+}
 
-KSimpleConfigItem::KSimpleConfigItem(Type type, QObject *object,
+uint KConfigItem::objectType() const
+{
+    return d->objectType();
+}
+
+//-----------------------------------------------------------------------------
+KSimpleConfigItem::KSimpleConfigItem(QVariant::Type type, QObject *object,
                                      const QString &group, const QString &key,
                                      const QVariant &def, const QString &text,
                                      KConfigCollection *col, const char *name)
-    : KConfigItem(DATA[type], object, group, key, def, text, col, name)
+    : KConfigItem(Simple, type, object, group, key, def, text, col, name)
+{}
+
+KSimpleConfigItem::~KSimpleConfigItem()
 {}
 
 //-----------------------------------------------------------------------------
-const KConfigItem::Data KRangedConfigItem::DATA[NB_TYPES] = {
-    {"IntInput", "KIntNumInput", SIGNAL(valueChanged(int)),
-     "value", "label", QVariant::Int},
-    {"DoubleInput", "KDoubleNumInput", SIGNAL(valueChanged(double)),
-     "value", "label", QVariant::Double},
-    {"SpinBox", "QSpinBox", SIGNAL(valueChanged(int)),
-     "value", 0, QVariant::Int},
-    {"Slider", "QSlider", SIGNAL(valueChanged(int)),
-     "value", 0, QVariant::Int},
-    {"Dial", "QDial", SIGNAL(valueChanged(int)),
-     "value", 0, QVariant::Int},
-    {"Selector", "KSelector", SIGNAL(valueChanged(int)),
-     "value", 0, QVariant::Int},
-    { 0, 0, 0, 0, 0, QVariant::Invalid },
-    { 0, 0, 0, 0, 0, QVariant::Invalid },
-    { 0, 0, 0, 0, 0, QVariant::Invalid },
-    { 0, 0, 0, 0, 0, QVariant::Invalid },
-    { 0, 0, 0, 0, 0, QVariant::Invalid }
-};
-
-KRangedConfigItem::KRangedConfigItem(Type type, QObject *object,
+KRangedConfigItem::KRangedConfigItem(QVariant::Type type, QObject *object,
                                      const QString &group, const QString &key,
                                      const QVariant &def,
                                      const QVariant &min, const QVariant &max,
                                      const QString &text,
                                      KConfigCollection *col, const char *name)
-    : KConfigItem(DATA[type], object, group, key, def, text, col, name),
-      _type(type)
+    : KConfigItem(Ranged, type, object, group, key, def, text, col, name)
 {
     setRange(min, max);
 }
+
+KRangedConfigItem::~KRangedConfigItem()
+{}
 
 void KRangedConfigItem::setRange(const QVariant &min, const QVariant &max)
 {
@@ -375,7 +477,7 @@ void KRangedConfigItem::setRange(const QVariant &min, const QVariant &max)
     checkType(max);
     _max = max;
 
-    if (object()) {
+    if ( object() ) {
         blockSignals(true); // do not change the state of the setting
         object()->setProperty("minValue", min);
         object()->setProperty("maxValue", max);
@@ -397,23 +499,23 @@ QVariant KRangedConfigItem::bound(const QVariant &v) const
 {
     checkType(v);
 
-    if (object()) {
+    if ( object() ) {
         const KIntNumInput *in;
         const KDoubleNumInput *dn;
-        switch (_type) {
-        case IntInput:
+        switch ( (KConfigItemPrivate::RangedType)objectType() ) {
+        case KConfigItemPrivate::IntInput:
             in = static_cast<const KIntNumInput *>(object());
             return kMin(kMax(v.toInt(), in->minValue()), in->maxValue());
-        case DoubleInput:
+        case KConfigItemPrivate::DoubleInput:
             dn = static_cast<const KDoubleNumInput *>(object());
             return kMin(kMax(v.toDouble(), dn->minValue()), dn->maxValue());
-        case SpinBox:
+        case KConfigItemPrivate::SpinBox:
             return static_cast<const QSpinBox *>(object())->bound(v.toInt());
-        case Slider:
+        case KConfigItemPrivate::Slider:
             return static_cast<const QSlider *>(object())->bound(v.toInt());
-        case Dial:
+        case KConfigItemPrivate::Dial:
             return static_cast<const QDial *>(object())->bound(v.toInt());
-        case Selector:
+        case KConfigItemPrivate::Selector:
             return static_cast<const KSelector *>(object())->bound(v.toInt());
         default:
             break;
@@ -429,6 +531,7 @@ QVariant KRangedConfigItem::bound(const QVariant &v) const
         }
     }
 
+    Q_ASSERT(false);
     return QVariant();
 }
 
@@ -438,48 +541,41 @@ QVariant KRangedConfigItem::configValue() const
 }
 
 //-----------------------------------------------------------------------------
-const KConfigItem::Data KMultiConfigItem::DATA[NB_TYPES] = {
-    {"ReadOnlyComboBox", "QComboBox", SIGNAL(activated(const QString &)),
-     "currentText", 0, QVariant::String},
-    {"RadioButtonGroup", "QButtonGroup", SIGNAL(clicked(int)),
-     0, "text", QVariant::String},
-    {"SelectAction", "KSelectAction", SIGNAL(activated(int)),
-     "currentText", "text", QVariant::String},
-    { 0, 0, 0, 0, 0, QVariant::Invalid },
-    { 0, 0, 0, 0, 0, QVariant::Invalid },
-    { 0, 0, 0, 0, 0, QVariant::Invalid },
-    { 0, 0, 0, 0, 0, QVariant::Invalid },
-    { 0, 0, 0, 0, 0, QVariant::Invalid }
-};
-
-KMultiConfigItem::KMultiConfigItem(Type type, QObject *object, uint nbItems,
+KMultiConfigItem::KMultiConfigItem(QObject *obj, uint nbItems,
                                    const QString &group, const QString &key,
                                    const QVariant &def, const QString &text,
                                    KConfigCollection *col, const char *name)
-    : KConfigItem(DATA[type], object, group, key, def, text, col, name),
-      _type(type), _entries(nbItems)
+    : KConfigItem(Multi, QVariant::String, obj, group, key, def, text,
+                  col, name),
+      _entries(nbItems)
 {
-    if ( type==ReadOnlyComboBox
-         && object && object->property("editable").toBool() ) {
+    if ( object()==0 ) return;
+
+    KConfigItemPrivate::MultiType type =
+        (KConfigItemPrivate::MultiType)objectType();
+    if ( type==KConfigItemPrivate::ReadOnlyComboBox
+         && object()->property("editable").toBool() ) {
         kdError() << k_funcinfo << "the combobox should be readonly" << endl;
         return;
     }
 
-    if ( object==0 ) return;
     QStringList list;
     for (uint i=0; i<nbItems; i++)
         list.append(QString::null);
     switch (type) {
-    case ReadOnlyComboBox:
-        static_cast<QComboBox *>(object)->insertStringList(list);
+    case KConfigItemPrivate::ReadOnlyComboBox:
+        static_cast<QComboBox *>(object())->insertStringList(list);
         break;
-    case SelectAction:
-        static_cast<KSelectAction *>(object)->setItems(list);
+    case KConfigItemPrivate::SelectAction:
+        static_cast<KSelectAction *>(object())->setItems(list);
         break;
     default:
         break;
     }
 }
+
+KMultiConfigItem::~KMultiConfigItem()
+{}
 
 void KMultiConfigItem::map(int id, const char *entry, const QString &text)
 {
@@ -487,18 +583,18 @@ void KMultiConfigItem::map(int id, const char *entry, const QString &text)
     if ( object()==0 ) return;
 
     QButton *button;
-    switch (_type) {
-    case ReadOnlyComboBox:
+    switch ( (KConfigItemPrivate::MultiType)objectType() ) {
+    case KConfigItemPrivate::ReadOnlyComboBox:
         static_cast<QComboBox *>(object())->changeItem(text, id);
         break;
-    case RadioButtonGroup:
+    case KConfigItemPrivate::RadioButtonGroup:
         button = static_cast<QButtonGroup *>(object())->find(id);
         if ( button && button->inherits("QRadioButton") )
             button->setText(text);
         else kdError() << k_funcinfo << "cannot find radio button at id #"
                        << id << endl;
         break;
-    case SelectAction:
+    case KConfigItemPrivate::SelectAction:
         static_cast<KSelectAction *>(object())->changeItem(id, text);
         break;
     default:
@@ -525,7 +621,8 @@ void KMultiConfigItem::setValue(const QVariant &v)
     bool ok = false;
     int id = mapToId(v.toString().utf8());
     if ( id==-1 ) return;
-    if ( _type==RadioButtonGroup ) {
+    if ( (KConfigItemPrivate::MultiType)objectType()
+         ==KConfigItemPrivate::RadioButtonGroup ) {
         QButton *b = static_cast<QButtonGroup *>(object())->find(id);
         if ( b && b->inherits("QRadioButton") )
             static_cast<QRadioButton *>(b)->setChecked(true);
@@ -553,7 +650,8 @@ QVariant KMultiConfigItem::value() const
     Q_ASSERT(object());
 
     int id;
-    if ( _type==RadioButtonGroup )
+    if ( (KConfigItemPrivate::MultiType)objectType()
+         ==KConfigItemPrivate::RadioButtonGroup )
         id = findRadioButtonId(static_cast<const QButtonGroup *>(object()));
     else {
         QVariant v = object()->property("currentItem");
@@ -573,13 +671,6 @@ int KMultiConfigItem::configIndex() const
 }
 
 //-----------------------------------------------------------------------------
-const KConfigCollection::ItemData
-KConfigCollection::ITEM_DATA[NB_ITEM_TYPES] = {
-    { KSimpleConfigItem::NB_TYPES, KSimpleConfigItem::DATA },
-    { KRangedConfigItem::NB_TYPES, KRangedConfigItem::DATA },
-    { KMultiConfigItem::NB_TYPES,  KMultiConfigItem::DATA  }
-};
-
 QDomDocument *KConfigCollection::_xml = 0;
 
 KConfigCollection::KConfigCollection(KConfigBase *config,
@@ -638,14 +729,14 @@ void KConfigCollection::readConfigFile()
     QString xml_file = locate("data", name + '/' + name + "config.rc");
     QFile file(xml_file);
     if ( !file.open( IO_ReadOnly ) )
-        kdError(1000) << "No XML config file " << xml_file << endl;
+        kdFatal() << "No XML config file \"" << xml_file << "\"" << endl;
     else {
         QByteArray buffer(file.readAll());
         _xml->setContent( QString::fromUtf8(buffer.data(), buffer.size()) );
     }
 }
 
-#define ENTRY_NAME "entry named \"" << name << "\")"
+#define ENTRY_NAME "entry named \"" << name << "\""
 
 KConfigItem *KConfigCollection::createConfigItem(const char *name,
                                                  QObject *object)
@@ -658,6 +749,7 @@ KConfigItem *KConfigCollection::createConfigItem(const char *name,
 {
     readConfigFile();
     QDomElement root = _xml->namedItem("kconfig").toElement();
+    if ( root.isNull() ) kdFatal() << "no \"kconfig\" element" << endl;
 
     // find entry and group
     bool several = false;
@@ -675,7 +767,7 @@ KConfigItem *KConfigCollection::createConfigItem(const char *name,
             group = grp;
         }
     }
-    if ( entry.isNull() ) kdError() << "no " << ENTRY_NAME << endl;
+    if ( entry.isNull() ) kdFatal() << "no " << ENTRY_NAME << endl;
     if (several) kdWarning() << "several " << ENTRY_NAME << endl;
 
     // read common attributes
@@ -686,42 +778,54 @@ KConfigItem *KConfigCollection::createConfigItem(const char *name,
     QString whatsthis = entry.namedItem("whatsthis").toElement().text();
     QString tooltip = entry.namedItem("tooltip").toElement().text();
 
-    // recognize type
-    QString stype = entry.attribute("type");
-    ItemType type;
-    uint specificType;
-    const KConfigItem::Data *data = 0;
-    for (uint i = 0; i<NB_ITEM_TYPES; i++)
-        for (uint k = 0; k<ITEM_DATA[i].nb; k++)
-            if ( stype==ITEM_DATA[i].data[k].typeName ) {
-                data = &ITEM_DATA[i].data[k];
-                type = (ItemType)i;
-                specificType = k;
+    // recognize item type
+    QString itype = entry.attribute("type");
+    KConfigItem::Type type = KConfigItem::NB_ITEM_TYPES;
+    if ( itype.isEmpty() ) type = KConfigItem::Simple;
+    else {
+        for (uint i=0; i<KConfigItem::NB_ITEM_TYPES; i++)
+            if ( itype==KConfigItemPrivate::name((KConfigItem::Type)i) ) {
+                type = (KConfigItem::Type)i;
                 break;
             }
-    if ( data==0 ) {
-        kdError() << "type not recognized for " << ENTRY_NAME << endl;
-        data = &ITEM_DATA[0].data[0];
+        if ( type==KConfigItem::NB_ITEM_TYPES ) {
+            kdFatal() << "unrecognized item type (" << itype << ") for "
+                      << ENTRY_NAME << endl;
+            type = KConfigItem::Simple;
+        }
+    }
+
+    // recognize value type
+    QString stype = entry.attribute("vtype");
+    QVariant::Type vtype;
+    if ( type==KConfigItem::Multi ) {
+        if ( !stype.isEmpty() && stype!="QString" )
+            kdWarning() << ENTRY_NAME
+                        << " : only QString value type is allowed for"
+                        << " multi config" << endl;
+    } else {
+        vtype = QVariant::nameToType(stype.utf8());
+        if ( vtype==QVariant::Invalid )
+            kdFatal() << ENTRY_NAME << " : invalid value type" << endl;
     }
 
     // check default value
     QVariant def = KConfigString::toVariant(entry.attribute("defaultValue"),
-                                            data->type);
+                                            vtype);
 
     // specific
-    if ( type==Simple )
-        return new KSimpleConfigItem((KSimpleConfigItem::Type)specificType,
-                                     object, groupKey, key, def, text,
-                                     col, name);
-    else if ( type==Ranged ) {
+    KConfigItem *ci = 0;
+    if ( type==KConfigItem::Simple )
+        ci = new KSimpleConfigItem(vtype, object, groupKey, key, def, text,
+                                   col, name);
+    else if ( type==KConfigItem::Ranged ) {
         QVariant min = KConfigString::toVariant(entry.attribute("minValue"),
-                                                data->type);
+                                                vtype);
         QVariant max = KConfigString::toVariant(entry.attribute("maxValue"),
-                                                data->type);
-        return new KRangedConfigItem((KRangedConfigItem::Type)specificType,
-                                     object, groupKey, key, def, min, max,
-                                     text, col, name);
-    } else if ( type==Multi ) {
+                                                vtype);
+       ci = new KRangedConfigItem(vtype, object, groupKey, key, def, min,
+                                  max, text, col, name);
+    } else if ( type==KConfigItem::Multi ) {
         QDomNodeList list = entry.elementsByTagName("Item");
         QStringList names, texts;
         for (uint i=0; i<list.count(); i++) {
@@ -731,15 +835,16 @@ KConfigItem *KConfigCollection::createConfigItem(const char *name,
             texts.append(item.text());
         }
         KMultiConfigItem *mci =
-            new KMultiConfigItem((KMultiConfigItem::Type)specificType, object,
-                                 names.count(), groupKey, key, def, text,
-                                 col, name);
+            new KMultiConfigItem(object, names.count(), groupKey, key, def,
+                                 text, col, name);
         for (uint i=0; i<names.count(); i++)
             mci->map(i, names[i].utf8(), i18n(texts[i].utf8()));
-        return mci;
+        ci = mci;
     }
-    Q_ASSERT(false);
-    return 0;
+
+    if ( !whatsthis.isNull() ) ci->setWhatsThis(whatsthis);
+    if ( !tooltip.isNull() ) ci->setToolTip(tooltip);
+    return ci;
 }
 
 //-----------------------------------------------------------------------------

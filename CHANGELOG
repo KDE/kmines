@@ -1,4 +1,7 @@
-2.1.6 (24 April 2002) [CVS 3.1 devel]
+2.1.7 (02 May 2002) [CVS 3.1 devel]
+ * XML configuration is working !!
+
+2.1.6 (24 April 2002)
  * mark/unmark actions on mouse release [patch by Thomas Capricelli]
  * "magic reveal" : a new option that leave only the non-trivial cases to
    solve [patch by Thomas Capricelli]

@@ -169,6 +169,7 @@ class KConfigCollection;
 class KConfigBase;
 class QLabel;
 class QButtonGroup;
+class KConfigItemPrivate;
 
 /**
  * Abstract class that manages an UI control that load/save its state from
@@ -183,14 +184,24 @@ class KConfigItem : public KConfigItemBase
 
  public:
     /**
-     * @internal.
+     * @internal
      */
-    struct Data {
-        const char *typeName, *className, *signal, *property, *labelProperty;
-        QVariant::Type type;
-    };
+    enum Type { Simple = 0, Ranged, Multi, NB_ITEM_TYPES };
 
- public:
+     /**
+     * @internal
+     *
+     * The @ref KConfigBase used to load/save the state is taken from the
+     * collection. If @param collection is null, the application
+     * @ref KConfigBase is used.
+     */
+     KConfigItem(Type type, QVariant::Type valueType, QObject *object,
+                 const QString &group, const QString &key,
+                 const QVariant &def, const QString &text,
+                 KConfigCollection *collection, const char *name);
+
+    ~KConfigItem();
+
     /**
      * Set the text shown to the user.
      */
@@ -244,21 +255,9 @@ class KConfigItem : public KConfigItemBase
     /**
      * @return the managed object.
      */
-    QObject *object() const { return _object; }
+    QObject *object() const;
 
  protected:
-    /**
-     * @internal
-     *
-     * The @ref KConfigBase used to load/save the state is taken from the
-     * collection. If @param collection is null, the application
-     * @ref KConfigBase is used.
-     */
-     KConfigItem(const Data &data, QObject *object,
-                 const QString &group, const QString &key,
-                 const QVariant &def, const QString &text,
-                 KConfigCollection *collection, const char *name);
-
     /**
      * @reimplemented
      */
@@ -287,18 +286,21 @@ class KConfigItem : public KConfigItemBase
  private slots:
     void objectDestroyed();
 
+ protected:
+    /**
+     * @internal
+     */
+    uint objectType() const;
+
  private:
-    const Data    &_data;
-    QObject       *_object;
     const QString  _group, _key;
     QVariant       _def;
     QString        _text, _whatsthis, _tooltip;
     QLabel        *_label;
 
-    KConfigBase *config() const;
-
-    class KConfigItemPrivate;
     KConfigItemPrivate *d;
+
+    KConfigBase *config() const;
 };
 
 /**
@@ -317,34 +319,26 @@ class KSimpleConfigItem : public KConfigItem
 {
  Q_OBJECT
  public:
-    enum Type { CheckBox = 0, LineEdit, ColorButton, ToggleAction,
-                ColorComboBox, EditableComboBox, DatePicker, FontAction,
-                FontSizeAction, DateTimeEdit, TextEdit,
-                Reserved1, Reserved2, Reserved3, Reserved4, Reserved5,
-                NB_TYPES };
-
     /**
      * Constructor.
      *
-     * @param type the control type.
+     * @param type the value type.
      * @param object the managed control.
      * @param group the configuration entry group.
      * @param key the configuration entry key.
-     * @param def the default value.
+     * @param def the default value (should be of type @param type).
      * @param text the text shown to the user.
      */
-    KSimpleConfigItem(Type type, QObject *object,
+    KSimpleConfigItem(QVariant::Type type, QObject *object,
                       const QString &group, const QString &key,
                       const QVariant &def, const QString &text = QString::null,
                       KConfigCollection *collection = 0, const char *name = 0);
 
- private:
-    static const Data DATA[NB_TYPES];
+    ~KSimpleConfigItem();
 
+ private:
     class KSimpleConfigItemPrivate;
     KSimpleConfigItemPrivate *d;
-
-    friend class KConfigCollection;
 };
 
 /**
@@ -358,28 +352,25 @@ class KRangedConfigItem : public KConfigItem
 {
  Q_OBJECT
  public:
-    enum Type { IntInput = 0, DoubleInput, SpinBox, Slider, Dial,
-                Selector,
-                Reserved1, Reserved2, Reserved3, Reserved4, Reserved5,
-                NB_TYPES };
-
     /**
      * Constructor.
      *
-     * @param type the control type.
+     * @param type the value type.
      * @param object the managed control.
      * @param group the configuration entry group.
      * @param key the configuration entry key.
-     * @param def the default value.
-     * @param min the minimum value.
-     * @param max the maximum value.
+     * @param def the default value (should be of type @param type).
+     * @param min the minimum value (should be of type @param type).
+     * @param max the maximum value (should be of type @param type).
      * @param text the text shown to the user.
      */
-    KRangedConfigItem(Type type, QObject *object,
+    KRangedConfigItem(QVariant::Type type, QObject *object,
                       const QString &group, const QString &key,
                       const QVariant &def, const QVariant &min,
                       const QVariant &max, const QString &text = QString::null,
                       KConfigCollection *collection = 0, const char *name = 0);
+
+    ~KRangedConfigItem();
 
     /**
      * Set the range of allowed values.
@@ -409,14 +400,10 @@ class KRangedConfigItem : public KConfigItem
     QVariant configValue() const;
 
  private:
-    static const Data DATA[NB_TYPES];
-    Type     _type;
     QVariant _min, _max;
 
     class KRangedConfigItemPrivate;
     KRangedConfigItemPrivate *d;
-
-    friend class KConfigCollection;
 };
 
 /**
@@ -428,25 +415,22 @@ class KMultiConfigItem : public KConfigItem
 {
  Q_OBJECT
  public:
-    enum Type { ReadOnlyComboBox = 0, RadioButtonGroup, SelectAction,
-                Reserved1, Reserved2, Reserved3, Reserved4, Reserved5,
-                NB_TYPES };
-
     /**
      * Constructor.
      *
-     * @param type the control type.
      * @param object the managed control.
      * @param nbItems the number of items (@ref map).
      * @param group the configuration entry group.
      * @param key the configuration entry key.
-     * @param def the default value.
+     * @param def the default value (should be of type QString).
      * @param text the text shown to the user.
      */
-    KMultiConfigItem(Type type, QObject *object, uint nbItems,
+    KMultiConfigItem(QObject *object, uint nbItems,
                      const QString &group, const QString &key,
                      const QVariant &def, const QString &text = QString::null,
                      KConfigCollection *collection = 0, const char *name = 0);
+
+    ~KMultiConfigItem();
 
      /**
      * Set the entry string that will be saved in the config file when the
@@ -481,8 +465,6 @@ class KMultiConfigItem : public KConfigItem
     int configIndex() const;
 
  private:
-    static const Data DATA[NB_TYPES];
-    Type _type;
     QValueVector<QString> _entries;
 
     class KMultiConfigItemPrivate;
@@ -490,8 +472,6 @@ class KMultiConfigItem : public KConfigItem
 
     int mapToId(const char *entry) const;
     uint findRadioButtonId(const QButtonGroup *) const;
-
-    friend class KConfigCollection;
 };
 
 //-----------------------------------------------------------------------------
@@ -551,13 +531,6 @@ class KConfigCollection : public KConfigItemList
     static KConfigItem *createConfigItem(const char *name, QObject *object,
                                          KConfigCollection *collection);
  private:
-    enum ItemType { Simple = 0, Ranged, Multi, NB_ITEM_TYPES };
-    struct ItemData {
-        uint nb;
-        const KConfigItem::Data *data;
-    };
-    static const ItemData ITEM_DATA[NB_ITEM_TYPES];
-
     KConfigBase  *_config;
     static QDomDocument *_xml;
 
@@ -578,18 +551,17 @@ class KConfigCollection : public KConfigItemList
  * <!DOCTYPE kconfig>
  * <kconfig name="myapp">
  * <Group name="Options">
- *   <Entry name="with_sails" key="with sails" type="CheckBox"
+ *   <Entry name="with_sails" key="with sails" vtype="bool"
  *          defaultValue="true">
  *   <text>Boat with sails</text>
  *   </Entry>
  *
- *   <Entry name="boat_length" key="length" type="IntInput" defaultValue="30"
- *          minValue="10" maxValue="100">
+ *   <Entry name="boat_length" key="length" type="ranged" vtype="int"
+            defaultValue="30" minValue="10" maxValue="100">
  *   <text>Length</text>
  *   </Entry>
  *
- *   <Entry name="boat_type" key="type" type="ReadOnlyComboBox"
- *          defaultValue="catamaran">
+ *   <Entry name="boat_type" key="type" type="multi" defaultValue="catamaran">
  *   <text>Type</text>
  *   <Item name="single hull"><text>Single hull</text></Item>
  *   <Item name="catamaran"><text>Catamaran</text></Item>

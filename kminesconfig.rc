@@ -2,11 +2,11 @@
 <kconfig name="kmines">
 
 <Group name="Options">
-  <Entry name="menubar_visible" key="menubar visible" type="ToggleAction"
+  <Entry name="menubar_visible" key="menubar visible" vtype="bool"
          defaultValue="true">
   </Entry>
 
-  <Entry name="level" key="Level" type="SelectAction" defaultValue="easy">
+  <Entry name="level" key="Level" type="multi" defaultValue="easy">
     <text>Choose &amp;Level</text>
     <Item name="easy"><text>Easy</text></Item>
     <Item name="normal"><text>Normal</text></Item>
@@ -14,43 +14,41 @@
     <Item name="custom"><text>Custom</text></Item>
   </Entry>
 
-  <Entry name="custom_width" key="custom width" type="IntInput"
+  <Entry name="custom_width" key="custom width" type="ranged" vtype="int"
          defaultValue="10" minValue="5" maxValue="50">
   <text>Width</text>
   </Entry>
-  <Entry name="custom_height" key="custom height" type="IntInput"
+  <Entry name="custom_height" key="custom height" type="ranged" vtype="int"
          defaultValue="10" minValue="5" maxValue="50">
   <text>Height</text>
   </Entry>
-  <Entry name="custom_mines" key="custom mines" type="IntInput"
+  <Entry name="custom_mines" key="custom mines" type="ranged" vtype="int"
          defaultValue="20" minValue="1" maxValue="2500">
   <text>No of mines</text>
   </Entry>
 
-  <Entry name="uncertain_mark" key="? mark" type="CheckBox"
-         defaultValue="true">
+  <Entry name="uncertain_mark" key="? mark" vtype="bool" defaultValue="true">
   <text>Enable ? mark</text>
   </Entry>
 
-  <Entry name="keyboard_game" key="keyboard game" type="CheckBox"
+  <Entry name="keyboard_game" key="keyboard game" vtype="bool"
          defaultValue="false">
   <text>Enable keyboard</text>
   </Entry>
 
-  <Entry name="pause_focus" key="paused if lose focus" type="CheckBox"
+  <Entry name="pause_focus" key="paused if lose focus" vtype="bool"
          defaultValue="true">
   <text>Pause if windows lose focus</text>
   </Entry>
 
-  <Entry name="mouse_left" key="mouse left" type="ReadOnlyComboBox"
-         defaultValue="reveal">
+  <Entry name="mouse_left" key="mouse left" type="multi" defaultValue="reveal">
   <text>Left button</text>
   <Item name="reveal"><text>reveal</text></Item>
   <Item name="autoreveal"><text>autoreveal</text></Item>
   <Item name="toggle flag"><text>toggle flag</text></Item>
   <Item name="toggle ? flag"><text>toggle ? flag</text></Item>
   </Entry>
-  <Entry name="mouse_mid" key="mouse mid" type="ReadOnlyComboBox"
+  <Entry name="mouse_mid" key="mouse mid" type="multi"
          defaultValue="autoreveal">
   <text>Middle button</text>
   <Item name="reveal"><text>reveal</text></Item>
@@ -58,7 +56,7 @@
   <Item name="toggle flag"><text>toggle flag</text></Item>
   <Item name="toggle ? flag"><text>toggle ? flag</text></Item>
   </Entry>
-  <Entry name="mouse_right" key="mouse right" type="ReadOnlyComboBox"
+  <Entry name="mouse_right" key="mouse right" type="multi"
          defaultValue="toggle flag">
   <text>Right button</text>
   <Item name="reveal"><text>reveal</text></Item>
@@ -67,59 +65,59 @@
   <Item name="toggle ? flag"><text>toggle ? flag</text></Item>
   </Entry>
 
-  <Entry name="magic_reveal" key="magic reveal" type="CheckBox"
+  <Entry name="magic_reveal" key="magic reveal" vtype="bool"
          defaultValue="false">
-  <text>"Magic reveal"</text>
+  <text>"Magic" reveal</text>
   <whatsthis>Set flags and reveal cases for the trivial cases.</whatsthis>
   </Entry>
 
-  <Entry name="case_size" key="case size" type="IntInput"
+  <Entry name="case_size" key="case size" type="ranged" vtype="int"
          defaultValue="20" minValue="8" maxValue="100">
   <text>Case size</text>
   </Entry>
 
-  <Entry name="flag_color" key="flag color" type="ColorButton"
+  <Entry name="flag_color" key="flag color" vtype="QColor"
          defaultValue="#FF0000">
   <text>Flag color</text>
   </Entry>
-  <Entry name="explosion_color" key="explosion color" type="ColorButton"
+  <Entry name="explosion_color" key="explosion color" vtype="QColor"
          defaultValue="#FF0000">
   <text>Flag color</text>
   </Entry>
-  <Entry name="error_color" key="error color" type="ColorButton"
+  <Entry name="error_color" key="error color" vtype="QColor"
          defaultValue="#FF0000">
   <text>Flag color</text>
   </Entry>
 
-  <Entry name="color_#0" key="color #0" type="ColorButton"
+  <Entry name="color_#0" key="color #0" vtype="QColor"
          defaultValue="#0000FF">
   <text>1 mine color</text>
   </Entry>
-  <Entry name="color_#1" key="color #1" type="ColorButton"
+  <Entry name="color_#1" key="color #1" vtype="QColor"
          defaultValue="#008800">
   <text>2 mines color</text>
   </Entry>
-  <Entry name="color_#2" key="color #2" type="ColorButton"
+  <Entry name="color_#2" key="color #2" vtype="QColor"
          defaultValue="#888800">
   <text>3 mines color</text>
   </Entry>
-  <Entry name="color_#3" key="color #3" type="ColorButton"
+  <Entry name="color_#3" key="color #3" vtype="QColor"
          defaultValue="#880088">
   <text>4 mines color</text>
   </Entry>
-  <Entry name="color_#4" key="color #4" type="ColorButton"
+  <Entry name="color_#4" key="color #4" vtype="QColor"
          defaultValue="#FF0000">
   <text>5 mines color</text>
   </Entry>
-  <Entry name="color_#5" key="color #5" type="ColorButton"
+  <Entry name="color_#5" key="color #5" vtype="QColor"
          defaultValue="#880000">
   <text>6 mines color</text>
   </Entry>
-  <Entry name="color_#6" key="color #6" type="ColorButton"
+  <Entry name="color_#6" key="color #6" vtype="QColor"
          defaultValue="#000000">
   <text>7 mines color</text>
   </Entry>
-  <Entry name="color_#7" key="color #7" type="ColorButton"
+  <Entry name="color_#7" key="color #7" vtype="QColor"
          defaultValue="#000000">
   <text>8 mines color</text>
   </Entry>
