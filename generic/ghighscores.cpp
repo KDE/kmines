@@ -157,7 +157,9 @@ Score firstScore()
 
 QString Manager::gameTypeLabel(uint gameType, LabelType type) const
 {
-    Q_ASSERT( gameType==0 );
+    if ( gameType!=0 )
+        qFatal("You need to reimplement KExtHighscore::Manager for "
+               "multiple game types");
     switch (type) {
     case Icon:
     case Standard:

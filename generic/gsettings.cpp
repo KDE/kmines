@@ -55,8 +55,8 @@
 
 
 //-----------------------------------------------------------------------------
-KConfigItemBase::KConfigItemBase(QObject *parent, const char *name)
-    : QObject(parent, name), _modified(false)
+KConfigItemBase::KConfigItemBase()
+    : _modified(false)
 {}
 
 KConfigItemBase::~KConfigItemBase()
@@ -64,9 +64,7 @@ KConfigItemBase::~KConfigItemBase()
 
 void KConfigItemBase::load()
 {
-    blockSignals(true); // do not emit modified()
     loadState();
-    blockSignals(false);
     _modified = false;
 }
 
@@ -74,27 +72,19 @@ bool KConfigItemBase::save()
 {
     if ( !_modified ) return true;
     bool success = saveState();
-    if (success) {
-        _modified = false;
-        emit saved();
-    }
+    if (success) _modified = false;
     return success;
 }
 
 void KConfigItemBase::setDefault()
 {
-    // NB: we emit modified() by hand because some widgets (like QComboBox)
-    // report changes with a signal that only gets activated by GUI actions.
-    blockSignals(true);
     setDefaultState();
-    blockSignals(false);
-    modifiedSlot();
+    setModified();
 }
 
-void KConfigItemBase::modifiedSlot()
+void KConfigItemBase::setModified()
 {
     _modified = true;
-    emit modified();
 }
 
 //-----------------------------------------------------------------------------
@@ -257,9 +247,8 @@ KConfigItemPrivate::DATA[KConfigItem::NB_ITEM_TYPES] = {
 //-----------------------------------------------------------------------------
 KConfigItem::KConfigItem(Type type, QVariant::Type valueType,
                         const QCString &group, const QCString &key,
-                        const QVariant &def, QObject *parent, const char *name)
-    : KConfigItemBase(parent, name), _group(group), _key(key),
-      _def(def), _label(0)
+                        const QVariant &def)
+    : _group(group), _key(key), _def(def), _label(0)
 {
     d = new KConfigItemPrivate(type);
 
@@ -275,15 +264,18 @@ KConfigItem::~KConfigItem()
 
 void KConfigItem::setObject(QObject *o)
 {
-    if ( object() ) object()->disconnect(this, SLOT(modifiedSlot()));
     d->setObject(o, _def.type());
     if (object()) {
-        QObject::connect(object(), d->data().signal, SLOT(modifiedSlot()));
         if ( !_text.isNull() ) d->setText(_text);
         if ( !_whatsthis.isNull() ) d->setWhatsThis(_whatsthis);
         if ( !_tooltip.isNull() ) d->setToolTip(_tooltip);
         initObject();
     }
+}
+
+const char *KConfigItem::signal() const
+{
+    return d->data().signal;
 }
 
 void KConfigItem::setText(const QString &text)
@@ -387,10 +379,9 @@ uint KConfigItem::objectType() const
 
 //-----------------------------------------------------------------------------
 KSimpleConfigItem::KSimpleConfigItem(QVariant::Type type,
-                                    const QCString &group, const QCString &key,
-                                    const QVariant &def,
-                                    QObject *parent, const char *name)
-    : KConfigItem(Simple, type, group, key, def, parent, name)
+                                     const QCString &group,
+                                     const QCString &key, const QVariant &def)
+    : KConfigItem(Simple, type, group, key, def)
 {}
 
 KSimpleConfigItem::~KSimpleConfigItem()
@@ -400,9 +391,8 @@ KSimpleConfigItem::~KSimpleConfigItem()
 KRangedConfigItem::KRangedConfigItem(QVariant::Type type,
                                     const QCString &group, const QCString &key,
                                     const QVariant &def,
-                                    const QVariant &min, const QVariant &max,
-                                    QObject *parent, const char *name)
-    : KConfigItem(Ranged, type, group, key, def, parent, name)
+                                    const QVariant &min, const QVariant &max)
+    : KConfigItem(Ranged, type, group, key, def)
 {
     setRange(min, max);
 }
@@ -421,10 +411,8 @@ void KRangedConfigItem::setRange(const QVariant &min, const QVariant &max)
 
 void KRangedConfigItem::initObject()
 {
-    blockSignals(true); // do not change the state of the setting
     object()->setProperty("minValue", _min);
     object()->setProperty("maxValue", _max);
-    blockSignals(false);
 }
 
 QVariant KRangedConfigItem::minValue() const
@@ -464,10 +452,9 @@ QVariant KRangedConfigItem::configValue() const
 //-----------------------------------------------------------------------------
 KMultiConfigItem::KMultiConfigItem(uint nbItems,
                                    const QCString &group, const QCString &key,
-                                   const QVariant &def,
-                                   QObject *parent, const char *name)
-    : KConfigItem(Multi, QVariant::String, group, key, def,
-                  parent, name), _entries(nbItems), _items(nbItems)
+                                   const QVariant &def)
+    : KConfigItem(Multi, QVariant::String, group, key, def),
+      _entries(nbItems), _items(nbItems)
 {}
 
 void KMultiConfigItem::initObject()
@@ -590,7 +577,7 @@ int KMultiConfigItem::configIndex() const
 QAsciiDict<KConfigItem> *KConfigCollection::_items = 0;
 
 KConfigCollection::KConfigCollection(QObject *parent, const char *name)
-    : KConfigItemBase(parent, name)
+    : QObject(parent, name)
 {}
 
 #define ITEM_NAMED "item named \"" << name << "\" : "
@@ -642,13 +629,15 @@ KConfigCollection::~KConfigCollection()
 {
     Iterator it = _list.begin();
     for (; it!=_list.end(); ++it)
-        if ( !(*it).isNull() ) _remove(*it);
+        remove(*it);
 }
 
 void KConfigCollection::loadState()
 {
     Iterator it = _list.begin();
+    blockSignals(true); // do not emit modified()
     for (; it!=_list.end(); ++it) (*it)->load();
+    blockSignals(false);
 }
 
 bool KConfigCollection::saveState()
@@ -657,14 +646,17 @@ bool KConfigCollection::saveState()
     Iterator it = _list.begin();
     for (; it!=_list.end(); ++it)
         if ( !(*it)->save() ) ok = false;
+    emit saved();
     return ok;
 }
 
 void KConfigCollection::setDefaultState()
 {
     Iterator it = _list.begin();
-    for (; it!=_list.end(); ++it)
-        (*it)->setDefault();
+    blockSignals(true); // emit modified() only once
+    for (; it!=_list.end(); ++it) (*it)->setDefault();
+    blockSignals(false);
+    emit modified();
 }
 
 bool KConfigCollection::hasDefault() const
@@ -681,12 +673,6 @@ KConfigItem *KConfigCollection::item(const char *name)
     return (*_items)[name];
 }
 
-void KConfigCollection::insert(KConfigItemBase *item)
-{
-    _list.append(item);
-    connect(item, SIGNAL(modified()), SLOT(modifiedSlot()));
-}
-
 KConfigItem *KConfigCollection::plug(const char *name, QObject *object)
 {
     Q_ASSERT(object);
@@ -694,38 +680,49 @@ KConfigItem *KConfigCollection::plug(const char *name, QObject *object)
     if ( it==0 ) return 0;
     ConstIterator iter = _list.begin();
     for (; iter!=_list.end(); ++iter)
-        if ( static_cast<KConfigItemBase *>(*iter)==it) {
+        if ( (*iter)==it) {
             kdWarning() << ITEM_NAMED << "already plugged in the collection"
                         << endl;
             return it;
         }
     it->setObject(object);
-    insert(it);
+    _list.append(it);
+    connect(object, it->signal(), SLOT(modifiedSlot()));
     return it;
+}
+
+void KConfigCollection::modifiedSlot()
+{
+    ConstIterator iter = _list.begin();
+    for (; iter!=_list.end(); ++iter)
+        if ( (*iter)->object()==sender() ) {
+            (*iter)->setModified();
+            break;
+        }
+    setModified();
+    emit modified();
 }
 
 void KConfigCollection::unplug(const char *name)
 {
     KConfigItem *it = item(name);
-    if (it) remove(it);
+    if (it) {
+        remove(it);
+        Iterator iter = _list.begin();
+        for (; iter!=_list.end(); ++it)
+            if ( (*iter)==it) {
+                _list.remove(iter);
+                break;
+            }
+    }
 }
 
-void KConfigCollection::remove(KConfigItemBase *item)
+void KConfigCollection::remove(KConfigItem *item)
 {
-    _remove(item);
-    Iterator it = _list.begin();
-    for (; it!=_list.end(); ++it)
-        if ( static_cast<KConfigItemBase *>(*it)==item) {
-            _list.remove(it);
-            break;
-        }
-}
-
-void KConfigCollection::_remove(KConfigItemBase *item)
-{
-    item->disconnect(this, SLOT(modifiedSlot()));
-    KConfigItem *ci = static_cast<KConfigItem *>(item->qt_cast("KConfigItem"));
-    if (ci) ci->setObject(0);
+    if ( item->object() ) {
+        item->object()->disconnect(this, SLOT(modifiedSlot()));
+        item->setObject(0);
+    }
 }
 
 QVariant KConfigCollection::configValue(const char *name)

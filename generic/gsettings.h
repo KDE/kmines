@@ -23,7 +23,6 @@
 #include <qvariant.h>
 #include <qvaluevector.h>
 #include <qasciidict.h>
-#include <qguardedptr.h>
 
 #include <kdialogbase.h>
 
@@ -35,12 +34,10 @@ class QDomElement;
  * Abstract base class for loading and saving some setting.
  * This class keeps track of the modification status of the setting.
  */
-class KConfigItemBase : public QObject
+class KConfigItemBase
 {
- Q_OBJECT
-
  public:
-    KConfigItemBase(QObject *parent = 0, const char *name = 0);
+    KConfigItemBase();
 
     virtual ~KConfigItemBase();
 
@@ -68,22 +65,10 @@ class KConfigItemBase : public QObject
      */
     virtual bool hasDefault() const = 0;
 
- public slots:
     /**
      * Should be called when the setting state has been modified.
      */
-    void modifiedSlot();
-
- signals:
-    /**
-     * Emitted when the setting state has been modified.
-     */
-    void modified();
-
-    /**
-     * Emitted when the setting state has been saved.
-     */
-    void saved();
+    void setModified();
 
  protected:
     /**
@@ -122,26 +107,7 @@ class KConfigItemPrivate;
  */
 class KConfigItem : public KConfigItemBase
 {
- Q_OBJECT
- Q_PROPERTY(QString text READ text WRITE setText)
- Q_PROPERTY(QString whatsThis READ whatsThis WRITE setWhatsThis)
- Q_PROPERTY(QString toolTip READ toolTip WRITE setToolTip)
-
  public:
-    /**
-     * @internal
-     */
-    enum Type { Simple = 0, Ranged, Multi, NB_ITEM_TYPES };
-
-     /**
-     * @internal
-     *
-     * The @ref KConfigBase used to load/save the state is application one.
-     */
-     KConfigItem(Type type, QVariant::Type valueType,
-                 const QCString &group, const QCString &key,
-                 const QVariant &def, QObject *parent, const char *name);
-
     ~KConfigItem();
 
     /**
@@ -211,6 +177,20 @@ class KConfigItem : public KConfigItemBase
 
  protected:
     /**
+     * @internal
+     */
+    enum Type { Simple = 0, Ranged, Multi, NB_ITEM_TYPES };
+
+     /**
+     * @internal
+     *
+     * The @ref KConfigBase used to load/save the state is application one.
+     */
+     KConfigItem(Type type, QVariant::Type valueType,
+                 const QCString &group, const QCString &key,
+                 const QVariant &def);
+
+    /**
      * @reimplemented
      */
     void loadState();
@@ -235,7 +215,6 @@ class KConfigItem : public KConfigItemBase
      */
     virtual void initObject() {}
 
- protected:
     /**
      * @internal
      */
@@ -248,6 +227,11 @@ class KConfigItem : public KConfigItemBase
     QLabel        *_label;
 
     KConfigItemPrivate *d;
+
+    const char *signal() const;
+
+    friend class KConfigItemPrivate;
+    friend class KConfigCollection;
 };
 
 /**
@@ -264,7 +248,6 @@ class KConfigItem : public KConfigItemBase
  */
 class KSimpleConfigItem : public KConfigItem
 {
- Q_OBJECT
  public:
     /**
      * Constructor.
@@ -276,8 +259,7 @@ class KSimpleConfigItem : public KConfigItem
      */
     KSimpleConfigItem(QVariant::Type type,
                       const QCString &group, const QCString &key,
-                      const QVariant &def,
-                      QObject *parent = 0, const char *name = 0);
+                      const QVariant &def);
 
     ~KSimpleConfigItem();
 
@@ -295,7 +277,6 @@ class KSimpleConfigItem : public KConfigItem
  */
 class KRangedConfigItem : public KConfigItem
 {
- Q_OBJECT
  public:
     /**
      * Constructor.
@@ -310,8 +291,7 @@ class KRangedConfigItem : public KConfigItem
     KRangedConfigItem(QVariant::Type type,
                       const QCString &group, const QCString &key,
                       const QVariant &def, const QVariant &min,
-                      const QVariant &max,
-                      QObject *parent = 0, const char *name = 0);
+                      const QVariant &max);
 
     ~KRangedConfigItem();
 
@@ -358,7 +338,6 @@ class KRangedConfigItem : public KConfigItem
  */
 class KMultiConfigItem : public KConfigItem
 {
- Q_OBJECT
  public:
     /**
      * Constructor.
@@ -370,8 +349,7 @@ class KMultiConfigItem : public KConfigItem
      * @param text the text shown to the user.
      */
     KMultiConfigItem(uint nbItems, const QCString &group, const QCString &key,
-                     const QVariant &def,
-                     QObject *parent = 0, const char *name = 0);
+                     const QVariant &def);
 
     ~KMultiConfigItem();
 
@@ -423,7 +401,7 @@ class KMultiConfigItem : public KConfigItem
 /**
  * This class manages a list of @ref KConfigItem.
  */
-class KConfigCollection : public KConfigItemBase
+class KConfigCollection : public QObject, public KConfigItemBase
 {
  Q_OBJECT
  public:
@@ -451,18 +429,6 @@ class KConfigCollection : public KConfigItemBase
      * @return the @ref KConfigItem of the given name.
      */
     static KConfigItem *item(const char *name);
-
-    /**
-     * Insert a @ref KConfigItemBase in the collection. Use this method
-     * only if you know what you are doing.
-     */
-    void insert(KConfigItemBase *item);
-
-    /**
-     * Remove a @ref KConfigItemBase from the collection. Use this method
-     * only if you know what you are doing.
-     */
-    void remove(KConfigItemBase *item);
 
     /**
      * Associate a @ref KConfigItem with this collection and the given
@@ -503,6 +469,17 @@ class KConfigCollection : public KConfigItemBase
      */
     bool hasDefault() const;
 
+ signals:
+    /**
+     * Emitted when the @ref KConfigItem have been saved.
+     */
+    void saved();
+
+    /**
+     * Emitted when modified.
+     */
+    void modified();
+
  protected:
     /**
      * @reimplemented
@@ -519,9 +496,11 @@ class KConfigCollection : public KConfigItemBase
      */
     void setDefaultState();
 
+ private slots:
+    void modifiedSlot();
+
  private:
-    typedef QGuardedPtr<KConfigItemBase> Item;
-    typedef QValueList<Item> ItemList;
+    typedef QValueList<KConfigItem *> ItemList;
     typedef ItemList::iterator Iterator;
     typedef ItemList::const_iterator ConstIterator;
     ItemList _list;
@@ -532,7 +511,7 @@ class KConfigCollection : public KConfigItemBase
     static QAsciiDict<KConfigItem> *_items;
     static KConfigItem *createItem(QDomElement &group, QDomElement &entry,
                                    const char *name);
-    void _remove(KConfigItemBase *item);
+    void remove(KConfigItem *item);
 };
 
 //-----------------------------------------------------------------------------
@@ -675,7 +654,7 @@ class KConfigDialog : public KDialogBase
 
  signals:
     /**
-     * Emitted when some @ref KConfigItem have been saved (with
+     * Emitted when the @ref KConfigItem have been saved (with
      * Apply button or with Ok button).
      */
     void saved();

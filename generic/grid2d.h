@@ -20,12 +20,11 @@
 #ifndef __KGRID2D_H_
 #define __KGRID2D_H_
 
-#include <set>
 #include <math.h>
 
+#include <qpair.h>
+#include <qvaluelist.h>
 #include <qvaluevector.h>
-#include <qpoint.h>
-#include <qsize.h>
 
 #include <kglobal.h>
 
@@ -36,7 +35,12 @@ namespace KGrid2D
     /**
      * This type represents coordinates on a bidimensionnal grid.
      */
-    typedef std::pair<int, int> Coord;
+    typedef QPair<int, int> Coord;
+
+    /**
+     * This type represents a list of @ref Coord.
+     */
+    typedef QValueList<Coord> CoordList;
 };
 
 inline KGrid2D::Coord
@@ -68,50 +72,11 @@ inline QTextStream &operator <<(QTextStream &s, const KGrid2D::Coord &c) {
     return s << '(' << c.second << ", " << c.first << ')';
 }
 
-inline QDataStream &operator <<(QDataStream &s, const KGrid2D::Coord &c) {
-    return s << Q_UINT32(c.first) << Q_UINT32(c.second);
-}
-
-inline QDataStream &operator >>(QDataStream &s, KGrid2D::Coord &c) {
-    Q_UINT32 first, second;
-    s >> first >> second;
-    c.first = first;
-    c.second = second;
-    return s;
-}
-
-//-----------------------------------------------------------------------------
-namespace KGrid2D
+inline QTextStream &operator <<(QTextStream &s, const KGrid2D::CoordList &list)
 {
-    /**
-     * This type represents a set of @ref Coord.
-     */
-    typedef std::set<Coord, std::less<Coord> > CoordSet;
-};
-
-inline QTextStream &operator <<(QTextStream &s, const KGrid2D::CoordSet &set) {
-    for(KGrid2D::CoordSet::iterator i=set.begin(); i!=set.end(); ++i)
+    for(KGrid2D::CoordList::const_iterator i=list.begin(); i!=list.end(); ++i)
         s << *i;
 	return s;
-}
-
-inline QDataStream &operator <<(QDataStream &s, const KGrid2D::CoordSet &set) {
-    s << Q_UINT32(set.size());
-    for(KGrid2D::CoordSet::iterator i=set.begin(); i!=set.end(); ++i)
-        s << *i;
-    return s;
-}
-
-inline QDataStream &operator >>(QDataStream &s, KGrid2D::CoordSet &set) {
-    set.clear();
-    Q_UINT32 nb;
-    s >> nb;
-    for (Q_UINT32 i=0; i<nb; i++) {
-        KGrid2D::Coord c;
-        s >> c;
-        set.insert(c);
-    }
-    return s;
 }
 
 //-----------------------------------------------------------------------------
@@ -147,7 +112,7 @@ class Generic
      * Fill the nodes with the given value.
      */
     void fill(const Type &value) {
-        std::fill(_vector.begin(), _vector.end(), value);
+        for (uint i=0; i<_vector.count(); i++) _vector[i] = value;
     }
 
     /**
@@ -349,13 +314,13 @@ class Square : public Generic<Type>, public SquareBase
      * @param insideOnly only add coordinates that are inside the grid.
      * @param directOnly only add the four nearest neighbours.
      */
-    CoordSet neighbours(const Coord &c, bool insideOnly = true,
-                        bool directOnly = false) const {
-        CoordSet neighbours;
+    CoordList neighbours(const Coord &c, bool insideOnly = true,
+                         bool directOnly = false) const {
+        CoordList neighbours;
         for (uint i=0; i<(directOnly ? LeftUp : Nb_Neighbour); i++) {
             Coord n = neighbour(c, (Neighbour)i);
             if ( insideOnly && !inside(n) ) continue;
-            neighbours.insert(n);
+            neighbours.append(n);
         }
         return neighbours;
     }
@@ -483,12 +448,12 @@ class Hexagonal : public Generic<Type>, public HexagonalBase
      *
      * @param insideOnly only add coordinates that are inside the grid.
      */
-    CoordSet neighbours(const Coord &c, bool insideOnly = true) const {
-        CoordSet neighbours;
+    CoordList neighbours(const Coord &c, bool insideOnly = true) const {
+        CoordList neighbours;
         for (uint i=0; i<Nb_Neighbour; i++) {
             Coord n = neighbour(c, (Neighbour)i);
             if ( insideOnly && !inside(n) ) continue;
-            neighbours.insert(n);
+            neighbours.append(n);
         }
         return neighbours;
     }
@@ -503,35 +468,35 @@ class Hexagonal : public Generic<Type>, public HexagonalBase
      * @param all returns all neighbours at distance equal and less than
      *        @param distance (the original coordinate is not included).
      */
-    CoordSet neighbours(const Coord &c, uint distance, bool all,
+    CoordList neighbours(const Coord &c, uint distance, bool all,
                         bool insideOnly = true) const {
         // brute force algorithm -- you're welcome to make it more efficient :)
-        CoordSet ring;
+        CoordList ring;
         if ( distance==0 ) return ring;
         ring = neighbours(c, insideOnly);
         if ( distance==1 ) return ring;
-        CoordSet center;
-        center.insert(c);
+        CoordList center;
+        center.append(c);
         for (uint i=1; i<distance; i++) {
-            CoordSet newRing;
-            CoordSet::const_iterator it;
+            CoordList newRing;
+            CoordList::const_iterator it;
             for (it=ring.begin(); it!=ring.end(); ++it) {
-                CoordSet n = neighbours(*it, insideOnly);
-                CoordSet::const_iterator it2;
+                CoordList n = neighbours(*it, insideOnly);
+                CoordList::const_iterator it2;
                 for (it2=n.begin(); it2!=n.end(); ++it2)
                     if ( center.find(*it2)==center.end()
                          && ring.find(*it2)==ring.end()
                          && newRing.find(*it2)==newRing.end() )
-                        newRing.insert(*it2);
-                center.insert(*it);
+                        newRing.append(*it2);
+                center.append(*it);
             }
             ring = newRing;
         }
         if ( !all ) return ring;
-        CoordSet::const_iterator it;
+        CoordList::const_iterator it;
         for (it=ring.begin(); it!=ring.end(); ++it)
-            center.insert(*it);
-        center.erase(c);
+            center.append(*it);
+        center.remove(c);
         return center;
     }
 };
