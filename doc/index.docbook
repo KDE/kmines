@@ -175,7 +175,7 @@ simply says <guilabel>Game stopped</guilabel>.</para></listitem>
 determines whether you can mark squares as
 <quote>questionable</quote>.  If there is a mark in front of this
 option, then right clicking the mouse will first cause a case to be
-flaged. If you click again on the same square, the flag will change to
+flagged. If you click again on the same square, the flag will change to
 a <guiicon>?</guiicon>, to indicate you don't know if there is a bomb
 there or not.  If you click again, the square will change back to
 blank.</para>
@@ -186,7 +186,7 @@ red flag.  The second will make it blank again, thus skipping the ?
 symbol.</para>
 
 <para>The next option down, labelled <guilabel>Enable
-keyboard</guilabel>, determins if the keyboard shortcuts will work
+keyboard</guilabel>, determines if the keyboard shortcuts will work
 while playing the game.</para>
 
 <note><para>The only keyboard shortcuts affected, are those
