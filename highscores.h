@@ -36,6 +36,6 @@ class ExtManager : public Manager
     bool isStrictlyLess(const Score &s1, const Score &s2) const;
 };
 
-};
+}
 
 #endif

@@ -56,7 +56,7 @@ QString ExtManager::gameTypeLabel(uint gameType, LabelType type) const
     case WW:       return data.wwLabel;
     }
     return QString::null;
-};
+}
 
 void ExtManager::convertLegacy(uint gameType)
 {
@@ -89,4 +89,4 @@ bool ExtManager::isStrictlyLess(const Score &s1, const Score &s2) const
     return Manager::isStrictlyLess(s1, s2);
 }
 
-};
+}
