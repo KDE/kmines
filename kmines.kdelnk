@@ -1,6 +1,7 @@
 # KDE Config File 
 [KDE Desktop Entry]
 Name=Minesweeper
+Name[no]=Minesveiper
 Name[pl]=Saper
 Name[fi]=Miinaharava
 Name[pt]=Minas e Armadilhas
@@ -14,6 +15,7 @@ Type=Application
 DocPath=kmines/index.html
 Comment=KDE replacement for xbombs
 Comment[de]=Das bekannte Spiel Bombenfinden
+Comment[no]=KDE-erstatning for xbombs
 Comment[pl]=Wersja KDE popularnego sapera.
 Comment[fi]=Tunnettu miinaharavapeli
 Comment[hu]=A népszerû játék
