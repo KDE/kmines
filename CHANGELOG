@@ -1,4 +1,11 @@
-2.1.7 (27 July 2002) [CVS 3.1 devel]
+2.1.8 (3 December 2002) [CVS 3.2 devel]
+ * fix bug in highscores dialog in statistics and histogram tabs
+ * fix icons in adviser menu and in configuration dialog
+ * fix bug in XML configuration that was leading to crash at program
+   end [report by ... and ...]
+ * fix bug in mean score computation
+
+2.1.7 (27 July 2002) [KDE 3.1 stable]
  * XML configuration is working !!
  * separate keyboard and general shortcuts in configuration dialog
  * add "advanced" tab to highscores configuration + possibility to remove

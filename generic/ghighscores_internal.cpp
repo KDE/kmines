@@ -326,7 +326,7 @@ uint PlayerInfos::histoSize() const
 
 bool PlayerInfos::isLastAndUnbound(uint i) const
 {
-    return ( !_bound && i==_histogram.size()-1 );
+    return ( !_bound && i==histoSize()-1 );
 }
 
 void PlayerInfos::submitScore(const Score &score) const
@@ -347,8 +347,12 @@ void PlayerInfos::submitScore(const Score &score) const
     };
 
     // update mean
-    double total = item("mean score")->read(_id).toDouble() * (nbGames-1);
-    item("mean score")->write(_id, total / nbGames);
+    if ( !lost ) {
+        uint nbWonGames = nbGames - item("nb lost games")->read(_id).toUInt();
+        double mean = item("mean score")->read(_id).toDouble();
+        mean += (double(score.score()) - mean) / nbWonGames;
+        item("mean score")->write(_id, mean);
+    }
 
     // update best score
     if ( score.score()>item("best score")->read(_id).toUInt() ) {

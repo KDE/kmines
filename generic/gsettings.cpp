@@ -640,36 +640,38 @@ void KConfigCollection::cleanUp()
 
 KConfigCollection::~KConfigCollection()
 {
-    QPtrListIterator<KConfigItemBase> it(_list);
-    for (; it.current()!=0; ++it) _remove(it.current());
+    Iterator it = _list.begin();
+    for (; it!=_list.end(); ++it)
+        if ( !(*it).isNull() ) _remove(*it);
 }
 
 void KConfigCollection::loadState()
 {
-    QPtrListIterator<KConfigItemBase> it(_list);
-    for (; it.current()!=0; ++it) it.current()->load();
+    Iterator it = _list.begin();
+    for (; it!=_list.end(); ++it) (*it)->load();
 }
 
 bool KConfigCollection::saveState()
 {
-    QPtrListIterator<KConfigItemBase> it(_list);
     bool ok = true;
-    for (; it.current()!=0; ++it)
-        if ( !it.current()->save() ) ok = false;
+    Iterator it = _list.begin();
+    for (; it!=_list.end(); ++it)
+        if ( !(*it)->save() ) ok = false;
     return ok;
 }
 
 void KConfigCollection::setDefaultState()
 {
-    QPtrListIterator<KConfigItemBase> it(_list);
-    for (; it.current()!=0; ++it) it.current()->setDefault();
+    Iterator it = _list.begin();
+    for (; it!=_list.end(); ++it)
+        (*it)->setDefault();
 }
 
 bool KConfigCollection::hasDefault() const
 {
-    QPtrListIterator<KConfigItemBase> it(_list);
-    for (; it.current()!=0; ++it)
-        if ( !it.current()->hasDefault() ) return false;
+    ConstIterator it = _list.begin();
+    for (; it!=_list.end(); ++it)
+        if ( !(*it)->hasDefault() ) return false;
     return true;
 }
 
@@ -689,14 +691,16 @@ KConfigItem *KConfigCollection::plug(const char *name, QObject *object)
 {
     Q_ASSERT(object);
     KConfigItem *it = item(name);
-    if ( it==0 ) return 0;
-    if ( _list.findRef(it)!=-1 )
-        kdWarning() << ITEM_NAMED << "already plugged in the collection"
-                    << endl;
-    else {
-        it->setObject(object);
-        insert(it);
-    }
+    if ( item==0 ) return 0;
+    ConstIterator iter = _list.begin();
+    for (; iter!=_list.end(); ++iter)
+        if ( static_cast<KConfigItemBase *>(*iter)==it) {
+            kdWarning() << ITEM_NAMED << "already plugged in the collection"
+                        << endl;
+            return it;
+        }
+    it->setObject(object);
+    insert(it);
     return it;
 }
 
@@ -709,7 +713,12 @@ void KConfigCollection::unplug(const char *name)
 void KConfigCollection::remove(KConfigItemBase *item)
 {
     _remove(item);
-    _list.removeRef(item);
+    Iterator it = _list.begin();
+    for (; it!=_list.end(); ++it)
+        if ( static_cast<KConfigItemBase *>(*it)==item) {
+            _list.remove(it);
+            break;
+        }
 }
 
 void KConfigCollection::_remove(KConfigItemBase *item)
