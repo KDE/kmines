@@ -1,4 +1,5 @@
 <!DOCTYPE book PUBLIC "-//KDE//DTD DocBook V3.1-Based Variant V1.0//EN">
+
 <book lang="en">
 <bookinfo>
 <title>The KMines Handbook</title>
@@ -8,23 +9,18 @@
 <surname>Hadacek</surname>
 </author>
 </authorgroup>
-<date>Version 1.0.0, 19 June 1998</date>
-<releaseinfo><!-- information about this particular version --></releaseinfo>
-<revhistory>
-<revision>
-<revnumber></revnumber>
-<date></date>
-</revision>
-</revhistory>
+<date>19/06/1998</date>
+<releaseinfo>1.00.00</releaseinfo>
 <abstract>
 <para>This documentation was last updated for kmines version 1.0.0. Please make any comments and additions to the author.</para>
-<para>Minesweeper</para><!-- Merge this with the previous paragraph; it comes from <META NAME="description" CONTENT="..."> --></abstract>
+</abstract>
 <keywordset>
 <keyword>KDE</keyword>
 <keyword>game</keyword>
 <keyword>minesweeper</keyword>
 </keywordset>
 </bookinfo>
+
 <chapter id="Introduction">
 <title>Introduction</title>
 <para>KMines is the classical Minesweeper game. You must uncover all the empty cases
