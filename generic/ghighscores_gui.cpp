@@ -196,7 +196,7 @@ void HighscoresDialog::exportToText()
         KGuiItem gi = KStdGuiItem::save();
         gi.setText(i18n("Overwrite"));
         int res = KMessageBox::warningYesNo(this,
-                                 i18n("The file already exists. Overwrite ?"),
+                                 i18n("The file already exists. Overwrite?"),
                                  i18n("Export..."), gi, KStdGuiItem::cancel());
         if ( res==KMessageBox::No ) return;
     }
@@ -338,9 +338,9 @@ void ImplConfigWidget::removeSlot()
     KGuiItem gi = KStdGuiItem::clear();
     gi.setText(i18n("Remove"));
     int res = KMessageBox::warningYesNo(this,
-       i18n("This will remove permanently your "
-            "registration key. You will not be able to use anymore "
-            "the current registered nickname."),
+       i18n("This will permanently remove your "
+            "registration key. You will not be able to use "
+            "the currently registered nickname anymore."),
        QString::null, gi, KStdGuiItem::cancel());
     if ( res==KMessageBox::Yes ) {
         internal->playerInfos().removeKey();
