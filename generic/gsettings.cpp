@@ -891,7 +891,7 @@ KConfigWidget::~KConfigWidget()
 
 //-----------------------------------------------------------------------------
 KConfigDialog::KConfigDialog(QWidget *parent, const char *name)
-    : KDialogBase(IconList, i18n("Configure..."),
+    : KDialogBase(IconList, i18n("Configure"),
                   Ok|Apply|Cancel|Default, Cancel, parent, name, true, true)
 {
     connect(this, SIGNAL(aboutToShowPage(QWidget *)),

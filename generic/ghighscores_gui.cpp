@@ -183,7 +183,7 @@ HighscoresDialog::HighscoresDialog(bool treeList, QWidget *parent)
                   KDialogBase::Close|KDialogBase::User1, KDialogBase::Close,
                   parent, "show_highscores", true, true)
 {
-    setButtonText(KDialogBase::User1, i18n("Export..."));
+    setButtonText(KDialogBase::User1, i18n("Export"));
     connect(this, SIGNAL(user1Clicked()), SLOT(exportToText()));
     enableButtonSeparator(treeList);
 }
@@ -197,7 +197,7 @@ void HighscoresDialog::exportToText()
         gi.setText(i18n("Overwrite"));
         int res = KMessageBox::warningYesNo(this,
                                  i18n("The file already exists. Overwrite?"),
-                                 i18n("Export..."), gi, KStdGuiItem::cancel());
+                                 i18n("Export"), gi, KStdGuiItem::cancel());
         if ( res==KMessageBox::No ) return;
     }
     KTempFile tmp;
@@ -257,7 +257,7 @@ ImplConfigWidget::ImplConfigWidget(QWidget *parent)
     QGridLayout *pageTop = new QGridLayout(page, 2, 2,
                                KDialog::spacingHint(), KDialog::spacingHint());
 
-    QLabel *label = new QLabel(i18n("Nickname"), page);
+    QLabel *label = new QLabel(i18n("Nickname:"), page);
     pageTop->addWidget(label, 0, 0);
     _nickname = new QLineEdit(page);
     connect(_nickname, SIGNAL(textChanged(const QString &)),
@@ -265,7 +265,7 @@ ImplConfigWidget::ImplConfigWidget(QWidget *parent)
     _nickname->setMaxLength(16);
     pageTop->addWidget(_nickname, 0, 1);
 
-    label = new QLabel(i18n("Comment"), page);
+    label = new QLabel(i18n("Comment:"), page);
     pageTop->addWidget(label, 1, 0);
     _comment = new QLineEdit(page);
     connect(_comment, SIGNAL(textChanged(const QString &)),
@@ -286,16 +286,16 @@ ImplConfigWidget::ImplConfigWidget(QWidget *parent)
         QVBoxLayout *pageTop = new QVBoxLayout(page,
                        KDialogBase::spacingHint(), KDialogBase::spacingHint());
 
-        QVGroupBox *group = new QVGroupBox(i18n("Registration data"), page);
+        QVGroupBox *group = new QVGroupBox(i18n("Registration Data"), page);
         pageTop->addWidget(group);
         QGrid *grid = new QGrid(2, group);
         grid->setSpacing(KDialogBase::spacingHint());
 
-        label = new QLabel(i18n("Nickname"), grid);
+        label = new QLabel(i18n("Nickname:"), grid);
         _registeredName = new KLineEdit(grid);
         _registeredName->setReadOnly(true);
 
-        label = new QLabel(i18n("Key"), grid);
+        label = new QLabel(i18n("Key:"), grid);
         _key = new KLineEdit(grid);
         _key->setReadOnly(true);
 
