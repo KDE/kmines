@@ -27,8 +27,8 @@ class Level
     const Data &data() const { return data(type()); }
     uint maxNbMines() const  { return _width*_height - 2; }
 
-    static const uint MAX_CUSTOM_SIZE = 50;
-    static const uint MIN_CUSTOM_SIZE = 5;
+    static const uint MAX_CUSTOM_SIZE;
+    static const uint MIN_CUSTOM_SIZE;
 
  private:
     static const Data DATA[NbLevels+1];

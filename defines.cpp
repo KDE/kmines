@@ -2,6 +2,8 @@
 
 #include <klocale.h>
 
+const uint Level::MAX_CUSTOM_SIZE = 50;
+const uint Level::MIN_CUSTOM_SIZE = 5;
 
 const Level::Data Level::DATA[Level::NbLevels+1] = {
 	{ 8,  8, 10, "easy",   "8x8x10",   I18N_NOOP("Easy")   },
