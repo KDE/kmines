@@ -97,16 +97,11 @@ class HistogramTab : public AdditionalTab
     HistogramTab(QWidget *parent);
 
  private:
-    struct Data {
-        uint total;
-        double max;
-    };
     QMemArray<uint> _counts;
-    QMemArray<Data> _data;
+    QMemArray<uint> _data;
     KListView       *_list;
 
     void display(uint i);
-    uint delta(uint k) const;
 };
 
 }; // namespace

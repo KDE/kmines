@@ -224,36 +224,19 @@ HistogramTab::HistogramTab(QWidget *parent)
     uint n = pi.nbEntries();
     uint s = pi.histoSize() - 1;
     _counts.resize((n+1) * s);
-    _data.resize(n+1);
-    for (uint i=0; i<_data.size(); i++) {
-        _data[i].total = 0;
-        _data[i].max = 0;
-    }
+    _data.fill(0, n+1);
     for (uint k=0; k<s; k++) {
         _counts[n*s + k] = 0;
         for (uint i=0; i<n; i++) {
             uint nb = pi.item(pi.histoName(k+1))->read(i).toUInt();
             _counts[i*s + k] = nb;
             _counts[n*s + k] += nb;
-            _data[i].total += nb;
-            _data[n].total += nb;
-            _data[i].max = kMax(_data[i].max, double(nb) / delta(k+1));
+            _data[i] += nb;
+            _data[n] += nb;
         }
-    }
-    for (uint k=0; k<s; k++) {
-        double v = double(_counts[n*s + k]) / delta(k+1);
-        _data[n].max = kMax(_data[n].max, v);
     }
 
     init();
-}
-
-uint HistogramTab::delta(uint k) const
-{
-    if ( !internal->scoreBound && k==internal->playerInfos().histoSize()-1 )
-        return 1;
-    const QMemArray<uint> &sh = internal->scoreHistogram;
-    return sh[k] - sh[k-1] + 1;
 }
 
 void HistogramTab::display(uint i)
@@ -264,17 +247,11 @@ void HistogramTab::display(uint i)
     for (int k=s-1; k>=0; k--) {
         uint nb = _counts[i*s + k];
         item->setText(2, QString::number(nb));
-        item->setText(3, percent(nb, _data[i].total));
-        if ( !internal->scoreBound
-             && k+1==internal->playerInfos().histoSize()-1 )
-            item->setText(4, "--");
-        else {
-            uint width = (_data[i].max==0 ? 0
-                          : qRound(150.0 * nb / delta(k+1) / _data[i].max));
-            QPixmap pixmap(width, 10);
-            pixmap.fill(blue);
-            item->setPixmap(4, pixmap);
-        }
+        item->setText(3, percent(nb, _data[i]));
+        uint width = (_data[i]==0 ? 0 : qRound(150.0 * nb / _data[i]));
+        QPixmap pixmap(width, 10);
+        pixmap.fill(blue);
+        item->setPixmap(4, pixmap);
         item = item->nextSibling();
     }
 }
