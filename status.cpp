@@ -1,4 +1,3 @@
-#include <qmsgbox.h>
 
 #include "status.h"
 #include "defines.h"
@@ -10,8 +9,8 @@
 #include <qfile.h>
 #include <qfileinf.h>
 #include <qtstream.h>
+#include <qmsgbox.h>
 
-#include <kconfig.h>
 #include <kapp.h>
 
 #include "status.moc"
@@ -76,12 +75,11 @@ KStatus::KStatus ( QWidget *parent, const char *name )
 	left->setFrameStyle(  QFrame::Panel | QFrame::Sunken );
 	left->installEventFilter(parent);
 	
-	QFont f("Times", 14, QFont::Bold);
+	setFont( QFont("Times", 14, QFont::Bold) );
 	
 	mesg = new QLabel(this);
 	mesg->setAlignment( AlignCenter );
 	mesg->setFrameStyle(  QFrame::Panel | QFrame::Sunken );
-	mesg->setFont( f );
 	mesg->installEventFilter(parent);
 	
 	connect( this, SIGNAL(exleft(const char *)),
@@ -116,7 +114,7 @@ KStatus::KStatus ( QWidget *parent, const char *name )
 	for (int i=0; i<3; i++) {
 		kconf->setGroup(HS_GRP[i]);
 		if ( !kconf->hasKey(HS_NAME_KEY) )
-			kconf->writeEntry(HS_NAME_KEY, "Anonymous");        
+			kconf->writeEntry(HS_NAME_KEY, klocale->translate("Anonymous"));
 		if ( !kconf->hasKey(HS_MIN_KEY) )
 			kconf->writeEntry(HS_MIN_KEY, 59);
 		if ( !kconf->hasKey(HS_SEC_KEY) )
@@ -152,25 +150,22 @@ void KStatus::createSmileyPixmap(QPixmap *pm, QPainter *pt)
 
 void KStatus::adjustSize()
 { 
-	int dec_w, dec_h, dec_hs;
-
-	dec_w  = (width() - 2*LCD_W - SMILEY_W)/4;
-	dec_h  = (STATUS_H - LCD_H)/2;
-	dec_hs = (STATUS_H - SMILEY_H)/2;
+	int dec_w  = (width() - 2*LCD_W - SMILEY_W)/4;
+	int dec_h  = (STATUS_H - LCD_H)/2;
+	int dec_hs = (STATUS_H - SMILEY_H)/2;
 	
 	left->setGeometry( dec_w, dec_h, LCD_W, LCD_H );
-	mesg->setGeometry( dec_w, dec_h, LCD_W, LCD_H );
 	smiley->setGeometry( 2*dec_w + LCD_W, dec_hs, SMILEY_W, SMILEY_H );
 	dg->setGeometry( 3*dec_w + LCD_W + SMILEY_W, dec_h, LCD_W, LCD_H );
 
 	
 	dec_w = (width() - 2*FRAME_W - nb_width*CASE_W)/2;
-	dec_h = (height() - STATUS_H - 2*FRAME_W - nb_height*CASE_W)/2;
+	dec_h = (height() - STATUS_H - LABEL_H - 2*FRAME_W - nb_height*CASE_W)/2;
 	
-	frame->setGeometry( dec_w, STATUS_H + dec_h,
+	frame->setGeometry( dec_w, STATUS_H + dec_h + LABEL_H,
 					    nb_width*CASE_W + 2*FRAME_W,
 					    nb_height*CASE_W + 2*FRAME_W );
-	field->setGeometry( FRAME_W + dec_w, STATUS_H + FRAME_W + dec_h ,
+	field->setGeometry( FRAME_W + dec_w, STATUS_H + FRAME_W + dec_h + LABEL_H,
 					    nb_width*CASE_W, nb_height*CASE_W );
 }
 
@@ -219,7 +214,7 @@ void KStatus::update()
 	sprintf(perc,"%d", nb_mines - marked);
 	emit exleft(perc);
 	
-	if (uncovered==(nb_width*nb_height - nb_mines))
+	if ( uncovered==(nb_width*nb_height - nb_mines) )
 		endGame(TRUE);
 }
 
@@ -237,29 +232,27 @@ void KStatus::updateSmiley(int mood)
 
 void KStatus::endGame(int win)
 {
-	int t_sec, t_min;
+	int t_sec, t_min, res = 0;
 	
 	emit stopField();
 	emit freezeTimer();
 	
 	if (win) {
 		emit updateSmiley(HAPPY);
-		exmesg("You did it !");
-		
 		emit getTime(&t_sec, &t_min);
 		
-		if (nb_width==MODES[0][0] && nb_height==MODES[0][1]
-			&& nb_mines==MODES[0][2])
-			setHighScore(t_sec,t_min,EASY);
-		else if (nb_width==MODES[1][0] && nb_height==MODES[1][1]
-				 && nb_mines==MODES[1][2])
-			setHighScore(t_sec,t_min,NORMAL);
-	  else if (nb_width==MODES[2][0] && nb_height==MODES[2][1]
-			   && nb_mines==MODES[2][2])
-			setHighScore(t_sec,t_min,EXPERT);
+		if (nb_width==MODES[0][0] && nb_height==MODES[0][1] && nb_mines==MODES[0][2])
+			res = setHighScore(t_sec, t_min, EASY);
+		else if (nb_width==MODES[1][0] && nb_height==MODES[1][1] && nb_mines==MODES[1][2])
+			res = setHighScore(t_sec, t_min, NORMAL);
+		else if (nb_width==MODES[2][0] && nb_height==MODES[2][1] && nb_mines==MODES[2][2])
+			res = setHighScore(t_sec,t_min,EXPERT);
+		
+		if ( res!=0 ) exmesg(klocale->translate("You did it ... but not in time."));
+		else exmesg(klocale->translate("Yeeessss !"));
 	} else {
 		emit updateSmiley(UNHAPPY);
-		exmesg("Try again ...");
+		exmesg(klocale->translate("Bad luck !"));
 	}
 }
 
@@ -269,6 +262,7 @@ void KStatus::getNumbers(int *nb_w, int *nb_h, int *nb_m)
 	*nb_w = nb_width; *nb_h = nb_height; *nb_m = nb_mines;
 }
 
+
 void KStatus::options()
 {
 	Options::Options(this);
@@ -277,39 +271,50 @@ void KStatus::options()
 	emit setUMark(kconf->readNumEntry(OP_UMARK_KEY));
 }
 
+
 void KStatus::exmesg(const char *str)
 { 
+	QFontMetrics fm1( font() );
+	int w = fm1.width(str)+10;
+	mesg->setGeometry((width()-w)/2, STATUS_H, w, fm1.height()+5);
 	mesg->show();
 	mesg->setText(str);
 }
 
+
 void KStatus::showHighScores()
 {
-	WHighScores whs(TRUE, 0, 0, 0, this);
+	int dummy;
+	WHighScores whs(TRUE, 0, 0, 0, dummy, this);
 }
 
-void KStatus::setHighScore(int sec, int min, int mode)
+
+int KStatus::setHighScore(int sec, int min, int mode)
 {
+	int res = 0;
+	
 	if ( isConfigWritable ) {
-		WHighScores whs(FALSE, sec, min, mode, this);
+		WHighScores whs(FALSE, sec, min, mode, res, this);
 		
-		/* save the new score (in the file to be sure it won't be lost) */
-		if (isConfigWritable)
-			kconf->sync();
-	} else
-		errorShow("Highscore file is not writable !");
+		/* save the new score in the file to be sure it won't be lost */
+		if (isConfigWritable) kconf->sync();
+	} else errorShow(klocale->translate("Highscore file is not writable !"));
+	
+	return res;
 } 
+
 
 void KStatus::pauseGame()
 {
 	emit pause();
 }
 
+
 void KStatus::errorShow(QString msg)
 {
-	QMessageBox ab;   
-	ab.setCaption("kmines : Error"); 
-	ab.setText(msg);   
-	ab.setButtonText("Ok");        
+	QMessageBox ab;
+	ab.setCaption(klocale->translate("kmines : Error"));
+	ab.setText(msg);
+	ab.setButtonText(klocale->translate("Ok"));
 	ab.exec();
 }

@@ -1,20 +1,31 @@
---- kmines 0.6.5 : Alpha version (06/05/97)
+--- kmines 0.6.8 : Alpha version (12/08/97)
 
 This is a very classical minesweeper written almost from scratch.
 
-Features :
+---------------------------------------------------------------------------
+FEATURES :
+
  - 3 levels : Easy   : 8x8   with 10 bombs
               Normal : 16x16 with 40 bombs
 	  	      Expert : 30x16 with 99 bombs
-  
  - Custom levels
  - High Scores
 
-Installation :
-  make
-  make install
+---------------------------------------------------------------------------
+CHANGELOG :
 
-ChangeLog :
+0.6.8
+ - some polishing (game over message do not overwrite mines number & marked 
+   mines stay marked even when the game is lost : so you can completely analyse
+   why you have lost :) -- thanx to Christoph Rummel for pointing these to me.
+
+0.6.7
+ - internationalization
+
+0.6.6
+ - no more NULLs (for the sake of 64bits)
+ - nicer dialog boxes
+ - no mine on first click
 
 0.6.5
  - minor changes
@@ -59,7 +70,6 @@ ChangeLog :
  - option : "'?' mark" on/off (the default behaviour is on : you can change
    it by editing the defines.h file)
 
-	
 0.2
  - some code reorganisation
  - timer starts at first click now
@@ -70,9 +80,9 @@ ChangeLog :
  - highscoring
  - custom level
  
- 
+---------------------------------------------------------------------------
 AUTHOR :
  Nicolas HADACEK 
  email : hadacek@kde.org
 
-Copyright Nicolas HADACEK 1996 1997 and distributed under the GPL.
+Copyright Nicolas HADACEK 1996-97 and distributed under the GPL.

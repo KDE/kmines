@@ -17,7 +17,7 @@ class DigitalClock : public QLCDNumber
  Q_OBJECT
 	
  public:
-	DigitalClock( QWidget *parent=0, const char *name=0 );
+	DigitalClock(QWidget *parent);
 	
  protected:
 	void timerEvent( QTimerEvent * );
@@ -41,8 +41,7 @@ class Custom : public QDialog
  Q_OBJECT
 	  
  public:
-	Custom( int *, int *, int *,
-		    QWidget *parent=0, const char *name=0 );
+	Custom(int *w, int *h, int *nb, QWidget *parent);
   
  private slots:
 	void widthChanged(int);
@@ -63,8 +62,8 @@ class WHighScores : public QDialog
  Q_OBJECT
 	  
  public:
-	WHighScores( bool, int, int, int,
-				 QWidget *parent=0, const char *name=0);
+	WHighScores(bool show, int sec, int min, int mode, int &res,
+				QWidget *parent);
 
  private slots:
 	void writeName();
@@ -75,7 +74,7 @@ class WHighScores : public QDialog
 	QLabel *lab;
 	QPushButton *pb;
 	
-	void showHS(bool,int,int,int);
+	int showHS(bool,int,int,int);
 };
 
 /* options dialog */
@@ -84,7 +83,7 @@ class Options : public QDialog
  Q_OBJECT 
   
  public:
-	Options(QWidget *parent=0, const char *name=0);
+	Options(QWidget *parent);
 	
  private slots:
 	void changeUMark(int);
@@ -94,5 +93,13 @@ class Options : public QDialog
 	KConfig *kconf;
 };
 
-
+/* Replay dialog */
+class WReplay : public QDialog
+{
+ public:
+	WReplay(const QString &msg1, const QString &msg2,
+			const QPixmap &happy, const QPixmap &ohno,
+			QWidget *parent);	
+};
+		
 #endif

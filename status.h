@@ -39,6 +39,8 @@ class KStatus : public QWidget
 	void getTime(int *, int*);
 	void setUMark(int);
 	void pause();
+	
+	void quit();
   
  private:
 	QPixmap *s_ok, *s_stress, *s_happy, *s_ohno;
@@ -46,7 +48,6 @@ class KStatus : public QWidget
 	int nb_width, nb_height, nb_mines; /* mines field */
 	int uncovered, marked, uncertain;  /* number of cases in each state */
 
-//	QFile *file;
 	KConfig *kconf;
 	bool isConfigWritable;
 	
@@ -61,7 +62,7 @@ class KStatus : public QWidget
 	void adjustSize();
 	void createSmileyPixmap(QPixmap *, QPainter *);
 	void exmesg(const char *);
-	void setHighScore(int, int, int);
+	int  setHighScore(int, int, int);
 	void errorShow(QString);
 };
 

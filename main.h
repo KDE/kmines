@@ -1,5 +1,5 @@
-#ifndef KMINES_H
-#define KMINES_H
+#ifndef MAIN_H
+#define MAIN_H
 
 #include "status.h"
 
@@ -59,5 +59,4 @@ class KMines : public QWidget
 	void changedSize();
 };
 
-
-#endif
+#endif // MAIN_H

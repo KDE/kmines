@@ -1,11 +1,5 @@
 # kmines Makefile.in 
 
-kde_libraries = @kde_libraries@
-qt_libraries = @qt_libraries@
-top_builddir = ..
-LIBTOOL = @LIBTOOL@
-KDE_RPATH = @KDE_RPATH@
-
 # @CXXFLAGS@     : is set to -g -Wall (when debuging) or -O2 -Wall (when not)
 # @all_includes@ : is set to all needed include paths for QT, KDE and X11
 # -I.. 	         : needed for config.h
@@ -14,7 +8,7 @@ CXXFLAGS= @CXXFLAGS@ @all_includes@ -DHAVE_CONFIG_H -I..
 # @LDFLAGS@    : is set to -s (when not debuging) for stripping
 # @all_libra.@ : is set to all needed libraries paths for QT, KDE and X11
 # you need also @LIBSOCKET@, if you link with -lkfm
-LDFLAGS	= @LDFLAGS@ @all_libraries@ -lkdecore -lkdeui -lqt -lXext -lX11 @LIBSOCKET@
+LDFLAGS	= @LDFLAGS@ @all_libraries@ -lkdecore -lkdeui -lqt -lXext -lX11 
 
 # both are clear, I think
 CXX     = @CXX@
@@ -31,26 +25,26 @@ INSTALL_DIR_PRIVATE = $(install) -d -m 0700
 prefix = @prefix@
 BINDIR = $(prefix)/bin
 ICONDIR = $(prefix)/share/icons
-MINIDIR = $(prefix)/share/icons/mini
+MINIDIR = $(prefix)/share/icons/mini 
 DOCDIR = $(prefix)/share/doc/HTML/en/kmines
-APPSDIR= $(prefix)/share/applnk/Games
+APPDIR = $(prefix)/share/applnk/Games
 
 ########### File Formats ###########
 
-.SUFFIXES: .cpp .moc
+.SUFFIXES: .cpp
 
 .cpp.o:
 	$(CXX) -c $(CXXFLAGS) $<
 
-.h.moc: 
+%.moc: %.h
 	$(MOC) $< -o $@
 
 ########## Files #####################
 
-OBJECTS =	kmines.o status.o field.o dialogs.o
-SRCMETA =	kmines.moc status.moc field.moc dialogs.moc
+OBJECTS =	main.o status.o field.o dialogs.o
+SRCMETA =	main.moc status.moc field.moc dialogs.moc
 TARGET	=	kmines
-DOC	=	index.html
+DOC		=	index.html
 
 ######### build rules ################
 
@@ -60,7 +54,7 @@ Makefile: Makefile.in
 	cd .. && CONFIG_FILES=kmines/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 $(TARGET): $(SRCMETA) $(OBJECTS)
-	$(LIBTOOL) --mode=link $(CXX) $(OBJECTS) -o $(TARGET) $(LDFLAGS) $(KDE_RPATH)
+	$(CXX) $(OBJECTS) -o $(TARGET) $(LDFLAGS)
 
 clean:
 	rm -f *.o *.bak *~ *% #*
@@ -74,8 +68,8 @@ install: all
 	$(INSTALL) $(TARGET) $(BINDIR)
 	$(INSTALL_DIR) $(DOCDIR)
 	$(INSTALL_DATA) $(DOC) $(DOCDIR)
-	$(INSTALL_DIR) $(APPSDIR)
-	$(INSTALL_DATA) kmines.kdelnk $(APPSDIR)
+	$(INSTALL_DIR) $(APPDIR)
+	$(INSTALL_DATA) kmines.kdelnk $(APPDIR)
 	$(INSTALL_DIR) $(ICONDIR)
 	$(INSTALL_DATA) kmines.xpm $(ICONDIR)
 	$(INSTALL_DIR) $(MINIDIR)
@@ -85,7 +79,11 @@ uninstall:
 	rm -f $(BINDIR)/$(TARGET)
 	rm -f $(DOCSDIR)/$(DOC)
 	rm -f $(APPSDIR)/kmines.kdelnk
-	rm -f $(ICONDIR)/kmines.xpm
-	rm -f $(MINIDIR)/kmines.xpm
+
+po:
+	xgettext --default-domain=$(TARGET) --keyword=translate -p ../po *.cpp *.h
+
+depend:
+	@makedepend @all_includes@ *.cpp 2> /dev/null
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.

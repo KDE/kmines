@@ -8,6 +8,7 @@
 #include <qpainter.h>
 #include <qdrawutl.h>
 #include <qpixmap.h>
+#include <qimage.h>
 
 #include "field.moc"
 
@@ -16,12 +17,12 @@ Field::Field( QWidget *parent, const char *name)
 {
 	initMetaObject();
 	
-	srandom(time(NULL));
+	srandom(time(0));
 	
 	left_down = FALSE; 
 	mid_down  = FALSE;
 	stop = FALSE;
-	pfield = NULL;
+	pfield = 0;
 	isPaused = FALSE;
   
 	pt = new QPainter();
@@ -44,6 +45,7 @@ Field::Field( QWidget *parent, const char *name)
 	pt->begin(pm_mine);
 	createMinePixmap();
 	pt->end();
+	pm_mine->save("mine.bmp", "BMP");
   
 	pm_exploded = new QPixmap(20,20);
 	pm_exploded->fill(red);
@@ -79,21 +81,19 @@ Field::Field( QWidget *parent, const char *name)
 
 void Field::adjustSize()
 {
-	char spa[] = "Game paused";
-	char sre[] = "Press to resume";
 	int sw, sh, sw2, sh2;
 	
 	QFontMetrics fm = msg->fontMetrics();
-	sw = fm.width(spa) + LABEL_WC;
+	sw = fm.width(klocale->translate("Game paused")) + LABEL_WC;
 	sh = fm.height() + LABEL_HC;
 	QFontMetrics fm2 = pb->fontMetrics();
-	sw2 = fm2.width(sre) + LABEL_WC;
+	sw2 = fm2.width(klocale->translate("Press to resume")) + LABEL_WC;
 	sh2 = fm2.height() + LABEL_HC;
 
 	msg->setGeometry((width() - sw)/2, (height() - sh-sh2)/3, sw,sh);
-	msg->setText(spa);
+	msg->setText(klocale->translate("Game paused"));
 	pb->setGeometry((width() - sw2)/2, 2*(height() - sh-sh2)/3, sw2, sh2);
-	pb->setText(sre);
+	pb->setText(klocale->translate("Press to resume"));
 }
 
 void Field::createMinePixmap()
@@ -113,7 +113,6 @@ void Field::createMinePixmap()
 	pt->drawPoint(5,15); pt->drawLine(8,15,12,15); pt->drawPoint(15,15);
 }
 
-
 int Field::computeNeighbours(int i, int j)
 {
 	int nm = 0;
@@ -130,7 +129,6 @@ int Field::computeNeighbours(int i, int j)
 	return nm;
 }
 
-
 void Field::Start(int nb_width, int nb_height, int nb_mines)
 {
 	int i,j;
@@ -142,7 +140,7 @@ void Field::Start(int nb_width, int nb_height, int nb_mines)
 	}
 	
 	/* nb_w must be the old value ! */
-	if (pfield!=NULL) {
+	if (pfield!=0) {
 		for (i=0; i<nb_w+2; i++) delete pfield[i];
 		delete pfield;
 	}
@@ -175,20 +173,9 @@ void Field::Start(int nb_width, int nb_height, int nb_mines)
 		pfield[nb_w+1][j] = UNCOVERED;
 	}
   
-	for(int k=0; k<nb_m; k++) {
-		do {
-			i = random() % nb_w;
-			j = random() % nb_h;
-		}
-		while(pfield[i+1][j+1] & MINE);
-
-		pfield[i+1][j+1] |= MINE;
-	}
-	
 	adjustSize();
 	repaint();
 }
-
 
 void Field::paintEvent( QPaintEvent *)
 {
@@ -196,7 +183,6 @@ void Field::paintEvent( QPaintEvent *)
 	    for (int j=1; j<=nb_h; j++)
 		    drawCase(i, j, computeNeighbours(i,j));
 }
-
 
 void Field::changeCaseState(int i, int j, int new_st)
 {
@@ -209,12 +195,9 @@ void Field::changeCaseState(int i, int j, int new_st)
 	}
   
 	emit changeCase(new_st,1);
-  
-	if (!stop)
-	    emit updateStatus();
 	drawCase(i,j,computeNeighbours(i,j));
+	if (!stop) emit updateStatus();
 }
-
 
 #define ipos (i-1)*CASE_W
 #define jpos (j-1)*CASE_W
@@ -265,7 +248,6 @@ void Field::drawCase(int i, int j, int nbs)
     pt->end();
 }
 
-
 void Field::uncover(int i, int j)
 {
 	int nbs;
@@ -300,10 +282,8 @@ void Field::mousePressEvent( QMouseEvent *e )
 	ic = e->pos().x() / CASE_W + 1;
 	jc = e->pos().y() / CASE_W + 1;
 	
-	if (first_click) {
+	if (first_click)
 		emit startTimer();
-		first_click = FALSE;
-	}
 
 	if (e->button()==LeftButton) {
 		left_down = TRUE;
@@ -333,6 +313,24 @@ void Field::mouseReleaseEvent( QMouseEvent *e )
 	if (ic>=1 && ic<=nb_w && jc>=1 && jc<=nb_h) {
 		if (e->button()==LeftButton) {
 			left_down = FALSE;
+			
+			if ( first_click ) {
+				// set mines positions on field ; must avoid the first 
+				// clicked case
+				for(int k=0; k<nb_m; k++) {
+					int i, j;
+					do {
+						i = random() % nb_w;
+						j = random() % nb_h;
+					}
+					while ( (pfield[i+1][j+1] & MINE) 
+						    || ((i+1)==ic && (j+1)==jc) );
+			
+					pfield[i+1][j+1] |= MINE;
+				}
+				first_click = FALSE;
+			}
+			
 			uncoverCase(ic, jc);
 		} else if (e->button()==MidButton) {
 			mid_down = FALSE;
@@ -369,17 +367,17 @@ void Field::mouseMoveEvent( QMouseEvent *e )
 	} 
 }
 
+/* Shown mines on explosion */
 void Field::showMines(int i0, int j0)
 {
 	for(int i=1; i<=nb_w; i++)
 		for(int j=1; j<=nb_h; j++)
-		    if (pfield[i][j] & MINE) {
-				if ( !(pfield[i][j] & EXPLODED) )
+		    if ( (pfield[i][j] & MINE) ) {
+				if ( !(pfield[i][j] & EXPLODED) && !(pfield[i][j] & MARKED) ) 
 					changeCaseState(i,j,UNCOVERED);
-			} else if (pfield[i][j] & MARKED)
-	            changeCaseState(i,j,ERROR);
-  
-	changeCaseState(i0,j0,EXPLODED);
+			} else if (pfield[i][j] & MARKED) changeCaseState(i,j,ERROR);
+			
+	changeCaseState(i0, j0, EXPLODED);
 }
 
 void Field::Stop()
@@ -410,6 +408,7 @@ void Field::pressClearFunction(int i, int j, int state)
 	pressCase(i+1, j+1, state);
 }
 
+#define M_OR_U(i, j) ( (pfield[i][j] & MARKED) || (pfield[i][j] & UNCERTAIN) )
 void Field::clearFunction(int i, int j)
 {
 	pressClearFunction(i, j, FALSE);
@@ -421,14 +420,14 @@ void Field::clearFunction(int i, int j)
 	/* number of mines around the case */
 	nm = computeNeighbours(i, j);
 	
-	if (pfield[i-1][j]   & MARKED) nm--;
-	if (pfield[i-1][j+1] & MARKED) nm--;
-	if (pfield[i-1][j-1] & MARKED) nm--;
-	if (pfield[i][j+1]   & MARKED) nm--;
-	if (pfield[i][j-1]   & MARKED) nm--;
-	if (pfield[i+1][j]   & MARKED) nm--;
-	if (pfield[i+1][j+1] & MARKED) nm--;
-	if (pfield[i+1][j-1] & MARKED) nm--;
+	if M_OR_U(i-1, j  ) nm--;
+	if M_OR_U(i-1, j+1) nm--;
+	if M_OR_U(i-1, j-1) nm--;
+	if M_OR_U(i,   j+1) nm--;
+	if M_OR_U(i,   j-1) nm--;
+	if M_OR_U(i+1, j  ) nm--;
+	if M_OR_U(i+1, j+1) nm--;
+	if M_OR_U(i+1, j-1) nm--;
 	
 	if (!nm) { /* the number of surrounding mines is equal */
 		       /* to the number of marks :) */
