@@ -1,0 +1,80 @@
+# kmines Makefile.in 
+
+# @CXXFLAGS@     : is set to -g -Wall (when debuging) or -O2 -Wall (when not)
+# @all_includes@ : is set to all needed include paths for QT, KDE and X11
+# -I.. 	         : needed for config.h
+CXXFLAGS= @CXXFLAGS@ @all_includes@ -DHAVE_CONFIG_H -I..
+
+# @LDFLAGS@    : is set to -s (when not debuging) for stripping
+# @all_libra.@ : is set to all needed libraries paths for QT, KDE and X11
+# you need also @LIBSOCKET@, if you link with -lkfm
+LDFLAGS	= @LDFLAGS@ @all_libraries@ -lkdecore -lkdeui -lqt -lXext -lX11 
+
+# both are clear, I think
+CXX     = @CXX@
+MOC   	= @MOC@
+
+############# INSTALL #################
+
+install = @INSTALL@
+INSTALL = $(install) -m 0755
+INSTALL_DATA = $(install) -m 0644
+INSTALL_DIR = $(install) -d -m 0755
+INSTALL_DIR_PRIVATE = $(install) -d -m 0700
+
+prefix = @prefix@
+KDEINC = $(prefix)/include
+BINDIR = $(prefix)/bin
+LIBDIR = $(prefix)/lib
+PICSDIR = $(LIBDIR)/pics
+DOCDIR = $(prefix)/doc/HTML
+APPSDIR= $(prefix)/apps/Games
+
+########### File Formats ###########
+
+.SUFFIXES: .cpp
+
+.cpp.o:
+	$(CXX) -c $(CXXFLAGS) $<
+
+%.moc: %.h
+	$(MOC) $< -o $@
+
+########## Files #####################
+
+OBJECTS =	kmines.o status.o field.o dialogs.o
+SRCMETA =	kmines.moc status.moc field.moc dialogs.moc
+TARGET	=	kmines
+DOC	=	kmines.html
+
+######### build rules ################
+
+all: Makefile $(TARGET)
+
+Makefile: Makefile.in
+	cd .. && CONFIG_FILES=kmines/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+$(TARGET): $(SRCMETA) $(OBJECTS)
+	$(CXX) $(OBJECTS) -o $(TARGET) $(LDFLAGS)
+
+clean:
+	rm -f *.o *.bak *~ *% #*
+	rm -f $(SRCMETA) $(TARGET)
+
+distclean: clean
+	rm -f Makefile
+
+install: all
+	$(INSTALL_DIR) $(BINDIR)
+	$(INSTALL) $(TARGET) $(BINDIR)
+	$(INSTALL_DIR) $(DOCDIR)
+	$(INSTALL_DATA) $(DOC) $(DOCDIR)
+	$(INSTALL_DIR) $(APPSDIR)
+	$(INSTALL_DATA) kmines.kdelnk $(APPSDIR)
+
+uninstall:
+	rm -f $(BINDIR)/$(TARGET)
+	rm -f $(DOCSDIR)/$(DOC)
+	rm -f $(APPSDIR)/kmines.kdelnk
+
+# DO NOT DELETE THIS LINE -- make depend depends on it.

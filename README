@@ -1,0 +1,78 @@
+--- kmines 0.6.5 : Alpha version (06/05/97)
+
+This is a very classical minesweeper written almost from scratch.
+
+Features :
+ - 3 levels : Easy   : 8x8   with 10 bombs
+              Normal : 16x16 with 40 bombs
+	  	      Expert : 30x16 with 99 bombs
+  
+ - Custom levels
+ - High Scores
+
+Installation :
+  make
+  make install
+
+ChangeLog :
+
+0.6.5
+ - minor changes
+ - "kexample 0.31" compliant
+
+0.6.4
+ - adapted to libkdecore 0.7
+ - hide/show menubar and popup
+ - more compliant to the Style Guide
+ 
+0.6.3
+ - use kdehelp
+ - updating of Makefile (use KDEDIR)
+ - use kmsgbox
+ 
+0.62
+ - use KKeyCode to manage some keyboard shortcuts
+
+0.6
+ - change the class name "Status" to "KStatus" as an include file present on my
+   system defines something called "Status"...
+
+0.5
+ - use KApp for configuration and highscoring save (via KConfig)
+ - better look of option & highscores windows
+
+0.4
+ - minor bug fixe
+ - 4 spaces tabs indentation
+ - slight change in the "pause code"
+
+0.3
+ - the random configuration seems to be a bit too repetitive ...
+   (fixed : silly me !)
+ - a red cross must show where the marked cases have not contained mines
+ - uncover case on button release, not on button push and also allow moving
+   the mouse with the left button pressed
+ - clear function with the mid-button : it should be kool :)
+ - a pause entry in the menu
+ - QLCD for timer and mines left
+ - cleaning of the highscore stuff (the highscore file is now in the home dir)
+ - option : "'?' mark" on/off (the default behaviour is on : you can change
+   it by editing the defines.h file)
+
+	
+0.2
+ - some code reorganisation
+ - timer starts at first click now
+ - it is no more possible to click on a marked or uncertain case now
+ - a small help
+ - colored pixmaps
+ - a better look (?)
+ - highscoring
+ - custom level
+ 
+ 
+AUTHOR :
+ Nicolas HADACEK 
+ email : hadacek@kde.org
+
+Copyright Nicolas HADACEK 1996 1997 and distributed under the GPL.

@@ -1,0 +1,4 @@
+[KDE Desktop Entry]
+Exec=kmines -caption "%c"
+DocPath=kmines.html
+Info=KDE replacement for xbombs
