@@ -1,14 +1,14 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include <qmenubar.h>
+
 #include <qpopmenu.h>
 
 #include <kconfig.h>
 #include <kaccel.h>
 #include <kkeydialog.h>
 #include <kapp.h>
-
+#include <kmenubar.h>
 
 class KStatus;
 
@@ -34,7 +34,7 @@ class KMines : public QWidget
 	  *	height and number of mines
 	  */
 	void change_level(int level);
-        void configKeys() { KKeyDialog::configureKeys( kacc ); }
+    void configKeys() { KKeyDialog::configureKeys(kacc); }
 	void quit();
 	void toggleMenu();
 	void toggleUMark();
@@ -55,7 +55,7 @@ class KMines : public QWidget
 	KConfig *kconf;
 	KAccel * kacc;
 	
-	QMenuBar *menu;
+	KMenuBar *menu;
 	QPopupMenu* popup, *options;
 	int tog_id;
 	int um_id;

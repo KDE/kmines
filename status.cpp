@@ -7,6 +7,7 @@
 #include <qpixmap.h>
 #include <qprinter.h>
 #include <qobjectlist.h>
+#include <qpicture.h>
 
 #include <kconfig.h>
 
@@ -252,22 +253,24 @@ int KStatus::setHighScore(int sec, int min, int mode)
 void KStatus::print()
 {
 	QPrinter prt;
-	if ( prt.setup() ) {
-		QPainter p(&prt);
-		QPixmap pi(width(), height());
-		bitBlt(&pi, 0, 0, this, 0, 0, width(), height(), CopyROP);
-		QObjectList *ol = queryList("QWidget");
-		QObjectListIt it(*ol);
-		QObject *obj;
-		QWidget *w;
-		while ( (obj=it.current()) != 0 ) { // for each found object...
-			++it;
-			w = (QWidget *)obj;
-			if ( !w->isVisible() ) continue;
-			bitBlt(&pi, w->x(), w->y(),
-				  w, 0, 0, w->width(), w->height(), CopyROP);
-		}
-		delete ol;    
-		p.drawPixmap(0, 0, pi);
+	if ( !prt.setup() ) return;
+
+	// repaint all children widgets
+	repaint(FALSE);
+	const QObjectList *ol = children();
+	QObjectListIt it(*ol);
+	QObject *o;
+	QWidget *w;
+	while ( (o=it.current()) ) {
+		++it;
+		if ( !o->isWidgetType()) continue;
+		w = (QWidget *)o;
+		w->repaint(FALSE);
 	}
+
+	// write the screen region corresponding to the window
+	QPainter p(&prt);
+	p.drawPixmap(0, 0, QPixmap::grabWindow(winId())); 
+
+//  QRect r = p.viewport();
 }
