@@ -1,9 +1,25 @@
-2.1.4 (23 January 2001) [CVS 3.0 devel]
+2.1.6 (11 April 2002) [CVS 3.1 devel]
+ * mark/unmark actions on mouse release [patch by Thomas Capricelli]
+ * "magic reveal" : a new option that leave only the non trivial cases to
+   solve [patch by Thomas Capricelli]
+ * fix obscure flicker condition : keyboard play and moving pressed mouse
+   outside field :)
+ * add home/end/pageup/pagedown keyboard actions
+
+2.1.5 (14 February 2002) [SF 3.1 devel]
+ * now include a solver/adviser ! [contributed by Mikhail Kourinny]
+ * revamped game state management
+ * slightly changed settings API
+
+2.1.4b (15 April 2002)
+ * hopefully fixed case drawing for all styles [bug reported by kanthoney]
+
+2.1.4 (23 January 2002) [KDE 3.0 stable]
  * completely revamped API for highscores + dynamic library
- * revamped the settings (include Custom minefield)
+ * revamped settings (include Custom minefield)
  * fixed repaint of LCDs in inactive mode
 
-2.1.3 (29 November 2001) [KDE 3.0beta1 devel]
+2.1.3 (29 November 2001)
  * use KConfigGroupSaver everywhere
  * config entry for wwhs server url (just in case ...)
 

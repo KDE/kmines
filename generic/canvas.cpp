@@ -1,6 +1,8 @@
 #include "canvas.h"
 #include "canvas.moc"
 
+#include <qcanvas.h>
+
 
 KCanvasRootPixmap::KCanvasRootPixmap(QCanvasView *view, const char *name)
     : KRootPixmap(view, name), _view(view)
@@ -10,11 +12,8 @@ KCanvasRootPixmap::KCanvasRootPixmap(QCanvasView *view, const char *name)
             SLOT(backgroundUpdatedSlot(const QPixmap &)));
 }
 
-KCanvasRootPixmap::~KCanvasRootPixmap()
-{}
-
 void KCanvasRootPixmap::backgroundUpdatedSlot(const QPixmap &pixmap)
 {
-    if ( _view->canvas()==0 ) return;
-    _view->canvas()->setBackgroundPixmap(pixmap);
+    if ( _view && _view->canvas() )
+        _view->canvas()->setBackgroundPixmap(pixmap);
 }

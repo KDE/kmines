@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 1996-2002 Nicolas HADACEK (hadacek@kde.org)
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Library General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Library General Public License for more details.
+ *
+ * You should have received a copy of the GNU Library General Public
+ * License along with this program; if not, write to the Free
+ * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+
 #ifndef DEFINES_H
 #define DEFINES_H
 
@@ -35,18 +53,12 @@ class Level
     uint _width, _height, _nbMines;
 };
 
-class KMines
+namespace KMines
 {
- public:
-    enum CaseState { Covered, Uncovered, Uncertain, Marked, Exploded, Error };
-    struct Case {
-        bool      mine;
-        CaseState state;
-    };
-
-    enum GameState   { Stopped, Playing, Paused };
+    enum GameState   { Playing = 0, Paused, GameOver, Stopped, NB_STATES };
+    extern const char *STATES[NB_STATES];
     enum MouseAction { Reveal = 0, AutoReveal, Mark, UMark, None };
-    enum MouseButton { Left = 0, Mid, Right };
+    enum MouseButton { LeftButton = 0, MidButton, RightButton };
 
     enum Color { FlagColor = 0, ExplosionColor, ErrorColor, NB_COLORS };
     enum NumberColor { NB_NUMBER_COLORS = 8 };
@@ -57,7 +69,7 @@ class KMines
         QColor colors[NB_COLORS];
     };
 
-    static const char *OP_GROUP;
+    extern const char *OP_GROUP;
 };
 
 #endif

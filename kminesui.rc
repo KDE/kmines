@@ -1,9 +1,14 @@
 <!DOCTYPE kpartgui>
-<kpartgui name="kmines" version="11">
+<kpartgui name="kmines" version="13">
 
 <MenuBar>
   <Menu name="game"><text>&amp;Game</text>
     <Action name="levels" append="new_merge" />
+  </Menu>
+  <Menu name="adviser"><text>&amp;Adviser</text>
+    <Action name="advise" />
+    <Action name="solve" />
+    <Action name="solve_rate" />
   </Menu>
 </MenuBar>
 
@@ -18,5 +23,36 @@
   <Separator/>
   <Action name="game_quit"/>
 </Menu>
+
+
+<State name="stopped">
+  <enable>
+    <Action name="advise" />
+    <Action name="solve" />
+  </enable>
+  <disable>
+    <Action name="game_pause" />
+  </disable>
+</State>
+<State name="gameover">
+  <disable>
+    <Action name="advise" />
+    <Action name="solve" />
+    <Action name="game_pause" />
+  </disable>
+</State>
+<State name="playing">
+  <enable>
+    <Action name="advise" />
+    <Action name="solve" />
+    <Action name="game_pause" />
+  </enable>
+</State>
+<State name="paused">
+  <disable>
+    <Action name="advise" />
+    <Action name="solve" />
+  /disable>
+</State>
 
 </kpartgui>

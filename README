@@ -1,6 +1,7 @@
 KMINES : the KDE minesweeper
 ----------------------------
-Copyright (c) 1996-2002 Nicolas HADACEK (hadacek@kde.org)
+Copyright (c) 1996-2002 Nicolas HADACEK  (hadacek@kde.org)
+Copyright (c) 2001      Mikhail Kourinny (mkourinny@yahoo.com)
 Distributed under the GNU General Public License
 
 
@@ -12,4 +13,4 @@ with three predefined levels and custom levels.
  Expert : 30x16 with 99 mines
 
 
-Requirements : uptodate KDE and QT libraries.
+Requirements : up to date KDE and QT libraries.

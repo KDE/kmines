@@ -1,9 +1,12 @@
 TODO:
 
- * messages from/to a named pipe for external AI + log of game [yawn ...]
+ * messages from/to a named pipe for external AI [yawn ...]
  * icons for easy/normal/expert
  * new levels ...
- * integrate solver
+ * flowers
+ * background color (?)
+ * save/load game log (for finished game)
+ * choose drawing style ???
 
  * do you have any idea ?
 

@@ -211,11 +211,11 @@ class HighscoresSetting : public KSettingGeneric
 };
 
 HighscoresSettingsWidget::HighscoresSettingsWidget(QWidget *parent)
-    : KSettingWidget(i18n("Highscores"), "highscores", parent),
+    : KSettingWidget(i18n("Highscores"), "highscore", parent),
       _WWHEnabled(0)
 {
     KSettingGeneric *sg = new HighscoresSetting(this);
-    settings()->append(sg);
+    settingCollection()->insert(sg);
 
     QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
 

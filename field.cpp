@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 1996-2002 Nicolas HADACEK (hadacek@kde.org)
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Library General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Library General Public License for more details.
+ *
+ * You should have received a copy of the GNU Library General Public
+ * License along with this program; if not, write to the Free
+ * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+
 #include "field.h"
 #include "field.moc"
 
@@ -10,61 +28,85 @@
 
 #include <klocale.h>
 
+#include "solver/solver.h"
 
-//-----------------------------------------------------------------------------
+
+using namespace Grid2D;
+
 Field::Field(QWidget *parent)
-: QFrame(parent, "field"),
-  _level(Level::Easy), state(Stopped), u_mark(false), cursor(false), button(0)
+    : QFrame(parent, "field"), _state(Stopped), _button(0),
+      _level(Level::Easy)
 {
 	setFrameStyle( QFrame::Box | QFrame::Raised );
 	setLineWidth(2);
 	setMidLineWidth(2);
 
-	readSettings();
+    readSettings();
 }
 
 void Field::readSettings()
 {
-	setCaseProperties( AppearanceSettings::readCaseProperties() );
-	setUMark( GameSettings::readUMark() );
-	setCursor( GameSettings::readKeyboard() );
+	_uMark = GameSettings::readUMark();
+    _cursorShown = GameSettings::readKeyboard();
 	for (uint i=0; i<3; i++)
-		mb[i] = GameSettings::readMouseBinding((MouseButton)i);
+		_mb[i] = GameSettings::readMouseBinding((MouseButton)i);
+    setCaseProperties( AppearanceSettings::readCaseProperties() );
+    _completeReveal = GameSettings::readMagicReveal();
+    if (_completeReveal) emit setCheating();
 }
 
-void Field::setCaseProperties(const CaseProperties &_cp)
+void Field::setCaseProperties(const CaseProperties &cp)
 {
-	cp = _cp;
-	button.resize(cp.size, cp.size);
-	updateGeometry();
+	_cp = cp;
+	_button.resize(cp.size, cp.size);
 
 	QBitmap mask;
 
 	flagPixmap(mask, true);
-	flagPixmap(pm_flag, false);
-	pm_flag.setMask(mask);
+	flagPixmap(_pm_flag, false);
+	_pm_flag.setMask(mask);
 
 	minePixmap(mask, true, Covered);
-	minePixmap(pm_mine, false, Covered);
-	pm_mine.setMask(mask);
+	minePixmap(_pm_mine, false, Covered);
+	_pm_mine.setMask(mask);
 
 	minePixmap(mask, true, Exploded);
-	minePixmap(pm_exploded, false, Exploded);
-	pm_exploded.setMask(mask);
+	minePixmap(_pm_exploded, false, Exploded);
+	_pm_exploded.setMask(mask);
 
 	minePixmap(mask, true, Marked);
-	minePixmap(pm_error, false, Marked);
-	pm_error.setMask(mask);
+	minePixmap(_pm_error, false, Marked);
+	_pm_error.setMask(mask);
+
+    for (uint i=0; i<5; i++) {
+        advisedPixmap(mask, true, i);
+        advisedPixmap(_pm_advised[i], false, i);
+        _pm_advised[i].setMask(mask);
+    }
 
 	QFont f = font();
 	f.setPointSize(cp.size-6);
 	f.setBold(true);
 	setFont(f);
+
+    updateGeometry();
+    emit setMood(Smiley::Normal); // #### necessary to correctly resize the
+                                  // widget !!!
+}
+
+void Field::advisedPixmap(QPixmap &pix, bool mask, uint i) const
+{
+    pix.resize(_cp.size, _cp.size);
+    if (mask) pix.fill(color0);
+    QPainter p(&pix);
+    p.setWindow(0, 0, 16, 16);
+    p.setPen( QPen((mask ? color1 : _cp.numberColors[i]), 2) );
+    p.drawRect(3, 3, 11, 11);
 }
 
 void Field::flagPixmap(QPixmap &pix, bool mask) const
 {
-	pix.resize(cp.size, cp.size);
+	pix.resize(_cp.size, _cp.size);
 	if (mask) pix.fill(color0);
 	QPainter p(&pix);
 	p.setWindow(0, 0, 16, 16);
@@ -73,20 +115,20 @@ void Field::flagPixmap(QPixmap &pix, bool mask) const
 	p.drawLine(8, 12, 12, 12);
 	p.drawLine(9, 11, 11, 11);
 	p.drawLine(10, 2, 10, 10);
-	if (!mask) p.setPen(cp.colors[FlagColor]);
-	p.setBrush( (mask ? color1 : cp.colors[FlagColor]) );
+	if (!mask) p.setPen(black);
+	p.setBrush( (mask ? color1 : _cp.colors[FlagColor]) );
 	p.drawRect(4, 3, 6, 5);
 }
 
 void Field::minePixmap(QPixmap &pix, bool mask, CaseState type) const
 {
-	pix.resize(cp.size, cp.size);
+	pix.resize(_cp.size, _cp.size);
 	if (mask) pix.fill(color0);
 	QPainter p(&pix);
 	p.setWindow(0, 0, 20, 20);
 
 	if ( type==Exploded )
-		p.fillRect(2, 2, 16, 16, (mask ? color1 : cp.colors[ExplosionColor]));
+		p.fillRect(2, 2, 16, 16, (mask ? color1 : _cp.colors[ExplosionColor]));
 
 	QPen pen(mask ? color1 : black, 1);
 	p.setPen(pen);
@@ -101,7 +143,7 @@ void Field::minePixmap(QPixmap &pix, bool mask, CaseState type) const
 
 	if ( type==Marked ) {
 		if (!mask) {
-			pen.setColor(cp.colors[ErrorColor]);
+			pen.setColor(_cp.colors[ErrorColor]);
 			p.setPen(pen);
 		}
 		p.drawLine(3, 3, 17, 17);
@@ -115,8 +157,8 @@ void Field::minePixmap(QPixmap &pix, bool mask, CaseState type) const
 
 QSize Field::sizeHint() const
 {
-	return QSize(2*frameWidth() + _level.width()*cp.size,
-				 2*frameWidth() + _level.height()*cp.size);
+	return QSize(2*frameWidth() + _level.width()*_cp.size,
+				 2*frameWidth() + _level.height()*_cp.size);
 }
 
 QSizePolicy Field::sizePolicy() const
@@ -124,492 +166,347 @@ QSizePolicy Field::sizePolicy() const
 	return QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 }
 
-const KMines::Case &Field::pfield(uint i, uint j) const
-{
-	return _pfield[i + j*(_level.width()+2)];
-}
-
-KMines::Case &Field::pfield(uint i, uint j)
-{
-	return _pfield[i + j*(_level.width()+2)];
-}
-
-uint Field::computeNeighbours(uint i, uint j) const
-{
-	uint nm = 0;
-
-	if (pfield(i-1,   j).mine) nm++;
-	if (pfield(i-1, j+1).mine) nm++;
-	if (pfield(i-1, j-1).mine) nm++;
-	if (pfield(  i, j+1).mine) nm++;
-	if (pfield(  i, j-1).mine) nm++;
-	if (pfield(i+1,   j).mine) nm++;
-	if (pfield(i+1, j+1).mine) nm++;
-	if (pfield(i+1, j-1).mine) nm++;
-
-	return nm;
-}
-
 void Field::setLevel(const Level &level)
 {
-	_level = level;
-	restart();
-	updateGeometry();
+    _level = level;
+    updateGeometry();
+    reset();
 }
 
-void Field::restart()
+void Field::setState(GameState state)
 {
-	state = Playing;
-	firstReveal = true;
-	currentAction = None;
-	ic = _level.width()/2;
-	jc = _level.height()/2;
+    _state = state;
+    emit gameStateChanged(state, false);
+}
 
-	Case tmp;
-	tmp.mine = false;
-	tmp.state = Covered;
-	_pfield.fill(tmp, (_level.width()+2) * (_level.height()+2) );
-
-	// fill hidden borders
-	tmp.state = Uncovered;
-	for (uint i=0; i<_level.width()+2; i++) {
-		pfield(i, 0) = tmp;
-		pfield(i, _level.height()+1) = tmp;
-	}
-	for (uint j=0; j<_level.height()+2; j++) {
-		pfield(0, j) = tmp;
-		pfield(_level.width()+1, j) = tmp;
-	}
-
+void Field::reset()
+{
+    BaseField::reset(_level.width(), _level.height(), _level.nbMines());
+    setState(Stopped);
+    if (_completeReveal) emit setCheating();
+	_currentAction = None;
+    _reveal = false;
+    _cursor.first = _level.width()/2;
+    _cursor.second = _level.height()/2;
+    _advised = Coord(-1, -1);
 	update();
 }
 
 void Field::paintEvent(QPaintEvent *e)
 {
-	QPainter p(this);
-	drawFrame(&p);
+	QPainter painter(this);
+	drawFrame(&painter);
+	if ( _state==Paused ) return;
 
-	if ( state==Paused ) return;
-
-	uint imin
-        = (uint)QMAX(QMIN(xToI(e->rect().left()), (int)_level.width()), 1);
-	uint imax
-        = (uint)QMAX(QMIN(xToI(e->rect().right()), (int)_level.width()), 1);
-	uint jmin
-        = (uint)QMAX(QMIN(yToJ(e->rect().top()), (int)_level.height()), 1);
-	uint jmax
-        = (uint)QMAX(QMIN(yToJ(e->rect().bottom()), (int)_level.height()), 1);
-	for (uint i=imin; i<=imax; i++)
-	    for (uint j=jmin; j<=jmax; j++)
-            drawCase(p, i, j);
+    Coord min = fromPoint(e->rect().topLeft());
+    bound(min);
+    Coord max = fromPoint(e->rect().bottomRight());
+    bound(max);
+	for (short i=min.first; i<=max.first; i++)
+	    for (short j=min.second; j<=max.second; j++)
+            drawCase(painter, Coord(i,j));
 }
 
-void Field::changeCaseState(uint i, uint j, CaseState new_st)
+void Field::changeCase(const Coord &p, CaseState newState)
 {
-	emit changeCase(pfield(i, j).state, -1);
-	pfield(i, j).state = new_st;
-	emit changeCase(new_st, 1);
-    QPainter p(this);
-	drawCase(p, i, j);
-	if ( state==Playing ) emit updateStatus(pfield(i, j).mine);
+    BaseField::changeCase(p, newState);
+    QPainter painter(this);
+	drawCase(painter, p);
+	if ( isActive() ) emit updateStatus( hasMine(p) );
 }
 
-int Field::iToX(uint i) const
+QPoint Field::toPoint(const Coord &p) const
 {
-	return (i-1)*cp.size + frameWidth();
+    QPoint qp;
+    qp.setX( p.first*_cp.size + frameWidth() );
+    qp.setY( p.second*_cp.size + frameWidth() );
+    return qp;
 }
 
-int Field::jToY(uint j) const
+Coord Field::fromPoint(const QPoint &qp) const
 {
-	return (j-1)*cp.size + frameWidth();
+	double i = (double)(qp.x() - frameWidth()) / _cp.size;
+    double j = (double)(qp.y() - frameWidth()) / _cp.size;
+    return Coord((int)floor(i), (int)floor(j));
 }
 
-int Field::xToI(int x) const
-{
-	double d = (double)(x - frameWidth()) / cp.size;
-	return (int)floor(d) + 1;
-}
-
-int Field::yToJ(int y) const
-{
-	double d = (double)(y - frameWidth()) / cp.size;
-	return (int)floor(d) + 1;
-}
-
-void Field::uncover(uint i, uint j)
-{
-	if ( pfield(i, j).state!=Covered ) return;
-	uint nbs = computeNeighbours(i, j);
-
-	if (!nbs) {
-		changeCaseState(i, j, Uncovered);
-		uncover(i-1, j+1);
-		uncover(i-1,   j);
-		uncover(i-1, j-1);
-		uncover(  i, j+1);
-		uncover(  i, j-1);
-		uncover(i+1, j+1);
-		uncover(i+1,   j);
-		uncover(i+1, j-1);
-	} else changeCaseState(i, j, Uncovered);
-}
-
-bool Field::inside(int i, int j) const
-{
-	return ( i>=1 && i<=(int)_level.width() && j>=1
-             && j<=(int)_level.height());
-}
-
-KMines::MouseAction Field::mapMouseButton(QMouseEvent *e) const
+MouseAction Field::mapMouseButton(QMouseEvent *e) const
 {
 	switch (e->button()) {
-	case LeftButton:  return mb[KMines::Left];
-	case MidButton:   return mb[KMines::Mid];
-	case RightButton: return mb[KMines::Right];
+	case LeftButton:  return _mb[KMines::LeftButton];
+	case MidButton:   return _mb[KMines::MidButton];
+	case RightButton: return _mb[KMines::RightButton];
 	default:          return Mark;
 	}
 }
 
-bool Field::revealActions(bool press)
+void Field::revealActions(bool press)
 {
-	switch (currentAction) {
+    if ( _reveal==press ) return; // avoid flicker
+    _reveal = press;
+
+	switch (_currentAction) {
 	case Reveal:
-		pressCase(ic, jc, press);
-		return true;
+		pressCase(_cursor, press);
+		break;
 	case AutoReveal:
-		pressClearFunction(ic, jc, press);
-		return true;
+		pressClearFunction(_cursor, press);
+		break;
 	default:
-		return false;
+		break;
 	}
 }
 
 void Field::mousePressEvent(QMouseEvent *e)
 {
-	if ( state!=Playing || currentAction!=None ) return;
+	if ( !isActive() || _currentAction!=None ) return;
 
-	setMood(Smiley::Stressed);
-	currentAction = mapMouseButton(e);
-	if ( !placeCursor(xToI(e->pos().x()), yToJ(e->pos().y())) ) return;
+    emit setMood(Smiley::Stressed);
+	_currentAction = mapMouseButton(e);
 
-	if ( !revealActions(true) )
-		switch (currentAction) {
-		case Mark:
-			mark();
-			break;
-		case UMark:
-			umark();
-			break;
-		default:
-			break;
-		}
+    Coord p = fromPoint(e->pos());
+    if ( !inside(p) ) return;
+    placeCursor(p);
+	revealActions(true);
 }
 
 void Field::mouseReleaseEvent(QMouseEvent *e)
 {
-	if ( state!=Playing ) return;
+	if ( !isActive() ) return;
 
-	MouseAction ma = mapMouseButton(e);
-	if ( ma!=currentAction ) return;
-	setMood(Smiley::Normal);
+    MouseAction tmp = _currentAction;
+    emit setMood(Smiley::Normal);
 	revealActions(false);
-	currentAction = None;
+    MouseAction ma = mapMouseButton(e);
+    _currentAction = None;
+    if ( ma!=tmp ) return;
 
-	if ( !placeCursor(xToI(e->pos().x()), yToJ(e->pos().y())) ) return;
+    Coord p = fromPoint(e->pos());
+    if ( !inside(p) ) return;
+    placeCursor(p);
 
 	switch (ma) {
-	case Reveal:
-		reveal();
-		break;
-	case AutoReveal:
-		autoReveal();
-		break;
-	default:
-		break;
+    case Mark:       doMark(p); break;
+    case UMark:      doUmark(p); break;
+	case Reveal:     doReveal(p); break;
+	case AutoReveal: doAutoReveal(p); break;
 	}
 }
 
 void Field::mouseMoveEvent(QMouseEvent *e)
 {
-	if ( state!=Playing ) return;
+	if ( !isActive() ) return;
 
-	int i = xToI(e->pos().x());
-	int j = yToJ(e->pos().y());
-	if ( i==(int)ic && j==(int)jc ) return; // avoid flicker
+    Coord p = fromPoint(e->pos());
+    if ( p==_cursor ) return; // avoid flicker
 
 	revealActions(false);
-	if ( !placeCursor(i, j) ) return;
+    if ( !inside(p) ) return;
+    placeCursor(p);
 	revealActions(true);
 }
 
-void Field::showMines()
+void Field::pressCase(const Coord &c, bool pressed)
 {
-	for(uint i=1; i<=_level.width(); i++)
-		for(uint j=1; j<=_level.height(); j++) {
-		    if ( !pfield(i, j).mine ) continue;
-			if ( pfield(i, j).state!=Exploded && pfield(i, j).state!=Marked )
-				changeCaseState(i, j, Uncovered);
-		}
-}
-
-void Field::pressCase(uint i, uint j, bool pressed)
-{
-	if ( pfield(i, j).state==Covered ) {
-        QPainter p(this);
-        drawBox(p, i, j, pressed);
+	if ( state(c)==Covered ) {
+        QPainter painter(this);
+        drawBox(painter, c, pressed);
     }
 }
 
-void Field::pressClearFunction(uint i, uint j, bool pressed)
+void Field::pressClearFunction(const Coord &p, bool pressed)
 {
-	pressCase(i-1, j+1, pressed);
-	pressCase(i-1,   j, pressed);
-	pressCase(i-1, j-1, pressed);
-	pressCase(  i, j+1, pressed);
-	pressCase(  i,   j, pressed);
-	pressCase(  i, j-1, pressed);
-	pressCase(i+1, j-1, pressed);
-	pressCase(i+1,   j, pressed);
-	pressCase(i+1, j+1, pressed);
+    pressCase(p, pressed);
+    CoordSet n;
+    neighbours(p, n);
+    for (CoordSet::iterator it=n.begin(); it!=n.end(); ++it)
+        pressCase(*it, pressed);
 }
 
 void Field::keyboardAutoReveal()
 {
-	pressClearFunction(ic, jc, true);
+	pressClearFunction(_cursor, true);
 	QTimer::singleShot(50, this, SLOT(keyboardAutoRevealSlot()));
 }
 
 void Field::keyboardAutoRevealSlot()
 {
-	pressClearFunction(ic, jc, false);
-	autoReveal();
+	pressClearFunction(_cursor, false);
+	doAutoReveal(_cursor);
 }
 
-void Field::autoReveal()
+void Field::doAutoReveal(const Coord &p)
 {
-	if ( state!=Playing ) return;
-    if ( pfield(ic, jc).state!=Uncovered ) return;
-    emit incActions();
+	if ( !isActive() ) return;
 
-	// number of mines around the case
-	uint nm = computeNeighbours(ic, jc);
-	if ( pfield(ic-1,   jc).state==Marked ) nm--;
-	if ( pfield(ic-1, jc+1).state==Marked ) nm--;
-	if ( pfield(ic-1, jc-1).state==Marked ) nm--;
-	if ( pfield(  ic, jc+1).state==Marked ) nm--;
-	if ( pfield(  ic, jc-1).state==Marked ) nm--;
-	if ( pfield(ic+1,   jc).state==Marked ) nm--;
-	if ( pfield(ic+1, jc+1).state==Marked ) nm--;
-	if ( pfield(ic+1, jc-1).state==Marked ) nm--;
-
-	if (!nm) { // number of surrounding mines == number of marks :)
-		uncoverCase(ic+1, jc+1);
-		uncoverCase(ic+1,   jc);
-		uncoverCase(ic+1, jc-1);
-		uncoverCase(  ic, jc+1);
-		uncoverCase(  ic, jc-1);
-		uncoverCase(ic-1, jc+1);
-		uncoverCase(ic-1,   jc);
-		uncoverCase(ic-1, jc-1);
-	}
-}
-
-void Field::uncoverCase(uint i, uint j)
-{
-	if ( pfield(i, j).state!=Covered ) return;
-
-    if ( !pfield(i, j).mine ) {
-        uncover(i, j);
-        return;
-    }
-
-    // explosion
-    changeCaseState(i, j, Exploded);
-    // if this is not the first explosion, the game is already stopped
-    if ( state==Stopped ) return;
-
-    // find all errors
-    for (uint ii=1; ii<_level.width()+1; ii++)
-        for (uint jj=1; jj<_level.height()+1; jj++)
-            if ( pfield(ii, jj).state==Marked && !pfield(ii, jj).mine )
-                changeCaseState(ii, jj, Error);
-
-    emit gameLost();
+    if ( state(p)==Uncovered ) emit incActions();
+    resetAdvised();
+    bool ok = autoReveal(p, 0);
+    if ( !ok ) setState(GameOver);
+    else if (_completeReveal) completeReveal();
 }
 
 void Field::pause()
 {
-	if ( firstReveal || state==Stopped ) return;
-
-	if ( state==Paused ) resume(); // if already paused : resume game
-	else {
-		emit stopTimer();
-		state = Paused;
-        emit setMood(Smiley::Sleeping);
-		emit gameStateChanged(Paused);
-		update();
-	}
+    switch (_state) {
+    case Paused:  setState(Playing); break;
+    case Playing: setState(Paused);  break;
+    default: return;
+    }
+    update();
 }
 
-void Field::resume()
+void Field::moveCursor(Neighbour n)
 {
-	state = Playing;
-    emit setMood(Smiley::Normal);
-	emit gameStateChanged(Playing);
-	emit startTimer();
-	update();
+    Coord c = neighbour(_cursor, n);
+    if ( inside(c) ) placeCursor(c);
 }
 
-void Field::up()
+void Field::moveToEdge(Neighbour n)
 {
-	placeCursor(ic, jc-1);
+    Coord c = toEdge(_cursor, n);
+    if ( inside(c) ) placeCursor(c);
 }
 
-void Field::down()
+void Field::doReveal(const Coord &p)
 {
-	placeCursor(ic, jc+1);
-}
-
-void Field::left()
-{
-	placeCursor(ic-1, jc);
-}
-
-void Field::right()
-{
-	placeCursor(ic+1, jc);
-}
-
-void Field::reveal()
-{
-	if ( state!=Playing ) return;
+	if ( !isActive() ) return;
     emit incActions();
-	if (firstReveal) {
-		// set mines positions on field ; must avoid the first
-		// clicked case
-		for(uint k=0; k<_level.nbMines(); k++) {
-			uint i, j;
-			do {
-				i = _random.getLong(_level.width());
-				j = _random.getLong(_level.height());
-			} while ( pfield(i+1, j+1).mine
-					  || ((i+1)==(uint)ic && (j+1)==(uint)jc) );
+    resetAdvised();
 
-			pfield(i+1, j+1).mine = true;
-		}
-		emit startTimer();
-		firstReveal = false;
-		emit gameStateChanged(Playing);
-	}
-
-	uncoverCase(ic, jc);
+    if ( firstReveal() ) setState(Playing);
+    bool ok = reveal(p, 0, 0);
+    if (!ok) setState(GameOver);
+    else if (_completeReveal) completeReveal();
 }
 
-void Field::mark()
+void Field::doMark(const Coord &p)
 {
-	if ( state!=Playing ) return;
+	if ( !isActive() ) return;
     emit incActions();
-	switch (pfield(ic, jc).state) {
-	case Covered:   changeCaseState(ic, jc, Marked); break;
-	case Marked:    changeCaseState(ic, jc, (u_mark ? Uncertain : Covered));
-		        break;
-	case Uncertain:	changeCaseState(ic, jc, Covered); break;
-	default:        break;
-	}
+    resetAdvised();
+    mark(p);
 }
 
-void Field::umark()
+void Field::doUmark(const Coord &p)
 {
-	if ( state!=Playing ) return;
+	if ( !isActive() ) return;
     emit incActions();
-	switch (pfield(ic, jc).state) {
-	case Covered:
-	case Marked:    changeCaseState(ic, jc, Uncertain); break;
-	case Uncertain: changeCaseState(ic, jc, Covered); break;
-	default:        break;
+    resetAdvised();
+    umark(p);
+}
+
+void Field::placeCursor(const Coord &p)
+{
+	if ( !isActive() ) return;
+
+    Q_ASSERT( inside(p) );
+    Coord old = _cursor;
+    _cursor = p;
+	if ( _cursorShown ) {
+        QPainter painter(this);
+		drawCase(painter, old);
+		drawCase(painter, _cursor);
 	}
 }
 
-bool Field::placeCursor(int i, int j)
+void Field::resetAdvised()
 {
-	if ( state!=Playing || !inside(i, j) ) return false;
-	uint oldIc = ic;
-	uint oldJc = jc;
-	ic = (uint)i;
-	jc = (uint)j;
-	if (cursor) {
+    if ( !inside(_advised) ) return;
+    QPainter p(this);
+    Coord tmp = _advised;
+    _advised = Coord(-1, -1);
+    drawCase(p, tmp);
+}
+
+void Field::setAdvised(const Coord &c, double proba)
+{
+    resetAdvised();
+
+    _advised = c;
+    _advisedProba = proba;
+    if ( inside(_advised) ) {
         QPainter p(this);
-		drawCase(p, oldIc, oldJc);
-		drawCase(p, ic, jc);
-	}
-	return true;
-}
-
-void Field::setCursor(bool show)
-{
-	cursor = show;
-	if ( state==Playing ) {
-        QPainter p(this);
-        drawCase(p, ic, jc);
+        drawCase(p, c);
     }
 }
 
 // draw methods
-void Field::drawBox(QPainter &p, uint i, uint j, bool pressed,
-                    const QPixmap *pixmap, const QString &text,
-                    const QColor &textColor)
+void Field::drawItem(QPainter &painter, const QPoint &p,
+                     const QPixmap *pixmap, const QString &text,
+                     const QColor &textColor) const
 {
-	int x = iToX(i);
-	int y = jToY(j);
-
-	p.translate(x, y);
-
-	QStyle::SFlags flags = QStyle::Style_Enabled;
-	if (pressed) flags |= QStyle::Style_Down;
-	else flags |= QStyle::Style_Raised;
-	if ( cursor && i==ic && j==jc ) flags |= QStyle::Style_HasFocus;
-
-	style().drawControl(QStyle::CE_PushButton, &p, &button, button.rect(),
-                        colorGroup(), flags);
-	style().drawControl(QStyle::CE_PushButtonLabel, &p, &button,
-                      style().subRect(QStyle::SR_PushButtonFocusRect, &button),
-                        colorGroup(), flags);
-
-	// we need to draw directly because the pushbutton control clips too much
-	// text and pixmap ...
-	p.resetXForm();
-	QRect r(x, y, cp.size, cp.size);
-	style().drawItem(&p, r, AlignCenter, colorGroup(), true, pixmap,
-                         text, -1, &textColor);
+    QRect r(p, _button.size());
+    style().drawItem(&painter, r, AlignCenter, colorGroup(), true, pixmap,
+                    text, -1, &textColor);
 }
 
-void Field::drawCase(QPainter &p, uint i, uint j)
+void Field::drawBox(QPainter &painter, const Coord &c, bool pressed,
+                    const QPixmap *pixmap, const QString &text,
+                    const QColor &textColor) const
 {
-	Q_ASSERT( inside(i, j) );
-	switch (pfield(i, j).state) {
-		case Covered:
-			drawBox(p, i, j, false);
-			break;
+    QPoint p = toPoint(c);
+	painter.translate(p.x(), p.y());
+
+    QStyle::SFlags flags = QStyle::Style_Enabled;
+    bool hasFocus = ( _cursorShown && c==_cursor );
+    if (hasFocus) flags |= QStyle::Style_HasFocus;
+     if (pressed) {
+        flags |= QStyle::Style_Sunken;
+        flags |= QStyle::Style_Down;
+    } else {
+        flags |= QStyle::Style_Raised;
+        flags |= QStyle::Style_Up;
+    }
+    style().drawPrimitive(QStyle::PE_ButtonCommand, &painter, _button.rect(),
+                          colorGroup(), flags);
+    if (hasFocus) {
+        QRect fbr = style().subRect(QStyle::SR_PushButtonFocusRect, &_button);
+        style().drawPrimitive(QStyle::PE_FocusRect, &painter, fbr,
+                              colorGroup(), flags);
+    }
+
+	painter.resetXForm();
+    drawItem(painter, p, pixmap, text, textColor);
+}
+
+void Field::drawCase(QPainter &painter, const Coord &c) const
+{
+	Q_ASSERT( inside(c) );
+
+	switch ( state(c) ) {
+    case Covered:
+        drawBox(painter, c, false);
+        break;
 	case Marked:
-			drawBox(p, i, j, false, &pm_flag);
-			break;
+        drawBox(painter, c, false, &_pm_flag);
+        break;
 	case Error:
-			drawBox(p, i, j, true, &pm_error);
-			break;
+        drawBox(painter, c, true, &_pm_error);
+        break;
 	case Uncertain:
-			drawBox(p, i, j, false, 0, "?", black);
-			break;
+        drawBox(painter, c, false, 0, "?", black);
+        break;
 	case Exploded:
-			drawBox(p, i, j, true, &pm_exploded);
-			break;
+        drawBox(painter, c, true, &_pm_exploded);
+        break;
 	case Uncovered:
-        	if ( pfield(i, j).mine ) drawBox(p, i, j, true, &pm_mine);
-        	else {
-                uint n = computeNeighbours(i, j);
-                QString nb;
-                if (n) nb.setNum(n);
-                drawBox(p, i, j, true, 0, nb,
-                        n ? cp.numberColors[n-1] : black);
-        	}
+        if ( hasMine(c) ) drawBox(painter, c, true, &_pm_mine);
+        else {
+            uint n = nbMinesAround(c);
+            QString nb;
+            if (n) nb.setNum(n);
+                drawBox(painter, c, true, 0, nb,
+                        n ? _cp.numberColors[n-1] : black);
+        }
 	}
+
+    if ( c==_advised ) {
+        uint i = 4;
+        if ( _advisedProba==1 ) i = 0;
+        else if ( _advisedProba>0.75 ) i = 1;
+        else if ( _advisedProba>0.5  ) i = 2;
+        else if ( _advisedProba>0.25 ) i = 3;
+        drawItem(painter, toPoint(c), &_pm_advised[i]);
+    }
 }

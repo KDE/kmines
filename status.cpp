@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 1996-2002 Nicolas HADACEK (hadacek@kde.org)
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Library General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Library General Public License for more details.
+ *
+ * You should have received a copy of the GNU Library General Public
+ * License along with this program; if not, write to the Free
+ * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+
 #include "status.h"
 #include "status.moc"
 
@@ -9,12 +27,20 @@
 #include <kapplication.h>
 #include <klocale.h>
 #include <kconfig.h>
+#include <kmessagebox.h>
+#include <kaction.h>
+
 #include "ghighscores.h"
+#include "solver/solver.h"
+#include "dialogs.h"
 
 
-Status::Status(QWidget *parent, const char *name)
-: QWidget(parent, name)
+Status::Status(QWidget *parent)
+    : QWidget(parent, "status")
 {
+    _solver = new Solver(this);
+    connect(_solver, SIGNAL(solvingDone(bool)), SLOT(solvingDone(bool)));
+
 // top layout
 	QGridLayout *top = new QGridLayout(this, 2, 5, 10, 10);
     top->setResizeMode(QLayout::Fixed);
@@ -53,16 +79,12 @@ Status::Status(QWidget *parent, const char *name)
     QGridLayout *g = new QGridLayout(_fieldContainer, 1, 1);
     field = new Field(_fieldContainer);
     g->addWidget(field, 0, 0, AlignCenter);
-    connect( field, SIGNAL(changeCase(CaseState, int)),
-			 SLOT(changeCase(CaseState, int)) );
 	connect( field, SIGNAL(updateStatus(bool)), SLOT(update(bool)) );
-	connect( field, SIGNAL(gameLost()), SLOT(gameLost()) );
-	connect( field, SIGNAL(startTimer()), dg, SLOT(start()) );
-	connect( field, SIGNAL(stopTimer()), dg, SLOT(stop()) );
-	connect( field, SIGNAL(setMood(Smiley::Mood)),
-			 smiley, SLOT(setMood(Smiley::Mood)) );
-	connect(field, SIGNAL(gameStateChanged(GameState)),
-			SLOT(gameStateChangedSlot(GameState)) );
+	connect(field, SIGNAL(gameStateChanged(GameState, bool)),
+			SLOT(gameStateChanged(GameState, bool)) );
+    connect(field, SIGNAL(setMood(Smiley::Mood)), smiley,
+            SLOT(setMood(Smiley::Mood)));
+    connect(field, SIGNAL(setCheating()), dg, SLOT(setCheating()));
     connect(field, SIGNAL(incActions()), dg, SLOT(incActions()));
 	QWhatsThis::add(field, i18n("Mines field."));
 
@@ -74,7 +96,7 @@ Status::Status(QWidget *parent, const char *name)
     QPushButton *pb
         = new QPushButton(i18n("Press to Resume"), _resumeContainer);
     pb->setFont(f);
-    connect(pb, SIGNAL(clicked()), field, SLOT(resume()));
+    connect(pb, SIGNAL(clicked()), SIGNAL(pause()));
     g->addWidget(pb, 0, 0, AlignCenter);
 
     _stack = new QWidgetStack(this);
@@ -84,34 +106,10 @@ Status::Status(QWidget *parent, const char *name)
     top->addMultiCellWidget(_stack, 1, 1, 0, 4);
 }
 
-void Status::initGame()
-{
-	uncovered = 0;
-	uncertain = 0;
-	marked    = 0;
-	gameStateChangedSlot(Stopped);
-	update(false);
-	smiley->setMood(Smiley::Normal);
-
-    KExtHighscores::Score first(KExtHighscores::Won);
-    KExtHighscores::Score last(KExtHighscores::Won);
-	if ( field->level().type()!=Level::Custom ) {
-        first = KExtHighscores::firstScore();
-        last = KExtHighscores::lastScore();
-    }
-	dg->reset(first, last);
-}
-
 void Status::smileyClicked()
 {
-    if ( field->isPaused() ) field->resume();
+    if ( field->isPaused() ) emit pause();
     else restartGame();
-}
-
-void Status::restartGame()
-{
-	field->restart();
-	initGame();
 }
 
 void Status::newGame(int t)
@@ -121,9 +119,6 @@ void Status::newGame(int t)
         KExtHighscores::setGameType(type);
         field->setLevel(Level(type));
     } else field->setLevel(CustomSettings::readLevel());
-
-	initGame();
-    updateGeometry();
 }
 
 void Status::settingsChanged()
@@ -136,48 +131,82 @@ void Status::settingsChanged()
     if ( l.width()==current.width() && l.height()==current.height()
          && l.nbMines()==current.nbMines() ) return;
     field->setLevel(l);
-    initGame();
-}
-
-void Status::changeCase(CaseState cs, int inc)
-{
-	switch (cs) {
-	case Uncovered: uncovered += inc; break;
-	case Uncertain: uncertain += inc; break;
-	case Marked:    marked    += inc; break;
-	default:                          break;
-	}
 }
 
 void Status::update(bool mine)
 {
-	QString str;
-	const Level &level = field->level();
-	int r = level.nbMines() - marked;
-	int u = level.width()*level.height()
-            - level.nbMines() - uncovered; // cannot be negative
-    QColor color = (r<0 && u!=0 ? red : white);
+	int r = field->nbMines() - field->nbMarked();
+    QColor color = (r<0 && !field->isSolved() ? red : white);
     left->setColor(color);
 	left->display(r);
 
-	if ( u==0 && !mine ) _endGame(true); // ends only for wins
+	if ( field->isSolved() && !mine )
+        gameStateChanged(GameOver, true); // ends only for wins
 }
 
-void Status::_endGame(bool won)
+void Status::gameStateChanged(GameState state, bool won)
 {
-    field->showMines();
-	field->stop();
-	dg->stop();
-	emit gameStateChanged(Stopped);
-    smiley->setMood(won ? Smiley::Happy : Smiley::Sad);
+    switch (state) {
+    case Playing:
+        smiley->setMood(Smiley::Normal);
+        dg->start();
+        break;
+    case GameOver:
+        field->showAllMines();
+        field->gameOver();
+        smiley->setMood(won ? Smiley::Happy : Smiley::Sad);
+        dg->stop();
+        if ( field->level().type()!=Level::Custom && won && !dg->cheating() )
+            KExtHighscores::submitScore(dg->score(), this);
+        break;
+    case Paused:
+        smiley->setMood(Smiley::Sleeping);
+        dg->stop();
+        break;
+    case Stopped:
+        smiley->setMood(Smiley::Normal);
+        update(false);
+        KExtHighscores::Score first(KExtHighscores::Won);
+        KExtHighscores::Score last(KExtHighscores::Won);
+        if ( field->level().type()!=Level::Custom ) {
+            first = KExtHighscores::firstScore();
+            last = KExtHighscores::lastScore();
+        }
+        dg->reset(first, last);
+        break;
+    }
 
-    if ( field->level().type()==Level::Custom || !won ) return;
-    KExtHighscores::submitScore(dg->score(), this);
-}
-
-void Status::gameStateChangedSlot(GameState state)
-{
     if ( state==Paused ) _stack->raiseWidget(_resumeContainer);
     else _stack->raiseWidget(_fieldContainer);
-    emit gameStateChanged(state);
+    emit gameStateChangedSignal(state);
+}
+
+void Status::advise()
+{
+    int res = KMessageBox::warningContinueCancel(this,
+               i18n("When the solver gives "
+               "you an advice, you lose the ability to enter the highscores."),
+                QString::null, QString::null, "advice_warning");
+    if ( res==KMessageBox::Cancel ) return;
+    dg->setCheating();
+    float probability;
+    Grid2D::Coord c = _solver->advise(*field, probability);
+    field->setAdvised(c, probability);
+}
+
+void Status::solve()
+{
+    dg->setCheating();
+    _solver->solve(*field, false);
+}
+
+void Status::solvingDone(bool success)
+{
+    if ( !success ) gameStateChanged(GameOver, false);
+}
+
+void Status::solveRate()
+{
+    SolvingRateDialog sd(*field, this);
+    sd.exec();
 }

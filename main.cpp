@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 1996-2002 Nicolas HADACEK (hadacek@kde.org)
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Library General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Library General Public License for more details.
+ *
+ * You should have received a copy of the GNU Library General Public
+ * License along with this program; if not, write to the Free
+ * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+
 #include "main.h"
 #include "main.moc"
 
@@ -18,75 +36,84 @@
 #include "highscores.h"
 #include "version.h"
 
+const MainWidget::KeyData MainWidget::KEY_DATA[NB_KEYS] = {
+{I18N_NOOP("Move up"),     "keyboard_moveup",    Key_Up,    SLOT(moveUp())},
+{I18N_NOOP("Move down"),   "keyboard_movedown",  Key_Down,  SLOT(moveDown())},
+{I18N_NOOP("Move right"),  "keyboard_moveright", Key_Right, SLOT(moveRight())},
+{I18N_NOOP("Move left"),   "keyboard_moveleft",  Key_Left,  SLOT(moveLeft())},
+{I18N_NOOP("Move at left edge"), "keyboard_leftedge", Key_Home, SLOT(moveLeftEdge())},
+{I18N_NOOP("Move at right edge"), "keyboard_rightedge", Key_End, SLOT(moveRightEdge())},
+{I18N_NOOP("Move at top edge"), "keyboard_topedge", Key_PageUp, SLOT(moveTop())},
+{I18N_NOOP("Move at bottom edge"), "keyboard_bottomedge", Key_PageDown, SLOT(moveBottom())},
+{I18N_NOOP("Reveal mine"), "keyboard_revealmine", Key_Space, SLOT(reveal())},
+{I18N_NOOP("Mark mine"),   "keyboard_markmine",  Key_W,     SLOT(mark())},
+{I18N_NOOP("Automatic reveal"), "keyboard_autoreveal", Key_Return, SLOT(autoReveal())}
+};
+
 
 MainWidget::MainWidget()
 {
 	installEventFilter(this);
 
-	status = new Status(this);
-	connect(status, SIGNAL(gameStateChanged(GameState)),
-			SLOT(gameStateChanged(GameState)));
+	_status = new Status(this);
+	connect(_status, SIGNAL(gameStateChangedSignal(KMines::GameState)),
+			SLOT(gameStateChanged(KMines::GameState)));
+    connect(_status, SIGNAL(pause()), SLOT(pause()));
 
 	// Game & Popup
-	KStdGameAction::gameNew(status, SLOT(restartGame()), actionCollection());
-	pause = KStdGameAction::pause(status, SLOT(pauseGame()),
+	KStdGameAction::gameNew(_status, SLOT(restartGame()), actionCollection());
+	_pause = KStdGameAction::pause(_status, SLOT(pauseGame()),
                                   actionCollection());
 	KStdGameAction::highscores(this, SLOT(showHighscores()),
                                actionCollection());
 	KStdGameAction::quit(qApp, SLOT(quit()), actionCollection());
 
 	// keyboard
-	QPtrVector<KAction> keyAction(7);
-	keyAction.insert(0, new KAction(i18n("Move up"), Key_Up,
-							   status, SLOT(moveUp()),
-							   actionCollection(), "keyboard_moveup"));
-	keyAction.insert(1, new KAction(i18n("Move down"), Key_Down,
-							   status, SLOT(moveDown()),
-							   actionCollection(), "keyboard_movedown"));
-	keyAction.insert(2, new KAction(i18n("Move left"), Key_Left,
-							   status, SLOT(moveLeft()),
-							   actionCollection(), "keyboard_moveleft"));
-	keyAction.insert(3, new KAction(i18n("Move right"), Key_Right,
-							   status, SLOT(moveRight()),
-							   actionCollection(), "keyboard_moveright"));
-	keyAction.insert(4, new KAction(i18n("Reveal mine"), Key_Space,
-							   status, SLOT(reveal()),
-							   actionCollection(), "keyboard_revealmine"));
-	keyAction.insert(5, new KAction(i18n("Mark mine"), Key_W,
-							   status, SLOT(mark()),
-							   actionCollection(), "keyboard_markmine"));
-	keyAction.insert(6, new KAction(i18n("Automatic reveal"), Key_Return,
-							   status, SLOT(autoReveal()),
-							   actionCollection(), "keyboard_autoreveal"));
-	KAccel *kacc = new KAccel(this);
-	for (uint i=0; i<keyAction.size(); i++) {
-		keyAction[i]->setGroup("keyboard_group");
+	QPtrVector<KAction> keyAction(NB_KEYS);
+    KAccel *kacc = new KAccel(this);
+    for (uint i=0; i<NB_KEYS; i++) {
+        const KeyData &d = KEY_DATA[i];
+        keyAction.insert(i, new KAction(i18n(d.label), d.keycode, _status,
+                                        d.slot, actionCollection(), d.name));
+        keyAction[i]->setGroup("keyboard_group");
 		keyAction[i]->plugAccel(kacc);
-	}
+    }
 
 	// Settings
-	menu = KStdAction::showMenubar(this, SLOT(toggleMenubar()),
+	_menu = KStdAction::showMenubar(this, SLOT(toggleMenubar()),
                                    actionCollection());
-    settings.plug(menu, OP_GROUP, "menubar visible", true);
+    KSetting *s = new KSimpleSetting(KSimpleSetting::ToggleAction,
+                                     OP_GROUP, "menubar visible", true,
+                                     &_settings);
+    s->associate(_menu);
 	KStdAction::preferences(this, SLOT(configureSettings()),
                             actionCollection());
 	KStdAction::keyBindings(this, SLOT(configureKeys()), actionCollection());
 
 	// Levels
-    levels = new KSelectAction(i18n("Choose &Level"), 0,
-                   0, 0, actionCollection(), "levels");
-    settings.plug(levels, OP_GROUP, "Level", Level::data(Level::Easy).label);
-    connect(levels, SIGNAL(activated(int)), status, SLOT(newGame(int)));
-    QStringList list;
-    for (uint i=0; i<Level::NbLevels+1; i++) {
-        list.append(i18n(Level::data((Level::Type)i).i18nLabel));
-        settings.map(levels, i, Level::data((Level::Type)i).label);
-    }
-    levels->setItems(list);
+    _levels = new KSelectAction(actionCollection(), "levels");
+    connect(_levels, SIGNAL(activated(int)), _status, SLOT(newGame(int)));
+    KMultiSetting *ms =
+        new KMultiSetting(KMultiSetting::SelectAction, Level::NbLevels+1,
+                          OP_GROUP, "Level", Level::data(Level::Easy).label,
+                          &_settings, i18n("Choose &Level"));
+    ms->associate(_levels);
+    for (uint i=0; i<Level::NbLevels+1; i++)
+        ms->map(i, Level::data((Level::Type)i).label,
+                i18n(Level::data((Level::Type)i).i18nLabel));
+
+    // Adviser
+    _advise = new KAction(i18n("Advise"), CTRL + Key_A,
+                          _status, SLOT(advise()),
+                          actionCollection(), "advise");
+    _solve = new KAction(i18n("Solve"), 0, _status, SLOT(solve()),
+                         actionCollection(), "solve");
+    (void)new KAction(i18n("Solving rate..."), 0, _status, SLOT(solveRate()),
+                      actionCollection(), "solve_rate");
 
 	createGUI();
 	readSettings();
-	setCentralWidget(status);
+	setCentralWidget(_status);
 
     QPopupMenu *popup =
         static_cast<QPopupMenu *>(factory()->container("popup", this));
@@ -95,15 +122,15 @@ MainWidget::MainWidget()
 
 bool MainWidget::queryExit()
 {
-    settings.save();
+    _settings.save();
     return true;
 }
 
 void MainWidget::readSettings()
 {
-    settings.load();
+    _settings.load();
 
-    status->newGame( levels->currentItem() );
+    _status->newGame( _levels->currentItem() );
 	toggleMenubar();
     settingsChanged();
 }
@@ -124,14 +151,15 @@ bool MainWidget::eventFilter(QObject *, QEvent *e)
 
 void MainWidget::focusOutEvent(QFocusEvent *e)
 {
-    if ( pauseFocus && e->reason()==QFocusEvent::ActiveWindow
-         && !status->isPaused() ) status->pauseGame();
+    if (  GameSettings::readPauseFocus()
+          && e->reason()==QFocusEvent::ActiveWindow
+          && !_status->isPaused() ) pause();
     KMainWindow::focusOutEvent(e);
 }
 
 void MainWidget::toggleMenubar()
 {
-	if ( menu->isChecked() ) menuBar()->show();
+	if ( _menu->isChecked() ) menuBar()->show();
 	else menuBar()->hide();
 }
 
@@ -154,9 +182,7 @@ void MainWidget::settingsChanged()
 	for (it = list.begin(); it!=list.end(); ++it)
 		(*it)->setEnabled(enabled);
 
-    pauseFocus = GameSettings::readPauseFocus();
-
-    status->settingsChanged();
+    _status->settingsChanged();
 }
 
 void MainWidget::configureKeys()
@@ -164,21 +190,15 @@ void MainWidget::configureKeys()
 	KKeyDialog::configureKeys(actionCollection(), xmlFile(), true, this);
 }
 
-void MainWidget::gameStateChanged(GameState s)
+void MainWidget::gameStateChanged(KMines::GameState state)
 {
-	switch (s) {
-	case Stopped:
-		pause->setEnabled(false);
-        break;
-	case Paused:
-		pause->setChecked(true);
-		break;
-	case Playing:
-		pause->setChecked(false);
-		pause->setEnabled(true);
-        setFocus();
-		break;
-	}
+    stateChanged(KMines::STATES[state]);
+    if ( state==Playing ) setFocus();
+}
+
+void MainWidget::pause()
+{
+    action("game_pause")->activate();
 }
 
 //----------------------------------------------------------------------------
@@ -192,6 +212,7 @@ int main(int argc, char **argv)
 						 COPYLEFT, 0, HOMEPAGE);
     aboutData.addAuthor("Nicolas Hadacek", 0, EMAIL);
 	aboutData.addCredit("Andreas Zehender", I18N_NOOP("Smiley pixmaps"));
+    aboutData.addCredit("Mikhail Kourinny", I18N_NOOP("Solver/Adviser"));
     KCmdLineArgs::init(argc, argv, &aboutData);
 
     KApplication a;
