@@ -1,26 +1,14 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
-#include <qstring.h>
-#include <kapp.h>
-
-
 /* Strings for the configuration file */
-#define OP_GRP "Options"
-#define OP_UMARK_KEY "? mark"
-const QString HS_GRP[3] = { 
-	"Easy level", "Normal level", "Expert level"
-};
-#define HS_NAME_KEY "Name"
-#define HS_MIN_KEY "Min"
-#define HS_SEC_KEY "Sec"
+#define OP_GRP         "Options"
+#define OP_UMARK_KEY   "? mark"
+extern const char *HS_GRP[3];
+#define HS_NAME_KEY    "Name"
+#define HS_MIN_KEY     "Min"
+#define HS_SEC_KEY     "Sec"
 #define OP_MENUBAR_VIS "menubar visible"
-
-/* Strings for keys management */
-#define K_KMINES "kmines"
-#define K_CUSTOM "custom"
-#define K_HS "highscores"
-#define K_OP "options"
 
 /* States of a case (unsigned int) */
 #define NOTHING    0
@@ -67,3 +55,12 @@ const uint MODES[3][3] = { /* (width, height, mines) */
 };
 
 #endif // DEFINES_H
+
+
+
+
+
+
+
+
+

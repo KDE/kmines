@@ -1,7 +1,5 @@
 #include "status.h"
-#include "defines.h"
-#include "field.h"
-#include "dialogs.h"
+#include "status.moc"
 
 #include <qpainter.h>
 #include <qpixmap.h>
@@ -9,12 +7,15 @@
 #include <qobjectlist.h>
 #include <qpicture.h>
 
+#include <kapp.h>
 #include <kconfig.h>
 
-#include "status.moc"
+#include "defines.h"
+#include "field.h"
+#include "dialogs.h"
 
 
-KStatus::KStatus(QWidget *parent, const char *name)
+KMinesStatus::KMinesStatus(QWidget *parent, const char *name)
 : QWidget(parent, name)
 {
 	frame = new QFrame(this);
@@ -76,11 +77,12 @@ KStatus::KStatus(QWidget *parent, const char *name)
 	mesg->setFrameStyle(  QFrame::Panel | QFrame::Sunken );
 	mesg->installEventFilter(parent);
 	
-	connect( this, SIGNAL(exleft(int)),
-			 left, SLOT(display(int)) );
+	connect( this, SIGNAL(exleft(const QString &)),
+			 left, SLOT(display(const QString &)) );
+
 	connect( this, SIGNAL(freezeTimer()), dg, SLOT(freeze()) );
-	connect( this, SIGNAL(getTime(int *, int *)),
-		 	 dg,   SLOT(getTime(int *, int *)) );
+	connect( this, SIGNAL(getTime(int &, int &)),
+		 	 dg,   SLOT(getTime(int &, int &)) );
 	
 	connect( field, SIGNAL(startTimer()), dg, SLOT(start()) );
 	connect( field, SIGNAL(freezeTimer()), dg, SLOT(freeze()) );
@@ -104,7 +106,7 @@ KStatus::KStatus(QWidget *parent, const char *name)
 	}
 }
 
-void KStatus::createSmileyPixmap(QPixmap *pm, QPainter *pt)
+void KMinesStatus::createSmileyPixmap(QPixmap *pm, QPainter *pt)
 {
 	pm->fill(yellow);
 	pt->begin(pm);
@@ -124,7 +126,7 @@ void KStatus::createSmileyPixmap(QPixmap *pm, QPainter *pt)
 	pt->drawLine(10,21,14,21);
 }
 
-void KStatus::adjustSize()
+void KMinesStatus::adjustSize()
 { 
 	int dec_w  = (width() - 2*LCD_W - SMILEY_W)/4;
 	int dec_h  = (STAT_H - LCD_H)/2;
@@ -145,7 +147,7 @@ void KStatus::adjustSize()
 					    nb_width*CASE_W, nb_height*CASE_W );
 }
 
-void KStatus::restartGame()
+void KMinesStatus::restartGame()
 {
 	uncovered = 0; uncertain = 0; marked = 0;
 	
@@ -159,7 +161,7 @@ void KStatus::restartGame()
 	emit newField( nb_width, nb_height, nb_mines);
 }
 
-void KStatus::newGame(uint nb_w, uint nb_h, uint nb_m)
+void KMinesStatus::newGame(uint nb_w, uint nb_h, uint nb_m)
 {
 	nb_width  = nb_w;
 	nb_height = nb_h;
@@ -169,7 +171,7 @@ void KStatus::newGame(uint nb_w, uint nb_h, uint nb_m)
 	restartGame();
 }
 
-void KStatus::changeCase(uint case_mode, uint inc)
+void KMinesStatus::changeCase(uint case_mode, uint inc)
 {
 	switch(case_mode) {
 	 case UNCOVERED : uncovered += inc; break;
@@ -178,14 +180,16 @@ void KStatus::changeCase(uint case_mode, uint inc)
 	}
 }
 
-void KStatus::update(bool mine)
+void KMinesStatus::update(bool mine)
 {
-	emit exleft(nb_mines - marked);
+	QString str;
+	str.setNum(nb_mines - marked);
+	emit exleft(str);
 	
 	if ( uncovered==(nb_width*nb_height - nb_mines) ) endGame(!mine);
 }
 
-void KStatus::updateSmiley(int mood)
+void KMinesStatus::updateSmiley(int mood)
 {
 	switch (mood) {
 	 case OK      : smiley->setPixmap(*s_ok); break;
@@ -195,7 +199,7 @@ void KStatus::updateSmiley(int mood)
 	}
 }
 
-void KStatus::endGame(int win)
+void KMinesStatus::endGame(int win)
 {
 	int t_sec, t_min, res = 0;
 	
@@ -204,7 +208,7 @@ void KStatus::endGame(int win)
 	
 	if (win) {
 		emit updateSmiley(HAPPY);
-		emit getTime(&t_sec, &t_min);
+		emit getTime(t_sec, t_min);
 		
 		if (nb_width==MODES[0][0] && nb_height==MODES[0][1] && nb_mines==MODES[0][2])
 			res = setHighScore(t_sec, t_min, EASY);
@@ -221,12 +225,14 @@ void KStatus::endGame(int win)
 	}
 }
 
-void KStatus::getNumbers(uint *nb_w, uint *nb_h, uint *nb_m)
+void KMinesStatus::getNumbers(uint &width, uint &height, uint &nbMines)
 {
-	*nb_w = nb_width; *nb_h = nb_height; *nb_m = nb_mines;
+	width   = nb_width;
+	height  = nb_height;
+	nbMines = nb_mines;
 }
 
-void KStatus::exmesg(const char *str)
+void KMinesStatus::exmesg(const QString &str)
 { 
 	QFontMetrics fm1( font() );
 	int w = fm1.width(str)+10;
@@ -235,20 +241,20 @@ void KStatus::exmesg(const char *str)
 	mesg->setText(str);
 }
 
-void KStatus::showHighScores()
+void KMinesStatus::showHighScores()
 {
 	int dummy;
 	WHighScores whs(TRUE, 0, 0, 0, dummy, this);
 }
 
-int KStatus::setHighScore(int sec, int min, int mode)
+int KMinesStatus::setHighScore(int sec, int min, int mode)
 {
 	int res = 0;
 	WHighScores whs(FALSE, sec, min, mode, res, this);
 	return res;
 } 
 
-void KStatus::print()
+void KMinesStatus::print()
 {
 	QPrinter prt;
 	if ( !prt.setup() ) return;
@@ -272,3 +278,6 @@ void KStatus::print()
 
 //  QRect r = p.viewport();
 }
+
+
+

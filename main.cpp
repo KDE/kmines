@@ -1,27 +1,26 @@
 #include "main.h"
+#include "main.moc"
+
 #include "defines.h"
 #include "version.h"
 #include "status.h"
 #include "dialogs.h"
 
-#include "main.moc"
 
-
-KMines::KMines(QWidget *parent, const char *name)
-: QWidget( parent, name )
+MainWidget::MainWidget()
 {
-   	setCaption(kapp->getCaption());
 	installEventFilter(this);
 	
-	status = new KStatus(this);
+	status = new KMinesStatus(this);
 	status->installEventFilter(this);
 	connect( this, SIGNAL(newGame(uint, uint, uint)),
 			 status, SLOT(newGame(uint, uint, uint)) );
-	connect( this, SIGNAL(getNumbers(uint *, uint *, uint *)),
-		 status, SLOT(getNumbers(uint *, uint *, uint *)) );
+	connect( this, SIGNAL(getNumbers(uint &, uint &, uint &)),
+			 status, SLOT(getNumbers(uint &, uint &, uint &)) );
 	connect( status, SIGNAL(quit()), this, SLOT(quit()) );
+	setView(status);
 	
-	kacc = new KAccel( this );
+	kacc = new KAccel(this);
 	// KAccel initialization
 	kacc->insertStdItem(KAccel::New, i18n("New game"));
 	kacc->insertItem(i18n("Pause game"), "Pause", "P");
@@ -62,18 +61,17 @@ KMines::KMines(QWidget *parent, const char *name)
 	options->insertItem(i18n("Keys"), this, SLOT(configKeys()) );
 	
 	level = new QPopupMenu;
-	level->setCheckable(true);
-	level->insertItem(i18n("Easy"), 1);
-	level->insertItem(i18n("Normal"), 2);
-	level->insertItem(i18n("Expert"), 3);
+	level->insertItem(i18n("Easy"),   0);
+	level->insertItem(i18n("Normal"), 1);
+	level->insertItem(i18n("Expert"), 2);
 	level->insertSeparator();
-	level->insertItem(i18n("Custom"), 4);
-	connect(level, SIGNAL(activated(int)), SLOT(change_level(int)));
+	level->insertItem(i18n("Custom"), 3);
+	connect(level, SIGNAL(activated(int)), SLOT(changeLevel(int)));
 
-	QString s;
-	s.sprintf(i18n("%s %s (%s)\n\nby %s"), KMINES_NAME, KMINES_VERSION,
-			  KMINES_DATE, KMINES_AUTHOR);
-	QPopupMenu *help = kapp->getHelpMenu(true, s);
+	QPopupMenu *help = kapp->getHelpMenu(true, i18n("%1 %2 (%3)\n\nby %4")
+										 .arg(KMINES_NAME).arg(KMINES_VERSION)
+										 .arg(KMINES_DATE)
+										 .arg(KMINES_AUTHOR));
 
 	menu = new KMenuBar(this);
 	connect(menu, SIGNAL(moved(menuPosition)),
@@ -83,6 +81,7 @@ KMines::KMines(QWidget *parent, const char *name)
 	menu->insertItem(i18n("&Options"), options );
 	menu->insertSeparator();
 	menu->insertItem(i18n("&Help"), help );
+	setMenu(menu);
 
 	/* read the menu visible/invisible config */
 	kconf = kapp->getConfig();
@@ -101,57 +100,42 @@ KMines::KMines(QWidget *parent, const char *name)
 	emit UMarkChanged(um);
 	
 	/* begin easy game */
-	change_level(1);
+	changeLevel(0);
 
 	toggleMenu();
 }
 
-KMines::~KMines ()
+void MainWidget::changeLevel(int lev)
 {
-  delete kacc;
-  delete status;
-}
-
-void KMines::change_level(int lev)
-{
-	bool go;
-
-	for(int i = 1; i < 6; i++)
-	  if(i != 4)
-	    level->setItemChecked(i, i == lev);
-
-	lev--; // level counting begins with 0
-
-	if (lev == 3) {
-		emit getNumbers(&nb_w, &nb_h, &nb_m);
-		
-		Custom cu(&nb_w, &nb_h, &nb_m, this);		
-		go = cu.exec();
+	for(int i = 0; i<4; i++)
+		level->setItemChecked(i, i==lev);
+	
+	if (lev==3) {
+		emit getNumbers(nb_w, nb_h, nb_m);
+		Custom cu(&nb_w, &nb_h, &nb_m, this);
+		if ( !cu.exec() ) return;
 	} else {
 		nb_w = MODES[lev][0];
 		nb_h = MODES[lev][1];
 		nb_m = MODES[lev][2];
-		go = TRUE;
 	}
 
-	if ( go ) {
-		changedSize();
-		newGame(nb_w, nb_h, nb_m);
-	}
+	changedSize();
+	newGame(nb_w, nb_h, nb_m);
 }
 
-bool KMines::eventFilter(QObject *, QEvent *e)
+bool MainWidget::eventFilter(QObject *, QEvent *e)
 {
 	if ( e->type()!=QEvent::MouseButtonPress ) return FALSE;
 	
-	QMouseEvent *em = (QMouseEvent*) e;
+	QMouseEvent *em = (QMouseEvent*)e;
 	if ( em->button()!=RightButton ) return FALSE;
 	
 	popup->popup(QCursor::pos());
 	return TRUE;
 }
 
-void KMines::quit()
+void MainWidget::quit()
 {
 	kconf->setGroup("");
 	kconf->writeEntry(OP_MENUBAR_VIS, menu->isVisible());
@@ -160,7 +144,7 @@ void KMines::quit()
 	kapp->quit();
 }
 
-void KMines::toggleMenu()
+void MainWidget::toggleMenu()
 {
 	if ( menu->isVisible() ) {
 		popup->changeItem(i18n("Show menu bar"), tog_id);
@@ -173,14 +157,14 @@ void KMines::toggleMenu()
 	changedSize();
 }
 
-void KMines::toggleUMark()
+void MainWidget::toggleUMark()
 {
 	bool um = !options->isItemChecked(um_id);
 	options->setItemChecked(um_id, um);
 	emit UMarkChanged(um);
 }
 
-void KMines::changedSize()
+void MainWidget::changedSize()
 {
 	int aff_w, aff_h;
 	
@@ -205,20 +189,18 @@ void KMines::changedSize()
 			 STAT_H + LABEL_H + aff_h*CASE_W + 2*FRAME_W );
 }
 
-
-void KMines::menuMoved() {
-  changedSize();
+void MainWidget::menuMoved()
+{
+	changedSize();
 }
-
 
 /* MAIN */
 int main( int argc, char ** argv )
 {
     KApplication a(argc, argv, KMINES_NAME);
-    KMines km;
-
-    a.setMainWidget(&km);
-    km.show();
+	MainWidget *mw = new MainWidget;
+    a.setMainWidget(mw);
+    mw->show();
 	
     return a.exec();
 }

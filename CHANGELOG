@@ -1,3 +1,6 @@
+1.0.4:
+ * porting to QT 2.0
+
 1.0.3: (Mario Weilguni <mweilguni@kde.org>)
  * fixed the bug in the level selection (showed up with Qt 2.0)
  * fixed layout for Qt 2.0
@@ -6,7 +9,7 @@
  * level menu items are now checked
 
 1.0.2:
- * bug fix : argh! a "brown bag" one (bug report by Szokovacs Robert)  
+ * bug fix : argh! a "brown paper bag" one (bug report by Szokovacs Robert)  
 
 1.0.1
  * bug fix : when paused a game can be continued by changing desktops or 

@@ -12,36 +12,36 @@ class Field;
 class DigitalClock;
 
 /* status widget */
-class KStatus : public QWidget
+class KMinesStatus : public QWidget
 {
   Q_OBJECT
 	
  public :
-	KStatus( QWidget *parent=0, const char *name=0 );
+	KMinesStatus( QWidget *parent=0, const char *name=0 );
 	
  public slots:
 	void restartGame();
-	void newGame(uint, uint, uint);
-	void changeCase(uint, uint);
+	void newGame(uint width, uint height, uint nbMines);
+	void changeCase(uint i, uint j);
 	void update(bool);
 	void updateSmiley(int);
 	void endGame(int);
-	void getNumbers(uint *, uint *, uint *);
+	void getNumbers(uint &width, uint &height, uint &nbMines);
 	void showHighScores();
 	void pauseGame() { pause(); };
 	void print();
   
  signals:
 	/* field signals */
-	void newField(uint, uint, uint);
+	void newField(uint width, uint height, uint nbMines);
 	void stopField();
   
 	/* update status signals */
-	void exleft(int);
+	void exleft(const QString &);
 	void freezeTimer();
 	void zeroTimer();
 	void startTimer();
-	void getTime(int *, int*);
+	void getTime(int &sec, int &min);
 	void pause();
 	
 	void quit();
@@ -62,7 +62,7 @@ class KStatus : public QWidget
   
 	void adjustSize();
 	void createSmileyPixmap(QPixmap *, QPainter *);
-	void exmesg(const char *);
+	void exmesg(const QString &str);
 	int  setHighScore(int, int, int);
 };
 

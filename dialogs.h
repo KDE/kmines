@@ -25,7 +25,7 @@ class DigitalClock : public QLCDNumber
 	void zero();
 	void freeze();
 	void start();
-	void getTime(int *, int *);
+	void getTime(int &sec, int &min);
 	
  private:
 	int  time_sec, time_min;
@@ -77,3 +77,13 @@ class WHighScores : public QDialog
 };
 
 #endif // DIALOGS_H
+
+
+
+
+
+
+
+
+
+

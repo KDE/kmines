@@ -1,14 +1,16 @@
 #include "field.h"
-#include "defines.h"
+#include "field.moc"
 
 #include <stdlib.h>
 #include <time.h>
 
 #include <qpainter.h>
 #include <qdrawutil.h>
+#include <qpixmap.h>
 
-#include "field.moc"
+#include <kapp.h>
 
+#include "defines.h"
 
 Field::Field(QWidget *parent, const char *name)
 : QWidget(parent, name), pfield(0), _stop(FALSE), isPaused(FALSE),
