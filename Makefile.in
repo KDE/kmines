@@ -80,8 +80,8 @@ uninstall:
 	rm -f $(DOCSDIR)/$(DOC)
 	rm -f $(APPSDIR)/kmines.kdelnk
 
-po:
-	xgettext --default-domain=$(TARGET) --keyword=translate -p ../po *.cpp *.h
+messages:
+	xgettext --default-domain=$(TARGET) --keyword=translate *.cpp *.h && mv messages.po ../po/kmines.pot
 
 depend:
 	@makedepend @all_includes@ *.cpp 2> /dev/null
