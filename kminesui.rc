@@ -6,7 +6,7 @@
 	<Action name="game_print"/>
   </Menu>
   <Menu name="settings"><text>&amp;Settings</text>
-	<Menu name="test"><text>&amp;Level</text>
+	<Menu name="level"><text>&amp;Level</text>
 	<Action name="level_easy"/>
 	<Action name="level_normal"/>
 	<Action name="level_expert"/>
