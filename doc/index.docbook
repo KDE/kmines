@@ -40,6 +40,8 @@
 </othercredit>
 </authorgroup>
 
+<!-- ROLES_OF_TRANSLATORS -->
+
 <copyright>
 <year>2000</year>
 <holder>Nicolas Hadacek, Michael McBride</holder>
@@ -440,6 +442,7 @@ author.</para>
 Program copyright 1996-2000 Nicolas Hadacek <email>hadacek@kde.org</email></para>
 <para>Documentation copyright 2000 Nicolas Hadacek <email>hadacek@kde.org</email></para>
 <para>Documentation updated for KDE 2.0 by Mike McBride <email>mpmcbride7@yahoo.com</email></para>
+<!-- CREDITS_FOR_TRANSLATORS -->
 
 &underFDL;
 &underGPL;
