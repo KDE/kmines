@@ -11,4 +11,4 @@ noinst_HEADERS = defines.h dialogs.h field.h status.h main.h
 SUBDIRS = data bitmaps
 
 messages:
-	$(XGETTEXT) -C -kI18N_NOOP -ki18n -x $(includedir)/kde.pot $(kmines_SOURCES) && mv messages.po $(podir)/kmines.pot
+	$(XGETTEXT) $(kmines_SOURCES) -o $(podir)/kmines.pot
