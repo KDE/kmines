@@ -15,4 +15,4 @@ messages: rc.cpp
 	$(XGETTEXT) rc.cpp `find . -name \*.h -o -name \*.cpp` -o $(podir)/kmines.pot
 
 install-data-local:
-	rm -rf $(kde_appsdir)/Games/kmines.desktop
+	rm -rf $(DESTDIR)$(kde_appsdir)/Games/kmines.desktop
