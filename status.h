@@ -7,63 +7,52 @@
 #include <qlabel.h>
 #include <qlcdnumber.h>
 
-
-class Field;
-class DigitalClock;
+#include "field.h"
+#include "dialogs.h"
 
 /* status widget */
-class KMinesStatus : public QWidget
+class Status : public QWidget
 {
   Q_OBJECT
 	
  public :
-	KMinesStatus( QWidget *parent=0, const char *name=0 );
+	Status( QWidget *parent=0, const char *name=0 );
+
+	bool newGame(uint i);
 	
  public slots:
 	void restartGame();
-	void newGame(uint width, uint height, uint nbMines);
 	void changeCase(uint i, uint j);
 	void update(bool);
 	void updateSmiley(int);
 	void endGame(int);
-	void getNumbers(uint &width, uint &height, uint &nbMines);
 	void showHighScores();
-	void pauseGame() { pause(); };
+	void pauseGame() { field->pause(); }
 	void print();
+	void changeUMark(bool b) { field->changeUMark(b); }
+	void setMsg(const QString &s) { mesg->setText(s); }
   
  signals:
-	/* field signals */
-	void newField(uint width, uint height, uint nbMines);
-	void stopField();
-  
-	/* update status signals */
-	void exleft(const QString &);
-	void freezeTimer();
-	void zeroTimer();
-	void startTimer();
-	void getTime(int &sec, int &min);
-	void pause();
-	
 	void quit();
-  
- private:
-	QPixmap *s_ok, *s_stress, *s_happy, *s_ohno;
-  
-	uint nb_width, nb_height, nb_mines; /* mines field */
-	uint uncovered, marked, uncertain;  /* number of cases in each state */
 	
-	QFrame *frame;
-	Field  *field;
+ private:
+	enum GameType { Easy = 0, Normal, Expert, Custom };
+	
+	QPixmap *s_ok, *s_stress, *s_happy, *s_ohno;
+	uint    uncovered, marked, uncertain;  /* number of cases in each state */
+	
+	Field    *field;
+	GameType _type;
 	
 	QPushButton  *smiley;
 	QLCDNumber   *left;
 	QLabel       *mesg;
 	DigitalClock *dg;
   
-	void adjustSize();
 	void createSmileyPixmap(QPixmap *, QPainter *);
 	void exmesg(const QString &str);
 	int  setHighScore(int, int, int);
+	void initGame();
 };
 
 #endif // STATUS_H

@@ -5,20 +5,14 @@
 
 #include "defines.h"
 #include "version.h"
-#include "status.h"
-#include "dialogs.h"
 
 MainWidget::MainWidget()
 {
 	installEventFilter(this);
 	
-	status = new KMinesStatus(this);
+	status = new Status(this);
 	status->installEventFilter(this);
-	connect( this, SIGNAL(newGame(uint, uint, uint)),
-			 status, SLOT(newGame(uint, uint, uint)) );
-	connect( this, SIGNAL(getNumbers(uint &, uint &, uint &)),
-			 status, SLOT(getNumbers(uint &, uint &, uint &)) );
-	connect( status, SIGNAL(quit()), this, SLOT(quit()) );
+	connect(status, SIGNAL(quit()), this, SLOT(quit()));
 	setView(status);
 	
 	kacc = new KAccel(this);
@@ -74,15 +68,12 @@ MainWidget::MainWidget()
 										 .arg(KMINES_DATE)
 										 .arg(KMINES_AUTHOR));
 
-	menu = new KMenuBar(this);
-	connect(menu, SIGNAL(moved(menuPosition)),
-		this, SLOT(menuMoved()));
+	menu = menuBar();
 	menu->insertItem(i18n("&File"), popup );
 	menu->insertItem(i18n("&Level"), level );
 	menu->insertItem(i18n("&Options"), options );
 	menu->insertSeparator();
 	menu->insertItem(i18n("&Help"), help );
-	setMenu(menu);
 
 	kconf = kapp->getConfig();
 	kconf->setGroup(OP_GRP);
@@ -92,7 +83,6 @@ MainWidget::MainWidget()
 		kconf->writeEntry(OP_MENUBAR_VIS, 1);
 	if ( kconf->readNumEntry(OP_MENUBAR_VIS)!=1 ) menu->show();
 	else menu->hide();
-	toggleMenu();
 
 	// read uncertain mark option
 	kconf->setGroup(OP_GRP);
@@ -104,36 +94,29 @@ MainWidget::MainWidget()
 	
 	// begin easy game
 	changeLevel(0);
+	toggleMenu();
 }
 
 void MainWidget::changeLevel(int lev)
 {
-	for(int i = 0; i<4; i++)
-		level->setItemChecked(i, i==lev);
-	
-	if (lev==3) {
-		emit getNumbers(nb_w, nb_h, nb_m);
-		Custom cu(&nb_w, &nb_h, &nb_m, this);
-		if ( !cu.exec() ) return;
-	} else {
-		nb_w = MODES[lev][0];
-		nb_h = MODES[lev][1];
-		nb_m = MODES[lev][2];
-	}
-
-	changedSize();
-	newGame(nb_w, nb_h, nb_m);
+	if ( !status->newGame(lev) ) return;
+	for(int i = 0; i<4; i++) level->setItemChecked(i, i==lev);
 }
 
-bool MainWidget::eventFilter(QObject *, QEvent *e)
+bool MainWidget::eventFilter(QObject *o, QEvent *e)
 {
-	if ( e->type()!=QEvent::MouseButtonPress ) return FALSE;
+	if ( !o->isWidgetType() ) return FALSE;
 	
-	QMouseEvent *em = (QMouseEvent*)e;
-	if ( em->button()!=RightButton ) return FALSE;
-	
-	popup->popup(QCursor::pos());
-	return TRUE;
+	switch (e->type()) {
+	 case QEvent::LayoutHint :
+		if ( ((QWidget *)o)!=this ) return FALSE;
+		updateRects(); return TRUE;
+	 case QEvent::MouseButtonPress : 
+		if ( ((QMouseEvent *)e)->button()!=RightButton ) return FALSE;
+		popup->popup(QCursor::pos());
+		return TRUE;
+	 default : return FALSE;
+	}
 }
 
 void MainWidget::quit()
@@ -153,8 +136,6 @@ void MainWidget::toggleMenu()
 		popup->changeItem(i18n("Hide menu bar"), tog_id);
 		menu->show();
 	}
-	
-	changedSize();
 }
 
 void MainWidget::toggleUMark()
@@ -164,36 +145,6 @@ void MainWidget::toggleUMark()
 	emit UMarkChanged(um);
 }
 
-void MainWidget::changedSize()
-{
-	int aff_w, aff_h;
-	
-	/* if under the minimum size for application */
-	aff_h = nb_h;
-
-	if (nb_w < MIN_W) {
-		aff_w = MIN_W;
-		aff_h = nb_h + (MIN_W - nb_w);
-	} else
-		aff_w = nb_w;
-	
-	int mh = 0;
-    if ( menu->isVisible() && 
-	 (menu->menuBarPos() == KMenuBar::Top ||
-	  menu->menuBarPos() == KMenuBar::Bottom)) 
-      mh += menu->height();
-	    
-    setFixedSize( aff_w*CASE_W + 2*FRAME_W,
-		  mh + STAT_H + LABEL_H + aff_h*CASE_W + 2*FRAME_W);
-    status->setGeometry( 0, mh, aff_w*CASE_W + 2*FRAME_W,
-			 STAT_H + LABEL_H + aff_h*CASE_W + 2*FRAME_W );
-}
-
-void MainWidget::menuMoved()
-{
-	changedSize();
-}
-
 /* MAIN */
 int main( int argc, char ** argv )
 {
@@ -201,6 +152,5 @@ int main( int argc, char ** argv )
 	MainWidget *mw = new MainWidget;
     a.setMainWidget(mw);
     mw->show();
-	
     return a.exec();
 }

@@ -10,83 +10,86 @@
 #include <kconfig.h>
 
 #include "defines.h"
-#include "field.h"
-#include "dialogs.h"
 
-KMinesStatus::KMinesStatus(QWidget *parent, const char *name)
+Status::Status(QWidget *parent, const char *name)
 : QWidget(parent, name)
 {
-	frame = new QFrame(this);
-	frame->setFrameStyle( QFrame::Box | QFrame::Raised );
-	frame->setLineWidth(2);
-	frame->setMidLineWidth(2);
+// top layout
+	QVBoxLayout *top = new QVBoxLayout(this, BORDER);
+	top->setResizeMode( QLayout::Fixed );
 	
-	field = new Field(this);
-  
-	connect( field, SIGNAL(changeCase(uint,uint)),
-			 SLOT(changeCase(uint,uint)) );
-	connect( field, SIGNAL(updateStatus(bool)), SLOT(update(bool)) );
-	connect( field, SIGNAL(endGame(int)), SLOT(endGame(int)) );
-	connect( parent, SIGNAL(UMarkChanged(bool)),
-			 field, SLOT(changeUMark(bool)) );
-  
+// status bar
+	QHBoxLayout *hbl = new QHBoxLayout(SEP);
+	top->addLayout(hbl);
+
+	// mines left LCD
+	left = new QLCDNumber(this);
+	left->setFrameStyle( QFrame::Panel | QFrame::Sunken );
+	left->installEventFilter(parent);
+	hbl->addWidget(left);
+	hbl->addStretch(1);
+	
+	// smiley
 	smiley = new QPushButton(this);
 	connect( smiley, SIGNAL(clicked()), SLOT(restartGame()) );
 	smiley->installEventFilter(parent);
+	smiley->setFixedSize(25, 25);
+	smiley->setFocusPolicy(QWidget::NoFocus);
+	hbl->addWidget(smiley);
+	hbl->addStretch(1);
   
 	QPainter pt;
 	
 	s_ok = new QPixmap(25,25);
-	createSmileyPixmap(s_ok,&pt);
+	createSmileyPixmap(s_ok, &pt);
 	pt.drawPoint(8,14); pt.drawPoint(16,14);
 	pt.drawLine(9,15,15,15);
 	pt.end();
 	s_stress = new QPixmap(25,25);
-	createSmileyPixmap(s_stress,&pt);
+	createSmileyPixmap(s_stress, &pt);
 	pt.drawPoint(12,13);
 	pt.drawLine(11,14,11,15); pt.drawLine(13,14,13,15);
 	pt.drawPoint(12,16);
 	pt.end();
 	s_happy = new QPixmap(25,25);
-	createSmileyPixmap(s_happy,&pt);
+	createSmileyPixmap(s_happy, &pt);
 	pt.drawPoint(7,14); pt.drawPoint(17,14);
 	pt.drawPoint(8,15); pt.drawPoint(16,15);
 	pt.drawPoint(9,16); pt.drawPoint(15,16);
 	pt.drawLine(10,17,14,17);
 	pt.end();
 	s_ohno = new QPixmap(25,25);
-	createSmileyPixmap(s_ohno,&pt);  pt.drawPoint(12,11);
+	createSmileyPixmap(s_ohno, &pt);  pt.drawPoint(12,11);
 	pt.drawLine(10,13,14,13);
 	pt.drawLine(9,14,9,17); pt.drawLine(15,14,15,17);
 	pt.drawLine(10,18,14,18);
 	pt.end();
-  
+
+	// digital clock LCD
 	dg = new DigitalClock(this);
 	dg->installEventFilter(parent);
-	
-	left = new QLCDNumber(this);
-	left->setFrameStyle(  QFrame::Panel | QFrame::Sunken );
-	left->installEventFilter(parent);
-	
-	setFont( QFont("Times", 14, QFont::Bold) );
-	
-	mesg = new QLabel(this);
-	mesg->setAlignment( AlignCenter );
+	hbl->addWidget(dg);
+
+// game over label	
+	mesg = new QLabel(" ", this); // empty string to get the right height
+	mesg->setFont(QFont("Times", 14, QFont::Bold) );
 	mesg->setFrameStyle(  QFrame::Panel | QFrame::Sunken );
 	mesg->installEventFilter(parent);
+	mesg->setFixedHeight( mesg->sizeHint().height() );
+	top->addWidget(mesg, 0, AlignCenter);
 	
-	connect( this, SIGNAL(exleft(const QString &)),
-			 left, SLOT(display(const QString &)) );
-
-	connect( this, SIGNAL(freezeTimer()), dg, SLOT(freeze()) );
-	connect( this, SIGNAL(getTime(int &, int &)),
-		 	 dg,   SLOT(getTime(int &, int &)) );
-	
+// mines field	
+	field = new Field(this);
+	connect( field, SIGNAL(changeCase(uint,uint)),
+			 SLOT(changeCase(uint,uint)) );
+	connect( field, SIGNAL(putMsg(const QString &)),
+			 SLOT(setMsg(const QString &)) );
+	connect( field, SIGNAL(updateStatus(bool)), SLOT(update(bool)) );
+	connect( field, SIGNAL(endGame(int)), SLOT(endGame(int)) );
 	connect( field, SIGNAL(startTimer()), dg, SLOT(start()) );
 	connect( field, SIGNAL(freezeTimer()), dg, SLOT(freeze()) );
-	connect( this,  SIGNAL(zeroTimer()), dg, SLOT(zero()) );
-	connect( this,  SIGNAL(startTimer()), dg, SLOT(start()) );
 	connect( field, SIGNAL(updateSmiley(int)), this, SLOT(updateSmiley(int)) );
+	top->addWidget(field);
 	
 	/* configuration & highscore initialisation */
 	KConfig *kconf = kapp->getConfig();
@@ -101,7 +104,7 @@ KMinesStatus::KMinesStatus(QWidget *parent, const char *name)
 	}
 }
 
-void KMinesStatus::createSmileyPixmap(QPixmap *pm, QPainter *pt)
+void Status::createSmileyPixmap(QPixmap *pm, QPainter *pt)
 {
 	pm->fill(yellow);
 	pt->begin(pm);
@@ -121,52 +124,43 @@ void KMinesStatus::createSmileyPixmap(QPixmap *pm, QPainter *pt)
 	pt->drawLine(10,21,14,21);
 }
 
-void KMinesStatus::adjustSize()
-{ 
-	int dec_w  = (width() - 2*LCD_W - SMILEY_W)/4;
-	int dec_h  = (STAT_H - LCD_H)/2;
-	int dec_hs = (STAT_H - SMILEY_H)/2;
-	
-	left->setGeometry( dec_w, dec_h, LCD_W, LCD_H );
-	smiley->setGeometry( 2*dec_w + LCD_W, dec_hs, SMILEY_W, SMILEY_H );
-	dg->setGeometry( 3*dec_w + LCD_W + SMILEY_W, dec_h, LCD_W, LCD_H );
-
-	
-	dec_w = (width() - 2*FRAME_W - nb_width*CASE_W)/2;
-	dec_h = (height() - STAT_H - LABEL_H - 2*FRAME_W - nb_height*CASE_W)/2;
-	
-	frame->setGeometry( dec_w, STAT_H + dec_h + LABEL_H,
-					    nb_width*CASE_W + 2*FRAME_W,
-					    nb_height*CASE_W + 2*FRAME_W );
-	field->setGeometry( FRAME_W + dec_w, STAT_H + FRAME_W + dec_h + LABEL_H,
-					    nb_width*CASE_W, nb_height*CASE_W );
-}
-
-void KMinesStatus::restartGame()
+void Status::initGame()
 {
 	uncovered = 0; uncertain = 0; marked = 0;
-	
-	/* hide the message label */
-	mesg->hide();
-	
+	setMsg(i18n("Stopped"));
 	update(FALSE);
 	updateSmiley(OK);
-	
-	emit zeroTimer();
-	emit newField( nb_width, nb_height, nb_mines);
+	dg->zero();
 }
 
-void KMinesStatus::newGame(uint nb_w, uint nb_h, uint nb_m)
+void Status::restartGame()
 {
-	nb_width  = nb_w;
-	nb_height = nb_h;
-	nb_mines  = nb_m;
-	
-	adjustSize();
-	restartGame();
+	field->restart();
+	initGame();
 }
 
-void KMinesStatus::changeCase(uint case_mode, uint inc)
+bool Status::newGame(uint l)
+{
+	_type = (GameType)l;
+	uint nb_w, nb_h, nb_m;
+	if ( _type==Custom ) {
+		nb_w = field->nbWidth();
+		nb_h = field->nbHeight();
+		nb_m = field->nbMines();
+		CustomDialog cu(&nb_w, &nb_h, &nb_m, this);
+		if ( !cu.exec() ) return FALSE;
+	} else {
+		nb_w = MODES[l][0];
+		nb_h = MODES[l][1];
+		nb_m = MODES[l][2];
+	}
+	
+	field->start(nb_w, nb_h, nb_m);
+	initGame();
+	return TRUE;
+}
+	
+void Status::changeCase(uint case_mode, uint inc)
 {
 	switch(case_mode) {
 	 case UNCOVERED : uncovered += inc; break;
@@ -175,16 +169,16 @@ void KMinesStatus::changeCase(uint case_mode, uint inc)
 	}
 }
 
-void KMinesStatus::update(bool mine)
+void Status::update(bool mine)
 {
 	QString str;
-	str.setNum(nb_mines - marked);
-	emit exleft(str);
+	str.setNum(field->nbMines() - marked);
+	left->display(str);
 	
-	if ( uncovered==(nb_width*nb_height - nb_mines) ) endGame(!mine);
+	if ( uncovered==(field->nbWidth()*field->nbHeight() - field->nbMines()) ) endGame(!mine);
 }
 
-void KMinesStatus::updateSmiley(int mood)
+void Status::updateSmiley(int mood)
 {
 	switch (mood) {
 	 case OK      : smiley->setPixmap(*s_ok); break;
@@ -194,62 +188,37 @@ void KMinesStatus::updateSmiley(int mood)
 	}
 }
 
-void KMinesStatus::endGame(int win)
+void Status::endGame(int win)
 {
-	int t_sec, t_min, res = 0;
-	
-	emit stopField();
-	emit freezeTimer();
+	field->stop();
+	dg->freeze();
 	
 	if (win) {
 		emit updateSmiley(HAPPY);
-		emit getTime(t_sec, t_min);
-		
-		if (nb_width==MODES[0][0] && nb_height==MODES[0][1] && nb_mines==MODES[0][2])
-			res = setHighScore(t_sec, t_min, EASY);
-		else if (nb_width==MODES[1][0] && nb_height==MODES[1][1] && nb_mines==MODES[1][2])
-			res = setHighScore(t_sec, t_min, NORMAL);
-		else if (nb_width==MODES[2][0] && nb_height==MODES[2][1] && nb_mines==MODES[2][2])
-			res = setHighScore(t_sec, t_min, EXPERT);
-		
-		if ( res!=0 ) exmesg(i18n("You did it ... but not in time."));
-		else exmesg(i18n("Yeeessss !"));
+		int res = 0;
+		if ( _type!=Custom ) res = setHighScore(dg->sec(), dg->min(), _type);
+		if ( res!=0 ) setMsg(i18n("You did it ... but not in time."));
+		else setMsg(i18n("Yeeessss !"));
 	} else {
 		emit updateSmiley(UNHAPPY);
-		exmesg(i18n("Bad luck !"));
+		setMsg(i18n("Bad luck !"));
 	}
 }
 
-void KMinesStatus::getNumbers(uint &width, uint &height, uint &nbMines)
-{
-	width   = nb_width;
-	height  = nb_height;
-	nbMines = nb_mines;
-}
-
-void KMinesStatus::exmesg(const QString &str)
-{ 
-	QFontMetrics fm1( font() );
-	int w = fm1.width(str)+10;
-	mesg->setGeometry((width()-w)/2, STAT_H, w, fm1.height()+5);
-	mesg->show();
-	mesg->setText(str);
-}
-
-void KMinesStatus::showHighScores()
+void Status::showHighScores()
 {
 	int dummy;
 	WHighScores whs(TRUE, 0, 0, 0, dummy, this);
 }
 
-int KMinesStatus::setHighScore(int sec, int min, int mode)
+int Status::setHighScore(int sec, int min, int mode)
 {
 	int res = 0;
 	WHighScores whs(FALSE, sec, min, mode, res, this);
 	return res;
 } 
 
-void KMinesStatus::print()
+void Status::print()
 {
 	QPrinter prt;
 	if ( !prt.setup() ) return;
@@ -273,6 +242,3 @@ void KMinesStatus::print()
 
 //  QRect r = p.viewport();
 }
-
-
-

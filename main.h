@@ -9,19 +9,13 @@
 #include <kmenubar.h>
 #include <ktmainwindow.h>
 
-class KMinesStatus;
+#include "status.h"
 
-/** Main widget 
-  * This widget contains the menu bar
-  */
 class MainWidget : public KTMainWindow
 {
   Q_OBJECT
 	
  public:
-	/** Construct the KMines object
-	  * create the KStatus object, the menu and initialize an easy game
-	  */
 	MainWidget();
 
  private slots:
@@ -32,36 +26,25 @@ class MainWidget : public KTMainWindow
 	  */
 	void changeLevel(int level);
     void configKeys() { KKeyDialog::configureKeys(kacc); }
-	void quit();
 	void toggleMenu();
 	void toggleUMark();
-	void menuMoved();
+	void quit();
 
 signals:
-	/** signal : start a new game */
 	void newGame(uint width, uint height, uint nb_mines);
-	/** signal : restart the game */
 	void restartGame();
-	/** signal : ask for these numbers (used for the custom dialog) */
-	void getNumbers(uint &width, uint &height, uint &nbMines);
 	void UMarkChanged(bool);
 
  protected:
 	bool eventFilter(QObject *, QEvent *e);
-	
+
  private:
 	KConfig      *kconf;
 	KAccel       *kacc;
-
 	KMenuBar     *menu;
 	QPopupMenu   *popup, *options, *level;
 	int          tog_id, um_id;
-	
-	KMinesStatus *status;
-  	/* set the size of the application and of the status object */
-	uint nb_w, nb_h, nb_m;
-
-	void changedSize();
+	Status       *status;
 };
 
 #endif // MAIN_H

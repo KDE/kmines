@@ -18,6 +18,9 @@ class DigitalClock : public QLCDNumber
  public:
 	DigitalClock(QWidget *parent);
 	
+	int sec() const { return time_sec; }
+	int min() const { return time_min; }
+	
  protected:
 	void timerEvent( QTimerEvent * );
 	
@@ -25,7 +28,6 @@ class DigitalClock : public QLCDNumber
 	void zero();
 	void freeze();
 	void start();
-	void getTime(int &sec, int &min);
 	
  private:
 	int  time_sec, time_min;
@@ -35,12 +37,12 @@ class DigitalClock : public QLCDNumber
 };
 
 /**** custom dialog **********************************************************/
-class Custom : public QDialog
+class CustomDialog : public QDialog
 {
  Q_OBJECT
 	  
  public:
-	Custom(uint *w, uint *h, uint *nb, QWidget *parent);
+	CustomDialog(uint *w, uint *h, uint *nb, QWidget *parent);
   
  private slots:
 	void widthChanged(int);

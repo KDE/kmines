@@ -1,18 +1,22 @@
-1.0.4:
+1.0.5
+ * fixed layout handling (all those "updateGeometry" and "LayoutHint" stuff)
+ * space bar hit cannot restart game anymore
+
+1.0.4
  * porting to QT 2.0
 
-1.0.3: (Mario Weilguni <mweilguni@kde.org>)
+1.0.3 (Mario Weilguni <mweilguni@kde.org>)
  * fixed the bug in the level selection (showed up with Qt 2.0)
  * fixed layout for Qt 2.0
  * fixed signal/slot handling for Qt 2.0
  * fixed layout with floating menubar
  * level menu items are now checked
 
-1.0.2:
+1.0.2
  * bug fix : argh! a "brown paper bag" one (bug report by Szokovacs Robert)  
 
 1.0.1
- * bug fix : when paused a game can be continued by changing desktops or 
+ * bug fix : when paused a game can be continued by changing desktops or
    iconifying/deiconifying without time consumption ... (bug report by
    François-Xavier Duranceau, Frank Pieczynski & Oliver Eiden)
  * add printing facility : well it seems hacky to me and certainly not perfect

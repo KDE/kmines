@@ -69,14 +69,8 @@ void DigitalClock::freeze()
 	stop = TRUE;
 }
 
-void DigitalClock::getTime(int  &sec, int &min)
-{
-	sec = time_sec;
-	min = time_min;
-}
-
 /** Customize dialog *********************************************************/
-Custom::Custom(uint *nbWidth, uint *nbHeight, uint *nbMines,
+CustomDialog::CustomDialog(uint *nbWidth, uint *nbHeight, uint *nbMines,
 			   QWidget *parent)
 : QDialog(parent, 0, TRUE), nbW(nbWidth), nbH(nbHeight), nbM(nbMines)
 {
@@ -200,21 +194,21 @@ Custom::Custom(uint *nbWidth, uint *nbHeight, uint *nbMines,
 	hbl->addStretch(1);
 }
 
-void Custom::widthChanged(int newWidth)
+void CustomDialog::widthChanged(int newWidth)
 {
 	*nbW = (uint)newWidth;
 	lw->setNum(newWidth);
 	nbMinesChanged(*nbM);
 }
   
-void Custom::heightChanged(int newHeight)
+void CustomDialog::heightChanged(int newHeight)
 {
 	*nbH = (uint)newHeight;
 	lh->setNum(newHeight);
 	nbMinesChanged(*nbM);
 }
   
-void Custom::nbMinesChanged(int newNbMines)
+void CustomDialog::nbMinesChanged(int newNbMines)
 {
 	*nbM = (uint)newNbMines;
 	sm->setRange(1, (*nbW)*(*nbH)-2);
@@ -383,7 +377,3 @@ void WHighScores::writeName()
 	pb->show();
 	pb->setFocus();
 }
-
-
-
-
