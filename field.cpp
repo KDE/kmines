@@ -14,7 +14,7 @@ Field::Field(QWidget *parent, const char *name)
 	setLineWidth(2);
 	setMidLineWidth(2);
 
-	initRandomWithTime();
+        random.setSeed(0);
   
 	QPainter p;
 	pm_flag.resize(16, 16);
@@ -304,8 +304,8 @@ void Field::mouseReleaseEvent( QMouseEvent *e )
 			for(uint k=0; k<lev.nbMines; k++) {
 				uint i, j;
 				do {
-					i = randomInt(0, lev.width-1);
-					j = randomInt(0, lev.height-1);
+					i = random.getLong(lev.width);
+					j = random.getLong(lev.height);
 				}
 				while ( (pfield(i+1, j+1) & MINE)
 						|| ((i+1)==ic && (j+1)==jc) );

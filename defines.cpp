@@ -18,12 +18,3 @@ const Level LEVELS[3] = {
 	{30, 16, 99}  // Expert
 };
 
-void initRandomWithTime()
-{
-	srandom(time(0));
-}	
-
-int randomInt(int min, int max)
-{
-	return min + (int)( (max-min+1.0)*random() / (RANDOM_MAX+1.0) );
-}

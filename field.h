@@ -1,6 +1,8 @@
 #ifndef FIELD_H
 #define FIELD_H
 
+#include <krandomsequence.h>
+
 #include <qframe.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
@@ -50,6 +52,8 @@ class Field : public QFrame
  private:
 	QArray<uint> _pfield;
 	Level lev;
+
+        KRandomSequence random;
   
 	bool _stop;             /* end of game ? */
 	bool noGame, isPaused;

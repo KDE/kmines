@@ -3,9 +3,6 @@
 
 #include <qglobal.h>
 
-void initRandomWithTime();
-int randomInt(int min, int max);
-
 /* Strings for the configuration file */
 extern const char *OP_GRP;
 extern const char *OP_UMARK;
