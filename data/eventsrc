@@ -214,7 +214,7 @@ default_presentation=0
 
 [unmark]
 Name=Unmark case
-Name[bg]=Размаркиране
+Name[bg]=Премахване на флаг
 Name[ca]=Desmarca casella
 Name[cs]=Zrušit označení pole
 Name[da]=Afmarkér felt
@@ -246,7 +246,7 @@ Name[xx]=xxUnmark casexx
 Name[zh_CN]=不标记盒子
 Name[zh_TW]=去標記方格
 Comment=Unmark case
-Comment[bg]=Размаркиране
+Comment[bg]=Премахване на флаг
 Comment[ca]=Desmarca casella
 Comment[cs]=Zrušit označení pole
 Comment[da]=Afmarkér felt
@@ -496,6 +496,7 @@ default_presentation=0
 
 [set_uncertain]
 Name=Set Question Mark
+Name[bg]=Поставяне на въпросителна
 Name[da]=Sæt spørgsmålstegn
 Name[et]=Pane küsimärk
 Name[hu]=Kérdőjel beállítása
@@ -506,6 +507,7 @@ Name[pt_BR]=Colocar Ponto de Interrogação
 Name[sv]=Placerade frågetecken
 Name[ta]=கேள்விக்குறியை அமை
 Comment=Set Question Mark
+Comment[bg]=Поставяне на въпросителна
 Comment[da]=Sæt spørgsmålstegn
 Comment[et]=Pane küsimärk
 Comment[hu]=Kérdőjel beállítása
@@ -519,6 +521,7 @@ default_presentation=0
 
 [unset_uncertain]
 Name=Unset Question Mark
+Name[bg]=Премахване на въпросителна
 Name[da]=Fjern spørgsmålstegn
 Name[et]=Eemalda küsimärk
 Name[hu]=Kérdőjel megszüntetése
@@ -529,6 +532,7 @@ Name[pt_BR]=Retirar Ponto de Interrogação
 Name[sv]=Tog bort frågetecken
 Name[ta]=கேள்விக் குறி அமைக்கவில்லை
 Comment=Unset Question Mark
+Comment[bg]=Премахване на въпросителна
 Comment[da]=Fjern spørgsmålstegn
 Comment[et]=Eemalda küsimärk
 Comment[hu]=Kérdőjel megszüntetése
