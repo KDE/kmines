@@ -11,7 +11,7 @@ struct Case {
 
 enum GameType    { Easy = 0, Normal, Expert, Custom, NbLevels };
 enum GameState   { Stopped, Playing, Paused };
-enum MouseAction { Reveal = 0, AutoReveal, Mark, UMark, None };
+enum MouseAction { Reveal = 0, Mark, AutoReveal, UMark, None };
 enum MouseButton { Left = 0, Mid, Right };
 
 struct Level {
