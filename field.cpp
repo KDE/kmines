@@ -244,7 +244,7 @@ int Field::jToY(uint j) const
 
 int Field::xToI(int x) const
 {
-	// the cast is necessary when x-frameWidth() is negative (??)
+	// the cast is necessary when x-frameWidth() is negative ( ?? )
 	return (int)((double)(x - frameWidth())/cp.size) + 1;
 }
 
