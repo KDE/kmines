@@ -62,4 +62,4 @@ GenericName[zh_TW]=智力遊戲
 GenericName[zu]=Umdlalo wokucabanga
 X-KDE-StartupNotify=true
 X-DCOP-ServiceType=Multi
-Categories=QT;KDE;Game;StrategyGame
+Categories=Qt;KDE;Game;StrategyGame
