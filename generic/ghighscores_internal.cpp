@@ -339,7 +339,8 @@ void PlayerInfos::submitScore(const Score &score) const
 
     // update mean
     if ( !lost ) {
-        uint nbWonGames = nbGames - item("nb lost games")->read(_id).toUInt();
+        uint nbWonGames = nbGames - item("nb lost games")->read(_id).toUInt()
+                          - item("nb black marks")->read(_id).toUInt();
         double mean = item("mean score")->read(_id).toDouble();
         mean += (double(score.score()) - mean) / nbWonGames;
         item("mean score")->write(_id, mean);
