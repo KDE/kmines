@@ -16,6 +16,7 @@ Exec=kmines -caption "%c" %i %m
 Type=Application
 DocPath=kmines/index.html
 Comment=KDE replacement for xbombs
+Comment[no]=KDE-erstatning for xbombs
 Comment[fr]=Substitut de xbombs pour le projet KDE
 Comment[de]=Das bekannte Spiel Bombenfinden
 Comment[pl]=Wersja KDE popularnego sapera
