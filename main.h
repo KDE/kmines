@@ -5,7 +5,7 @@
 #include <qpopmenu.h>
 
 #include <kconfig.h>
-#include <kkeyconf.h>
+#include <kaccel.h>
 #include <kapp.h>
 
 
@@ -23,7 +23,9 @@ class KMines : public QWidget
 	  * create the KStatus object, the menu and initialize an easy game
 	  */
 	KMines( QWidget *parent=0, const char *name=0 );
-	
+
+        virtual ~KMines ();
+
  private slots:
 	/** menu slot : change level
 	  * initialize a new game for default level ( with the constant MODES)
@@ -32,7 +34,6 @@ class KMines : public QWidget
 	  */
 	void change_level(int level);
 	
-	void configKeys() { kKeys->configureKeys(this); };
 	void quit();
 	void toggleMenu();
 	void toggleUMark();
@@ -51,6 +52,7 @@ class KMines : public QWidget
 	
  private:
 	KConfig *kconf;
+	KAccel * kacc;
 	
 	QMenuBar *menu;
 	QPopupMenu* popup, *options;

@@ -3,6 +3,7 @@
 #include "version.h"
 #include "status.h"
 #include "dialogs.h"
+#include "kstdaccel.h"
 
 #include "main.moc"
 
@@ -16,18 +17,19 @@ KMines::KMines(QWidget *parent, const char *name)
 	status = new KStatus(this);
 	status->installEventFilter(this);
 	
-	/* KKeyCode initialization */
-	kKeys->addKey(i18n("Quit"), "CTRL+Q");
-	kKeys->addKey(i18n("New game"), "F2");
-	kKeys->addKey(i18n("Pause game"), "P");
-	kKeys->addKey(i18n("High scores"), "H");
+	kacc = new KAccel( this ); 
+	KStdAccel stdacc; // Access to standard accelerators
+	/* Kaccel initialization */
+	kacc->insertItem(i18n("Quit"), "Quit", stdacc.quit());
+	kacc->insertItem(i18n("New game"), "New", "F2");
+	kacc->insertItem(i18n("Pause game"), "Pause", "P");
+	kacc->insertItem(i18n("High scores"), "HighScores", "H");
 
 	/* connections for kmines */
-	kKeys->registerWidget(K_KMINES, this);
-	kKeys->connectFunction(K_KMINES, i18n("Quit"), this, SLOT(quit()));
-	kKeys->connectFunction(K_KMINES, i18n("New game"), status, SLOT(restartGame()));
-	kKeys->connectFunction(K_KMINES, i18n("Pause game"), status, SLOT(pauseGame()));
-	kKeys->connectFunction(K_KMINES, i18n("High scores"), status, SLOT(showHighScores()));
+	kacc->connectItem("Quit", this, SLOT(quit()));
+	kacc->connectItem("New", status, SLOT(restartGame()));
+	kacc->connectItem("Pause", status, SLOT(pauseGame()));
+	kacc->connectItem("HighScores", status, SLOT(showHighScores()));
 	
 	connect( this, SIGNAL(restartGame()), status, SLOT(restartGame()) );
 	connect( this, SIGNAL(newGame(uint, uint, uint)),
@@ -51,7 +53,8 @@ KMines::KMines(QWidget *parent, const char *name)
 	options = new QPopupMenu;
 	options->setCheckable(TRUE);
 	um_id = options->insertItem(i18n("? mark"), this, SLOT(toggleUMark()) );
-	options->insertItem(i18n("Keys"), this, SLOT(configKeys()) );
+	// options->insertItem(i18n("Keys"), this, SLOT(configKeys()) );
+	// How to do that with kaccel ?
 	
 	QPopupMenu *level = new QPopupMenu;
 	level->insertItem(i18n("Easy"));
@@ -93,6 +96,12 @@ KMines::KMines(QWidget *parent, const char *name)
 	change_level(0);
 
 	toggleMenu();
+}
+
+KMines::~KMines ()
+{
+  delete kacc;
+  delete status;
 }
 
 void KMines::change_level(int lev)
@@ -173,9 +182,9 @@ void KMines::changedSize()
     if ( menu->isVisible() ) mh += menu->height();
 	
 	setFixedSize( aff_w*CASE_W + 2*FRAME_W,
-				  mh + STAT_H + LABEL_H + aff_h*CASE_W + 2*FRAME_W);
+		      mh + STAT_H + LABEL_H + aff_h*CASE_W + 2*FRAME_W);
     status->setGeometry( 0, mh, aff_w*CASE_W + 2*FRAME_W,
-						 STAT_H + LABEL_H + aff_h*CASE_W + 2*FRAME_W );
+			 STAT_H + LABEL_H + aff_h*CASE_W + 2*FRAME_W );
 }
 
 
@@ -183,10 +192,10 @@ void KMines::changedSize()
 int main( int argc, char ** argv )
 {
     KApplication a(argc, argv, KMINES_NAME);
-	KMines *km = new KMines();
+    KMines km;
 
-	a.setMainWidget(km);
-	km->show();
+    a.setMainWidget(&km);
+    km.show();
 	
     return a.exec();
 }
