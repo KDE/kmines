@@ -177,24 +177,12 @@ bool Highscores::isStrictlyWorse(const Score &s1, const Score &s2) const
     return s1.score()<s2.score();
 }
 
-void Highscores::addItemToScore(const QString &name, Item *item)
+void Highscores::setItem(const QString &name, Item *item)
 {
-    _scoreInfos->addItem(name, item, true);
-}
-
-void Highscores::setItem(ReplaceableItem type, Item *item)
-{
-    switch (type) {
-    case RScore:
-        _scoreInfos->setItem("score", item);
-        break;
-    case RMeanScore:
-        _playerInfos->setItem("mean score", item);
-        break;
-    case RBestScore:
-        _playerInfos->setItem("best score", item);
-        break;
-    }
+    if ( name=="score" ) _scoreInfos->setItem("score", item);
+    else if ( name=="mean score" ) _playerInfos->setItem("mean score", item);
+    else if ( name=="best score" ) _playerInfos->setItem("best score", item);
+    else _scoreInfos->addItem(name, item, true);
 }
 
 Score Highscores::lastScore()

@@ -222,23 +222,11 @@ class Highscores
     /**
      * Add an item to the score. It will add a column to the highscores list.
      * Should be called at construction time.
-     */
-    void addItemToScore(const QString &name, Item *item);
-
-    /**
-     * Items that can be replaced.
      *
-     * @p RScore the item named "score" (@ref ScoreItem).
-     * @p RBestScore the item named "best score" (@ref BestScoreItem).
-     * @p RMeanScore the item named "mean score" (@ref MeanScoreItem).
+     * if name is "score", "best score" or "mean score", the default item
+     * will be replaced by the given one.
      */
-    enum ReplaceableItem { RScore, RBestScore, RMeanScore };
-
-    /**
-     * Replace the default @ref Item.
-     * This method should be called only at construction time.
-     */
-    void setItem(ReplaceableItem type, Item *item);
+    void setItem(const QString &name, Item *item);
 
     /**
      * This method is called once for each player (ie for each user). You

@@ -159,7 +159,9 @@ QString MultipleScoresList::itemText(const ItemContainer &item, uint row) const
         if ( _scores[row].type()==Won ) return i18n("Winner");
         return QString::null;
     }
-    return item.item()->pretty(row, _scores[row].data(name));
+    QVariant v = _scores[row].data(name);
+    if ( name=="name" ) return v.toString();
+    return item.item()->pretty(row, v);
 }
 
 bool MultipleScoresList::showColumn(const ItemContainer &item) const

@@ -178,7 +178,8 @@ uint ScoreInfos::nbEntries() const
 {
     uint i = 0;
     for (; i<_maxNbEntries; i++)
-        if ( item("score")->read(i).toUInt()==0 ) break;
+        if ( item("score")->read(i)==item("score")->item()->defaultValue() )
+            break;
 	return i;
 }
 

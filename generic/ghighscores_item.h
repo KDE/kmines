@@ -153,7 +153,7 @@ class Item
 class ScoreItem : public Item
 {
  public:
-    ScoreItem();
+    ScoreItem(uint minScore = 0);
 };
 
 /**

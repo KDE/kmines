@@ -133,8 +133,8 @@ QString Item::pretty(uint, const QVariant &value) const
 }
 
 //-----------------------------------------------------------------------------
-ScoreItem::ScoreItem()
-    : Item((uint)0, i18n("Score"), Qt::AlignRight)
+ScoreItem::ScoreItem(uint minScore)
+    : Item(minScore, i18n("Score"), Qt::AlignRight)
 {}
 
 MeanScoreItem::MeanScoreItem()
