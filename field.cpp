@@ -40,8 +40,7 @@ const char *Field::ACTION_NAMES[Nb_Actions] = {
 };
 
 Field::Field(QWidget *parent)
-    : FieldFrame(parent), _state(Init), _solvingState(Regular),
-      _level(Level::Easy)
+    : FieldFrame(parent), _state(Init), _solvingState(Regular), _level(Level::Easy)
 {}
 
 void Field::readSettings()
@@ -51,43 +50,26 @@ void Field::readSettings()
         drawCase(p, _cursor);
     }
     if ( Settings::magicReveal() ) emit setCheating();
+
+    FieldFrame::readSettings();
+    updateGeometry();
+    emit setMood(Normal); // #### necessary to correctly resize the widget !!!
 }
 
 QSize Field::sizeHint() const
 {
-    return QSize(2*frameWidth() + _level.width()*20,
-                 2*frameWidth() + _level.height()*20);
-}
-
-QSize Field::minimumSizeHint() const
-{
-    return QSize(2*frameWidth() + _level.width()*4,
-                 2*frameWidth() + _level.height()*4);
+	return QSize(2*frameWidth() + _level.width()*caseSize(),
+				 2*frameWidth() + _level.height()*caseSize());
 }
 
 QSizePolicy Field::sizePolicy() const
 {
-    return QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-}
-
-void Field::resizeEvent(QResizeEvent *)
-{
-    uint uw = QFrame::width() - 2*frameWidth();
-    uint uh = QFrame::height() - 2*frameWidth();
-    int size = QMIN(uw/_level.width(), uh/_level.height() );
-    int w = _level.width()*size + 2*frameWidth();
-    int h = _level.height()*size + 2*frameWidth();
-    QRect r((QFrame::width() - w) / 2,  (QFrame::height() - h) / 2, w, h);
-    setFrameRect(r);
-    setCaseSize(size);
-    update();
+	return QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 }
 
 void Field::setLevel(const Level &level)
 {
     _level = level;
-    QFrame::resize(2*frameWidth() + _level.width()*caseSize(),
-                   2*frameWidth() + _level.height()*caseSize());
     updateGeometry();
     reset(false);
 }
@@ -121,16 +103,16 @@ void Field::reset(bool init)
 
 void Field::paintEvent(QPaintEvent *e)
 {
-    QPainter painter(this);
-    drawFrame(&painter);
-    if ( _state==Paused ) return;
+	QPainter painter(this);
+	drawFrame(&painter);
+	if ( _state==Paused ) return;
 
     Coord min = fromPoint(e->rect().topLeft());
     bound(min);
     Coord max = fromPoint(e->rect().bottomRight());
     bound(max);
-    for (short i=min.first; i<=max.first; i++)
-        for (short j=min.second; j<=max.second; j++)
+	for (short i=min.first; i<=max.first; i++)
+	    for (short j=min.second; j<=max.second; j++)
             drawCase(painter, Coord(i,j));
 }
 
@@ -138,37 +120,33 @@ void Field::changeCase(const Coord &p, CaseState newState)
 {
     BaseField::changeCase(p, newState);
     QPainter painter(this);
-    drawCase(painter, p);
-    if ( isActive() ) emit updateStatus( hasMine(p) );
+	drawCase(painter, p);
+	if ( isActive() ) emit updateStatus( hasMine(p) );
 }
 
 QPoint Field::toPoint(const Coord &p) const
 {
-    int xoff = ( QFrame::width() - _level.width()*caseSize() ) / 2;
-    int yoff = ( QFrame::height() - _level.height()*caseSize() ) / 2;
     QPoint qp;
-    qp.setX( p.first*caseSize() + xoff );
-    qp.setY( p.second*caseSize() + yoff);
+    qp.setX( p.first*caseSize() + frameWidth() );
+    qp.setY( p.second*caseSize() + frameWidth() );
     return qp;
 }
 
 Coord Field::fromPoint(const QPoint &qp) const
 {
-    int xoff = ( QFrame::width() - _level.width()*caseSize() ) / 2;
-    int yoff = ( QFrame::height() - _level.height()*caseSize() ) / 2;
-    double i = (double)(qp.x() - xoff) / caseSize();
-    double j = (double)(qp.y() - yoff) / caseSize();
+	double i = (double)(qp.x() - frameWidth()) / caseSize();
+    double j = (double)(qp.y() - frameWidth()) / caseSize();
     return Coord((int)floor(i), (int)floor(j));
 }
 
 int Field::mapMouseButton(QMouseEvent *e) const
 {
-    switch (e->button()) {
-    case Qt::LeftButton:  return Settings::mouseAction(Settings::EnumButton::left);
-    case Qt::MidButton:   return Settings::mouseAction(Settings::EnumButton::mid);
-    case Qt::RightButton: return Settings::mouseAction(Settings::EnumButton::right);
-    default:              return Settings::EnumMouseAction::ToggleFlag;
-    }
+	switch (e->button()) {
+	case Qt::LeftButton:  return Settings::mouseAction(Settings::EnumButton::left);
+	case Qt::MidButton:   return Settings::mouseAction(Settings::EnumButton::mid);
+	case Qt::RightButton: return Settings::mouseAction(Settings::EnumButton::right);
+	default:              return Settings::EnumMouseAction::ToggleFlag;
+	}
 }
 
 void Field::revealActions(bool press)
@@ -176,22 +154,21 @@ void Field::revealActions(bool press)
     if ( _reveal==press ) return; // avoid flicker
     _reveal = press;
 
-    switch (_currentAction) {
-    case Reveal:
-        pressCase(_cursor, press);
-        break;
-    case AutoReveal:
-        pressClearFunction(_cursor, press);
-        break;
-    default:
-        break;
-    }
+	switch (_currentAction) {
+	case Reveal:
+		pressCase(_cursor, press);
+		break;
+	case AutoReveal:
+		pressClearFunction(_cursor, press);
+		break;
+	default:
+		break;
+	}
 }
 
 void Field::mousePressEvent(QMouseEvent *e)
 {
-    if ( !isActive() || (_currentAction!=Settings::EnumMouseAction::None) )
-        return;
+    if ( !isActive() || (_currentAction!=Settings::EnumMouseAction::None) ) return;
 
     emit setMood(Stressed);
     _currentAction = mapMouseButton(e);
@@ -241,7 +218,7 @@ void Field::mouseMoveEvent(QMouseEvent *e)
 
 void Field::pressCase(const Coord &c, bool pressed)
 {
-    if ( state(c)==Covered ) {
+	if ( state(c)==Covered ) {
         QPainter painter(this);
         drawCase(painter, c, pressed);
     }
@@ -258,19 +235,19 @@ void Field::pressClearFunction(const Coord &p, bool pressed)
 
 void Field::keyboardAutoReveal()
 {
-    pressClearFunction(_cursor, true);
-    QTimer::singleShot(50, this, SLOT(keyboardAutoRevealSlot()));
+	pressClearFunction(_cursor, true);
+	QTimer::singleShot(50, this, SLOT(keyboardAutoRevealSlot()));
 }
 
 void Field::keyboardAutoRevealSlot()
 {
-    pressClearFunction(_cursor, false);
-    doAutoReveal(_cursor);
+	pressClearFunction(_cursor, false);
+	doAutoReveal(_cursor);
 }
 
 void Field::doAutoReveal(const Coord &c)
 {
-    if ( !isActive() ) return;
+	if ( !isActive() ) return;
     if ( state(c)!=Uncovered ) return;
     emit addAction(c, AutoReveal);
     resetAdvised();
@@ -313,15 +290,15 @@ bool Field::doReveal(const Coord &c, CoordList *autorevealed,
 
 void Field::doMark(const Coord &c)
 {
-    if ( !isActive() ) return;
+	if ( !isActive() ) return;
     ActionType action;
     CaseState oldState = state(c);
     switch (oldState) {
-    case Covered:   action = SetFlag; break;
-    case Marked:    action = (Settings::uncertainMark() ? SetUncertain : UnsetFlag); break;
-    case Uncertain:	action = UnsetUncertain; break;
-    default:        return;
-    }
+	case Covered:   action = SetFlag; break;
+	case Marked:    action = (Settings::uncertainMark() ? SetUncertain : UnsetFlag); break;
+	case Uncertain:	action = UnsetUncertain; break;
+	default:        return;
+	}
     CaseState newState = doAction(action, c, Settings::magicReveal());
     addMarkAction(c, newState, oldState);
 }
@@ -332,11 +309,11 @@ void Field::doUmark(const Coord &c)
     ActionType action;
     CaseState oldState = state(c);
     switch (oldState) {
-    case Covered:
-    case Marked:    action = SetUncertain; break;
-    case Uncertain: action = UnsetUncertain; break;
-    default:        return;
-    }
+	case Covered:
+	case Marked:    action = SetUncertain; break;
+	case Uncertain: action = UnsetUncertain; break;
+	default:        return;
+	}
     CaseState newState = doAction(action, c, Settings::magicReveal());
     addMarkAction(c, newState, oldState);
 }
@@ -427,8 +404,8 @@ void Field::resetAdvised()
 void Field::setAdvised(const Coord &c, double proba)
 {
     resetAdvised();
-    _solvingState = Advised;
-    _advisedCoord = c;
+	_solvingState = Advised;
+	_advisedCoord = c;
     _advisedProba = proba;
     if ( inside(c) ) {
         QPainter p(this);
@@ -438,39 +415,39 @@ void Field::setAdvised(const Coord &c, double proba)
 
 void Field::drawCase(QPainter &painter, const Coord &c, bool pressed) const
 {
-    Q_ASSERT( inside(c) );
+	Q_ASSERT( inside(c) );
 
     QString text;
     uint nbMines = 0;
     PixmapType type = NoPixmap;
 
-    switch ( state(c) ) {
+	switch ( state(c) ) {
     case Covered:
         break;
-    case Marked:
+	case Marked:
         type = FlagPixmap;
         pressed = false;
         break;
-    case Error:
+	case Error:
         type = ErrorPixmap;
         pressed = true;
         break;
-    case Uncertain:
+	case Uncertain:
         text = '?';
         pressed = false;
         break;
-    case Exploded:
+	case Exploded:
         type = ExplodedPixmap;
         pressed = true;
         break;
-    case Uncovered:
+	case Uncovered:
         pressed = true;
         if ( hasMine(c) ) type = MinePixmap;
         else {
             nbMines = nbMinesAround(c);
             if (nbMines) text.setNum(nbMines);
         }
-    }
+	}
 
     int i = -1;
     if ( c==_advisedCoord ) {

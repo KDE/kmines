@@ -30,15 +30,18 @@ FieldFrame::FieldFrame(QWidget *parent)
     : QFrame(parent, "field"), _button(0)
 {
     setFrameStyle( QFrame::Box | QFrame::Raised );
-    setLineWidth(2);
-    setMidLineWidth(2);
+	setLineWidth(2);
+	setMidLineWidth(2);
 }
 
-void FieldFrame::setCaseSize(uint size)
+void FieldFrame::readSettings()
 {
-    _button.resize(size,  size);
+    _caseSize = Settings::caseSize();
+
+    _button.resize(_caseSize, _caseSize);
 
     QBitmap mask;
+
     for (uint i=0; i<Nb_Pixmap_Types; i++) {
         drawPixmap(mask, (PixmapType)i, true);
         drawPixmap(_pixmaps[i], (PixmapType)i, false);
@@ -51,14 +54,14 @@ void FieldFrame::setCaseSize(uint size)
     }
 
     QFont f = font();
-    f.setPointSize(QMAX(1, int(caseSize())-6));
-    f.setBold(true);
-    setFont(f);
+	f.setPointSize(_caseSize-6);
+	f.setBold(true);
+	setFont(f);
 }
 
 void FieldFrame::initPixmap(QPixmap &pix, bool mask) const
 {
-    pix.resize(caseSize(), caseSize());
+    pix.resize(_caseSize, _caseSize);
     if (mask) pix.fill(color0);
 }
 
@@ -81,29 +84,29 @@ void FieldFrame::drawPixmap(QPixmap &pix, PixmapType type, bool mask) const
     }
 
     p.setWindow(0, 0, 20, 20);
-    if ( type==ExplodedPixmap )
-        p.fillRect(2, 2, 16, 16, (mask ? color1 : Settings::color(Settings::EnumType::explosion)));
-    QPen pen(mask ? color1 : black, 1);
-    p.setPen(pen);
-    p.setBrush(mask ? color1 : black);
-    p.drawLine(10,3,10,18);
-    p.drawLine(3,10,18,10);
-    p.drawLine(5, 5, 16, 16);
-    p.drawLine(5, 15, 15, 5);
-    p.drawEllipse(5, 5, 11, 11);
-    p.fillRect(8, 8, 2, 2, (mask ? color1 : white));
-    if ( type==ErrorPixmap ) {
-        if (!mask) {
-            pen.setColor(Settings::color(Settings::EnumType::error));
-            p.setPen(pen);
-        }
-        p.drawLine(3, 3, 17, 17);
-        p.drawLine(4, 3, 17, 16);
-        p.drawLine(3, 4, 16, 17);
-        p.drawLine(3, 17, 17, 3);
-        p.drawLine(3, 16, 16, 3);
-        p.drawLine(4, 17, 17, 4);
-    }
+	if ( type==ExplodedPixmap )
+		p.fillRect(2, 2, 16, 16, (mask ? color1 : Settings::color(Settings::EnumType::explosion)));
+	QPen pen(mask ? color1 : black, 1);
+	p.setPen(pen);
+	p.setBrush(mask ? color1 : black);
+	p.drawLine(10,3,10,18);
+	p.drawLine(3,10,18,10);
+	p.drawLine(5, 5, 16, 16);
+	p.drawLine(5, 15, 15, 5);
+	p.drawEllipse(5, 5, 11, 11);
+	p.fillRect(8, 8, 2, 2, (mask ? color1 : white));
+	if ( type==ErrorPixmap ) {
+		if (!mask) {
+			pen.setColor(Settings::color(Settings::EnumType::error));
+			p.setPen(pen);
+		}
+		p.drawLine(3, 3, 17, 17);
+		p.drawLine(4, 3, 17, 16);
+		p.drawLine(3, 4, 16, 17);
+		p.drawLine(3, 17, 17, 3);
+		p.drawLine(3, 16, 16, 3);
+		p.drawLine(4, 17, 17, 4);
+	}
 }
 
 void FieldFrame::drawAdvised(QPixmap &pix, uint i, bool mask) const
@@ -131,7 +134,7 @@ void FieldFrame::drawBox(QPainter &painter, const QPoint &p,
         painter.resetXForm();
     }
 
-    QRect r(p, _button.size());
+	QRect r(p, _button.size());
     const QPixmap *pixmap = (type==NoPixmap ? 0 : &_pixmaps[type]);
     QColor color = (nbMines==0 ? black : Settings::mineColor(nbMines-1));
     style().drawItem(&painter, r, AlignCenter, colorGroup(), true, pixmap,

@@ -34,8 +34,7 @@ class FieldFrame : public QFrame, public KMines
     FieldFrame(QWidget *parent);
 
  protected:
-    void setCaseSize(uint size);
-    uint caseSize() const { return _button.width(); }
+    virtual void readSettings();
 
     enum PixmapType { FlagPixmap = 0, MinePixmap, ExplodedPixmap,
                       ErrorPixmap, Nb_Pixmap_Types,
@@ -46,8 +45,10 @@ class FieldFrame : public QFrame, public KMines
                  PixmapType, const QString &text,
                  uint nbMines, int advised, bool hasFocus) const;
 
+    uint caseSize() const { return _caseSize; }
 
  private:
+    uint           _caseSize;
     QPushButton    _button;
     QPixmap        _pixmaps[Nb_Pixmap_Types];
     QPixmap        _advised[Nb_Advised];
