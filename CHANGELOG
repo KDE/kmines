@@ -1,4 +1,11 @@
-2.1.8 (17 January 2003) [CVS 3.2 devel]
+2.1.9 (26 February 2004) [CVS 3.3 devel]
+ * fix compilation of solver debugging code.
+
+2.1.8b (26 February 2004) [KDE 3.2.1 stable]
+ * fix solver crash when "magic reveal" on.
+ * fix longstanding crash in solver dialog.
+
+2.1.8 (17 January 2003) [KDE 3.2 stable]
  * configure button in highscores dialog
  * notifications
 
