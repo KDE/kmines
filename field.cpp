@@ -88,8 +88,8 @@ void Field::setReplayField(const QString &field)
 void Field::setState(GameState state)
 {
     Q_ASSERT( state!=GameOver );
-    _state = state;
     emit gameStateChanged(state);
+    _state = state;
 }
 
 void Field::reset(bool init)

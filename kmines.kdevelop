@@ -68,6 +68,13 @@
     <ignoreqt_xml>
       <toc>qmake User Guide</toc>
     </ignoreqt_xml>
+    <projectdoc>
+      <userdocDir>html/</userdocDir>
+      <apidocDir>html/</apidocDir>
+    </projectdoc>
+    <ignoredoxygen/>
+    <ignorekdocs/>
+    <ignoredevhelp/>
   </kdevdoctreeview>
   <kdevdebugger>
     <general>
@@ -87,6 +94,7 @@
     </display>
   </kdevdebugger>
   <kdevfilecreate>
+    <filetypes/>
     <useglobaltypes>
       <type ext="ui" />
       <type ext="cpp" />
@@ -99,9 +107,13 @@
         <envvar value="1" name="WANT_AUTOCONF_2_5" />
         <envvar value="1" name="WANT_AUTOMAKE_1_6" />
       </envvars>
+      <abortonerror>false</abortonerror>
+      <numberofjobs>1</numberofjobs>
+      <dontact>false</dontact>
+      <makebin></makebin>
     </make>
     <run>
-      <directoryradio>build</directoryradio>
+      <directoryradio>executable</directoryradio>
       <customdirectory>/</customdirectory>
       <mainprogram>kmines</mainprogram>
       <programargs></programargs>
@@ -109,6 +121,59 @@
       <autocompile>true</autocompile>
       <envvars/>
     </run>
+    <configurations>
+      <default>
+        <configargs></configargs>
+        <builddir></builddir>
+        <topsourcedir></topsourcedir>
+        <cppflags></cppflags>
+        <ldflags></ldflags>
+        <ccompiler>kdevgccoptions</ccompiler>
+        <cxxcompiler>kdevgppoptions</cxxcompiler>
+        <f77compiler>kdevpgf77options</f77compiler>
+        <ccompilerbinary></ccompilerbinary>
+        <cxxcompilerbinary></cxxcompilerbinary>
+        <f77compilerbinary></f77compilerbinary>
+        <cflags></cflags>
+        <cxxflags></cxxflags>
+        <f77flags></f77flags>
+      </default>
+      <kmines>
+        <configargs></configargs>
+        <builddir>/home/azhyd/prog/KDE/CVS/build/kdegames/kmines</builddir>
+        <topsourcedir>/home/azhyd/prog/KDE/CVS/kdegames/kmines</topsourcedir>
+        <cppflags></cppflags>
+        <ldflags></ldflags>
+        <ccompiler>kdevgccoptions</ccompiler>
+        <cxxcompiler>kdevgppoptions</cxxcompiler>
+        <f77compiler>kdevpgf77options</f77compiler>
+        <ccompilerbinary></ccompilerbinary>
+        <cxxcompilerbinary></cxxcompilerbinary>
+        <f77compilerbinary></f77compilerbinary>
+        <cflags></cflags>
+        <cxxflags></cxxflags>
+        <f77flags></f77flags>
+      </kmines>
+      <kdegames>
+        <configargs>--enable-debug=full</configargs>
+        <builddir>/home/azhyd/prog/KDE/CVS/build/kdegames</builddir>
+        <topsourcedir>/home/azhyd/prog/KDE/CVS/kdegames</topsourcedir>
+        <cppflags></cppflags>
+        <ldflags></ldflags>
+        <ccompiler>kdevgccoptions</ccompiler>
+        <cxxcompiler>kdevgppoptions</cxxcompiler>
+        <f77compiler>kdevpgf77options</f77compiler>
+        <ccompilerbinary></ccompilerbinary>
+        <cxxcompilerbinary></cxxcompilerbinary>
+        <f77compilerbinary></f77compilerbinary>
+        <cflags></cflags>
+        <cxxflags></cxxflags>
+        <f77flags></f77flags>
+      </kdegames>
+    </configurations>
+    <general>
+      <useconfiguration>kmines</useconfiguration>
+    </general>
   </kdevautoproject>
   <cppsupportpart>
     <filetemplates>

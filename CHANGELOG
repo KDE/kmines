@@ -1,9 +1,10 @@
-2.1.9 (29 May 2004) [KDE 3.3 devel]
+2.1.9 (31 May 2004) [KDE 3.3 devel]
  * fix compilation of solver debugging code.
  * add missing events
 
-2.1.8c (17 May 2004) [KDE 3.2.3 stable]
- * fix bug #80721 (hint not displayed)
+2.1.8c (31 May 2004) [KDE 3.2.3 stable]
+ * fix bug: hint not displayed [reported by Daniel Schepler]
+ * fix bug: log file restarted when game paused [reported by Astharoth]
 
 2.1.8b (26 February 2004) [KDE 3.2.1 stable]
  * fix solver crash when "magic reveal" on.
