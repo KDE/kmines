@@ -62,7 +62,8 @@ bool BaseField::checkField(uint w, uint h, uint nb, const QString &s)
 {
     if ( s.length()!=w*h ) return false;
     uint n = 0;
-    for (uint i=0; i<s.length(); i++)
+	unsigned int strLength(s.length());
+    for (uint i=0; i<strLength; i++)
         if ( s[i]=="1" ) n++;
         else if ( s[i]!="0" ) return false;
     return ( n==nb );
@@ -76,7 +77,8 @@ void BaseField::initReplay(const QString &s)
 
     Case tmp;
     tmp.state = Covered;
-    for (uint i=0; i<s.length(); i++) {
+	unsigned int strLength(s.length());
+    for (uint i=0; i<strLength; i++) {
         tmp.mine = ( s[i]=="1" );
         at(i) = tmp;
     }
