@@ -141,11 +141,11 @@ void Status::endGame(int win)
 				Score score; score.sec = dg->sec(); score.min = dg->min(); score.mode = _type;
 				highScores(&score);
 			}
-			emit message(i18n("Yeeeesssssss !"));
+			emit message(i18n("Yeeeesssssss!"));
 		} else emit message(i18n("You did it ... but not in time."));
 	} else {
 		emit updateSmiley(UNHAPPY);
-		emit message(i18n("Bad luck !"));
+		emit message(i18n("Bad luck!"));
 	}
 }
 
