@@ -177,8 +177,8 @@ void MainWidget::toggleUMark()
 void MainWidget::toggleKeyboard()
 {
 	bool keyboard = KEYBOARD_ACTION->isChecked();
-	QValueList<QAction *> list = actionCollection()->actions("keyboard_group");
-	QValueList<QAction *>::Iterator it;
+	QValueList<KAction *> list = actionCollection()->actions("keyboard_group");
+	QValueList<KAction *>::Iterator it;
 	for (it = list.begin(); it!=list.end(); ++it)
 		(*it)->setEnabled(keyboard);
 	status->setCursor(keyboard);
