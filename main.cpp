@@ -136,9 +136,13 @@ void MainWidget::toggleMenubar()
 
 void MainWidget::configureSettings()
 {
-	SettingsDialog od(this);
-    connect(&od, SIGNAL(settingsSaved()), SLOT(settingsChanged()));
-    od.exec();
+    KSettingDialog d(this);
+    d.append(new GameSettings);
+    d.append(new AppearanceSettings);
+    d.append( kHighscores->createSettingsWidget(this) );
+    d.append(new CustomSettings);
+    connect(&d, SIGNAL(settingsSaved()), SLOT(settingsChanged()));
+    d.exec();
 }
 
 void MainWidget::settingsChanged()

@@ -69,10 +69,6 @@ class CustomSettings : public KSettingWidget, public KMines
  private:
 	KIntNumInput *_width, *_height, *_mines;
     QComboBox    *_gameType;
-
-    static KIntNumInput *createWidth(KSettingWidget *);
-    static KIntNumInput *createHeight(KSettingWidget *);
-    static KIntNumInput *createMines(KSettingWidget *);
 };
 
 //-----------------------------------------------------------------------------
@@ -86,13 +82,6 @@ class GameSettings : public KSettingWidget, public KMines
     static bool readKeyboard();
     static bool readPauseFocus();
     static MouseAction readMouseBinding(MouseButton);
-
- private:
-    static QCheckBox *createUMark(KSettingWidget *);
-    static QCheckBox *createKeyboard(KSettingWidget *);
-    static QCheckBox *createPauseFocus(KSettingWidget *);
-    static QComboBox *createMouseBinding(KSettingCollection &, QWidget *,
-                                         MouseButton);
 };
 
 class AppearanceSettings : public KSettingWidget, public KMines
@@ -102,19 +91,6 @@ class AppearanceSettings : public KSettingWidget, public KMines
     AppearanceSettings();
 
     static CaseProperties readCaseProperties();
-
- private:
-    static KIntNumInput *createCaseSize(KSettingWidget *);
-    static KColorButton *createColor(KSettingCollection &, QWidget *, uint i);
-    static KColorButton *createNumberColor(KSettingCollection &, QWidget *,
-                                           uint i);
-};
-
-class SettingsDialog : public KSettingDialog, public KMines
-{
- Q_OBJECT
- public:
-	SettingsDialog(QWidget *parent);
 };
 
 #endif

@@ -616,7 +616,9 @@ int KSettingCollection::readId(const QObject *o) const
 KSettingWidget::KSettingWidget(const QString &title, const QString &icon,
                                QWidget *parent, const char *name)
     : QWidget(parent, name), _title(title), _icon(icon)
-{}
+{
+    _settings = new KSettingCollection(this);
+}
 
 KSettingWidget::~KSettingWidget()
 {}
@@ -645,15 +647,15 @@ void KSettingDialog::append(KSettingWidget *w)
     vbox->addStretch(1);
     _widgets.append(w);
 
-    w->settings().load();
-    connect(&w->settings(), SIGNAL(hasBeenModified()), SLOT(changed()));
+    w->settings()->load();
+    connect(w->settings(), SIGNAL(hasBeenModified()), SLOT(changed()));
     if ( pageIndex(page)==0 ) aboutToShowPage(page);
 }
 
 void KSettingDialog::slotDefault()
 {
     int i = activePageIndex();
-    _widgets.at(i)->settings().setDefaults();
+    _widgets.at(i)->settings()->setDefaults();
 }
 
 void KSettingDialog::accept()
@@ -669,7 +671,7 @@ void KSettingDialog::accept()
 void KSettingDialog::changed()
 {
     int i = activePageIndex();
-    bool hasDefaults = _widgets.at(i)->settings().hasDefaults();
+    bool hasDefaults = _widgets.at(i)->settings()->hasDefaults();
     enableButton(Default, !hasDefaults);
     enableButtonApply(true);
 }
@@ -678,7 +680,7 @@ bool KSettingDialog::apply()
 {
     bool ok = true;
     for (uint i=0; i<_widgets.count(); i++)
-        if ( !_widgets.at(i)->settings().save() ) ok = false;
+        if ( !_widgets.at(i)->settings()->save() ) ok = false;
     emit settingsSaved();
     return ok;
 }
@@ -691,6 +693,6 @@ void KSettingDialog::slotApply()
 void KSettingDialog::slotAboutToShowPage(QWidget *page)
 {
     int i = pageIndex(page);
-    bool hasDefaults = _widgets.at(i)->settings().hasDefaults();
+    bool hasDefaults = _widgets.at(i)->settings()->hasDefaults();
     enableButton(Default, !hasDefaults);
 }

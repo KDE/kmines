@@ -190,7 +190,7 @@ HighscoresSettingsWidget::HighscoresSettingsWidget(const PlayerInfos &infos,
       _infos(infos), _WWHEnabled(0)
 {
     KSettingGeneric *sg = new HighscoresSetting(this);
-    settings().append(sg);
+    settings()->append(sg);
 
     QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
 

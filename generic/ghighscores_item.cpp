@@ -219,7 +219,7 @@ QDataStream &operator >>(QDataStream &s, DataArray &array)
 
 //-----------------------------------------------------------------------------
 Score::Score(ScoreType type)
-    : DataArray(kHighscores->scoreInfos()), _type(type)
+    : DataArray(*kHighscores->scoreInfos()), _type(type)
 {}
 
 Score::~Score()

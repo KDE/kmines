@@ -193,7 +193,7 @@ class Highscores
     /**
      * @internal
      */
-    const ScoreInfos &scoreInfos() const { return *_scoreInfos; }
+    const ScoreInfos *scoreInfos() const { return _scoreInfos; }
 
     /**
      * @internal

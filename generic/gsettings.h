@@ -305,11 +305,11 @@ class KSettingWidget : public QWidget
     /**
      * @return the @ref KSettingCollection.
      */
-    KSettingCollection &settings() { return _collection; }
+    KSettingCollection *settings() { return _settings; }
 
  private:
-    KSettingCollection _collection;
-    QString            _title, _icon;
+    KSettingCollection *_settings;
+    QString             _title, _icon;
 
     class KSettingWidgetPrivate;
     KSettingWidgetPrivate *d;

@@ -66,6 +66,34 @@ void DigitalClock::reset(const KExtHighscores::Score &first,
 }
 
 //-----------------------------------------------------------------------------
+KIntNumInput *createWidth(KSettingWidget *sw)
+{
+    KIntNumInput *w = new KIntNumInput(sw);
+    w->setLabel(i18n("Width"));
+    w->setRange(Level::MIN_CUSTOM_SIZE, Level::MAX_CUSTOM_SIZE);
+    sw->settings()->plug(w, KMines::OP_GROUP, "custom width",
+                         Level::data(Level::Custom).width);
+    return w;
+}
+
+KIntNumInput *createHeight(KSettingWidget *sw)
+{
+    KIntNumInput *h = new KIntNumInput(sw);
+    h->setLabel(i18n("Height"));
+    h->setRange(Level::MIN_CUSTOM_SIZE, Level::MAX_CUSTOM_SIZE);
+    sw->settings()->plug(h, KMines::OP_GROUP, "custom height",
+                        Level::data(Level::Custom).height);
+    return h;
+}
+
+KIntNumInput *createMines(KSettingWidget *sw)
+{
+    KIntNumInput *m = new KIntNumInput(sw);
+    sw->settings()->plug(m, KMines::OP_GROUP, "custom mines",
+                        Level::data(Level::Custom).nbMines);
+    return m;
+}
+
 CustomSettings::CustomSettings()
     : KSettingWidget(i18n("Custom Game"), "configure")
 {
@@ -116,43 +144,15 @@ void CustomSettings::typeChosen(int i)
     updateNbMines();
 }
 
-KIntNumInput *CustomSettings::createWidth(KSettingWidget *sw)
-{
-    KIntNumInput *w = new KIntNumInput(sw);
-    w->setLabel(i18n("Width"));
-    w->setRange(Level::MIN_CUSTOM_SIZE, Level::MAX_CUSTOM_SIZE);
-    sw->settings().plug(w, OP_GROUP, "custom width",
-                        Level::data(Level::Custom).width);
-    return w;
-}
-
-KIntNumInput *CustomSettings::createHeight(KSettingWidget *sw)
-{
-    KIntNumInput *h = new KIntNumInput(sw);
-    h->setLabel(i18n("Height"));
-    h->setRange(Level::MIN_CUSTOM_SIZE, Level::MAX_CUSTOM_SIZE);
-    sw->settings().plug(h, OP_GROUP, "custom height",
-                        Level::data(Level::Custom).height);
-    return h;
-}
-
-KIntNumInput *CustomSettings::createMines(KSettingWidget *sw)
-{
-    KIntNumInput *m = new KIntNumInput(sw);
-    sw->settings().plug(m, OP_GROUP, "custom mines",
-                        Level::data(Level::Custom).nbMines);
-    return m;
-}
-
 Level CustomSettings::readLevel()
 {
     KSettingWidget sw;
     KIntNumInput *i = createWidth(&sw);
-    uint w = sw.settings().readValue(i).toUInt();
+    uint w = sw.settings()->readValue(i).toUInt();
     i = createHeight(&sw);
-    uint h = sw.settings().readValue(i).toUInt();
+    uint h = sw.settings()->readValue(i).toUInt();
     i = createMines(&sw);
-    uint n = sw.settings().readValue(i).toUInt();
+    uint n = sw.settings()->readValue(i).toUInt();
     return Level(w, h, n);
 }
 
@@ -164,6 +164,39 @@ const char *OP_MOUSE_BINDINGS[3] = { "mouse left", "mouse mid", "mouse right"};
 const char *ACTION_BINDINGS[4] =
     { I18N_NOOP("reveal"), I18N_NOOP("autoreveal"),
       I18N_NOOP("toggle flag"), I18N_NOOP("toggle ? mark") };
+
+QCheckBox *createUMark(KSettingWidget *sw)
+{
+    QCheckBox *cb = new QCheckBox(i18n("Enable ? mark"), sw);
+    sw->settings()->plug(cb, KMines::OP_GROUP, "? mark", true);
+    return cb;
+}
+
+QCheckBox *createKeyboard(KSettingWidget *sw)
+{
+    QCheckBox *cb = new QCheckBox(i18n("Enable keyboard"), sw);
+    sw->settings()->plug(cb, KMines::OP_GROUP, "keyboard game", false);
+    return cb;
+}
+
+QCheckBox *createPauseFocus(KSettingWidget *sw)
+{
+    QCheckBox *cb = new QCheckBox(i18n("Pause if window lose focus"), sw);
+    sw->settings()->plug(cb, KMines::OP_GROUP, "paused if lose focus", true);
+    return cb;
+}
+
+QComboBox *createMouseBinding(KSettingCollection *col,
+                              QWidget *parent, KMines::MouseButton i)
+{
+    QComboBox *cb = new QComboBox(parent);
+    col->plug(cb, KMines::OP_GROUP, OP_MOUSE_BINDINGS[i], ACTION_BINDINGS[i]);
+    for (uint j=0; j<4; j++) {
+        cb->insertItem(i18n(ACTION_BINDINGS[j]), j);
+        col->map(cb, j, ACTION_BINDINGS[j]);
+    }
+    return cb;
+}
 
 GameSettings::GameSettings()
     : KSettingWidget(i18n("Game"), "misc")
@@ -191,65 +224,32 @@ GameSettings::GameSettings()
 	}
 }
 
-QCheckBox *GameSettings::createUMark(KSettingWidget *sw)
-{
-    QCheckBox *cb = new QCheckBox(i18n("Enable ? mark"), sw);
-    sw->settings().plug(cb, OP_GROUP, "? mark", true);
-    return cb;
-}
-
 bool GameSettings::readUMark()
 {
     KSettingWidget sw;
     QCheckBox *cb = createUMark(&sw);
-    return sw.settings().readValue(cb).toBool();
-}
-
-QCheckBox *GameSettings::createKeyboard(KSettingWidget *sw)
-{
-    QCheckBox *cb = new QCheckBox(i18n("Enable keyboard"), sw);
-    sw->settings().plug(cb, OP_GROUP, "keyboard game", false);
-    return cb;
+    return sw.settings()->readValue(cb).toBool();
 }
 
 bool GameSettings::readKeyboard()
 {
     KSettingWidget sw;
     QCheckBox *cb = createKeyboard(&sw);
-    return sw.settings().readValue(cb).toBool();
-}
-
-QCheckBox *GameSettings::createPauseFocus(KSettingWidget *sw)
-{
-    QCheckBox *cb = new QCheckBox(i18n("Pause if window lose focus"), sw);
-    sw->settings().plug(cb, OP_GROUP, "paused if lose focus", true);
-    return cb;
+    return sw.settings()->readValue(cb).toBool();
 }
 
 bool GameSettings::readPauseFocus()
 {
     KSettingWidget sw;
     QCheckBox *cb = createPauseFocus(&sw);
-    return sw.settings().readValue(cb).toBool();
-}
-
-QComboBox *GameSettings::createMouseBinding(KSettingCollection &col,
-                                            QWidget *parent, MouseButton i)
-{
-    QComboBox *cb = new QComboBox(parent);
-    col.plug(cb, OP_GROUP, OP_MOUSE_BINDINGS[i], ACTION_BINDINGS[i]);
-    for (uint j=0; j<4; j++) {
-        cb->insertItem(i18n(ACTION_BINDINGS[j]), j);
-        col.map(cb, j, ACTION_BINDINGS[j]);
-    }
-    return cb;
+    return sw.settings()->readValue(cb).toBool();
 }
 
 KMines::MouseAction GameSettings::readMouseBinding(MouseButton mb)
 {
     KSettingWidget sw;
     QComboBox *cb = createMouseBinding(sw.settings(), &sw, mb);
-    return (MouseAction)sw.settings().readId(cb);
+    return (MouseAction)sw.settings()->readId(cb);
 }
 
 //-----------------------------------------------------------------------------
@@ -272,6 +272,33 @@ const QColor DEFAULT_NUMBER_COLOR[KMines::NB_NUMBER_COLORS] = {
     Qt::blue, Qt::darkGreen, Qt::darkYellow, Qt::darkMagenta, Qt::red,
     Qt::darkRed, Qt::black, Qt::black
 };
+
+KIntNumInput *createCaseSize(KSettingWidget *sw)
+{
+    KIntNumInput *cs = new KIntNumInput(sw);
+    cs->setLabel(i18n("Case size"));
+    cs->setRange(MIN_CASE_SIZE, MAX_CASE_SIZE);
+    sw->settings()->plug(cs, KMines::OP_GROUP, "case size", MIN_CASE_SIZE);
+    return cs;
+}
+
+KColorButton *createColor(KSettingCollection *col, QWidget *parent, uint i)
+{
+    KColorButton *cb = new KColorButton(parent);
+    cb->setFixedWidth(100);
+    col->plug(cb, KMines::OP_GROUP, COLOR_DATA[i].entry, COLOR_DATA[i].def);
+    return cb;
+}
+
+KColorButton *createNumberColor(KSettingCollection *col,
+                                QWidget *parent, uint i)
+{
+    KColorButton *cb = new KColorButton(parent);
+    cb->setFixedWidth(100);
+    col->plug(cb, KMines::OP_GROUP, QString("color #%1").arg(i),
+              DEFAULT_NUMBER_COLOR[i]);
+    return cb;
+}
 
 AppearanceSettings::AppearanceSettings()
     : KSettingWidget(i18n("Appearance"), "appearance")
@@ -298,61 +325,23 @@ AppearanceSettings::AppearanceSettings()
 	}
 }
 
-KIntNumInput *AppearanceSettings::createCaseSize(KSettingWidget *sw)
-{
-    KIntNumInput *cs = new KIntNumInput(sw);
-    cs->setLabel(i18n("Case size"));
-    cs->setRange(MIN_CASE_SIZE, MAX_CASE_SIZE);
-    sw->settings().plug(cs, OP_GROUP, "case size", MIN_CASE_SIZE);
-    return cs;
-}
-
-KColorButton *AppearanceSettings::createColor(KSettingCollection &col,
-                                              QWidget *parent, uint i)
-{
-    KColorButton *cb = new KColorButton(parent);
-    cb->setFixedWidth(100);
-    col.plug(cb, OP_GROUP, COLOR_DATA[i].entry, COLOR_DATA[i].def);
-    return cb;
-}
-
-KColorButton *AppearanceSettings::createNumberColor(KSettingCollection &col,
-                                                    QWidget *parent, uint i)
-{
-    KColorButton *cb = new KColorButton(parent);
-    cb->setFixedWidth(100);
-    col.plug(cb, OP_GROUP, QString("color #%1").arg(i),
-             DEFAULT_NUMBER_COLOR[i]);
-    return cb;
-}
-
 KMines::CaseProperties AppearanceSettings::readCaseProperties()
 {
     CaseProperties cp;
     KSettingWidget sw;
 
     KIntNumInput *cs = createCaseSize(&sw);
-    cp.size = sw.settings().readValue(cs).toUInt();
+    cp.size = sw.settings()->readValue(cs).toUInt();
 
     for (uint i=0; i<NB_COLORS; i++) {
         KColorButton *cb = createColor(sw.settings(), &sw, i);
-        cp.colors[i] = sw.settings().readValue(cb).toColor();
+        cp.colors[i] = sw.settings()->readValue(cb).toColor();
     }
 
 	for (uint i=0; i<NB_NUMBER_COLORS; i++) {
         KColorButton *cb = createNumberColor(sw.settings(), &sw, i);
-		cp.numberColors[i] = sw.settings().readValue(cb).toColor();
+		cp.numberColors[i] = sw.settings()->readValue(cb).toColor();
     }
 
 	return cp;
-}
-
-//-----------------------------------------------------------------------------
-SettingsDialog::SettingsDialog(QWidget *parent)
-    : KSettingDialog(parent)
-{
-    append(new GameSettings);
-    append(new AppearanceSettings);
-    append( kHighscores->createSettingsWidget(this) );
-    append(new CustomSettings);
 }
