@@ -354,9 +354,9 @@ OptionDialog::OptionDialog(uint &caseSize, QWidget *parent)
 : DialogBase(i18n("Game settings"), Ok|Cancel, Cancel, parent),
   cs(caseSize)
 {
-	KIntNumInput *ni = new KIntNumInput(i18n("Case size"), MIN_CASE_SIZE, MAX_CASE_SIZE, 1,
-										caseSize, QString::null, 10, true,
-										plainPage());
+	KIntNumInput *ni = new KIntNumInput(0, caseSize, this, 10);
+	ni->setRange(MIN_CASE_SIZE, MAX_CASE_SIZE, 1, true);
+	ni->setLabel(i18n("Case size"));
 	top->addWidget(ni);
 	connect(ni, SIGNAL(valueChanged(int)), SLOT(changed(int)));
 }
