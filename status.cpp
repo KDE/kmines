@@ -204,7 +204,7 @@ void Status::setGameOver(bool won)
     // game log
     _logRoot.setAttribute("count", dg->nbActions());
 
-    if ( field->hasCompleteReveal() )
+    if ( Settings::magicReveal() )
         _logRoot.setAttribute("complete_reveal", "true");
     QString sa = "none";
     if ( field->solvingState()==Solved ) sa = "solving";

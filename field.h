@@ -47,7 +47,6 @@ class Field : public FieldFrame, public BaseField
     bool isActive() const { return _state!=Paused && _state!=GameOver; }
     void pause();
     void setGameOver() { _state = GameOver; }
-	bool hasCompleteReveal() const { return _completeReveal; }
 
     void moveCursor(Neighbour);
     void moveToEdge(Neighbour);
@@ -83,7 +82,7 @@ class Field : public FieldFrame, public BaseField
 
  private:
 	GameState   _state;
-	bool              _reveal, _completeReveal;
+	bool              _reveal;
 	SolvingState _solvingState;
 	KGrid2D::Coord  _cursor, _advisedCoord;
 	double        _advisedProba;
