@@ -22,7 +22,8 @@
 
 #include "ghighscores_item.h"
 
-class KURL;
+#include <kurl.h>
+
 class QTabWidget;
 
 
