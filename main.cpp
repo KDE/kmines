@@ -124,7 +124,7 @@ MainWidget::MainWidget()
                       _status, SLOT(loadLog()),
                       actionCollection(), "log_load");
 
-	createGUI();
+	setupGUI( KMainWindow::Save | Create );
 	readSettings();
 	setCentralWidget(_status);
 
