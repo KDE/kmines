@@ -5,6 +5,7 @@
 #include "version.h"
 #include "status.h"
 #include "dialogs.h"
+#include <klocale.h>
 
 
 MainWidget::MainWidget()

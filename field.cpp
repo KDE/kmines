@@ -11,6 +11,7 @@
 #include <kapp.h>
 
 #include "defines.h"
+#include <klocale.h>
 
 Field::Field(QWidget *parent, const char *name)
 : QWidget(parent, name), pfield(0), _stop(FALSE), isPaused(FALSE),

@@ -13,6 +13,7 @@
 #include "defines.h"
 #include "field.h"
 #include "dialogs.h"
+#include <klocale.h>
 
 
 KMinesStatus::KMinesStatus(QWidget *parent, const char *name)

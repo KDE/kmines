@@ -10,6 +10,7 @@
 
 #include "defines.h"
 #include "version.h"
+#include <klocale.h>
 
 #define BORDER   10
 #define TBORDER  5
