@@ -13,6 +13,9 @@ EXTRA_DIST = $(kde_icon_DATA) $(apps_DATA) $(html_DATA) mini-kmines.xpm kmines.x
 install-data-local:
 	$(mkinstalldirs) $(minidir)
 	$(INSTALL_DATA) $(srcdir)/mini-kmines.xpm $(minidir)/kmines.xpm
+	$(mkinstalldirs) $(minidir)/../large
+	$(INSTALL_DATA) $(srcdir)/large-kmines.xpm $(minidir)/../large/kmines.xpm
 
 uninstall-local:
 	rm -f $(minidir)/kmines.xpm
+	rm -f $(minidir)/../large-kmines.xpm
