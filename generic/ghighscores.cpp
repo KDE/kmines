@@ -266,7 +266,7 @@ const char *DUMMY_STRINGS[] = {
     I18N_NOOP("Missing argument(s)."),
     I18N_NOOP("Invalid argument(s)."),
 
-    I18N_NOOP("Unable to connect mysql server."),
+    I18N_NOOP("Unable to connect to MySQL server."),
     I18N_NOOP("Unable to select database."),
     I18N_NOOP("Error on database query."),
     I18N_NOOP("Error on database insert."),
