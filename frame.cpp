@@ -3,6 +3,7 @@
 #include <qpainter.h>
 #include <qbitmap.h>
 #include <qstyle.h>
+#include <qdrawutil.h>
 
 #include "dialogs.h"
 
@@ -110,28 +111,18 @@ void FieldFrame::drawBox(QPainter &painter, const QPoint &p,
                       uint nbMines, int advised,
                       bool hasFocus) const
 {
-	painter.translate(p.x(), p.y());
-
-    QStyle::SFlags flags = QStyle::Style_Enabled;
-    if (hasFocus) flags |= QStyle::Style_HasFocus;
-    if (pressed) {
-        flags |= QStyle::Style_Sunken;
-        flags |= QStyle::Style_Down;
-    } else {
-        flags |= QStyle::Style_Raised;
-        flags |= QStyle::Style_Up;
-    }
-
-    style().drawPrimitive(QStyle::PE_ButtonCommand, &painter, _button.rect(),
-                        colorGroup(), flags);
+    qDrawShadePanel(&painter, p.x(), p.y(), _button.width(), _button.height(),
+                    colorGroup(),  pressed, 2,
+                    &colorGroup().brush(QColorGroup::Background));
     if (hasFocus) {
+        painter.translate(p.x(), p.y());
         QRect fbr = style().subRect(QStyle::SR_PushButtonFocusRect, &_button);
         style().drawPrimitive(QStyle::PE_FocusRect, &painter, fbr,
-                            colorGroup(), flags);
+                              colorGroup(), QStyle::Style_Enabled);
+        painter.resetXForm();
     }
 
-	painter.resetXForm();
-    QRect r(p, _button.size());
+	QRect r(p, _button.size());
     const QPixmap *pixmap = (type==NoPixmap ? 0 : &_pixmaps[type]);
     QColor color = (nbMines==0 ? black : _numberColors[nbMines-1]);
     style().drawItem(&painter, r, AlignCenter, colorGroup(), true, pixmap,

@@ -168,7 +168,7 @@ void Status::setGameOver(bool won)
     _logList.setAttribute("nb", dg->nbActions());
 
     if ( field->hasCompleteReveal() )
-        _logRoot.setAttribute("CompleteReveal", 1);
+        _logRoot.setAttribute("CompleteReveal", "true");
     QString sa = "None";
     if (_solved) sa = "Solving";
     else if (_advised) sa = "Advising";
@@ -178,7 +178,7 @@ void Status::setGameOver(bool won)
     _logRoot.appendChild(f);
     QDomText data = _log.createTextNode(field->string());
     f.appendChild(data);
-    kdDebug() << _log.toString() << endl; // #### REMOVE ME
+//    kdDebug() << _log.toString() << endl; // #### REMOVE ME
 }
 
 void Status::setStopped()
