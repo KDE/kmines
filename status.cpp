@@ -28,7 +28,6 @@ Status::Status(QWidget *parent, const char *name)
 	left = new LCD(5, this);
     left->setFrameStyle(QFrame::Panel | QFrame::Sunken);
     left->setDefaultColors(white, black);
-	left->installEventFilter(parent);
 	QWhatsThis::add(left, i18n("<qt>Mines left.<br/>"
                                "It turns <font color=\"red\">red</font> "
                                "when you have flagged more cases than "
@@ -38,14 +37,12 @@ Status::Status(QWidget *parent, const char *name)
 	// smiley
 	smiley = new Smiley(this);
 	connect(smiley, SIGNAL(clicked()), SLOT(smileyClicked()));
-	smiley->installEventFilter(parent);
 	smiley->setFocusPolicy(QWidget::NoFocus);
 	QWhatsThis::add(smiley, i18n("Press to start a new game"));
     top->addWidget(smiley, 0, 2);
 
 	// digital clock LCD
 	dg = new DigitalClock(this);
-	dg->installEventFilter(parent);
 	QWhatsThis::add(dg, i18n("<qt>Time elapsed.<br/>"
                              "It turns <font color=\"blue\">blue</font> "
                              "if it is a highscore "

@@ -1,7 +1,6 @@
 #include "main.h"
 #include "main.moc"
 
-#include <qwhatsthis.h>
 #include <qptrvector.h>
 
 #include <kaccel.h>
@@ -13,17 +12,17 @@
 #include <kstdaction.h>
 #include <kkeydialog.h>
 #include <kstdgameaction.h>
+#include <kcmenumngr.h>
 
 #include "status.h"
 #include "highscores.h"
 
+
 MainWidget::MainWidget()
-    : KMainWindow(0)
 {
 	installEventFilter(this);
 
 	status = new Status(this);
-	status->installEventFilter(this);
 	connect(status, SIGNAL(gameStateChanged(GameState)),
 			SLOT(gameStateChanged(GameState)));
 
@@ -88,6 +87,10 @@ MainWidget::MainWidget()
 	createGUI();
 	readSettings();
 	setCentralWidget(status);
+
+    QPopupMenu *popup =
+        static_cast<QPopupMenu *>(factory()->container("popup", this));
+    if (popup) KContextMenuManager::insert(this, popup);
 }
 
 bool MainWidget::queryExit()
@@ -112,20 +115,11 @@ void MainWidget::showHighscores()
 
 bool MainWidget::eventFilter(QObject *, QEvent *e)
 {
-	QPopupMenu *popup;
-	switch (e->type()) {
-	case QEvent::MouseButtonPress :
-		if ( ((QMouseEvent *)e)->button()!=RightButton ) return false;
-		popup = (QPopupMenu*)factory()->container("popup", this);
-		if (popup) popup->popup(QCursor::pos());
-		return true;
-	case QEvent::LayoutHint:
+    if ( e->type()==QEvent::LayoutHint )
 		setFixedSize(minimumSize()); // because QMainWindow and KMainWindow
 		                             // do not manage fixed central widget and
 		                             // hidden menubar ...
-		return false;
-	default : return false;
-	}
+    return false;
 }
 
 void MainWidget::focusOutEvent(QFocusEvent *e)

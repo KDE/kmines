@@ -67,9 +67,9 @@ class Field : public QFrame, public KMines
 	void keyboardAutoRevealSlot();
 
  private:
-	QMemArray<Case> _pfield;
-	Level           _level;
-	KRandomSequence random;
+	QMemArray<Case>    _pfield;
+	Level              _level;
+	KRandomSequence    _random;
 
 	GameState state;
 	bool u_mark, cursor, firstReveal;

@@ -13,8 +13,8 @@
 
 //-----------------------------------------------------------------------------
 Field::Field(QWidget *parent)
-: QFrame(parent, "field"), _level(Level::Easy), random(0), state(Stopped),
-  u_mark(false), cursor(false), button(0)
+: QFrame(parent, "field"),
+  _level(Level::Easy), state(Stopped), u_mark(false), cursor(false), button(0)
 {
 	setFrameStyle( QFrame::Box | QFrame::Raised );
 	setLineWidth(2);
@@ -490,8 +490,8 @@ void Field::reveal()
 		for(uint k=0; k<_level.nbMines(); k++) {
 			uint i, j;
 			do {
-				i = random.getLong(_level.width());
-				j = random.getLong(_level.height());
+				i = _random.getLong(_level.width());
+				j = _random.getLong(_level.height());
 			} while ( pfield(i+1, j+1).mine
 					  || ((i+1)==(uint)ic && (j+1)==(uint)jc) );
 
@@ -570,10 +570,10 @@ void Field::drawBox(QPainter &p, uint i, uint j, bool pressed,
 	if ( cursor && i==ic && j==jc ) flags |= QStyle::Style_HasFocus;
 
 	style().drawControl(QStyle::CE_PushButton, &p, &button, button.rect(),
-                            colorGroup(), flags);
+                        colorGroup(), flags);
 	style().drawControl(QStyle::CE_PushButtonLabel, &p, &button,
-                            style().subRect(QStyle::SR_PushButtonFocusRect, &button),
-                            colorGroup(), flags);
+                      style().subRect(QStyle::SR_PushButtonFocusRect, &button),
+                        colorGroup(), flags);
 
 	// we need to draw directly because the pushbutton control clips too much
 	// text and pixmap ...
