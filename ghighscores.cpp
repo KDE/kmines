@@ -7,6 +7,7 @@
 #include <qheader.h>
 #include <qfile.h>
 #include <qtextstream.h>
+#include <qgrid.h>
 
 #include <kapplication.h>
 #include <kmessagebox.h>
@@ -17,7 +18,6 @@
 #include <kurllabel.h>
 #include <kopenwith.h>
 #include <krun.h>
-#include <qgrid.h>
 
 
 //-----------------------------------------------------------------------------

@@ -1,9 +1,9 @@
-2.1.1 (08 September 2001) [in CVS]
+2.1.1 (04 October 2001) [in CVS]
  * port to Qt 3.0 completed (hopefully)
  * some changes in highscores (nicer dialog)
  * i18n error messages for wwhs (#### test them)
  * new smiley pixmap for pause
- * clicking smiley with game paused new resumes game
+ * clicking smiley resumes when game paused
 
 2.1.0 (17 July 2001) 
  -- version to be released with KDE 2.2 --
