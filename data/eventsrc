@@ -1,6 +1,7 @@
 [!Global!]
 IconName=kmines
 Comment=KMines
+Comment[ar]=لعبة الألغام (KMines)
 Comment[bn]=কে-মাইন্স
 Comment[hi]=के-माइन्स
 Comment[pt_BR]=KMinas
@@ -14,6 +15,7 @@ Comment[zh_TW]=KMine 踩地雷
 
 [reveal]
 Name=Reveal case
+Name[ar]=أظهر القضية
 Name[bg]=Разкриване
 Name[bn]=মাইন প্রদর্শন করো
 Name[ca]=Descobreix casella
@@ -295,6 +297,7 @@ default_presentation=0
 
 [explosion]
 Name=Explosion
+Name[ar]=انفجار
 Name[bg]=Експлозия
 Name[bn]=বিস্ফোরণ
 Name[ca]=Explosió
@@ -368,6 +371,7 @@ default_presentation=0
 
 [won]
 Name=Game won
+Name[ar]=ربحت اللعبة
 Name[bg]=Играта е спечелена
 Name[bn]=খেলা জিতেছেন
 Name[ca]=Partida guanyada
@@ -405,6 +409,7 @@ Name[xx]=xxGame wonxx
 Name[zh_CN]=你赢了游戏
 Name[zh_TW]=遊戲獲勝
 Comment=Game won
+Comment[ar]=ربحت اللعبة
 Comment[bg]=Играта е спечелена
 Comment[bn]=খেল খতম
 Comment[ca]=Partida guanyada
@@ -444,6 +449,7 @@ default_presentation=0
 
 [lost]
 Name=Game lost
+Name[ar]=خسرت اللعبة
 Name[bg]=Играта е загубена
 Name[bn]=খেলায় হেরে গিয়েছেন
 Name[ca]=Partida perduda
@@ -481,6 +487,7 @@ Name[xx]=xxGame lostxx
 Name[zh_CN]=你输了游戏
 Name[zh_TW]=遊戲失敗
 Comment=Game lost
+Comment[ar]=خسرت اللعبة
 Comment[bg]=Играта е загубена
 Comment[bn]=খেলায় হেরে গিয়েছেন
 Comment[ca]=Partida perduda
