@@ -45,7 +45,6 @@ Field::Field( QWidget *parent, const char *name)
 	pt->begin(pm_mine);
 	createMinePixmap();
 	pt->end();
-	pm_mine->save("mine.bmp", "BMP");
   
 	pm_exploded = new QPixmap(20,20);
 	pm_exploded->fill(red);
