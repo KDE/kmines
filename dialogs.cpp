@@ -7,14 +7,54 @@
 #include <kapp.h>
 #include <klocale.h>
 #include <kconfig.h>
-#include <qobjcoll.h>
-/** Digital Clock ************************************************************/
-DigitalClock::DigitalClock(QWidget *parent)
-: QLCDNumber(parent, 0), max_secs(0)
+#include "bitmaps/smile"
+#include "bitmaps/smile_happy"
+#include "bitmaps/smile_ohno"
+#include "bitmaps/smile_stress"
+
+//-----------------------------------------------------------------------------
+Smiley::Smiley(QWidget *parent, const char *name)
+: QPushButton("", parent, name), normal(smile_xpm), stressed(smile_stress_xpm),
+  happy(smile_happy_xpm), sad(smile_ohno_xpm)
+{}
+
+void Smiley::setMood(Mood mood)
+{
+	switch (mood) {
+	case Normal:   setPixmap(normal);   break;
+	case Stressed: setPixmap(stressed); break;
+	case Happy:    setPixmap(happy);    break;
+	case Sad:      setPixmap(sad);      break;
+	}
+}
+
+//-----------------------------------------------------------------------------
+LCDNumber::LCDNumber(QWidget *parent, const char *name)
+: QLCDNumber(parent, name)
 {
 	setFrameStyle( QFrame::Panel | QFrame::Sunken );
 	setSegmentStyle(Flat);
+	QPalette p = palette();
+	p.setColor(QColorGroup::Foreground, white);
+	setPalette(p);
+	state = TRUE;
+	setState(FALSE);
 }
+
+void LCDNumber::setState(bool _state)
+{
+	if ( _state==state ) return;
+	QPalette p = palette();
+	if (_state) p.setColor(QColorGroup::Background, red);
+	else p.setColor(QColorGroup::Background, black);
+	setPalette(p);
+	state = _state;
+}
+
+//-----------------------------------------------------------------------------
+DigitalClock::DigitalClock(QWidget *parent, const char *name)
+: LCDNumber(parent, name), max_secs(0)
+{}
 
 void DigitalClock::timerEvent( QTimerEvent *)
 {
@@ -26,11 +66,7 @@ void DigitalClock::timerEvent( QTimerEvent *)
 			_sec = 0;
 		}
 		showTime();
-		if ( toSec(_sec, _min)==max_secs ) {
-			QPalette p = palette();
-			p.setColor(QColorGroup::Background, QColor(200, 0, 0));
-			setPalette(p);
-		}
+		if ( toSec(_sec, _min)==max_secs ) setState(TRUE);
 	}
 }
 
@@ -53,25 +89,23 @@ void DigitalClock::zero()
 	_sec = 0; _min = 0;
 	startTimer(1000); //  1 seconde
 
-	setPalette(kapp->palette());
+	setState(FALSE);
 	showTime();
 }
 
-/** Customize dialog *********************************************************/
-CustomDialog::CustomDialog(Level &_lev, QWidget *parent)
-: KDialogBase(Plain, i18n("Customize your game"),
-			  Ok|Cancel, Cancel, parent), lev(&_lev)
+//-----------------------------------------------------------------------------
+DialogBase::DialogBase(const QString &caption, int buttonMask,
+					   ButtonCode defaultButton,
+					   QWidget *parent, const char *name)
+: KDialogBase(Plain, caption, buttonMask ,defaultButton, parent, name, TRUE,
+			  TRUE)
 {
-	QLabel      *lab;
-	QScrollBar  *scb;
-	QHBoxLayout *hbl;
-
-/* top layout */
-	QVBoxLayout *top = new QVBoxLayout(plainPage(), spacingHint());
+	// top layout
+	top = new QVBoxLayout(plainPage(), spacingHint());
 	top->setResizeMode(QLayout::Fixed);
 	
-/* title */
-	lab = new QLabel(i18n("Customize your game"), plainPage());
+	// title
+	QLabel *lab = new QLabel(caption, plainPage());
 	QFont f( font() );
 	f.setBold(TRUE);
 	lab->setFont(f);
@@ -79,6 +113,16 @@ CustomDialog::CustomDialog(Level &_lev, QWidget *parent)
 	lab->setFrameStyle(QFrame::Panel | QFrame::Raised);
 	top->addWidget(lab);
 	top->addSpacing(2*spacingHint());
+}
+
+//-----------------------------------------------------------------------------
+CustomDialog::CustomDialog(Level &_lev, QWidget *parent)
+: DialogBase(i18n("Customize your game"), Ok|Cancel, Cancel, parent),
+  lev(&_lev)
+{
+	QLabel      *lab;
+	QScrollBar  *scb;
+	QHBoxLayout *hbl;
 
 /* Width */
 	/* labels */
@@ -162,7 +206,7 @@ CustomDialog::CustomDialog(Level &_lev, QWidget *parent)
 
 	nbMinesChanged(_lev.nbMines);
 
-	enableButtonSeparator(TRUE);
+	enableButton(Ok, FALSE);
 }
 
 void CustomDialog::widthChanged(int n)
@@ -185,9 +229,10 @@ void CustomDialog::nbMinesChanged(int n)
 	uint nb = lev->width * lev->height;
 	sm->setRange(1, nb - 2);
 	emit setNbMines(i18n("%1 (%2%)").arg(n).arg(100*n/nb));
+	enableButton(Ok, TRUE);
 }
 
-/** HighScore dialog *********************************************************/
+//-----------------------------------------------------------------------------
 uint WHighScores::time(uint mode)
 {
 	KConfig *conf = kapp->config();
@@ -201,13 +246,13 @@ uint WHighScores::time(uint mode)
 }
 
 WHighScores::WHighScores(QWidget *parent, const Score *score)
-: KDialogBase(Plain, i18n("Hall of Fame"), Close, Close, parent),
-  mode((score ? score->mode : 0)), qle(0)
+: DialogBase(i18n("Hall of Fame"), Close, Close, parent), qle(0)
 {
 	KConfig *conf = kapp->config();
-	conf->setGroup(HS_GRP[mode]);
 
 	if (score) { // set highscores
+		mode = score->mode;
+		conf->setGroup(HS_GRP[mode]);
 		conf->writeEntry(HS_NAME, i18n("Anonymous")); // default
 		conf->writeEntry(HS_MIN, score->min);
 		conf->writeEntry(HS_SEC, score->sec);
@@ -217,18 +262,6 @@ WHighScores::WHighScores(QWidget *parent, const Score *score)
 	QFont f( font() );
 	f.setBold(TRUE);
 
-/* top layout */
-	QVBoxLayout *top = new QVBoxLayout(plainPage(), spacingHint());
-	top->setResizeMode( QLayout::Fixed );
-	
-/* title */
-	lab = new QLabel(i18n("Hall of Fame"), plainPage());
-	lab->setFont(f);
-	lab->setAlignment(AlignCenter);
-	lab->setFrameStyle(QFrame::Panel | QFrame::Raised);
-	top->addWidget(lab);
-	top->addSpacing(2*spacingHint());
-	
 /* Grid layout */
 	QGridLayout *gl = new QGridLayout(3, 4, spacingHint());
 	top->addLayout(gl);
@@ -258,7 +291,7 @@ WHighScores::WHighScores(QWidget *parent, const Score *score)
 			QString name = conf->readEntry(HS_NAME, "");
 			no_score = name.isEmpty() || (!min && !sec);
 			
-			if (no_score) { // no score for this level
+			if (no_score) {
 				lab->setText(i18n("no score for this level"));
 				lab->setMinimumSize( lab->sizeHint() );
 				gl->addWidget(lab, k, 2);
@@ -273,7 +306,7 @@ WHighScores::WHighScores(QWidget *parent, const Score *score)
 			qle->setMaxLength(10);
 			qle->setFont(f);
 			qle->setMinimumSize(qle->fontMetrics().maxWidth()*10,
-								qle->sizeHint().height() );
+								qle->sizeHint().height());
 			qle->setFocus();
 			connect(qle, SIGNAL(returnPressed()), SLOT(writeName()));
 			gl->addWidget(qle, k, 2);
@@ -291,9 +324,7 @@ WHighScores::WHighScores(QWidget *parent, const Score *score)
 		gl->addWidget(lab, k, 3);
 	}
 
-/* button */
-	enableButtonSeparator(TRUE);
-	if (score) enableButtonOK(FALSE);
+	if (score) enableButton(Close, FALSE);
 }
 
 void WHighScores::writeName()
@@ -302,16 +333,14 @@ void WHighScores::writeName()
 	conf->setGroup(HS_GRP[mode]);
 	QString str = qle->text();
 	if ( str.length() ) conf->writeEntry(HS_NAME, str);
-	
-	// show the entered highscore
 	str = conf->readEntry(HS_NAME);
 	qle->setText(str);
+	enableButton(Close, TRUE);
 }
 
 void WHighScores::reject()
 {
 	if ( qle && qle->isEnabled() ) {
-		enableButtonOK(TRUE);
 		qle->setEnabled(FALSE);
 		focusNextPrevChild(TRUE); // sort of hack (wonder why its call in
 		                          // setEnabled(FALSE) does nothing ...)

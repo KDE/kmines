@@ -6,8 +6,8 @@
 #include <qpushbutton.h>
 #include <qpainter.h>
 #include <qpixmap.h>
-
 #include "defines.h"
+#include "dialogs.h"
 
 /* mines field widget */
 class Field : public QFrame
@@ -27,7 +27,6 @@ class Field : public QFrame
 	void showMines();
 
 	const Level &level() const { return lev; }
-	
 	void changeUMark(bool um) { u_mark = um; }
 	
  public slots:
@@ -36,7 +35,7 @@ class Field : public QFrame
  signals:
 	void changeCase(uint, uint);
 	void updateStatus(bool);
-	void updateSmiley(int);
+	void setMood(Smiley::Mood);
 	void endGame(int);
 	void startTimer();
 	void freezeTimer();

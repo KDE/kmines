@@ -26,23 +26,13 @@ extern const char *HS_SEC;
 #define EXPLODED   32
 #define ERROR      64                        
 
-/* States of the smiley */
-enum SmileyState { OK = 0, STRESS, HAPPY, UNHAPPY };
-
 /* Layout dimensions */
 #define CASE_W   20
 #define CASE_H   20
 
-#define SMILEY_W 29
-#define SMILEY_H 29
-
 /* Predefined levels */
 typedef struct { uint width, height, nbMines; } Level;
-const Level LEVELS[3] = {
-		{8,   8, 10}, // Easy
-		{16, 16, 40}, // Normal
-		{30, 16, 99}  // Expert
-};
+extern const Level LEVELS[3];
 
 typedef struct { uint sec, min, mode; } Score;
 

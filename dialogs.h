@@ -7,16 +7,44 @@
 #include <qlcdnumber.h>
 #include <qlayout.h>
 #include <kdialogbase.h>
-
 #include "defines.h"
 
-/**** digital clock widget ***************************************************/
-class DigitalClock : public QLCDNumber
+//-----------------------------------------------------------------------------
+class Smiley : public QPushButton
+{
+ Q_OBJECT
+
+ public:
+    Smiley(QWidget *parent, const char *name = 0);
+	enum Mood { Normal, Stressed, Happy, Sad };
+
+ public slots:
+    void setMood(Smiley::Mood);
+
+ private:
+	QPixmap normal, stressed, happy, sad;
+};
+
+//-----------------------------------------------------------------------------
+class LCDNumber : public QLCDNumber
+{
+ Q_OBJECT
+
+ public:
+	LCDNumber(QWidget *parent, const char *name = 0);
+	void setState(bool state);
+
+ private:
+	bool state;
+};
+
+//-----------------------------------------------------------------------------
+class DigitalClock : public LCDNumber
 {
  Q_OBJECT
 	
  public:
-	DigitalClock(QWidget *parent);
+	DigitalClock(QWidget *parent, const char *name = 0);
 	
 	uint sec() const { return _sec; }
 	uint min() const { return _min; }
@@ -40,8 +68,22 @@ class DigitalClock : public QLCDNumber
 	void showTime();
 };
 
-/**** custom dialog **********************************************************/
-class CustomDialog : public KDialogBase
+//-----------------------------------------------------------------------------
+class DialogBase : public KDialogBase
+{
+ Q_OBJECT
+
+ public:
+    DialogBase(const QString &caption, int buttonMask,
+			   ButtonCode defaultButton,
+			   QWidget *parent, const char *name = 0);
+ 
+ protected:
+	QVBoxLayout *top;
+};
+
+//-----------------------------------------------------------------------------
+class CustomDialog : public DialogBase
 {
  Q_OBJECT
 	  
@@ -63,9 +105,8 @@ class CustomDialog : public KDialogBase
 	Level      *lev;
 };
 
-
-/**** highscores dialog ******************************************************/
-class WHighScores : public KDialogBase
+//-----------------------------------------------------------------------------
+class WHighScores : public DialogBase
 {
  Q_OBJECT
 	  
@@ -79,7 +120,7 @@ class WHighScores : public KDialogBase
 	void reject();
   
  private:
-	uint       mode;
+	uint mode;
 	QLineEdit *qle;
 };
 

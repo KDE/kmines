@@ -12,6 +12,12 @@ const char *HS_MIN    = "Min";
 const char *HS_SEC    = "Sec";
 const char *HS_GRP[3] = { "Easy level", "Normal level", "Expert level" };
 
+const Level LEVELS[3] = {
+	{8,   8, 10}, // Easy
+	{16, 16, 40}, // Normal
+	{30, 16, 99}  // Expert
+};
+
 void initRandomWithTime()
 {
 	srandom(time(0));

@@ -138,7 +138,8 @@ void Field::restart(bool repaint)
 	uint tmp;
 	for (uint i=0; i<lev.width+2; i++)
 		for (uint j=0; j<lev.height+2; j++) {
-			tmp = (i==0 || i==lev.width+1 || j==0 || j==lev.height+1 ? UNCOVERED : COVERED);
+			tmp = (i==0 || i==lev.width+1 || j==0 || j==lev.height+1
+				   ? UNCOVERED : COVERED);
 			if ( pfield(i, j)==tmp ) continue;
 			pfield(i, j) = tmp;
 			if (repaint && tmp==COVERED) drawCase(i, j);
@@ -269,7 +270,7 @@ void Field::mousePressEvent( QMouseEvent *e )
 	jc = yToJ(e->pos().y());
 	if ( !inside(ic, jc) ) return;
 
-	updateSmiley(STRESS);
+	setMood(Smiley::Stressed);
 
 	if (e->button()==LeftButton) {
 		left_down = TRUE;
@@ -290,7 +291,7 @@ void Field::mousePressEvent( QMouseEvent *e )
 void Field::mouseReleaseEvent( QMouseEvent *e )
 {
 	if ( _stop || isPaused ) return;
-	updateSmiley(OK);
+	setMood(Smiley::Normal);
 	if ( !inside(ic, jc) ) return;
 
 	if (e->button()==LeftButton) {

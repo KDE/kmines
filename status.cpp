@@ -4,25 +4,16 @@
 #include <qpixmap.h>
 #include <qprinter.h>
 #include <qobjectlist.h>
-
 #include <kapp.h>
 #include <klocale.h>
 #include <kconfig.h>
-
-#include "defines.h"
 #include "dialogs.h"
-
-#include "bitmaps/smile"
-#include "bitmaps/smile_happy"
-#include "bitmaps/smile_ohno"
-#include "bitmaps/smile_stress"
 
 #define BORDER   10
 #define SEP      10
 
 Status::Status(QWidget *parent, const char *name)
-: QWidget(parent, name), s_ok(smile_xpm), s_happy(smile_happy_xpm),
-  s_ohno(smile_ohno_xpm), s_stress(smile_stress_xpm)
+: QWidget(parent, name)
 {
 // top layout
 	QVBoxLayout *top = new QVBoxLayout(this, BORDER);
@@ -33,18 +24,15 @@ Status::Status(QWidget *parent, const char *name)
 	top->addLayout(hbl);
 
 	// mines left LCD
-	left = new QLCDNumber(this);
-	left->setFrameStyle( QFrame::Panel | QFrame::Sunken );
-	left->setSegmentStyle(QLCDNumber::Flat);
+	left = new LCDNumber(this);
 	left->installEventFilter(parent);
 	hbl->addWidget(left);
 	hbl->addStretch(1);
 	
 	// smiley
-	smiley = new QPushButton(this);
+	smiley = new Smiley(this);
 	connect( smiley, SIGNAL(clicked()), SLOT(restartGame()) );
 	smiley->installEventFilter(parent);
-	smiley->setFixedSize(25, 25);
 	smiley->setFocusPolicy(QWidget::NoFocus);
 	hbl->addWidget(smiley);
 	hbl->addStretch(1);
@@ -58,26 +46,29 @@ Status::Status(QWidget *parent, const char *name)
 	field = new Field(this);
 	connect( field, SIGNAL(changeCase(uint,uint)),
 			 SLOT(changeCase(uint,uint)) );
-	connect( field, SIGNAL(putMsg(const QString &)),
-			 SLOT(putMessage(const QString &)) );
 	connect( field, SIGNAL(updateStatus(bool)), SLOT(update(bool)) );
 	connect( field, SIGNAL(endGame(int)), SLOT(endGame(int)) );
 	connect( field, SIGNAL(startTimer()), dg, SLOT(start()) );
 	connect( field, SIGNAL(freezeTimer()), dg, SLOT(freeze()) );
-	connect( field, SIGNAL(updateSmiley(int)), this, SLOT(updateSmiley(int)) );
+	connect( field, SIGNAL(setMood(Smiley::Mood)),
+			 smiley, SLOT(setMood(Smiley::Mood)) );
 	top->addWidget(field);
 
 	message = new QLabel(this);
 	message->setAlignment(AlignCenter);
+	connect( field, SIGNAL(putMsg(const QString &)),
+			 message, SLOT(setText(const QString &)) );
 	top->addWidget(message);
 }
 
 void Status::initGame()
 {
-	uncovered = 0; uncertain = 0; marked = 0;
+	uncovered = 0;
+	uncertain = 0;
+	marked    = 0;
 	message->setText(i18n("Game stopped"));
 	update(FALSE);
-	updateSmiley(OK);
+	smiley->setMood(Smiley::Normal);
 	if ( _type!=Custom ) dg->setMaxTime( WHighScores::time(_type) );
 	dg->zero();
 }
@@ -90,14 +81,14 @@ void Status::restartGame()
 
 bool Status::newGame(uint l)
 {
-	_type = (GameType)l;
 	Level lev;
-	if ( _type==Custom ) {
+	if ( (GameType)l==Custom ) {
 		lev = field->level();
 		CustomDialog cu(lev, this);
 		if ( !cu.exec() ) return FALSE;
 	} else lev = LEVELS[l];
-	
+
+	_type = (GameType)l;
 	field->start(lev);
 	initGame();
 	return TRUE;
@@ -118,28 +109,9 @@ void Status::update(bool mine)
 	const Level &l = field->level();
 	int r = l.nbMines - marked;
 	int u = l.width*l.height - l.nbMines - uncovered; // cannot be negative
-	if ( (r*left->value())<=0 ) {
-		QPalette p = palette();
-		if ( r<=0 && u!=0 ) p.setColor(QColorGroup::Background, QColor(200, 0, 0));
-		left->setPalette(p);
-	}
+	left->setState(r<0 && u!=0);
 	left->display(r);
 	if ( u==0 ) endGame(!mine);
-}
-
-void Status::updateSmiley(int mood)
-{
-	switch (mood) {
-	 case OK      : smiley->setPixmap(s_ok); break;
-	 case STRESS  : smiley->setPixmap(s_stress); break;
-	 case HAPPY   : smiley->setPixmap(s_happy); break;
-	 case UNHAPPY : smiley->setPixmap(s_ohno); break;
-	}
-}
-
-void Status::putMessage(const QString &str)
-{
-	message->setText(str);
 }
 
 void Status::endGame(int win)
@@ -149,10 +121,10 @@ void Status::endGame(int win)
 	field->showMines();
 	
 	if (win) {
-		updateSmiley(HAPPY);
+		smiley->setMood(Smiley::Happy);
 		if ( _type==Custom || dg->better() ) {
 			message->setText(i18n("Yeeeesssssss!"));
-			if ( dg->better() ) {
+			if ( _type!=Custom && dg->better() ) {
 				Score score;
 				score.sec = dg->sec();
 				score.min = dg->min();
@@ -161,7 +133,7 @@ void Status::endGame(int win)
 			}
 		} else message->setText(i18n("You did it ... but not in time."));
 	} else {
-		updateSmiley(UNHAPPY);
+		smiley->setMood(Smiley::Sad);
 		message->setText(i18n("Bad luck!"));
 	}
 }
