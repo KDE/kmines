@@ -219,11 +219,11 @@ GameConfig::GameConfig()
     cb = new QCheckBox(i18n("Enable keyboard"), this, "kcfg_KeyboardGame");
     top->addWidget(cb);
 
-    cb = new QCheckBox(i18n("Pause if windows lose focus"), this, "kcfg_PauseFocus");
+    cb = new QCheckBox(i18n("Pause if window loses focus"), this, "kcfg_PauseFocus");
     top->addWidget(cb);
 
     cb = new QCheckBox(i18n("\"Magic\" reveal"), this, "kcfg_MagicReveal");
-    QWhatsThis::add(cb, i18n("Set flags and reveal cases where they are trivial."));
+    QWhatsThis::add(cb, i18n("Set flags and reveal squares where they are trivial."));
     connect(cb, SIGNAL(toggled(bool)), SLOT(magicModified(bool)));
     top->addWidget(cb);
 
@@ -274,7 +274,7 @@ AppearanceConfig::AppearanceConfig()
     QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
 
     KIntNumInput *in = new KIntNumInput(this, "kcfg_CaseSize");
-    in->setLabel(i18n("Case size:"));
+    in->setLabel(i18n("Square size:"));
     in->setRange(4, 100);
     top->addWidget(in);
 

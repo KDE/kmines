@@ -4,7 +4,7 @@
   <kcfgfile name="kminesrc"/>
   <group name="Options">
     <entry name="CaseSize" type="Int" key="case size">
-      <label>The size of a case.</label>
+      <label>The size of a square.</label>
       <min>4</min>
       <max>100</max>
       <default>20</default>
@@ -22,7 +22,7 @@
       <default>10</default>
     </entry>
     <entry name="CustomMines" type="Int" key="custom mines">
-      <label>The numer of mines in the playing field.</label>
+      <label>The number of mines in the playing field.</label>
       <default>20</default>
     </entry>
     <entry name="UncertainMark" type="Bool" key="uncertain mark">
@@ -38,7 +38,7 @@
       <default>true</default>
     </entry>
     <entry name="MagicReveal" type="Bool" key="magic reveal">
-      <label>Whether to set flags and reveal cases in trivial situations.</label>
+      <label>Whether to set flags and reveal squares in trivial situations.</label>
       <default>false</default>
     </entry>
     <entry name="level" type="Enum">
