@@ -30,7 +30,7 @@ INSTALL_DIR_PRIVATE = $(install) -d -m 0700
 
 prefix = @prefix@
 BINDIR = $(prefix)/bin
-DOCDIR = $(prefix)/share/doc/HTML
+DOCDIR = $(prefix)/share/doc/HTML/en/kmines
 APPSDIR= $(prefix)/share/applnk/Games
 
 ########### File Formats ###########
