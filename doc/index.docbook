@@ -1,7 +1,7 @@
 <!DOCTYPE book PUBLIC  "-//KDE//DTD DocBook V3.1-Based Variant V1.0//EN" [
   <!ENTITY kappname "&kmines;" -- this only *seems* redundant -->
   <!ENTITY % addindex "IGNORE">
-  <!ENTITY % English "INCLUDE"> 
+  <!ENTITY % French "INCLUDE">
   <!ENTITY % ents PUBLIC "-//KDE//ENTITIES Documentation V1.0//EN">
   %ents; 
 ]>
@@ -9,7 +9,7 @@
 <book lang="&language;">
 
 <bookinfo>
-<title>The &kmines; Handbook</title>
+<title>Le manuel de &kmines;</title>
 
 <authorgroup>
 <author>
@@ -30,13 +30,21 @@
 <affiliation>
 <address><email>hadacek@kde.org</email></address>
 </affiliation>
-<contrib>Developer</contrib>
+<contrib>Développeur&nbsp;</contrib>
 </othercredit>
 <othercredit role="reviewer">
 <firstname>Lauri</firstname>
 <surname>Watts</surname>
 <affiliation><address><email>vampyr@atconnex.net</email></address></affiliation>
-<contrib>Reviewer</contrib>
+<contrib>Relecteur&nbsp;</contrib>
+</othercredit>
+<othercredit role="translator">
+<firstname>Anne-Marie</firstname>
+<surname>Mahfouf</surname>
+<affiliation>
+<address><email>a-m.mahfouf@lineone.net</email></address>
+</affiliation>
+<contrib>Traduction française&nbsp;</contrib>
 </othercredit>
 </authorgroup>
 
@@ -50,8 +58,8 @@
 <date>16/12/2000</date>
 <releaseinfo>2.00.09</releaseinfo>
 
-<abstract><para>&kmines; is the KDE version of the classic minesweeper
-game.</para></abstract>
+<abstract><para>&kmines; est la version KDE du classique jeu de détection de
+mines.</para></abstract>
 
 <keywordset>
 <keyword>KDE</keyword>
@@ -64,190 +72,210 @@ game.</para></abstract>
 <chapter id="introduction">
 <title>Introduction</title>
 
-<para>&kmines; is the classic Minesweeper game. You must uncover all the empty
-cases without blowing on a mine.</para>
+<para>&kmines; est le jeu classique détection de mines. Vous devez découvrir
+toutes les cases vides sans sauter sur une mine.</para>
 
-<para>When you uncover a case, a number appears : it indicates how many mines
-surround this case. If there is no number the neighbour cases are automatically
-uncovered.  In your process of uncovering secure cases, it is
-<emphasis>very</emphasis> useful to put a flag on the cases which contain a
-mine.</para>
+<para>Lorsque vous découvrez une case, un nombre apparaît&nbsp;: il indique 
+combien
+de mines entourent cette case. S'il n'y a pas de nombre, les cases
+voisines sont découvertes automatiquement. Dans votre recherche des cases
+sûres à découvrir, il est <emphasis>très</emphasis> utile de placer un drapeau
+sur les cases qui contiennent une mine.</para>
 
 </chapter>
 
 <chapter id="how-to-play">
-<title>How to play</title>
+<title>Comment jouer</title>
 
-<para>You have to use the mouse and its three buttons (with two-buttoned mouses,
-clicking the middle button is generally achieved by simultaneously pressing
-the <mousebutton>left</mousebutton> and the <mousebutton>right</mousebutton>
-buttons) to uncover or to flag the cases. Here are the details :</para>
+<para>Vous devez utiliser la souris et ses trois boutons (avec les souris à
+deux boutons, le fait de cliquer sur le bouton du milieu est
+généralement émulé en appuyant simultanément sur les boutons de
+<mousebutton>gauche</mousebutton> et de <mousebutton>droite</mousebutton>)
+pour découvrir ou marquer les cases. Voici les détails&nbsp;:</para>
 
 <itemizedlist>
-<listitem><para>The left button will uncover a case. If there is a bomb below
-that case, the bomb will explode, and the game will be over </para>
-<para>If there is not a bomb under the case, a number will appear.  That is the
-number of neighboring cases that do have bombs under them.  Which ones you ask?
-Thats the point of the game.</para>
-<para>For each box (excluding edge and cornerboxes), there are 8 neighboring
-boxes.</para>
-<para>If none of the neighboring boxes has a bomb, then a blank will be shown
-under the case, and all neighboring boxes will be automatically
-uncovered.</para>
-<note><para><mousebutton>Left</mousebutton> clicking a flagged case is secure
-and does nothing.</para></note></listitem>
-<listitem><para>The <mousebutton>right</mousebutton> button will mark a case as
-containing a mine (draw a red flag) or, if the option is set, as being uncertain
-(draw a question mark). The uncertain tag can be useful when you are puzzled
-about the positions of mines.</para></listitem>
-<listitem><para>The <mousebutton>middle</mousebutton> button will clear the
-surrounding cases if there is the right number of cases already flagged. It is
-very useful since it is much quicker than uncovering all individual
-cases. </para>
-<warning><para>If your flags are not properly positionned, you will explode on a
-bomb.</para></warning></listitem>
-<listitem><para>Pressing the <guiicon>yellow smiley</guiicon> will start a new
-game.</para></listitem>
+<listitem><para>Le bouton de gauche de la souris découvre une
+case. S'il y a une bombe sous cette case, la bombe va exploser et le jeu sera
+fini </para>
+<para>S'il n'y a pas de bombe sous la case, un nombre apparaîtra.  C'est le
+nombre de cases avoisinantes qui ont des bombes. Lesquelles, 
+demandez-vous&nbsp;?
+C'est le but du jeu de les découvrir.</para>
+<para>Pour chaque case (sauf celles des bords et des coins), il y a 8 cases
+avoisinantes.</para>
+<para>Si aucune de ces cases avoisinantes n'a de bombe, une case vide sera
+montrée sous la case et toutes les cases avoisinantes seront automatiquement
+découvertes.</para>
+<note><para>Cliquer avec le bouton <mousebutton>gauche</mousebutton> de la
+souris sur une case marquée avec un drapeau peut se faire en toute sécurité et
+il ne se passe rien.</para></note></listitem>
+<listitem><para>Le bouton <mousebutton>droit</mousebutton> de la souris va
+marquer une case comme contenant une mine (en dessinant un drapeau rouge) ou,
+si cette option est sélectionnée, comme étant incertaine
+(en dessinant un point d'interrogation). Le drapeau incertain peut être utile
+si vous doutez de la position des mines.</para></listitem>
+<listitem><para>Le bouton du <mousebutton>milieu</mousebutton> de la souris va
+découvrir les cases environnantes s'il y a déjà le bon nombre de cases
+marquées avec des drapeaux. Il est très utile car c'est
+beaucoup plus rapide que de découvrir individuellement toutes les
+cases.</para>
+<warning><para>Si vos drapeaux ne sont pas correctement positionnés,
+vous sauterez sur une mine.</para></warning></listitem>
+<listitem><para>En appuyant sur l'icône jaune de <guiicon>la figure
+souriante</guiicon>,  on démarre un nouveau jeu.</para></listitem>
 </itemizedlist>
 
-<note><para>These are the default settings.  The mouse buttons can be
-reprogramed. For more information, see the section entitled <link
-linkend="prefs">Game Options</link>.</para></note>
+<note><para>Ce sont les paramètres par défaut.  Les boutons de la souris
+peuvent être reprogrammés. Pour plus d'information, voir le chapitre intitulé
+<link linkend="prefs">Options du jeu</link>.</para></note>
 
-<sect1 id="screen"><title>The &kmines; Screen</title>
+<sect1 id="screen"><title>L'écran de &kmines;</title>
 
 <screenshot>
-<screeninfo>The &kmines; Screen</screeninfo>
+<screeninfo>L'écran de &kmines;</screeninfo>
 <mediaobject>
 <imageobject><imagedata fileref="kmines1.png" format="PNG"></imageobject>
 </mediaobject>
 </screenshot>   
 
-<para>The &kmines; screen consists of:</para>
+<para>L'écran de &kmines; consiste en&nbsp;:</para>
 
 <itemizedlist>
-<listitem><para>A Box showing you the number of mines still left to be marked.
-Everytime you flag a bomb site, this number will decrease by one.</para>
-<note><para>This box does not determine if you are right or wrong, but only how
-many mines you need to theoretically mark before you are done with this
-game.</para></note>
-<para>In this example, there are 10 mines to be marked.</para></listitem>
-<listitem><para>A Yellow Smiley Face.  Clicking this will start a new game.  If
-you loose the game, it will become a frown.</para></listitem>
-<listitem><para>The box on the right, shows how much time this round has taken.
-The shortest time for each level, gets to list their name as the high
-score.</para></listitem>
-<listitem><para>The playing area.  This will vary in size depending on the
-difficulty level of the game.  In this example, it consists of 64 boxes. This is where you play the game.</para></listitem>
-<listitem><para>A status line at the bottom of the window.  In this example, it
-simply says <guilabel>Playing</guilabel>.</para></listitem>
+<listitem><para>Une boîte vous montrant le nombre de mines restantes non
+marquées. Chaque fois que vous mettez un drapeau sur une case avec une bombe,
+ce nombre décroît de un.</para>
+<note><para>Cette boîte ne détermine pas si vous avez raison ou tort mais
+seulement combien de mines vous devez théoriquement marquer avant d'avoir fini
+ce jeu.</para></note>
+<para>Dans cet exemple, il reste à marquer 10 mines.</para></listitem>
+<listitem><para>Une figure souriante jaune.  Cliquer dessus va démarrer un
+nouveau jeu.  Si vous perdez le jeu, elle se changera en figure
+mécontente.</para></listitem>
+<listitem><para>La boîte sur la droite montre combien de temps a pris ce jeu.
+Les temps les plus courts pour chaque niveau permettent au nom de figurer dans
+le tableau des meilleurs scores.</para></listitem>
+<listitem><para>La surface du jeu.  Elle va varier en taille selon le niveau
+de difficulté du jeu. Dans cet exemple, elle consiste en 64 cases.  C'est ici 
+que se joue le
+jeu. </para></listitem>
+<listitem><para>Une ligne d'état en bas de la fenêtre.  Dans cet exemple, elle
+indique simplement <guilabel>Partie en cours</guilabel>.</para></listitem>
 </itemizedlist>
 </sect1>
 </chapter>
 
-<chapter id="prefs"><title>Game options</title>
-<para>The options to &kmines; are set by selecting <menuchoice>
-<guimenu>Settings</guimenu> <guimenuitem>Preferences</guimenuitem> </menuchoice>
-from the menubar.  This will bring up a dialog box.</para>
+<chapter id="prefs"><title>Options du jeu</title>
+<para>Les options de  &kmines; sont fixées en sélectionnant <menuchoice>
+<guimenu>Configuration</guimenu> <guimenuitem>Préférences</guimenuitem>
+</menuchoice>
+dans la barre de menus.  Cela va faire apparaître une boîte de dialogue.</para>
 
 <screenshot>
-<screeninfo>&kmines; Preferences</screeninfo>
+<screeninfo>Préférences de &kmines;</screeninfo>
 <mediaobject>
 <imageobject><imagedata fileref="kmines2.png" format="PNG"></imageobject>
 </mediaobject>
 </screenshot>  
 
-<para>This dialog box is divided into two tabs.</para>
+<para>Cette boîte de dialogue est divisée en deux onglets.</para>
 
 <variablelist>
 <varlistentry>
-<term><guilabel>Main settings</guilabel></term>
-<listitem><para>The top option, entitled <guilabel>case size</guilabel>,
-determines the size of each of the squares in the playing area.  By default,
-they are set small.  You can increase the size, if you are working on a very
-high resolution monitor.</para> 
+<term><guilabel>Général</guilabel></term>
+<listitem><para>L'option la plus en haut, intitulée <guilabel>Taille des
+cases</guilabel>, détermines la taille de chacun des carrés dans la surface du
+jeu.  Par défaut, ils sont fixés à la taille la plus petite.  Vous pouvez
+augmenter la taille si vous travaillez avec un écran de vraiment haute
+résolution.</para>
 
-<para>The next option down, labelled <guilabel>Enable ? Mark</guilabel>,
-determines whether you can mark squares as <quote>questionable</quote>.  If
-there is a mark in front of this option, then right clicking the mouse will
-first cause a case to be flaged. If you click again on the same square, the flag
-will change to a <guiicon>?</guiicon>, to indicate you don't know if there is a
-bomb there or not.  If you click again, the square will change back to
-blank.</para>
+<para>L'option suivante en dessous, intitulée <guilabel>Activer les marques
+?</guilabel>, détermine si vous pouvez marquer les cases comme étant
+<quote>discutable</quote>.  Si la case est cochée à côté de cette option, 
+alors en cliquant
+avec le bouton droit de la souris va d'abord marquer la cas avec un drapeau.
+Si vous cliquez ensuite sur la même case, le drapeau va se changer en un
+<guiicon>?</guiicon>, pour indiquer que vous ne savez pas s'il y a ici une 
+bombe ou non.  Si
+vous cliquez à nouveau, la case va revenir à son état initial.</para>
 
-<para>If there is not a mark in front of this option, the first
-<mousebutton>right</mousebutton> mouse click will change the case to a red flag.
-The second will make it blank again, thus skipping the ? symbol.</para>
+<para>Si cette option n'est pas cochée, le premier clic avec le bouton
+<mousebutton>droit</mousebutton> de la souris va changer la case en un drapeau
+rouge. Le second va la faire revenir dans son état normal, sans passer par le
+symbole ?.</para>
 
-<para>The next option down, labelled <guilabel>Enable keyboard</guilabel>,
-determins if the keyboard shortcuts will work while playing the game.</para>
+<para>L'option suivante en dessous, intitulée "<guilabel>Activer le
+clavier</guilabel>",
+détermine si les raccourcis clavier vont fonctionner pendant que vous
+jouez.</para>
 
-<note><para>The only keyboard shortcuts affected, are those responsible for
-playing the game.  Keyboard commands such as <guimenuitem>New
-Game</guimenuitem>, and <guimenuitem>Quit</guimenuitem>, still
-work, regardless of this option.</para></note>
+<note><para>Les seuls raccourcis clavier affectés sont ceux responsables du
+lancement du jeu. Les commandes du clavier telles que "<guimenuitem>Nouveau
+jeu</guimenuitem>" et "<guimenuitem>Quitter</guimenuitem>" fonctionnent
+toujours, peu importe si cette option est cochée ou non.</para></note>
 
-<para>The last section of this tab, allows you to change the action of each of
-the three mouse buttons.  Your options are:</para>
+<para>La dernière partie de cet onglet vous permet de changer les actions de
+chacun des trois boutons de la souris.  Vos options sont&nbsp;:</para>
 
 <variablelist>
 <varlistentry>
-<term>Reveal</term>
-<listitem><para>This will reveal the contents of the case.  If there is no bomb,
-then a number will appear.  If there is a bomb under that case, then the bomb
-will explode, and the game will be over.</para></listitem>
+<term>révéler</term>
+<listitem><para>Cela va révéler le contenu de la case.  S'il n'y a pas de
+bombe,un nombre va alors apparaître.  S'il y a une bombe sous cette case,
+elle va alors exploser et le jeu se terminera.</para></listitem>
 </varlistentry>
 <varlistentry>
-<term>Toggle Mark</term>
-<listitem><para>Clicking with this button on a case, will mark/unmark with a red
-flag.</para></listitem>
+<term>changer la marque</term>
+<listitem><para>Cliquer avec ce bouton sur une case va marquer la case avec un
+drapeau rouge ou supprimer la marque.</para></listitem>
 </varlistentry>
 <varlistentry>
-<term>Autoreveal</term>
-<listitem><para>Clicking on a case with this button, will automatically reveal
-all neighboring cases, that are not marked with red flags.  If one of those
-neighboring cases has a bomb under it, the bomb will explode, and the game will
-be over.</para></listitem>
+<term>révéler automatiquement</term>
+<listitem><para>Cliquer sur une case avec ce bouton va automatiquement révéler
+toutes les cases avoisinantes qui ne sont pas marquées avec un drapeau rouge.
+Si l'une de ces cases avoisinantes contient une bombe, la bombe va exploser et
+le jeu sera terminé.</para></listitem>
 </varlistentry>
 <varlistentry>
-<term>Toggle ? Mark</term>
-<listitem><para>Clicking with this button on a case, will mark/unmark with a
-question mark.</para></listitem>
+<term>changer la marque ?</term>
+<listitem><para>Cliquer avec ce bouton sur une case va marquer la case avec un
+point d'interrogation ou supprimer cette marque.</para></listitem>
 </varlistentry>
 </variablelist>
 </listitem>
 </varlistentry>
 <varlistentry>
-<term><guilabel>Color Settings</guilabel></term>
-<listitem><para>This dialog box will allow you to adjust the color of the kmines
-screen.  To adjust, simply click the color button beside each description, and
-select the new color.</para></listitem>
+<term><guilabel>Configuration des couleurs</guilabel></term>
+<listitem><para>Cette boîte de dialogue va vous permettre d'ajuster la couleur
+de l'écran de KMines.  Pour cela, cliquez simplement sur le bouton de couleur
+à côté de chaque description et sélectionnez la nouvelle
+couleur.</para></listitem>
 </varlistentry>
 <varlistentry>
-<term>Saving your changes</term>
-<listitem><para>Once your changes are complete, click
-"<guibutton>OK</guibutton>" to make them permenant.</para>
-<para>If you want to abandon your changes, click "<guibutton>Cancel</guibutton>"
-to abort the changes.</para>
-<para>If you click on "<guilabel>Default</guilabel>", the default settings will
-be restored.  Click "<guilabel>OK</guilabel>" to make these default changes
-permenant, or edit the settings some more.</para>
-</listitem>
-</varlistentry>
+<term>Enregistrer vos changements</term>
+<listitem><para>Une fois vos changements terminés, cliquez sur
+"<guibutton>OK</guibutton>" pour les rendre permanents.</para>
+<para>Si vous voulez abandonner vos changements, cliquez sur
+"<guibutton>Annuler</guibutton>"
+pour annuler vos changements.</para>
+<para>Si vous cliquez sur "<guilabel>Par défaut</guilabel>", la configuration
+par défaut sera restaurée.  Cliquez sur "<guilabel>OK</guilabel>" pour rendre
+ces changements par défaut permanents ou continuez la configuration.</para>
+</listitem> </varlistentry>
 </variablelist>
 
 
 </chapter>
 
 <chapter id="command">
-<title>Commands/Keyboard Shortcuts</title>
+<title>Raccourcis clavier pour les commandes</title>
 
-<para>The following sections briefly describe each menubar option.</para>
+<para>Les chapitres suivants décrivent brièvement chaque option de la barre
+de menus.</para>
 
 <sect1 id="game-menu">
-<title><guimenu>Game</guimenu> Menu</title>
+<title>Le menu <guimenu>Jeu</guimenu></title>
 
-<para>The <guimenu>Game</guimenu> menu consists of 5 options.</para>
+<para>Le menu <guimenu>Jeu</guimenu> consiste en 5 options.</para>
 
 <variablelist>
 <varlistentry>
@@ -255,191 +283,216 @@ permenant, or edit the settings some more.</para>
 <shortcut>
 <keycombo action="simul"><keycap>Ctrl</keycap><keycap>N</keycap></keycombo>
 </shortcut>
-<guimenu><accel>G</accel>ame</guimenu>
-<guimenuitem><accel>N</accel>ew Game</guimenuitem> </menuchoice></term>
-<listitem><para>Starts a new game.</para></listitem>
+<guimenu><accel>J</accel>eu</guimenu>
+<guimenuitem><accel>N</accel>ouveau</guimenuitem> </menuchoice></term>
+<listitem><para>Débute un nouveau jeu.</para></listitem>
 </varlistentry>
 <varlistentry>
 <term><menuchoice>
 <shortcut>
 <keycap>H</keycap>
 </shortcut>
-<guimenu><accel>G</accel>ame</guimenu>
-<guimenuitem>High Scores...</guimenuitem> </menuchoice></term>
-<listitem><para>This shows you the high score (the shortest time) for each
-difficulty level.</para></listitem>
+<guimenu><accel>J</accel>eu</guimenu>
+<guimenuitem>Panthéon...</guimenuitem> </menuchoice></term>
+<listitem><para>Cela vous montre le score le plus haut (le temps le plus
+court) pour chaque niveau de difficulté.</para></listitem>
 </varlistentry>
 <varlistentry>
 <term><menuchoice>
 <shortcut>
 <keycombo action="simul"><keycap>P</keycap></keycombo>
 </shortcut>
-<guimenu><accel>G</accel>ame</guimenu>
-<guimenuitem><accel>P</accel>ause</guimenuitem> </menuchoice></term>
-<listitem><para>Pauses the game.  This will hide the board (no cheating), and
-give you a button to press when you want to continue this
-game.</para></listitem>
+<guimenu><accel>J</accel>eu</guimenu>
+<guimenuitem>Pa<accel>u</accel>se</guimenuitem> </menuchoice></term>
+<listitem><para>Met le jeu en pause.  Cela va cacher le tableau (pas de
+triche) et affiche un bouton à presser lorsque vous voulez continuer ce
+jeu.</para></listitem>
 </varlistentry>
 <varlistentry>
 <term><menuchoice>
 <shortcut>
 <keycombo action="simul"><keycap>Ctrl</keycap><keycap>P</keycap></keycombo>
 </shortcut>
-<guimenu><accel>G</accel>ame</guimenu>
-<guimenuitem><accel>P</accel>rint</guimenuitem> </menuchoice></term>
-<listitem><para>Prints the game board.</para></listitem>
+<guimenu><accel>J</accel>eu</guimenu>
+<guimenuitem>Im<accel>p</accel>rimer</guimenuitem> </menuchoice></term>
+<listitem><para>Imprime l'échiquier du jeu.</para></listitem>
 </varlistentry>
 <varlistentry>
 <term><menuchoice>
 <shortcut>
 <keycombo action="simul"><keycap>Ctrl</keycap><keycap>Q</keycap></keycombo>
 </shortcut>
-<guimenu><accel>G</accel>ame</guimenu>
-<guimenuitem><accel>Q</accel>uit</guimenuitem> </menuchoice></term>
-<listitem><para><action>Quits</action> &kmines;</para></listitem>
+<guimenu><accel>J</accel>eu</guimenu>
+<guimenuitem><accel>Q</accel>uitter</guimenuitem> </menuchoice></term>
+<listitem><para><action>Quitte</action> &kmines;</para></listitem>
 </varlistentry>
 </variablelist>
 </sect1>
 
-<sect1 id="settings-menu"><title><guimenu>Settings</guimenu> Menu</title>
-<variablelist>
+<sect1 id="settings-menu"><title>Le menu <guimenu>Configuration</guimenu>
+Menu</title> <variablelist>
 <varlistentry>
 <term><menuchoice>
-<guimenu><accel>S</accel>ettings</guimenu>
-<guimenuitem>Show <accel>M</accel>enubar</guimenuitem> </menuchoice></term>
-<listitem><para>If there is a check in front of this option, then the menubar
-will be visible.  Selecting this option, hides the menubar.</para>
-<note><para>To restore a hidden menubar, click outside the game play area, with
-the right mouse button.  This will bring up a small submenu.  Simply select
-<guimenuitem>Show Menubar</guimenuitem> from this submenu, and the menubar
-will be visible again.</para></note></listitem>
+<guimenu><accel>C</accel>onfiguration</guimenu>
+<guimenuitem>Afficher la barre de <accel>m</accel>enus</guimenuitem>
+</menuchoice></term> <listitem><para>S'il y a un coche à côté de cette option,
+la barre de menus sera alors visible. Enlever le coche cachera la barre de
+menus.</para> <note><para>Pour retrouver une barre de menus cachée, cliquez 
+hors
+de la surface de jeu avec le bouton droit de la souris. Cela va ouvrir un petit
+sous-menu. Sélectionnez simplement <guimenuitem>Afficher la barre de
+menus</guimenuitem> dans ce sous-menu et la barre de menus sera à nouveau
+visible.</para></note></listitem>
 </varlistentry>
 <varlistentry>
 <term><menuchoice>
-<guimenu><accel>S</accel>ettings</guimenu>
-<guimenuitem>Configure <accel>K</accel>ey Bindings...</guimenuitem> </menuchoice></term>
-<listitem><para>Allows you to change the keyboard shortcuts for &kmines;</para>
-</listitem>
+<guimenu><accel>C</accel>onfiguration</guimenu>
+<guimenuitem>Raccourcis <accel>c</accel>lavier...</guimenuitem>
+</menuchoice></term> <listitem><para>Vous permet de changer les raccourcis
+clavier pour &kmines;</para> </listitem>
 </varlistentry>
 <varlistentry>
 <term><menuchoice>
-<guimenu><accel>S</accel>ettings</guimenu>
+<guimenu><accel>C</accel>onfiguration</guimenu>
 <guimenuitem><accel>C</accel>onfigure KMines</guimenuitem> </menuchoice></term>
-<listitem><para>Allows you to adjust game options.  For more detailed
-information, see the section entitled <link linkend="prefs">Game
-Options</link>.</para></listitem>
+<listitem><para>Vous permet d'ajuster les options du jeu.  Pour des
+informations plus détaillées, voyez le chapitre intitulé <link
+linkend="prefs">Options du jeu</link>.</para></listitem>
 </varlistentry>
 <varlistentry>
 <term><menuchoice>
-<guimenu><accel>S</accel>ettings</guimenu>
-<guisubmenu>Level</guisubmenu> </menuchoice></term>
-<listitem><para>Lets you set the difficulty level from a submenu.</para>
-<para>There are three default levels of difficulty:
-<guimenuitem>Easy</guimenuitem> (64 boxes, 10 mines),
-<guimenuitem>Normal</guimenuitem> (256 boxes, 40 mines), and
-<guimenuitem>Expert</guimenuitem> (480 boxes, 99 mines).  There is also a
-<guimenuitem>Custom...</guimenuitem> level settings.</para>
-<para>If you select <guimenuitem>Custom...</guimenuitem>, a small dialog box will
-appear, that will allow you to adjust Width (number of boxes across), Height
-(number of boxes up and down), and number of mines, using slider bars, or
-directly entering them into the text boxes.</para></listitem>
+<guimenu><accel>C</accel>onfiguration</guimenu>
+<guisubmenu>Niveau</guisubmenu> </menuchoice></term>
+<listitem><para>Vous permet de choisir le niveau de difficulté depuis un
+sous-menu.</para>
+<para>Il y a trois niveaux de difficulté par défaut&nbsp;:
+<guimenuitem>Facile</guimenuitem> (64 cases, 10 mines),
+<guimenuitem>Moyen</guimenuitem> (256 cases, 40 mines), et
+<guimenuitem>Expert</guimenuitem> (480 cases, 99 mines).  Il y a
+en plus un niveau de configuration
+<guimenuitem>Personnalisé...</guimenuitem></para>
+<para>Si vous sélectionnez <guimenuitem>Personnalisé...</guimenuitem>, une
+petite boîte de dialogue va apparaître qui permettra d'ajuster la largeur
+(nombre de cases en travers), la hauteur (nombre de cases de haut en bas) et
+le nombre de mines, en utilisant des curseurs ou en entrant les nombres
+directement dans les champs de texte.</para></listitem>
 </varlistentry>
 </variablelist>
 </sect1>
 
 <sect1 id="help-menu">
-<title><guimenu>Help</guimenu> Menu</title>
+<title>Le menu <guimenu>Aide</guimenu></title>
 
 <variablelist>
 <varlistentry>
 <term><anchor id="contents"><menuchoice>
 <shortcut><keycombo action="simul"><keycap>F1</keycap></keycombo></shortcut>
-<guimenu><accel>H</accel>elp</guimenu><guimenuitem><accel>C</accel>ontents</guimenuitem></menuchoice></term>
-<listitem>
-<para>This invokes the &kde; help system starting at the &kmines; help pages (this
-document).</para>
-</listitem>
+<guimenu><accel>A</accel>ide</guimenu><guimenuitem><accel>C</accel>ontenu
+</guimenuitem></menuchoice></term> <listitem> <para>Cela invoque le système
+d'aide de &kde; en commençant par les pages d'aide de &kmines; (ce
+document).</para> </listitem>
 </varlistentry>
 
 <varlistentry>
 <term><anchor id="bug"><menuchoice>
-<shortcut><keycombo action="simul"><keycap>Shift</keycap><keycap>F1</keycap></keycombo></shortcut>
-<guimenu><accel>H</accel>elp</guimenu><guimenuitem>What's <accel>T</accel>his?</guimenuitem></menuchoice></term>
-<listitem><para>This changes the mouse cursor to a combination arrow and
-question mark.  Clicking on items within &kmines; with this arrow will open a help
-window (if one exists for the particular item) explaining the item's
-function.</para></listitem>
-</varlistentry>
-<varlistentry>
-<term><anchor id="whats-this"><menuchoice>
-<guimenu><accel>H</accel>elp</guimenu><guimenuitem><accel>R</accel>eport
-Bug...</guimenuitem></menuchoice></term>
+<shortcut><keycombo action="simul"><keycap>Shift</keycap><keycap>F1</keycap>
+</keycombo></shortcut>
+<guimenu><accel>A</accel>ide</guimenu><guimenuitem><accel>Q</accel>u'est-ce que
+c'est&nbsp;?</guimenuitem></menuchoice></term>
 <listitem>
-<para>If you have a good idea for the next version of the game, or the program
-crashes on you, you can select this option to send a bug report to the
-author.</para>
+<para>Cela change le curseur de la souris en une combinaison de
+flèche et de point d'interrogation.  Cliquer sur des éléments dans &kmines; 
+avec
+ce curseur va ouvrir une fenêtre d'aide (s'il en existe une pour cet élément
+en particulier) qui expliquera la fonction de l'élément.</para></listitem>
+</varlistentry>
+<varlistentry> <term><anchor id="whats-this"><menuchoice>
+<guimenu><accel>A</accel>ide</guimenu> <guimenuitem><accel>R</accel>apport de
+bogue...</guimenuitem></menuchoice></term> <listitem>
+<para>Si vous avez une bonne idée pour la version suivante du jeu ou si le
+programme plante, vous pouvez sélectionner cette option pour envoyer un
+rapport de bogue à l'auteur.</para>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term><anchor id="about-kmines"><menuchoice>
-<guimenu><accel>H</accel>elp</guimenu><guimenuitem>About
-<accel>K</accel>Mines</guimenuitem></menuchoice></term>
-<listitem>
-<para>This will displays version and author information</para>
+<guimenu><accel>A</accel>ide</guimenu><guimenuitem><accel>À</accel> propos de
+KMines</guimenuitem></menuchoice></term> <listitem>
+<para>Cela affiche la version et une information sur l'auteur</para>
 </listitem>
 </varlistentry>
 
 <varlistentry>
 <term><anchor id="about-kde"><menuchoice>
-<guimenu><accel>H</accel>elp</guimenu><guimenuitem>About
+<guimenu><accel>A</accel>ide</guimenu><guimenuitem>À propos de
 <accel>K</accel>DE</guimenuitem></menuchoice></term>
 <listitem>
-<para>This displays the &kde; version and other basic information.</para>
+<para>Cela affiche la version de &kde; ainsi que d'autres informations de
+base.</para>
 </listitem>
 </varlistentry>
 </variablelist>
 </sect1>
 
-<sect1 id="keys"><title>Default Key Bindings</title>
-<para>The following tables show you the default key bindings.</para>
+<sect1 id="keys"><title>Les raccourcis clavier par défaut</title>
+<para>Les tableaux suivants vous montrent les raccourcis clavier par
+défaut.</para>
 
 
 <table>
-<title>Menu bindings</title>
+<title>Raccourcis des menus</title>
 <tgroup cols=2>
-<thead><row><entry>Key Combo</entry><entry>Action</entry></row></thead>
+<thead><row><entry>Combinaison de
+touches</entry><entry>Action</entry></row></thead>
 <tbody>
-<row><entry><keycombo action="simul"><keycap>Arrows</keycap></keycombo></entry><entry>Move cursor in playing area.</entry></row>
-<row><entry><keycombo action="simul"><keycap>Ctrl</keycap></keycombo></entry><entry>Automatically reveal all surrounding cases not marked by a flag.</entry></row>
-<row><entry><keycombo action="simul"><keycap>Ctrl</keycap><keycap>N</keycap></keycombo></entry><entry>New Game</entry></row>
-<row><entry><keycombo action="simul"><keycap>Ctrl</keycap><keycap>P</keycap></keycombo></entry><entry>Pause Game</entry></row>
-<row><entry><keycombo action="simul"><keycap>Ctrl</keycap><keycap>P</keycap></keycombo></entry><entry>Print Game</entry></row>
-<row><entry><keycombo action="simul"><keycap>Ctrl</keycap><keycap>Q</keycap></keycombo></entry><entry>Quit &kmines;</entry></row>
-<row><entry><keycombo action="simul"><keycap>F1</keycap></keycombo></entry><entry>Help Contents</entry></row>
-<row><entry><keycombo action="simul"><keycap>Shift</keycap><keycap>F1</keycap></keycombo></entry><entry>Whats This Help</entry></row>
-<row><entry><keycombo action="simul"><keycap>Shift</keycap></keycombo></entry><entry>Reveal Mine.</entry></row>
-<row><entry><keycombo action="simul"><keycap>Space</keycap></keycombo></entry><entry>Mark Mine</entry></row>
+<row><entry><keycombo action="simul"><keycap>Flèches</keycap></keycombo>
+</entry><entry>Déplace le curseur sur la surface de jeu.</entry></row>
+<row><entry><keycombo action="simul"><keycap>Ctrl</keycap></keycombo></entry>
+<entry>Révèle automatiquement toutes les cases avoisinantes non marquées par un
+drapeau.</entry></row>
+<row><entry><keycombo
+action="simul"><keycap>Ctrl</keycap><keycap>N</keycap></keycombo>
+</entry><entry>Nouveau jeu</entry></row> <row><entry><keycombo
+action="simul"><keycap>Ctrl</keycap><keycap>P</keycap></keycombo></entry><entry>
+Met le jeu en pause</entry></row> <row><entry><keycombo
+action="simul"><keycap>Ctrl</keycap><keycap>P</keycap></keycombo></entry><entry>
+Imprime le jeu</entry></row> <row><entry><keycombo
+action="simul"><keycap>Ctrl</keycap><keycap>Q</keycap></keycombo></entry><entry>
+Quitte &kmines;</entry></row> <row><entry><keycombo
+action="simul"><keycap>F1</keycap></keycombo></entry><entry>Le contenu
+de l'aide</entry></row> <row><entry><keycombo
+action="simul"><keycap>Maj</keycap><keycap>F1</keycap></keycombo></entry>
+<entry>L'aide
+Qu'est-ce que c'est&nbsp;?</entry></row> <row><entry><keycombo
+action="simul"><keycap>Maj</keycap></keycombo></entry><entry>Révèle la
+mine.</entry></row> <row><entry><keycombo
+action="simul"><keycap>Barre espace</keycap></keycombo></entry><entry>Marque la
+mine</entry></row>
 
 </tbody>
 </tgroup>
 </table>
 
-<para>These key bindings can be changed by selecting <menuchoice>
-<guimenu>Settings</guimenu> <guimenuitem>Configure Key Bindings</guimenuitem>
-</menuchoice> from the menubar.</para>
+<para>Ces raccourcis clavier peuvent être changés en sélectionnant  
+<menuchoice>
+<guimenu>Configuration</guimenu> <guimenuitem>Raccourcis
+clavier...</guimenuitem> </menuchoice> dans la barre de menus.</para>
 
 </sect1>
 
 </chapter>
-<chapter id="credits"><title>Credits and License</title>
+<chapter id="credits"><title>Remerciements et licence</title>
  
 <para>
 &kmines;
 </para>
 <para>
-Program copyright 1996-2000 Nicolas Hadacek <email>hadacek@kde.org</email></para>
-<para>Documentation copyright 2000 Nicolas Hadacek <email>hadacek@kde.org</email></para>
-<para>Documentation updated for KDE 2.0 by Mike McBride <email>mpmcbride7@yahoo.com</email></para>
+Programme copyright 1996-2000 Nicolas Hadacek
+<email>hadacek@kde.org</email></para> <para>Documentation copyright 2000 
+Nicolas
+Hadacek <email>hadacek@kde.org</email></para> <para>Documentation mise à jour
+pour KDE 2.0 par Mike McBride
+<email>mpmcbride7@yahoo.com</email></para>
 
 &underFDL;
 &underGPL;
@@ -450,20 +503,21 @@ Program copyright 1996-2000 Nicolas Hadacek <email>hadacek@kde.org</email></para
 <title>Installation</title>
  
 <sect1 id="getting-kapp">
-<title>How to obtain &kmines;</title>
+<title>Comment obtenir &kmines;</title>
  
-<para>&kmines; is part of the KDE project
+<para>&kmines; fait partie du projet KDE
 <ulink url="http://www.kde.org">http://www.kde.org</ulink>.
-&kmines; can be found in the kdegames package on
-<ulink url="ftp://ftp.kde.org/pub/kde/">ftp://ftp.kde.org/pub/kde/</ulink>, the
-main ftp site of the KDE project. </para>
+&kmines; se trouve dans le paquetage kdegames à
+<ulink url="ftp://ftp.kde.org/pub/kde/">ftp://ftp.kde.org/pub/kde/</ulink>, le
+site ftp principal du projet KDE. </para>
 </sect1>
 
 <sect1 id="compilation">
-<title>Compilation and installation</title>
+<title>Compilation et installation</title>
  
-<para>In order to compile and install &kmines; on your system, type the following
-in the base directory of the KDE distribution:</para>
+<para>Pour compiler et installer &kmines; sur votre système, tapez les 
+commandes
+suivantes dans le répertoire de base de la distribution KDE&nbsp;:</para>
 
 <screen width="40">
 <prompt>%</prompt> <userinput>cd kdegames</userinput>
@@ -472,9 +526,10 @@ in the base directory of the KDE distribution:</para>
 <prompt>%</prompt> <userinput>make install</userinput>
 </screen>
 
-<para>Since &kmines; uses <application>autoconf</application> and
-<application>automake</application> you should have not trouble compiling it.
-Should you run into problems please report them to the KDE mailing lists.</para>
+<para>Comme &kmines; utilise <application>autoconf</application> et
+<application>automake</application>, vous ne devriez pas avoir de problème
+pour le compiler. Si vous rencontrez des problèmes, veuillez les rapporter aux
+listes de diffusion KDE.</para>
  
 </sect1>         
 </appendix>
@@ -488,4 +543,5 @@ sgml-omittag: nil
 sgml-shorttag: t
 End:
 -->
+
 
