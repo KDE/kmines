@@ -406,7 +406,7 @@ author.</para>
 
 <table>
 <title>Menu bindings</title>
-<tgroup cols=2>
+<tgroup cols="2">
 <thead><row><entry>Key Combo</entry><entry>Action</entry></row></thead>
 <tbody>
 <row><entry><keycombo action="simul"><keycap>Arrows</keycap></keycombo></entry><entry>Move cursor in playing area.</entry></row>
