@@ -123,14 +123,14 @@ uint LCDClock::time() const
 
 
 //-----------------------------------------------------------------------------
-LCDList::LCDList(const QString &label, QWidget *parent, const char *name)
+LCDList::LCDList(const QString &title, QWidget *parent, const char *name)
     : QWidget(parent, name)
 {
     QVBoxLayout *top = new QVBoxLayout(this, 5);
 
-    QLabel *lab = new QLabel(label, this);
-    lab->setAlignment(AlignCenter);
-    top->addWidget(lab, AlignCenter);
+    _label = new QLabel(title, this);
+    _label->setAlignment(AlignCenter);
+    top->addWidget(_label, AlignCenter);
 }
 
 uint LCDList::append(LCD *lcd)

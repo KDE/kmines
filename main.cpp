@@ -72,11 +72,11 @@ MainWidget::MainWidget()
 	KStdGameAction::quit(qApp, SLOT(quit()), actionCollection());
 
 	// keyboard
+    _keybCollection = new KActionCollection(this);
     for (uint i=0; i<NB_KEYS; i++) {
         const KeyData &d = KEY_DATA[i];
-        KAction *action = new KAction(i18n(d.label), d.keycode, _status,
-                                      d.slot, actionCollection(), d.name);
-        action->setGroup("keyboard_group");
+        (void)new KAction(i18n(d.label), d.keycode, _status,
+                          d.slot, _keybCollection, d.name);
     }
 
 	// Settings
@@ -167,7 +167,7 @@ void MainWidget::settingsChanged()
 {
     bool enabled =
         KConfigCollection::configItemValue("keyboard game").toBool();
-	QValueList<KAction *> list = actionCollection()->actions("keyboard_group");
+	QValueList<KAction *> list = _keybCollection->actions();
 	QValueList<KAction *>::Iterator it;
 	for (it = list.begin(); it!=list.end(); ++it)
 		(*it)->setEnabled(enabled);
@@ -179,7 +179,10 @@ void MainWidget::settingsChanged()
 
 void MainWidget::configureKeys()
 {
-	KKeyDialog::configure(actionCollection(), this);
+    KKeyDialog d(true, this);
+    d.insert(_keybCollection);
+    d.insert(actionCollection());
+    d.configure();
 }
 
 void MainWidget::gameStateChanged(KMines::GameState state)
@@ -205,6 +208,7 @@ int main(int argc, char **argv)
     aboutData.addAuthor("Nicolas Hadacek", 0, EMAIL);
 	aboutData.addCredit("Andreas Zehender", I18N_NOOP("Smiley pixmaps"));
     aboutData.addCredit("Mikhail Kourinny", I18N_NOOP("Solver/Adviser"));
+    aboutData.addCredit("Thomas Capricelli", I18N_NOOP("Magic reveal mode"));
     KCmdLineArgs::init(argc, argv, &aboutData);
 
     KApplication a;

@@ -57,6 +57,7 @@ class MainWidget : public KMainWindow, public KMines
     KSelectAction     *_levels;
     KAction           *_advise, *_solve;
     bool               _pauseIfFocusLost;
+    KActionCollection *_keybCollection;
 
     struct KeyData {
         const char *label, *name;

@@ -6,6 +6,8 @@
 #include <qptrvector.h>
 
 
+class QLabel;
+
 //-----------------------------------------------------------------------------
 class LCD : public QLCDNumber
 {
@@ -79,13 +81,15 @@ class LCDList : public QWidget
 {
  Q_OBJECT
  public:
-    LCDList(const QString &label, QWidget *parent = 0, const char *name = 0);
+    LCDList(const QString &title, QWidget *parent = 0, const char *name = 0);
 
     uint append(LCD *lcd);
+    QLabel *label() const { return _label; }
     LCD *lcd(uint i) const { return _lcds[i]; }
 
  private:
-    QPtrVector<LCD> _lcds;
+    QLabel          *_label;
+    QPtrVector<LCD>  _lcds;
 };
 
 #endif
