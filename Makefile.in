@@ -37,12 +37,12 @@ APPSDIR= $(prefix)/share/applnk/Games
 
 ########### File Formats ###########
 
-.SUFFIXES: .cpp
+.SUFFIXES: .cpp .moc
 
 .cpp.o:
 	$(CXX) -c $(CXXFLAGS) $<
 
-%.moc: %.h
+.h.moc: 
 	$(MOC) $< -o $@
 
 ########## Files #####################
