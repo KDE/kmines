@@ -33,8 +33,6 @@
 #include "headerP.h"
 
 
-using namespace Grid2D;
-
 //-----------------------------------------------------------------------------
 class SolverPrivate
 {

@@ -23,6 +23,8 @@
 #include <qvaluevector.h>
 #include <kurl.h>
 
+#include <kurl.h>
+
 #include "ghighscores_item.h"
 
 class QTabWidget;

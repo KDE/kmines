@@ -37,7 +37,7 @@ class Solver : public QObject
     ~Solver();
 
     /** A method to advice a point placement */
-    Grid2D::Coord advise(BaseField &field, float &probability);
+    KGrid2D::Coord advise(BaseField &field, float &probability);
 
     /** Solve current mine field */
     void solve(BaseField &field, bool noGuess);

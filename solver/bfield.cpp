@@ -19,7 +19,7 @@
 #include "bfield.h"
 
 
-using namespace Grid2D;
+using namespace KGrid2D;
 
 BaseField::BaseField(long seed)
     : _nbUncovered(0), _nbMarked(0), _nbUncertain(0), _random(seed)
@@ -27,8 +27,7 @@ BaseField::BaseField(long seed)
 
 void BaseField::coveredNeighbours(const Coord &p, CoordSet &n) const
 {
-    CoordSet tmp;
-    neighbours(p, tmp);
+    CoordSet tmp = neighbours(p);
     for (CoordSet::iterator it=tmp.begin(); it!=tmp.end(); ++it)
         if ( state(*it)!=Uncovered ) n.insert(*it);
 }
@@ -36,8 +35,7 @@ void BaseField::coveredNeighbours(const Coord &p, CoordSet &n) const
 uint BaseField::nbMinesAround(const Coord &p) const
 {
 	uint nb = 0;
-    CoordSet n;
-    neighbours(p, n);
+    CoordSet n = neighbours(p);
     for (CoordSet::iterator it=n.begin(); it!=n.end(); ++it)
         if ( hasMine(*it) ) nb++;
 	return nb;
@@ -129,8 +127,7 @@ bool BaseField::autoReveal(const Coord &p, bool *caseUncovered)
     if ( state(p)!=Uncovered ) return true;
 
 	uint nb = nbMinesAround(p);
-    CoordSet n;
-    neighbours(p, n);
+    CoordSet n = neighbours(p);
     for (CoordSet::iterator it=n.begin(); it!=n.end(); ++it)
         if ( state(*it)==Marked ) nb--;
     if ( nb==0 ) // number of surrounding mines == number of marks :)
@@ -192,8 +189,7 @@ void BaseField::completeReveal()
             if ( state(c)!=Uncovered ) continue;
             autoReveal(c, &changed);
             uint nb = nbMinesAround(c);
-            CoordSet n;
-            neighbours(c, n);
+            CoordSet n = neighbours(c);
             for (CoordSet::iterator it=n.begin(); it!=n.end(); ++it)
                 if ( state(*it)!=Uncovered ) nb--;
             if (nb) continue;

@@ -53,14 +53,14 @@ class Status : public QWidget, public KMines
 	void update(bool);
 	void pauseGame()     { field->pause(); }
 
-	void moveUp()        { field->moveCursor(Grid2D::SquareBase::Up); }
-	void moveDown()      { field->moveCursor(Grid2D::SquareBase::Down); }
-	void moveLeft()      { field->moveCursor(Grid2D::SquareBase::Left); }
-	void moveRight()     { field->moveCursor(Grid2D::SquareBase::Right); }
-    void moveLeftEdge()  { field->moveToEdge(Grid2D::SquareBase::Left); }
-    void moveRightEdge() { field->moveToEdge(Grid2D::SquareBase::Right); }
-    void moveTop()       { field->moveToEdge(Grid2D::SquareBase::Up); }
-    void moveBottom()    { field->moveToEdge(Grid2D::SquareBase::Down); }
+	void moveUp()        { field->moveCursor(KGrid2D::SquareBase::Up); }
+	void moveDown()      { field->moveCursor(KGrid2D::SquareBase::Down); }
+	void moveLeft()      { field->moveCursor(KGrid2D::SquareBase::Left); }
+	void moveRight()     { field->moveCursor(KGrid2D::SquareBase::Right); }
+    void moveLeftEdge()  { field->moveToEdge(KGrid2D::SquareBase::Left); }
+    void moveRightEdge() { field->moveToEdge(KGrid2D::SquareBase::Right); }
+    void moveTop()       { field->moveToEdge(KGrid2D::SquareBase::Up); }
+    void moveBottom()    { field->moveToEdge(KGrid2D::SquareBase::Down); }
 	void reveal()        { field->doReveal(); }
 	void mark()          { field->doMark(); }
 	void autoReveal()    { field->keyboardAutoReveal(); }
@@ -68,7 +68,7 @@ class Status : public QWidget, public KMines
     void advise();
     void solve();
     void solveRate();
-    void addAction(const Grid2D::Coord &, Field::ActionType type);
+    void addAction(const KGrid2D::Coord &, Field::ActionType type);
 
     void viewLog();
     void replayLog();

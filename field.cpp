@@ -31,7 +31,7 @@
 #include "dialogs.h"
 
 
-using namespace Grid2D;
+using namespace KGrid2D;
 
 const char *Field::ACTION_NAMES[Nb_Actions] = {
     "Reveal", "AutoReveal", "SetFlag", "UnsetFlag", "SetUncertain",
@@ -283,19 +283,17 @@ bool Field::doReveal(const Coord &c, CoordSet *autorevealed,
                      bool *caseUncovered)
 {
 	if ( !isActive() ) return true;
-    resetAdvised();
-
+    if ( state(c)!=Covered ) return true;
     if ( firstReveal() ) setState(Playing);
-    emit addAction(c, Reveal);
     CaseState state =
         doAction(Reveal, c, _completeReveal, autorevealed, caseUncovered);
+    emit addAction(c, Reveal);
     return ( state!=Error );
 }
 
 void Field::doMark(const Coord &c)
 {
 	if ( !isActive() ) return;
-    resetAdvised();
     ActionType action;
     CaseState oldState = state(c);
     switch (oldState) {
@@ -311,7 +309,6 @@ void Field::doMark(const Coord &c)
 void Field::doUmark(const Coord &c)
 {
 	if ( !isActive() ) return;
-    resetAdvised();
     ActionType action;
     CaseState oldState = state(c);
     switch (oldState) {
@@ -328,6 +325,7 @@ KMines::CaseState Field::doAction(ActionType type, const Coord &c,
                                   bool complete, CoordSet *autorevealed,
                                   bool *caseUncovered)
 {
+    resetAdvised();
     CaseState state = Error;
 
     switch (type) {

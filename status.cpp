@@ -97,8 +97,8 @@ Status::Status(QWidget *parent)
 			SLOT(gameStateChangedSlot(GameState)) );
     connect(field, SIGNAL(setMood(Mood)), smiley, SLOT(setMood(Mood)));
     connect(field, SIGNAL(setCheating()), dg, SLOT(setCheating()));
-    connect(field,SIGNAL(addAction(const Grid2D::Coord &, Field::ActionType)),
-            SLOT(addAction(const Grid2D::Coord &, Field::ActionType)));
+    connect(field,SIGNAL(addAction(const KGrid2D::Coord &, Field::ActionType)),
+            SLOT(addAction(const KGrid2D::Coord &, Field::ActionType)));
 	QWhatsThis::add(field, i18n("Mines field."));
 
 // resume button
@@ -282,7 +282,7 @@ void Status::gameStateChanged(GameState state, bool won)
     emit gameStateChangedSignal(state);
 }
 
-void Status::addAction(const Grid2D::Coord &c, Field::ActionType type)
+void Status::addAction(const KGrid2D::Coord &c, Field::ActionType type)
 {
     QDomElement action = _log.createElement("Action");
     action.setAttribute("time", dg->pretty());
@@ -302,7 +302,7 @@ void Status::advise()
     if ( res==KMessageBox::Cancel ) return;
     dg->setCheating();
     float probability;
-    Grid2D::Coord c = _solver->advise(*field, probability);
+    KGrid2D::Coord c = _solver->advise(*field, probability);
     field->setAdvised(c, probability);
     _advised = true;
 }
@@ -476,7 +476,7 @@ void Status::replayStep()
     for (uint k=0; k<Field::Nb_Actions; k++)
         if ( type==Field::ACTION_NAMES[k] ) {
             field->doAction((Field::ActionType)k,
-                            Grid2D::Coord(i, j), _completeReveal);
+                            KGrid2D::Coord(i, j), _completeReveal);
             break;
         }
     _index++;

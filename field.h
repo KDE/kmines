@@ -55,20 +55,20 @@ class Field : public FieldFrame, public BaseField
 	void doMark()   { doMark(_cursor); }
 	void doUmark()  { doUmark(_cursor); }
 	void keyboardAutoReveal();
-    CaseState doAction(ActionType type, const Grid2D::Coord &c,
-                       bool completeReveal, Grid2D::CoordSet *autorevealed = 0,
+    CaseState doAction(ActionType type, const KGrid2D::Coord &c,
+                       bool completeReveal, KGrid2D::CoordSet *autorevealed = 0,
                        bool *caseUncovered = 0);
 
 	void readSettings();
 
-    void setAdvised(const Grid2D::Coord &c, double proba);
+    void setAdvised(const KGrid2D::Coord &c, double proba);
 
  signals:
 	void updateStatus(bool);
 	void gameStateChanged(GameState);
     void setMood(Mood);
     void setCheating();
-    void addAction(const Grid2D::Coord &, Field::ActionType);
+    void addAction(const KGrid2D::Coord &, Field::ActionType);
 
  protected:
 	void paintEvent(QPaintEvent *);
@@ -82,29 +82,29 @@ class Field : public FieldFrame, public BaseField
  private:
 	GameState      _state;
 	bool           _cursorShown, _reveal, _completeReveal, _umark;
-    Grid2D::Coord  _cursor, _advised;
+    KGrid2D::Coord  _cursor, _advised;
     double         _advisedProba;
 	MouseAction    _mb[3];
 	MouseAction    _currentAction;
     Level          _level;
 
-	void pressCase(const Grid2D::Coord &, bool);
-	void pressClearFunction(const Grid2D::Coord &, bool);
-	void placeCursor(const Grid2D::Coord &);
+	void pressCase(const KGrid2D::Coord &, bool);
+	void pressClearFunction(const KGrid2D::Coord &, bool);
+	void placeCursor(const KGrid2D::Coord &);
 	void revealActions(bool press);
 
-    void doAutoReveal(const Grid2D::Coord &);
-    bool doReveal(const Grid2D::Coord &, Grid2D::CoordSet *autorevealed = 0,
+    void doAutoReveal(const KGrid2D::Coord &);
+    bool doReveal(const KGrid2D::Coord &, KGrid2D::CoordSet *autorevealed = 0,
                   bool *caseUncovered = 0);
-    void doMark(const Grid2D::Coord &);
-    void doUmark(const Grid2D::Coord &);
-    void changeCase(const Grid2D::Coord &, CaseState newState);
-    void addMarkAction(const Grid2D::Coord &, CaseState newS, CaseState oldS);
+    void doMark(const KGrid2D::Coord &);
+    void doUmark(const KGrid2D::Coord &);
+    void changeCase(const KGrid2D::Coord &, CaseState newState);
+    void addMarkAction(const KGrid2D::Coord &, CaseState newS, CaseState oldS);
 
-    QPoint toPoint(const Grid2D::Coord &) const;
-    Grid2D::Coord fromPoint(const QPoint &) const;
+    QPoint toPoint(const KGrid2D::Coord &) const;
+    KGrid2D::Coord fromPoint(const QPoint &) const;
 
-	void drawCase(QPainter &, const Grid2D::Coord &,
+	void drawCase(QPainter &, const KGrid2D::Coord &,
                   bool forcePressed = false) const;
 
 	MouseAction mapMouseButton(QMouseEvent *) const;

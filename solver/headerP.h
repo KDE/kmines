@@ -28,7 +28,7 @@
 #include "bfield.h"
 
 
-using namespace Grid2D;
+using namespace KGrid2D;
 
 namespace AdviseFast {
 

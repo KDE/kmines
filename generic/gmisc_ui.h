@@ -17,8 +17,8 @@
     Boston, MA 02111-1307, USA.
 */
 
-#ifndef MISC_UI_H
-#define MISC_UI_H
+#ifndef __KGAMELCD_H
+#define __KGAMELCD_H
 
 #include <qlcdnumber.h>
 #include <qptrvector.h>
@@ -56,7 +56,8 @@ class KGameLCD : public QLCDNumber
     void setLeadingString(const QString &s);
 
     /**
-     * Set the highlight duration. By default it is 800 milliseconds.
+     * Set the highlight duration in milliseconds. The default value is
+     * 800 milliseconds.
      */
     void setHighlightTime(uint time);
 
@@ -66,8 +67,7 @@ class KGameLCD : public QLCDNumber
     void resetColor();
 
     /**
-     * Set the foreground color to the given one.
-     * If the given color is not valid, the default one is used.
+     * Set the foreground color.
      */
     void setColor(const QColor &color);
 
@@ -111,11 +111,6 @@ class KGameLCDClock : public KGameLCD
     KGameLCDClock(QWidget *parent = 0, const char *name = 0);
 
     /**
-     * Stop the clock and reset it to zero.
-     */
-    void reset();
-
-    /**
      * @return the total number of seconds elapsed.
      */
     uint seconds() const;
@@ -131,11 +126,16 @@ class KGameLCDClock : public KGameLCD
     void setTime(uint seconds);
 
     /**
-     * Set the time (format should be "mm:ss".
+     * Set the time (format should be "mm:ss").
      */
     void setTime(const QString &s);
 
  public slots:
+    /**
+     * Stop the clock and reset it to zero.
+     */
+    virtual void reset();
+
     /**
      * Stop the clock but do not reset it to zero.
      */
@@ -152,6 +152,9 @@ class KGameLCDClock : public KGameLCD
  private:
     QTimer *_timerClock;
 	uint    _sec, _min;
+
+    class KGameLCDClockPrivate;
+    KGameLCDClockPrivate *d;
 
 	void showTime();
 };
@@ -192,6 +195,9 @@ class KGameLCDList : public QWidget
  private:
     QLabel                 *_title;
     QPtrVector<QLCDNumber>  _lcds;
+
+    class KGameLCDListPrivate;
+    KGameLCDListPrivate *d;
 
     void init(const QString &title);
 };
