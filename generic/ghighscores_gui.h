@@ -68,7 +68,8 @@ class ScoresList : public KListView
     virtual QString itemText(const ItemContainer &, uint row) const = 0;
 
  private:
-    virtual void addLine(const ItemArray &, uint index, QListViewItem *item);
+    virtual void addLineItem(const ItemArray &, uint index,
+                             QListViewItem *item);
 };
 
 //-----------------------------------------------------------------------------
@@ -128,17 +129,32 @@ class HighscoresDialog : public KDialogBase
 };
 
 //-----------------------------------------------------------------------------
-class MultipleScoresList : public ScoresList
+class LastMultipleScoresList : public ScoresList
 {
- Q_OBJECT
- public:
-    MultipleScoresList(const QValueVector<Score> &, QWidget *parent);
+    Q_OBJECT
+public:
+    LastMultipleScoresList(const QValueVector<Score> &, QWidget *parent);
 
- private:
-    const QValueVector<Score> &_scores;
-
+private:
+    void addLineItem(const ItemArray &, uint index, QListViewItem *line);
     QString itemText(const ItemContainer &, uint row) const;
-    void addLine(const ItemArray &, uint index, QListViewItem *line);
+
+private:
+    const QValueVector<Score> &_scores;
+};
+
+class TotalMultipleScoresList : public ScoresList
+{
+    Q_OBJECT
+public:
+    TotalMultipleScoresList(const QValueVector<Score> &, QWidget *parent);
+
+private:
+    void addLineItem(const ItemArray &, uint index, QListViewItem *line);
+    QString itemText(const ItemContainer &, uint row) const;
+
+private:
+    const QValueVector<Score> &_scores;
 };
 
 //-----------------------------------------------------------------------------

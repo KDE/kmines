@@ -267,9 +267,25 @@ void MultiplayerScores::show(QWidget *parent)
     KDialogBase dialog(KDialogBase::Plain, i18n("Multiplayers Scores"),
                        KDialogBase::Close, KDialogBase::Close,
                        parent, "show_multiplayers_score", true, true);
-    QVBoxLayout *vbox = new QVBoxLayout(dialog.plainPage());
-    QWidget *list = new MultipleScoresList(ordered, dialog.plainPage());
-    vbox->addWidget(list);
+    QHBoxLayout *hbox = new QHBoxLayout(dialog.plainPage(),
+                                KDialog::marginHint(), KDialog::spacingHint());
+
+    QVBox *vbox = new QVBox(dialog.plainPage());
+    hbox->addWidget(vbox);
+    if ( _nbGames[0]==0 ) (void)new QLabel(i18n("No game played !"), vbox);
+    else {
+        (void)new QLabel(i18n("Scores for last game:"), vbox);
+        (void)new LastMultipleScoresList(ordered, vbox);
+    }
+
+    if ( _nbGames[0]>1 ) {
+        vbox = new QVBox(dialog.plainPage());
+        hbox->addWidget(vbox);
+        (void)new QLabel(i18n("Scores for the last %1 games:")
+                         .arg(_nbGames[0]), vbox);
+        (void)new TotalMultipleScoresList(ordered, vbox);
+    }
+
     dialog.enableButtonSeparator(false);
     dialog.exec();
 }
@@ -277,12 +293,14 @@ void MultiplayerScores::show(QWidget *parent)
 QDataStream &operator <<(QDataStream &s, const MultiplayerScores &score)
 {
     s << score._scores;
+    s << score._nbGames;
     return s;
 }
 
 QDataStream &operator >>(QDataStream &s, MultiplayerScores &score)
 {
     s >> score._scores;
+    s >> score._nbGames;
     return s;
 }
 

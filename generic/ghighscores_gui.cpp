@@ -71,19 +71,19 @@ ScoresList::ScoresList(QWidget *parent)
 
 void ScoresList::addHeader(const ItemArray &items)
 {
-    addLine(items, 0, static_cast<QListViewItem *>(0));
+    addLineItem(items, 0, 0);
 }
 
 QListViewItem *ScoresList::addLine(const ItemArray &items,
                                    uint index, bool highlight)
 {
     QListViewItem *item = new ShowItem(this, highlight);
-    addLine(items, index, item);
+    addLineItem(items, index, item);
     return item;
 }
 
-void ScoresList::addLine(const ItemArray &items,
-                         uint index, QListViewItem *line)
+void ScoresList::addLineItem(const ItemArray &items,
+                             uint index, QListViewItem *line)
 {
     uint k = 0;
     for (uint i=0; i<items.size(); i++) {
@@ -269,27 +269,62 @@ void HighscoresDialog::slotUser2()
 }
 
 //-----------------------------------------------------------------------------
-MultipleScoresList::MultipleScoresList(const QValueVector<Score> &scores,
-                                       QWidget *parent)
+LastMultipleScoresList::LastMultipleScoresList(
+                            const QValueVector<Score> &scores, QWidget *parent)
     : ScoresList(parent), _scores(scores)
 {
     const ScoreInfos &s = internal->scoreInfos();
     addHeader(s);
-    for (uint i=0; i<scores.size(); i++)
-        ScoresList::addLine(s, i, scores[i].type()==Won);
+    for (uint i=0; i<scores.size(); i++) addLine(s, i, false);
 }
 
-void MultipleScoresList::addLine(const ItemArray &si,
-                                 uint index, QListViewItem *line)
+void LastMultipleScoresList::addLineItem(const ItemArray &si,
+                                         uint index, QListViewItem *line)
+{
+    uint k = 1; // skip "id"
+    for (uint i=0; i<si.size()-2; i++) {
+        if ( i==3 ) k = 5; // skip "date"
+        const ItemContainer *container = si[k];
+        k++;
+        if (line) line->setText(i, itemText(*container, index));
+        else {
+            addColumn(  container->item()->label() );
+            setColumnAlignment(i, container->item()->alignment());
+        }
+    }
+}
+
+QString LastMultipleScoresList::itemText(const ItemContainer &item,
+                                         uint row) const
+{
+    QString name = item.name();
+    if ( name=="rank" )
+        return (_scores[row].type()==Won ? i18n("Winner") : QString::null);
+    QVariant v = _scores[row].data(name);
+    if ( name=="name" ) return v.toString();
+    return item.item()->pretty(row, v);
+}
+
+//-----------------------------------------------------------------------------
+TotalMultipleScoresList::TotalMultipleScoresList(
+                            const QValueVector<Score> &scores, QWidget *parent)
+    : ScoresList(parent), _scores(scores)
+{
+    const ScoreInfos &s = internal->scoreInfos();
+    addHeader(s);
+    for (uint i=0; i<scores.size(); i++) addLine(s, i, false);
+}
+
+void TotalMultipleScoresList::addLineItem(const ItemArray &si,
+                                          uint index, QListViewItem *line)
 {
     const PlayerInfos &pi = internal->playerInfos();
     uint k = 1; // skip "id"
-    for (uint i=0; i<si.size(); i++) {
+    for (uint i=0; i<4; i++) { // skip additionnal fields
         const ItemContainer *container;
         if ( i==2 ) container = pi.item("nb games");
         else if ( i==3 ) container = pi.item("mean score");
         else {
-            if ( i==5 ) k = 5; // skip "date"
             container = si[k];
             k++;
         }
@@ -303,12 +338,13 @@ void MultipleScoresList::addLine(const ItemArray &si,
     }
 }
 
-QString MultipleScoresList::itemText(const ItemContainer &item, uint row) const
+QString TotalMultipleScoresList::itemText(const ItemContainer &item,
+                                          uint row) const
 {
     QString name = item.name();
+    if ( name=="rank" ) return QString::number(_scores.size()-row);
     if ( name=="nb games" )
         return QString::number( _scores[row].data("nb won games").toUInt() );
-    if ( name=="rank" ) return QString::number(_scores.size()-row);
     QVariant v = _scores[row].data(name);
     if ( name=="name" ) return v.toString();
     return item.item()->pretty(row, v);
