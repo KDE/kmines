@@ -1,8 +1,12 @@
+2.0.1
+ * KAction/KAccel integrated (bug in level choice)
+ * keyboard play (still buggy + cursor missing)
+
 2.0.0
- * use of KDialogBase and KAboutDialog
- * unflagged mines are shown at game end
+ * use of KDialogBase and KAboutData/KAboutDialog
+ * unflagged mines are shown at game's end
  * hack for focus handling in highscores dialog ...
- * slightly better LCDs, message label and smiley button (?)
+ * slightly better LCDs, message label and smiley button
  * fixed a bug when clicking on the frame outside the mine field
  * small fixes for custom games
  * "What's This" added.

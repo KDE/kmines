@@ -8,75 +8,91 @@
 #include <klocale.h>
 #include <kglobal.h>
 #include <kconfig.h>
-#include <kmenubar.h>
 #include <kaboutdialog.h>
 #include <kcmdlineargs.h>
-
 #include <kaboutdata.h>
+#include <kmenubar.h>
 
 #include "defines.h"
 #include "version.h"
 #include "status.h"
 
-
-static const char *description = I18N_NOOP("KDE Game");
-
 MainWidget::MainWidget()
-: kacc(this), popup(this), options(this), level(this)
 {
 	installEventFilter(this);
 	
 	status = new Status(this);
 	status->installEventFilter(this);
 	setView(status);
-
-	// KAccel
-	kacc.insertStdItem(KAccel::New, i18n("New game"));
-	kacc.insertItem(i18n("Pause game"), "Pause", "P");
-	kacc.insertItem(i18n("High scores"), "HighScores", "H");
-
-	kacc.connectItem(KAccel::Quit, qApp, SLOT(quit()));
-	kacc.connectItem(KAccel::New, status, SLOT(restartGame()));
-	kacc.connectItem("Pause", status, SLOT(pauseGame()));
-	kacc.connectItem("HighScores", status, SLOT(showHighScores()));
-	kacc.connectItem(KAccel::Print, status, SLOT(print()));
-
-	kacc.readSettings();
-
-	// Menu
-	tog_id = popup.insertItem("", this, SLOT(toggleMenu()) );
-	popup.insertSeparator();
-	int id = popup.insertItem(i18n("&New game"),
-							   status, SLOT(restartGame()) );
-	kacc.changeMenuAccel(&popup, id, KAccel::New);
-	id = popup.insertItem(i18n("&Pause game"), status, SLOT(pauseGame()) );
-	kacc.changeMenuAccel(&popup, id, "Pause");
-	popup.insertSeparator();
-	id = popup.insertItem(i18n("&High scores"),
-						   status, SLOT(showHighScores()) );
-	kacc.changeMenuAccel(&popup, id, "HighScores");
-	id = popup.insertItem(i18n("P&rint"), status, SLOT(print()));
-	kacc.changeMenuAccel(&popup, id, KAccel::Print);
-	popup.insertSeparator();
-	id = popup.insertItem(i18n("&Quit"), qApp, SLOT(quit()) );
-	kacc.changeMenuAccel(&popup, id, KAccel::Quit);
-
-	options.setCheckable(TRUE);
-	um_id = options.insertItem(i18n("? &mark"), this, SLOT(toggleUMark()) );
-	options.insertItem(i18n("&Keys"), this, SLOT(configKeys()) );
 	
-	level.insertItem(i18n("&Easy"),   0);
-	level.insertItem(i18n("&Normal"), 1);
-	level.insertItem(i18n("&Expert"), 2);
-	level.insertSeparator();
-	level.insertItem(i18n("&Custom"), 3);
-	connect(&level, SIGNAL(activated(int)), SLOT(changeLevel(int)));
+	kacc = new KAccel(this);
+	
+	// popup
+	popup = new KActionMenu(i18n("&File"), this);
+	menuBar()->insertItem(i18n("&File"), popup->popupMenu());
+	toggleMenuAction = new KToggleAction(QString::null, 0, this, SLOT(toggleMenu()), this);
+	popup->insert(toggleMenuAction);
+	popup->insert( new KActionSeparator(this) );
+	KAction *action = new KAction(i18n("&New game"), 0, status, SLOT(restartGame()), this);
+	action->plugStdAccel(kacc, KStdAccel::New);
+	popup->insert(action);
+	action = new KAction(i18n("&Pause game"), Key_P, status, SLOT(pauseGame()), this);
+	action->plugAccel(kacc, "pause");
+	popup->insert(action);
+	popup->insert( new KActionSeparator(this) );
+	action = new KAction(i18n("&High scores"), Key_H, status, SLOT(showHighScores()), this);
+	action->plugAccel(kacc, "highscores");
+	popup->insert(action);
+	action = new KAction(i18n("P&rint"), 0, status, SLOT(print()), this);
+	action->plugStdAccel(kacc, KStdAccel::Print);
+	popup->insert(action);
+	popup->insert( new KActionSeparator(this) );
+	action = new KAction(i18n("&Quit"), 0, qApp, SLOT(quit()), this);
+	action->plugStdAccel(kacc, KStdAccel::Quit);
+	popup->insert(action);
+	
+	// keyboard
+	action = new KAction(i18n("Move up"), Key_Up, status, SLOT(moveUp()), this);
+	action->plugAccel(kacc, "moveup");
+	action = new KAction(i18n("Move down"), Key_Down, status, SLOT(moveDown()), this);
+	action->plugAccel(kacc, "movedown");
+	action = new KAction(i18n("Move left"), Key_Left, status, SLOT(moveLeft()), this);
+	action->plugAccel(kacc, "moveleft");
+	action = new KAction(i18n("Move right"), Key_Right, status, SLOT(mvoeRight()), this);
+	action->plugAccel(kacc, "moveright");
+	action = new KAction(i18n("Reveal mine"), Key_Enter, status, SLOT(reveal()), this);
+	action->plugAccel(kacc, "revealmine");
+	action = new KAction(i18n("Mark mine"), Key_Space, status, SLOT(mark()), this);
+	action->plugAccel(kacc, "markmine");
+	action = new KAction(i18n("Automatic reveal"), Key_BackSpace, status, SLOT(autoReveal()), this);
+	action->plugAccel(kacc, "autoreveal");
 
-	menuBar()->insertItem(i18n("&File"), &popup);
-	menuBar()->insertItem(i18n("&Level"), &level);
-	menuBar()->insertItem(i18n("&Options"), &options);
+	// options
+	KActionMenu *options = new KActionMenu(i18n("&Options"), this);
+	menuBar()->insertItem(i18n("&Options"), options->popupMenu());
+	toggleMarkAction = new KToggleAction(i18n("? &mark"), 0, this, SLOT(toggleUMark()), this);
+	options->insert(toggleMarkAction);
+	options->insert( new KAction(i18n("&Keys"), 0, this, SLOT(configKeys()), this) );
+	
+	// levels
+	KActionMenu *levels = new KActionMenu(i18n("&Level"), this);
+	menuBar()->insertItem(i18n("&Level"), levels->popupMenu());
+	levelAction[0] = new KToggleAction(i18n("&Easy"), 0, this, SLOT(easyLevel()), this);
+	levelAction[1] = new KToggleAction(i18n("&Normal"), 0, this, SLOT(normalLevel()), this);
+	levelAction[2] = new KToggleAction(i18n("&Expert"), 0, this, SLOT(expertLevel()), this);
+	levelAction[3] = new KToggleAction(i18n("&Custom"), 0, this, SLOT(customLevel()), this);
+	for (uint i=0; i<4; i++) {
+		levelAction[i]->setExclusiveGroup("level");
+		levels->insert(levelAction[i]);
+		if ( i==2) levels->insert(new KActionSeparator(this));
+	}
+	
+	// help
 	menuBar()->insertSeparator();
 	menuBar()->insertItem(i18n("&Help"), helpMenu());
+
+	// read key settings
+	kacc->readSettings();
 
 	// init
 	_toggleMenu(TRUE);
@@ -94,7 +110,7 @@ void MainWidget::changeLevel(int lev)
 	}
 	conf->writeEntry(OP_LEVEL, lev);
 	if ( !status->newGame(lev) ) return;
-	for(int i = 0; i<4; i++) level.setItemChecked(i, i==lev);
+	levelAction[lev]->setChecked(TRUE);
 }
 
 bool MainWidget::eventFilter(QObject *, QEvent *e)
@@ -102,7 +118,7 @@ bool MainWidget::eventFilter(QObject *, QEvent *e)
 	switch (e->type()) {
 	 case QEvent::MouseButtonPress : 
 		if ( ((QMouseEvent *)e)->button()!=RightButton ) return FALSE;
-		popup.popup(QCursor::pos());
+		popup->popup(QCursor::pos());
 		return TRUE;
 	 default : return FALSE;
 	}
@@ -116,7 +132,7 @@ void MainWidget::_toggleMenu(bool first)
 	if ( !first ) show = !show;
 	conf->writeEntry(OP_MENU, show);
 	if (show) menuBar()->show(); else menuBar()->hide();
-	popup.changeItem((show ? i18n("Hide menu") : i18n("Show menu")), tog_id);
+	toggleMenuAction->setText((show ? i18n("Hide menu") : i18n("Show menu")));
 }
 
 void MainWidget::_toggleUMark(bool first)
@@ -126,42 +142,21 @@ void MainWidget::_toggleUMark(bool first)
 	bool um = conf->readBoolEntry(OP_UMARK, TRUE);
 	if ( !first ) um = !um;
 	conf->writeEntry(OP_UMARK, um);
-	options.setItemChecked(um_id, um);
+	toggleMarkAction->setChecked(um);
 	status->changeUMark(um);
 }
 
-void MainWidget::showAboutApplication()
-{
-	QDate date(YEAR, MONTH, DAY);
-	QString sdate = KGlobal::locale()->formatDate(date);
-
-	KAboutDialog about(KAboutDialog::AbtAppStandard, kapp->name(),
-					   KDialogBase::Close, KDialogBase::Close, this, 0, true);
-
-	about.setProduct("KMines", QString("%2 (%3)").arg(VERSION).arg(sdate),
-					 "Nicolas Hadacek (hadacek@kde.org)", "1996-1999");
-
-	QString sa = i18n(
-		"KMines is a classical mine sweeper game.");
-	about.addTextPage(i18n("About"), sa);
-
-	QString sl =
-	   "This program is free software; you can redistribute it and/or modify\n"
-  	   "it under the terms of the GNU General Public License as published by\n"
-	   "the Free Software Foundation; either version 2 of the License, or\n"
-	   "(at your option) any later version.";
-	about.addTextPage(i18n("Licence"), sl);
-
-	about.show();
-}
-
 //----------------------------------------------------------------------------
+static const char *DESCRIPTION = I18N_NOOP("KMines is a classical mine sweeper game.");
+
 int main( int argc, char ** argv )
 {
-    KAboutData aboutData( "kmines", I18N_NOOP("KMines"), 
-        VERSION, description, KAboutData::License_GPL, 
-        "(c) 1996-1999, Nicolas Hadacek");
-    aboutData.addAuthor("Nicolas Hadacek",0, "hadacek@kde.org");
+    KAboutData aboutData("kmines", I18N_NOOP("KMines"),
+		QString("%1 (%2/%3/%4)").arg(VERSION).arg(DAY).arg(MONTH).arg(YEAR).latin1(),
+		DESCRIPTION, KAboutData::License_GPL, 
+        "(c) 1996-2000, Nicolas Hadacek",
+		0, "http://azhyd.free.fr/KDE/kmines.php3");
+    aboutData.addAuthor("Nicolas Hadacek", 0, "hadacek@kde.org");
     KCmdLineArgs::init( argc, argv, &aboutData );
 
     KApplication a;

@@ -27,6 +27,14 @@ class Field : public QFrame
 	void pause();
 	void stop() { _stop = TRUE; }
 	void showMines();
+	
+	void up();
+	void down();
+	void left();
+	void right();
+	void reveal();
+	void mark();
+	void autoReveal();
 
 	const Level &level() const { return lev; }
 	void changeUMark(bool um) { u_mark = um; }
@@ -44,25 +52,24 @@ class Field : public QFrame
 	void putMsg(const QString &msg);
   
  protected:
-	void paintEvent( QPaintEvent * );
-	void mousePressEvent( QMouseEvent * );
-	void mouseReleaseEvent( QMouseEvent * );
-	void mouseMoveEvent( QMouseEvent * );
+	void paintEvent(QPaintEvent *);
+	void mousePressEvent(QMouseEvent *);
+	void mouseReleaseEvent(QMouseEvent *);
+	void mouseMoveEvent(QMouseEvent *);
 	
  private:
 	QArray<uint> _pfield;
 	Level lev;
-
-        KRandomSequence random;
+	KRandomSequence random;
   
-	bool _stop;             /* end of game ? */
+	bool _stop;             // end of game ?
 	bool noGame, isPaused;
 	bool first_click;
 	bool u_mark;
 
-	uint ic, jc;
-	bool left_down;        /* left button pressed */
-	bool mid_down;         /* mid button pressed */
+	uint ic, jc;           // current pos
+	bool left_down;        // left button pressed
+	bool mid_down;         // mid button pressed
   
 	QPainter pt;
 	QPixmap  pm_flag, pm_mine, pm_exploded, pm_error;
@@ -75,7 +82,6 @@ class Field : public QFrame
 	void createMinePixmap(QPainter &p) const;
 	void pressCase(uint, uint, uint);
 	void pressClearFunction(uint, uint, uint);
-	void clearFunction(uint, uint);
 	void uncoverCase(uint, uint);
 	bool inside(uint, uint) const;
 	

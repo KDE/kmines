@@ -7,14 +7,15 @@
 
 Field::Field(QWidget *parent, const char *name)
 : QFrame(parent, name), lev(LEVELS[0]),
-  _stop(FALSE), isPaused(FALSE), left_down(FALSE), mid_down(FALSE),
+  _stop(FALSE), isPaused(FALSE), ic(0), jc(0),
+  left_down(FALSE), mid_down(FALSE),
   pt(this)
 {
 	setFrameStyle( QFrame::Box | QFrame::Raised );
 	setLineWidth(2);
 	setMidLineWidth(2);
 
-        random.setSeed(0);
+	random.setSeed(0);
   
 	QPainter p;
 	pm_flag.resize(16, 16);
@@ -262,7 +263,7 @@ bool Field::inside(uint i, uint j) const
 	return ( i>=1 && i<=lev.width && j>=1 && j<=lev.height);
 }
 
-void Field::mousePressEvent( QMouseEvent *e )
+void Field::mousePressEvent(QMouseEvent *e)
 {
 	if ( _stop || isPaused ) return;
 	
@@ -275,20 +276,14 @@ void Field::mousePressEvent( QMouseEvent *e )
 	if (e->button()==LeftButton) {
 		left_down = TRUE;
 		pressCase(ic, jc, TRUE);
-	} else if (e->button()==RightButton) {
-		if (pfield(ic, jc) & COVERED)
-			changeCaseState(ic, jc, MARKED);
-		else if (pfield(ic, jc) & MARKED) /* ? mark option */
-			changeCaseState(ic, jc, (u_mark ? UNCERTAIN : COVERED));
-		else if (pfield(ic, jc) & UNCERTAIN)
-			changeCaseState(ic, jc, COVERED);
-	} else if (e->button()==MidButton) {
+	} else if (e->button()==RightButton) mark();
+	else if (e->button()==MidButton) {
 		mid_down = TRUE;
 		pressClearFunction(ic, jc, TRUE);
 	}
 }
 
-void Field::mouseReleaseEvent( QMouseEvent *e )
+void Field::mouseReleaseEvent(QMouseEvent *e)
 {
 	if ( _stop || isPaused ) return;
 	setMood(Smiley::Normal);
@@ -297,34 +292,14 @@ void Field::mouseReleaseEvent( QMouseEvent *e )
 	if (e->button()==LeftButton) {
 		if (!left_down) return;
 		left_down = FALSE;
-		
-		if ( first_click ) {
-			// set mines positions on field ; must avoid the first 
-			// clicked case
-			for(uint k=0; k<lev.nbMines; k++) {
-				uint i, j;
-				do {
-					i = random.getLong(lev.width);
-					j = random.getLong(lev.height);
-				}
-				while ( (pfield(i+1, j+1) & MINE)
-						|| ((i+1)==ic && (j+1)==jc) );
-				
-				pfield(i+1, j+1) |= MINE;
-			}
-			emit startTimer();
-			first_click = FALSE;
-			emit putMsg(i18n("Playing"));
-		}
-		
-		uncoverCase(ic, jc);
+		reveal();
 	} else if (e->button()==MidButton) {
 		mid_down = FALSE;
-		clearFunction(ic, jc);
+		autoReveal();
 	}
 }
 
-void Field::mouseMoveEvent( QMouseEvent *e )
+void Field::mouseMoveEvent(QMouseEvent *e)
 {
 	if (_stop) return; 
 
@@ -384,35 +359,35 @@ void Field::pressClearFunction(uint i, uint j, uint state)
 
 #define M_OR_U(i, j) ( (pfield(i, j) & MARKED) || (pfield(i, j) & UNCERTAIN) )
 
-void Field::clearFunction(uint i, uint j)
+void Field::autoReveal()
 {
-	pressClearFunction(i, j, FALSE);
+	pressClearFunction(ic, jc, FALSE);
 	
-	if ( pfield(i, j) & (COVERED|MARKED|UNCERTAIN) ) return; 
+	if ( pfield(ic, jc) & (COVERED|MARKED|UNCERTAIN) ) return; 
 	
 	uint nm;
 	/* number of mines around the case */
-	nm = computeNeighbours(i, j);
+	nm = computeNeighbours(ic, jc);
 	
-	if M_OR_U(i-1,   j) nm--;
-	if M_OR_U(i-1, j+1) nm--;
-	if M_OR_U(i-1, j-1) nm--;
-	if M_OR_U(  i, j+1) nm--;
-	if M_OR_U(  i, j-1) nm--;
-	if M_OR_U(i+1,   j) nm--;
-	if M_OR_U(i+1, j+1) nm--;
-	if M_OR_U(i+1, j-1) nm--;
+	if M_OR_U(ic-1,   jc) nm--;
+	if M_OR_U(ic-1, jc+1) nm--;
+	if M_OR_U(ic-1, jc-1) nm--;
+	if M_OR_U(  ic, jc+1) nm--;
+	if M_OR_U(  ic, jc-1) nm--;
+	if M_OR_U(ic+1,   jc) nm--;
+	if M_OR_U(ic+1, jc+1) nm--;
+	if M_OR_U(ic+1, jc-1) nm--;
 	
 	if (!nm) { /* the number of surrounding mines is equal */
 		       /* to the number of marks :) */
-		uncoverCase(i+1, j+1);
-		uncoverCase(i+1,   j);
-		uncoverCase(i+1, j-1);
-		uncoverCase(  i, j+1);
-		uncoverCase(  i, j-1);
-		uncoverCase(i-1, j+1);
-		uncoverCase(i-1,   j);
-		uncoverCase(i-1, j-1);
+		uncoverCase(ic+1, jc+1);
+		uncoverCase(ic+1,   jc);
+		uncoverCase(ic+1, jc-1);
+		uncoverCase(  ic, jc+1);
+		uncoverCase(  ic, jc-1);
+		uncoverCase(ic-1, jc+1);
+		uncoverCase(ic-1,   jc);
+		uncoverCase(ic-1, jc-1);
 	}
 }
 	  
@@ -456,4 +431,59 @@ void Field::resume()
 	emit putMsg(i18n("Playing"));
 	pb->hide();
 	emit startTimer(); 
+}
+
+void Field::up()
+{
+	if ( jc>0 ) jc--;
+}
+
+void Field::down()
+{
+	if ( jc<(lev.height-1) ) jc++;
+}
+
+void Field::left()
+{
+	if ( ic>0 ) ic--;
+}
+
+void Field::right()
+{
+	if ( ic<(lev.width-1) ) ic++;
+}
+
+void Field::reveal()
+{
+	if ( first_click ) {
+		// set mines positions on field ; must avoid the first 
+		// clicked case
+		for(uint k=0; k<lev.nbMines; k++) {
+			uint i, j;
+			do {
+				i = random.getLong(lev.width);
+				j = random.getLong(lev.height);
+			}
+			while ( (pfield(i+1, j+1) & MINE)
+				   || ((i+1)==ic && (j+1)==jc) );
+			
+			pfield(i+1, j+1) |= MINE;
+		}
+		emit startTimer();
+		first_click = FALSE;
+		emit putMsg(i18n("Playing"));
+	}
+	
+	uncoverCase(ic, jc);
+}
+
+void Field::mark()
+{
+			if (pfield(ic, jc) & COVERED)
+			changeCaseState(ic, jc, MARKED);
+		else if (pfield(ic, jc) & MARKED) /* ? mark option */
+			changeCaseState(ic, jc, (u_mark ? UNCERTAIN : COVERED));
+		else if (pfield(ic, jc) & UNCERTAIN)
+			changeCaseState(ic, jc, COVERED);
+
 }

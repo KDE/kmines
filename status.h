@@ -29,7 +29,15 @@ class Status : public QWidget
 	void showHighScores() { highScores(0); }
 	void pauseGame() { field->pause(); }
 	void print();
-	
+
+	void moveUp()     { field->up(); }
+	void moveDown()   { field->down(); }
+	void moveLeft()   { field->left(); }
+	void moveRight()  { field->right(); }
+	void reveal()     { field->reveal(); }
+	void mark()       { field->mark(); }
+	void autoReveal() { field->autoReveal(); }
+
  private:
 	enum GameType { Easy = 0, Normal, Expert, Custom };
 	

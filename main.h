@@ -1,9 +1,9 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include <qpopmenu.h>
 #include <kkeydialog.h>
 #include <ktmainwindow.h>
+#include <kaction.h>
 
 class Status;
 
@@ -15,23 +15,26 @@ class MainWidget : public KTMainWindow
 	MainWidget();
 
  private slots:
-	void changeLevel(int level);
-    void configKeys()           { KKeyDialog::configureKeys(&kacc); }
-	void toggleMenu()           { _toggleMenu(FALSE); }
-	void toggleUMark()          { _toggleUMark(FALSE); }
-	void showAboutApplication();
+	void easyLevel()   { changeLevel(0); }
+	void normalLevel() { changeLevel(1); }
+	void expertLevel() { changeLevel(2); }
+	void customLevel() { changeLevel(3); }
+    void configKeys()  { KKeyDialog::configureKeys(kacc); }
+	void toggleMenu()  { _toggleMenu(FALSE); }
+	void toggleUMark() { _toggleUMark(FALSE); }
 
  protected:
 	bool eventFilter(QObject *, QEvent *);
 
  private:
-	KAccel       kacc;
-	QPopupMenu   popup, options, level;
-	int          tog_id, um_id;
-	Status      *status;
+	KAccel        *kacc;
+	KActionMenu   *popup;
+	KToggleAction *toggleMenuAction, *toggleMarkAction, *levelAction[4];
+	Status        *status;
 	
 	void _toggleMenu(bool first);
 	void _toggleUMark(bool first);
+	void changeLevel(int i);
 };
 
 #endif // MAIN_H
