@@ -1,16 +1,18 @@
 #include "main.h"
 
+#include <qdatetime.h>
+
 #include <kapp.h>
 #include <klocale.h>
 #include <kglobal.h>
+#include <kconfig.h>
+#include <kmenubar.h>
 
 #include "defines.h"
 #include "version.h"
 #include "status.h"
-#include <qdatetime.h>
+
 #include <time.h>
-#include <kmenubar.h>
-#include <kconfig.h>
 
 MainWidget::MainWidget()
 {
