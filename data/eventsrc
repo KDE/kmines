@@ -121,6 +121,7 @@ Comment[ta]=நிகழ்ச்சியை தானே வெளிப்ப
 Comment[tr]=Kutuyu otomatik aç
 Comment[xx]=xxAutoreveal casexx
 Comment[zh_CN]=自动揭开盒盖
+Comment[zh_TW]=周圍自動開挖方格
 default_presentation=0
 
 [mark]
@@ -177,6 +178,7 @@ Comment[ta]=நிகழ்ச்சியை குறி
 Comment[tr]=Kutuyu işaretle
 Comment[xx]=xxMark casexx
 Comment[zh_CN]=标记盒子
+Comment[zh_TW]=標記方格
 default_presentation=0
 
 [unmark]
@@ -233,6 +235,7 @@ Comment[ta]=நிகழ்ச்சியை குறிக்காதே
 Comment[tr]=Kutudaki işareti kaldır
 Comment[xx]=xxUnmark casexx
 Comment[zh_CN]=不标记盒子
+Comment[zh_TW]=去標記方格
 default_presentation=0
 
 [explosion]
@@ -350,6 +353,7 @@ Comment[tr]=Oyun kazanıldı
 Comment[wa]=Djeu wangnî
 Comment[xx]=xxGame wonxx
 Comment[zh_CN]=你赢了游戏
+Comment[zh_TW]=遊戲獲勝
 default_presentation=0
 
 [lost]
@@ -410,4 +414,5 @@ Comment[tr]=Oyun kaybedildi
 Comment[wa]=Djeu pierdou
 Comment[xx]=xxGame lostxx
 Comment[zh_CN]=你输了游戏
+Comment[zh_TW]=遊戲失敗
 default_presentation=0
