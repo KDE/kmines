@@ -18,8 +18,4 @@ noinst_HEADERS = defines.h dialogs.h field.h status.h main.h
 SUBDIRS = data
 
 messages:
-	$(XGETTEXT) -C -ktranslate -ki18n -x $(includedir)/kde.pot \
-		$(kmines_SOURCES) && mv messages.po ../po/kmines.pot
-
-
-
+	$(XGETTEXT) -C -ki18n -x $(includedir)/kde.pot $(kmines_SOURCES) && mv messages.po ../po/kmines.pot
