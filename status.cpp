@@ -196,8 +196,7 @@ void Status::print()
 void Status::preferences()
 {
 	OptionDialog od(this);
-	if ( od.exec() ) {
-		field->readSettings();
-		emit keyboardEnabled(OptionDialog::readKeyboard());
-	}
+	if ( !od.exec() ) return;
+	field->readSettings();
+	emit keyboardEnabled(OptionDialog::readKeyboard());
 }

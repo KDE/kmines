@@ -120,118 +120,49 @@ DialogBase::DialogBase(const QString &caption, int buttonMask,
 //-----------------------------------------------------------------------------
 CustomDialog::CustomDialog(Level &_lev, QWidget *parent)
 : DialogBase(i18n("Customize your game"), Ok|Cancel, Cancel, parent),
-  lev(&_lev)
+  lev(_lev), initLev(_lev)
 {
-	QLabel      *lab;
-	QScrollBar  *scb;
-	QHBoxLayout *hbl;
+	// width
+	KIntNumInput *ki = new KIntNumInput(lev.width, plainPage());
+	ki->setLabel(i18n("Width"));
+	ki->setRange(8, 50);
+	connect(ki, SIGNAL(valueChanged(int)), SLOT(widthChanged(int)));
+	top->addWidget(ki);
 
-/* Width */
-	/* labels */
-	hbl = new QHBoxLayout(spacingHint());
-	top->addLayout(hbl);
-	
-	lab = new QLabel(i18n("Width"), plainPage());
-	lab->setFixedSize( lab->sizeHint() );
-	hbl->addWidget(lab);
-	hbl->addStretch(1);
-	
-	lab = new QLabel(plainPage());
-	lab->setNum((int)_lev.width);
-	lab->setAlignment( AlignRight );
-	lab->setFixedSize( lab->fontMetrics().maxWidth()*2,
-					   lab->sizeHint().height());
-	connect(this, SIGNAL(setWidth(int)), lab, SLOT(setNum(int)));
-	hbl->addWidget(lab);
+	// height
+	ki = new KIntNumInput(lev.height, plainPage());
+	ki->setLabel(i18n("Height"));
+	ki->setRange(8, 50);
+	connect(ki, SIGNAL(valueChanged(int)), SLOT(heightChanged(int)));
+	top->addWidget(ki);
 
-	/* scrollbar */
-	scb = new QScrollBar(8, 50, 1, 5, _lev.width,
-						 QScrollBar::Horizontal, plainPage());
-	scb->setMinimumWidth( scb->sizeHint().width() );
-	scb->setFixedHeight( scb->sizeHint().height() );
-	connect(scb, SIGNAL(valueChanged(int)), SLOT(widthChanged(int)));
-	top->addWidget(scb);
-	top->addSpacing(2*spacingHint());
-	
-/* Height */
-	/* labels */
-	hbl = new QHBoxLayout(spacingHint());
-	top->addLayout(hbl);
-	
-	lab = new QLabel(i18n("Height"), plainPage());
-	lab->setFixedSize( lab->sizeHint() );
-	hbl->addWidget(lab);
-	hbl->addStretch(1);
-	
-	lab = new QLabel(plainPage());
-	lab->setNum((int)_lev.height);
-	lab->setAlignment( AlignRight );
-	lab->setFixedSize( lab->fontMetrics().maxWidth()*2,
-					   lab->sizeHint().height());
-	connect(this, SIGNAL(setHeight(int)), lab, SLOT(setNum(int)));
-	hbl->addWidget(lab);
-
-	/* scrollbar */
-	scb = new QScrollBar(8, 50, 1, 5, _lev.height,
-						 QScrollBar::Horizontal, plainPage());
-	scb->setMinimumWidth( scb->sizeHint().width() );
-	scb->setFixedHeight( scb->sizeHint().height() );
-	connect(scb, SIGNAL(valueChanged(int)), SLOT(heightChanged(int)));
-    top->addWidget(scb);
-	top->addSpacing(2*spacingHint());
-
-/* Mines */
-	/* labels */
-	hbl = new QHBoxLayout(spacingHint());
-	top->addLayout(hbl);
-	
-	lab = new QLabel(i18n("Mines"), plainPage());
-	lab->setFixedSize( lab->sizeHint() );
-	hbl->addWidget(lab);
-	hbl->addStretch(1);
-	
-	lab = new QLabel(" ", plainPage());
-	lab->setAlignment( AlignRight );
-	lab->setFixedSize(lab->fontMetrics().maxWidth()*11,
-					  lab->sizeHint().height());
-	connect(this, SIGNAL(setNbMines(const QString &)), lab,
-			SLOT(setText(const QString &)));
-	hbl->addWidget(lab);
-
-	/* scrollbar */
-	sm = new QScrollBar(1, _lev.width*_lev.height, 1, 5, _lev.nbMines,
-						 QScrollBar::Horizontal, plainPage());
-	sm->setMinimumWidth( sm->sizeHint().width() );
-	sm->setFixedHeight( sm->sizeHint().height() );
-	connect(sm, SIGNAL(valueChanged(int)), SLOT(nbMinesChanged(int)));
-	top->addWidget(sm);
-
-	nbMinesChanged(_lev.nbMines);
-
-	enableButton(Ok, FALSE);
+	// mines
+	km = new KIntNumInput(lev.nbMines, plainPage());
+	connect(km, SIGNAL(valueChanged(int)), SLOT(nbMinesChanged(int)));
+	top->addWidget(km);
+	nbMinesChanged(lev.nbMines);
 }
 
 void CustomDialog::widthChanged(int n)
 {
-	lev->width = (uint)n;
-	emit setWidth(n);
-	nbMinesChanged(lev->nbMines);
+	lev.width = (uint)n;
+	nbMinesChanged(lev.nbMines);
 }
 
 void CustomDialog::heightChanged(int n)
 {
-	lev->height = (uint)n;
-	emit setHeight(n);
-	nbMinesChanged(lev->nbMines);
+	lev.height = (uint)n;
+	nbMinesChanged(lev.nbMines);
 }
 
 void CustomDialog::nbMinesChanged(int n)
 {
-	lev->nbMines = (uint)n;
-	uint nb = lev->width * lev->height;
-	sm->setRange(1, nb - 2);
-	emit setNbMines(i18n("%1 (%2%)").arg(n).arg(100*n/nb));
-	enableButton(Ok, TRUE);
+	lev.nbMines = (uint)n;
+	uint nb = lev.width * lev.height;
+	km->setRange(1, nb - 2);
+	km->setLabel(i18n("Mines (%1%)").arg(100*n/nb));
+	enableButton(Ok, lev.width!=initLev.width || lev.height!=initLev.height
+				 || lev.nbMines!=initLev.nbMines);
 }
 
 //-----------------------------------------------------------------------------
@@ -354,8 +285,8 @@ void WHighScores::reject()
 OptionDialog::OptionDialog(QWidget *parent)
 : DialogBase(i18n("Settings"), Ok|Cancel, Cancel, parent)
 {
-	ni = new KIntNumInput(0, readCaseSize(), plainPage(), 10);
-	ni->setRange(MIN_CASE_SIZE, MAX_CASE_SIZE, 1, true);
+	ni = new KIntNumInput(readCaseSize(), plainPage());
+	ni->setRange(MIN_CASE_SIZE, MAX_CASE_SIZE);
 	ni->setLabel(i18n("Case size"));
 	top->addWidget(ni);
 	top->addSpacing(spacingHint());

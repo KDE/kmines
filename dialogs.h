@@ -100,15 +100,10 @@ class CustomDialog : public DialogBase
 	void widthChanged(int);
 	void heightChanged(int);
 	void nbMinesChanged(int);
-	
- signals:
-	void setWidth(int);
-	void setHeight(int);
-	void setNbMines(const QString &);
 
  private:
-	QScrollBar *sm;
-	Level      *lev;
+	KIntNumInput *km;
+	Level        &lev, &initLev;
 };
 
 //-----------------------------------------------------------------------------

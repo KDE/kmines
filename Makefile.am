@@ -10,7 +10,7 @@ noinst_HEADERS     = defines.h dialogs.h field.h status.h main.h
 SUBDIRS = data bitmaps
 
 rcdir   = $(kde_datadir)/kmines
-rc_DATA = ui_kmines.rc
+rc_DATA = kminesui.rc
 
 messages:
 	$(XGETTEXT) $(kmines_SOURCES) -o $(podir)/kmines.pot

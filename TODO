@@ -5,5 +5,5 @@ IDEAS:
 
 KNOWN BUGS:
 
- * layout bug when changing level/case size/menubar visible
-   [fvwm specific ? -> no !]
+ * occasionnal X BadMatch error in highscore (KDialogBase bug ?)
+

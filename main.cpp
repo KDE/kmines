@@ -15,7 +15,6 @@
 #include <kstdaction.h>
 #include <kkeydialog.h>
 
-#include "defines.h"
 #include "version.h"
 #include "status.h"
 
@@ -34,12 +33,11 @@ MainWidget::MainWidget()
 	// File & Popup
 	KStdAction::openNew(status, SLOT(restartGame()),
 						actionCollection(), "game_new");
-	KAction *action
-		= new KAction(i18n("Pause"), Key_P, status, SLOT(pauseGame()),
+	(void)new KAction(i18n("Pause"), Key_P, status, SLOT(pauseGame()),
 					  actionCollection(), "game_pause");
-	action = new KAction(i18n("High scores..."), Key_H,
-						 status, SLOT(showHighScores()),
-						 actionCollection(), "game_highscores");
+	(void)new KAction(i18n("High Scores..."), Key_H,
+					  status, SLOT(showHighScores()),
+					  actionCollection(), "game_highscores");
 	KStdAction::print(status, SLOT(print()), actionCollection(), "game_print");
 	KStdAction::quit(qApp, SLOT(quit()), actionCollection(), "game_quit");
 
@@ -93,7 +91,7 @@ MainWidget::MainWidget()
 	for (uint i=0; i<levelAction.size(); i++)
 		levelAction[i]->setExclusiveGroup("level");
 
-	createGUI("ui_kmines.rc");
+	createGUI();
 	readSettings();
 	setView(status);
 }
@@ -145,7 +143,13 @@ void MainWidget::toggleMenubar()
 {
 	bool b = MENUBAR_ACTION->isChecked();
 	if (b) menuBar()->show();
-	else menuBar()->hide();
+	else {
+		menuBar()->hide();
+		// #### sort of hack : because KTMainWindow does not manage correctly
+		// main widget with a fixed layout
+		updateRects();
+		adjustSize();
+	}
 
 	OptionDialog::writeMenuVisible(b);
 }
@@ -188,10 +192,9 @@ static const char *DESCRIPTION
 
 int main(int argc, char **argv)
 {
-    KAboutData aboutData("kmines", I18N_NOOP("KMines"),
-		LONG_VERSION, DESCRIPTION, KAboutData::License_GPL,
-        "(c) 1996-2000, Nicolas Hadacek",
-		0, "http://azhyd.free.fr/KDE/kmines.php3");
+    KAboutData aboutData("kmines", I18N_NOOP("KMines"), LONG_VERSION,
+						 DESCRIPTION, KAboutData::License_GPL,
+						 COPYLEFT, 0, HOMEPAGE);
     aboutData.addAuthor("Nicolas Hadacek", 0, "hadacek@kde.org");
 	aboutData.addCredit("Andreas Zehender", "Smiley pixmaps");
     KCmdLineArgs::init(argc, argv, &aboutData);
