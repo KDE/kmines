@@ -58,7 +58,7 @@ void Smiley::setMood(Mood mood)
 
 //-----------------------------------------------------------------------------
 DigitalClock::DigitalClock(QWidget *parent)
-: LCDClock(parent, "digital_clock")
+: KGameLCDClock(parent, "digital_clock")
 {
     setFrameStyle(Panel | Sunken);
     setDefaultColors(white, black);
@@ -67,14 +67,14 @@ DigitalClock::DigitalClock(QWidget *parent)
 KExtHighscores::Score DigitalClock::score() const
 {
     KExtHighscores::Score score(KExtHighscores::Won);
-    score.setData("score", time());
+    score.setData("score", 3600 - seconds());
     score.setData("nb_actions", _nbActions);
     return score;
 }
 
 void DigitalClock::timeoutClock()
 {
-    LCDClock::timeoutClock();
+    KGameLCDClock::timeoutClock();
 
     if (_cheating) setColor(white);
     else if ( _first<score() ) setColor(red);
@@ -84,7 +84,7 @@ void DigitalClock::timeoutClock()
 
 void DigitalClock::start()
 {
-    LCDClock::start();
+    KGameLCDClock::start();
     if ( !_cheating ) setColor(red);
 }
 
@@ -95,7 +95,7 @@ void DigitalClock::reset(const KExtHighscores::Score &first,
     _first = first;
     _last = last;
     _cheating = false;
-    LCDClock::reset();
+    KGameLCDClock::reset();
     resetColor();
 }
 

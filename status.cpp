@@ -32,7 +32,7 @@
 #include <kaction.h>
 #include <kdebug.h>
 
-#include "ghighscores.h"
+#include "generic/ghighscores.h"
 #include "solver/solver.h"
 #include "dialogs.h"
 #include "version.h"
@@ -52,7 +52,7 @@ Status::Status(QWidget *parent)
 
 // status bar
 	// mines left LCD
-	left = new LCD(5, this);
+	left = new KGameLCD(5, this);
     left->setFrameStyle(QFrame::Panel | QFrame::Sunken);
     left->setDefaultColors(white, black);
 	QWhatsThis::add(left, i18n("<qt>Mines left.<br/>"

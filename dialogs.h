@@ -21,9 +21,9 @@
 
 #include <qpushbutton.h>
 
-#include "ghighscores.h"
-#include "gsettings.h"
-#include "gmisc_ui.h"
+#include "generic/ghighscores.h"
+#include "generic/gsettings.h"
+#include "generic/gmisc_ui.h"
 
 #include "defines.h"
 
@@ -46,7 +46,7 @@ class Smiley : public QPushButton, public KMines
 };
 
 //-----------------------------------------------------------------------------
-class DigitalClock : public LCDClock
+class DigitalClock : public KGameLCDClock
 {
  Q_OBJECT
  public:

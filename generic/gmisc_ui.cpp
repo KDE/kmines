@@ -1,27 +1,48 @@
+/*
+    This file is part of the KDE games library
+    Copyright (C) 2001-02 Nicolas Hadacek (hadacek@kde.org)
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Library General Public
+    License version 2 as published by the Free Software Foundation.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Library General Public License for more details.
+
+    You should have received a copy of the GNU Library General Public License
+    along with this library; see the file COPYING.LIB.  If not, write to
+    the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+    Boston, MA 02111-1307, USA.
+*/
+
 #include "gmisc_ui.h"
 #include "gmisc_ui.moc"
 
 #include <qlayout.h>
 #include <qlabel.h>
+#include <qtimer.h>
 
 
 //-----------------------------------------------------------------------------
-LCD::LCD(uint nbDigits, QWidget *parent, const char *name)
-    : QLCDNumber(nbDigits, parent, name)
+KGameLCD::KGameLCD(uint nbDigits, QWidget *parent, const char *name)
+    : QLCDNumber(nbDigits, parent, name), _htime(800)
 {
     const QPalette &p = palette();
     _fgColor = p.color(QPalette::Active, QColorGroup::Foreground);
     _hlColor = p.color(QPalette::Active, QColorGroup::HighlightedText);
 
-    connect(&_timer, SIGNAL(timeout()), SLOT(timeout()));
+    _timer = new QTimer(this);
+    connect(_timer, SIGNAL(timeout()), SLOT(timeout()));
 
     setFrameStyle(Panel | Plain);
 	setSegmentStyle(Flat);
 
-    showValue(0);
+    displayInt(0);
 }
 
-void LCD::setDefaultColors(const QColor &fgColor, const QColor &bgColor)
+void KGameLCD::setDefaultColors(const QColor &fgColor, const QColor &bgColor)
 {
     _fgColor = fgColor;
     QPalette p = palette();
@@ -30,18 +51,23 @@ void LCD::setDefaultColors(const QColor &fgColor, const QColor &bgColor)
     setPalette(p);
 }
 
-void LCD::setLeadString(const QString &s)
+void KGameLCD::setLeadingString(const QString &s)
 {
     _lead = s;
-    showValue(0);
+    displayInt(0);
 }
 
-void LCD::resetColor()
+void KGameLCD::setHighlightTime(uint time)
+{
+    _htime = time;
+}
+
+void KGameLCD::resetColor()
 {
     setColor(QColor());
 }
 
-void LCD::setColor(const QColor &color)
+void KGameLCD::setColor(const QColor &color)
 {
     const QColor &c = (color.isValid() ? color : _fgColor);
     QPalette p = palette();
@@ -49,32 +75,33 @@ void LCD::setColor(const QColor &color)
     setPalette(p);
 }
 
-void LCD::showValue(uint v)
+void KGameLCD::displayInt(int v)
 {
     int n = numDigits() - _lead.length();
     display(_lead + QString::number(v).rightJustify(n));
 }
 
-void LCD::highlight()
+void KGameLCD::highlight()
 {
     highlight(true);
-    _timer.start(800, true);
+    _timer->start(_htime, true);
 }
 
-void LCD::highlight(bool light)
+void KGameLCD::highlight(bool light)
 {
     if (light) setColor(_hlColor);
     else resetColor();
 }
 
 //-----------------------------------------------------------------------------
-LCDClock::LCDClock(QWidget *parent, const char *name)
-: LCD(5, parent, name)
+KGameLCDClock::KGameLCDClock(QWidget *parent, const char *name)
+: KGameLCD(5, parent, name)
 {
-    connect(&_timerClock, SIGNAL(timeout()), SLOT(timeoutClock()));
+    _timerClock = new QTimer(this);
+    connect(_timerClock, SIGNAL(timeout()), SLOT(timeoutClock()));
 }
 
-void LCDClock::timeoutClock()
+void KGameLCDClock::timeoutClock()
 {
     // waiting an hour does not restart timer
     if ( _min==59 && _sec==59 ) return;
@@ -86,58 +113,69 @@ void LCDClock::timeoutClock()
     showTime();
 }
 
-QString LCDClock::pretty() const
+QString KGameLCDClock::pretty() const
 {
     QString sec = QString::number(_sec).rightJustify(2, '0', true);
     QString min = QString::number(_min).rightJustify(2, '0', true);
     return min + ':' + sec;
 }
 
-void LCDClock::showTime()
+void KGameLCDClock::showTime()
 {
     display(pretty());
 }
 
-void LCDClock::reset()
+void KGameLCDClock::reset()
 {
-    _timerClock.stop();
+    _timerClock->stop();
 	_sec = 0;
     _min = 0;
 	showTime();
 }
 
-void LCDClock::start()
+void KGameLCDClock::start()
 {
-    _timerClock.start(1000); // 1 second
+    _timerClock->start(1000); // 1 second
 }
 
-void LCDClock::stop()
+void KGameLCDClock::stop()
 {
-    _timerClock.stop();
+    _timerClock->stop();
 }
 
-uint LCDClock::time() const
+uint KGameLCDClock::seconds() const
 {
-    return 3600 - (_min*60 + _sec);
+    return _min*60 + _sec;
 }
 
 
 //-----------------------------------------------------------------------------
-LCDList::LCDList(const QString &title, QWidget *parent, const char *name)
+KGameLCDList::KGameLCDList(const QString &title, QWidget *parent, const char *name)
     : QWidget(parent, name)
+{
+    init(title);
+}
+
+KGameLCDList::KGameLCDList(QWidget *parent, const char *name)
+    : QWidget(parent, name)
+{
+    init(QString::null);
+}
+
+void KGameLCDList::init(const QString &title)
 {
     QVBoxLayout *top = new QVBoxLayout(this, 5);
 
-    _label = new QLabel(title, this);
-    _label->setAlignment(AlignCenter);
-    top->addWidget(_label, AlignCenter);
+    _title = new QLabel(title, this);
+    _title->setAlignment(AlignCenter);
+    top->addWidget(_title, AlignCenter);
 }
 
-uint LCDList::append(LCD *lcd)
+uint KGameLCDList::append(QLCDNumber *lcd)
 {
     uint n = _lcds.size();
     _lcds.resize(n+1);
     _lcds.insert(n, lcd);
-    ((QVBoxLayout *)layout())->addWidget(lcd);
+    static_cast<QVBoxLayout *>(layout())->addWidget(lcd);
     return n;
 }

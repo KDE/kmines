@@ -20,19 +20,21 @@
 #include "ghighscores_gui.h"
 #include "ghighscores_gui.moc"
 
-#include <qlabel.h>
 #include <qlayout.h>
-#include <qvbox.h>
-#include <qheader.h>
-#include <qfile.h>
 #include <qtextstream.h>
+#include <qtabwidget.h>
+#include <qheader.h>
 #include <qgrid.h>
+#include <qvgroupbox.h>
 
 #include <kapplication.h>
 #include <kmessagebox.h>
 #include <kurllabel.h>
 #include <kopenwith.h>
 #include <krun.h>
+#include <kfiledialog.h>
+#include <ktempfile.h>
+#include <kio/netaccess.h>
 
 #include "ghighscores_internal.h"
 #include "ghighscores.h"
@@ -165,6 +167,36 @@ void HighscoresWidget::showURL(const QString &url) const
 }
 
 //-----------------------------------------------------------------------------
+HighscoresDialog::HighscoresDialog(bool treeList, QWidget *parent)
+    : KDialogBase(treeList ? TreeList : Plain, i18n("Highscores"),
+                  KDialogBase::Close|KDialogBase::User1, KDialogBase::Close,
+                  parent, "show_highscores", true, true)
+{
+    setButtonText(KDialogBase::User1, i18n("Export..."));
+    connect(this, SIGNAL(user1Clicked()), SLOT(exportToText()));
+    enableButtonSeparator(treeList);
+}
+
+void HighscoresDialog::exportToText()
+{
+    KURL url = KFileDialog::getSaveURL(QString::null, QString::null, this);
+    if ( url.isEmpty() ) return;
+    if ( KIO::NetAccess::exists(url) ) {
+        KGuiItem gi = KStdGuiItem::save();
+        gi.setText(i18n("Overwrite"));
+        int res = KMessageBox::warningYesNo(this,
+                                 i18n("The file already exists. Overwrite ?"),
+                                 i18n("Export..."), gi, KStdGuiItem::cancel());
+        if ( res==KMessageBox::No ) return;
+    }
+    KTempFile tmp;
+    HighscoresPrivate::exportHighscores(*tmp.textStream());
+    tmp.close();
+    KIO::NetAccess::upload(tmp.name(), url);
+    tmp.unlink();
+}
+
+//-----------------------------------------------------------------------------
 MultipleScoresList::MultipleScoresList(const QValueList<Score> &scores,
                                        QWidget *parent)
     : ScoresList(parent), _scores(scores)
@@ -194,64 +226,120 @@ bool MultipleScoresList::showColumn(const ItemContainer &item) const
 }
 
 //-----------------------------------------------------------------------------
-class HighscoresConfigItem : public KConfigItemBase
+ImplConfigWidget::ImplConfigWidget(QWidget *parent)
+    : ConfigWidget(parent), _WWHEnabled(0)
 {
- public:
-    HighscoresConfigItem(HighscoresConfigWidget *hsw)
-        : _hsw(hsw) {}
+    bool wwhs = HighscoresPrivate::isWWHSAvailable();
 
- protected:
-    void loadState() { _hsw->load(); }
-    bool saveState() { return _hsw->save(); }
-    void setDefaultState() {}
-    bool hasDefault() const { return true; }
+    QWidget *page = this;
+    QTabWidget *tab = 0;
+    if (wwhs) {
+        QVBoxLayout *top = new QVBoxLayout(this);
+        tab = new QTabWidget(this);
+        top->addWidget(tab);
 
- private:
-    HighscoresConfigWidget *_hsw;
-};
+        // main tab
+        page = new QWidget(tab);
+        tab->addTab(page, i18n("Main"));
+    }
 
-HighscoresConfigWidget::HighscoresConfigWidget(QWidget *parent)
-    : KConfigWidget(i18n("Highscores"), "highscore", parent), _WWHEnabled(0)
-{
-    KConfigItemBase *sg = new HighscoresConfigItem(this);
-    configCollection()->insert(sg);
+    QGridLayout *pageTop = new QGridLayout(page, 2, 2,
+                               KDialog::spacingHint(), KDialog::spacingHint());
 
-    QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
-
-    QGrid *grid = new QGrid(2, this);
-    grid->setSpacing(KDialog::spacingHint());
-    top->addWidget(grid);
-
-    (void)new QLabel(i18n("Nickname"), grid);
-    _nickname = new QLineEdit(grid);
+    QLabel *label = new QLabel(i18n("Nickname"), page);
+    pageTop->addWidget(label, 0, 0);
+    _nickname = new QLineEdit(page);
     connect(_nickname, SIGNAL(textChanged(const QString &)),
-            sg, SLOT(modifiedSlot()));
+            SIGNAL(modified()));
     _nickname->setMaxLength(16);
+    pageTop->addWidget(_nickname, 0, 1);
 
-    (void)new QLabel(i18n("Comment"), grid);
-    _comment = new QLineEdit(grid);
+    label = new QLabel(i18n("Comment"), page);
+    pageTop->addWidget(label, 1, 0);
+    _comment = new QLineEdit(page);
     connect(_comment, SIGNAL(textChanged(const QString &)),
-            sg, SLOT(modifiedSlot()));
+            SIGNAL(modified()));
     _comment->setMaxLength(50);
+    pageTop->addWidget(_comment, 1, 1);
 
-    if ( HighscoresPrivate::isWWHSAvailable() ) {
+    if (wwhs) {
         _WWHEnabled
-            = new QCheckBox(i18n("World-wide highscores enabled"), this);
+            = new QCheckBox(i18n("World-wide highscores enabled"), page);
         connect(_WWHEnabled, SIGNAL(toggled(bool)),
-                sg, SLOT(modifiedSlot()));
-        top->addWidget(_WWHEnabled);
+                SIGNAL(modified()));
+        pageTop->addMultiCellWidget(_WWHEnabled, 2, 2, 0, 1);
+
+        // advanced tab
+        QWidget *page = new QWidget(tab);
+        tab->addTab(page, i18n("Advanced"));
+        QVBoxLayout *pageTop = new QVBoxLayout(page,
+                       KDialogBase::spacingHint(), KDialogBase::spacingHint());
+
+        QVGroupBox *group = new QVGroupBox(i18n("Registration data"), page);
+        pageTop->addWidget(group);
+        QGrid *grid = new QGrid(2, group);
+        grid->setSpacing(KDialogBase::spacingHint());
+
+        label = new QLabel(i18n("Nickname"), grid);
+        _registeredName = new KLineEdit(grid);
+        _registeredName->setReadOnly(true);
+
+        label = new QLabel(i18n("Key"), grid);
+        _key = new KLineEdit(grid);
+        _key->setReadOnly(true);
+
+        KGuiItem gi = KStdGuiItem::clear();
+        gi.setText(i18n("Remove"));
+        _removeButton = new KPushButton(gi, grid);
+        connect(_removeButton, SIGNAL(clicked()), SLOT(removeSlot()));
     }
 }
 
-void HighscoresConfigWidget::load()
+QString ImplConfigWidget::title() const
+{
+    return i18n("Highscores");
+}
+
+QString ImplConfigWidget::icon() const
+{
+    return "highscore";
+}
+
+void ImplConfigWidget::load()
 {
     const PlayerInfos &infos = HighscoresPrivate::playerInfos();
     _nickname->setText(infos.isAnonymous() ? QString::null : infos.name());
     _comment->setText(infos.comment());
-    if (_WWHEnabled) _WWHEnabled->setChecked(infos.isWWEnabled());
+    if (_WWHEnabled) {
+        _WWHEnabled->setChecked(infos.isWWEnabled());
+        if ( !infos.key().isEmpty() ) {
+            _registeredName->setText(infos.registeredName());
+            _key->setText(infos.key());
+        }
+        _removeButton->setEnabled(!infos.key().isEmpty());
+    }
 }
 
-bool HighscoresConfigWidget::save()
+void ImplConfigWidget::removeSlot()
+{
+    KGuiItem gi = KStdGuiItem::clear();
+    gi.setText(i18n("Remove"));
+    int res = KMessageBox::warningYesNo(this,
+       i18n("This will remove permanently your "
+            "registration key. You will not be able to use anymore "
+            "with the current registered nickname."),
+       QString::null, gi, KStdGuiItem::cancel());
+    if ( res==KMessageBox::Yes ) {
+        HighscoresPrivate::playerInfos().removeKey();
+        _registeredName->clear();
+        _key->clear();
+        _removeButton->setEnabled(false);
+        _WWHEnabled->setChecked(false);
+        emit modified();
+    }
+}
+
+bool ImplConfigWidget::save()
 {
     bool enabled = (_WWHEnabled ? _WWHEnabled->isChecked() : false);
 
@@ -261,8 +349,10 @@ bool HighscoresConfigWidget::save()
          && !HighscoresPrivate::playerInfos().isAnonymous() && !enabled )
         return true;
 
-    return HighscoresPrivate::modifySettings(_nickname->text().lower(),
-                               _comment->text(), enabled, (QWidget *)parent());
+    bool res = HighscoresPrivate::modifySettings(_nickname->text().lower(),
+                  _comment->text(), enabled, static_cast<QWidget *>(parent()));
+    if (res) load(); // update view when "apply" is clicked
+    return res;
 }
 
 }; // namespace

@@ -88,13 +88,13 @@ class Item
      * Set the display format.
      * @see Format
      */
-    void setPrettyFormat(Format);
+    void setPrettyFormat(Format format);
 
     /**
      * Set the special value for display.
      * @see Special
      */
-    void setPrettySpecial(Special);
+    void setPrettySpecial(Special special);
 
     /**
      * @return if the item is shown.
@@ -227,7 +227,7 @@ enum ScoreType { Won = 0, Lost = -1, BlackMark = -2 };
 
 /**
  * This class contains data for a score. You should not inherit from
- * this class but reimplement the methods in @ref Highscores .
+ * this class but reimplement the methods in @ref Highscores.
  */
 class Score : public DataArray
 {

@@ -24,6 +24,7 @@
 
 #include <kglobal.h>
 #include <kio/netaccess.h>
+#include <kio/job.h>
 #include <kmessagebox.h>
 #include <kstaticdeleter.h>
 #include <kdialogbase.h>
@@ -171,6 +172,21 @@ void ItemArray::write(uint k, const DataArray &data, uint nb) const
         if ( !at(i)->isStored() ) continue;
         for (uint j=nb-1; j>k; j--)  at(i)->write(j, at(i)->read(j-1));
         at(i)->write(k, data.data(at(i)->name()));
+    }
+}
+
+void ItemArray::exportToText(QTextStream &s) const
+{
+    for (uint k=0; k<nbEntries()+1; k++) {
+        for (uint i=0; i<size(); i++) {
+            const Item *item = at(i)->item();
+            if ( item->isVisible() ) {
+                if ( i!=0 ) s << '\t';
+                if ( k==0 ) s << item->label();
+                else s << at(i)->pretty(k-1);
+            }
+        }
+        s << endl;
     }
 }
 
@@ -328,6 +344,27 @@ QString PlayerInfos::registeredName() const
     return cg.config()->readEntry(HS_REGISTERED_NAME, QString::null);
 }
 
+void PlayerInfos::removeKey()
+{
+    ConfigGroup cg;
+
+    // save old key/nickname
+    uint i = 0;
+    QString str = "%1 old #%2";
+    QString sk;
+    do {
+        i++;
+        sk = str.arg(HS_KEY).arg(i);
+    } while ( !cg.config()->readEntry(sk, QString::null).isEmpty() );
+    cg.config()->writeEntry(sk, key());
+    cg.config()->writeEntry(str.arg(HS_REGISTERED_NAME).arg(i),
+                            registeredName());
+
+    // clear current key/nickname
+    cg.config()->deleteEntry(HS_KEY);
+    cg.config()->deleteEntry(HS_REGISTERED_NAME);
+    cg.config()->writeEntry(HS_WW_ENABLED, false);
+}
 
 //-----------------------------------------------------------------------------
 KURL *HighscoresPrivate::_baseURL = 0;
@@ -434,23 +471,26 @@ const char *DUMMY_STRINGS[] = {
     I18N_NOOP("Invalid score.")
 };
 
+const char *UNABLE_TO_CONTACT =
+    I18N_NOOP("Unable to contact world-wide highscore server");
+
 bool HighscoresPrivate::doQuery(const KURL &url, QWidget *parent,
                                 QDomNamedNodeMap *map)
 {
+    KIO::http_update_cache(url, true, 0); // remove cache !
+
     QString tmpFile;
     if ( !KIO::NetAccess::download(url, tmpFile) ) {
-        QString msg = i18n("Unable to contact world-wide highscore server");
         QString details = i18n("Server URL: %1").arg(url.host());
-        KMessageBox::detailedSorry(parent, msg, details);
+        KMessageBox::detailedSorry(parent, i18n(UNABLE_TO_CONTACT), details);
         return false;
     }
 
 	QFile file(tmpFile);
 	if ( !file.open(IO_ReadOnly) ) {
         KIO::NetAccess::removeTempFile(tmpFile);
-        QString msg = i18n("Unable to contact world-wide highscore server.");
         QString details = i18n("Unable to open temporary file.");
-        KMessageBox::detailedSorry(parent, msg, details);
+        KMessageBox::detailedSorry(parent, i18n(UNABLE_TO_CONTACT), details);
         return false;
     }
 
@@ -570,31 +610,27 @@ void HighscoresPrivate::checkFirst()
 void HighscoresPrivate::showHighscores(QWidget *parent, int rank)
 {
     uint tmp = _gameType;
-    int face = (_nbGameTypes==1 ? KDialogBase::Plain : KDialogBase::TreeList);
-    KDialogBase hs(face, i18n("Highscores"),
-                   KDialogBase::Close, KDialogBase::Close,
-                   parent, "show_highscores", true, true);
+
+    bool treeList = ( _nbGameTypes!=1 );
+    HighscoresDialog hs(treeList, parent);
     for (uint i=0; i<_nbGameTypes; i++) {
         setGameType(i);
         QWidget *w;
-        if ( _nbGameTypes==1 ) w = hs.plainPage();
-        else {
+        if (treeList) {
             QString title = _highscores->gameTypeLabel(i, Highscores::I18N);
             QString icon = _highscores->gameTypeLabel(i, Highscores::Icon);
             w = hs.addPage(title, QString::null,
                             BarIcon(icon, KIcon::SizeLarge));
-        }
+        } else w = hs.plainPage();
         QVBoxLayout *vbox = new QVBoxLayout(w);
 
         w = new HighscoresWidget((i==tmp ? rank : -1), w,
                               queryURL(Players).url(), queryURL(Scores).url());
         vbox->addWidget(w);
     }
-    setGameType(tmp);
 
-    hs.resize( hs.calculateSize(500, 400) ); // hacky
+    setGameType(tmp);
     hs.showPage(_gameType);
-    if ( _nbGameTypes==1 ) hs.enableButtonSeparator(false);
 	hs.exec();
 }
 
@@ -657,6 +693,30 @@ Score HighscoresPrivate::firstScore()
     Score score(Won);
     _scoreInfos->read(0, score);
     return score;
+}
+
+void HighscoresPrivate::exportHighscores(QTextStream &s)
+{
+    uint tmp = _gameType;
+
+    for (uint i=0; i<_nbGameTypes; i++) {
+        setGameType(i);
+        if ( _nbGameTypes>1 ) {
+            if ( i!=0 ) s << endl;
+            s << "--------------------------------" << endl;
+            s << "Game type: "
+              << _highscores->gameTypeLabel(_gameType, Highscores::I18N)
+              << endl;
+            s << endl;
+        }
+        s << "Players list:" << endl;
+        _playerInfos->exportToText(s);
+        s << endl;
+        s << "Highscores list:" << endl;
+        _scoreInfos->exportToText(s);
+    }
+
+    setGameType(tmp);
 }
 
 }; // namespace

@@ -20,16 +20,15 @@
 #ifndef G_HIGHSCORES_GUI_H
 #define G_HIGHSCORES_GUI_H
 
-#include <qptrvector.h>
 #include <qcheckbox.h>
-#include <qlineedit.h>
-#include <qtabwidget.h>
+#include <qlabel.h>
 
 #include <klistview.h>
+#include <klineedit.h>
+#include <kpushbutton.h>
 #include <kdialogbase.h>
-#include <klocale.h>
 
-#include "gsettings.h"
+#include "ghighscores.h"
 
 
 namespace KExtHighscores
@@ -91,6 +90,16 @@ class HighscoresWidget : public QWidget
     void showURL(const QString &) const;
 };
 
+class HighscoresDialog : public KDialogBase
+{
+ Q_OBJECT
+ public:
+    HighscoresDialog(bool treeList, QWidget *parent);
+
+ private slots:
+    void exportToText();
+};
+
 //-----------------------------------------------------------------------------
 class MultipleScoresList : public ScoresList
 {
@@ -106,18 +115,26 @@ class MultipleScoresList : public ScoresList
 };
 
 //-----------------------------------------------------------------------------
-class HighscoresConfigWidget : public KConfigWidget
+class ImplConfigWidget : public ConfigWidget
 {
  Q_OBJECT
  public:
-    HighscoresConfigWidget(QWidget *parent);
+    ImplConfigWidget(QWidget *parent);
 
     void load();
     bool save();
 
+    QString title() const;
+    QString icon() const;
+
+ private slots:
+    void removeSlot();
+
  private:
-    QCheckBox *_WWHEnabled;
-    QLineEdit *_nickname, *_comment;
+    QCheckBox   *_WWHEnabled;
+    QLineEdit   *_nickname, *_comment;
+    KLineEdit   *_key, *_registeredName;
+    KPushButton *_removeButton;
 };
 
 }; // namespace

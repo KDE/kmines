@@ -20,8 +20,8 @@
 #define MAIN_H
 
 #include <kmainwindow.h>
-#include "gsettings.h"
 
+#include "generic/gsettings.h"
 #include "defines.h"
 
 

@@ -25,7 +25,7 @@
 
 
 class Smiley;
-class LCD;
+class KGameLCD;
 class DigitalClock;
 class Solver;
 class QWidgetStack;
@@ -79,7 +79,7 @@ class Status : public QWidget, public KMines
     QWidgetStack *_stack;
 
 	Smiley       *smiley;
-	LCD          *left;
+	KGameLCD     *left;
 	DigitalClock *dg;
     Solver       *_solver;
     bool          _advised, _solved;

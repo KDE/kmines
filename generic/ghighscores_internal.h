@@ -21,6 +21,7 @@
 #define G_HIGHSCORES_INTERNAL_H
 
 #include <qdom.h>
+#include <qtextstream.h>
 
 #include <kapplication.h>
 #include <kconfig.h>
@@ -139,6 +140,8 @@ class ItemArray : public QMemArray<ItemContainer *>
     void read(uint k, DataArray &data) const;
     void write(uint k, const DataArray &data, uint maxNbLines) const;
 
+    void exportToText(QTextStream &) const;
+
  private:
     QString _group, _subGroup;
 
@@ -190,6 +193,7 @@ class PlayerInfos : public ItemArray
     void submitScore(const Score &) const;
     void modifySettings(const QString &newName, const QString &comment,
                         bool WWEnabled, const QString &newKey) const;
+    void removeKey();
 
  private:
     bool _trackLostGames, _trackBlackMarks, _newPlayer;
@@ -221,6 +225,8 @@ class HighscoresPrivate
     static ScoreInfos &scoreInfos()   { return *_scoreInfos; }
     static PlayerInfos &playerInfos() { return *_playerInfos; }
     static Highscores &highscores()   { return *_highscores; }
+
+    static void exportHighscores(QTextStream &);
 
  private:
     static PlayerInfos *_playerInfos;

@@ -1,5 +1,5 @@
 SUBDIRS  = generic data bitmaps solver
-INCLUDES = -I$(top_srcdir)/libkdegames -I$(top_srcdir)/kmines/generic $(all_includes)
+INCLUDES = -I$(top_srcdir)/libkdegames $(all_includes)
 
 bin_PROGRAMS       = kmines
 kmines_LDFLAGS     = $(all_libraries) $(KDE_RPATH)

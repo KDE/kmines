@@ -607,7 +607,6 @@ class KConfigCollection : public KConfigItemList
  * </pre>
  *
  * That's it : all the loading/saving/defaulting is done automagically.
- *
  */
 class KConfigWidget : public QWidget
 {
@@ -628,7 +627,9 @@ class KConfigWidget : public QWidget
 
     ~KConfigWidget();
 
+    void setTitle(const QString &title) { _title = title; }
     QString title() const { return _title; }
+    void setIcon(const QString &icon) { _icon = icon; }
     QString icon() const { return _icon; }
 
     /**

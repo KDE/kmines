@@ -21,6 +21,7 @@
 #define G_HIGHSCORES_H
 
 #include <qvaluelist.h>
+#include <qwidget.h>
 
 #include <kurl.h>
 
@@ -28,7 +29,6 @@
 
 
 class QWidget;
-class KConfigWidget;
 class QTabWidget;
 
 namespace KExtHighscores
@@ -44,12 +44,46 @@ uint gameType();
 /**
  * Set the current game type.
  */
-void setGameType(uint);
+void setGameType(uint gameType);
 
 /**
- * @return a @ref KCongiWidget for configuration of the highscores.
+ * This abstrat class is the base class of the highscores
+ * configuration widget (@see createConfigWidget).
  */
-KConfigWidget *createConfigWidget(QWidget *parent);
+class ConfigWidget : public QWidget
+{
+ Q_OBJECT
+ public:
+    ConfigWidget(QWidget *parent) : QWidget(parent) {}
+
+    /**
+     * Load the settings.
+     */
+    virtual void load() = 0;
+
+    /**
+     * Save the settings.
+     */
+    virtual bool save() = 0;
+
+    /**
+     * @return the title.
+     */
+    virtual QString title() const = 0;
+
+    /**
+     * @return the icon.
+     */
+    virtual QString icon() const = 0;
+
+ signals:
+    void modified();
+};
+
+/**
+ * @return a @ref ConfigWidget for configuration of the highscores.
+ */
+ConfigWidget *createConfigWidget(QWidget *parent);
 
 /**
  * Show the highscores lists.
@@ -83,14 +117,14 @@ void showMultipleScores(const QValueList<Score> &scores,
 void submitScore(const Score &score, QWidget *widget);
 
 /**
- * @return the last score in the local list of highscores (the minimum
+ * @return the last score in the local list of highscores (the worst
  * score if the number of entries is less than the maximum).
  */
 Score lastScore();
 
 /**
- * @return the first score in the local list of highscores (the minimum score
- * if there is no entry).
+ * @return the first score in the local list of highscores (the worst possible
+ * score if there is no entry).
  */
 Score firstScore();
 
@@ -124,8 +158,8 @@ Score firstScore();
  * <li> "date" : the time and date of the highscore (automatically set) </li>
  * </ul>
  * You can add an item or replace the default item for the score value
- * (for e.g. displaying it differently) by calling @ref setItem right after
- * construction.
+ * (for e.g. displaying it differently) by calling @ref setItem in a
+ * reimplementation of the constructor.
  *
  * The players list contains :
  * <ul>
@@ -144,8 +178,7 @@ Score firstScore();
  * <li> "comment" : the player comment (as defined by the user in the
  *      configuration dialog) </li>
  * </ul>
- * You can replace the best score and the mean score item with
- * @ref setItem.
+ * You can replace the best score and the mean score item with @ref setItem.
  *
  * To submit a new score at game end, just construct a @ref Score, set the
  * score data and then call @ref submitScore.
@@ -163,8 +196,8 @@ class Highscores
     /**
      * Constructor
      *
-     * @param version the game version which is sent to the web server (it is
-     *        useful for backward compatibility on the server side).
+     * @param version the game version which is sent to the web server (it can
+     *        be useful for backward compatibility on the server side).
      * @param baseURL the web server url (an empty url means that world-wide
      *        highscores are not available)
      * @param nbGameTypes the number of different game types (usually one) ;
@@ -201,7 +234,7 @@ class Highscores
 
     /**
      * @return the label corresponding to the game type. The default
-     * implementation is ok for one game type. But you need to reimplement
+     * implementation works only for one game type : you need to reimplement
      * this method if the number of game types is more than one.
      */
     virtual QString gameTypeLabel(uint gameType, LabelType type) const;
@@ -222,17 +255,17 @@ class Highscores
      *
      * @param gameType the game type
      */
-    virtual void convertLegacy(uint /*gameType*/) {}
+    virtual void convertLegacy(uint gameType) { Q_UNUSED(gameType); }
 
     /**
      * This method should be called from @ref convertLegacy. It is used
      * to submit an old highscore (it will not be send over the network).
      * For each score do something like:
      * <pre>
-     * Score score = newScore(Won);
+     * KExtHighscores::Score score(KExtHighscores::Won);
      * score.setData("score", oldScore);
      * score.setData("name", name);
-     * submiteLegacyScore(score);
+     * KExtHighscores::submitLegacyScore(score);
      * </pre>
      * Note that here you can set the player "name" and the highscore "date"
      * if they are known.
@@ -246,7 +279,8 @@ class Highscores
      *
      * @param score the score to be submitted.
      */
-    virtual void additionnalQueryItems(KURL &, const Score &) const {}
+    virtual void additionnalQueryItems(KURL &url, const Score &score) const
+        { Q_UNUSED(url); Q_UNUSED(score); }
 
     /**
      * Add an entry to the url to be submitted (@see additionnalQueryItems).
@@ -261,13 +295,13 @@ class Highscores
      * Called when a score has been submitted. By default, this method
      * does nothing. It's there for future extensions.
      */
-    virtual void scoreSubmitted(const Score &) {}
+    virtual void scoreSubmitted(const Score &score) { Q_UNUSED(score); }
 
     /**
      * Called before the highscores are shown. By default it does nothing.
      * It's there for future extensions.
      */
-    virtual void additionnalTabs(QTabWidget *) {}
+    virtual void additionnalTabs(QTabWidget *widget) { Q_UNUSED(widget); }
 
  private:
     HighscoresPrivate  *d;

@@ -1,5 +1,5 @@
 <!DOCTYPE kpartgui>
-<kpartgui name="kmines" version="13">
+<kpartgui name="kmines" version="14">
 
 <MenuBar>
   <Menu name="game"><text>&amp;Game</text>
@@ -23,7 +23,6 @@
   <Separator/>
   <Action name="game_quit"/>
 </Menu>
-
 
 <State name="stopped">
   <enable>
@@ -52,7 +51,7 @@
   <disable>
     <Action name="advise" />
     <Action name="solve" />
-  /disable>
+  </disable>
 </State>
 
 </kpartgui>

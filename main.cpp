@@ -34,6 +34,7 @@
 #include <kaction.h>
 #include <kdebug.h>
 
+#include "generic/gmisc.h"
 #include "status.h"
 #include "highscores.h"
 #include "version.h"
@@ -157,7 +158,7 @@ void MainWidget::configureSettings()
     d.setIconListAllVisible(true);
     d.append(new GameConfig);
     d.append(new AppearanceConfig);
-    d.append( KExtHighscores::createConfigWidget(this) );
+    d.append(new HighscoresConfigWidget);
     d.append(new CustomConfig);
     connect(&d, SIGNAL(saved()), SLOT(settingsChanged()));
     d.exec();

@@ -23,7 +23,7 @@
 
 #include <krandomsequence.h>
 
-#include "grid2d.h"
+#include "generic/grid2d.h"
 #include "defines.h"
 
 

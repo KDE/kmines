@@ -18,6 +18,7 @@
 */
 
 #include "ghighscores.h"
+#include "ghighscores.moc"
 
 #include <qlayout.h>
 
@@ -62,10 +63,10 @@ void setGameType(uint type)
     HighscoresPrivate::setGameType(type);
 }
 
-KConfigWidget *createConfigWidget(QWidget *parent)
+ConfigWidget *createConfigWidget(QWidget *parent)
 {
     HighscoresPrivate::checkFirst();
-    return new HighscoresConfigWidget(parent);
+    return new ImplConfigWidget(parent);
 }
 
 void showMultipleScores(const QValueList<Score> &scores, QWidget *parent)
