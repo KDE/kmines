@@ -7,6 +7,7 @@ Name[pt]=Minas e Armadilhas
 Name[hu]=Aknakereso
 Name[cs]=Minové pole
 Name[sk]=Mínové pole
+Name[hr]=Minsko polje
 Icon=kmines.xpm
 Exec=kmines -caption "%c" %i %m
 Type=Application
@@ -19,3 +20,5 @@ Comment[hu]=A népszerû játék
 Comment[pt]=Um jogo muito popular
 Comment[cs]=Hledání min v minovém poli 
 Comment[sk]=Jednoduchá hra 
+Comment[hr]=Naðite mine u minskom polju
+
