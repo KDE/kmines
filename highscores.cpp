@@ -13,42 +13,6 @@ ExtScore::ExtScore(uint score, uint clicks)
 }
 
 //-----------------------------------------------------------------------------
-class ExtScoreItemScore : public ScoreItemScore
-{
- public:
-    ExtScoreItemScore() {}
-
-    QString pretty(uint i) const {
-        return ExtHighscores::formatScore( read(i).toUInt() );
-    }
-};
-
-//-----------------------------------------------------------------------------
-class ExtPlayerItemMeanScore : public PlayerItemMeanScore
-{
- public:
-    ExtPlayerItemMeanScore() {}
-
-    QString pretty(uint i) const {
-        double n = read(i).toDouble();
-        if ( n==0 ) return "--";
-        return ExtHighscores::formatScore( (uint)n );
-    }
-};
-
-class ExtPlayerItemBestScore : public PlayerItemBestScore
-{
- public:
-    ExtPlayerItemBestScore() {}
-
-    QString pretty(uint i) const {
-        uint n = read(i).toUInt();
-        if ( n==0 ) return "--";
-        return ExtHighscores::formatScore(n);
-    }
-};
-
-//-----------------------------------------------------------------------------
 QString ExtHighscores::gameTypeLabel(uint level, LabelType type) const
 {
     const Level::Data &data = Level::data((Level::Type)level);
@@ -85,24 +49,23 @@ void ExtHighscores::convertLegacy(uint level) const
     submitLocal(s, name);
 }
 
-QString ExtHighscores::formatScore(uint n)
+ItemBase *ExtHighscores::scoreItem() const
 {
-    n = 3600 - n;
-    return QString::number(n / 60).rightJustify(2, '0') + ':'
-        + QString::number(n % 60).rightJustify(2, '0');
+    ItemBase *item = Highscores::scoreItem();
+    item->setPrettyFormat(ItemBase::Time);
+    return item;
 }
 
-ItemBase *ExtHighscores::scoreItemScore() const
+ItemBase *ExtHighscores::bestScoreItem() const
 {
-    return new ExtScoreItemScore;
+    ItemBase *item = Highscores::bestScoreItem();
+    item->setPrettyFormat(ItemBase::Time);
+    return item;
 }
 
-ItemBase *ExtHighscores::playerItemBestScore() const
+ItemBase *ExtHighscores::meanScoreItem() const
 {
-    return new ExtPlayerItemBestScore;
-}
-
-ItemBase *ExtHighscores::playerItemMeanScore() const
-{
-    return new ExtPlayerItemMeanScore;
+    ItemBase *item = Highscores::meanScoreItem();
+    item->setPrettyFormat(ItemBase::Time);
+    return item;
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE kpartgui>
-<kpartgui name="kmines" version="6">
+<kpartgui name="kmines" version="7">
 
 <MenuBar>
   <Menu name="game"><text>&amp;Game</text>
@@ -30,8 +30,5 @@
   <Separator/>
   <Action name="game_quit"/>
 </Menu>
-
-<ToolBar name="mainToolBar" noMerge="1"><text>Main Toolbar</text>
-</ToolBar>
 
 </kpartgui>

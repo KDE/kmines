@@ -1,7 +1,9 @@
-2.1.2 (18 October 2001) [in CVS]
+2.1.2 (14 November 2001) [in CVS]
+ * date for each highscores and for best highscore [proposed by Jenne]
  * some more reorganisation
  * better custom dialog
- * #### test i18n error msg
+ * slightly modify the init/repaint at game start : more clean & repaint could
+   leak some infos about mines position (?)
 
 2.1.1 (16 October 2001)
  * port to Qt 3.0 completed (hopefully)
@@ -13,8 +15,7 @@
    forbidden as keys now ...
  * count nb of clicks (reveal, autoreveal, mark) and display it in highscores.
 
-2.1.0 (17 July 2001) 
- -- version released with KDE 2.2 --
+2.1.0 (17 July 2001) [KDE 2.2]
  * fixed checked entry in "show highscores" submenu
 
 2.0.13 (10 June 2001) [released]

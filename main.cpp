@@ -39,9 +39,9 @@ MainWidget::MainWidget()
 
 	// Game & Popup
 	KStdGameAction::gameNew(status, SLOT(restartGame()), actionCollection());
-    KStdGameAction::pause(status, SLOT(pauseGame()), actionCollection());
-    KStdGameAction::highscores(this, SLOT(showHighscores()),
-                               actionCollection());
+	KStdGameAction::pause(status, SLOT(pauseGame()), actionCollection());
+	KStdGameAction::highscores(this, SLOT(showHighscores()),
+                                   actionCollection());
 	KStdGameAction::print(status, SLOT(print()), actionCollection());
 	KStdGameAction::quit(qApp, SLOT(quit()), actionCollection());
 

@@ -18,13 +18,13 @@ class Field : public QFrame, public KMines
 {
  Q_OBJECT
  public:
-    Field(QWidget *parent);
+	Field(QWidget *parent);
 
 	QSize sizeHint() const;
-    QSizePolicy sizePolicy() const;
+	QSizePolicy sizePolicy() const;
 
-	void restart(bool repaint = true);
-    bool isPaused() const { return state==Paused; }
+	void restart();
+	bool isPaused() const { return state==Paused; }
 	void pause();
 	void stop() { state = Stopped; }
 	void showMines();
@@ -41,9 +41,9 @@ class Field : public QFrame, public KMines
 	void setLevel(const Level &);
 	const Level &level() const { return _level; }
 	void readSettings();
-    void setCaseSize(uint s);
-    uint caseSize() const { return cp.size; }
-    uint nbActions() const { return nb_actions; }
+	void setCaseSize(uint s);
+	uint caseSize() const { return cp.size; }
+	uint nbActions() const { return nb_actions; }
 
  public slots:
 	void resume();
@@ -64,7 +64,7 @@ class Field : public QFrame, public KMines
 	void mouseMoveEvent(QMouseEvent *);
 
  private slots:
-    void keyboardAutoRevealSlot();
+	void keyboardAutoRevealSlot();
 
  private:
 	QMemArray<Case> _pfield;
@@ -72,7 +72,7 @@ class Field : public QFrame, public KMines
 	KRandomSequence random;
 
 	GameState state;
-    uint      nb_actions;
+	uint      nb_actions;
 	bool      u_mark, cursor, firstReveal;
 
 	uint  ic, jc;              // current pos
@@ -81,7 +81,7 @@ class Field : public QFrame, public KMines
 
 	CaseProperties cp;
 	QPixmap        pm_flag, pm_mine, pm_exploded, pm_error;
-    QPushButton    button;
+	QPushButton    button;
 
 	uint computeNeighbours(uint, uint) const;
 	void uncover(uint, uint);
@@ -104,8 +104,8 @@ class Field : public QFrame, public KMines
 	int iToX(uint i) const;
 	int jToY(uint j) const;
 
-	void drawCase(uint, uint);
-	void drawBox(uint, uint, bool, const QPixmap * = 0,
+	void drawCase(QPainter &, uint, uint);
+	void drawBox(QPainter &, uint, uint, bool, const QPixmap * = 0,
                  const QString &text = QString::null,
                  const QColor &textColor = black);
 	void eraseField();

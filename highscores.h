@@ -18,15 +18,13 @@ class ExtHighscores : public Highscores
     ExtHighscores()
         : Highscores(VERSION, WORLD_WIDE_HS_URL, Level::NbLevels) {}
 
-    static QString formatScore(uint);
-
  private:
     QString gameTypeLabel(uint level, LabelType) const;
     void convertLegacy(uint level) const;
     Score *score() const { return new ExtScore; }
-    ItemBase *scoreItemScore() const;
-    ItemBase *playerItemBestScore() const;
-    ItemBase *playerItemMeanScore() const;
+    ItemBase *scoreItem() const;
+    ItemBase *bestScoreItem() const;
+    ItemBase *meanScoreItem() const;
 };
 
 #endif

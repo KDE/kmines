@@ -1,146 +1,27 @@
 #include "ghighscores.h"
-#include "ghighscores.moc"
 
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qvbox.h>
-#include <qheader.h>
 #include <qfile.h>
-#include <qtextstream.h>
-#include <qgrid.h>
+#include <qlayout.h>
 
 #include <kapplication.h>
-#include <kmessagebox.h>
-#include <kiconloader.h>
 #include <kmdcodec.h>
 #include <kio/netaccess.h>
 #include <khighscore.h>
-#include <kurllabel.h>
-#include <kopenwith.h>
-#include <krun.h>
+#include <kiconloader.h>
+#include <kmessagebox.h>
 
+#include "ghighscores_gui.h"
 
-//-----------------------------------------------------------------------------
-void ItemBase::set(const QString &n, const QString &grp, const QString &sgrp)
-{
-    _name = n;
-    _group = grp;
-    _subGroup = sgrp;
-}
-
-QString ItemBase::entryName() const
-{
-    if ( !_canHaveSubGroup || _subGroup.isEmpty() ) return _name;
-    return _name + "_" + _subGroup;
-}
-
-QVariant ItemBase::read(uint i) const
-{
-    Q_ASSERT( stored() );
-    KHighscore hs;
-    hs.setHighscoreGroup(_group);
-    QVariant v = hs.readEntry(i+1, entryName(), _default.toString());
-    if ( v.cast(_default.type()) ) return v;
-    return _default;
-}
-
-QString ItemBase::pretty(uint i) const
-{
-	return read(i).toString();
-}
-
-void ItemBase::write(uint i, const QVariant &value) const
-{
-    Q_ASSERT( stored() );
-    KHighscore hs;
-    hs.setHighscoreGroup(_group);
-    hs.writeEntry(i+1, entryName(), value.toString());
-}
-
-void ItemBase::moveDown(uint newIndex) const
-{
-    Q_ASSERT( newIndex!=0 );
-    write(newIndex, read(newIndex-1));
-}
-
-//-----------------------------------------------------------------------------
-ItemContainer::ItemContainer(const QString &group, const QString &subGroup)
-    : _group(group), _subGroup(subGroup)
-{
-    _items.setAutoDelete(true);
-    _names.setAutoDelete(true);
-}
-
-void ItemContainer::addItem(const QString &key, ItemBase *item, bool stored)
-{
-    uint i = _items.count();
-    _names.insert(key, new uint(i));
-    _items.append(item);
-    _items.at(i)->set(key, (stored ? _group : QString::null), _subGroup);
-}
-
-const ItemBase &ItemContainer::item(const QString &n) const
-{
-    QPtrListIterator<ItemBase> it(_items);
-    it += name(n);
-    return *it.current();
-}
-
-//-----------------------------------------------------------------------------
-void DataContainer::addData(const QString &key, ItemBase *item, bool stored,
-                            QVariant value)
-{
-    ItemContainer::addItem(key, item, stored);
-    _data.append(value);
-}
-
-QString DataContainer::prettyData(const QString &name) const
-{
-	return data(name).toString();
-}
-
-void DataContainer::read(uint i)
-{
-    QPtrListIterator<ItemBase> it(items());
-    while( it.current() ) {
-        const ItemBase *item = it.current();
-        data(item->name()) = item->read(i);
-        ++it;
-    }
-}
-
-void DataContainer::write(uint i, uint nb) const
-{
-    QPtrListIterator<ItemBase> it(items());
-    while( it.current() ) {
-        const ItemBase *item = it.current();
-        ++it;
-        if ( !item->stored() ) continue;
-        for (uint j=nb-1; j>i; j--) item->moveDown(j);
-        item->write(i, data(item->name()));
-    }
-}
-
-QDataStream &operator <<(QDataStream &stream, const DataContainer &c)
-{
-    stream << c._data;
-    return stream;
-}
-
-QDataStream &operator >>(QDataStream &stream, DataContainer &c)
-{
-    stream >> c._data;
-    return stream;
-}
 
 //-----------------------------------------------------------------------------
 Score::Score(uint score)
     : DataContainer(highscores().scoreGroup(), QString::null)
 {
-    addData("rank", new ScoreItemRank, false, (uint)0);
+    addData("rank", new RankItem, false, (uint)0);
     addData("name", new ItemBase(i18n("anonymous"), i18n("Player"),
                                  Qt::AlignLeft), true, QString::null);
-    addData("score", highscores().scoreItemScore(), true, score);
+    addData("score", highscores().scoreItem(), true, score);
+    addData("date", new DateItem, true, QDateTime::currentDateTime());
 }
 
 uint Score::nbEntries() const
@@ -153,21 +34,21 @@ const char *HS_ID              = "player id";
 const char *HS_REGISTERED_NAME = "registered name";
 const char *HS_KEY             = "player key";
 const char *HS_WW_ENABLED      = "ww hs enabled";
-const char *ANONYMOUS          = "_";
 
 PlayerInfos::PlayerInfos()
     : ItemContainer("players", highscores().playerSubGroup())
 {
-    addItem("name", new PlayerItemName, true);
+    addItem("name", new NameItem, true);
     addItem("nb games", new ItemBase((uint)0, i18n("Nb of games"),
                                      Qt::AlignRight, true), true);
     if ( highscores().isLostGameEnabled() )
-        addItem("success", new PlayerItemWin, true);
-    addItem("mean score", highscores().playerItemMeanScore(), true);
-    addItem("best score", highscores().playerItemBestScore(), true);
+        addItem("success", new SuccessPercentageItem, true);
+    addItem("mean score", highscores().meanScoreItem(), true);
+    addItem("best score", highscores().bestScoreItem(), true);
     if ( highscores().isBlackMarkEnabled() )
         addItem("black mark", new ItemBase((uint)0, i18n("Black mark"),
                                            Qt::AlignRight, true), true);
+    addItem("date", new DateItem, true);
     addItem("comment", new ItemBase(QString::null, i18n("Comment"),
                                     Qt::AlignLeft), true);
 
@@ -182,7 +63,7 @@ bool PlayerInfos::isNewPlayer()
 
 bool PlayerInfos::isAnonymous() const
 {
-    return ( name()==ANONYMOUS );
+    return ( name()==ItemBase::ANONYMOUS );
 }
 
 KConfig *PlayerInfos::config()
@@ -204,7 +85,7 @@ void PlayerInfos::addPlayer()
 {
     _id = nbEntries();
     config()->writeEntry(HS_ID, _id);
-    item("name").write(_id, QString(ANONYMOUS));
+    item("name").write(_id, QString(ItemBase::ANONYMOUS));
 }
 
 QString PlayerInfos::key() const
@@ -240,8 +121,10 @@ void PlayerInfos::submitScore(bool won, const Score &score) const
         double success = 100.0 * nb_success / nb;
         item("success").write(_id, success);
     }
-    if ( score.score()>item("best score").read(_id).toUInt() )
+    if ( score.score()>item("best score").read(_id).toUInt() ) {
         item("best score").write(_id, score.score());
+        item("date").write(_id, score.date());
+    }
 }
 
 void PlayerInfos::submitBlackMark() const
@@ -265,187 +148,6 @@ void PlayerInfos::modifySettings(const QString &newName,
 QString PlayerInfos::registeredName() const
 {
     return config()->readEntry(HS_REGISTERED_NAME, QString::null);
-}
-
-//-----------------------------------------------------------------------------
-ShowHighscoresItem::ShowHighscoresItem(QListView *list, bool highlight)
-    : KListViewItem(list), _highlight(highlight)
-{}
-
-void ShowHighscoresItem::paintCell(QPainter *p, const QColorGroup &cg,
-                                   int column, int width, int align)
-{
-    QColorGroup cgrp(cg);
-    if (_highlight) cgrp.setColor(QColorGroup::Text, red);
-    KListViewItem::paintCell(p, cgrp, column, width, align);
-}
-
-//-----------------------------------------------------------------------------
-ShowScoresList::ShowScoresList(QWidget *parent)
-    : KListView(parent)
-{
-    setSelectionMode(QListView::NoSelection);
-    setItemMargin(3);
-    setAllColumnsShowFocus(true);
-    setSorting(-1);
-    header()->setClickEnabled(false);
-    header()->setMovingEnabled(false);
-}
-
-void ShowScoresList::addLine(const ItemContainer &container, int index,
-                             bool highlight)
-{
-    QListViewItem *line
-        = (index==-1 ? 0 : new ShowHighscoresItem(this, highlight));
-    int i = -1;
-    QPtrListIterator<ItemBase> it(container.items());
-    while ( it.current() ) {
-        const ItemBase *item = it.current();
-        ++it;
-        if ( !item->shown() || !showColumn(item) ) continue;
-        i++;
-        if (line) line->setText(i, itemText(item, index));
-        else {
-            addColumn( item->label() );
-            setColumnAlignment(i, item->alignment());
-        }
-    }
-}
-
-//-----------------------------------------------------------------------------
-ShowHighscoresList::ShowHighscoresList(const ItemContainer &container,
-                                       int highlight, QWidget *parent)
-    : ShowScoresList(parent)
-{
-    uint nb = container.nbEntries();
-    for (int j=nb; j>=0; j--)
-        addLine(container, (j==(int)nb ? -1 : j), j==highlight);
-}
-
-QString ShowHighscoresList::itemText(const ItemBase *item, uint row) const
-{
-    return item->pretty(row);
-}
-
-//-----------------------------------------------------------------------------
-ShowHighscoresWidget::ShowHighscoresWidget(int localRank,
-         QWidget *parent, const Score &score, const PlayerInfos &player,
-         int spacingHint)
-    : QWidget(parent, "show_highscores_widget")
-{
-    QVBoxLayout *vbox = new QVBoxLayout(this, spacingHint);
-
-    QTabWidget *tw = new QTabWidget(this);
-    vbox->addWidget(tw);
-
-    QWidget *w;
-    if ( score.nbEntries()==0 ) {
-        QLabel *lab = new QLabel(i18n("no score entry"), this);
-        lab->setAlignment(AlignCenter);
-        w = lab;
-    } else w = new ShowHighscoresList(score, localRank, this);
-    tw->addTab(w, i18n("Best &scores"));
-
-    w = new ShowHighscoresList(player, player.id(), this);
-    tw->addTab(w, i18n("&Players"));
-
-    if ( highscores().isWWHSAvailable() ) {
-        KURLLabel *urlLabel = new KURLLabel(highscores().highscoresURL(),
-                                 i18n("View world-wide highscores"), this);
-        connect(urlLabel, SIGNAL(leftClickedURL(const QString &)),
-                SLOT(showURL(const QString &)));
-        vbox->addWidget(urlLabel);
-
-        urlLabel = new KURLLabel(highscores().playersURL(),
-                                 i18n("View world-wide players"), this);
-        connect(urlLabel, SIGNAL(leftClickedURL(const QString &)),
-                SLOT(showURL(const QString &)));
-        vbox->addWidget(urlLabel);
-    }
-}
-
-void ShowHighscoresWidget::showURL(const QString &url) const
-{
-    KFileOpenWithHandler foo;
-    (void)new KRun(KURL(url));
-}
-
-//-----------------------------------------------------------------------------
-ShowMultiScoresList::ShowMultiScoresList(const QPtrVector<Score> &scores,
-                                         QWidget *parent)
-    : ShowScoresList(parent), _scores(scores)
-{
-    addLine(*scores[0], -1, false);
-    for (uint i=0; i<scores.size(); i++)
-        addLine(*scores[i], i, false);
-}
-
-QString ShowMultiScoresList::itemText(const ItemBase *item, uint row) const
-{
-    return _scores[row]->prettyData(item->name());
-}
-
-bool ShowMultiScoresList::showColumn(const ItemBase *item) const
-{
-    return item->name()!="rank";
-}
-
-//-----------------------------------------------------------------------------
-ShowMultiScoresDialog::ShowMultiScoresDialog(const QPtrVector<Score> &scores,
-                                             QWidget *parent)
-: KDialogBase(Plain, i18n("Multiplayers scores"), Close, Close,
-			  parent, "show_multiplayers_score", true, true)
-{
-    QVBoxLayout *vbox = new QVBoxLayout(plainPage());
-    QWidget *list = new ShowMultiScoresList(scores, plainPage());
-    vbox->addWidget(list);
-
-    enableButtonSeparator(false);
-}
-
-//-----------------------------------------------------------------------------
-HighscoresSettingsWidget::HighscoresSettingsWidget(BaseSettingsDialog *parent,
-                                                   PlayerInfos *infos)
-    : BaseSettingsWidget(new BaseSettings(i18n("Highscores"), "highscores"),
-						 parent, "highscores_settings"),
-      _WWHEnabled(0)
-{
-    QVBoxLayout *top = new QVBoxLayout(this, parent->spacingHint());
-
-    QGrid *grid = new QGrid(2, this);
-    grid->setSpacing(parent->spacingHint());
-    top->addWidget(grid);
-    (void)new QLabel(i18n("Nickname"), grid);
-    _nickname = new QLineEdit((infos->isAnonymous() ? QString::null
-                               : infos->name()), grid);
-    _nickname->setMaxLength(16);
-    QString name = infos->registeredName();
-    if ( !infos->key().isEmpty() && !name.isEmpty() ) {
-        (void)new QLabel(i18n("Registered nickname :"), grid);
-        (void)new QLabel(name, grid);
-    }
-
-    (void)new QLabel(i18n("Comment"), grid);
-    _comment = new QLineEdit(infos->comment(), grid);
-    _comment->setMaxLength(50);
-
-    if ( highscores().isWWHSAvailable() ) {
-        _WWHEnabled
-            = new QCheckBox(i18n("world-wide highscores enabled"), this);
-        _WWHEnabled->setChecked(infos->WWEnabled());
-        top->addWidget(_WWHEnabled);
-    }
-}
-
-bool HighscoresSettingsWidget::writeConfig()
-{
-    bool enabled = (_WWHEnabled ? _WWHEnabled->isChecked() : false);
-    bool res
-        =  highscores().modifySettings(_nickname->text().lower(),
-                                       _comment->text(), enabled,
-                                       (QWidget *)parent());
-    if ( !res ) emit showPage();
-    return res;
 }
 
 //-----------------------------------------------------------------------------
@@ -705,6 +407,8 @@ bool Highscores::_doQuery(const KURL &url, QDomNamedNodeMap &attributes,
             }
         }
     }
+    file.close();
+    KIO::NetAccess::removeTempFile(tmpFile);
     error = i18n("Invalid answer.");
     return false;
 }
