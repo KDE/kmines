@@ -21,12 +21,12 @@
 #define G_HIGHSCORES_H
 
 #include <qvaluevector.h>
+#include <kurl.h>
 
 #include "ghighscores_item.h"
 
 class QTabWidget;
 class QWidget;
-class KURL;
 
 
 namespace KExtHighscore
