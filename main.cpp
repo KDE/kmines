@@ -55,6 +55,7 @@ KMines::KMines(QWidget *parent, const char *name)
 	popup->insertItem(i18n("Quit"), this, SLOT(quit()) );
   
 	options = new QPopupMenu;
+	options->setCheckable(TRUE);
 	um_id = options->insertItem(i18n("? mark"), this, SLOT(toggleUMark()) );
 	options->insertItem(i18n("Keys"), this, SLOT(configKeys()) );
 	
