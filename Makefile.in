@@ -23,12 +23,9 @@ INSTALL_DIR = $(install) -d -m 0755
 INSTALL_DIR_PRIVATE = $(install) -d -m 0700
 
 prefix = @prefix@
-KDEINC = $(prefix)/include
 BINDIR = $(prefix)/bin
-LIBDIR = $(prefix)/lib
-PICSDIR = $(LIBDIR)/pics
-DOCDIR = $(prefix)/doc/HTML
-APPSDIR= $(prefix)/apps/Games
+DOCDIR = $(prefix)/share/doc/HTML
+APPSDIR= $(prefix)/share/applnk/Games
 
 ########### File Formats ###########
 
