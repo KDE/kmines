@@ -197,7 +197,6 @@ int main( int argc, char ** argv )
 	km->setCaption( a.getCaption() );
 
 	a.setMainWidget(km);
-	a.restoreTopLevelGeometry();
 	km->show();
 	
     return a.exec();
