@@ -25,7 +25,7 @@ INSTALL_DIR_PRIVATE = $(install) -d -m 0700
 prefix = @prefix@
 BINDIR = $(prefix)/bin
 ICONDIR = $(prefix)/share/icons
-MINIDIR = $(prefix)/share/icons/mini 
+MINIDIR = $(prefix)/share/icons/mini
 DOCDIR = $(prefix)/share/doc/HTML/en/kmines
 APPDIR = $(prefix)/share/applnk/Games
 
