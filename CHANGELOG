@@ -1,3 +1,6 @@
+2.1.8c (17 May 2004) [KDE 3.2.3 stable]
+ * fix bug #80721
+
 2.1.8b (26 February 2004) [KDE 3.2.1 stable]
  * fix solver crash when "magic reveal" on.
  * fix longstanding crash in solver dialog.
