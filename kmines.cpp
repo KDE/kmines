@@ -106,7 +106,7 @@ void KMines::about()
 
 void KMines::help()
 {
-	kapp->invokeHTMLHelp("kmines.html",QString());
+	kapp->invokeHTMLHelp("","");
 }
 
 void KMines::change_level(int lev)
