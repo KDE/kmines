@@ -109,7 +109,7 @@ mines.</para></listitem>
 clear the surrounding cases if there is the right number of cases
 already flagged. It is very useful since it is much quicker than
 uncovering all individual cases. </para>
-<warning><para>If your flags are not properly positionned, you will
+<warning><para>If your flags are not properly positioned, you will
 explode on a bomb.</para></warning></listitem>
 <listitem><para>Pressing the <guiicon>yellow smiley</guiicon> will start a new
 game.</para></listitem>
