@@ -149,7 +149,7 @@ void CustomConfig::updateNbMines()
             _mines->value().toUInt());
 	static_cast<KRangedConfigItem *>(_mines)
         ->setRange(1, Level::maxNbMines(l.width(), l.height()));
-	_mines->setText(i18n("Mines (%1%)")
+	_mines->setText(i18n("Mines (%1%):")
                     .arg(100*l.nbMines()/l.width()/l.height()));
     _gameType->setCurrentItem(l.type());
 }

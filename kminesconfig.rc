@@ -15,11 +15,11 @@
 
   <Entry name="custom width" type="ranged" vtype="int"
          defaultValue="10" minValue="5" maxValue="50">
-  <text>Width</text>
+  <text>Width:</text>
   </Entry>
   <Entry name="custom height" type="ranged" vtype="int"
          defaultValue="10" minValue="5" maxValue="50">
-  <text>Height</text>
+  <text>Height:</text>
   </Entry>
   <Entry name="custom mines" type="ranged" vtype="int"
          defaultValue="20" minValue="1" maxValue="2500">
@@ -40,25 +40,25 @@
   </Entry>
 
   <Entry name="mouse left" type="multi" defaultValue="reveal">
-  <text>Left button</text>
-  <Item name="reveal"><text>reveal</text></Item>
-  <Item name="autoreveal"><text>autoreveal</text></Item>
-  <Item name="toggle flag"><text>toggle flag</text></Item>
-  <Item name="toggle ? flag"><text>toggle ? flag</text></Item>
+  <text>Left button:</text>
+  <Item name="reveal"><text>Reveal</text></Item>
+  <Item name="autoreveal"><text>Autoreveal</text></Item>
+  <Item name="toggle flag"><text>Toggle Flag</text></Item>
+  <Item name="toggle ? flag"><text>Toggle ? Flag</text></Item>
   </Entry>
   <Entry name="mouse mid" type="multi" defaultValue="autoreveal">
-  <text>Middle button</text>
-  <Item name="reveal"><text>reveal</text></Item>
-  <Item name="autoreveal"><text>autoreveal</text></Item>
-  <Item name="toggle flag"><text>toggle flag</text></Item>
-  <Item name="toggle ? flag"><text>toggle ? flag</text></Item>
+  <text>Middle button:</text>
+  <Item name="reveal"><text>Reveal</text></Item>
+  <Item name="autoreveal"><text>Autoreveal</text></Item>
+  <Item name="toggle flag"><text>Toggle Flag</text></Item>
+  <Item name="toggle ? flag"><text>Toggle ? Flag</text></Item>
   </Entry>
   <Entry name="mouse right" type="multi" defaultValue="toggle flag">
-  <text>Right button</text>
-  <Item name="reveal"><text>reveal</text></Item>
-  <Item name="autoreveal"><text>autoreveal</text></Item>
-  <Item name="toggle flag"><text>toggle flag</text></Item>
-  <Item name="toggle ? flag"><text>toggle ? flag</text></Item>
+  <text>Right button:</text>
+  <Item name="reveal"><text>Reveal</text></Item>
+  <Item name="autoreveal"><text>Autoreveal</text></Item>
+  <Item name="toggle flag"><text>Toggle Flag</text></Item>
+  <Item name="toggle ? flag"><text>Toggle ? Flag</text></Item>
   </Entry>
 
   <Entry name="magic reveal" vtype="bool" defaultValue="false">
@@ -68,44 +68,44 @@
 
   <Entry name="case size" type="ranged" vtype="int"
          defaultValue="20" minValue="8" maxValue="100">
-  <text>Case size</text>
+  <text>Case size:</text>
   </Entry>
 
   <Entry name="flag color" vtype="QColor" defaultValue="#FF0000">
-  <text>Flag color</text>
+  <text>Flag color:</text>
   </Entry>
   <Entry name="explosion color" vtype="QColor" defaultValue="#FF0000">
-  <text>Explosion color</text>
+  <text>Explosion color:</text>
   </Entry>
   <Entry name="error color" vtype="QColor" defaultValue="#FF0000">
-  <text>Error color</text>
+  <text>Error color:</text>
   </Entry>
 
   <Entry name="color #0" vtype="QColor" defaultValue="#0000FF">
-  <text>1 mine color</text>
+  <text>1 mine color:</text>
   </Entry>
   <Entry name="color #1" vtype="QColor" defaultValue="#008800">
-  <text>2 mines color</text>
+  <text>2 mines color:</text>
   </Entry>
   <Entry name="color #2" vtype="QColor" defaultValue="#888800">
-  <text>3 mines color</text>
+  <text>3 mines color:</text>
   </Entry>
   <Entry name="color #3" vtype="QColor" defaultValue="#880088">
-  <text>4 mines color</text>
+  <text>4 mines color:</text>
   </Entry>
   <Entry name="color #4" vtype="QColor" defaultValue="#FF0000">
-  <text>5 mines color</text>
+  <text>5 mines color:</text>
   </Entry>
   <Entry name="color #5" vtype="QColor" defaultValue="#880000">
-  <text>6 mines color</text>
+  <text>6 mines color:</text>
   </Entry>
   <Entry name="color #6" vtype="QColor" defaultValue="#000000">
-  <text>7 mines color</text>
+  <text>7 mines color:</text>
   </Entry>
   <Entry name="color #7" vtype="QColor" defaultValue="#000000">
-  <text>8 mines color</text>
+  <text>8 mines color:</text>
   </Entry>
-         
+
 </Group>
 
 </kconfig>

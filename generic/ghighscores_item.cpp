@@ -138,14 +138,14 @@ ScoreItem::ScoreItem(uint minScore)
 {}
 
 MeanScoreItem::MeanScoreItem()
-    : Item((double)0, i18n("Mean score"), Qt::AlignRight)
+    : Item((double)0, i18n("Mean Score"), Qt::AlignRight)
 {
     setPrettyFormat(OneDecimal);
     setPrettySpecial(ZeroNotDefined);
 }
 
 BestScoreItem::BestScoreItem()
-    : Item((uint)0, i18n("Best score"), Qt::AlignRight)
+    : Item((uint)0, i18n("Best Score"), Qt::AlignRight)
 {
     setPrettySpecial(ZeroNotDefined);
 }

@@ -250,7 +250,7 @@ PlayerInfos::PlayerInfos()
 
     // standard items
     addItem("name", new NameItem);
-    addItem("nb games", new Item((uint)0, i18n("Games count"),
+    addItem("nb games", new Item((uint)0, i18n("Games Count"),
                                  Qt::AlignRight), true, true);
     addItem("mean score", new MeanScoreItem, true, true);
     addItem("best score", new BestScoreItem, true, true);

@@ -183,7 +183,7 @@ HighscoresDialog::HighscoresDialog(bool treeList, QWidget *parent)
                   KDialogBase::Close|KDialogBase::User1, KDialogBase::Close,
                   parent, "show_highscores", true, true)
 {
-    setButtonText(KDialogBase::User1, i18n("Export"));
+    setButtonText(KDialogBase::User1, i18n("Export..."));
     connect(this, SIGNAL(user1Clicked()), SLOT(exportToText()));
     enableButtonSeparator(treeList);
 }
