@@ -230,6 +230,7 @@ void Status::setPlaying()
 {
     smiley->setMood(Normal);
     dg->start();
+    if ( field->gameState()==Paused ) return; // do not restart log on resume...
 
     const Level &level = field->level();
     _log = QDomDocument("kmineslog");
