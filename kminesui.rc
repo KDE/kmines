@@ -15,7 +15,7 @@
     <Action name="log_save" />
     <Action name="log_load" />
   </Menu>
-  <Menu name="settings"><text>&amps;Settings</text>
+  <Menu name="settings"><text>&amp;Settings</text>
     <Action name="configure_highscores" append="configure_merge" />
   </Menu>
 </MenuBar>
