@@ -2,9 +2,9 @@
  * slightly better highscores dialog
  * fixed a bug in flagged mines display (cannot be negative) 
  * the LCDs gets red when there are more flagged cases than mines
-   and when you have used more time thant the better player.
+   and when you have used more time than the better player.
  * use of a status bar.
- * the smiley moods are now XPMs (made by ?)
+ * the smiley moods are now XPMs (made by Andreas Zehender)
 
 1.0.5
  * fixed layout handling (all this "updateGeometry" and "LayoutHint" stuff)
