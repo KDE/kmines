@@ -497,7 +497,7 @@ KSettingWidget::KSettingWidget(const QString &title, const QString &icon,
 
 //-----------------------------------------------------------------------------
 KSettingDialog::KSettingDialog(QWidget *parent, const char *name)
-    : KDialogBase(IconList, i18n("Configure ..."),
+    : KDialogBase(IconList, i18n("Configure..."),
                   Ok|Apply|Cancel|Default, Cancel, parent, name, true, true)
 {
     setIconListAllVisible(true);
