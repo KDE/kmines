@@ -41,17 +41,17 @@
 #include "dialogs.h"
 
 const MainWidget::KeyData MainWidget::KEY_DATA[NB_KEYS] = {
-{I18N_NOOP("Move up"),     "keyboard_moveup",    Key_Up,    SLOT(moveUp())},
-{I18N_NOOP("Move down"),   "keyboard_movedown",  Key_Down,  SLOT(moveDown())},
-{I18N_NOOP("Move right"),  "keyboard_moveright", Key_Right, SLOT(moveRight())},
-{I18N_NOOP("Move left"),   "keyboard_moveleft",  Key_Left,  SLOT(moveLeft())},
-{I18N_NOOP("Move at left edge"), "keyboard_leftedge", Key_Home, SLOT(moveLeftEdge())},
-{I18N_NOOP("Move at right edge"), "keyboard_rightedge", Key_End, SLOT(moveRightEdge())},
-{I18N_NOOP("Move at top edge"), "keyboard_topedge", Key_PageUp, SLOT(moveTop())},
-{I18N_NOOP("Move at bottom edge"), "keyboard_bottomedge", Key_PageDown, SLOT(moveBottom())},
-{I18N_NOOP("Reveal mine"), "keyboard_revealmine", Key_Space, SLOT(reveal())},
-{I18N_NOOP("Mark mine"),   "keyboard_markmine",  Key_W,     SLOT(mark())},
-{I18N_NOOP("Automatic reveal"), "keyboard_autoreveal", Key_Return, SLOT(autoReveal())}
+{I18N_NOOP("Move Up"),     "keyboard_moveup",    Key_Up,    SLOT(moveUp())},
+{I18N_NOOP("Move Down"),   "keyboard_movedown",  Key_Down,  SLOT(moveDown())},
+{I18N_NOOP("Move Right"),  "keyboard_moveright", Key_Right, SLOT(moveRight())},
+{I18N_NOOP("Move Left"),   "keyboard_moveleft",  Key_Left,  SLOT(moveLeft())},
+{I18N_NOOP("Move at Left Edge"), "keyboard_leftedge", Key_Home, SLOT(moveLeftEdge())},
+{I18N_NOOP("Move at Right Edge"), "keyboard_rightedge", Key_End, SLOT(moveRightEdge())},
+{I18N_NOOP("Move at Top Edge"), "keyboard_topedge", Key_PageUp, SLOT(moveTop())},
+{I18N_NOOP("Move at Bottom Edge"), "keyboard_bottomedge", Key_PageDown, SLOT(moveBottom())},
+{I18N_NOOP("Reveal Mine"), "keyboard_revealmine", Key_Space, SLOT(reveal())},
+{I18N_NOOP("Mark Mine"),   "keyboard_markmine",  Key_W,     SLOT(mark())},
+{I18N_NOOP("Automatic Reveal"), "keyboard_autoreveal", Key_Return, SLOT(autoReveal())}
 };
 
 
@@ -99,17 +99,17 @@ MainWidget::MainWidget()
                           actionCollection(), "advise");
     _solve = new KAction(i18n("Solve"), 0, _status, SLOT(solve()),
                          actionCollection(), "solve");
-    (void)new KAction(i18n("Solving rate..."), 0, _status, SLOT(solveRate()),
+    (void)new KAction(i18n("Solving Rate..."), 0, _status, SLOT(solveRate()),
                       actionCollection(), "solve_rate");
 
     // Log
-    (void)new KAction(i18n("View log..."), 0, _status, SLOT(viewLog()),
+    (void)new KAction(i18n("View Log..."), 0, _status, SLOT(viewLog()),
                       actionCollection(), "log_view");
-    (void)new KAction(i18n("Replay log"), 0, _status, SLOT(replayLog()),
+    (void)new KAction(i18n("Replay Log"), 0, _status, SLOT(replayLog()),
                       actionCollection(), "log_replay");
-    (void)new KAction(i18n("Save log..."), 0, _status, SLOT(saveLog()),
+    (void)new KAction(i18n("Save Log..."), 0, _status, SLOT(saveLog()),
                       actionCollection(), "log_save");
-    (void)new KAction(i18n("Load log..."), 0, _status, SLOT(loadLog()),
+    (void)new KAction(i18n("Load Log..."), 0, _status, SLOT(loadLog()),
                       actionCollection(), "log_load");
 
 	createGUI();

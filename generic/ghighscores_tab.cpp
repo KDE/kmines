@@ -103,7 +103,7 @@ const char *StatisticsTab::COUNT_LABELS[Nb_Counts] = {
     I18N_NOOP("Black marks:")
 };
 const char *StatisticsTab::TREND_LABELS[Nb_Trends] = {
-    I18N_NOOP("Current:"), I18N_NOOP("Max Won:"), I18N_NOOP("Max Lost:")
+    I18N_NOOP("Current:"), I18N_NOOP("Max won:"), I18N_NOOP("Max lost:")
 };
 
 StatisticsTab::StatisticsTab(QWidget *parent)
@@ -114,7 +114,7 @@ StatisticsTab::StatisticsTab(QWidget *parent)
 
     QHBoxLayout *hbox = new QHBoxLayout(top);
     QVBoxLayout *vbox = new QVBoxLayout(hbox);
-    QVGroupBox *group = new QVGroupBox(i18n("Games counts"), this);
+    QVGroupBox *group = new QVGroupBox(i18n("Games Counts"), this);
     vbox->addWidget(group);
     QGrid *grid = new QGrid(3, group);
     grid->setSpacing(KDialogBase::spacingHint());
