@@ -384,7 +384,6 @@ bool PlayerInfos::_doQuery(const KURL &url, QDomNamedNodeMap &attributes,
                            QString &error)
 {
     QString tmpFile;
-    qDebug("do query %s", url.prettyURL().latin1());
     if ( !KIO::NetAccess::download(url, tmpFile) ) {
   	    error = i18n("Unable to contact remote host.");
 	    return false;
@@ -395,7 +394,7 @@ bool PlayerInfos::_doQuery(const KURL &url, QDomNamedNodeMap &attributes,
 	    return false;
 	}
 	QTextStream t(&file);
-	QString content = t.read();
+	QString content = t.read().stripWhiteSpace();
 	file.close();
 	if ( content.isEmpty() ) {
         error = i18n("No data in answer.");
@@ -575,7 +574,6 @@ HighscoresOption::HighscoresOption(KDialogBase *dialog)
 
     _WWHEnabled = new QCheckBox(i18n("world-wide highscores enabled"), page);
     _WWHEnabled->setChecked(pi.WWEnabled());
-    _WWHEnabled->setEnabled(false); // #### fixme
     top->addWidget(_WWHEnabled);
 
     top->addStretch(1);
