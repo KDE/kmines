@@ -20,12 +20,12 @@
 #define HIGHSCORES_H
 
 #include <kexthighscore.h>
-
+#include <kdemacros.h>
 
 namespace KExtHighscore
 {
 
-class ExtManager : public Manager
+class KDE_EXPORT ExtManager : public Manager
 {
  public:
     ExtManager();
