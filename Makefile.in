@@ -30,6 +30,8 @@ INSTALL_DIR_PRIVATE = $(install) -d -m 0700
 
 prefix = @prefix@
 BINDIR = $(prefix)/bin
+ICONDIR = $(prefix)/share/icons
+MINIDIR = $(prefix)/share/icons/mini
 DOCDIR = $(prefix)/share/doc/HTML/en/kmines
 APPSDIR= $(prefix)/share/applnk/Games
 
@@ -74,10 +76,16 @@ install: all
 	$(INSTALL_DATA) $(DOC) $(DOCDIR)
 	$(INSTALL_DIR) $(APPSDIR)
 	$(INSTALL_DATA) kmines.kdelnk $(APPSDIR)
+	$(INSTALL_DIR) $(ICONDIR)
+	$(INSTALL_DATA) kmines.xpm $(ICONDIR)
+	$(INSTALL_DIR) $(MINIDIR)
+	$(INSTALL_DATA) mini-kmines.xpm $(MINIDIR)/kmines.xpm
 
 uninstall:
 	rm -f $(BINDIR)/$(TARGET)
 	rm -f $(DOCSDIR)/$(DOC)
 	rm -f $(APPSDIR)/kmines.kdelnk
+	rm -f $(ICONDIR)/kmines.xpm
+	rm -f $(MINIDIR)/kmines.xpm
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.

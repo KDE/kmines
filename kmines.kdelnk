@@ -1,6 +1,7 @@
 # KDE Config File 
 [KDE Desktop Entry]
 Name=Minesweeper
+Icon=kmines.xpm
 Name[pl]=Saper
 Exec=kmines -caption "%c"
 Type=Application
