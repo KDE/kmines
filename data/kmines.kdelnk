@@ -1,6 +1,7 @@
 # KDE Config File 
 [KDE Desktop Entry]
 Name=Minesweeper
+Name[br]=Divombezenner
 Name[ca]=Cercamines
 Name[cs]=Minové pole
 Name[da]=Minesøger
@@ -8,7 +9,7 @@ Name[es]=Buscaminas
 Name[fi]=Miinaharava
 Name[fr]=Démineur
 Name[hr]=Minsko polje
-Name[hu]=Aknakereso
+Name[hu]=Aknakeresõ
 Name[is]=Sprengjuhreinsun
 Name[it]=Campo minato
 Name[no]=Minesveiper
@@ -25,6 +26,7 @@ Exec=kmines -caption "%c" %i %m
 Type=Application
 DocPath=kmines/index.html
 Comment=KDE replacement for xbombs
+Comment[br]=Nevezentadur xbombs KDE
 Comment[ca]=El substitut KDE per xbombs
 Comment[cs]=Hledání min v minovém poli
 Comment[da]=KDE's erstatning for xbomber
