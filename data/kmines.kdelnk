@@ -2,6 +2,7 @@
 [KDE Desktop Entry]
 Name=Minesweeper
 Name[cs]=Minové pole
+Name[da]=Minesøger
 Name[es]=Buscaminas
 Name[fi]=Miinaharava
 Name[fr]=Démineur
@@ -23,6 +24,7 @@ Type=Application
 DocPath=kmines/index.html
 Comment=KDE replacement for xbombs
 Comment[cs]=Hledání min v minovém poli
+Comment[da]=KDE's erstatning for xbomber
 Comment[de]=Das bekannte Spiel Bombenfinden
 Comment[es]=Sustituto para xbombs de KDE
 Comment[fi]=Tunnettu miinaharavapeli
