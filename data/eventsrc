@@ -71,7 +71,7 @@ default_presentation=0
 
 [unmark]
 Name=Unmark case
-Name[bg]=Отмаркиране
+Name[bg]=Размаркиране
 Name[da]=Afmarkér felt
 Name[es]=Desmarcar el caso
 Name[hu]=Mező kijelölésének megszüntetése
