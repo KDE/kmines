@@ -1,6 +1,7 @@
 [!Global!]
 IconName=kmines
 Comment=KMines
+Comment[ar]=لعبة الألغام (KMines)
 Comment[bn]=কে-মাইন্স
 Comment[hi]=के-माइन्स
 Comment[pt_BR]=KMinas
@@ -13,6 +14,7 @@ Comment[zh_TW]=KMine 踩地雷
 
 [reveal]
 Name=Reveal case
+Name[ar]=أظهر القضية
 Name[bg]=Разкриване
 Name[bn]=মাইন প্রদর্শন করো
 Name[bs]=Otkrij polja
@@ -313,6 +315,7 @@ default_presentation=0
 
 [explosion]
 Name=Explosion
+Name[ar]=انفجار
 Name[bg]=Експлозия
 Name[bn]=বিস্ফোরণ
 Name[bs]=Eksplozija
@@ -390,6 +393,7 @@ default_presentation=0
 
 [won]
 Name=Game won
+Name[ar]=ربحت اللعبة
 Name[bg]=Спечелихте
 Name[bn]=খেলা জিতেছেন
 Name[bs]=Pobjeda
@@ -429,6 +433,7 @@ Name[wa]=Djeu wangnî
 Name[zh_CN]=您赢了游戏
 Name[zh_TW]=遊戲獲勝
 Comment=Game won
+Comment[ar]=ربحت اللعبة
 Comment[bg]=Спечелихте
 Comment[bn]=খেল খতম
 Comment[bs]=Pobjeda
@@ -471,6 +476,7 @@ default_presentation=0
 
 [lost]
 Name=Game lost
+Name[ar]=خسرت اللعبة
 Name[bg]=Загубихте
 Name[bn]=খেলায় হেরে গিয়েছেন
 Name[bs]=Poraz
@@ -510,6 +516,7 @@ Name[wa]=Djeu pierdou
 Name[zh_CN]=您输了游戏
 Name[zh_TW]=遊戲失敗
 Comment=Game lost
+Comment[ar]=خسرت اللعبة
 Comment[bg]=Загубихте
 Comment[bn]=খেলায় হেরে গিয়েছেন
 Comment[bs]=Poraz
@@ -575,6 +582,7 @@ Name[sr]=Постави знак питања
 Name[sr@Latn]=Postavi znak pitanja
 Name[sv]=Placerade frågetecken
 Name[ta]=கேள்விக்குறியை அமை
+Name[tg]=Танзим кардани нишони савол
 Name[zh_CN]=设置了问号
 Comment=Set question mark
 Comment[bg]=Поставяне на въпросителна
@@ -600,6 +608,7 @@ Comment[sr]=Постави знак питања
 Comment[sr@Latn]=Postavi znak pitanja
 Comment[sv]=Placerade frågetecken
 Comment[ta]=கேள்விக்குறியை அமை
+Comment[tg]=Танзим кардани нишони савол
 Comment[zh_CN]=设置了问号
 default_presentation=0
 
@@ -628,6 +637,7 @@ Name[sr]=Скини знак питања
 Name[sr@Latn]=Skini znak pitanja
 Name[sv]=Tog bort frågetecken
 Name[ta]=கேள்விக் குறி அமைக்கவில்லை
+Name[tg]=Танзим накардани нишони савол
 Name[zh_CN]=取消了问号
 Comment=Unset question mark
 Comment[bg]=Премахване на въпросителна
@@ -653,5 +663,6 @@ Comment[sr]=Скини знак питања
 Comment[sr@Latn]=Skini znak pitanja
 Comment[sv]=Tog bort frågetecken
 Comment[ta]=கேள்விக்குறி நீக்கு
+Comment[tg]=Танзим накардани нишони савол
 Comment[zh_CN]=取消了问号
 default_presentation=0
