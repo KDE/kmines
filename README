@@ -9,9 +9,8 @@ This is a very classical minesweeper written from scratch.
  - 3 predefined levels :
        Easy : 8x8 with 10 mines
        Normal : 16x16 with 40 mines
-	   Expert : 30x16 with 99 mines
- - Custom levels
- - High Scores
+       Expert : 30x16 with 99 mines
+ - custom levels
 
 
 

@@ -92,9 +92,6 @@ KMinesStatus::KMinesStatus(QWidget *parent, const char *name)
 	
 	/* configuration & highscore initialisation */
 	KConfig *kconf = kapp->getConfig();
-	
-	/* if the entries do not exist : create them */
-	kconf->setGroup(OP_GRP);
 	for (int i=0; i<3; i++) {
 		kconf->setGroup(HS_GRP[i]);
 		if ( !kconf->hasKey(HS_NAME_KEY) )

@@ -83,15 +83,17 @@ MainWidget::MainWidget()
 	menu->insertItem(i18n("&Help"), help );
 	setMenu(menu);
 
-	/* read the menu visible/invisible config */
 	kconf = kapp->getConfig();
-	kconf->setGroup("");
+	kconf->setGroup(OP_GRP);
+
+	// read menu visible/invisible config
 	if ( !kconf->hasKey(OP_MENUBAR_VIS) )
 		kconf->writeEntry(OP_MENUBAR_VIS, 1);
 	if ( kconf->readNumEntry(OP_MENUBAR_VIS)!=1 ) menu->show();
 	else menu->hide();
+	toggleMenu();
 
-	/* read uncertain mark option */
+	// read uncertain mark option
 	kconf->setGroup(OP_GRP);
 	if ( !kconf->hasKey(OP_UMARK_KEY) )
 		kconf->writeEntry(OP_UMARK_KEY, TRUE);
@@ -99,10 +101,8 @@ MainWidget::MainWidget()
 	options->setItemChecked(um_id, um);
 	emit UMarkChanged(um);
 	
-	/* begin easy game */
+	// begin easy game
 	changeLevel(0);
-
-	toggleMenu();
 }
 
 void MainWidget::changeLevel(int lev)
@@ -137,9 +137,8 @@ bool MainWidget::eventFilter(QObject *, QEvent *e)
 
 void MainWidget::quit()
 {
-	kconf->setGroup("");
-	kconf->writeEntry(OP_MENUBAR_VIS, menu->isVisible());
 	kconf->setGroup(OP_GRP);
+	kconf->writeEntry(OP_MENUBAR_VIS, menu->isVisible());
 	kconf->writeEntry(OP_UMARK_KEY, options->isItemChecked(um_id));
 	kapp->quit();
 }

@@ -24,7 +24,7 @@ DigitalClock::DigitalClock(QWidget *parent)
 
 void DigitalClock::timerEvent( QTimerEvent *)
 {
-	if (!stop) {
+ 	if (!stop) {
 		time_sec++;
 		if (time_sec==60) {
 			time_min++; time_sec = 0;
@@ -290,6 +290,7 @@ WHighScores::WHighScores(bool show, int newSec, int newMin, uint Mode,
 			qle->setFont(f);
 			qle->setMinimumSize(qle->fontMetrics().maxWidth()*10,
 								qle->sizeHint().height() );
+			qle->setFocus();
 			connect(qle, SIGNAL(returnPressed()), SLOT(writeName()));
 			gl->addWidget(qle, k, 2);
 			
@@ -353,6 +354,7 @@ WHighScores::WHighScores(bool show, int newSec, int newMin, uint Mode,
 	hbl->addStretch(1);
 
 	if ( !show ) pb->hide();
+	else pb->setFocus();
 	
 	exec();
 	res = 0;
@@ -368,6 +370,7 @@ void WHighScores::writeName()
 	
 	/* show the entered highscore */
 	qle->hide();
+	qle->clearFocus();
 	QFont f( font() );
 	f.setBold(TRUE);
 	QLabel *lab = new QLabel(str, this);
@@ -378,4 +381,9 @@ void WHighScores::writeName()
 	lab->show();
 
 	pb->show();
+	pb->setFocus();
 }
+
+
+
+
