@@ -196,7 +196,6 @@ class PlayerInfos : public ItemArray
     QString histoName(uint i) const;
     uint histoSize() const;
     const QMemArray<uint> &histogram() const { return _histogram; }
-    bool isLastAndUnbound(uint i) const;
 
     void submitScore(const Score &) const;
     void modifySettings(const QString &newName, const QString &comment,

@@ -324,11 +324,6 @@ uint PlayerInfos::histoSize() const
      return _histogram.size() + (_bound ? 0 : 1);
 }
 
-bool PlayerInfos::isLastAndUnbound(uint i) const
-{
-    return ( !_bound && i==histoSize()-1 );
-}
-
 void PlayerInfos::submitScore(const Score &score) const
 {
     // update counts
