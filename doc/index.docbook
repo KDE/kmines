@@ -47,8 +47,8 @@
 
 <legalnotice>&FDLNotice;</legalnotice>
 
-<date>16/12/2000</date>
-<releaseinfo>2.00.09</releaseinfo>
+<date>03/02/2001</date>
+<releaseinfo>2.00.10</releaseinfo>
 
 <abstract><para>&kmines; is the KDE version of the classic minesweeper
 game.</para></abstract>
@@ -140,7 +140,7 @@ score.</para></listitem>
 <listitem><para>The playing area.  This will vary in size depending on the
 difficulty level of the game.  In this example, it consists of 64 boxes. This is where you play the game.</para></listitem>
 <listitem><para>A status line at the bottom of the window.  In this example, it
-simply says <guilabel>Playing</guilabel>.</para></listitem>
+simply says <guilabel>Game stopped</guilabel>.</para></listitem>
 </itemizedlist>
 </sect1>
 </chapter>
