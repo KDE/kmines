@@ -12,6 +12,8 @@
 #include <kaboutdialog.h>
 #include <kcmdlineargs.h>
 
+#include <kaboutdata.h>
+
 #include "defines.h"
 #include "version.h"
 #include "status.h"
@@ -156,7 +158,11 @@ void MainWidget::showAboutApplication()
 //----------------------------------------------------------------------------
 int main( int argc, char ** argv )
 {
-    KCmdLineArgs::init(argc, argv, "kmines", description, VERSION);
+    KAboutData aboutData( "kmines", I18N_NOOP("KMines"), 
+        VERSION, description, KAboutData::GPL, 
+        "(c) 1996-1999, Nicolas Hadacek");
+    aboutData.addAuthor("Nicolas Hadacek",0, "hadacek@kde.org");
+    KCmdLineArgs::init( argc, argv, &aboutData );
 
     KApplication a;
 
