@@ -1,0 +1,29 @@
+/* XPM */
+/* Drawn  by Nico Shirwing for the K Desktop Environment */
+/* See http://www.kde.org */
+static char*kmines[]={
+"16 16 7 1",
+"# c #000000",
+"d c #ffffff",
+"c c #808080",
+"b c #c0c0c0",
+"e c #585858",
+"a c #ff0000",
+". c None",
+"..........##....",
+".........#a#....",
+"........#aa#....",
+".........###....",
+"...........#....",
+".......##..#....",
+".....##bb###....",
+"...##ccbbcc###..",
+".##bbddccdd#bd##",
+"#bbddccddccddcc#",
+"#bbbcddbbddeccc#",
+"#bbbcdbddcbeccc#",
+".##bcdbbccbec##.",
+"...##dbbccb##...",
+".....##bc##.....",
+".......##......."};
+

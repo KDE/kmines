@@ -1,0 +1,40 @@
+<!doctype kdedoc system>
+
+<article>
+<title>The KMines Handbook
+<author>Nicolas Hadacek
+<date>Version 0.6.10, 17 February 1998
+<abstract>This documentation was last updated for kmines version 0.6.10. 
+Please make any comments and additions to the author.
+</abstract>
+
+<toc>
+
+<sect>Introduction
+<p>
+
+KMines is the classical Minesweeper game. 
+
+You must discover all the cases without a mine to win: 
+
+<itemize>
+<item>Left-button will uncover a case. 
+<item>Right-button will mark a case as containing a mine or as being uncertain. 
+<item>Middle-button will try to clear the eigth surrounding cases if there are the right number of cases already marked as containing a mine. 
+<item>Pressing the smiley will start a new game.
+</itemize>
+
+
+<sect>Epilogue
+<p>
+
+<sect1>Authors
+<p>
+<tt><htmlurl url="mailto:hadacek@kde.org" 
+name="Nicolas Hadacek"></tt><p>
+
+<tt><htmlurl url="mailto:rwilliam@kde.org" 
+name="Robert Williams"></tt> editor<p>
+
+
+</article>
