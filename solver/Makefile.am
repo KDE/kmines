@@ -12,6 +12,3 @@ test_SOURCES = test.cpp
 testFast_SOURCES = testFast.cpp
 testSolve_SOURCES = testSolve.cpp
 testRate_SOURCES = testRate.cpp
-
-messages:
-	$(XGETTEXT) *.cpp *.h -o $(podir)/kmines.pot
