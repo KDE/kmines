@@ -76,7 +76,7 @@ void DigitalClock::timeoutClock()
 {
     KGameLCDClock::timeoutClock();
 
-    if (_cheating) setColor(white);
+    if ( _cheating || _customGame ) setColor(white);
     else if ( _first<score() ) setColor(red);
     else if ( _last<score() ) setColor(blue);
     else setColor(white);
@@ -85,15 +85,17 @@ void DigitalClock::timeoutClock()
 void DigitalClock::start()
 {
     KGameLCDClock::start();
-    if ( !_cheating ) setColor(red);
+    if ( !_cheating && !_customGame ) setColor(red);
 }
 
-void DigitalClock::reset(const KExtHighscores::Score &first,
-                         const KExtHighscores::Score &last)
+void DigitalClock::reset(bool customGame)
 {
     _nbActions = 0;
-    _first = first;
-    _last = last;
+    _customGame = customGame;
+    if ( !customGame ) {
+        _first = KExtHighscores::firstScore();
+        _last = KExtHighscores::lastScore();
+    }
     _cheating = false;
     KGameLCDClock::reset();
     resetColor();

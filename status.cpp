@@ -216,13 +216,8 @@ void Status::setStopped()
 {
     smiley->setMood(Normal);
     update(false);
-    KExtHighscores::Score first(KExtHighscores::Won);
-    KExtHighscores::Score last(KExtHighscores::Won);
-    if ( field->level().type()!=Level::Custom ) {
-        first = KExtHighscores::firstScore();
-        last = KExtHighscores::lastScore();
-    }
-    dg->reset(first, last);
+    bool custom = ( field->level().type()==Level::Custom );
+    dg->reset(custom);
     _advised = false;
     _solved = false;
 }
