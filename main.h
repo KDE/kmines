@@ -47,7 +47,6 @@ class MainWidget : public KMainWindow, public KMines
     void pause();
 
  protected:
-	bool eventFilter(QObject *, QEvent *);
     void focusOutEvent(QFocusEvent *);
     bool queryExit();
 

@@ -44,7 +44,6 @@
 #include "dialogs.h"
 #include "version.h"
 
-
 Status::Status(QWidget *parent)
     : QWidget(parent, "status"), _oldLevel(Level::Easy)
 {
@@ -55,14 +54,13 @@ Status::Status(QWidget *parent)
     connect(_solver, SIGNAL(solvingDone(bool)), SLOT(solvingDone(bool)));
 
 // top layout
-	QGridLayout *top = new QGridLayout(this, 2, 5, 10, 10);
-    top->setResizeMode(QLayout::Fixed);
+    QGridLayout *top = new QGridLayout(this, 2, 5, 10, 10);
     top->setColStretch(1, 1);
     top->setColStretch(3, 1);
 
 // status bar
-	// mines left LCD
-	left = new KGameLCD(5, this);
+    // mines left LCD
+    left = new KGameLCD(5, this);
     left->setFrameStyle(QFrame::Panel | QFrame::Sunken);
     left->setDefaultBackgroundColor(black);
     left->setDefaultColor(white);
@@ -72,16 +70,16 @@ Status::Status(QWidget *parent)
                                "present mines.</qt>"));
     top->addWidget(left, 0, 0);
 
-	// smiley
-	smiley = new Smiley(this);
-	connect(smiley, SIGNAL(clicked()), SLOT(smileyClicked()));
-	smiley->setFocusPolicy(QWidget::NoFocus);
-	QWhatsThis::add(smiley, i18n("Press to start a new game"));
+    // smiley
+    smiley = new Smiley(this);
+    connect(smiley, SIGNAL(clicked()), SLOT(smileyClicked()));
+    smiley->setFocusPolicy(QWidget::NoFocus);
+    QWhatsThis::add(smiley, i18n("Press to start a new game"));
     top->addWidget(smiley, 0, 2);
 
-	// digital clock LCD
-	dg = new DigitalClock(this);
-	QWhatsThis::add(dg, i18n("<qt>Time elapsed.<br/>"
+    // digital clock LCD
+    dg = new DigitalClock(this);
+    QWhatsThis::add(dg, i18n("<qt>Time elapsed.<br/>"
                              "It turns <font color=\"blue\">blue</font> "
                              "if it is a highscore "
                              "and <font color=\"red\">red</font> "
@@ -90,18 +88,19 @@ Status::Status(QWidget *parent)
 
 // mines field
     _fieldContainer = new QWidget(this);
-    QGridLayout *g = new QGridLayout(_fieldContainer, 1, 1);
+    _fieldContainer->setBackgroundColor( red );
+    QGridLayout *g = new QGridLayout(_fieldContainer, 3, 3);
     field = new Field(_fieldContainer);
     field->readSettings();
-    g->addWidget(field, 0, 0, AlignCenter);
-	connect( field, SIGNAL(updateStatus(bool)), SLOT(update(bool)) );
-	connect(field, SIGNAL(gameStateChanged(GameState)),
-			SLOT(gameStateChangedSlot(GameState)) );
+    g->addWidget(field, 1, 1);
+    connect( field, SIGNAL(updateStatus(bool)), SLOT(update(bool)) );
+    connect(field, SIGNAL(gameStateChanged(GameState)),
+            SLOT(gameStateChangedSlot(GameState)) );
     connect(field, SIGNAL(setMood(Mood)), smiley, SLOT(setMood(Mood)));
     connect(field, SIGNAL(setCheating()), dg, SLOT(setCheating()));
     connect(field,SIGNAL(addAction(const KGrid2D::Coord &, Field::ActionType)),
             SLOT(addAction(const KGrid2D::Coord &, Field::ActionType)));
-	QWhatsThis::add(field, i18n("Mines field."));
+    QWhatsThis::add(field, i18n("Mines field."));
 
 // resume button
     _resumeContainer = new QWidget(this);

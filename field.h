@@ -33,10 +33,11 @@ class Field : public FieldFrame, public BaseField
     static const char *ACTION_NAMES[Nb_Actions];
 
  public:
-	Field(QWidget *parent);
+    Field(QWidget *parent);
 
-	QSize sizeHint() const;
-	QSizePolicy sizePolicy() const;
+    QSize sizeHint() const;
+    QSize minimumSizeHint() const;
+    QSizePolicy sizePolicy() const;
 
     void setLevel(const Level &level);
     void setReplayField(const QString &field);
@@ -58,42 +59,43 @@ class Field : public FieldFrame, public BaseField
                      bool completeReveal, KGrid2D::CoordList *autorevealed = 0,
                      bool *caseUncovered = 0);
 
-	void readSettings();
+    void readSettings();
 
     void setAdvised(const KGrid2D::Coord &c, double proba);
-	void setSolvingState(SolvingState state) { _solvingState = state; }
-	SolvingState solvingState() const { return _solvingState; }
+    void setSolvingState(SolvingState state) { _solvingState = state; }
+    SolvingState solvingState() const { return _solvingState; }
 	
- signals:
-	void updateStatus(bool);
-	void gameStateChanged(GameState);
+signals:
+    void updateStatus(bool);
+    void gameStateChanged(GameState);
     void setMood(Mood);
     void setCheating();
     void addAction(const KGrid2D::Coord &, Field::ActionType);
-
- protected:
-	void paintEvent(QPaintEvent *);
-	void mousePressEvent(QMouseEvent *);
-	void mouseReleaseEvent(QMouseEvent *);
-	void mouseMoveEvent(QMouseEvent *);
-
- private slots:
-	void keyboardAutoRevealSlot();
-
- private:
-	GameState   _state;
-	bool              _reveal;
-	SolvingState _solvingState;
-	KGrid2D::Coord  _cursor, _advisedCoord;
-	double        _advisedProba;
-	int               _currentAction;
-	Level          _level;
-
-	void pressCase(const KGrid2D::Coord &, bool);
-	void pressClearFunction(const KGrid2D::Coord &, bool);
-	void placeCursor(const KGrid2D::Coord &);
-	void revealActions(bool press);
-
+    
+protected:
+    void resizeEvent(QResizeEvent *);
+    void paintEvent(QPaintEvent *);
+    void mousePressEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent *);
+    void mouseMoveEvent(QMouseEvent *);
+    
+private slots:
+    void keyboardAutoRevealSlot();
+    
+private:
+    GameState   _state;
+    bool              _reveal;
+    SolvingState _solvingState;
+    KGrid2D::Coord  _cursor, _advisedCoord;
+    double        _advisedProba;
+    int               _currentAction;
+    Level          _level;
+    
+    void pressCase(const KGrid2D::Coord &, bool);
+    void pressClearFunction(const KGrid2D::Coord &, bool);
+    void placeCursor(const KGrid2D::Coord &);
+    void revealActions(bool press);
+    
     void doAutoReveal(const KGrid2D::Coord &);
     bool doReveal(const KGrid2D::Coord &, KGrid2D::CoordList *autorevealed = 0,
                   bool *caseUncovered = 0);

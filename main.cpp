@@ -61,23 +61,24 @@ const MainWidget::KeyData MainWidget::KEY_DATA[NB_KEYS] = {
 
 MainWidget::MainWidget()
 {
+    setAutoSaveSettings();
     KNotifyClient::startDaemon();
-	installEventFilter(this);
+    installEventFilter(this);
 
-	_status = new Status(this);
-	connect(_status, SIGNAL(gameStateChangedSignal(KMines::GameState)),
-			SLOT(gameStateChanged(KMines::GameState)));
+    _status = new Status(this);
+    connect(_status, SIGNAL(gameStateChangedSignal(KMines::GameState)),
+            SLOT(gameStateChanged(KMines::GameState)));
     connect(_status, SIGNAL(pause()), SLOT(pause()));
 
-	// Game & Popup
-	KStdGameAction::gameNew(_status, SLOT(restartGame()), actionCollection());
-	_pause = KStdGameAction::pause(_status, SLOT(pauseGame()),
-                                  actionCollection());
-	KStdGameAction::highscores(this, SLOT(showHighscores()),
+    // Game & Popup
+    KStdGameAction::gameNew(_status, SLOT(restartGame()), actionCollection());
+    _pause = KStdGameAction::pause(_status, SLOT(pauseGame()),
+                                   actionCollection());
+    KStdGameAction::highscores(this, SLOT(showHighscores()),
                                actionCollection());
-	KStdGameAction::quit(qApp, SLOT(quit()), actionCollection());
+    KStdGameAction::quit(qApp, SLOT(quit()), actionCollection());
 
-	// keyboard
+    // keyboard
     _keybCollection = new KActionCollection(this);
     for (uint i=0; i<NB_KEYS; i++) {
         const KeyData &d = KEY_DATA[i];
@@ -85,17 +86,17 @@ MainWidget::MainWidget()
                           d.slot, _keybCollection, d.name);
     }
 
-	// Settings
-	_menu = KStdAction::showMenubar(this, SLOT(toggleMenubar()),
-                                   actionCollection());
-	KStdAction::preferences(this, SLOT(configureSettings()),
+    // Settings
+    _menu = KStdAction::showMenubar(this, SLOT(toggleMenubar()),
+                                    actionCollection());
+    KStdAction::preferences(this, SLOT(configureSettings()),
                             actionCollection());
-	KStdAction::keyBindings(this, SLOT(configureKeys()), actionCollection());
+    KStdAction::keyBindings(this, SLOT(configureKeys()), actionCollection());
     KStdAction::configureNotifications(this, SLOT(configureNotifications()),
                                        actionCollection());
     KStdGameAction::configureHighscores(this, SLOT(configureHighscores()),
                                         actionCollection());
-	// Levels
+    // Levels
     _levels = KStdGameAction::chooseGameType(0, 0, actionCollection());
     QStringList list;
     for (uint i=0; i<=Level::NB_TYPES; i++)
@@ -124,9 +125,9 @@ MainWidget::MainWidget()
                       _status, SLOT(loadLog()),
                       actionCollection(), "log_load");
 
-	createGUI();
-	readSettings();
-	setCentralWidget(_status);
+    createGUI();
+    readSettings();
+    setCentralWidget(_status);
 
     QPopupMenu *popup =
         static_cast<QPopupMenu *>(factory()->container("popup", this));
@@ -154,15 +155,6 @@ void MainWidget::readSettings()
 void MainWidget::showHighscores()
 {
     KExtHighscore::show(this);
-}
-
-bool MainWidget::eventFilter(QObject *, QEvent *e)
-{
-    if ( e->type()==QEvent::LayoutHint )
-		setFixedSize(minimumSize()); // because QMainWindow and KMainWindow
-		                             // do not manage fixed central widget and
-		                             // hidden menubar ...
-    return false;
 }
 
 void MainWidget::focusOutEvent(QFocusEvent *e)
