@@ -113,13 +113,13 @@ void BaseField::uncover(const Coord &p, CoordSet *autorevealed)
     }
 }
 
-void BaseField::showAllMines()
+void BaseField::showAllMines(bool won)
 {
 	for (uint i=0; i<size(); i++) {
             Coord p = coord(i);
 		    if ( hasMine(p) && state(p)!=Exploded && state(p)!=Marked ) {
-				changeCase(p, Uncovered);
-                _nbUncovered--; // not an empty case ...
+				changeCase(p, won ? Marked : Uncovered);
+                if ( !won ) _nbUncovered--; // not an empty case ...
             }
     }
 }

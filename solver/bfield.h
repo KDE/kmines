@@ -61,7 +61,7 @@ class BaseField : public Grid2D::Square<KMines::Case>, public KMines
     uint nbMarked() const { return _nbMarked; }
     QCString string() const;
 
-    void showAllMines();
+    void showAllMines(bool won);
 
  protected:
     bool firstReveal() const { return _firstReveal; }

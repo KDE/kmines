@@ -185,7 +185,7 @@ void Status::update(bool mine)
 
 void Status::setGameOver(bool won)
 {
-    field->showAllMines();
+    field->showAllMines(won);
     smiley->setMood(won ? Happy : Sad);
     if ( field->gameState()==Replaying ) return;
 

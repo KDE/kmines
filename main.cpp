@@ -196,8 +196,8 @@ void MainWidget::settingsChanged()
 void MainWidget::configureKeys()
 {
     KKeyDialog d(true, this);
-    d.insert(_keybCollection);
-    d.insert(actionCollection());
+    d.insert(_keybCollection, i18n("Keyboard game"));
+    d.insert(actionCollection(), i18n("General"));
     d.configure();
 }
 

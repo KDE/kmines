@@ -441,36 +441,15 @@ QVariant KRangedConfigItem::bound(const QVariant &v) const
 {
     checkType(v);
 
-    if ( object() ) {
-        const KIntNumInput *in;
-        const KDoubleNumInput *dn;
-        switch ( (KConfigItemPrivate::RangedType)objectType() ) {
-        case KConfigItemPrivate::IntInput:
-            in = static_cast<const KIntNumInput *>(object());
-            return kMin(kMax(v.toInt(), in->minValue()), in->maxValue());
-        case KConfigItemPrivate::DoubleInput:
-            dn = static_cast<const KDoubleNumInput *>(object());
-            return kMin(kMax(v.toDouble(), dn->minValue()), dn->maxValue());
-        case KConfigItemPrivate::SpinBox:
-            return static_cast<const QSpinBox *>(object())->bound(v.toInt());
-        case KConfigItemPrivate::Slider:
-            return static_cast<const QSlider *>(object())->bound(v.toInt());
-        case KConfigItemPrivate::Dial:
-            return static_cast<const QDial *>(object())->bound(v.toInt());
-        case KConfigItemPrivate::Selector:
-            return static_cast<const KSelector *>(object())->bound(v.toInt());
-        default:
-            break;
-        }
-    } else {
-        switch ( defaultValue().type() ) {
-        case QVariant::Int:
-            return kMin(kMax(v.toInt(), _min.toInt()), _max.toInt());
-        case QVariant::Double:
-            return kMin(kMax(v.toDouble(), _min.toDouble()), _max.toDouble());
-        default:
-            break;
-        }
+    QVariant min = minValue();
+    QVariant max = maxValue();
+    switch ( defaultValue().type() ) {
+    case QVariant::Int:
+        return kMin(kMax(v.toInt(), min.toInt()), max.toInt());
+    case QVariant::Double:
+        return kMin(kMax(v.toDouble(), min.toDouble()), max.toDouble());
+    default:
+        break;
     }
 
     Q_ASSERT(false);
