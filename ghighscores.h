@@ -60,7 +60,7 @@ class ItemContainer
     virtual ~ItemContainer() {}
 
     virtual uint nbEntries() const = 0;
-    const QList<ItemBase> &items() const { return _items; }
+    const QPtrList<ItemBase> &items() const { return _items; }
 
  protected:
     void addItem(const QString &key, ItemBase *, bool stored);
@@ -70,9 +70,9 @@ class ItemContainer
     uint name(const QString &name) const { return *_names[name]; }
 
  private:
-    QString         _group, _subGroup;
-    QList<ItemBase> _items;
-    QDict<uint>     _names;
+    QString            _group, _subGroup;
+    QPtrList<ItemBase> _items;
+    QDict<uint>        _names;
 
     ItemContainer(const ItemContainer &c);
     void operator =(const ItemContainer &);
