@@ -1,4 +1,7 @@
-2.1.8 (17 January 2003) [CVS 3.2 devel]
+2.1.8b (26 February 2004) [KDE 3.2.1 stable]
+ * fix longstanding crash in solver dialog.
+
+2.1.8 (17 January 2003) [KDE 3.2 stable]
  * configure button in highscores dialog
  * notifications
 
