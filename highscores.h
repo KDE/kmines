@@ -1,7 +1,7 @@
 #ifndef HIGHSCORES_H
 #define HIGHSCORES_H
 
-#include "ghighscores.h"
+#include "generic/ghighscores.h"
 #include "defines.h"
 #include "version.h"
 
@@ -12,11 +12,11 @@ class ExtScore : public Score
     ExtScore(uint score = 0, uint clicks = 0);
 };
 
-class ExtHighscores : public Highscores, public KMines
+class ExtHighscores : public Highscores
 {
  public:
     ExtHighscores()
-        : Highscores(VERSION, WORLD_WIDE_HS_URL, NbLevels) {}
+        : Highscores(VERSION, WORLD_WIDE_HS_URL, Level::NbLevels) {}
 
     static QString formatScore(uint);
 

@@ -14,6 +14,8 @@
 #include <kapplication.h>
 #include <kiconloader.h>
 
+#include "generic/ghighscores.h"
+
 #include "bitmaps/smile"
 #include "bitmaps/smile_happy"
 #include "bitmaps/smile_ohno"
@@ -96,69 +98,76 @@ void DigitalClock::zero()
 }
 
 //-----------------------------------------------------------------------------
-const uint MIN_CUSTOM_SIZE = 8;
-const uint MAX_CUSTOM_SIZE = 50;
-
-CustomDialog::CustomDialog(LevelData &_lev, QWidget *parent)
+CustomDialog::CustomDialog(Level &level, QWidget *parent)
 : KDialogBase(Plain, i18n("Customize your game"), Ok|Cancel, Cancel,
-			  parent, 0, true, true),
-  lev(_lev), initLev(_lev)
+			  parent, 0, true, true), _level(level)
 {
-	lev.level = Custom;
-
 	QVBoxLayout *top = new QVBoxLayout(plainPage(), spacingHint());
 
 	// width
-	KIntNumInput *ki = new KIntNumInput(lev.width, plainPage());
-	ki->setLabel(i18n("Width"));
-	ki->setRange(MIN_CUSTOM_SIZE, MAX_CUSTOM_SIZE);
-	connect(ki, SIGNAL(valueChanged(int)), SLOT(widthChanged(int)));
-	top->addWidget(ki);
+	_width = new KIntNumInput(level.width(), plainPage());
+	_width->setLabel(i18n("Width"));
+	_width->setRange(Level::MIN_CUSTOM_SIZE, Level::MAX_CUSTOM_SIZE);
+	connect(_width, SIGNAL(valueChanged(int)), SLOT(widthChanged(int)));
+	top->addWidget(_width);
 
 	// height
-	ki = new KIntNumInput(lev.height, plainPage());
-	ki->setLabel(i18n("Height"));
-	ki->setRange(MIN_CUSTOM_SIZE, MAX_CUSTOM_SIZE);
-	connect(ki, SIGNAL(valueChanged(int)), SLOT(heightChanged(int)));
-	top->addWidget(ki);
+	_height = new KIntNumInput(level.height(), plainPage());
+	_height->setLabel(i18n("Height"));
+	_height->setRange(Level::MIN_CUSTOM_SIZE, Level::MAX_CUSTOM_SIZE);
+	connect(_height, SIGNAL(valueChanged(int)), SLOT(heightChanged(int)));
+	top->addWidget(_height);
 
 	// mines
-	km = new KIntNumInput(lev.nbMines, plainPage());
-	connect(km, SIGNAL(valueChanged(int)), SLOT(nbMinesChanged(int)));
-	top->addWidget(km);
-	updateNbMines();
+	_mines = new KIntNumInput(level.nbMines(), plainPage());
+	connect(_mines, SIGNAL(valueChanged(int)), SLOT(nbMinesChanged(int)));
+	top->addWidget(_mines);
+
+    // combo to choose game type
+    QHBoxLayout *hbox = new QHBoxLayout(top);
+    QLabel *label = new QLabel(i18n("Game type :"), plainPage());
+    hbox->addWidget(label);
+    _gameType = new QComboBox(false, plainPage());
+    connect(_gameType, SIGNAL(activated(int)), SLOT(typeChosen(int)));
+    for (uint i=0; i<=Level::NbLevels; i++)
+        _gameType->insertItem(i18n(Level::data((Level::Type)i).i18nLabel));
+    hbox->addWidget(_gameType);
+
+    updateNbMines();
 }
 
 void CustomDialog::widthChanged(int n)
 {
-	lev.width = (uint)n;
+    _level = Level(n, _level.height(), _level.nbMines());
 	updateNbMines();
 }
 
 void CustomDialog::heightChanged(int n)
 {
-	lev.height = (uint)n;
+    _level = Level(_level.width(), n, _level.nbMines());
 	updateNbMines();
 }
 
 void CustomDialog::nbMinesChanged(int n)
 {
-	lev.nbMines = (uint)n;
+    _level = Level(_level.width(), _level.height(), n);
 	updateNbMines();
 }
 
 void CustomDialog::updateNbMines()
 {
-	km->setRange(1, maxNbMines(lev.width, lev.height));
-	uint nb = lev.width * lev.height;
-	km->setLabel(i18n("Mines (%1%)").arg(100*lev.nbMines/nb));
-	enableButton(Ok, lev.width!=initLev.width || lev.height!=initLev.height
-				 || lev.nbMines!=initLev.nbMines);
+	_mines->setRange(1, _level.maxNbMines());
+	uint nb = _level.width() * _level.height();
+	_mines->setLabel(i18n("Mines (%1%)").arg(100*_level.nbMines()/nb));
+    _gameType->setCurrentItem(_level.type());
 }
 
-uint CustomDialog::maxNbMines(uint width, uint height)
+void CustomDialog::typeChosen(int i)
 {
-	return width*height - 2;
+    _level = Level((Level::Type)i);
+    _width->setValue(_level.width());
+    _height->setValue(_level.height());
+    _mines->setValue(_level.nbMines());
 }
 
 //-----------------------------------------------------------------------------
@@ -396,33 +405,27 @@ KConfig *SettingsDialog::config()
 	return conf;
 }
 
-KMines::LevelData SettingsDialog::readLevel()
+Level SettingsDialog::readLevel()
 {
-	LevelData l;
-	l.level = (Level)config()->readUnsignedNumEntry(OP_LEVEL, 0);
-	if ( l.level>Custom ) l.level = Easy;
+	Level::Type type
+        = (Level::Type)config()->readUnsignedNumEntry(OP_LEVEL, 0);
+    if ( type>Level::Custom ) type = Level::Easy;
+    if ( type!=Level::Custom ) return Level(type);
 
-	if ( l.level==Custom ) {
-		l.width  = config()->readUnsignedNumEntry(OP_CUSTOM_WIDTH, 0);
-		l.width  = QMAX(QMIN(l.width, MAX_CUSTOM_SIZE), MIN_CUSTOM_SIZE);
-		l.height = config()->readUnsignedNumEntry(OP_CUSTOM_HEIGHT, 0);
-		l.height = QMAX(QMIN(l.height, MAX_CUSTOM_SIZE), MIN_CUSTOM_SIZE);
-		l.nbMines  = config()->readUnsignedNumEntry(OP_CUSTOM_MINES, 0);
-		l.nbMines  = QMAX(QMIN(l.nbMines,
-							  CustomDialog::maxNbMines(l.width, l.height)), 1);
-	} else l = LEVELS[l.level];
-
-	return l;
+    uint width = config()->readUnsignedNumEntry(OP_CUSTOM_WIDTH, 0);
+    uint height = config()->readUnsignedNumEntry(OP_CUSTOM_HEIGHT, 0);
+    uint nbMines = config()->readUnsignedNumEntry(OP_CUSTOM_MINES, 0);
+    return Level(width, height, nbMines);
 }
 
-void SettingsDialog::writeLevel(const LevelData &l)
+void SettingsDialog::writeLevel(const Level &level)
 {
-	if ( l.level==Custom ) {
-		config()->writeEntry(OP_CUSTOM_WIDTH, l.width);
-		config()->writeEntry(OP_CUSTOM_HEIGHT, l.height);
-		config()->writeEntry(OP_CUSTOM_MINES, l.nbMines);
+	if ( level.type()==Level::Custom ) {
+		config()->writeEntry(OP_CUSTOM_WIDTH, level.width());
+		config()->writeEntry(OP_CUSTOM_HEIGHT, level.height());
+		config()->writeEntry(OP_CUSTOM_MINES, level.nbMines());
 	}
-	config()->writeEntry(OP_LEVEL, (uint)l.level);
+	config()->writeEntry(OP_LEVEL, (uint)level.type());
 }
 
 bool SettingsDialog::readMenuVisible()

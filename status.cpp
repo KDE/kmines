@@ -96,14 +96,14 @@ void Status::initGame()
 	emit gameStateChanged(Stopped);
 	update(false);
 	smiley->setMood(Smiley::Normal);
-	Level level = field->level().level;
-	if ( level!=Custom ) {
+	Level::Type type = field->level().type();
+	if ( type!=Level::Custom ) {
         Score *fs = highscores().firstScore();
         Score *ls = highscores().lastScore();
         dg->setBestScores( fs->score(), ls->score() );
         delete fs;
         delete ls;
-    }
+    } else dg->setBestScores(0, 0);
 
 	dg->zero();
 }
@@ -120,11 +120,12 @@ void Status::restartGame()
 	initGame();
 }
 
-void Status::newGame(const LevelData &l)
+void Status::newGame(const Level &level)
 {
-    if ( l.level!=Custom ) highscores().setGameType(l.level);
-	field->setLevel(l);
+    if ( level.type()!=Level::Custom ) highscores().setGameType(level.type());
+	field->setLevel(level);
 	initGame();
+    updateGeometry();
 }
 
 void Status::changeCase(CaseState cs, int inc)
@@ -140,9 +141,10 @@ void Status::changeCase(CaseState cs, int inc)
 void Status::update(bool mine)
 {
 	QString str;
-	const LevelData &l = field->level();
-	int r = l.nbMines - marked;
-	int u = l.width*l.height - l.nbMines - uncovered; // cannot be negative
+	const Level &level = field->level();
+	int r = level.nbMines() - marked;
+	int u = level.width()*level.height()
+            - level.nbMines() - uncovered; // cannot be negative
     QColor color = (r<0 && u!=0 ? red : white);
     left->setColor(color);
 	left->display(r);
@@ -157,7 +159,7 @@ void Status::_endGame(bool won)
 	emit gameStateChanged(Stopped);
     smiley->setMood(won ? Smiley::Happy : Smiley::Sad);
 
-    if ( field->level().level==Custom || !won ) return;
+    if ( field->level().type()==Level::Custom || !won ) return;
     ExtScore score(dg->score(), field->nbActions());
     highscores().submitScore(true, score, this);
 }

@@ -21,10 +21,10 @@ class Status : public QWidget, public KMines
  public :
 	Status(QWidget *parent=0, const char *name=0);
 
-	void newGame(const LevelData &);
-	const LevelData &currentLevel() const { return field->level(); }
-    bool isPaused() const                 { return field->isPaused(); }
-    void settingsChanged()                { field->readSettings(); }
+	void newGame(const Level &);
+	const Level &currentLevel() const { return field->level(); }
+    bool isPaused() const             { return field->isPaused(); }
+    void settingsChanged()            { field->readSettings(); }
 
  signals:
 	void gameStateChanged(GameState);

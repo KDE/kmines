@@ -1,4 +1,8 @@
-2.1.1 (16 October 2001) [in CVS]
+2.1.2 (18 October 2001) [in CVS]
+ * some more reorganisation
+ * better custom dialog
+
+2.1.1 (16 October 2001)
  * port to Qt 3.0 completed (hopefully)
  * some changes in highscores (nicer dialog)
  * i18n error messages for wwhs (#### test them)

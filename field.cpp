@@ -13,7 +13,7 @@
 
 //-----------------------------------------------------------------------------
 Field::Field(QWidget *parent)
-: QFrame(parent, "field"), lev(LEVELS[0]), random(0), state(Stopped),
+: QFrame(parent, "field"), _level(Level::Easy), random(0), state(Stopped),
   u_mark(false), cursor(false), button(0)
 {
 	setFrameStyle( QFrame::Box | QFrame::Raised );
@@ -115,8 +115,8 @@ void Field::minePixmap(QPixmap &pix, bool mask, CaseState type) const
 
 QSize Field::sizeHint() const
 {
-	return QSize(2*frameWidth() + lev.width*cp.size,
-				 2*frameWidth() + lev.height*cp.size);
+	return QSize(2*frameWidth() + _level.width()*cp.size,
+				 2*frameWidth() + _level.height()*cp.size);
 }
 
 QSizePolicy Field::sizePolicy() const
@@ -126,12 +126,12 @@ QSizePolicy Field::sizePolicy() const
 
 const KMines::Case &Field::pfield(uint i, uint j) const
 {
-	return _pfield[i + j*(lev.width+2)];
+	return _pfield[i + j*(_level.width()+2)];
 }
 
 KMines::Case &Field::pfield(uint i, uint j)
 {
-	return _pfield[i + j*(lev.width+2)];
+	return _pfield[i + j*(_level.width()+2)];
 }
 
 uint Field::computeNeighbours(uint i, uint j) const
@@ -150,9 +150,9 @@ uint Field::computeNeighbours(uint i, uint j) const
 	return nm;
 }
 
-void Field::setLevel(const LevelData &l)
+void Field::setLevel(const Level &level)
 {
-	lev = l;
+    _level = level;
 	restart(false);
     updateGeometry();
 }
@@ -169,18 +169,18 @@ void Field::restart(bool repaint)
     firstReveal = true;
     nb_actions = 0;
 	currentAction = None;
-	ic = lev.width/2;
-	jc = lev.height/2;
+	ic = _level.width()/2;
+	jc = _level.height()/2;
 
-	_pfield.resize( (lev.width+2) * (lev.height+2) );
+	_pfield.resize( (_level.width()+2) * (_level.height()+2) );
 
 
-	for (uint i=0; i<lev.width+2; i++)
-		for (uint j=0; j<lev.height+2; j++) {
+	for (uint i=0; i<_level.width()+2; i++)
+		for (uint j=0; j<_level.height()+2; j++) {
 			Case tmp;
 			tmp.mine  = false;
-			tmp.state = (i==0 || i==lev.width+1 || j==0 || j==lev.height+1
-						 ? Uncovered : Covered);
+			tmp.state = (i==0 || i==_level.width()+1 || j==0
+                         || j==_level.height()+1 ? Uncovered : Covered);
 			if ( pfield(i, j).mine==false && pfield(i, j).state==tmp.state )
 				continue;
 			pfield(i, j) = tmp;
@@ -196,10 +196,14 @@ void Field::paintEvent(QPaintEvent *e)
 
 	if ( state==Paused ) return;
 
-	uint imin = (uint)QMAX(QMIN(xToI(e->rect().left()), (int)lev.width), 1);
-	uint imax = (uint)QMAX(QMIN(xToI(e->rect().right()), (int)lev.width), 1);
-	uint jmin = (uint)QMAX(QMIN(yToJ(e->rect().top()), (int)lev.height), 1);
-	uint jmax = (uint)QMAX(QMIN(yToJ(e->rect().bottom()), (int)lev.height), 1);
+	uint imin
+        = (uint)QMAX(QMIN(xToI(e->rect().left()), (int)_level.width()), 1);
+	uint imax
+        = (uint)QMAX(QMIN(xToI(e->rect().right()), (int)_level.width()), 1);
+	uint jmin
+        = (uint)QMAX(QMIN(yToJ(e->rect().top()), (int)_level.height()), 1);
+	uint jmax
+        = (uint)QMAX(QMIN(yToJ(e->rect().bottom()), (int)_level.height()), 1);
 	for (uint i=imin; i<=imax; i++)
 	    for (uint j=jmin; j<=jmax; j++) drawCase(i, j);
 }
@@ -255,7 +259,8 @@ void Field::uncover(uint i, uint j)
 
 bool Field::inside(int i, int j) const
 {
-	return ( i>=1 && i<=(int)lev.width && j>=1 && j<=(int)lev.height);
+	return ( i>=1 && i<=(int)_level.width() && j>=1
+             && j<=(int)_level.height());
 }
 
 KMines::MouseAction Field::mapMouseButton(QMouseEvent *e) const
@@ -342,8 +347,8 @@ void Field::mouseMoveEvent(QMouseEvent *e)
 
 void Field::showMines()
 {
-	for(uint i=1; i<=lev.width; i++)
-		for(uint j=1; j<=lev.height; j++) {
+	for(uint i=1; i<=_level.width(); i++)
+		for(uint j=1; j<=_level.height(); j++) {
 		    if ( !pfield(i, j).mine ) continue;
 			if ( pfield(i, j).state!=Exploded && pfield(i, j).state!=Marked )
 				changeCaseState(i, j, Uncovered);
@@ -436,8 +441,8 @@ void Field::_endGame()
 {
 	if ( state==Stopped ) return;
 	/* find all errors */
-	for (uint ii=1; ii<lev.width+1; ii++)
-		for (uint jj=1; jj<lev.height+1; jj++)
+	for (uint ii=1; ii<_level.width()+1; ii++)
+		for (uint jj=1; jj<_level.height()+1; jj++)
 			if ( pfield(ii, jj).state==Marked && !pfield(ii, jj).mine )
 				changeCaseState(ii, jj, Error);
 	emit endGame();
@@ -493,11 +498,11 @@ void Field::reveal()
 	if (firstReveal) {
 		// set mines positions on field ; must avoid the first
 		// clicked case
-		for(uint k=0; k<lev.nbMines; k++) {
+		for(uint k=0; k<_level.nbMines(); k++) {
 			uint i, j;
 			do {
-				i = random.getLong(lev.width);
-				j = random.getLong(lev.height);
+				i = random.getLong(_level.width());
+				j = random.getLong(_level.height());
 			} while ( pfield(i+1, j+1).mine
 					  || ((i+1)==(uint)ic && (j+1)==(uint)jc) );
 

@@ -51,7 +51,7 @@ class ExtPlayerItemBestScore : public PlayerItemBestScore
 //-----------------------------------------------------------------------------
 QString ExtHighscores::gameTypeLabel(uint level, LabelType type) const
 {
-    const LevelData &data = LEVELS[level];
+    const Level::Data &data = Level::data((Level::Type)level);
     switch (type) {
     case Icon:
     case Standard: return data.label;
@@ -65,11 +65,11 @@ QString ExtHighscores::gameTypeLabel(uint level, LabelType type) const
 void ExtHighscores::convertLegacy(uint level) const
 {
     QString group;
-    switch ((Level)level) {
-    case Easy: group = "Easy level"; break;
-    case Normal: group = "Normal level"; break;
-    case Expert: group = "Expert level"; break;
-    case NbLevels: Q_ASSERT(false);
+    switch ((Level::Type)level) {
+    case Level::Easy:     group = "Easy level"; break;
+    case Level::Normal:   group = "Normal level"; break;
+    case Level::Expert:   group = "Expert level"; break;
+    case Level::NbLevels: Q_ASSERT(false);
     }
 
     KConfig *config = kapp->config();

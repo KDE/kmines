@@ -38,8 +38,8 @@ class Field : public QFrame, public KMines
 	void umark();
 	void keyboardAutoReveal();
 
-	void setLevel(const LevelData &);
-	const LevelData &level() const { return lev; }
+	void setLevel(const Level &);
+	const Level &level() const { return _level; }
 	void readSettings();
     void setCaseSize(uint s);
     uint caseSize() const { return cp.size; }
@@ -68,7 +68,7 @@ class Field : public QFrame, public KMines
 
  private:
 	QMemArray<Case> _pfield;
-	LevelData       lev;
+	Level           _level;
 	KRandomSequence random;
 
 	GameState state;

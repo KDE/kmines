@@ -30,8 +30,8 @@ class MainWidget : public KMainWindow, public KMines
 
  private:
 	QPtrVector<KRadioAction>  levelAction;
-	Status                *status;
-    bool                   pauseFocus;
+	Status                   *status;
+    bool                      pauseFocus;
 
 	void readSettings();
     void settingsChanged();

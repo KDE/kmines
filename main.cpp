@@ -17,8 +17,8 @@
 #include <kstatusbar.h>
 #include <kstdgameaction.h>
 
-#include "version.h"
 #include "status.h"
+#include "highscores.h"
 
 
 ExtHighscores HIGHSCORES;
@@ -81,12 +81,12 @@ MainWidget::MainWidget()
 	KStdAction::keyBindings(this, SLOT(configureKeys()), actionCollection());
 
 	// Levels
-    levelAction.resize(NbLevels+1);
-    QCString name("level_");
-    for (uint i=0; i<NbLevels+1; i++) {
-        levelAction.insert(i, new KRadioAction(i18n(LEVELS[i].i18nLabel), 0,
-                         this, SLOT(changeLevel()), actionCollection(),
-                         name + LEVELS[i].label));
+    levelAction.resize(Level::NbLevels+1);
+    for (uint i=0; i<Level::NbLevels+1; i++) {
+        levelAction.insert(i,
+              new KRadioAction(i18n(Level::data((Level::Type)i).i18nLabel), 0,
+                               this, SLOT(changeLevel()), actionCollection(),
+                               Level::actionName((Level::Type)i)));
         levelAction[i]->setExclusiveGroup("level");
     }
 
@@ -102,9 +102,10 @@ MainWidget::MainWidget()
 
 void MainWidget::readSettings()
 {
-	LevelData l = SettingsDialog::readLevel();
-	if ( l.level!=Custom ) levelAction[l.level]->setChecked(true);
-	status->newGame(l);
+	Level level = SettingsDialog::readLevel();
+	if ( level.type()!=Level::Custom )
+        levelAction[level.type()]->setChecked(true);
+	status->newGame(level);
 
 	bool visible = SettingsDialog::readMenuVisible();
 	MENUBAR_ACTION->setChecked(visible);
@@ -115,29 +116,30 @@ void MainWidget::readSettings()
 
 void MainWidget::changeLevel()
 {
-    Level level = Easy;
+    Level::Type type = Level::Easy;
     for (uint i=0; i<levelAction.size(); i++)
         if ( levelAction[i]==sender() ) {
-            level = (Level)i;
+            type = (Level::Type)i;
             break;
         }
 
-	if ( !levelAction[level]->isChecked() ) return;
+	if ( !levelAction[type]->isChecked() ) return;
 
-	LevelData l;
-	if ( level==Custom ) {
-		levelAction[Custom]->setChecked(false);
-		l = status->currentLevel();
-		level = l.level;
-		CustomDialog cu(l, this);
-		if ( !cu.exec() ) { // level unchanged
-			if ( level!=Custom ) levelAction[level]->setChecked(true);
-			return;
-		}
-	} else l = LEVELS[level];
+	Level level = (type==Level::Custom ? status->currentLevel() : Level(type));
+	if ( type==Level::Custom ) {
+		levelAction[Level::Custom]->setChecked(false);
+        type = level.type();
+		CustomDialog cu(level, this);
+		bool res = cu.exec();
+        if ( level.type()!=Level::Custom ) {
+            levelAction[type]->setChecked(true);
+            if ( level.type()==type ) return; // level unchanged
+        }
+        if ( !res ) return; // canceled
+	}
 
-	status->newGame(l);
-	SettingsDialog::writeLevel(l);
+	status->newGame(level);
+	SettingsDialog::writeLevel(level);
 }
 
 void MainWidget::showHighscores()

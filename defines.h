@@ -4,6 +4,37 @@
 #include <qcolor.h>
 
 
+class Level
+{
+ public:
+    enum Type { Easy = 0, Normal, Expert, NbLevels, Custom = NbLevels };
+    struct Data {
+        uint        width, height, nbMines;
+        const char *label, *wwLabel, *i18nLabel;
+    };
+
+    Level(Type);
+    Level(uint width, uint height, uint nbMines);
+
+    static const Data &data(Type type) { return DATA[type]; }
+    static QCString actionName(Type type)
+        { return QCString("level_") + data(type).label; }
+
+    uint width() const   { return _width; }
+    uint height() const  { return _height; }
+    uint nbMines() const { return _nbMines; }
+    Type type() const;
+    const Data &data() const { return data(type()); }
+    uint maxNbMines() const  { return _width*_height - 2; }
+
+    static const uint MAX_CUSTOM_SIZE = 50;
+    static const uint MIN_CUSTOM_SIZE = 5;
+
+ private:
+    static const Data DATA[NbLevels+1];
+    uint _width, _height, _nbMines;
+};
+
 class KMines
 {
  public:
@@ -13,17 +44,9 @@ class KMines
         CaseState state;
     };
 
-    enum Level       { Easy = 0, Normal, Expert, NbLevels, Custom = NbLevels };
     enum GameState   { Stopped, Playing, Paused };
     enum MouseAction { Reveal = 0, AutoReveal, Mark, UMark, None };
     enum MouseButton { Left = 0, Mid, Right };
-
-    struct LevelData {
-        uint        width, height, nbMines;
-        Level       level;
-        const char *label, *wwLabel, *i18nLabel;
-    };
-    static const LevelData LEVELS[NbLevels+1];
 
     #define NB_NUMBER_COLORS 8
     struct CaseProperties {

@@ -10,9 +10,8 @@
 
 #include <knuminput.h>
 
-#include "gsettings.h"
+#include "generic/gsettings.h"
 #include "defines.h"
-#include "highscores.h"
 
 
 //-----------------------------------------------------------------------------
@@ -72,18 +71,18 @@ class CustomDialog : public KDialogBase, public KMines
 {
  Q_OBJECT
  public:
-	CustomDialog(LevelData &lev, QWidget *parent);
-
-	static uint maxNbMines(uint width, uint height);
+	CustomDialog(Level &, QWidget *parent);
 
  private slots:
 	void widthChanged(int);
 	void heightChanged(int);
 	void nbMinesChanged(int);
+    void typeChosen(int);
 
  private:
-	KIntNumInput *km;
-	LevelData    &lev, initLev;
+	KIntNumInput *_width, *_height, *_mines;
+    QComboBox    *_gameType;
+	Level        &_level;
 
 	void updateNbMines();
 };
@@ -143,8 +142,8 @@ class SettingsDialog : public BaseSettingsDialog, public KMines
 
     static KConfig *config();
 
-	static LevelData readLevel();
-	static void writeLevel(const LevelData &);
+	static Level readLevel();
+	static void writeLevel(const Level &);
 	static bool readMenuVisible();
 	static void writeMenuVisible(bool visible);
 };
