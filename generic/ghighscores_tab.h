@@ -80,7 +80,7 @@ class StatisticsTab : public AdditionalTab
     static const char *TREND_LABELS[Nb_Trends];
     struct Data {
         uint count[Nb_Counts];
-        int trend[Nb_Trends];
+        double trend[Nb_Trends];
     };
     QMemArray<Data> _data;
     QLabel *_nbs[Nb_Counts], *_percents[Nb_Counts], *_trends[Nb_Trends];

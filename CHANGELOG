@@ -1,3 +1,6 @@
+2.1.7e (11 May 2003)
+ * fix score trends display
+
 2.1.7d (30 April 2003) [ KDE 3.1.2 stable]
  * fix assert in custom dialog [reported by Albert Astals Cid]
 

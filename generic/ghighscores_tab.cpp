@@ -148,7 +148,7 @@ StatisticsTab::StatisticsTab(QWidget *parent)
             pi.item("current trend")->read(i).toInt();
         _data[i].trend[WonTrend] = pi.item("max won trend")->read(i).toUInt();
         _data[i].trend[LostTrend] =
-            -pi.item("max lost trend")->read(i).toUInt();
+            -(int)pi.item("max lost trend")->read(i).toUInt();
     }
 
     for (uint k=0; k<Nb_Counts; k++) _data[nb].count[k] = 0;
@@ -160,8 +160,7 @@ StatisticsTab::StatisticsTab(QWidget *parent)
             _data[nb].trend[k] += _data[i].trend[k];
     }
     for (uint k=0; k<Nb_Trends; k++)
-        _data[nb].trend[k] =
-            qRound(double(_data[nb].trend[k]) / _data.size()-1);
+        _data[nb].trend[k] /= _data.size()-1;
 
     init();
 }
@@ -182,7 +181,8 @@ void StatisticsTab::display(uint i)
     for (uint k=0; k<Nb_Trends; k++) {
         QString s;
         if ( d.trend[k]>0 ) s = '+';
-        _trends[k]->setText(s + QString::number(d.trend[k]));
+        int prec = (i==internal->playerInfos().nbEntries() ? 1 : 0);
+        _trends[k]->setText(s + QString::number(d.trend[k], 'f', prec));
     }
 }
 
