@@ -104,56 +104,6 @@ bool KSettingList::hasDefaults() const
 }
 
 //-----------------------------------------------------------------------------
-class KSettingCollection::Item : public KSettingGeneric
-{
- public:
-    Item(QObject *object,
-         const QString &group, const QString &key, const QVariant &def);
-    bool objectRecognized() const { return _type!=NB_TYPES; }
-
-    void map(int id, const QString &entry);
-    QVariant currentValue() const;
-    void setCurrentValue(const QVariant &);
-    QVariant loadValue() const;
-    QVariant read() const;
-    int readId() const;
-
-    void load();
-    void save();
-    void setDefaults();
-    bool hasDefaults() const;
-
-    bool contains(const QObject *object) const { return object==_obj; }
-
- private:
-    enum Type { CheckBox = 0, ToggleAction,
-                LineEdit, TextEdit, //URLRequester,
-                DatePicker, DateTimeEdit,
-                ColorButton, ButtonGroup,
-                ColorComboBox, ComboBox,
-                SpinBox, Slider, Dial, Selector,
-                IntInput, DoubleInput,
-                FontAction, FontSizeAction, SelectAction,
-                NB_TYPES };
-
-    struct Data {
-        const char     *className, *signal;
-        QVariant::Type  type;
-        bool            multi;
-    };
-    static const Data DATA[NB_TYPES];
-
-    const QString         _group, _key;
-    QGuardedPtr<QObject>  _gobj;
-    QObject              *_obj;
-    Type                  _type;
-    QVariant              _def;
-    QMap<int, QString>    _entries;
-
-    bool isMulti() const;
-    int mapToId(const QString &entry) const;
-    static int findRadioButtonId(const QButtonGroup *group);
-};
 
 const KSettingCollection::Item::Data
 KSettingCollection::Item::DATA[KSettingCollection::Item::NB_TYPES] = {
