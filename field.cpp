@@ -251,8 +251,8 @@ void Field::keyboardAutoRevealSlot()
 void Field::doAutoReveal(const Coord &c)
 {
 	if ( !isActive() ) return;
-
-    if ( state(c)==Uncovered ) emit addAction(c, AutoReveal);
+    if ( state(c)!=Uncovered ) return;
+    emit addAction(c, AutoReveal);
     resetAdvised();
     doAction(AutoReveal, c, _completeReveal);
 }
