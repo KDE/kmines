@@ -56,7 +56,8 @@ class KMines
  public:
     enum GameState   { Playing = 0, Paused, GameOver, Stopped, Replaying,
                        Init, NB_STATES };
-    static const char *STATES[NB_STATES];
+	static const char *STATES[NB_STATES];
+	enum SolvingState { Regular, Advised, Solved };
 
     enum CaseState { Covered, Uncovered, Uncertain, Marked, Exploded, Error };
     struct Case {

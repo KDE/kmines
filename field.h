@@ -41,20 +41,20 @@ class Field : public FieldFrame, public BaseField
     void setLevel(const Level &level);
     void setReplayField(const QString &field);
     const Level &level() const { return _level; }
-	void reset(bool init);
+    void reset(bool init);
 
     GameState gameState() const { return _state; }
     bool isActive() const { return _state!=Paused && _state!=GameOver; }
-	void pause();
-	void setGameOver() { _state = GameOver; }
-    bool hasCompleteReveal() const { return _completeReveal; }
+    void pause();
+    void setGameOver() { _state = GameOver; }
+	bool hasCompleteReveal() const { return _completeReveal; }
 
     void moveCursor(Neighbour);
     void moveToEdge(Neighbour);
-	void doReveal() { doReveal(_cursor); }
-	void doMark()   { doMark(_cursor); }
-	void doUmark()  { doUmark(_cursor); }
-	void keyboardAutoReveal();
+    void doReveal() { doReveal(_cursor); }
+    void doMark()   { doMark(_cursor); }
+    void doUmark()  { doUmark(_cursor); }
+    void keyboardAutoReveal();
     CaseState doAction(ActionType type, const KGrid2D::Coord &c,
                      bool completeReveal, KGrid2D::CoordList *autorevealed = 0,
                      bool *caseUncovered = 0);
@@ -62,7 +62,9 @@ class Field : public FieldFrame, public BaseField
 	void readSettings();
 
     void setAdvised(const KGrid2D::Coord &c, double proba);
-
+	void setSolvingState(SolvingState state) { _solvingState = state; }
+	SolvingState solvingState() const { return _solvingState; }
+	
  signals:
 	void updateStatus(bool);
 	void gameStateChanged(GameState);
@@ -80,11 +82,12 @@ class Field : public FieldFrame, public BaseField
 	void keyboardAutoRevealSlot();
 
  private:
-	GameState      _state;
-	bool           _reveal, _completeReveal;
-	KGrid2D::Coord  _cursor, _advised;
-	double         _advisedProba;
-	int            _currentAction;
+	GameState   _state;
+	bool              _reveal, _completeReveal;
+	SolvingState _solvingState;
+	KGrid2D::Coord  _cursor, _advisedCoord;
+	double        _advisedProba;
+	int               _currentAction;
 	Level          _level;
 
 	void pressCase(const KGrid2D::Coord &, bool);
