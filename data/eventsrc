@@ -131,7 +131,7 @@ default_presentation=0
 
 [mark]
 Name=Mark case
-Name[bg]=Маркиране
+Name[bg]=Поставяне на флаг
 Name[ca]=Marca casella
 Name[cs]=Označit pole
 Name[da]=Markér felt
@@ -159,7 +159,7 @@ Name[xx]=xxMark casexx
 Name[zh_CN]=标记盒子
 Name[zh_TW]=標記方格
 Comment=Mark case
-Comment[bg]=Маркиране
+Comment[bg]=Поставяне на флаг
 Comment[ca]=Marca casella
 Comment[cs]=Označit pole
 Comment[da]=Markér felt
@@ -310,7 +310,7 @@ default_presentation=0
 
 [won]
 Name=Game won
-Name[bg]=Играта е спечелена
+Name[bg]=Спечелихте
 Name[ca]=Partida guanyada
 Name[cs]=Vyhraná hra
 Name[da]=Spillet vundet
@@ -341,7 +341,7 @@ Name[xx]=xxGame wonxx
 Name[zh_CN]=您赢了游戏
 Name[zh_TW]=遊戲獲勝
 Comment=Game won
-Comment[bg]=Играта е спечелена
+Comment[bg]=Спечелихте
 Comment[ca]=Partida guanyada
 Comment[cs]=Vyhraná hra
 Comment[da]=Spil vundet
@@ -375,7 +375,7 @@ default_presentation=0
 
 [lost]
 Name=Game lost
-Name[bg]=Играта е загубена
+Name[bg]=Загубихте
 Name[ca]=Partida perduda
 Name[cs]=Prohraná hra
 Name[da]=Spil tabt
@@ -406,7 +406,7 @@ Name[xx]=xxGame lostxx
 Name[zh_CN]=您输了游戏
 Name[zh_TW]=遊戲失敗
 Comment=Game lost
-Comment[bg]=Играта е загубена
+Comment[bg]=Загубихте
 Comment[ca]=Partida perduda
 Comment[cs]=Prohraná hra
 Comment[da]=Spil tabt
