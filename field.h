@@ -23,7 +23,7 @@ class Field : public QWidget
 	
  signals:
 	void changeCase(uint, uint);
-	void updateStatus();
+	void updateStatus(bool);
 	void updateSmiley(int);
 	void endGame(int);
 	void startTimer();

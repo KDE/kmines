@@ -14,27 +14,10 @@ kmines_SOURCES= dialogs.cpp field.cpp status.cpp main.cpp
 BUILTSOURCES = dialogs.moc field.moc status.moc main.moc
 DISTCLEANFILES = $(BUILTSOURCES)
 
+SUBDIRS = data
+
 messages:
 	$(XGETTEXT) -C -ktranslate -x ../../kdelibs/po/kde.pot $(kmines_SOURCES) && mv messages.po ../po/kmines.pot
-
-## ##########################
-## # Installation definitions
-
-icondir = $(kde_icondir)
-icon_DATA = kmines.xpm
-minidir = $(kde_minidir)
-appsdir = $(kde_appsdir)/Games
-apps_DATA = kmines.kdelnk
-htmldir = $(kde_htmldir)/en/kmines
-html_DATA = index.html index-1.html index-2.html logotp3.gif
-
-install-data-local:
-	$(mkinstalldirs) $(minidir)
-	$(INSTALL_DATA) mini-kmines.xpm $(minidir)/kmines.xpm
-
-uninstall-local:
-	rm -f $(minidir)/kmines.xpm
-	rm -rf $(htmldir)
 
 ## ##############
 ## # MOC building

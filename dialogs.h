@@ -6,6 +6,7 @@
 #include <qscrbar.h>
 #include <qlined.h>
 #include <qlcdnum.h>
+#include <qlayout.h>
 
 #include <kconfig.h>
 
@@ -44,15 +45,15 @@ class Custom : public QDialog
 	Custom(uint *w, uint *h, uint *nb, QWidget *parent);
   
  private slots:
-	void widthChanged(uint);
-	void heightChanged(uint);
-	void nbminesChanged(uint);
+	void widthChanged(int);
+	void heightChanged(int);
+	void nbMinesChanged(int);
   
  private:
 	QScrollBar *sw, *sh, *sm;
 	QLabel *lw, *lh, *lm;
   
-	uint  *nb_w, *nb_h, *nb_m;
+	uint  *nbW, *nbH, *nbM;
 };
 
 
@@ -62,44 +63,19 @@ class WHighScores : public QDialog
  Q_OBJECT
 	  
  public:
-	WHighScores(bool show, int sec, int min, int mode, int &res,
+	WHighScores(bool show, int sec, int min, uint mode, int &res,
 				QWidget *parent);
 
  private slots:
 	void writeName();
   
  private:
+	uint mode;
 	KConfig *kconf;
 	QLineEdit *qle;
-	QLabel *lab;
 	QPushButton *pb;
-	
-	int showHS(bool,int,int,int);
+	QGridLayout *gl;
+	QVBoxLayout *top;
 };
 
-/* options dialog */
-class Options : public QDialog
-{
- Q_OBJECT 
-  
- public:
-	Options(QWidget *parent);
-	
- private slots:
-	void changeUMark(int);
-  
- private:
-	int um;
-	KConfig *kconf;
-};
-
-/* Replay dialog */
-class WReplay : public QDialog
-{
- public:
-	WReplay(const QString &msg1, const QString &msg2,
-			const QPixmap &happy, const QPixmap &ohno,
-			QWidget *parent);	
-};
-		
 #endif

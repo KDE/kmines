@@ -28,7 +28,7 @@ KStatus::KStatus ( QWidget *parent, const char *name )
   
 	connect( field, SIGNAL(changeCase(uint,uint)),
 			 SLOT(changeCase(uint,uint)) );
-	connect( field, SIGNAL(updateStatus()), SLOT(update()) );
+	connect( field, SIGNAL(updateStatus(bool)), SLOT(update(bool)) );
 	connect( field, SIGNAL(endGame(int)), SLOT(endGame(int)) );
 	connect( parent, SIGNAL(UMarkChanged(bool)),
 			 field, SLOT(changeUMark(bool)) );
@@ -156,7 +156,7 @@ void KStatus::restartGame()
 	/* hide the message label */
 	mesg->hide();
 	
-	update();
+	update(FALSE);
 	updateSmiley(OK);
 	
 	emit zeroTimer();
@@ -182,13 +182,13 @@ void KStatus::changeCase(uint case_mode, uint inc)
 	}
 }
 
-void KStatus::update()
+void KStatus::update(bool mine)
 {
 	static char perc[5];
 	sprintf(perc,"%d", nb_mines - marked);
 	emit exleft(perc);
 	
-	if ( uncovered==(nb_width*nb_height - nb_mines) ) endGame(TRUE);
+	if ( uncovered==(nb_width*nb_height - nb_mines) ) endGame(!mine);
 }
 
 void KStatus::updateSmiley(int mood)
@@ -217,7 +217,7 @@ void KStatus::endGame(int win)
 		else if (nb_width==MODES[1][0] && nb_height==MODES[1][1] && nb_mines==MODES[1][2])
 			res = setHighScore(t_sec, t_min, NORMAL);
 		else if (nb_width==MODES[2][0] && nb_height==MODES[2][1] && nb_mines==MODES[2][2])
-			res = setHighScore(t_sec,t_min,EXPERT);
+			res = setHighScore(t_sec, t_min, EXPERT);
 		
 		if ( res!=0 ) exmesg(i18n("You did it ... but not in time."));
 		else exmesg(i18n("Yeeessss !"));

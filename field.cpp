@@ -183,16 +183,16 @@ void Field::paintEvent( QPaintEvent *)
 void Field::changeCaseState(uint i, uint j, uint new_st)
 {
 	if (pfield[i][j] & MINE) {
-		emit changeCase(pfield[i][j] ^ MINE,-1);
+		emit changeCase(pfield[i][j] ^ MINE, -1);
 		pfield[i][j] = MINE | new_st;
 	} else {
-		emit changeCase(pfield[i][j],-1);
+		emit changeCase(pfield[i][j], -1);
 		pfield[i][j] = new_st;
 	}
   
-	emit changeCase(new_st,1);
-	drawCase(i,j,computeNeighbours(i,j));
-	if (!_stop) emit updateStatus();
+	emit changeCase(new_st, 1);
+	drawCase(i, j, computeNeighbours(i,j));
+	if (!_stop) emit updateStatus(pfield[i][j] & MINE);
 }
 
 #define ipos (i-1)*CASE_W

@@ -1,5 +1,8 @@
 0.6.12
- * tiny cleanup
+ * use QLayout for "custom level dialog" and "highscore dialog"
+ * some cleanup
+ * and a fix ! (yes there was a bug still lurking : when only two
+   uncovered cases remain, it was possible to win on clicking on the mine)
 
 0.6.11
  * Added kapp->getHelpMenu() & setCaption() [Robert Williams]

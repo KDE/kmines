@@ -18,7 +18,7 @@ class KStatus : public QWidget
 	void restartGame();
 	void newGame(uint, uint, uint);
 	void changeCase(uint, uint);
-	void update();
+	void update(bool);
 	void updateSmiley(int);
 	void endGame(int);
 	void getNumbers(uint *, uint *, uint *);
