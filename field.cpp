@@ -14,7 +14,7 @@
 //-----------------------------------------------------------------------------
 Field::Field(QWidget *parent)
 : QFrame(parent, "field"), lev(LEVELS[0]), random(0), state(Stopped),
-  u_mark(false), cursor(false)
+  u_mark(false), cursor(false), button(0)
 {
 	setFrameStyle( QFrame::Box | QFrame::Raised );
 	setLineWidth(2);
@@ -35,6 +35,7 @@ void Field::readSettings()
 void Field::setCaseProperties(const CaseProperties &_cp)
 {
 	cp = _cp;
+    button.resize(cp.size, cp.size);
     updateGeometry();
 
 	QBitmap mask;
@@ -165,7 +166,8 @@ void Field::restart(bool repaint)
 	}
 
 	state = Playing;
-	first_click = true;
+    firstReveal = true;
+    nb_actions = 0;
 	currentAction = None;
 	ic = lev.width/2;
 	jc = lev.height/2;
@@ -384,6 +386,7 @@ void Field::keyboardAutoRevealSlot()
 void Field::autoReveal()
 {
 	if ( state!=Playing ) return;
+    nb_actions++;
 	switch (pfield(ic, jc).state) {
 	case Covered:
 	case Marked:
@@ -442,7 +445,7 @@ void Field::_endGame()
 
 void Field::pause()
 {
-	if ( first_click || state==Stopped ) return;
+	if ( firstReveal || state==Stopped ) return;
 
 	if ( state==Paused ) resume(); // if already paused : resume game
 	else {
@@ -486,7 +489,8 @@ void Field::right()
 void Field::reveal()
 {
 	if ( state!=Playing ) return;
-	if ( first_click ) {
+    nb_actions++;
+	if (firstReveal) {
 		// set mines positions on field ; must avoid the first
 		// clicked case
 		for(uint k=0; k<lev.nbMines; k++) {
@@ -500,7 +504,7 @@ void Field::reveal()
 			pfield(i+1, j+1).mine = true;
 		}
 		emit startTimer();
-		first_click = false;
+		firstReveal = false;
 		emit gameStateChanged(Playing);
 	}
 
@@ -510,6 +514,7 @@ void Field::reveal()
 void Field::mark()
 {
 	if ( state!=Playing ) return;
+    nb_actions++;
 	switch (pfield(ic, jc).state) {
 	case Covered:   changeCaseState(ic, jc, Marked); break;
 	case Marked:    changeCaseState(ic, jc, (u_mark ? Uncertain : Covered));
@@ -522,6 +527,7 @@ void Field::mark()
 void Field::umark()
 {
 	if ( state!=Playing ) return;
+    nb_actions++;
 	switch (pfield(ic, jc).state) {
 	case Covered:
 	case Marked:    changeCaseState(ic, jc, Uncertain); break;
@@ -551,34 +557,32 @@ void Field::setCursor(bool show)
 }
 
 // draw methods
-void Field::drawBox(uint i, uint j, bool pressed,
-					const QString &text, const QColor *textColor,
-					const QPixmap *pixmap)
+void Field::drawBox(uint i, uint j, bool pressed, const QPixmap *pixmap,
+					const QString &text, const QColor &textColor)
 {
+    int x = iToX(i);
+    int y = jToY(j);
+
 	QPainter p(this);
-	int x = iToX(i);
-	int y = jToY(j);
+    p.translate(x, y);
 
-	// draw button
-    int s = QStyle::Style_Enabled;
-    if (pressed) s |= QStyle::Style_Down;
-    style().drawPrimitive(QStyle::PE_ButtonCommand, &p,
-                          QRect(x, y, cp.size, cp.size),
-                          colorGroup(), s);
+    QStyle::SFlags flags = QStyle::Style_Enabled;
+    if (pressed) flags |= QStyle::Style_Down;
+    else flags |= QStyle::Style_Raised;
+    if ( cursor && i==ic && j==jc ) flags |= QStyle::Style_HasFocus;
 
-    // draw text and pixmap
-    style().drawItem(&p, QRect(x, y, cp.size, cp.size),
-                     AlignCenter, colorGroup(), true,
-                     pixmap, text, -1, textColor);
+    style().drawControl(QStyle::CE_PushButton, &p, &button, button.rect(),
+                        colorGroup(), flags);
+    style().drawControl(QStyle::CE_PushButtonLabel, &p, &button,
+                      style().subRect(QStyle::SR_PushButtonFocusRect, &button),
+                      colorGroup(), flags);
 
-    // draw cursor
-    if ( cursor && i==ic && j==jc ) {
-        QPushButton dummy(0);
-        dummy.resize(cp.size, cp.size);
-        QRect r = style().subRect(QStyle::SR_PushButtonFocusRect, &dummy);
-        r.moveBy(x, y);
-        style().drawPrimitive(QStyle::PE_FocusRect, &p, r, colorGroup());
-    }
+    // we need to draw directly because the pushbutton control clips too much
+    // text and pixmap ...
+    p.resetXForm();
+    QRect r(x, y, cp.size, cp.size);
+    style().drawItem(&p, r, AlignCenter, colorGroup(), true, pixmap,
+                     text, -1, &textColor);
 }
 
 void Field::drawCase(uint i, uint j)
@@ -591,18 +595,17 @@ void Field::drawCase(uint i, uint j)
 		            break;
 	case Error:     drawBox(i, j, true, &pm_error);
 		            break;
-	case Uncertain: drawBox(i, j, false, "?");
+	case Uncertain: drawBox(i, j, false, 0, "?", black);
 					break;
 	case Exploded:  drawBox(i, j, true, &pm_exploded);
 					break;
-	case Uncovered: if ( pfield(i, j).mine )
-		                drawBox(i, j, true, &pm_mine);
-	                else {
-						uint n = computeNeighbours(i, j);
-						QString nb;
-						if (n) nb.setNum(n);
-						drawBox(i, j, true, nb,
-								n ? &cp.numberColors[n-1] : 0);
-					}
+	case Uncovered:
+        if ( pfield(i, j).mine ) drawBox(i, j, true, &pm_mine);
+        else {
+            uint n = computeNeighbours(i, j);
+            QString nb;
+            if (n) nb.setNum(n);
+            drawBox(i, j, true, 0, nb, n ? cp.numberColors[n-1] : black);
+        }
 	}
 }

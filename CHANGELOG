@@ -1,12 +1,15 @@
-2.1.1 (04 October 2001) [in CVS]
+2.1.1 (16 October 2001) [in CVS]
  * port to Qt 3.0 completed (hopefully)
  * some changes in highscores (nicer dialog)
  * i18n error messages for wwhs (#### test them)
  * new smiley pixmap for pause
  * clicking smiley resumes when game paused
+ * changes in keyboard accelators since Ctrl and Shift seems to be
+   forbidden as keys now ... (#### investigate that)
+ * count nb of clicks (reveal, autoreveal, mark) and display it in highscores.
 
 2.1.0 (17 July 2001) 
- -- version to be released with KDE 2.2 --
+ -- version released with KDE 2.2 --
  * fixed checked entry in "show highscores" submenu
 
 2.0.13 (10 June 2001) [released]

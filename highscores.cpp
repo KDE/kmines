@@ -5,6 +5,14 @@
 
 
 //-----------------------------------------------------------------------------
+ExtScore::ExtScore(uint score, uint clicks)
+    : Score(score)
+{
+    addData("nb_actions", new ItemBase((uint)0, i18n("Clicks"),
+                                       Qt::AlignRight), true, clicks);
+}
+
+//-----------------------------------------------------------------------------
 class ExtScoreItemScore : public ScoreItemScore
 {
  public:

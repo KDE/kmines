@@ -43,6 +43,7 @@ class Field : public QFrame, public KMines
 	void readSettings();
     void setCaseSize(uint s);
     uint caseSize() const { return cp.size; }
+    uint nbActions() const { return nb_actions; }
 
  public slots:
 	void resume();
@@ -71,8 +72,8 @@ class Field : public QFrame, public KMines
 	KRandomSequence random;
 
 	GameState state;
-	bool      first_click;
-	bool      u_mark, cursor;
+    uint      nb_actions;
+	bool      u_mark, cursor, firstReveal;
 
 	uint  ic, jc;              // current pos
 	MouseAction mb[3];         // mouse bindings
@@ -80,6 +81,7 @@ class Field : public QFrame, public KMines
 
 	CaseProperties cp;
 	QPixmap        pm_flag, pm_mine, pm_exploded, pm_error;
+    QPushButton    button;
 
 	uint computeNeighbours(uint, uint) const;
 	void uncover(uint, uint);
@@ -103,10 +105,9 @@ class Field : public QFrame, public KMines
 	int jToY(uint j) const;
 
 	void drawCase(uint, uint);
-	void drawBox(uint, uint, bool, const QString &text = QString::null,
-				 const QColor *color = 0, const QPixmap *pixmap = 0);
-	void drawBox(uint i, uint j, bool pressed, const QPixmap *pixmap)
-		{ drawBox(i, j, pressed, QString::null, 0, pixmap); }
+	void drawBox(uint, uint, bool, const QPixmap * = 0,
+                 const QString &text = QString::null,
+                 const QColor &textColor = black);
 	void eraseField();
 
 	void setUMark(bool um) { u_mark = um; }

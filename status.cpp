@@ -158,7 +158,7 @@ void Status::_endGame(bool won)
     smiley->setMood(won ? Smiley::Happy : Smiley::Sad);
 
     if ( field->level().level==Custom || !won ) return;
-    Score score(dg->score());
+    ExtScore score(dg->score(), field->nbActions());
     highscores().submitScore(true, score, this);
 }
 

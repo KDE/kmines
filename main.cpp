@@ -62,10 +62,10 @@ MainWidget::MainWidget()
 	keyAction.insert(4, new KAction(i18n("Reveal mine"), Key_Space,
 							   status, SLOT(reveal()),
 							   actionCollection(), "keyboard_revealmine"));
-	keyAction.insert(5, new KAction(i18n("Mark mine"), Key_Control,
+	keyAction.insert(5, new KAction(i18n("Mark mine"), Key_W,
 							   status, SLOT(mark()),
 							   actionCollection(), "keyboard_markmine"));
-	keyAction.insert(6, new KAction(i18n("Automatic reveal"), Key_Shift,
+	keyAction.insert(6, new KAction(i18n("Automatic reveal"), Key_Return,
 							   status, SLOT(autoReveal()),
 							   actionCollection(), "keyboard_autoreveal"));
 	KAccel *kacc = new KAccel(this);
