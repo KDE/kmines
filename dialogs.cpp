@@ -325,8 +325,7 @@ AppearanceSettings::AppearanceSettings()
     }
 
 	for (uint i=0; i<NB_NUMBER_COLORS; i++) {
-		(void)new QLabel(i==0 ? i18n("1 mine color")
-						 : i18n("%1 mines color").arg(i+1), grid);
+		(void)new QLabel(i18n("1 mine color", "%n mines color", i+1), grid);
         createNumberColor(settings(), grid, i);
 	}
 }
