@@ -1,9 +1,13 @@
-2.1.8 (3 December 2002) [CVS 3.2 devel]
+2.1.8 (4 December 2002) [CVS 3.2 devel]
+ * config button in highscores dialog
+
+2.1.7b (3 December 2002) [KDE 3.1.1 stable]
  * fix bug in highscores dialog in statistics and histogram tabs
  * fix icons in adviser menu and in configuration dialog
- * fix bug in XML configuration that was leading to crash at program
-   end [report by ... and ...]
+ * fix bug in XML configuration that was leading to a crash at program
+   end [report by connyosis and "Quel Qun"]
  * fix bug in mean score computation
+ * fix bug that prevents logging solver actions
 
 2.1.7 (27 July 2002) [KDE 3.1 stable]
  * XML configuration is working !!

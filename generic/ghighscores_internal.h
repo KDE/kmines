@@ -231,6 +231,8 @@ class ManagerPrivate
     bool isWWHSAvailable() const     { return !serverURL.isEmpty(); }
     ScoreInfos &scoreInfos() const   { return *_scoreInfos; }
     PlayerInfos &playerInfos() const { return *_playerInfos; }
+    enum QueryType { Submit, Register, Change, Players, Scores };
+    KURL queryURL(QueryType type, const QString &newName=QString::null) const;
 
     void additionnalTabs(QTabWidget *parent);
     void exportHighscores(QTextStream &);
@@ -246,9 +248,6 @@ class ManagerPrivate
     bool          _first;
     const uint    _nbGameTypes;
     uint          _gameType;
-
-    enum QueryType { Submit, Register, Change, Players, Scores };
-    KURL queryURL(QueryType type, const QString &newName=QString::null) const;
 
     // return -1 if not a local best score
     int rank(const Score &score) const;

@@ -18,7 +18,6 @@
 */
 
 #include "ghighscores.h"
-#include "ghighscores.moc"
 
 #include <qlayout.h>
 
@@ -43,10 +42,16 @@ void setGameType(uint type)
     internal->setGameType(type);
 }
 
-ConfigWidget *createConfigWidget(QWidget *parent)
+bool configure(QWidget *parent)
 {
     internal->checkFirst();
-    return new ImplConfigWidget(parent);
+    KConfigWidget *cw = new KConfigWidget(i18n("Configure Highscores"));
+    cw->configCollection()->insert( new ConfigItem(cw) );
+    KConfigDialog *cd = new KConfigDialog(cw, parent);
+    cd->exec();
+    bool saved = cd->hasBeenSaved();
+    delete cd;
+    return saved;
 }
 
 void showMultipleScores(const ScoreVector &scores, QWidget *parent)
@@ -66,7 +71,7 @@ void submitScore(const Score &score, QWidget *parent)
     internal->submitScore(score, parent);
 }
 
-void showHighscores(QWidget *parent)
+void show(QWidget *parent)
 {
     internal->showHighscores(parent, -1);
 }

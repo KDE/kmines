@@ -22,7 +22,6 @@
 
 #include <qcheckbox.h>
 #include <qlabel.h>
-#include <qcombobox.h>
 #include <qvbox.h>
 
 #include <klistview.h>
@@ -31,6 +30,7 @@
 #include <kdialogbase.h>
 
 #include "ghighscores.h"
+#include "gsettings.h"
 
 
 namespace KExtHighscore
@@ -58,16 +58,20 @@ class ScoresList : public KListView
 {
  Q_OBJECT
  public:
-    ScoresList(QWidget *parent);
+    ScoresList(const ItemArray &, QWidget *parent);
+
+    void reload();
 
  protected:
-    void addHeader(const ItemArray &);
-    QListViewItem *addLine(const ItemArray &, uint index, bool highlight);
+    void addHeader();
+    QListViewItem *addLine(uint index, bool highlight);
     virtual QString itemText(const ItemContainer &, uint row) const = 0;
     virtual bool showColumn(const ItemContainer &) const { return true; }
 
  private:
-    void addLine(const ItemArray &, uint index, QListViewItem *item);
+    const ItemArray &_items;
+
+    void addLine(uint index, QListViewItem *item);
 };
 
 //-----------------------------------------------------------------------------
@@ -85,21 +89,32 @@ class HighscoresWidget : public QWidget
 {
  Q_OBJECT
  public:
-    HighscoresWidget(int localRank, QWidget *parent,
-                     const QString &playersURL, const QString &scoresURL);
+    HighscoresWidget(int localRank, QWidget *parent);
+
+    void reload();
 
  private slots:
     void showURL(const QString &) const;
+
+ private:
+    HighscoresList *_scoresList, *_playersList;
+    KURLLabel      *_scoresUrl, *_playersUrl;
 };
 
 class HighscoresDialog : public KDialogBase
 {
  Q_OBJECT
  public:
-    HighscoresDialog(bool treeList, QWidget *parent);
+    HighscoresDialog(uint nbGameTypes, int rank, QWidget *parent);
 
  private slots:
     void exportToText();
+    void configure();
+
+ private:
+    QValueVector<HighscoresWidget *> _widgets;
+
+    void reload();
 };
 
 //-----------------------------------------------------------------------------
@@ -117,26 +132,26 @@ class MultipleScoresList : public ScoresList
 };
 
 //-----------------------------------------------------------------------------
-class ImplConfigWidget : public ConfigWidget
+class ConfigItem : public KConfigItemBase
 {
  Q_OBJECT
  public:
-    ImplConfigWidget(QWidget *parent);
-
-    void load();
-    bool save();
-
-    QString title() const;
-    QString icon() const;
+    ConfigItem(QWidget *widget);
 
  private slots:
     void removeSlot();
 
  private:
+    QWidget     *_widget;
     QCheckBox   *_WWHEnabled;
     QLineEdit   *_nickname, *_comment;
     KLineEdit   *_key, *_registeredName;
     KPushButton *_removeButton;
+
+    void loadState();
+    bool saveState();
+    void setDefaultState() {}
+    bool hasDefault() const { return true; }
 };
 
 }; // namespace

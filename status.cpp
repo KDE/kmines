@@ -36,6 +36,7 @@
 #include <kfiledialog.h>
 #include <ktempfile.h>
 #include <kio/netaccess.h>
+#include <knotifyclient.h>
 
 #include "generic/ghighscores.h"
 #include "solver/solver.h"
@@ -195,6 +196,9 @@ void Status::setGameOver(bool won)
         if (won) KExtHighscore::submitScore(dg->score(), this);
         else KExtHighscore::submitScore(KExtHighscore::Lost, this);
     }
+
+    KNotifyClient::event(won ? "won" : "lost",
+                         won ? i18n("Game won!") : i18n("Game lost!"));
 
     // game log
     _logRoot.setAttribute("count", dg->nbActions());

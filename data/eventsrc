@@ -1,0 +1,38 @@
+[!Global!]
+IconName=kmines
+Comment=KMines
+
+[reveal]
+Name=Reveal case
+Comment=Reveal case
+default_presentation=0
+
+[autoreveal]
+Name=Autoreveal case
+Comment=Autoreveal case
+default_presentation=0
+
+[mark]
+Name=Mark case
+Comment=Mark case
+default_presentation=0
+
+[unmark]
+Name=Unmark case
+Comment=Unmark case
+default_presentation=0
+
+[explosion]
+Name=Explosion
+Comment=Explosion
+default_presentation=0
+
+[won]
+Name=Game won
+Comment=Game won
+default_presentation=0
+
+[lost]
+Name=Game lost
+Comment=Game lost
+default_presentation=0

@@ -21,17 +21,19 @@
 #define G_HIGHSCORES_H
 
 #include <qvaluevector.h>
-#include <qwidget.h>
-
-#include <kurl.h>
 
 #include "ghighscores_item.h"
 
 class QTabWidget;
+class QWidget;
+class KURL;
 
 
 namespace KExtHighscore
 {
+
+class Score;
+class Item;
 
 class ManagerPrivate;
 extern ManagerPrivate *internal;
@@ -47,48 +49,15 @@ uint gameType();
 void setGameType(uint gameType);
 
 /**
- * This abstrat class is the base class of the highscores
- * configuration widget (@see createConfigWidget).
+ * Configure the highscores.
+ * @return true if the configuration has been modified and saved
  */
-class ConfigWidget : public QWidget
-{
- Q_OBJECT
- public:
-    ConfigWidget(QWidget *parent) : QWidget(parent) {}
-
-    /**
-     * Load the settings.
-     */
-    virtual void load() = 0;
-
-    /**
-     * Save the settings.
-     */
-    virtual bool save() = 0;
-
-    /**
-     * @return the title.
-     */
-    virtual QString title() const = 0;
-
-    /**
-     * @return the icon.
-     */
-    virtual QString icon() const = 0;
-
- signals:
-    void modified();
-};
-
-/**
- * @return a @ref ConfigWidget for configuration of the highscores.
- */
-ConfigWidget *createConfigWidget(QWidget *parent);
+bool configure(QWidget *parent);
 
 /**
  * Show the highscores lists.
  */
-void showHighscores(QWidget *parent);
+void show(QWidget *parent);
 
 
 typedef QValueVector<Score> ScoreVector;
@@ -352,6 +321,7 @@ class Manager
      */
     virtual void additionnalTabs(QTabWidget *widget) { Q_UNUSED(widget); }
 
+    friend class HighscoresDialog;
     friend class ManagerPrivate;
 
  private:

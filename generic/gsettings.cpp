@@ -691,7 +691,7 @@ KConfigItem *KConfigCollection::plug(const char *name, QObject *object)
 {
     Q_ASSERT(object);
     KConfigItem *it = item(name);
-    if ( item==0 ) return 0;
+    if ( it==0 ) return 0;
     ConstIterator iter = _list.begin();
     for (; iter!=_list.end(); ++iter)
         if ( static_cast<KConfigItemBase *>(*iter)==it) {
@@ -854,12 +854,25 @@ KConfigWidget::~KConfigWidget()
 
 //-----------------------------------------------------------------------------
 KConfigDialog::KConfigDialog(QWidget *parent, const char *name)
-    : KDialogBase(IconList, i18n("Configure"),
-                  Ok|Apply|Cancel|Default, Cancel, parent, name, true, true)
+    : KDialogBase(IconList, i18n("Configure"), Ok|Apply|Cancel|Default,
+                  Cancel, parent, name, true, true), _unique(0), _saved(false)
 {
     connect(this, SIGNAL(aboutToShowPage(QWidget *)),
             SLOT(aboutToShowPageSlot(QWidget *)));
     enableButtonApply(false);
+}
+
+KConfigDialog::KConfigDialog(KConfigWidget *widget, QWidget *parent,
+                             const char *name)
+    : KDialogBase(Swallow, widget->title(), Ok|Apply|Cancel|Default, Cancel,
+                  parent, name, true, true), _unique(widget), _saved(false)
+{
+    setMainWidget(widget);
+    _widgets.append(widget);
+    widget->configCollection()->load();
+    connect(widget->configCollection(), SIGNAL(modified()), SLOT(modified()));
+    enableButtonApply(false);
+    aboutToShowPageSlot(0);
 }
 
 KConfigDialog::~KConfigDialog()
@@ -867,6 +880,7 @@ KConfigDialog::~KConfigDialog()
 
 void KConfigDialog::append(KConfigWidget *w)
 {
+    Q_ASSERT( !_unique );
     QFrame *page = addPage(w->title(), QString::null,
                            BarIcon(w->icon(), KIcon::SizeLarge));
     w->reparent(page, 0, QPoint());
@@ -877,13 +891,13 @@ void KConfigDialog::append(KConfigWidget *w)
 
     w->configCollection()->load();
     connect(w->configCollection(), SIGNAL(modified()), SLOT(modified()));
-    if ( pageIndex(page)==0 ) aboutToShowPage(page);
+    if ( pageIndex(page)==0 ) aboutToShowPageSlot(page);
 }
 
 void KConfigDialog::slotDefault()
 {
-    int i = activePageIndex();
-    _widgets.at(i)->configCollection()->setDefault();
+    KConfigWidget *cw = (_unique ? _unique : _widgets.at(activePageIndex()));
+    cw->configCollection()->setDefault();
 }
 
 void KConfigDialog::accept()
@@ -896,8 +910,8 @@ void KConfigDialog::accept()
 
 void KConfigDialog::modified()
 {
-    int i = activePageIndex();
-    bool hasDefault = _widgets.at(i)->configCollection()->hasDefault();
+    KConfigWidget *cw = (_unique ? _unique : _widgets.at(activePageIndex()));
+    bool hasDefault = cw->configCollection()->hasDefault();
     enableButton(Default, !hasDefault);
     enableButtonApply(true);
 }
@@ -907,6 +921,7 @@ bool KConfigDialog::apply()
     bool ok = true;
     for (uint i=0; i<_widgets.count(); i++)
         if ( !_widgets.at(i)->configCollection()->save() ) ok = false;
+    _saved = true;
     emit saved();
     return ok;
 }
@@ -918,7 +933,7 @@ void KConfigDialog::slotApply()
 
 void KConfigDialog::aboutToShowPageSlot(QWidget *page)
 {
-    int i = pageIndex(page);
-    bool hasDefault = _widgets.at(i)->configCollection()->hasDefault();
+    KConfigWidget *cw = (_unique ? _unique : _widgets.at(pageIndex(page)));
+    bool hasDefault = cw->configCollection()->hasDefault();
     enableButton(Default, !hasDefault);
 }

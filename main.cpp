@@ -33,8 +33,9 @@
 #include <kcmenumngr.h>
 #include <kaction.h>
 #include <kdebug.h>
+#include <knotifyclient.h>
+#include <knotifydialog.h>
 
-#include "generic/gmisc.h"
 #include "status.h"
 #include "highscores.h"
 #include "version.h"
@@ -57,6 +58,8 @@ const MainWidget::KeyData MainWidget::KEY_DATA[NB_KEYS] = {
 
 MainWidget::MainWidget()
 {
+    KNotifyClient::startDaemon();
+
 	installEventFilter(this);
     KConfigCollection::init();
 
@@ -88,6 +91,11 @@ MainWidget::MainWidget()
 	KStdAction::preferences(this, SLOT(configureSettings()),
                             actionCollection());
 	KStdAction::keyBindings(this, SLOT(configureKeys()), actionCollection());
+    KStdAction::configureNotifications(this, SLOT(configureNotifications()),
+                                       actionCollection());
+    (void)new KAction(i18n("Configure Highscores..."), 0,
+                      this, SLOT(configureHighscores()),
+                      actionCollection(), "configure_highscores");
 
 	// Levels
     _levels = new KSelectAction(actionCollection(), "levels");
@@ -149,7 +157,7 @@ void MainWidget::readSettings()
 
 void MainWidget::showHighscores()
 {
-    KExtHighscore::showHighscores(this);
+    KExtHighscore::show(this);
 }
 
 bool MainWidget::eventFilter(QObject *, QEvent *e)
@@ -180,10 +188,14 @@ void MainWidget::configureSettings()
     d.setIconListAllVisible(true);
     d.append(new GameConfig);
     d.append(new AppearanceConfig);
-    d.append(new HighscoresConfigWidget);
     d.append(new CustomConfig);
     connect(&d, SIGNAL(saved()), SLOT(settingsChanged()));
     d.exec();
+}
+
+void MainWidget::configureHighscores()
+{
+    KExtHighscore::configure(this);
 }
 
 void MainWidget::settingsChanged()
@@ -204,6 +216,11 @@ void MainWidget::configureKeys()
     d.insert(_keybCollection, i18n("Keyboard game"));
     d.insert(actionCollection(), i18n("General"));
     d.configure();
+}
+
+void MainWidget::configureNotifications()
+{
+    KNotifyDialog::configure(this);
 }
 
 void MainWidget::gameStateChanged(KMines::GameState state)

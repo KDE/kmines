@@ -27,8 +27,6 @@
 #include <kio/netaccess.h>
 #include <kio/job.h>
 #include <kmessagebox.h>
-#include <kdialogbase.h>
-#include <kiconloader.h>
 #include <kmdcodec.h>
 #include <kdebug.h>
 
@@ -653,29 +651,9 @@ void ManagerPrivate::checkFirst()
 
 void ManagerPrivate::showHighscores(QWidget *parent, int rank)
 {
-    uint tmp = _gameType;
-
-    bool treeList = ( _nbGameTypes!=1 );
-    HighscoresDialog hs(treeList, parent);
-    for (uint i=0; i<_nbGameTypes; i++) {
-        setGameType(i);
-        QWidget *w;
-        if (treeList) {
-            QString title = manager.gameTypeLabel(i, Manager::I18N);
-            QString icon = manager.gameTypeLabel(i, Manager::Icon);
-            w = hs.addPage(title, QString::null,
-                            BarIcon(icon, KIcon::SizeLarge));
-        } else w = hs.plainPage();
-        QVBoxLayout *vbox = new QVBoxLayout(w);
-
-        w = new HighscoresWidget((i==tmp ? rank : -1), w,
-                              queryURL(Players).url(), queryURL(Scores).url());
-        vbox->addWidget(w);
-    }
-
-    setGameType(tmp);
-    hs.showPage(_gameType);
-	hs.exec();
+    HighscoresDialog *hd = new HighscoresDialog(_nbGameTypes, rank, parent);
+	hd->exec();
+    delete hd;
 }
 
 void ManagerPrivate::submitScore(const Score &ascore, QWidget *parent)

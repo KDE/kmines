@@ -18,6 +18,7 @@
 
 #include "highscores.h"
 
+#include <kurl.h>
 #include <klocale.h>
 #include <kapplication.h>
 #include <kconfig.h>

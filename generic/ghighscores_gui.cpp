@@ -35,6 +35,7 @@
 #include <kfiledialog.h>
 #include <ktempfile.h>
 #include <kio/netaccess.h>
+#include <kiconloader.h>
 
 #include "ghighscores_internal.h"
 #include "ghighscores.h"
@@ -58,8 +59,8 @@ void ShowItem::paintCell(QPainter *p, const QColorGroup &cg,
 }
 
 //-----------------------------------------------------------------------------
-ScoresList::ScoresList(QWidget *parent)
-    : KListView(parent)
+ScoresList::ScoresList(const ItemArray &items, QWidget *parent)
+    : KListView(parent), _items(items)
 {
     setSelectionMode(QListView::NoSelection);
     setItemMargin(3);
@@ -69,25 +70,23 @@ ScoresList::ScoresList(QWidget *parent)
     header()->setMovingEnabled(false);
 }
 
-void ScoresList::addHeader(const ItemArray &items)
+void ScoresList::addHeader()
 {
-    addLine(items, 0, (QListViewItem *)0);
+    addLine(0, static_cast<QListViewItem *>(0));
 }
 
-QListViewItem *ScoresList::addLine(const ItemArray &items, uint index,
-                                   bool highlight)
+QListViewItem *ScoresList::addLine(uint index, bool highlight)
 {
     QListViewItem *item = new ShowItem(this, highlight);
-    addLine(items, index, item);
+    addLine(index, item);
     return item;
 }
 
-void ScoresList::addLine(const ItemArray &items, uint index,
-                         QListViewItem *line)
+void ScoresList::addLine(uint index, QListViewItem *line)
 {
     uint k = 0;
-    for (uint i=0; i<items.size(); i++) {
-        const ItemContainer &container = *items[i];
+    for (uint i=0; i<_items.size(); i++) {
+        const ItemContainer &container = *_items[i];
         if ( !container.item()->isVisible() || !showColumn(container) )
             continue;
         if (line) line->setText(k, itemText(container, index));
@@ -99,17 +98,34 @@ void ScoresList::addLine(const ItemArray &items, uint index,
     }
 }
 
-//-----------------------------------------------------------------------------
-HighscoresList::HighscoresList(const ItemArray &array, int highlight,
-                               QWidget *parent)
-    : ScoresList(parent)
+void ScoresList::reload()
 {
-    addHeader(array);
+    uint index = _items.nbEntries() - 1 ;
+    QListViewItem *item = firstChild();
+    while (item) {
+        uint k = 0;
+        for (uint i=0; i<_items.size(); i++) {
+            const ItemContainer &container = *_items[i];
+            if ( !container.item()->isVisible() || !showColumn(container) )
+                continue;
+            item->setText(k, itemText(container, index));
+            k++;
+        }
+        index--;
+        item = item->nextSibling();
+    }
+}
 
-    uint nb = array.nbEntries();
+//-----------------------------------------------------------------------------
+HighscoresList::HighscoresList(const ItemArray &items, int highlight,
+                               QWidget *parent)
+    : ScoresList(items, parent)
+{
+    addHeader();
+
     QListViewItem *line = 0;
-    for (int j=nb-1; j>=0; j--) {
-        QListViewItem *item = addLine(array, j, j==highlight);
+    for (int j=items.nbEntries()-1; j>=0; j--) {
+        QListViewItem *item = addLine(j, j==highlight);
         if ( j==highlight ) line = item;
     }
     if (line) ensureItemVisible(line);
@@ -121,9 +137,9 @@ QString HighscoresList::itemText(const ItemContainer &item, uint row) const
 }
 
 //-----------------------------------------------------------------------------
-HighscoresWidget::HighscoresWidget(int localRank, QWidget *parent,
-                       const QString &playersURL, const QString &scoresURL)
-    : QWidget(parent, "show_highscores_widget")
+HighscoresWidget::HighscoresWidget(int localRank, QWidget *parent)
+    : QWidget(parent, "show_highscores_widget"), _scoresList(0), _scoresUrl(0),
+      _playersUrl(0)
 {
     const ScoreInfos &s = internal->scoreInfos();
     const PlayerInfos &p = internal->playerInfos();
@@ -139,11 +155,16 @@ HighscoresWidget::HighscoresWidget(int localRank, QWidget *parent,
         QLabel *lab = new QLabel(i18n("no score entry"), tw);
         lab->setAlignment(AlignCenter);
         w = lab;
-    } else w = new HighscoresList(s, localRank, tw);
+        _scoresList = 0;
+    } else {
+        _scoresList = new HighscoresList(s, localRank, tw);
+        w = _scoresList;
+    }
     tw->addTab(w, i18n("Best &Scores"));
 
     // players tab
-    tw->addTab(new HighscoresList(p, p.id(), tw), i18n("&Players"));
+    _playersList = new HighscoresList(p, p.id(), tw);
+    tw->addTab(_playersList, i18n("&Players"));
 
     // statistics tab
     if ( internal->showStatistics )
@@ -157,17 +178,19 @@ HighscoresWidget::HighscoresWidget(int localRank, QWidget *parent,
 
     // url labels
     if ( internal->isWWHSAvailable() ) {
-        KURLLabel *urlLabel =
-            new KURLLabel(scoresURL, i18n("View world-wide highscores"), this);
-        connect(urlLabel, SIGNAL(leftClickedURL(const QString &)),
+        KURL url = internal->queryURL(ManagerPrivate::Scores);
+        _scoresUrl = new KURLLabel(url.url(),
+                                   i18n("View world-wide highscores"), this);
+        connect(_scoresUrl, SIGNAL(leftClickedURL(const QString &)),
                 SLOT(showURL(const QString &)));
-        vbox->addWidget(urlLabel);
+        vbox->addWidget(_scoresUrl);
 
-        urlLabel =
-            new KURLLabel(playersURL, i18n("View world-wide players"), this);
-        connect(urlLabel, SIGNAL(leftClickedURL(const QString &)),
+        url = internal->queryURL(ManagerPrivate::Players);
+        _playersUrl = new KURLLabel(url.url(),
+                                    i18n("View world-wide players"), this);
+        connect(_playersUrl, SIGNAL(leftClickedURL(const QString &)),
                 SLOT(showURL(const QString &)));
-        vbox->addWidget(urlLabel);
+        vbox->addWidget(_playersUrl);
     }
 }
 
@@ -177,15 +200,57 @@ void HighscoresWidget::showURL(const QString &url) const
     (void)new KRun(KURL(url));
 }
 
+void HighscoresWidget::reload()
+{
+    if (_scoresList)
+        _scoresList->reload();
+    _playersList->reload();
+    if (_scoresUrl)
+        _scoresUrl->setURL(internal->queryURL(ManagerPrivate::Scores).url());
+    if (_playersUrl)
+        _playersUrl->setURL(internal->queryURL(ManagerPrivate::Players).url());
+}
+
 //-----------------------------------------------------------------------------
-HighscoresDialog::HighscoresDialog(bool treeList, QWidget *parent)
-    : KDialogBase(treeList ? TreeList : Plain, i18n("Highscores"),
-                  KDialogBase::Close|KDialogBase::User1, KDialogBase::Close,
+HighscoresDialog::HighscoresDialog(uint nbGameTypes, int rank, QWidget *parent)
+    : KDialogBase(nbGameTypes>1 ? TreeList : Plain, i18n("Highscores"),
+                  Close|User1|User2, Close,
                   parent, "show_highscores", true, true)
 {
-    setButtonText(KDialogBase::User1, i18n("Export..."));
+    bool several = ( nbGameTypes>1 );
+    uint type = internal->gameType();
+    for (uint i=0; i<nbGameTypes; i++) {
+        internal->setGameType(i);
+        QWidget *w;
+        if (several) {
+            QString title = internal->manager.gameTypeLabel(i, Manager::I18N);
+            QString icon = internal->manager.gameTypeLabel(i, Manager::Icon);
+            w = addPage(title, QString::null, BarIcon(icon, KIcon::SizeLarge));
+        } else w = plainPage();
+        QVBoxLayout *vbox = new QVBoxLayout(w);
+        HighscoresWidget *hw = new HighscoresWidget((i==type ? rank : -1), w);
+        vbox->addWidget(hw);
+        _widgets.append(hw);
+    }
+    setGameType(type);
+    if (several) showPage(type);
+
+    setButtonText(User1, i18n("Export..."));
     connect(this, SIGNAL(user1Clicked()), SLOT(exportToText()));
-    enableButtonSeparator(treeList);
+    setButtonText(User2, i18n("Configure..."));
+    connect(this, SIGNAL(user2Clicked()), SLOT(configure()));
+    enableButtonSeparator(several);
+}
+
+void HighscoresDialog::configure()
+{
+    if ( KExtHighscore::configure(this) ) reload();
+}
+
+void HighscoresDialog::reload()
+{
+    for (uint i=0; i<_widgets.size(); i++)
+        _widgets[i]->reload();
 }
 
 void HighscoresDialog::exportToText()
@@ -210,13 +275,13 @@ void HighscoresDialog::exportToText()
 //-----------------------------------------------------------------------------
 MultipleScoresList::MultipleScoresList(const ScoreVector &scores,
                                        QWidget *parent)
-    : ScoresList(parent), _scores(scores)
+    : ScoresList(internal->scoreInfos(), parent), _scores(scores)
 {
     Q_ASSERT( scores.size()!=0 );
 
-    addHeader( internal->scoreInfos() );
+    addHeader();
     for (uint i=0; i<scores.size(); i++)
-        addLine(internal->scoreInfos(), i, false);
+        addLine(i, false);
 }
 
 QString MultipleScoresList::itemText(const ItemContainer &item, uint row) const
@@ -237,19 +302,19 @@ bool MultipleScoresList::showColumn(const ItemContainer &item) const
 }
 
 //-----------------------------------------------------------------------------
-ImplConfigWidget::ImplConfigWidget(QWidget *parent)
-    : ConfigWidget(parent), _WWHEnabled(0)
+ConfigItem::ConfigItem(QWidget *widget)
+    : KConfigItemBase(widget), _widget(widget), _WWHEnabled(0)
 {
     bool wwhs = internal->isWWHSAvailable();
 
-    QWidget *page = this;
+    QWidget *page = widget;
     QTabWidget *tab = 0;
     if (wwhs) {
-        QVBoxLayout *top = new QVBoxLayout(this);
-        tab = new QTabWidget(this);
+        QVBoxLayout *top = new QVBoxLayout(widget);
+        tab = new QTabWidget(widget);
         top->addWidget(tab);
 
-        // main tab
+            // main tab
         page = new QWidget(tab);
         tab->addTab(page, i18n("Main"));
     }
@@ -261,7 +326,7 @@ ImplConfigWidget::ImplConfigWidget(QWidget *parent)
     pageTop->addWidget(label, 0, 0);
     _nickname = new QLineEdit(page);
     connect(_nickname, SIGNAL(textChanged(const QString &)),
-            SIGNAL(modified()));
+            SLOT(modifiedSlot()));
     _nickname->setMaxLength(16);
     pageTop->addWidget(_nickname, 0, 1);
 
@@ -269,7 +334,7 @@ ImplConfigWidget::ImplConfigWidget(QWidget *parent)
     pageTop->addWidget(label, 1, 0);
     _comment = new QLineEdit(page);
     connect(_comment, SIGNAL(textChanged(const QString &)),
-            SIGNAL(modified()));
+            SLOT(modifiedSlot()));
     _comment->setMaxLength(50);
     pageTop->addWidget(_comment, 1, 1);
 
@@ -277,7 +342,7 @@ ImplConfigWidget::ImplConfigWidget(QWidget *parent)
         _WWHEnabled
             = new QCheckBox(i18n("World-wide highscores enabled"), page);
         connect(_WWHEnabled, SIGNAL(toggled(bool)),
-                SIGNAL(modified()));
+                SLOT(modifiedSlot()));
         pageTop->addMultiCellWidget(_WWHEnabled, 2, 2, 0, 1);
 
         // advanced tab
@@ -302,21 +367,30 @@ ImplConfigWidget::ImplConfigWidget(QWidget *parent)
         KGuiItem gi = KStdGuiItem::clear();
         gi.setText(i18n("Remove"));
         _removeButton = new KPushButton(gi, grid);
-        connect(_removeButton, SIGNAL(clicked()), SLOT(removeSlot()));
+            connect(_removeButton, SIGNAL(clicked()), SLOT(removeSlot()));
     }
 }
 
-QString ImplConfigWidget::title() const
+void ConfigItem::removeSlot()
 {
-    return i18n("Highscores");
+    KGuiItem gi = KStdGuiItem::clear();
+    gi.setText(i18n("Remove"));
+    int res = KMessageBox::warningYesNo(_widget,
+                               i18n("This will permanently remove your "
+                               "registration key. You will not be able to use "
+                               "the currently registered nickname anymore."),
+                               QString::null, gi, KStdGuiItem::cancel());
+    if ( res==KMessageBox::Yes ) {
+        internal->playerInfos().removeKey();
+        _registeredName->clear();
+        _key->clear();
+        _removeButton->setEnabled(false);
+        _WWHEnabled->setChecked(false);
+        modifiedSlot();
+    }
 }
 
-QString ImplConfigWidget::icon() const
-{
-    return "highscore";
-}
-
-void ImplConfigWidget::load()
+void ConfigItem::loadState()
 {
     const PlayerInfos &infos = internal->playerInfos();
     _nickname->setText(infos.isAnonymous() ? QString::null : infos.name());
@@ -333,26 +407,7 @@ void ImplConfigWidget::load()
     }
 }
 
-void ImplConfigWidget::removeSlot()
-{
-    KGuiItem gi = KStdGuiItem::clear();
-    gi.setText(i18n("Remove"));
-    int res = KMessageBox::warningYesNo(this,
-       i18n("This will permanently remove your "
-            "registration key. You will not be able to use "
-            "the currently registered nickname anymore."),
-       QString::null, gi, KStdGuiItem::cancel());
-    if ( res==KMessageBox::Yes ) {
-        internal->playerInfos().removeKey();
-        _registeredName->clear();
-        _key->clear();
-        _removeButton->setEnabled(false);
-        _WWHEnabled->setChecked(false);
-        emit modified();
-    }
-}
-
-bool ImplConfigWidget::save()
+bool ConfigItem::saveState()
 {
     bool enabled = (_WWHEnabled ? _WWHEnabled->isChecked() : false);
 
@@ -363,7 +418,7 @@ bool ImplConfigWidget::save()
         return true;
 
     bool res = internal->modifySettings(_nickname->text().lower(),
-                                        _comment->text(), enabled, this);
+                                        _comment->text(), enabled, _widget);
     if (res) load(); // need to update view when "apply" is clicked
     return res;
 }

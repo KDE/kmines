@@ -649,7 +649,17 @@ class KConfigDialog : public KDialogBase
 {
  Q_OBJECT
  public:
+   /**
+    * Constructor to use if the dialog will contain several @ref KConfigWidget.
+    * Use @ref append to add them.
+    */
 	KConfigDialog(QWidget *parent, const char *name = 0);
+
+    /**
+     * Constructor to use if there is only one @ref KConfigWidget.
+     */
+    KConfigDialog(KConfigWidget *widget, QWidget *parent,
+                  const char *name = 0);
 
     ~KConfigDialog();
 
@@ -657,6 +667,11 @@ class KConfigDialog : public KDialogBase
      * Append the given @KConfigWidget to the dialog.
      */
     void append(KConfigWidget *widget);
+
+    /**
+     * @return true if saved
+     */
+    bool hasBeenSaved() const { return _saved; }
 
  signals:
     /**
@@ -673,7 +688,9 @@ class KConfigDialog : public KDialogBase
     void aboutToShowPageSlot(QWidget *page);
 
  private:
-    QPtrList<KConfigWidget> _widgets;
+    KConfigWidget           *_unique;
+    QPtrList<KConfigWidget>  _widgets;
+    bool                     _saved;
 
     class KConfigDialogPrivate;
     KConfigDialogPrivate *d;

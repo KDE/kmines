@@ -1,5 +1,5 @@
 <!DOCTYPE kpartgui>
-<kpartgui name="kmines" version="16">
+<kpartgui name="kmines" version="17">
 
 <MenuBar>
   <Menu name="game"><text>&amp;Game</text>
@@ -14,6 +14,9 @@
 	<Action name="log_replay" />
     <Action name="log_save" />
     <Action name="log_load" />
+  </Menu>
+  <Menu name="settings"><text>&amps;Settings</text>
+    <Action name="configure_highscores" append="configure_merge" />
   </Menu>
 </MenuBar>
 

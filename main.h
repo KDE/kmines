@@ -41,6 +41,8 @@ class MainWidget : public KMainWindow, public KMines
 	void toggleMenubar();
     void configureKeys();
     void configureSettings();
+    void configureNotifications();
+    void configureHighscores();
 	void gameStateChanged(KMines::GameState);
     void showHighscores();
     void settingsChanged();
