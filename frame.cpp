@@ -114,7 +114,7 @@ void FieldFrame::drawAdvised(QPixmap &pix, uint i, bool mask) const
     initPixmap(pix, mask);
     QPainter p(&pix);
     p.setWindow(0, 0, 16, 16);
-    p.setPen( QPen((mask ? color1 : Settings::mineColor(i), 2)) );
+    p.setPen( QPen(mask ? color1 : Settings::mineColor(i), 2) );
     p.drawRect(3, 3, 11, 11);
 }
 
