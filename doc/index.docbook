@@ -1,15 +1,15 @@
 <!DOCTYPE book PUBLIC  "-//KDE//DTD DocBook V3.1-Based Variant V1.0//EN" [
-  <!ENTITY kapp "<application>KMines</application>">
-  <!ENTITY kappname "&kapp;" -- this only *seems* redundant -->
+  <!ENTITY kappname "&kmines;" -- this only *seems* redundant -->
   <!ENTITY % addindex "IGNORE">
-  <!ENTITY % ents PUBLIC "-//KDE//ENTITIES Application-Variable Entities V1.0//EN">
+  <!ENTITY % English "INCLUDE"> 
+  <!ENTITY % ents PUBLIC "-//KDE//ENTITIES Documentation V1.0//EN">
   %ents; 
 ]>
 
-<book lang="en">
+<book lang="&language;">
 
 <bookinfo>
-<title>The KMines Handbook</title>
+<title>The &kmines; Handbook</title>
 
 <authorgroup>
 <author>
@@ -24,7 +24,7 @@
 <surname>McBride</surname>
 <affiliation><address><email>mmcbride@ematic.org</email></address></affiliation>
 </author>
-<othercredit>
+<othercredit role="developer">
 <firstname>Nicolas</firstname>
 <surname>Hadacek</surname>
 <affiliation>
@@ -32,7 +32,7 @@
 </affiliation>
 <contrib>Developer</contrib>
 </othercredit>
-<othercredit>
+<othercredit role="reviewer">
 <firstname>Lauri</firstname>
 <surname>Watts</surname>
 <affiliation><address><email>vampyr@atconnex.net</email></address></affiliation>
@@ -40,25 +40,31 @@
 </othercredit>
 </authorgroup>
 
-<date>25/11/2000</date>
+<copyright>
+<year>2000</year>
+<holder>Nicolas Hadacek, Michael McBride</holder>
+</copyright>
+
+<legalnotice>&FDLNotice;</legalnotice>
+
+<date>16/12/2000</date>
 <releaseinfo>2.00.09</releaseinfo>
 
-<abstract>
-<para>&kapp; is the KDE version of the classic minesweeper game.  This
-documentation was last updated for kmines version 2.00.09. </para>
-</abstract>
+<abstract><para>&kmines; is the KDE version of the classic minesweeper
+game.</para></abstract>
 
 <keywordset>
 <keyword>KDE</keyword>
 <keyword>game</keyword>
 <keyword>minesweeper</keyword>
 </keywordset>
+
 </bookinfo>
 
 <chapter id="introduction">
 <title>Introduction</title>
 
-<para>&kapp; is the classic Minesweeper game. You must uncover all the empty
+<para>&kmines; is the classic Minesweeper game. You must uncover all the empty
 cases without blowing on a mine.</para>
 
 <para>When you uncover a case, a number appears : it indicates how many mines
@@ -69,40 +75,7 @@ mine.</para>
 
 </chapter>
 
-<chapter id="installation">
-<title>Installation</title>
- 
-<sect1 id="getting-kapp">
-<title>How to obtain &kapp;</title>
- 
-<para>&kapp; is part of the KDE project
-<ulink url="http://www.kde.org">http://www.kde.org</ulink>.
-&kapp; can be found in the kdegames package on
-<ulink url="ftp://ftp.kde.org/pub/kde/">ftp://ftp.kde.org/pub/kde/</ulink>, the
-main ftp site of the KDE project. </para>
-</sect1>
-
-<sect1 id="compilation">
-<title>Compilation and installation</title>
- 
-<para>In order to compile and install &kapp on your system, type the following
-in the base directory of the KDE distribution:</para>
-
-<screen width="40">
-<prompt>%</prompt> <userinput>cd kdegames</userinput>
-<prompt>%</prompt> <userinput>./configure</userinput>
-<prompt>%</prompt> <userinput>make</userinput>
-<prompt>%</prompt> <userinput>make install</userinput>
-</screen>
-
-<para>Since &kapp uses <application>autoconf</application> and
-<application>automake</application> you should have not trouble compiling it.
-Should you run into problems please report them to the KDE mailing lists.</para>
- 
-</sect1>         
-</chapter>
-
-<chapter id="Howtoplay">
+<chapter id="how-to-play">
 <title>How to play</title>
 
 <para>You have to use the mouse and its three buttons (with two-buttoned mouses,
@@ -141,16 +114,16 @@ game.</para></listitem>
 reprogramed. For more information, see the section entitled <link
 linkend="prefs">Game Options</link>.</para></note>
 
-<sect1 id="screen"><title>The KMines Screen</title>
+<sect1 id="screen"><title>The &kmines; Screen</title>
 
 <screenshot>
-<screeninfo>The KMines Screen</screeninfo>
+<screeninfo>The &kmines; Screen</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kmines1.png" format="png"></imageobject>
+<imageobject><imagedata fileref="kmines1.png" format="PNG"></imageobject>
 </mediaobject>
 </screenshot>   
 
-<para>The &kapp; screen consists of:</para>
+<para>The &kmines; screen consists of:</para>
 
 <itemizedlist>
 <listitem><para>A Box showing you the number of mines still left to be marked.
@@ -167,20 +140,20 @@ score.</para></listitem>
 <listitem><para>The playing area.  This will vary in size depending on the
 difficulty level of the game.  In this example, it consists of 64 boxes. This is where you play the game.</para></listitem>
 <listitem><para>A status line at the bottom of the window.  In this example, it
-simply says "Playing".</para></listitem>
+simply says <guilabel>Playing</guilabel>.</para></listitem>
 </itemizedlist>
 </sect1>
 </chapter>
 
 <chapter id="prefs"><title>Game options</title>
-<para>The options to &kapp; are set by selecting <menuchoice>
+<para>The options to &kmines; are set by selecting <menuchoice>
 <guimenu>Settings</guimenu> <guimenuitem>Preferences</guimenuitem> </menuchoice>
 from the menubar.  This will bring up a dialog box.</para>
 
 <screenshot>
-<screeninfo>&kapp; Preferences</screeninfo>
+<screeninfo>&kmines; Preferences</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kmines2.png" format="png"></imageobject>
+<imageobject><imagedata fileref="kmines2.png" format="PNG"></imageobject>
 </mediaobject>
 </screenshot>  
 
@@ -194,23 +167,24 @@ determines the size of each of the squares in the playing area.  By default,
 they are set small.  You can increase the size, if you are working on a very
 high resolution monitor.</para> 
 
-<para>The next option down, labled "<guilabel>Enable ? Mark</guilabel>",
-determines whether you can mark squares as "questionable".  If there is a mark
-in front of this option, then right clicking the mouse will first cause a case
-to be flaged. If you click again on the same square, the flag will change to a
-"?", to indicate you don't know if there is a bomb there or not.  If you click
-again, the square will change back to blank.</para>
+<para>The next option down, labelled <guilabel>Enable ? Mark</guilabel>,
+determines whether you can mark squares as <quote>questionable</quote>.  If
+there is a mark in front of this option, then right clicking the mouse will
+first cause a case to be flaged. If you click again on the same square, the flag
+will change to a <guiicon>?</guiicon>, to indicate you don't know if there is a
+bomb there or not.  If you click again, the square will change back to
+blank.</para>
 
-<para>If there is not a mark in front of this option, the first right mouse
-click will change the case to a red flag.  The second will make it blank again,
-thus skipping the ? symbol.</para>
+<para>If there is not a mark in front of this option, the first
+<mousebutton>right</mousebutton> mouse click will change the case to a red flag.
+The second will make it blank again, thus skipping the ? symbol.</para>
 
-<para>The next option down, labelled "<guilabel>Enable keyboard</guilabel>",
+<para>The next option down, labelled <guilabel>Enable keyboard</guilabel>,
 determins if the keyboard shortcuts will work while playing the game.</para>
 
 <note><para>The only keyboard shortcuts affected, are those responsible for
-playing the game.  Keyboard commands such as "<guimenuitem>New
-Game</guimenuitem>", and "<guimenuitem>Quit</guimenuitem>", still
+playing the game.  Keyboard commands such as <guimenuitem>New
+Game</guimenuitem>, and <guimenuitem>Quit</guimenuitem>, still
 work, regardless of this option.</para></note>
 
 <para>The last section of this tab, allows you to change the action of each of
@@ -271,18 +245,18 @@ permenant, or edit the settings some more.</para>
 <para>The following sections briefly describe each menubar option.</para>
 
 <sect1 id="game-menu">
-<title><guimenu>Game Menu</guimenu></title>
+<title><guimenu>Game</guimenu> Menu</title>
 
-<para>The <guimenu>Game menu</guimenu> consists of 5 options.</para>
+<para>The <guimenu>Game</guimenu> menu consists of 5 options.</para>
 
 <variablelist>
 <varlistentry>
 <term><menuchoice>
 <shortcut>
-<keycombo><keycap>Ctrl</keycap><keycap>N</keycap></keycombo>
+<keycombo action="simul"><keycap>Ctrl</keycap><keycap>N</keycap></keycombo>
 </shortcut>
-<guimenu>Game</guimenu>
-<guimenuitem>New Game</guimenuitem> </menuchoice></term>
+<guimenu><accel>G</accel>ame</guimenu>
+<guimenuitem><accel>N</accel>ew Game</guimenuitem> </menuchoice></term>
 <listitem><para>Starts a new game.</para></listitem>
 </varlistentry>
 <varlistentry>
@@ -290,18 +264,18 @@ permenant, or edit the settings some more.</para>
 <shortcut>
 <keycap>H</keycap>
 </shortcut>
-<guimenu>Game</guimenu>
-<guimenuitem>High Scores.</guimenuitem> </menuchoice></term>
+<guimenu><accel>G</accel>ame</guimenu>
+<guimenuitem>High Scores...</guimenuitem> </menuchoice></term>
 <listitem><para>This shows you the high score (the shortest time) for each
 difficulty level.</para></listitem>
 </varlistentry>
 <varlistentry>
 <term><menuchoice>
 <shortcut>
-<keycombo><keycap>P</keycap></keycombo>
+<keycombo action="simul"><keycap>P</keycap></keycombo>
 </shortcut>
-<guimenu>Game</guimenu>
-<guimenuitem>Pause</guimenuitem> </menuchoice></term>
+<guimenu><accel>G</accel>ame</guimenu>
+<guimenuitem><accel>P</accel>ause</guimenuitem> </menuchoice></term>
 <listitem><para>Pauses the game.  This will hide the board (no cheating), and
 give you a button to press when you want to continue this
 game.</para></listitem>
@@ -309,61 +283,63 @@ game.</para></listitem>
 <varlistentry>
 <term><menuchoice>
 <shortcut>
-<keycombo><keycap>Ctrl</keycap><keycap>P</keycap></keycombo>
+<keycombo action="simul"><keycap>Ctrl</keycap><keycap>P</keycap></keycombo>
 </shortcut>
-<guimenu>Game</guimenu>
-<guimenuitem>Print</guimenuitem> </menuchoice></term>
+<guimenu><accel>G</accel>ame</guimenu>
+<guimenuitem><accel>P</accel>rint</guimenuitem> </menuchoice></term>
 <listitem><para>Prints the game board.</para></listitem>
 </varlistentry>
 <varlistentry>
 <term><menuchoice>
 <shortcut>
-<keycombo><keycap>Ctrl</keycap><keycap>Q</keycap></keycombo>
+<keycombo action="simul"><keycap>Ctrl</keycap><keycap>Q</keycap></keycombo>
 </shortcut>
-<guimenu>Game</guimenu>
-<guimenuitem>Quit</guimenuitem> </menuchoice></term>
-<listitem><para><action>Quits</action> &kapp;</para></listitem>
+<guimenu><accel>G</accel>ame</guimenu>
+<guimenuitem><accel>Q</accel>uit</guimenuitem> </menuchoice></term>
+<listitem><para><action>Quits</action> &kmines;</para></listitem>
 </varlistentry>
 </variablelist>
 </sect1>
 
-<sect1 id="settings-menu"><title>Settings Menu</title>
+<sect1 id="settings-menu"><title><guimenu>Settings</guimenu> Menu</title>
 <variablelist>
 <varlistentry>
 <term><menuchoice>
-<guimenu>Settings</guimenu>
-<guimenuitem>Show Menubar</guimenuitem> </menuchoice></term>
+<guimenu><accel>S</accel>ettings</guimenu>
+<guimenuitem>Show <accel>M</accel>enubar</guimenuitem> </menuchoice></term>
 <listitem><para>If there is a check in front of this option, then the menubar
 will be visible.  Selecting this option, hides the menubar.</para>
 <note><para>To restore a hidden menubar, click outside the game play area, with
 the right mouse button.  This will bring up a small submenu.  Simply select
-"<guimenuitem>Show Menubar</guimenuitem>" from this submenu, and the menubar
+<guimenuitem>Show Menubar</guimenuitem> from this submenu, and the menubar
 will be visible again.</para></note></listitem>
 </varlistentry>
 <varlistentry>
 <term><menuchoice>
-<guimenu>Settings</guimenu>
-<guimenuitem>Configure Key Bindings</guimenuitem> </menuchoice></term>
-<listitem><para>Allows you to change the keyboard shortcuts for &kapp;</para>
+<guimenu><accel>S</accel>ettings</guimenu>
+<guimenuitem>Configure <accel>K</accel>ey Bindings...</guimenuitem> </menuchoice></term>
+<listitem><para>Allows you to change the keyboard shortcuts for &kmines;</para>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term><menuchoice>
-<guimenu>Settings</guimenu>
-<guimenuitem>Preferences</guimenuitem> </menuchoice></term>
+<guimenu><accel>S</accel>ettings</guimenu>
+<guimenuitem><accel>C</accel>onfigure KMines</guimenuitem> </menuchoice></term>
 <listitem><para>Allows you to adjust game options.  For more detailed
 information, see the section entitled <link linkend="prefs">Game
 Options</link>.</para></listitem>
 </varlistentry>
 <varlistentry>
 <term><menuchoice>
-<guimenu>Settings</guimenu>
-<guimenuitem>Level</guimenuitem> </menuchoice></term>
+<guimenu><accel>S</accel>ettings</guimenu>
+<guisubmenu>Level</guisubmenu> </menuchoice></term>
 <listitem><para>Lets you set the difficulty level from a submenu.</para>
-<para>There are three default levels of difficulty: Easy (64 boxes, 10 mines),
-Normal (256 boxes, 40 mines), and Expert (480 boxes, 99 mines).  There is also a
-custom level settings.</para>
-<para>If you select "<guimenuitem>Custom</guimenuitem>", a small dialog box will
+<para>There are three default levels of difficulty:
+<guimenuitem>Easy</guimenuitem> (64 boxes, 10 mines),
+<guimenuitem>Normal</guimenuitem> (256 boxes, 40 mines), and
+<guimenuitem>Expert</guimenuitem> (480 boxes, 99 mines).  There is also a
+<guimenuitem>Custom...</guimenuitem> level settings.</para>
+<para>If you select <guimenuitem>Custom...</guimenuitem>, a small dialog box will
 appear, that will allow you to adjust Width (number of boxes across), Height
 (number of boxes up and down), and number of mines, using slider bars, or
 directly entering them into the text boxes.</para></listitem>
@@ -372,31 +348,32 @@ directly entering them into the text boxes.</para></listitem>
 </sect1>
 
 <sect1 id="help-menu">
-<title>Help Menu</title>
+<title><guimenu>Help</guimenu> Menu</title>
 
 <variablelist>
 <varlistentry>
 <term><anchor id="contents"><menuchoice>
-<shortcut><keycombo><keycap>F1</keycap></keycombo></shortcut>
-<guimenu>Help</guimenu><guimenuitem>Contents</guimenuitem></menuchoice></term>
+<shortcut><keycombo action="simul"><keycap>F1</keycap></keycombo></shortcut>
+<guimenu><accel>H</accel>elp</guimenu><guimenuitem><accel>C</accel>ontents</guimenuitem></menuchoice></term>
 <listitem>
-<para>This invokes the KDE help system starting at the &kapp; help pages (this
+<para>This invokes the &kde; help system starting at the &kmines; help pages (this
 document).</para>
 </listitem>
 </varlistentry>
 
 <varlistentry>
 <term><anchor id="bug"><menuchoice>
-<shortcut><keycombo><keycap>Shift</keycap><keycap>F1</keycap></keycombo></shortcut>
-<guimenu>Help</guimenu><guimenuitem>What's This?</guimenuitem></menuchoice></term>
+<shortcut><keycombo action="simul"><keycap>Shift</keycap><keycap>F1</keycap></keycombo></shortcut>
+<guimenu><accel>H</accel>elp</guimenu><guimenuitem>What's <accel>T</accel>his?</guimenuitem></menuchoice></term>
 <listitem><para>This changes the mouse cursor to a combination arrow and
-question mark.  Clicking on items within &kapp; with this arrow will open a help
+question mark.  Clicking on items within &kmines; with this arrow will open a help
 window (if one exists for the particular item) explaining the item's
 function.</para></listitem>
 </varlistentry>
 <varlistentry>
 <term><anchor id="whats-this"><menuchoice>
-<guimenu>Help</guimenu><guimenuitem>Report Bug...</guimenuitem></menuchoice></term>
+<guimenu><accel>H</accel>elp</guimenu><guimenuitem><accel>R</accel>eport
+Bug...</guimenuitem></menuchoice></term>
 <listitem>
 <para>If you have a good idea for the next version of the game, or the program
 crashes on you, you can select this option to send a bug report to the
@@ -405,7 +382,8 @@ author.</para>
 </varlistentry>
 <varlistentry>
 <term><anchor id="about-kmines"><menuchoice>
-<guimenu>Help</guimenu><guimenuitem>About KMines</guimenuitem></menuchoice></term>
+<guimenu><accel>H</accel>elp</guimenu><guimenuitem>About
+<accel>K</accel>Mines</guimenuitem></menuchoice></term>
 <listitem>
 <para>This will displays version and author information</para>
 </listitem>
@@ -413,9 +391,10 @@ author.</para>
 
 <varlistentry>
 <term><anchor id="about-kde"><menuchoice>
-<guimenu>Help</guimenu><guimenuitem>About KDE</guimenuitem></menuchoice></term>
+<guimenu><accel>H</accel>elp</guimenu><guimenuitem>About
+<accel>K</accel>DE</guimenuitem></menuchoice></term>
 <listitem>
-<para>This displays the KDE version and other basic information.</para>
+<para>This displays the &kde; version and other basic information.</para>
 </listitem>
 </varlistentry>
 </variablelist>
@@ -424,25 +403,26 @@ author.</para>
 <sect1 id="keys"><title>Default Key Bindings</title>
 <para>The following tables show you the default key bindings.</para>
 
-<para><emphasis>Menu bindings</emphasis></para>
-<informaltable frame=all>
+
+<table>
+<title>Menu bindings</title>
 <tgroup cols=2>
 <thead><row><entry>Key Combo</entry><entry>Action</entry></row></thead>
 <tbody>
-<row><entry><keycombo><keycap>Arrows</keycap></keycombo></entry><entry>Move cursor in playing area.</entry></row>
-<row><entry><keycombo><keycap>Ctrl</keycap></keycombo></entry><entry>Automatically reveal all surrounding cases not marked by a flag.</entry></row>
-<row><entry><keycombo><keycap>Ctrl</keycap><keycap>N</keycap></keycombo></entry><entry>New Game</entry></row>
-<row><entry><keycombo><keycap>Ctrl</keycap><keycap>P</keycap></keycombo></entry><entry>Pause Game</entry></row>
-<row><entry><keycombo><keycap>Ctrl</keycap><keycap>P</keycap></keycombo></entry><entry>Print Game</entry></row>
-<row><entry><keycombo><keycap>Ctrl</keycap><keycap>Q</keycap></keycombo></entry><entry>Quit &kapp;</entry></row>
-<row><entry><keycombo><keycap>F1</keycap></keycombo></entry><entry>Help Contents</entry></row>
-<row><entry><keycombo><keycap>Shift</keycap><keycap>F1</keycap></keycombo></entry><entry>Whats This Help</entry></row>
-<row><entry><keycombo><keycap>Shift</keycap></keycombo></entry><entry>Reveal Mine.</entry></row>
-<row><entry><keycombo><keycap>Space</keycap></keycombo></entry><entry>Mark Mine</entry></row>
+<row><entry><keycombo action="simul"><keycap>Arrows</keycap></keycombo></entry><entry>Move cursor in playing area.</entry></row>
+<row><entry><keycombo action="simul"><keycap>Ctrl</keycap></keycombo></entry><entry>Automatically reveal all surrounding cases not marked by a flag.</entry></row>
+<row><entry><keycombo action="simul"><keycap>Ctrl</keycap><keycap>N</keycap></keycombo></entry><entry>New Game</entry></row>
+<row><entry><keycombo action="simul"><keycap>Ctrl</keycap><keycap>P</keycap></keycombo></entry><entry>Pause Game</entry></row>
+<row><entry><keycombo action="simul"><keycap>Ctrl</keycap><keycap>P</keycap></keycombo></entry><entry>Print Game</entry></row>
+<row><entry><keycombo action="simul"><keycap>Ctrl</keycap><keycap>Q</keycap></keycombo></entry><entry>Quit &kmines;</entry></row>
+<row><entry><keycombo action="simul"><keycap>F1</keycap></keycombo></entry><entry>Help Contents</entry></row>
+<row><entry><keycombo action="simul"><keycap>Shift</keycap><keycap>F1</keycap></keycombo></entry><entry>Whats This Help</entry></row>
+<row><entry><keycombo action="simul"><keycap>Shift</keycap></keycombo></entry><entry>Reveal Mine.</entry></row>
+<row><entry><keycombo action="simul"><keycap>Space</keycap></keycombo></entry><entry>Mark Mine</entry></row>
 
 </tbody>
 </tgroup>
-</informaltable>
+</table>
 
 <para>These key bindings can be changed by selecting <menuchoice>
 <guimenu>Settings</guimenu> <guimenuitem>Configure Key Bindings</guimenuitem>
@@ -454,15 +434,51 @@ author.</para>
 <chapter id="credits"><title>Credits and License</title>
  
 <para>
-&kapp;
+&kmines;
 </para>
 <para>
 Program copyright 1996-2000 Nicolas Hadacek <email>hadacek@kde.org</email></para>
 <para>Documentation copyright 2000 Nicolas Hadacek <email>hadacek@kde.org</email></para>
 <para>Documentation updated for KDE 2.0 by Mike McBride <email>mpmcbride7@yahoo.com</email></para>
 
-&license-links;
+&underFDL;
+&underGPL;
+
 </chapter>                  
+
+<appendix id="installation">
+<title>Installation</title>
+ 
+<sect1 id="getting-kapp">
+<title>How to obtain &kmines;</title>
+ 
+<para>&kmines; is part of the KDE project
+<ulink url="http://www.kde.org">http://www.kde.org</ulink>.
+&kmines; can be found in the kdegames package on
+<ulink url="ftp://ftp.kde.org/pub/kde/">ftp://ftp.kde.org/pub/kde/</ulink>, the
+main ftp site of the KDE project. </para>
+</sect1>
+
+<sect1 id="compilation">
+<title>Compilation and installation</title>
+ 
+<para>In order to compile and install &kmines; on your system, type the following
+in the base directory of the KDE distribution:</para>
+
+<screen width="40">
+<prompt>%</prompt> <userinput>cd kdegames</userinput>
+<prompt>%</prompt> <userinput>./configure</userinput>
+<prompt>%</prompt> <userinput>make</userinput>
+<prompt>%</prompt> <userinput>make install</userinput>
+</screen>
+
+<para>Since &kmines; uses <application>autoconf</application> and
+<application>automake</application> you should have not trouble compiling it.
+Should you run into problems please report them to the KDE mailing lists.</para>
+ 
+</sect1>         
+</appendix>
+
 
 </book>
 <!--
@@ -472,3 +488,4 @@ sgml-omittag: nil
 sgml-shorttag: t
 End:
 -->
+
