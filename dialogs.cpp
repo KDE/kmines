@@ -317,7 +317,7 @@ const QColor DEFAULT_ERROR_COLOR     = Qt::red;
 
 
 OptionDialog::OptionDialog(QWidget *parent)
-: KDialogBase(Tabbed, i18n("Settings"), Ok|Cancel|Default, Cancel,
+: KDialogBase(Tabbed, i18n("Settings"), Ok|Cancel|Default, Ok,
 			  parent, 0, true, true)
 {
 	mainPage();

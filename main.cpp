@@ -175,7 +175,7 @@ void MainWidget::setKeyboardEnabled(bool enable)
 
 void MainWidget::configureKeys()
 {
-	KKeyDialog::configureKeys(actionCollection(), xmlFile());
+	KKeyDialog::configureKeys(actionCollection(), xmlFile(), true, this);
 }
 
 void MainWidget::gameStateChanged(GameState s)
