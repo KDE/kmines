@@ -1,5 +1,9 @@
 /** A program to test advisory library */
 
+#include <assert.h>
+#include <stdlib.h>
+#include <time.h>
+
 #include "bfield.h"
 #include "solver.h"
 

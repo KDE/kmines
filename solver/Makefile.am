@@ -7,7 +7,7 @@ libsolver_la_SOURCES = bfield.cpp solver.cpp advFastRules.cpp adviseFast.cpp \
 METASOURCES          = solver.moc
 
 check_PROGRAMS = test testFast testSolve testRate
-LDADD = ../generic/libkdehighscores.la ./libsolver.la
+LDADD = $(LIB_KDEGAMES) ./libsolver.la
 test_SOURCES = test.cpp
 testFast_SOURCES = testFast.cpp
 testSolve_SOURCES = testSolve.cpp
