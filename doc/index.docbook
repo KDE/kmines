@@ -1,5 +1,5 @@
 <!DOCTYPE book PUBLIC  "-//KDE//DTD DocBook V3.1-Based Variant V1.0//EN" [
-  <!ENTITY kapp "<application> KMines</application>">
+  <!ENTITY kapp "<application>KMines</application>">
   <!ENTITY kappname "&kapp;" -- this only *seems* redundant -->
   <!ENTITY % addindex "IGNORE">
   <!ENTITY % ents PUBLIC "-//KDE//ENTITIES Application-Variable Entities V1.0//EN">
