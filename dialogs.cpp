@@ -197,7 +197,7 @@ Custom::Custom(uint *nbWidth, uint *nbHeight, uint *nbMines,
 	hbl = new QHBoxLayout(BORDER);
 	top->addLayout(hbl);
 	
-	QPushButton *pok = new QPushButton(i18n("Ok"), this);
+	QPushButton *pok = new QPushButton(i18n("OK"), this);
 	connect(pok, SIGNAL(clicked()), SLOT(accept()));
 	QPushButton *pcancel = new QPushButton(i18n("Cancel"), this);
 	connect(pcancel, SIGNAL(clicked()), SLOT(reject()));
