@@ -17,7 +17,7 @@
  */
 
 #include <algorithm>
-
+#include <assert.h>
 #include "adviseFast.h"
 
 using std::set;

@@ -21,6 +21,7 @@
 #include "solver.moc"
 
 #include <algorithm>
+#include <assert.h>
 
 #include <qtimer.h>
 #include <qlayout.h>

@@ -418,8 +418,8 @@ bool Status::checkLog(const QDomDocument &doc)
     for (uint i=0; i<actions.count(); i++) {
         QDomElement a = actions.item(i).toElement();
         if ( a.isNull() ) return false;
-        uint i = a.attribute("line").toUInt(&ok);
-        if ( !ok || i>=w ) return false;
+        uint i0 = a.attribute("line").toUInt(&ok);
+        if ( !ok || i0>=w ) return false;
         uint j = a.attribute("column").toUInt(&ok);
         if ( !ok || j>=h ) return false;
         QString type = a.attribute("type");
