@@ -1,38 +1,79 @@
 [!Global!]
 IconName=kmines
 Comment=KMines
+Comment[sv]=Minröjning
 
 [reveal]
 Name=Reveal case
+Name[es]=Revelar el caso
+Name[hu]=Mező felfedése
+Name[sv]=Avslöja ruta
 Comment=Reveal case
+Comment[es]=Revelar el caso
+Comment[hu]=Mező felfedése
+Comment[sv]=Avslöja ruta
 default_presentation=0
 
 [autoreveal]
 Name=Autoreveal case
+Name[es]=Autorevelar el caso
+Name[hu]=Mező automatikus felfedése
+Name[sv]=Avslöja ruta automatiskt
 Comment=Autoreveal case
+Comment[es]=Autorevelar el caso
+Comment[hu]=Mező automatikus felfedése
+Comment[sv]=Avslöja ruta automatiskt
 default_presentation=0
 
 [mark]
 Name=Mark case
+Name[es]=Marcar el caso
+Name[hu]=Mező megjelölése
+Name[sv]=Markera ruta
 Comment=Mark case
+Comment[es]=Marcar el caso
+Comment[hu]=Mező megjelölése
+Comment[sv]=Markera ruta
 default_presentation=0
 
 [unmark]
 Name=Unmark case
+Name[es]=Desmarcar el caso
+Name[hu]=Mező kijelölésének megszüntetése
+Name[sv]=Avmarkera ruta
 Comment=Unmark case
+Comment[es]=Desmarcar el caso
+Comment[hu]=Mező megjelölésének megszüntetése
+Comment[sv]=Avmarkera ruta
 default_presentation=0
 
 [explosion]
 Name=Explosion
+Name[es]=Explosión
+Name[hu]=Robbanás
 Comment=Explosion
+Comment[es]=Explosión
+Comment[hu]=Robbanás
 default_presentation=0
 
 [won]
 Name=Game won
+Name[es]=Partida ganada
+Name[hu]=Győzelem
+Name[sv]=Du vann spelet
 Comment=Game won
+Comment[es]=Partida ganada
+Comment[hu]=Győzelem
+Comment[sv]=Du vann spelet
 default_presentation=0
 
 [lost]
 Name=Game lost
+Name[es]=Partida perdida
+Name[hu]=Vereség
+Name[sv]=Du förlorade spelet
 Comment=Game lost
+Comment[es]=Partida perdida
+Comment[hu]=Vereség
+Comment[sv]=Du förlorade spelet
 default_presentation=0
