@@ -1,5 +1,5 @@
 <!DOCTYPE book PUBLIC  "-//KDE//DTD DocBook V3.1-Based Variant V1.0//EN" [
-  <!ENTITY kapp "<application> KMines</application>">
+  <!ENTITY kapp "<application>KMines</application>">
   <!ENTITY kappname "&kapp;" -- this only *seems* redundant -->
   <!ENTITY % addindex "IGNORE">
   <!ENTITY % ents PUBLIC "-//KDE//ENTITIES Application-Variable Entities V1.0//EN">
@@ -40,12 +40,12 @@
 </othercredit>
 </authorgroup>
 
-<date>04/08/2000</date>
-<releaseinfo>2.00.05</releaseinfo>
+<date>25/11/2000</date>
+<releaseinfo>2.00.09</releaseinfo>
 
 <abstract>
 <para>&kapp; is the KDE version of the classic minesweeper game.  This
-documentation was last updated for kmines version 2.00.05. </para>
+documentation was last updated for kmines version 2.00.09. </para>
 </abstract>
 
 <keywordset>
@@ -165,8 +165,7 @@ you loose the game, it will become a frown.</para></listitem>
 The shortest time for each level, gets to list their name as the high
 score.</para></listitem>
 <listitem><para>The playing area.  This will vary in size depending on the
-difficulty level of the game.  In this example, it consists of 64 boxes (one of
-which is uncovered as a "2".  This is where you play the game.</para></listitem>
+difficulty level of the game.  In this example, it consists of 64 boxes. This is where you play the game.</para></listitem>
 <listitem><para>A status line at the bottom of the window.  In this example, it
 simply says "Playing".</para></listitem>
 </itemizedlist>
@@ -289,7 +288,7 @@ permenant, or edit the settings some more.</para>
 <varlistentry>
 <term><menuchoice>
 <shortcut>
-<keycombo><keycap>Ctrl</keycap><keycap>H</keycap></keycombo>
+<keycap>H</keycap>
 </shortcut>
 <guimenu>Game</guimenu>
 <guimenuitem>High Scores.</guimenuitem> </menuchoice></term>
@@ -358,9 +357,6 @@ Options</link>.</para></listitem>
 </varlistentry>
 <varlistentry>
 <term><menuchoice>
-<shortcut>
-<keycombo><keycap>Ctrl</keycap><keycap>P</keycap></keycombo>
-</shortcut>
 <guimenu>Settings</guimenu>
 <guimenuitem>Level</guimenuitem> </menuchoice></term>
 <listitem><para>Lets you set the difficulty level from a submenu.</para>
@@ -463,7 +459,7 @@ author.</para>
 <para>
 Program copyright 1996-2000 Nicolas Hadacek <email>hadacek@kde.org</email></para>
 <para>Documentation copyright 2000 Nicolas Hadacek <email>hadacek@kde.org</email></para>
-<para>Documentation updated for KDE 2.0 by Mike McBride <email>mmcbride@ematic.com</email></para>
+<para>Documentation updated for KDE 2.0 by Mike McBride <email>mpmcbride7@yahoo.com</email></para>
 
 &license-links;
 </chapter>                  
