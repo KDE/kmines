@@ -77,7 +77,7 @@ MainWidget::MainWidget()
 	QString sdate = KGlobal::locale()->formatDate(date);
 	QString s = i18n("%1 %2 (%3)\n\nby %4").arg(KMINES_NAME)
    		        .arg(KMINES_VERSION).arg(sdate).arg(KMINES_AUTHOR);
-	QPopupMenu *help = kapp->getHelpMenu(true, s);
+	QPopupMenu *help = kapp->helpMenu(true, s);
 
 	menuBar()->insertItem(i18n("&File"), popup );
 	menuBar()->insertItem(i18n("&Level"), level );
@@ -96,7 +96,7 @@ MainWidget::MainWidget()
 
 void MainWidget::changeLevel(int lev)
 {
-	KConfig *conf = kapp->getConfig();
+	KConfig *conf = kapp->config();
 	conf->setGroup(OP_GRP);
 	if ( lev==-1 ) {
 		lev = conf->readUnsignedNumEntry(OP_LEVEL, 0);
@@ -120,7 +120,7 @@ bool MainWidget::eventFilter(QObject *, QEvent *e)
 
 void MainWidget::_toggleMenu(bool first)
 {
-	KConfig *conf = kapp->getConfig();
+	KConfig *conf = kapp->config();
 	conf->setGroup(OP_GRP);
 	bool show = conf->readBoolEntry(OP_MENU, TRUE);
 	if ( !first ) show = !show;
@@ -131,7 +131,7 @@ void MainWidget::_toggleMenu(bool first)
 
 void MainWidget::_toggleUMark(bool first)
 {
-	KConfig *conf = kapp->getConfig();
+	KConfig *conf = kapp->config();
 	conf->setGroup(OP_GRP);
 	bool um = conf->readBoolEntry(OP_UMARK, TRUE);
 	if ( !first ) um = !um;

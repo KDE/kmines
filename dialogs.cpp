@@ -218,7 +218,7 @@ void CustomDialog::nbMinesChanged(int n)
 /** HighScore dialog *********************************************************/
 uint WHighScores::time(uint mode)
 {
-	KConfig *conf = kapp->getConfig();
+	KConfig *conf = kapp->config();
 	conf->setGroup(HS_GRP[mode]);
 
 	int sec = conf->readNumEntry(HS_SEC, 59);
@@ -230,7 +230,7 @@ uint WHighScores::time(uint mode)
 WHighScores::WHighScores(QWidget *parent, const Score *score)
 : KDialog(parent, 0, TRUE), mode((score ? score->mode : 0))
 {
-	KConfig *conf = kapp->getConfig();
+	KConfig *conf = kapp->config();
 	conf->setGroup(HS_GRP[mode]);
 
 	if (score) { // set highscores
@@ -337,7 +337,7 @@ WHighScores::WHighScores(QWidget *parent, const Score *score)
 
 void WHighScores::writeName()
 {
-	KConfig *conf = kapp->getConfig();
+	KConfig *conf = kapp->config();
 	conf->setGroup(HS_GRP[mode]);
 	QString str = qle->text();
 	if ( str.length() ) conf->writeEntry(HS_NAME, str);
