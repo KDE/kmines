@@ -42,9 +42,11 @@ void LCD::resetColor()
 
 void LCD::setColor(const QColor &color)
 {
-    QPalette p = palette();
-    p.setColor(QColorGroup::Foreground, color);
-    setPalette(p);
+    if ( color.isValid() ) {
+        QPalette p = palette();
+        p.setColor(QColorGroup::Foreground, color);
+        setPalette(p);
+    } else resetColor();
 }
 
 void LCD::showValue(uint v)

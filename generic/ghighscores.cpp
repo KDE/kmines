@@ -53,12 +53,12 @@ Highscores::Highscores(const QString &version, const KURL &baseURL,
 
     Q_ASSERT(nbGameTypes && maxNbEntries);
 
-    bool b = baseURL.isEmpty();
-    Q_ASSERT( b || baseURL.isValid() );
-    if ( !b ) {
-        ConfigGroup cg;
-        _baseURL = cg.config()->readEntry(HS_WW_URL, baseURL.url());
-    }
+    if ( baseURL.isEmpty() ) return;
+    Q_ASSERT( baseURL.isValid() );
+    ConfigGroup cg;
+    if ( cg.config()->hasKey(HS_WW_URL) )
+        _baseURL = cg.config()->readEntry(HS_WW_URL);
+    else cg.config()->writeEntry(HS_WW_URL, _baseURL.url());
 }
 
 Highscores::~Highscores()
@@ -197,15 +197,17 @@ void Highscores::setItem(ReplaceableItem type, Item *item)
     }
 }
 
-Score Highscores::lastScore() const
+Score Highscores::lastScore()
 {
+    if (_first) setGameType(0);
     Score score(Won);
     score.read(_scoreInfos->maxNbEntries() - 1);
     return score;
 }
 
-Score Highscores::firstScore() const
+Score Highscores::firstScore()
 {
+    if (_first) setGameType(0);
     Score score(Won);
     score.read(0);
     return score;
@@ -271,16 +273,23 @@ const char *DUMMY_STRINGS[] = {
     I18N_NOOP("Invalid score.")
 };
 
-QString Highscores::_doQuery(QDomNamedNodeMap &attributes) const
+bool Highscores::doQuery(QDomNamedNodeMap &attributes, QWidget *parent) const
 {
     QString tmpFile;
-    if ( !KIO::NetAccess::download(_url, tmpFile) )
-  	    return i18n("Unable to contact world-wide highscore server (%1)")
-            .arg(_url.host());
+    if ( !KIO::NetAccess::download(_url, tmpFile) ) {
+        QString msg = i18n("Unable to contact world-wide highscore server");
+        QString details = i18n("Host url : %1").arg(_url.host());
+        KMessageBox::detailedSorry(parent, msg, details);
+        return false;
+    }
 
 	QFile file(tmpFile);
-	if ( !file.open(IO_ReadOnly) )
-	    return i18n("Unable to open temporary file.");
+	if ( !file.open(IO_ReadOnly) ) {
+        QString msg = i18n("Unable to contact world-wide highscore server");
+        QString details = i18n("Unable to open temporary file.");
+        KMessageBox::detailedSorry(parent, msg, details);
+        return false;
+    }
 
 	QTextStream t(&file);
 	QString content = t.read().stripWhiteSpace();
@@ -292,24 +301,22 @@ QString Highscores::_doQuery(QDomNamedNodeMap &attributes) const
         QDomElement root = doc.documentElement();
         QDomElement element = root.firstChild().toElement();
         attributes = element.attributes();
-        if ( element.tagName()=="success" ) return QString::null;
+        if ( element.tagName()=="success" ) return true;
         if ( element.tagName()=="error" ) {
             QDomAttr attr = attributes.namedItem("label").toAttr();
-            if ( !attr.isNull() )
-                return i18n("Error returned by world-wide highscores server "
-                            ": %1")
-                    .arg(i18n(attr.value().latin1()));
+            if ( !attr.isNull() ) {
+                QString msg = i18n(attr.value().latin1());
+                QString caption = i18n("Message from world-wide highscores "
+                                       "server");
+                KMessageBox::sorry(parent, msg, caption);
+                return false;
+            }
         }
     }
-    return i18n("Invalid answer from world-wide highscores server.");
-}
-
-bool Highscores::doQuery(QDomNamedNodeMap &map, QWidget *parent) const
-{
-  QString error = _doQuery(map);
-  bool ok = error.isNull();
-  if ( !ok ) KMessageBox::sorry(parent, error);
-  return ok;
+    QString msg = i18n("Invalid answer from world-wide highscores server.");
+    QString details = i18n("Raw message is : %1").arg(content);
+    KMessageBox::detailedSorry(parent, msg, details);
+    return false;
 }
 
 bool Highscores::getFromQuery(const QDomNamedNodeMap &map,

@@ -22,6 +22,10 @@ class LCD : public QLCDNumber
      */
     void resetColor();
 
+    /**
+     * Set the given color.
+     * If the color is not valid, @ref resetColor is called.
+     */
     void setColor(const QColor &color);
 
  public slots:

@@ -171,12 +171,12 @@ class Highscores
     /**
      * @return the last score in the local list of highscores.
      */
-    Score lastScore() const;
+    Score lastScore();
 
     /**
      * @return the first score in the local list of highscores.
      */
-    Score firstScore() const;
+    Score firstScore();
 
     /**
      * @return true is the first score is strictly worse than the second one.
@@ -308,7 +308,6 @@ class Highscores
     void submitWorldWide(const Score &score, QWidget *parent);
     void setQueryURL(QueryType, const QString &nickname,
                      const Score *score = 0);
-    QString _doQuery(QDomNamedNodeMap &attributes) const;
     bool doQuery(QDomNamedNodeMap &map, QWidget *parent) const;
     static bool getFromQuery(const QDomNamedNodeMap &map, const QString &name,
                              QString &value, QWidget *parent);
