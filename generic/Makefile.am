@@ -1,7 +1,7 @@
 INCLUDES = -I$(top_srcdir)/libkdegames $(all_includes)
 
-lib_LTLIBRARIES             = libkdehighscores.la
-libkdehighscores_la_LDFLAGS = $(all_libraries) $(KDE_RPATH) -no-undefined -version-info 1:0
+noinst_LTLIBRARIES             = libkdehighscores.la
+libkdehighscores_la_LDFLAGS = $(all_libraries)
 libkdehighscores_la_LIBADD  = $(LIB_KDEGAMES) $(LIB_KIO)
 
 libkdehighscores_la_SOURCES = gstring.cpp gsettings.cpp \
