@@ -63,7 +63,7 @@
 
   <Entry name="magic reveal" vtype="bool" defaultValue="false">
   <text>"Magic" reveal</text>
-  <whatsthis>Set flags and reveal cases for the trivial cases.</whatsthis>
+  <whatsthis>Set flags and reveal cases where they are trivial.</whatsthis>
   </Entry>
 
   <Entry name="case size" type="ranged" vtype="int"
