@@ -1,7 +1,9 @@
 IDEAS:
 
  * do you have any idea ?
-
+ * kstatusbar ? (we need to be sure the text is completely visible :
+   should be ok since it is not long texts)
+ * option to change number of mines colors for B&W/strange display
 
 KNOWN BUGS:
 
