@@ -198,17 +198,17 @@ void Status::setGameOver(bool won)
         else KExtHighscore::submitScore(KExtHighscore::Lost, this);
     }
 
-    KNotifyClient::event(won ? "won" : "lost",
+    KNotifyClient::event(winId(), won ? "won" : "lost",
                          won ? i18n("Game won!") : i18n("Game lost!"));
 
     // game log
     _logRoot.setAttribute("count", dg->nbActions());
 
-    if ( field->hasCompleteReveal() )
+    if ( Settings::magicReveal() )
         _logRoot.setAttribute("complete_reveal", "true");
     QString sa = "none";
-    if (_solved) sa = "solving";
-    else if (_advised) sa = "advising";
+    if ( field->solvingState()==Solved ) sa = "solving";
+    else if ( field->solvingState()==Advised ) sa = "advising";
     _logRoot.setAttribute("solver", sa);
 
     QDomElement f = _log.createElement("Field");
@@ -223,8 +223,7 @@ void Status::setStopped()
     update(false);
     bool custom = ( field->level().type()==Level::Custom );
     dg->reset(custom);
-    _advised = false;
-    _solved = false;
+    field->setSolvingState(Regular);
 }
 
 void Status::setPlaying()
@@ -300,14 +299,13 @@ void Status::advise()
     float probability;
     KGrid2D::Coord c = _solver->advise(*field, probability);
     field->setAdvised(c, probability);
-    _advised = true;
 }
 
 void Status::solve()
 {
     dg->setCheating();
     _solver->solve(*field, false);
-    _solved = true;
+    field->setSolvingState(Solved);
 }
 
 void Status::solvingDone(bool success)
@@ -338,7 +336,7 @@ void Status::saveLog()
 {
     KURL url = KFileDialog::getSaveURL(QString::null, QString::null, this);
     if ( url.isEmpty() ) return;
-    if ( KIO::NetAccess::exists(url) ) {
+    if ( KIO::NetAccess::exists(url, false, this) ) {
         KGuiItem gi = KStdGuiItem::save();
         gi.setText(i18n("Overwrite"));
         int res = KMessageBox::warningYesNo(this,
@@ -349,7 +347,7 @@ void Status::saveLog()
     KTempFile tmp;
     (*tmp.textStream()) << _log.toString();
     tmp.close();
-    KIO::NetAccess::upload(tmp.name(), url);
+    KIO::NetAccess::upload(tmp.name(), url, this);
     tmp.unlink();
 }
 
@@ -360,7 +358,7 @@ void Status::loadLog()
     QString tmpFile;
     bool success = false;
     QDomDocument doc;
-    if( KIO::NetAccess::download(url, tmpFile) ) {
+    if( KIO::NetAccess::download(url, tmpFile, this) ) {
         QFile file(tmpFile);
         if ( file.open(IO_ReadOnly) ) {
             int errorLine;

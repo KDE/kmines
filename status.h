@@ -91,7 +91,6 @@ class Status : public QWidget, public KMines
 	KGameLCD     *left;
 	DigitalClock *dg;
     Solver       *_solver;
-    bool          _advised, _solved;
 
     QDomDocument  _log;
     QDomElement   _logRoot, _logList;

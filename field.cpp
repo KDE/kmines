@@ -40,7 +40,7 @@ const char *Field::ACTION_NAMES[Nb_Actions] = {
 };
 
 Field::Field(QWidget *parent)
-    : FieldFrame(parent), _state(Init), _level(Level::Easy)
+    : FieldFrame(parent), _state(Init), _solvingState(Regular), _level(Level::Easy)
 {}
 
 void Field::readSettings()
@@ -97,7 +97,7 @@ void Field::reset(bool init)
     _reveal = false;
     _cursor.first = _level.width()/2;
     _cursor.second = _level.height()/2;
-    _advised = Coord(-1, -1);
+    _advisedCoord = Coord(-1, -1);
     update();
 }
 
@@ -324,6 +324,7 @@ KMines::CaseState Field::doAction(ActionType type, const Coord &c,
 {
     resetAdvised();
     CaseState state = Error;
+    if ( _solvingState==Solved ) complete = false;
 
     switch (type) {
     case Reveal:
@@ -392,20 +393,20 @@ void Field::placeCursor(const Coord &p)
 
 void Field::resetAdvised()
 {
-    if ( !inside(_advised) ) return;
+    if ( !inside(_advisedCoord) ) return;
     QPainter p(this);
-    Coord tmp = _advised;
-    _advised = Coord(-1, -1);
+    Coord tmp = _advisedCoord;
+    _advisedCoord = Coord(-1, -1);
     drawCase(p, tmp);
 }
 
 void Field::setAdvised(const Coord &c, double proba)
 {
     resetAdvised();
-
-    _advised = c;
+    _solvingState = Advised;
+    _advisedCoord = c;
     _advisedProba = proba;
-    if ( inside(_advised) ) {
+    if ( inside(c) ) {
         QPainter p(this);
         drawCase(p, c);
     }
@@ -448,7 +449,7 @@ void Field::drawCase(QPainter &painter, const Coord &c, bool pressed) const
 	}
 
     int i = -1;
-    if ( c==_advised ) {
+    if ( c==_advisedCoord ) {
         if ( _advisedProba==1 ) i = 0;
         else if ( _advisedProba>0.75 ) i = 1;
         else if ( _advisedProba>0.5  ) i = 2;

@@ -39,7 +39,7 @@ class FieldFrame : public QFrame, public KMines
     enum PixmapType { FlagPixmap = 0, MinePixmap, ExplodedPixmap,
                       ErrorPixmap, Nb_Pixmap_Types,
                       NoPixmap = Nb_Pixmap_Types };
-    enum Advised { Nb_Advised = 5 };
+    enum { Nb_Advised = 5 };
 
     void drawBox(QPainter &, const QPoint &, bool pressed,
                  PixmapType, const QString &text,
