@@ -236,6 +236,7 @@ int main(int argc, char **argv)
     KCmdLineArgs::init(argc, argv, &aboutData);
 
     KApplication a;
+    KGlobal::locale()->insertCatalogue("libkdegames");  
     if ( a.isRestored() ) RESTORE(MainWidget)
     else {
         MainWidget *mw = new MainWidget;
