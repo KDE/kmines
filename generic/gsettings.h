@@ -5,7 +5,7 @@
 
 #include <kdialogbase.h>
 #include <klocale.h>
-#include <kcolorbtn.h>
+#include <kcolorbutton.h>
 #include <kconfig.h>
 
 
