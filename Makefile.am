@@ -19,7 +19,7 @@ noinst_HEADERS = defines.h main.h status.h version.h field.h dialogs.h
 SUBDIRS = data
 
 messages:
-	$(XGETTEXT) -C -ktranslate -ki18n -x ../../kdelibs/po/kde.pot $(kmines_SOURCES) && mv messages.po ../po/kmines.pot
+	$(XGETTEXT) -C -ktranslate -ki18n -x $(includedir)/kde.pot $(kmines_SOURCES) && mv messages.po ../po/kmines.pot
 
 ## ##############
 ## # MOC building
