@@ -2,7 +2,6 @@
 #include <klocale.h>
 
 #include "main.h"
-#include "main.moc"
 
 #include "defines.h"
 #include "version.h"

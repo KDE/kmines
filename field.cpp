@@ -1,5 +1,4 @@
 #include "field.h"
-#include "field.moc"
 
 #include <stdlib.h>
 #include <time.h>

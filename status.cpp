@@ -1,5 +1,4 @@
 #include "status.h"
-#include "status.moc"
 
 #include <qpainter.h>
 #include <qpixmap.h>
