@@ -1,6 +1,7 @@
 # KDE Config File 
 [KDE Desktop Entry]
 Name=Minesweeper
+Name[is_IS]=Sprengjuhreinsun
 Name[es]=Buscaminas
 Name[fr]=Démineur
 Name[pl]=Saper
@@ -17,6 +18,7 @@ Exec=kmines -caption "%c" %i %m
 Type=Application
 DocPath=kmines/index.html
 Comment=KDE replacement for xbombs
+Comment[is_IS]=kmines:  Finndu sprengjur og gerðu þær óvirkar
 Comment[es]=Sustituto para xbombs de KDE
 Comment[no]=KDE-erstatning for xbombs
 Comment[fr]=Substitut de xbombs pour le projet KDE
