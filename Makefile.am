@@ -12,5 +12,5 @@ SUBDIRS = data bitmaps
 rcdir   = $(kde_datadir)/kmines
 rc_DATA = kminesui.rc
 
-messages:
-	$(XGETTEXT) $(kmines_SOURCES) -o $(podir)/kmines.pot
+messages: rc.cpp
+	$(XGETTEXT) rc.cpp $(kmines_SOURCES) -o $(podir)/kmines.pot
