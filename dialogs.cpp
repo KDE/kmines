@@ -1,4 +1,4 @@
-#include "dialogs.h"
+#include "dialogs.moc"
 
 #include <qpainter.h>
 #include <qpixmap.h>

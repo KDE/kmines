@@ -1,7 +1,7 @@
 bin_PROGRAMS   = kmines
 INCLUDES       = $(all_includes)
 kmines_LDFLAGS = $(all_libraries) $(KDE_RPATH)
-kmines_LDADD   = $(LIB_KDEUI)
+kmines_LDADD   = -lkdeprint
 
 kmines_SOURCES     = defines.cpp dialogs.cpp field.cpp status.cpp main.cpp
 kmines_METASOURCES = USE_AUTOMOC

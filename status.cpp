@@ -1,8 +1,8 @@
-#include "status.h"
+#include "status.moc"
 
 #include <qpainter.h>
 #include <qpixmap.h>
-#include <qprinter.h>
+#include <kprinter.h>
 #include <qobjectlist.h>
 #include <qwhatsthis.h>
 #include <qlayout.h>
@@ -163,7 +163,7 @@ void Status::highScores(const Score *score)
 
 void Status::print()
 {
-	QPrinter prt;
+	KPrinter prt;
 	if ( !prt.setup() ) return;
 
 	// repaint all children widgets
