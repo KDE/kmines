@@ -37,8 +37,8 @@
 #include <ktempfile.h>
 #include <kio/netaccess.h>
 #include <knotifyclient.h>
+#include <kexthighscore.h>
 
-#include "generic/ghighscores.h"
 #include "solver/solver.h"
 #include "dialogs.h"
 #include "version.h"

@@ -226,7 +226,7 @@ void MainWidget::gameStateChanged(KMines::GameState state)
 
 void MainWidget::pause()
 {
-    action("game_pause")->activate();
+    _pause->activate();
 }
 
 //----------------------------------------------------------------------------
@@ -246,7 +246,6 @@ int main(int argc, char **argv)
 
     KApplication a;
     KGlobal::locale()->insertCatalogue("libkdegames");
-    KGlobal::locale()->insertCatalogue("libkdehighscores"); // #### REMOVE ME
     KExtHighscore::ExtManager manager;
 
     if ( a.isRestored() ) RESTORE(MainWidget)

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE kpartgui>
-<kpartgui name="kmines" version="20">
+<!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
+<gui name="kmines" version="21">
 
 <MenuBar>
   <Menu name="move"><text>&amp;Move</text>
@@ -99,4 +99,4 @@
   </disable>
 </State>
 
-</kpartgui>
+</gui>

@@ -43,7 +43,7 @@ bool KConfigString::isUtf8(const char *buf)
        * still reject it if it uses weird control characters.
        */
 
-      if (text_chars[c] != T)
+      if (text_chars[c] != char(T))
         return false;
 
     } else if ((c & 0x40) == 0) { /* 10xxxxxx never 1st byte */

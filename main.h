@@ -21,7 +21,7 @@
 
 #include <kmainwindow.h>
 
-#include "generic/gsettings.h"
+#include "gsettings.h"
 #include "defines.h"
 
 

@@ -22,10 +22,9 @@
 #include <qpushbutton.h>
 
 #include <kgamelcd.h>
+#include <kexthighscore.h>
 
-#include "generic/ghighscores.h"
-#include "generic/gsettings.h"
-
+#include "gsettings.h"
 #include "defines.h"
 
 

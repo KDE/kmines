@@ -19,7 +19,7 @@
 #ifndef HIGHSCORES_H
 #define HIGHSCORES_H
 
-#include "generic/ghighscores.h"
+#include <kexthighscore.h>
 
 
 namespace KExtHighscore
