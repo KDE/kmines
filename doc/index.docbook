@@ -140,7 +140,7 @@ many mines you need to theoretically mark before you are done with this
 game.</para></note>
 <para>In this example, there are 10 mines to be marked.</para></listitem>
 <listitem><para>A Yellow Smiley Face.  Clicking this will start a new game.  If
-you loose the game, it will become a frown.</para></listitem>
+you lose the game, it will become a frown.</para></listitem>
 <listitem><para>The box on the right, shows how much time this round has taken.
 The shortest time for each level, gets to list their name as the high
 score.</para></listitem>
