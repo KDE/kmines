@@ -74,7 +74,7 @@ MainWidget::MainWidget()
 	KStdAction::keyBindings(this, SLOT(configureKeys()), actionCollection());
 
 	// Levels
-    levels = new KSelectAction(i18n("Choose &level"), 0,
+    levels = new KSelectAction(i18n("Choose &Level"), 0,
                    0, 0, actionCollection(), "levels");
     collection.plug(levels, OP_GROUP, "Level", Level::data(Level::Easy).label);
     connect(levels, SIGNAL(activated(int)), status, SLOT(newGame(int)));

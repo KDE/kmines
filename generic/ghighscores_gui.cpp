@@ -193,7 +193,7 @@ HighscoresSettingsWidget::HighscoresSettingsWidget(const PlayerInfos &infos,
 
     if (WWHSAvailable) {
         _WWHEnabled
-            = new QCheckBox(i18n("world-wide highscores enabled"), this);
+            = new QCheckBox(i18n("World-wide highscores enabled"), this);
         connect(_WWHEnabled, SIGNAL(toggled(bool)),
                 proxy(), SIGNAL(changed()));
         top->addWidget(_WWHEnabled);

@@ -107,7 +107,7 @@ void DigitalClock::reset(const KExtHighscores::Score &first,
 
 //-----------------------------------------------------------------------------
 CustomSettings::CustomSettings()
-    : KSettingWidget(i18n("Custom game"), "configure")
+    : KSettingWidget(i18n("Custom Game"), "configure")
 {
 	QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
 
@@ -218,7 +218,7 @@ GameSettings::GameSettings()
 
 	top->addSpacing(2 * KDialog::spacingHint());
 
-	QVGroupBox *gb = new QVGroupBox(i18n("Mouse bindings"), this);
+	QVGroupBox *gb = new QVGroupBox(i18n("Mouse Bindings"), this);
 	top->addWidget(gb);
 	QGrid *grid = new QGrid(2, gb);
 	grid->setSpacing(10);

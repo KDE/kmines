@@ -77,7 +77,7 @@ Status::Status(QWidget *parent, const char *name)
     QFont f = font();
     f.setBold(true);
     QPushButton *pb
-        = new QPushButton(i18n("Press to resume"), _resumeContainer);
+        = new QPushButton(i18n("Press to Resume"), _resumeContainer);
     pb->setFont(f);
     connect(pb, SIGNAL(clicked()), field, SLOT(resume()));
     g->addWidget(pb, 0, 0, AlignCenter);
