@@ -34,8 +34,6 @@ class QTabWidget;
 namespace KExtHighscores
 {
 
-class HighscoresPrivate;
-
 /**
  * Get the current game type.
  */
@@ -128,14 +126,14 @@ Score lastScore();
  */
 Score firstScore();
 
-
 /**
  * This class manages highscores and players entries (several players can
  * share the same highscore list if the libkdegames library is built to
  * support a common highscores file).
  *
  * You need one instance of this class during the application lifetime ; in
- * main() just insert <pre> KExtHighscores::Highscores highscores; </pre>.
+ * main() just insert <pre> KExtHighscores::Highscores highscores; </pre>
+ * with the needed arguments.
  * Replace <pre>Highscores</pre> by the derived class if you need to
  * reimplement some of the default methods.
  *
@@ -204,13 +202,45 @@ class Highscores
      *        for e.g. KMines has easy, normal and expert levels.
      * @param maxNbEntries the maximum numbers of highscores entries (by game
      *        types)
-     * @param trackLostGame if true, tracks the number of lost games
-     * @param trackBlackMark if true, tracks the number of black marks
      */
-    Highscores(const QString &version, const KURL &baseURL = KURL(),
-                   uint nbGameTypes = 1, uint maxNbEntries = 10,
-                   bool trackLostGames = false, bool trackBlackMarks = false);
+    Highscores(const QString &version = QString::null,
+               const KURL &baseURL = KURL(),
+               uint nbGameTypes = 1, uint maxNbEntries = 10);
     virtual ~Highscores();
+
+    /**
+     * Set if the number of lost games should be track for the world-wide
+     * highscores statistics. By default, there is no tracking.
+     *
+     * Note: should be called at construction time.
+     */
+    void setTrackLostGames(bool track);
+
+    /**
+     * Set if the number of black marks should be tracked for the world-wide
+     * highscores statistics. By default, there is no tracking.
+     *
+     * Note: should be called at construction time.
+     */
+    void setTrackBlackMarks(bool track);
+
+    /**
+     * Set if the statistics tab should be shown in the highscores dialog.
+     * You only want to show this tab if it makes sense to lose or to win the
+     * game (for e.g. it makes no sense for a tetris game but it does for a
+     * minesweeper game).
+     *
+     * Note: should be called at construction time.
+     */
+    void showStatistics(bool show);
+
+    /**
+     * Set the ranges for the score histogram.
+     *
+     * Note: should be called at construction time.
+     */
+    void setScoreHistogram(const QMemArray<uint> &scores, bool bound,
+                           bool showMaxPixmap = true);
 
     /**
      * @return true is the first score is strictly worse than the second one.
@@ -241,7 +271,7 @@ class Highscores
 
     /**
      * Add an item to the score. It will add a column to the highscores list.
-     * This methode should be called at construction time.
+     * This method should be called at construction time.
      *
      * If @p name is "score", "best score" or "mean score", the default item
      * will be replaced by the given one.
@@ -304,8 +334,6 @@ class Highscores
     virtual void additionnalTabs(QTabWidget *widget) { Q_UNUSED(widget); }
 
  private:
-    HighscoresPrivate  *d;
-
     Highscores(const Highscores &);
     Highscores &operator =(const Highscores &);
 };

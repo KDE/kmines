@@ -126,9 +126,16 @@ void Status::newGame(int t)
     } else field->setLevel(CustomConfig::readLevel());
 }
 
+void Status::checkBlackMark()
+{
+    if ( field->isPlaying() )
+        KExtHighscores::submitScore(KExtHighscores::BlackMark, this);
+}
+
 void Status::restartGame()
 {
     if ( field->isPaused() ) emit pause();
+    checkBlackMark();
     field->reset();
 }
 
@@ -163,8 +170,10 @@ void Status::setGameOver(bool won)
     smiley->setMood(won ? Happy : Sad);
     dg->stop();
 
-    if ( field->level().type()!=Level::Custom && won && !dg->cheating() )
-        KExtHighscores::submitScore(dg->score(), this);
+    if ( field->level().type()!=Level::Custom && !dg->cheating() ) {
+        if (won) KExtHighscores::submitScore(dg->score(), this);
+        else KExtHighscores::submitScore(KExtHighscores::Lost, this);
+    }
     _logList.setAttribute("nb", dg->nbActions());
 
     if ( field->hasCompleteReveal() )

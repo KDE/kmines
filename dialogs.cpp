@@ -130,13 +130,14 @@ CustomConfig::CustomConfig()
 
     // combo to choose level
     QHBoxLayout *hbox = new QHBoxLayout(top);
-    QLabel *label = new QLabel(i18n("Choose level"), this);
+    QLabel *label = new QLabel(i18n("Choose level:"), this);
     hbox->addWidget(label);
     _gameType = new KComboBox(false, this);
     connect(_gameType, SIGNAL(activated(int)), SLOT(typeChosen(int)));
     for (uint i=0; i<=Level::NbLevels; i++)
         _gameType->insertItem(i18n(Level::data((Level::Type)i).i18nLabel));
     hbox->addWidget(_gameType);
+    hbox->addWidget(new QWidget(this), 1);
 
     connect(configCollection(), SIGNAL(modified()), SLOT(updateNbMines()));
     QTimer::singleShot(0, this, SLOT(updateNbMines()));
@@ -196,10 +197,11 @@ GameConfig::GameConfig()
 
 	top->addSpacing(2 * KDialog::spacingHint());
 
+    QHBoxLayout *hbox = new QHBoxLayout(top);
 	QVGroupBox *gb = new QVGroupBox(i18n("Mouse Bindings"), this);
-	top->addWidget(gb);
-	QGrid *grid = new QGrid(2, gb);
-	grid->setSpacing(10);
+	hbox->addWidget(gb);
+    QGrid *grid = new QGrid(2, gb);
+    grid->setSpacing(KDialogBase::spacingHint());
     for (uint i=0; i<NB_MOUSE_BUTTONS; i++) {
         QLabel *l = new QLabel(grid);
         QComboBox *cb = new QComboBox(false, grid);
@@ -207,6 +209,7 @@ GameConfig::GameConfig()
             configCollection()->createConfigItem(MOUSE_CONFIG_NAMES[i], cb);
         set->setProxyLabel(l);
 	}
+    hbox->addStretch(1);
 }
 
 void GameConfig::magicRevealToggled()
@@ -231,9 +234,9 @@ AppearanceConfig::AppearanceConfig()
 
     top->addSpacing(2 * KDialog::spacingHint());
 
+    QHBoxLayout *hbox = new QHBoxLayout(top);
     QGrid *grid = new QGrid(2, this);
-    top->addWidget(grid);
-
+    hbox->addWidget(grid);
     for (uint i=0; i<NB_COLORS; i++) {
         QLabel *l = new QLabel(grid);
         KColorButton *cb = new KColorButton(grid);
@@ -242,7 +245,6 @@ AppearanceConfig::AppearanceConfig()
             configCollection()->createConfigItem(COLOR_CONFIG_NAMES[i], cb);
         set->setProxyLabel(l);
     }
-
 	for (uint i=0; i<NB_N_COLORS; i++) {
 		QLabel *l = new QLabel(grid);
         KColorButton *cb = new KColorButton(grid);
@@ -251,4 +253,5 @@ AppearanceConfig::AppearanceConfig()
             configCollection()->createConfigItem(N_COLOR_CONFIG_NAMES[i], cb);
         set->setProxyLabel(l);
 	}
+    hbox->addStretch(1);
 }

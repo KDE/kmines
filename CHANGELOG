@@ -1,9 +1,13 @@
-2.1.7 (11 June 2002) [CVS 3.1 devel]
+2.1.7 (13 June 2002) [CVS 3.1 devel]
  * XML configuration is working !!
  * separate keyboard and general shortcuts in configuration dialog
  * add "advanced" tab to highscores configuration + possibility to remove
    registration
  * export highscores to text file
+ * add (optionnal) statistics and histogram to highscores dialog
+ * track lost games and black marks for kmines
+ * histogram for kmines
+ * some cosmetic fixes in configuration dialog
 
 2.1.6 (24 April 2002)
  * mark/unmark actions on mouse release [patch by Thomas Capricelli]

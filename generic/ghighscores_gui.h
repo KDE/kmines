@@ -22,6 +22,8 @@
 
 #include <qcheckbox.h>
 #include <qlabel.h>
+#include <qcombobox.h>
+#include <qvbox.h>
 
 #include <klistview.h>
 #include <klineedit.h>

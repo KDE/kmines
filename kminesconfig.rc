@@ -75,10 +75,10 @@
   <text>Flag color</text>
   </Entry>
   <Entry name="explosion color" vtype="QColor" defaultValue="#FF0000">
-  <text>Flag color</text>
+  <text>Explosion color</text>
   </Entry>
   <Entry name="error color" vtype="QColor" defaultValue="#FF0000">
-  <text>Flag color</text>
+  <text>Error color</text>
   </Entry>
 
   <Entry name="color #0" vtype="QColor" defaultValue="#0000FF">

@@ -38,6 +38,7 @@
 
 #include "ghighscores_internal.h"
 #include "ghighscores.h"
+#include "ghighscores_tab.h"
 
 
 namespace KExtHighscores
@@ -124,14 +125,15 @@ HighscoresWidget::HighscoresWidget(int localRank, QWidget *parent,
                        const QString &playersURL, const QString &scoresURL)
     : QWidget(parent, "show_highscores_widget")
 {
-    const ScoreInfos &s = HighscoresPrivate::scoreInfos();
-    const PlayerInfos &p = HighscoresPrivate::playerInfos();
+    const ScoreInfos &s = internal->scoreInfos();
+    const PlayerInfos &p = internal->playerInfos();
 
     QVBoxLayout *vbox = new QVBoxLayout(this, KDialogBase::spacingHint());
 
     QTabWidget *tw = new QTabWidget(this);
     vbox->addWidget(tw);
 
+    // scores tab
     QWidget *w;
     if ( s.nbEntries()==0 ) {
         QLabel *lab = new QLabel(i18n("no score entry"), tw);
@@ -140,12 +142,21 @@ HighscoresWidget::HighscoresWidget(int localRank, QWidget *parent,
     } else w = new HighscoresList(s, localRank, tw);
     tw->addTab(w, i18n("Best &Scores"));
 
-    w = new HighscoresList(p, p.id(), tw);
-    tw->addTab(w, i18n("&Players"));
+    // players tab
+    tw->addTab(new HighscoresList(p, p.id(), tw), i18n("&Players"));
 
-    HighscoresPrivate::highscores().additionnalTabs(tw);
+    // statistics tab
+    if ( internal->showStatistics )
+        tw->addTab(new StatisticsTab(tw), i18n("Statistics"));
 
-    if ( HighscoresPrivate::isWWHSAvailable() ) {
+    if ( internal->scoreHistogram.size()!=0 )
+        tw->addTab(new HistogramTab(tw), i18n("Histogram"));
+
+    // additionnal tabs
+    internal->highscores().additionnalTabs(tw);
+
+    // url labels
+    if ( internal->isWWHSAvailable() ) {
         KURLLabel *urlLabel =
             new KURLLabel(scoresURL, i18n("View world-wide highscores"), this);
         connect(urlLabel, SIGNAL(leftClickedURL(const QString &)),
@@ -190,7 +201,7 @@ void HighscoresDialog::exportToText()
         if ( res==KMessageBox::No ) return;
     }
     KTempFile tmp;
-    HighscoresPrivate::exportHighscores(*tmp.textStream());
+    internal->exportHighscores(*tmp.textStream());
     tmp.close();
     KIO::NetAccess::upload(tmp.name(), url);
     tmp.unlink();
@@ -203,9 +214,9 @@ MultipleScoresList::MultipleScoresList(const QValueList<Score> &scores,
 {
     Q_ASSERT( scores.size()!=0 );
 
-    addHeader(HighscoresPrivate::scoreInfos());
+    addHeader( internal->scoreInfos() );
     for (uint i=0; i<scores.size(); i++)
-        addLine(HighscoresPrivate::scoreInfos(), i, false);
+        addLine(internal->scoreInfos(), i, false);
 }
 
 QString MultipleScoresList::itemText(const ItemContainer &item, uint row) const
@@ -229,7 +240,7 @@ bool MultipleScoresList::showColumn(const ItemContainer &item) const
 ImplConfigWidget::ImplConfigWidget(QWidget *parent)
     : ConfigWidget(parent), _WWHEnabled(0)
 {
-    bool wwhs = HighscoresPrivate::isWWHSAvailable();
+    bool wwhs = internal->isWWHSAvailable();
 
     QWidget *page = this;
     QTabWidget *tab = 0;
@@ -307,7 +318,7 @@ QString ImplConfigWidget::icon() const
 
 void ImplConfigWidget::load()
 {
-    const PlayerInfos &infos = HighscoresPrivate::playerInfos();
+    const PlayerInfos &infos = internal->playerInfos();
     _nickname->setText(infos.isAnonymous() ? QString::null : infos.name());
     _comment->setText(infos.comment());
     if (_WWHEnabled) {
@@ -327,10 +338,10 @@ void ImplConfigWidget::removeSlot()
     int res = KMessageBox::warningYesNo(this,
        i18n("This will remove permanently your "
             "registration key. You will not be able to use anymore "
-            "with the current registered nickname."),
+            "the current registered nickname."),
        QString::null, gi, KStdGuiItem::cancel());
     if ( res==KMessageBox::Yes ) {
-        HighscoresPrivate::playerInfos().removeKey();
+        internal->playerInfos().removeKey();
         _registeredName->clear();
         _key->clear();
         _removeButton->setEnabled(false);
@@ -346,12 +357,12 @@ bool ImplConfigWidget::save()
     // do not bother the user with "nickname empty" if he has not
     // messed with nickname settings ...
     if ( _nickname->text().isEmpty()
-         && !HighscoresPrivate::playerInfos().isAnonymous() && !enabled )
+         && !internal->playerInfos().isAnonymous() && !enabled )
         return true;
 
-    bool res = HighscoresPrivate::modifySettings(_nickname->text().lower(),
-                  _comment->text(), enabled, static_cast<QWidget *>(parent()));
-    if (res) load(); // update view when "apply" is clicked
+    bool res = internal->modifySettings(_nickname->text().lower(),
+                                          _comment->text(), enabled, this);
+    if (res) load(); // need to update view when "apply" is clicked
     return res;
 }
 

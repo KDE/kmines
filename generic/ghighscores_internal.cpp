@@ -26,10 +26,10 @@
 #include <kio/netaccess.h>
 #include <kio/job.h>
 #include <kmessagebox.h>
-#include <kstaticdeleter.h>
 #include <kdialogbase.h>
 #include <kiconloader.h>
 #include <kmdcodec.h>
+#include <kdebug.h>
 
 #include "khighscore.h"
 #include "ghighscores.h"
@@ -90,6 +90,13 @@ void ItemContainer::write(uint i, const QVariant &value) const
     hs.writeEntry(i+1, entryName(), value);
 }
 
+uint ItemContainer::increment(uint i) const
+{
+    uint v = read(i).toUInt() + 1;
+    write(i, v);
+    return v;
+}
+
 //-----------------------------------------------------------------------------
 ItemArray::ItemArray()
     : _group(""), _subGroup("") // no null groups
@@ -110,14 +117,16 @@ int ItemArray::findIndex(const QString &name) const
 const ItemContainer *ItemArray::item(const QString &name) const
 {
     int i = findIndex(name);
-    Q_ASSERT( i!=-1 );
+    if ( i==-1 ) kdDebug(11002) << k_funcinfo << "no item named \"" << name
+                                << "\"" << endl;
     return at(i);
 }
 
 void ItemArray::setItem(const QString &name, Item *item)
 {
     int i = findIndex(name);
-    Q_ASSERT( i!=-1 );
+    if ( i==-1 ) kdDebug(11002) << k_funcinfo << "no item named \"" << name
+                                << "\"" << endl;
     bool stored = at(i)->isStored();
     bool canHaveSubGroup = at(i)->canHaveSubGroup();
     _setItem(i, name, item, stored, canHaveSubGroup);
@@ -126,7 +135,8 @@ void ItemArray::setItem(const QString &name, Item *item)
 void ItemArray::addItem(const QString &name, Item *item,
                         bool stored, bool canHaveSubGroup)
 {
-    Q_ASSERT( findIndex(name)==-1 );
+    if ( findIndex(name)!=-1 )
+        kdDebug(11002) << "item already exists \"" << name << "\"" << endl;
     uint i = size();
     resize(i+1);
     at(i) = new ItemContainer;
@@ -152,7 +162,7 @@ void ItemArray::setGroup(const QString &group)
 
 void ItemArray::setSubGroup(const QString &subGroup)
 {
-    Q_ASSERT( !_subGroup.isNull() );
+    Q_ASSERT( !subGroup.isNull() );
     _subGroup = subGroup;
     for (uint i=0; i<size(); i++)
         if ( at(i)->canHaveSubGroup() ) at(i)->setSubGroup(subGroup);
@@ -234,24 +244,26 @@ const char *HS_REGISTERED_NAME = "registered name";
 const char *HS_KEY             = "player key";
 const char *HS_WW_ENABLED      = "ww hs enabled";
 
-PlayerInfos::PlayerInfos(bool trackLostGames, bool trackBlackMarks)
-    : _trackLostGames(trackLostGames), _trackBlackMarks(trackBlackMarks)
+PlayerInfos::PlayerInfos()
 {
     setGroup("players");
 
+    // standard items
     addItem("name", new NameItem);
     addItem("nb games", new Item((uint)0, i18n("Games count"),
                                  Qt::AlignRight), true, true);
-    if (trackLostGames)
-        addItem("success", new SuccessPercentageItem, true, true);
     addItem("mean score", new MeanScoreItem, true, true);
     addItem("best score", new BestScoreItem, true, true);
-    if (trackBlackMarks)
-        addItem("black mark", new Item((uint)0, i18n("Black mark"),
-                                       Qt::AlignRight), true, true);
     addItem("date", new DateItem, true, true);
     addItem("comment", new Item(QString::null, i18n("Comment"),
                                 Qt::AlignLeft));
+
+    // statistics items
+    addItem("nb black marks", new Item((uint)0), true, true);
+    addItem("nb lost games", new Item((uint)0), true, true);
+    addItem("current trend", new Item((int)0), true, true);
+    addItem("max lost trend", new Item((uint)0), true, true);
+    addItem("max won trend", new Item((uint)0), true, true);
 
     ConfigGroup cg;
     _newPlayer = !cg.config()->hasKey(HS_ID);
@@ -261,6 +273,12 @@ PlayerInfos::PlayerInfos(bool trackLostGames, bool trackBlackMarks)
         cg.config()->writeEntry(HS_ID, _id);
         item("name")->write(_id, QString(ItemContainer::ANONYMOUS));
     }
+}
+
+void PlayerInfos::createHistoItems()
+{
+    for (uint i=1; i<histoSize(); i++)
+        addItem(histoName(i), new Item((uint)0), true, true);
 }
 
 bool PlayerInfos::isAnonymous() const
@@ -288,41 +306,71 @@ bool PlayerInfos::isWWEnabled() const
     return cg.config()->readBoolEntry(HS_WW_ENABLED, false);
 }
 
+QString PlayerInfos::histoName(uint i) const
+{
+    const QMemArray<uint> &sh = internal->scoreHistogram;
+    Q_ASSERT( i<sh.size() || (internal->scoreBound || i==sh.size()) );
+    if ( i==sh.size() )
+        return QString("nb scores greater than %1").arg(sh[sh.size()-1]);
+    return QString("nb scores less than %1").arg(sh[i]);
+}
+
+uint PlayerInfos::histoSize() const
+{
+     return internal->scoreHistogram.size() + (internal->scoreBound ? 0 : 1);
+}
+
 void PlayerInfos::submitScore(const Score &score) const
 {
-    Q_ASSERT( score.type()!=Lost || _trackLostGames );
+    // update counts
+    uint nbGames = item("nb games")->increment(_id);
+    bool lost = true;
+    switch (score.type()) {
+    case BlackMark:
+        item("nb black marks")->increment(_id);
+        break;
+    case Lost:
+        item("nb lost games")->increment(_id);
+        break;
+    case Won:
+        lost = false;
+        break;
+    };
 
-    if ( score.type()==BlackMark ) {
-        Q_ASSERT(_trackBlackMarks);
-        uint nb_bm = item("black mark")->read(_id).toUInt();
-        item("black mark")->write(_id, nb_bm+1);
-        return;
-    }
+    // update mean
+    double total = item("mean score")->read(_id).toDouble() * (nbGames-1);
+    item("mean score")->write(_id, total / nbGames);
 
-    uint nb = item("nb games")->read(_id).toUInt();
-    uint nb_success = nb;
-    if (_trackLostGames) {
-        double success = item("success")->read(_id).toDouble();
-        if ( success!=-1 ) nb_success = (uint)(success * nb / 100);
-    }
-    double total_score = item("mean score")->read(_id).toDouble() * nb_success;
-
-    nb++;
-    if ( score.type()==Won ) {
-        nb_success++;
-        total_score += score.score();
-    }
-    double mean = (nb_success==0 ? 0 : total_score / nb_success);
-
-    item("nb games")->write(_id, nb);
-    item("mean score")->write(_id, mean);
-    if (_trackLostGames) {
-        double success = 100.0 * nb_success / nb;
-        item("success")->write(_id, success);
-    }
+    // update best score
     if ( score.score()>item("best score")->read(_id).toUInt() ) {
         item("best score")->write(_id, score.score());
         item("date")->write(_id, score.data("date").toDateTime());
+    }
+
+    // update trends
+    int current = item("current trend")->read(_id).toInt();
+    if (lost) {
+        if ( current>0 ) current = 0;
+        current--;
+        uint lost = item("max lost trend")->read(_id).toUInt();
+        uint clost = -current;
+        if ( clost>lost ) item("max lost trend")->write(_id, clost);
+    } else {
+        if ( current<0 ) current = 0;
+        current++;
+        uint won = item("max won trend")->read(_id).toUInt();
+        if ( (uint)current>won ) item("max won trend")->write(_id, current);
+    }
+    item("current trend")->write(_id, current);
+
+    // update histogram
+    if ( !lost ) {
+        const QMemArray<uint> &sh = internal->scoreHistogram;
+        for (uint i=1; i<histoSize(); i++)
+            if ( i==sh.size() || score.score()<sh[i] ) {
+                item(histoName(i))->increment(_id);
+                break;
+            }
     }
 }
 
@@ -367,30 +415,21 @@ void PlayerInfos::removeKey()
 }
 
 //-----------------------------------------------------------------------------
-KURL *HighscoresPrivate::_baseURL = 0;
-QString *HighscoresPrivate::_version = 0;
-PlayerInfos *HighscoresPrivate::_playerInfos = 0;
-ScoreInfos *HighscoresPrivate::_scoreInfos = 0;
-bool HighscoresPrivate::_first = true;
-uint HighscoresPrivate::_nbGameTypes;
-uint HighscoresPrivate::_gameType = 0;
-Highscores *HighscoresPrivate::_highscores = 0;
-
-static KStaticDeleter<Highscores> sd;
+HighscoresPrivate *HighscoresPrivate::_self = 0;
 
 HighscoresPrivate::HighscoresPrivate(const QString &version, const KURL &burl,
-                      uint nbGameTypes, uint maxNbEntries, bool trackLostGames,
-                      bool trackBlackMarks, Highscores *highscores)
+                   uint nbGameTypes, uint maxNbEntries, Highscores &highscores)
+    : showStatistics(false), trackLostGames(false), trackBlackMarks(false),
+      _baseURL(burl), _version(version), _first(true),
+      _nbGameTypes(nbGameTypes), _gameType(0), _highscores(highscores)
 {
-    Q_ASSERT(nbGameTypes);
-    _nbGameTypes = nbGameTypes;
-    Q_ASSERT(maxNbEntries);
-    if (_highscores) qFatal("A highscore object already exists");
-    sd.setObject(_highscores, highscores);
+    if (_self) qFatal("A highscore object already exists");
+    _self = this;
 
-    _baseURL = new KURL(burl);
-    _version = new QString(version);
-    _playerInfos = new PlayerInfos(trackLostGames, trackBlackMarks);
+    Q_ASSERT(nbGameTypes);
+    Q_ASSERT(maxNbEntries);
+
+    _playerInfos = new PlayerInfos;
     _scoreInfos = new ScoreInfos(maxNbEntries, *_playerInfos);
 }
 
@@ -398,14 +437,12 @@ HighscoresPrivate::~HighscoresPrivate()
 {
     delete _scoreInfos;
     delete _playerInfos;
-    delete _baseURL;
-    delete _version;
-    sd.setObject(_highscores, 0, false);
+    _self = 0;
 }
 
-KURL HighscoresPrivate::queryURL(QueryType type, const QString &newName)
+KURL HighscoresPrivate::queryURL(QueryType type, const QString &newName) const
 {
-    KURL url = *_baseURL;
+    KURL url = _baseURL;
     QString nameItem = "nickname";
     QString name = _playerInfos->registeredName();
     bool version = true;
@@ -440,11 +477,11 @@ KURL HighscoresPrivate::queryURL(QueryType type, const QString &newName)
             break;
 	}
 
-    if (version) Highscores::addToQueryURL(url, "version", *_version);
+    if (version) Highscores::addToQueryURL(url, "version", _version);
     if ( !name.isEmpty() ) Highscores::addToQueryURL(url, nameItem, name);
     if (key) Highscores::addToQueryURL(url, "key", _playerInfos->key());
     if (level) {
-        QString label = _highscores->gameTypeLabel(_gameType, Highscores::WW);
+        QString label = _highscores.gameTypeLabel(_gameType, Highscores::WW);
         if ( !label.isEmpty() ) Highscores::addToQueryURL(url, "level", label);
     }
 
@@ -539,7 +576,7 @@ bool HighscoresPrivate::getFromQuery(const QDomNamedNodeMap &map,
 	return true;
 }
 
-int HighscoresPrivate::rank(const Score &score)
+int HighscoresPrivate::rank(const Score &score) const
 {
     Score tmp(Won);
     uint nb = _scoreInfos->nbEntries();
@@ -586,7 +623,7 @@ void HighscoresPrivate::setGameType(uint type)
         if ( _playerInfos->isNewPlayer() ) {
             for (uint i=0; i<_nbGameTypes; i++) {
                 setGameType(i);
-                _highscores->convertLegacy(i);
+                _highscores.convertLegacy(i);
             }
         }
     }
@@ -594,7 +631,7 @@ void HighscoresPrivate::setGameType(uint type)
     Q_ASSERT( type<_nbGameTypes );
     _gameType = kMin(type, _nbGameTypes-1);
     QString str = "scores";
-    QString lab = _highscores->gameTypeLabel(_gameType, Highscores::Standard);
+    QString lab = _highscores.gameTypeLabel(_gameType, Highscores::Standard);
     if ( !lab.isEmpty() ) {
         _playerInfos->setSubGroup(lab);
         str += "_" + lab;
@@ -617,8 +654,8 @@ void HighscoresPrivate::showHighscores(QWidget *parent, int rank)
         setGameType(i);
         QWidget *w;
         if (treeList) {
-            QString title = _highscores->gameTypeLabel(i, Highscores::I18N);
-            QString icon = _highscores->gameTypeLabel(i, Highscores::Icon);
+            QString title = _highscores.gameTypeLabel(i, Highscores::I18N);
+            QString icon = _highscores.gameTypeLabel(i, Highscores::Icon);
             w = hs.addPage(title, QString::null,
                             BarIcon(icon, KIcon::SizeLarge));
         } else w = hs.plainPage();
@@ -651,7 +688,7 @@ void HighscoresPrivate::submitScore(const Score &ascore, QWidget *parent)
         if ( rank!=-1 ) showHighscores(parent, rank);
     }
 
-    _highscores->scoreSubmitted(score);
+    _highscores.scoreSubmitted(score);
 }
 
 int HighscoresPrivate::submitLocal(const Score &score)
@@ -665,17 +702,20 @@ int HighscoresPrivate::submitLocal(const Score &score)
     return r;
 }
 
-bool HighscoresPrivate::submitWorldWide(const Score &score, QWidget *parent)
+bool HighscoresPrivate::submitWorldWide(const Score &score,
+                                        QWidget *parent) const
 {
+    if ( score.type()==Lost && !trackLostGames ) return true;
+    if ( score.type()==BlackMark && !trackBlackMarks ) return true;
+
     KURL url = queryURL(Submit);
-    _highscores->additionnalQueryItems(url, score);
+    _highscores.additionnalQueryItems(url, score);
     int s = (score.type()==Won ? score.score() : (int)score.type());
     QString str =  QString::number(s);
     Highscores::addToQueryURL(url, "score", str);
     KMD5 context(QString(_playerInfos->registeredName() + str).latin1());
     Highscores::addToQueryURL(url, "check", context.hexDigest());
 
-    qDebug("%s", url.url().latin1());
     return doQuery(url, parent);
 }
 
@@ -705,7 +745,7 @@ void HighscoresPrivate::exportHighscores(QTextStream &s)
             if ( i!=0 ) s << endl;
             s << "--------------------------------" << endl;
             s << "Game type: "
-              << _highscores->gameTypeLabel(_gameType, Highscores::I18N)
+              << _highscores.gameTypeLabel(_gameType, Highscores::I18N)
               << endl;
             s << endl;
         }

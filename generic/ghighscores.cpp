@@ -30,8 +30,7 @@ namespace KExtHighscores
 {
 
 Highscores::Highscores(const QString &version, const KURL &baseURL,
-                       uint nbGameTypes, uint maxNbEntries,
-                       bool trackLostGames, bool trackBlackMarks)
+                       uint nbGameTypes, uint maxNbEntries)
 {
     KURL burl = baseURL;
     if ( !baseURL.isEmpty() ) {
@@ -43,29 +42,29 @@ Highscores::Highscores(const QString &version, const KURL &baseURL,
         else cg.config()->writeEntry(HS_WW_URL, burl.url());
     }
 
-    d = new HighscoresPrivate(version, burl, nbGameTypes, maxNbEntries,
-                              trackLostGames, trackBlackMarks, this);
+    (void)new HighscoresPrivate(version, burl, nbGameTypes, maxNbEntries,
+                                *this);
 }
 
 Highscores::~Highscores()
 {
-    delete d;
+    delete internal;
 }
 
 uint gameType()
 {
-    HighscoresPrivate::checkFirst();
-    return HighscoresPrivate::gameType();
+    internal->checkFirst();
+    return internal->gameType();
 }
 
 void setGameType(uint type)
 {
-    HighscoresPrivate::setGameType(type);
+    internal->setGameType(type);
 }
 
 ConfigWidget *createConfigWidget(QWidget *parent)
 {
-    HighscoresPrivate::checkFirst();
+    internal->checkFirst();
     return new ImplConfigWidget(parent);
 }
 
@@ -83,17 +82,45 @@ void showMultipleScores(const QValueList<Score> &scores, QWidget *parent)
 
 void submitScore(const Score &score, QWidget *parent)
 {
-    HighscoresPrivate::submitScore(score, parent);
+    internal->submitScore(score, parent);
 }
 
 void showHighscores(QWidget *parent)
 {
-    HighscoresPrivate::showHighscores(parent, -1);
+    internal->showHighscores(parent, -1);
+}
+
+void Highscores::setTrackLostGames(bool track)
+{
+    internal->trackLostGames = track;
+}
+
+void Highscores::setTrackBlackMarks(bool track)
+{
+    internal->trackBlackMarks = track;
+}
+
+void Highscores::showStatistics(bool show)
+{
+    internal->showStatistics = show;
+}
+
+void Highscores::setScoreHistogram(const QMemArray<uint> &scores, bool bound,
+                                   bool showMaxPixmap)
+{
+    Q_ASSERT( internal->scoreHistogram.size()==0 );
+    Q_ASSERT( scores.size()>=2 );
+    for (uint i=0; i<scores.size()-1; i++)
+        Q_ASSERT( scores[i]<scores[i+1] );
+    internal->scoreHistogram = scores;
+    internal->scoreBound = bound;
+    internal->showMaxPixmap = showMaxPixmap;
+    internal->playerInfos().createHistoItems();
 }
 
 void Highscores::submitLegacyScore(const Score &score) const
 {
-    HighscoresPrivate::submitLocal(score);
+    internal->submitLocal(score);
 }
 
 bool Highscores::isStrictlyLess(const Score &s1, const Score &s2) const
@@ -103,23 +130,22 @@ bool Highscores::isStrictlyLess(const Score &s1, const Score &s2) const
 
 void Highscores::setItem(const QString &name, Item *item)
 {
-    if ( name=="score" )
-        HighscoresPrivate::scoreInfos().setItem("score", item);
+    if ( name=="score" ) internal->scoreInfos().setItem("score", item);
     else if ( name=="mean score" )
-        HighscoresPrivate::playerInfos().setItem("mean score", item);
+        internal->playerInfos().setItem("mean score", item);
     else if ( name=="best score" )
-        HighscoresPrivate::playerInfos().setItem("best score", item);
-    else HighscoresPrivate::scoreInfos().addItem(name, item, true);
+        internal->playerInfos().setItem("best score", item);
+    else internal->scoreInfos().addItem(name, item, true);
 }
 
 Score lastScore()
 {
-    return HighscoresPrivate::lastScore();
+    return internal->lastScore();
 }
 
 Score firstScore()
 {
-    return HighscoresPrivate::firstScore();
+    return internal->firstScore();
 }
 
 QString Highscores::gameTypeLabel(uint gameType, LabelType type) const

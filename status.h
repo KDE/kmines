@@ -41,6 +41,8 @@ class Status : public QWidget, public KMines
     bool isPaused() const             { return field->isPaused(); }
     void settingsChanged();
 
+    void checkBlackMark();
+
  signals:
     void pause();
 	void gameStateChangedSignal(KMines::GameState);

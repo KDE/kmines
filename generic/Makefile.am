@@ -6,14 +6,14 @@ libkdehighscores_la_LIBADD  = $(top_builddir)/libkdegames/libkdegames.la $(LIB_K
 
 libkdehighscores_la_SOURCES = gstring.cpp gsettings.cpp \
                               ghighscores_item.cpp ghighscores_internal.cpp \
-                              ghighscores_gui.cpp ghighscores.cpp \
-                              gmisc_ui.cpp gmisc.cpp
+                              ghighscores_tab.cpp ghighscores_gui.cpp \
+                              ghighscores.cpp gmisc_ui.cpp gmisc.cpp
 noinst_HEADERS = gstring.h gsettings.h \
-                 ghighscores_item.h ghighscores.h \
-                 ghighscores_gui.h ghighscores_internal.h gmisc_ui.h grid2d.h \
-                 gmisc.h
-METASOURCES = gsettings.moc ghighscores.moc ghighscores_gui.moc gmisc_ui.moc \
-              gmisc.moc
+                 ghighscores_item.h ghighscores_tab.h \
+                 ghighscores_gui.h ghighscores_internal.h ghighscores.h \
+                 gmisc_ui.h gmisc.h grid2d.h
+METASOURCES = gsettings.moc ghighscores_tab.moc ghighscores_gui.moc \
+              ghighscores.moc gmisc_ui.moc gmisc.moc
 
 messages:
 	$(XGETTEXT) `find . -name \*.h -o -name \*.cpp -o -name \*.cc` -o $(podir)/libkdehighscores.pot

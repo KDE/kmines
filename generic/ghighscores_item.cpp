@@ -92,7 +92,7 @@ void Item::setPrettySpecial(Special special)
 
 QString Item::timeFormat(uint n)
 {
-    Q_ASSERT( n<3600 && n!=0 );
+    Q_ASSERT( n<=3600 && n!=0 );
     n = 3600 - n;
     return QString::number(n / 60).rightJustify(2, '0') + ':'
         + QString::number(n % 60).rightJustify(2, '0');
@@ -187,7 +187,7 @@ QDataStream &operator >>(QDataStream &s, DataArray &array)
 
 //-----------------------------------------------------------------------------
 Score::Score(ScoreType type)
-    : DataArray(HighscoresPrivate::scoreInfos()), _type(type)
+    : DataArray(internal->scoreInfos()), _type(type)
 {}
 
 Score::~Score()
@@ -195,7 +195,7 @@ Score::~Score()
 
 bool Score::operator <(const Score &score) const
 {
-    return HighscoresPrivate::highscores().isStrictlyLess(*this, score);
+    return internal->highscores().isStrictlyLess(*this, score);
 }
 
 QDataStream &operator <<(QDataStream &s, const Score &score)

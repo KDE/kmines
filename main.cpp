@@ -113,6 +113,7 @@ MainWidget::MainWidget()
 
 bool MainWidget::queryExit()
 {
+    _status->checkBlackMark();
     _configCollection.save();
     return true;
 }
