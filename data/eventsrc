@@ -485,10 +485,12 @@ Name=Set Question Mark
 Name[da]=Sæt spørgsmålstegn
 Name[is]=Setja spurningamerkið
 Name[sv]=Placerade frågetecken
+Name[ta]=கேள்விக்குறியை அமை
 Comment=Set Question Mark
 Comment[da]=Sæt spørgsmålstegn
 Comment[is]=Setja spurningamerkið
 Comment[sv]=Placerade frågetecken
+Comment[ta]=கேள்விக்குறியை அமை
 default_presentation=0
 
 [unset_uncertain]
@@ -496,8 +498,10 @@ Name=Unset Question Mark
 Name[da]=Fjern spørgsmålstegn
 Name[is]=Afsetja spurningamerkið
 Name[sv]=Tog bort frågetecken
+Name[ta]=கேள்விக் குறி அமைக்கவில்லை
 Comment=Unset Question Mark
 Comment[da]=Fjern spørgsmålstegn
 Comment[is]=Afsetja spurningamerkið
 Comment[sv]=Tog bort frågetecken
+Comment[ta]=கேள்விக்குறி அமைக்கவில்லை
 default_presentation=0
