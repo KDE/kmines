@@ -8,7 +8,7 @@ kmines_METASOURCES    = USE_AUTOMOC
 
 noinst_HEADERS = defines.h dialogs.h field.h status.h main.h
 
-SUBDIRS = data
+SUBDIRS = data bitmaps
 
 messages:
 	$(XGETTEXT) -C -ki18n -x $(includedir)/kde.pot $(kmines_SOURCES) && mv messages.po ../po/kmines.pot

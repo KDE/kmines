@@ -10,9 +10,16 @@
 #include <kconfig.h>
 
 #include "defines.h"
+#include "dialogs.h"
+
+#include "bitmaps/smile"
+#include "bitmaps/smile_happy"
+#include "bitmaps/smile_ohno"
+#include "bitmaps/smile_stress"
 
 Status::Status(QWidget *parent, const char *name)
-: QWidget(parent, name)
+: QWidget(parent, name), s_ok(smile_xpm), s_happy(smile_happy_xpm),
+  s_ohno(smile_ohno_xpm), s_stress(smile_stress_xpm)
 {
 // top layout
 	QVBoxLayout *top = new QVBoxLayout(this, BORDER);
@@ -37,53 +44,18 @@ Status::Status(QWidget *parent, const char *name)
 	smiley->setFocusPolicy(QWidget::NoFocus);
 	hbl->addWidget(smiley);
 	hbl->addStretch(1);
-  
-	QPainter pt;
-	
-	s_ok = new QPixmap(25,25);
-	createSmileyPixmap(s_ok, &pt);
-	pt.drawPoint(8,14); pt.drawPoint(16,14);
-	pt.drawLine(9,15,15,15);
-	pt.end();
-	s_stress = new QPixmap(25,25);
-	createSmileyPixmap(s_stress, &pt);
-	pt.drawPoint(12,13);
-	pt.drawLine(11,14,11,15); pt.drawLine(13,14,13,15);
-	pt.drawPoint(12,16);
-	pt.end();
-	s_happy = new QPixmap(25,25);
-	createSmileyPixmap(s_happy, &pt);
-	pt.drawPoint(7,14); pt.drawPoint(17,14);
-	pt.drawPoint(8,15); pt.drawPoint(16,15);
-	pt.drawPoint(9,16); pt.drawPoint(15,16);
-	pt.drawLine(10,17,14,17);
-	pt.end();
-	s_ohno = new QPixmap(25,25);
-	createSmileyPixmap(s_ohno, &pt);  pt.drawPoint(12,11);
-	pt.drawLine(10,13,14,13);
-	pt.drawLine(9,14,9,17); pt.drawLine(15,14,15,17);
-	pt.drawLine(10,18,14,18);
-	pt.end();
 
 	// digital clock LCD
 	dg = new DigitalClock(this);
 	dg->installEventFilter(parent);
 	hbl->addWidget(dg);
-
-// game over label	
-	mesg = new QLabel(" ", this); // empty string to get the right height
-	mesg->setFont(QFont("Times", 14, QFont::Bold) );
-	mesg->setFrameStyle(  QFrame::Panel | QFrame::Sunken );
-	mesg->installEventFilter(parent);
-	mesg->setFixedHeight( mesg->sizeHint().height() );
-	top->addWidget(mesg, 0, AlignCenter);
 	
 // mines field	
 	field = new Field(this);
 	connect( field, SIGNAL(changeCase(uint,uint)),
 			 SLOT(changeCase(uint,uint)) );
 	connect( field, SIGNAL(putMsg(const QString &)),
-			 SLOT(setMsg(const QString &)) );
+			 parent, SLOT(message(const QString &)) );
 	connect( field, SIGNAL(updateStatus(bool)), SLOT(update(bool)) );
 	connect( field, SIGNAL(endGame(int)), SLOT(endGame(int)) );
 	connect( field, SIGNAL(startTimer()), dg, SLOT(start()) );
@@ -92,32 +64,13 @@ Status::Status(QWidget *parent, const char *name)
 	top->addWidget(field);
 }
 
-void Status::createSmileyPixmap(QPixmap *pm, QPainter *pt)
-{
-	pm->fill(yellow);
-	pt->begin(pm);
-	pt->setPen(black);
-	pt->drawLine(9,3,15,3);
-	pt->drawLine(7,4,8,4); pt->drawLine(16,4,17,4);
-	pt->drawPoint(6,5); pt->drawPoint(18,5);
-	pt->drawPoint(5,6); pt->drawPoint(19,6);
-	pt->drawLine(4,7,4,8); pt->drawLine(20,7,20,8);
-	pt->drawLine(8,7,9,7); pt->drawLine(15,7,16,7);
-	pt->drawLine(3,9,3,14); pt->drawLine(21,9,21,14);
-	pt->drawPoint(12,10);
-	pt->drawLine(4,15,4,17); pt->drawLine(20,15,20,17);
-	pt->drawPoint(5,18); pt->drawPoint(19,18);
-	pt->drawLine(6,19,7,19); pt->drawLine(17,19,18,19);
-	pt->drawLine(8,20,9,20); pt->drawLine(15,20,16,20);
-	pt->drawLine(10,21,14,21);
-}
-
 void Status::initGame()
 {
 	uncovered = 0; uncertain = 0; marked = 0;
-	setMsg(i18n("Stopped"));
+	emit message(i18n("Game stopped"));
 	update(FALSE);
 	updateSmiley(OK);
+	if ( _type!=Custom ) dg->setMaxTime( WHighScores::time(_type) );
 	dg->zero();
 }
 
@@ -155,18 +108,24 @@ void Status::update(bool mine)
 {
 	QString str;
 	const Level &l = field->level();
-	str.setNum(l.nbMines - marked);
-	left->display(str);
-	if ( uncovered==(l.width*l.height - l.nbMines) ) endGame(!mine);
+	int r = l.nbMines - marked;
+	int u = l.width*l.height - l.nbMines - uncovered; // cannot be negative
+	if ( (r*left->value())<=0 ) {
+		QPalette p = palette();
+		if ( r<=0 && u!=0 ) p.setColor(QColorGroup::Background, QColor(200, 0, 0));
+		left->setPalette(p);
+	}
+	left->display(r);
+	if ( u==0 ) endGame(!mine);
 }
 
 void Status::updateSmiley(int mood)
 {
 	switch (mood) {
-	 case OK      : smiley->setPixmap(*s_ok); break;
-	 case STRESS  : smiley->setPixmap(*s_stress); break;
-	 case HAPPY   : smiley->setPixmap(*s_happy); break;
-	 case UNHAPPY : smiley->setPixmap(*s_ohno); break;
+	 case OK      : smiley->setPixmap(s_ok); break;
+	 case STRESS  : smiley->setPixmap(s_stress); break;
+	 case HAPPY   : smiley->setPixmap(s_happy); break;
+	 case UNHAPPY : smiley->setPixmap(s_ohno); break;
 	}
 }
 
@@ -177,22 +136,23 @@ void Status::endGame(int win)
 	
 	if (win) {
 		emit updateSmiley(HAPPY);
-		if ( _type!=Custom && !setHighScore(dg->sec(), dg->min(), _type) ) {
-			setMsg(i18n("You did it ... but not in time."));
-			return;
-		}
-		setMsg(i18n("Yeeessss !"));
+		if ( _type==Custom || dg->better() ) {
+			if ( dg->better() ) {
+				Score score; score.sec = dg->sec(); score.min = dg->min(); score.mode = _type;
+				highScores(&score);
+			}
+			emit message(i18n("Yeeeesssssss !"));
+		} else emit message(i18n("You did it ... but not in time."));
 	} else {
 		emit updateSmiley(UNHAPPY);
-		setMsg(i18n("Bad luck !"));
+		emit message(i18n("Bad luck !"));
 	}
 }
 
-bool Status::setHighScore(int sec, int min, int mode)
+void Status::highScores(const Score *score)
 {
-	bool better;
-	WHighScores whs(FALSE, sec, min, mode, &better, this);
-	return better;
+	WHighScores whs(this, score);
+	whs.exec();
 } 
 
 void Status::print()

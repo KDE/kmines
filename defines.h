@@ -47,4 +47,6 @@ const Level LEVELS[3] = {
 		{30, 16, 99}  // Expert
 };
 
+typedef struct { uint sec, min, mode; } Score;
+
 #endif // DEFINES_H

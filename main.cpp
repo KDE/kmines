@@ -1,11 +1,14 @@
+#include "main.h"
+
 #include <kapp.h>
 #include <klocale.h>
-
-#include "main.h"
+#include <kglobal.h>
 
 #include "defines.h"
 #include "version.h"
 #include "status.h"
+
+#include <time.h>
 
 MainWidget::MainWidget()
 {
@@ -14,6 +17,8 @@ MainWidget::MainWidget()
 	status = new Status(this);
 	status->installEventFilter(this);
 	connect(status, SIGNAL(quit()), qApp, SLOT(quit()));
+	connect(status, SIGNAL(message(const QString &)),
+			SLOT(message(const QString &)));
 	setView(status);
 	
 	kacc = new KAccel(this);
@@ -64,8 +69,10 @@ MainWidget::MainWidget()
 	level->insertItem(i18n("Custom"), 3);
 	connect(level, SIGNAL(activated(int)), SLOT(changeLevel(int)));
 
+	QDate date(KMINES_YEAR, KMINES_MONTH, KMINES_DAY);
+	QString sdate = KGlobal::locale()->formatDate(date);
 	QString s = i18n("%1 %2 (%3)\n\nby %4").arg(KMINES_NAME)
-		.arg(KMINES_VERSION).arg(KMINES_DATE).arg(KMINES_AUTHOR);
+   		        .arg(KMINES_VERSION).arg(sdate).arg(KMINES_AUTHOR);
 	QPopupMenu *help = kapp->getHelpMenu(true, s);
 
 	menuBar()->insertItem(i18n("&File"), popup );
@@ -74,6 +81,10 @@ MainWidget::MainWidget()
 	menuBar()->insertSeparator();
 	menuBar()->insertItem(i18n("&Help"), help );
 
+	statusLab = new QLabel(statusBar());
+	statusLab->setAlignment( AlignCenter );
+	statusBar()->insertWidget(statusLab, 0, 0);
+	
 	_toggleMenu(TRUE);
 	_toggleUMark(TRUE);
 	changeLevel(-1);
@@ -103,15 +114,6 @@ bool MainWidget::eventFilter(QObject *, QEvent *e)
 	}
 }
 
-bool MainWidget::event(QEvent *e)
-{
-	if ( QWidget::event(e) ) return TRUE;
-	switch (e->type()) {
-//	 case QEvent::LayoutHint: updateRects(); return TRUE;
-	 default: return FALSE;
-	}
-}
-
 void MainWidget::_toggleMenu(bool first)
 {
 	KConfig *conf = kapp->getConfig();
@@ -134,7 +136,12 @@ void MainWidget::_toggleUMark(bool first)
 	status->changeUMark(um);
 }
 
-/* MAIN */
+void MainWidget::message(const QString &str)
+{
+	statusLab->setText(str);
+}
+
+//----------------------------------------------------------------------------
 int main( int argc, char ** argv )
 {
     KApplication a(argc, argv, KMINES_NAME);

@@ -17,7 +17,7 @@
 
 /** Digital Clock ************************************************************/
 DigitalClock::DigitalClock(QWidget *parent)
-: QLCDNumber(parent, 0)
+: QLCDNumber(parent, 0), max_secs(0)
 {
 	setFrameStyle( QFrame::Panel | QFrame::Sunken );
 }
@@ -25,25 +25,28 @@ DigitalClock::DigitalClock(QWidget *parent)
 void DigitalClock::timerEvent( QTimerEvent *)
 {
  	if (!stop) {
-		time_sec++;
-		if (time_sec==60) {
+		_sec++;
+		if (_sec==60) {
 			/* so waiting one hour don't do a restart timer at 00:00 */
-			if ( time_min<60 ) time_min++;
-			time_sec = 0;
+			if ( _min<60 ) _min++;
+			_sec = 0;
 		}
 		showTime();
+		if ( toSec(_sec, _min)==max_secs ) {
+			QPalette p = palette();
+			p.setColor(QColorGroup::Background, QColor(200, 0, 0));
+			setPalette(p);
+		}
 	}
 }
 
 void DigitalClock::showTime()
 {
-	static char s[6];
-	
-	s[0] = '0'; s[1] = '0'; s[2] = ':'; s[3] = '0'; s[4] = '0'; s[5] = 0;
-	if (time_min>=10) s[0] += time_min / 10;
-	s[1] += time_min % 10;
-	if (time_sec>=10) s[3] += time_sec / 10;
-	s[4] += time_sec % 10;
+	char s[6] = "00:00";
+	if (_min>=10) s[0] += _min / 10;
+	s[1] += _min % 10;
+	if (_sec>=10) s[3] += _sec / 10;
+	s[4] += _sec % 10;
 	
 	display(s);
 }
@@ -53,25 +56,16 @@ void DigitalClock::zero()
 	killTimers();
 	
 	stop = TRUE;
-	time_sec = 0; time_min = 0;
-	startTimer(1000);
-  
+	_sec = 0; _min = 0;
+	startTimer(1000); //  1 seconde
+
+	setPalette(kapp->palette());
 	showTime();
-}
-
-void DigitalClock::start()
-{
-	stop = FALSE;
-}
-
-void DigitalClock::freeze()
-{
-	stop = TRUE;
 }
 
 /** Customize dialog *********************************************************/
 CustomDialog::CustomDialog(Level &_lev, QWidget *parent)
-: QDialog(parent, 0, TRUE), lev(&_lev)
+: KDialog(parent, 0, TRUE), lev(&_lev)
 {
 	QLabel      *lab;
 	QScrollBar  *scb;
@@ -82,6 +76,7 @@ CustomDialog::CustomDialog(Level &_lev, QWidget *parent)
 
 /* top layout */
 	QVBoxLayout *top = new QVBoxLayout(this, BORDER);
+	top->setResizeMode(QLayout::Fixed);
 	
 /* title */
 	lab = new QLabel(str, this);
@@ -189,6 +184,7 @@ CustomDialog::CustomDialog(Level &_lev, QWidget *parent)
 	int minW = QMAX(pok->sizeHint().width(), pcancel->sizeHint().width());
 	int minH = pok->sizeHint().height();
 	pok->setFixedSize(minW, minH);
+	pok->setFocus();
 	pcancel->setFixedSize(minW, minH);
 	hbl->addStretch(1);
 	hbl->addWidget(pok, 0, AlignBottom);
@@ -216,29 +212,31 @@ void CustomDialog::nbMinesChanged(int n)
 	lev->nbMines = (uint)n;
 	uint nb = lev->width * lev->height;
 	sm->setRange(1, nb - 2);
-	emit setNbMines(i18n("%1 (%2%%)").arg(n).arg(100*n/nb));
+	emit setNbMines(i18n("%1 (%2%)").arg(n).arg(100*n/nb));
 }
 
 /** HighScore dialog *********************************************************/
-WHighScores::WHighScores(bool show, int newSec, int newMin, uint Mode,
-						 bool *res, QWidget *parent)
-: KDialog(parent, 0, TRUE), mode(Mode)
+uint WHighScores::time(uint mode)
 {
 	KConfig *conf = kapp->getConfig();
 	conf->setGroup(HS_GRP[mode]);
 
-	/* set highscore ? */
-	if ( !show ) {
-		ASSERT( newSec || newMin );
-		int r = conf->readNumEntry(HS_SEC, 59)
-			    + 60*conf->readNumEntry(HS_MIN, 59);
-		bool better = ( (newSec + newMin*60)<r );
-		if (res) *res = better;
-		if ( !better ) return;
-		
+	int sec = conf->readNumEntry(HS_SEC, 59);
+	int min = conf->readNumEntry(HS_MIN, 59);
+	if ( sec<0 || sec>59 || min<0 || min>59 ) return 0;
+	return DigitalClock::toSec(sec, min);
+}
+
+WHighScores::WHighScores(QWidget *parent, const Score *score)
+: KDialog(parent, 0, TRUE), mode((score ? score->mode : 0))
+{
+	KConfig *conf = kapp->getConfig();
+	conf->setGroup(HS_GRP[mode]);
+
+	if (score) { // set highscores
 		conf->writeEntry(HS_NAME, i18n("Anonymous")); // default
-		conf->writeEntry(HS_MIN, newMin);
-		conf->writeEntry(HS_SEC, newSec);
+		conf->writeEntry(HS_MIN, score->min);
+		conf->writeEntry(HS_SEC, score->sec);
 	}
 
 	QLabel *lab;
@@ -267,7 +265,7 @@ WHighScores::WHighScores(bool show, int newSec, int newMin, uint Mode,
 	f.setBold(TRUE);
 	
 /* Grid layout */
-	gl = new QGridLayout(3, 9, BORDER);
+	QGridLayout *gl = new QGridLayout(3, 4, BORDER);
 	top->addLayout(gl);
 
 	/* level names */
@@ -288,7 +286,7 @@ WHighScores::WHighScores(bool show, int newSec, int newMin, uint Mode,
 		int sec = conf->readNumEntry(HS_SEC, 0);
 		bool no_score = FALSE;
 		
-		if ( show || (k!=mode) ) {
+		if ( !score || (k!=mode) ) {
 			lab = new QLabel(this);
 			lab->setFont(f);
 			QString name = conf->readEntry(HS_NAME, "");
@@ -297,7 +295,8 @@ WHighScores::WHighScores(bool show, int newSec, int newMin, uint Mode,
 			if (no_score) { // no score for this level
 				lab->setText(i18n("no score for this level"));
 				lab->setMinimumSize( lab->sizeHint() );
-				gl->addMultiCellWidget(lab, k, k, 2, 8);
+				gl->addWidget(lab, k, 2);
+				continue;
 			} else {
 				lab->setText(name);
 				lab->setMinimumSize( lab->sizeHint() );
@@ -314,59 +313,26 @@ WHighScores::WHighScores(bool show, int newSec, int newMin, uint Mode,
 			gl->addWidget(qle, k, 2);
 		}
 
-		if ( !no_score ) {
-			lab = new QLabel(i18n("in"), this);
-			lab->setAlignment(AlignCenter);
-			lab->setMinimumSize( lab->sizeHint() );
-			gl->addWidget(lab, k, 3);
-		}
-		
+		QString str;
 		if (min) {
-			lab = new QLabel(conf->readEntry(HS_MIN), this);
-			lab->setFont(f);
-			lab->setAlignment(AlignCenter);
-			lab->setMinimumSize( lab->sizeHint() );
-			gl->addWidget(lab, k, 4);
-			
-			str = i18n("minutes");
-			if ( sec==0 ) str += '.';
-			lab = new QLabel(str, this);
-			lab->setAlignment(AlignCenter);
-			lab->setMinimumSize( lab->sizeHint() );
-			gl->addWidget(lab, k, 5);
-		}	
-			
-		if (sec) {
-			if (min) {
-				lab = new QLabel(i18n("and"), this);
-				lab->setAlignment(AlignCenter);
-				lab->setMinimumSize( lab->sizeHint() );
-				gl->addWidget(lab, k, 6);
-			}
-			
-			lab = new QLabel(conf->readEntry(HS_SEC), this);
-			lab->setFont(f);
-			lab->setAlignment(AlignCenter);
-			lab->setMinimumSize( lab->sizeHint() );
-			gl->addWidget(lab, k, 7);
-			
-			lab = new QLabel(i18n("seconds."), this);
-			lab->setAlignment(AlignCenter);
-			lab->setMinimumSize( lab->sizeHint() );
-			gl->addWidget(lab, k, 8);
-		}	
+			if (sec) str = i18n("in %1 minutes and %2 seconds.").arg(min).arg(sec);
+			else str = i18n("in %1 minutes.").arg(min);
+		} else str = i18n("in %1 seconds.").arg(sec);
+
+		lab = new QLabel(str, this);
+		lab->setAlignment(AlignCenter);
+		lab->setMinimumSize( lab->sizeHint() );
+		gl->addWidget(lab, k, 3);
 	}
 
 /* button */
 	pb = new QPushButton(i18n("Close"), this);
 	pb->setFixedSize( pb->sizeHint() );
 	connect(pb, SIGNAL(clicked()), SLOT(accept()));
-	if (show) pb->setFocus();
-	else pb->setEnabled(FALSE);
+	if (score) pb->setEnabled(FALSE);
+	else pb->setFocus();
 	top->addSpacing(2*BORDER);
 	top->addWidget(pb);
-	
-	exec();
 }
 
 void WHighScores::writeName()
@@ -381,9 +347,7 @@ void WHighScores::writeName()
 	qle->setText(str);
 	qle->setEnabled(FALSE);
 	qle->clearFocus();
-	qle->setMinimumSize( qle->fontMetrics().boundingRect(str).width(),
-						 qle->sizeHint().height() );
 
 	pb->setEnabled(TRUE);
-	pb->setFocus(); //cannot set focus here ... it quits ...
+//	pb->setFocus(); //cannot set focus here ... it quits ...
 }

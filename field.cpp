@@ -264,8 +264,6 @@ void Field::mousePressEvent( QMouseEvent *e )
 
 	ic = xToI(e->pos().x());
 	jc = yToJ(e->pos().y());
-	
-	if (first_click) emit startTimer();
 
 	if (e->button()==LeftButton) {
 		left_down = TRUE;
@@ -306,6 +304,7 @@ void Field::mouseReleaseEvent( QMouseEvent *e )
 			
 					pfield(i+1, j+1) |= MINE;
 				}
+				emit startTimer();
 				first_click = FALSE;
 				emit putMsg(i18n("Playing"));
 			}
@@ -442,7 +441,7 @@ void Field::pause()
 	emit freezeTimer();
 
 	pt.eraseRect(0, 0, width(), height());
-	emit putMsg(i18n("Paused"));
+	emit putMsg(i18n("Game paused"));
 	pb->show();
 	pb->setFocus();
 
