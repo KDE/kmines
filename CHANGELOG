@@ -1,3 +1,7 @@
+2.1.0 (17 July 2001) [in CVS]
+ -- version to be released with KDE 2.2 --
+ * fixed checked entry in "show highscores" submenu
+
 2.0.13 (10 June 2001) [released]
  * enable world-wide highscores !!
 

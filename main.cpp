@@ -32,12 +32,12 @@ MainWidget::MainWidget()
 	// Game & Popup
 	KStdGameAction::gameNew(status, SLOT(restartGame()), actionCollection());
     KStdGameAction::pause(status, SLOT(pauseGame()), actionCollection());
-    KListAction *la = new KListAction(i18n("Show highscores"), 0, 0, 0,
-                                      actionCollection(), "game_highscores");
+    hs = new KSelectAction(i18n("Show highscores"), 0, 0, 0,
+                           actionCollection(), "game_highscores");
     QStringList list;
     for (uint i=0; i<NbLevels; i++) list.append(i18n(LEVELS[i].i18nLabel));
-    la->setItems(list);
-    connect(la, SIGNAL(activated(int)), status, SLOT(showHighscores(int)));
+    hs->setItems(list);
+    connect(hs, SIGNAL(activated(int)), SLOT(showHighscores(int)));
 
 	KStdGameAction::print(status, SLOT(print()), actionCollection());
 	KStdGameAction::quit(qApp, SLOT(quit()), actionCollection());
@@ -106,6 +106,12 @@ MainWidget::MainWidget()
     ((KToggleAction *)action(KStdAction::stdName(KStdAction::ShowMenubar)))
 
 #define PAUSE_ACTION ((KToggleAction *)action("game_pause"))
+
+void MainWidget::showHighscores(int level)
+{
+    hs->setCurrentItem(-1);
+    status->showHighscores(level);
+}
 
 void MainWidget::readSettings()
 {

@@ -24,6 +24,7 @@ class MainWidget : public KMainWindow
     void configureKeys();
     void configureSettings();
 	void gameStateChanged(GameState);
+    void showHighscores(int);
 
  protected:
 	bool eventFilter(QObject *, QEvent *);
@@ -33,6 +34,7 @@ class MainWidget : public KMainWindow
 	QArray<KRadioAction *>   levelAction;
 	Status                  *status;
     bool                     pauseFocus;
+    KSelectAction           *hs;
 
 	void readSettings();
 	void changeLevel(Level);
