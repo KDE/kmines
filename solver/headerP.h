@@ -21,6 +21,7 @@
 
 //#define DEBUG 1
 
+#include <set>
 #include <list>
 #include <map>
 #include <memory>
@@ -29,6 +30,15 @@
 
 
 using namespace KGrid2D;
+
+typedef std::set<Coord, std::less<Coord> > CoordSet;
+
+inline QTextStream &operator <<(QTextStream &s, const CoordSet &set)
+{
+    for(CoordSet::const_iterator i=set.begin(); i!=set.end(); ++i)
+        s << *i;
+	return s;
+}
 
 namespace AdviseFast {
 

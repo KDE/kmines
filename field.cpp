@@ -229,10 +229,9 @@ void Field::pressCase(const Coord &c, bool pressed)
 void Field::pressClearFunction(const Coord &p, bool pressed)
 {
     pressCase(p, pressed);
-    CoordSet n;
-    coveredNeighbours(p, n);
+    CoordList n = coveredNeighbours(p);
     QPainter painter(this);
-    for (CoordSet::iterator it=n.begin(); it!=n.end(); ++it)
+    for (CoordList::const_iterator it=n.begin(); it!=n.end(); ++it)
         drawCase(painter, *it, pressed);
 }
 
@@ -279,7 +278,7 @@ void Field::moveToEdge(Neighbour n)
     if ( inside(c) ) placeCursor(c);
 }
 
-bool Field::doReveal(const Coord &c, CoordSet *autorevealed,
+bool Field::doReveal(const Coord &c, CoordList *autorevealed,
                      bool *caseUncovered)
 {
 	if ( !isActive() ) return true;
@@ -322,7 +321,7 @@ void Field::doUmark(const Coord &c)
 }
 
 KMines::CaseState Field::doAction(ActionType type, const Coord &c,
-                                  bool complete, CoordSet *autorevealed,
+                                  bool complete, CoordList *autorevealed,
                                   bool *caseUncovered)
 {
     resetAdvised();

@@ -45,12 +45,12 @@ class BaseField : public KGrid2D::Square<KMines::Case>, public KMines
     bool isCovered(const KGrid2D::Coord &p) const
         { return ( state(p)!=KMines::Uncovered ); }
     uint nbMinesAround(const KGrid2D::Coord &) const;
-    void coveredNeighbours(const KGrid2D::Coord &p, KGrid2D::CoordSet &n) const;
+    KGrid2D::CoordList coveredNeighbours(const KGrid2D::Coord &p) const;
     bool isSolved() const { return (size() - _nbUncovered)==_nbMines; }
 
     // return false if the case revealed contains a mine.
 	virtual bool doReveal(const KGrid2D::Coord &c,
-                          KGrid2D::CoordSet *autorevealed, bool *caseUncovered)
+                         KGrid2D::CoordList *autorevealed, bool *caseUncovered)
         { return reveal(c, autorevealed, caseUncovered); }
     virtual void doMark(const KGrid2D::Coord &);
 // -------------------------
@@ -67,7 +67,7 @@ class BaseField : public KGrid2D::Square<KMines::Case>, public KMines
     bool hasMine(const KGrid2D::Coord &p) const { return (*this)[p].mine; }
     virtual void changeCase(const KGrid2D::Coord &, KMines::CaseState);
     bool reveal(const KGrid2D::Coord &c,
-                KGrid2D::CoordSet *autorevealed, bool *caseUncovered);
+                KGrid2D::CoordList *autorevealed, bool *caseUncovered);
     bool autoReveal(const KGrid2D::Coord &, bool *caseUncovered);
     void completeReveal();
 
@@ -76,7 +76,7 @@ class BaseField : public KGrid2D::Square<KMines::Case>, public KMines
     uint            _nbUncovered, _nbMarked, _nbUncertain, _nbMines;
     KRandomSequence _random;
 
-	void uncover(const KGrid2D::Coord &, KGrid2D::CoordSet *autoreveal);
+	void uncover(const KGrid2D::Coord &, KGrid2D::CoordList *autoreveal);
     void changeState(KMines::CaseState, int increment);
 };
 

@@ -56,8 +56,8 @@ class Field : public FieldFrame, public BaseField
 	void doUmark()  { doUmark(_cursor); }
 	void keyboardAutoReveal();
     CaseState doAction(ActionType type, const KGrid2D::Coord &c,
-                       bool completeReveal, KGrid2D::CoordSet *autorevealed = 0,
-                       bool *caseUncovered = 0);
+                     bool completeReveal, KGrid2D::CoordList *autorevealed = 0,
+                     bool *caseUncovered = 0);
 
 	void readSettings();
 
@@ -94,7 +94,7 @@ class Field : public FieldFrame, public BaseField
 	void revealActions(bool press);
 
     void doAutoReveal(const KGrid2D::Coord &);
-    bool doReveal(const KGrid2D::Coord &, KGrid2D::CoordSet *autorevealed = 0,
+    bool doReveal(const KGrid2D::Coord &, KGrid2D::CoordList *autorevealed = 0,
                   bool *caseUncovered = 0);
     void doMark(const KGrid2D::Coord &);
     void doUmark(const KGrid2D::Coord &);

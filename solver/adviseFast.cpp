@@ -56,7 +56,9 @@ void AdviseFast::FactSet::retrieveFact(
 {
     where->mines = (_field->isCovered(which) ? -1
                     : (int)_field->nbMinesAround(which));
-	_field->coveredNeighbours(which, where->pointSet);
+    CoordList tmp = _field->coveredNeighbours(which);
+    for (CoordList::const_iterator it = tmp.begin(); it!=tmp.end(); ++it)
+        where->pointSet.insert(*it);
 }
 
 void AdviseFast::FactSet::addFact(
@@ -110,11 +112,14 @@ bool AdviseFast::FactSet::reveal(
 	// Tolerate :)
 	if( !_field->isCovered(point) ) return true; // :)
 
-	CoordSet autorevealed;
-	if(_field->doReveal(point, &autorevealed, 0) == false)
+	CoordList tmp;
+	if(_field->doReveal(point, &tmp, 0) == false)
 		// Blew up :(
 		return false;
 
+    CoordSet autorevealed;
+    for (CoordList::const_iterator it = tmp.begin(); it!=tmp.end(); ++it)
+        autorevealed.insert(*it);
 	autorevealed.insert(point);
 	affectedFacts->insert(autorevealed.begin(), autorevealed.end());
 

@@ -25,18 +25,20 @@ BaseField::BaseField(long seed)
     : _nbUncovered(0), _nbMarked(0), _nbUncertain(0), _random(seed)
 {}
 
-void BaseField::coveredNeighbours(const Coord &p, CoordSet &n) const
+CoordList BaseField::coveredNeighbours(const Coord &p) const
 {
-    CoordSet tmp = neighbours(p);
-    for (CoordSet::iterator it=tmp.begin(); it!=tmp.end(); ++it)
-        if ( state(*it)!=Uncovered ) n.insert(*it);
+    CoordList n;
+    CoordList tmp = neighbours(p);
+    for (CoordList::const_iterator it=tmp.begin(); it!=tmp.end(); ++it)
+        if ( state(*it)!=Uncovered ) n.append(*it);
+    return n;
 }
 
 uint BaseField::nbMinesAround(const Coord &p) const
 {
 	uint nb = 0;
-    CoordSet n = neighbours(p);
-    for (CoordSet::iterator it=n.begin(); it!=n.end(); ++it)
+    CoordList n = neighbours(p);
+    for (CoordList::const_iterator it=n.begin(); it!=n.end(); ++it)
         if ( hasMine(*it) ) nb++;
 	return nb;
 }
@@ -97,16 +99,15 @@ void BaseField::changeCase(const Coord &p, KMines::CaseState newState)
 	(*this)[p].state = newState;
 }
 
-void BaseField::uncover(const Coord &p, CoordSet *autorevealed)
+void BaseField::uncover(const Coord &p, CoordList *autorevealed)
 {
     if ( state(p)!=Covered ) return;
     changeCase(p, Uncovered);
 
 	if ( nbMinesAround(p)==0 ) {
-        CoordSet n;
-        coveredNeighbours(p, n);
-        if (autorevealed) autorevealed->insert(n.begin(), n.end());
-        for (CoordSet::iterator it=n.begin(); it!=n.end(); ++it)
+        CoordList n = coveredNeighbours(p);
+        if (autorevealed) *autorevealed += n;
+        for (CoordList::const_iterator it=n.begin(); it!=n.end(); ++it)
             uncover(*it, autorevealed);
     }
 }
@@ -127,16 +128,16 @@ bool BaseField::autoReveal(const Coord &p, bool *caseUncovered)
     if ( state(p)!=Uncovered ) return true;
 
 	uint nb = nbMinesAround(p);
-    CoordSet n = neighbours(p);
-    for (CoordSet::iterator it=n.begin(); it!=n.end(); ++it)
+    CoordList n = neighbours(p);
+    for (CoordList::const_iterator it=n.begin(); it!=n.end(); ++it)
         if ( state(*it)==Marked ) nb--;
     if ( nb==0 ) // number of surrounding mines == number of marks :)
-        for (CoordSet::iterator it=n.begin(); it!=n.end(); ++it)
+        for (CoordList::const_iterator it=n.begin(); it!=n.end(); ++it)
             if ( !reveal(*it, 0, caseUncovered) ) return false;
     return true;
 }
 
-bool BaseField::reveal(const Coord &p, CoordSet *autorevealed,
+bool BaseField::reveal(const Coord &p, CoordList *autorevealed,
                        bool *caseUncovered)
 {
 	if ( state(p)!=Covered ) return true;
@@ -153,7 +154,7 @@ bool BaseField::reveal(const Coord &p, CoordSet *autorevealed,
             Coord tmp;
             for (;;) {
                 tmp = coord(i);
-                if ( tmp!=p && !hasMine(tmp) ) {
+                if ( !(tmp==p) && !hasMine(tmp) ) {
                     if ( pos==0 ) break;
                     pos--;
                 }
@@ -189,11 +190,11 @@ void BaseField::completeReveal()
             if ( state(c)!=Uncovered ) continue;
             autoReveal(c, &changed);
             uint nb = nbMinesAround(c);
-            CoordSet n = neighbours(c);
-            for (CoordSet::iterator it=n.begin(); it!=n.end(); ++it)
+            CoordList n = neighbours(c);
+            for (CoordList::const_iterator it=n.begin(); it!=n.end(); ++it)
                 if ( state(*it)!=Uncovered ) nb--;
             if (nb) continue;
-            for (CoordSet::iterator it=n.begin(); it!=n.end(); ++it)
+            for (CoordList::const_iterator it=n.begin(); it!=n.end(); ++it)
                 if ( state(*it)!=Uncovered && state(*it)!=Marked ) {
                     changed = true;
                     changeCase(*it, Marked);

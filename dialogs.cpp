@@ -193,7 +193,7 @@ GameConfig::GameConfig()
 
     cb = new QCheckBox(this);
     _magic = configCollection()->plug("magic reveal", cb);
-    connect(_magic, SIGNAL(modified()), SLOT(magicRevealToggled()));
+    connect(cb, SIGNAL(toggled(bool)), SLOT(magicRevealToggled(bool)));
     top->addWidget(cb);
 
 	top->addSpacing(2 * KDialog::spacingHint());
@@ -212,9 +212,9 @@ GameConfig::GameConfig()
     hbox->addStretch(1);
 }
 
-void GameConfig::magicRevealToggled()
+void GameConfig::magicRevealToggled(bool enabled)
 {
-    if ( _magic->value().toBool() )
+    if (enabled)
         KMessageBox::information(this,
                          i18n("When the \"magic\" reveal is on, "
                               "you lose the ability to enter the highscores."),
