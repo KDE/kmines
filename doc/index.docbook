@@ -48,7 +48,7 @@
 
 <legalnotice>&FDLNotice;</legalnotice>
 
-<date>2003-11-06</date>
+<date>2004-01-12</date>
 <releaseinfo>2.1.8</releaseinfo>
 
 <abstract><para>&kmines; is the &kde; version of the classic minesweeper
@@ -66,51 +66,49 @@ game.</para></abstract>
 <title>Introduction</title>
 
 <para>&kmines; is the classic Minesweeper game. You must uncover all the empty
-cases without blowing on a mine.</para>
+squares without blowing up a mine.</para>
 
-<para>When you uncover a case, a number appears: it indicates how many mines
-surround this case. If there is no number the neighbor cases are automatically
-uncovered.  In your process of uncovering secure cases, it is
-<emphasis>very</emphasis> useful to put a flag on the cases which contain a
-mine.</para>
+<para>When you uncover a square, a number appears: it indicates how many mines
+surround this square. If there is no number the neighboring squares are automatically
+uncovered. When you find a square that you are sure contains a mine, it is
+<emphasis>very</emphasis> useful to put a flag on it (by right-clicking).</para>
 
 </chapter>
 
 <chapter id="how-to-play">
 <title>How to play</title>
 
-<para>You have to use the mouse and its three buttons (with
-two-buttoned mouses, clicking the <mousebutton>middle</mousebutton>
-button is generally achieved by simultaneously pressing the
-<mousebutton>left</mousebutton> and the
-<mousebutton>right</mousebutton> buttons) to uncover or to flag the
-cases. Here are the details :</para>
+<para>You have to use the mouse and its three buttons to uncover or to flag the
+squares (with two-buttoned mice, clicking the
+<mousebutton>middle</mousebutton> button is generally achieved by
+simultaneously pressing the <mousebutton>left</mousebutton> and the
+<mousebutton>right</mousebutton> buttons). Here are the details:</para>
 
 <itemizedlist>
 <listitem><para>The <mousebutton>left</mousebutton> button will
-uncover a case. If there is a bomb below that case, the bomb will
-explode, and the game will be over </para>
-<para>If there is not a bomb under the case, a number will appear.
-That is the number of neighboring cases that do have bombs under them.
-Which ones you ask? Thats the point of the game.</para>
-<para>For each box (excluding edge and corner boxes), there are 8
-neighboring boxes.</para>
-<para>If none of the neighboring boxes has a bomb, then a blank will
-be shown under the case, and all neighboring boxes will be
+uncover a square. If there is a bomb below that square, the bomb will
+explode, and the game will be over.</para>
+<para>If there is not a bomb under the square, a number will appear.
+That is the number of neighboring squares that contain bombs.
+<quote>Which ones?</quote> you ask: That's the point of the game.</para>
+<para>For each square (excluding edge and corner squares), there are 8
+neighboring squares.</para>
+<para>If none of the neighboring squares has a bomb, then a blank will
+be shown under the square, and all neighboring squares will be
 automatically uncovered.</para>
-<note><para><mousebutton>Left</mousebutton> clicking a flagged case is
-secure and does nothing.</para></note></listitem>
+<note><para><mousebutton>Left</mousebutton> clicking a flagged square is
+safe and does nothing.</para></note></listitem>
 <listitem><para>The <mousebutton>right</mousebutton> button will mark
-a case as containing a mine (draw a red flag) or, if the option is
-set, as being uncertain (draw a question mark). The uncertain tag can
+a square as containing a mine (by drawing a red flag on it) or, if the option is
+set, as being uncertain (by drawing a question mark on it). The uncertain tag can
 be useful when you are puzzled about the positions of
 mines.</para></listitem>
 <listitem><para>The <mousebutton>middle</mousebutton> button will
-clear the surrounding cases if there is the right number of cases
+clear the surrounding squares if the right number of squares is
 already flagged. It is very useful since it is much quicker than
-uncovering all individual cases. </para>
+uncovering all individual squares.</para>
 <warning><para>If your flags are not properly positioned, you will
-explode on a bomb.</para></warning></listitem>
+explode a bomb.</para></warning></listitem>
 <listitem><para>Pressing the <guiicon>yellow smiley</guiicon> will start a new
 game.</para></listitem>
 </itemizedlist>
@@ -141,13 +139,15 @@ game.</para></note>
 <para>In this example, there are 10 mines to be marked.</para></listitem>
 <listitem><para>A Yellow Smiley Face.  Clicking this will start a new game.  If
 you lose the game, it will become a frown.</para></listitem>
-<listitem><para>The box on the right, shows how much time this round has taken.
-The shortest time for each level, gets to list their name as the high
+<listitem><para>The box on the right shows how much time this round has taken.
+The shortest time for each level is listed as the high
 score.</para></listitem>
-<listitem><para>The playing area.  This will vary in size depending on the
-difficulty level of the game.  In this example, it consists of 64 boxes. This is where you play the game.</para></listitem>
+<listitem><para>The playing area. This will vary in size depending on the
+difficulty level of the game.  In this example, it consists of 64 squares. This is where you play the game.</para></listitem>
+<!-- This doesn't seem to be there any more.
 <listitem><para>A status line at the bottom of the window.  In this example, it
 simply says <guilabel>Game stopped</guilabel>.</para></listitem>
+-->
 </itemizedlist>
 </sect1>
 </chapter>
@@ -173,59 +173,74 @@ simply says <guilabel>Game stopped</guilabel>.</para></listitem>
 <listitem>
 <para>The first option, labeled <guilabel>Enable ? Mark</guilabel>,
 determines whether you can mark squares as
-<quote>questionable</quote>.  If there is a mark in front of this
-option, then right clicking the mouse will first cause a case to be
-flagged. If you click again on the same square, the flag will change to
+<quote>questionable</quote>.  If this option is checked, then right clicking the mouse will first cause a square to be
+flagged. If you right click again on the same square, the flag will change to
 a <guiicon>?</guiicon>, to indicate you don't know if there is a bomb
 there or not.  If you click again, the square will change back to
 blank.</para>
 
 <para>If there is not a mark in front of this option, the first
-<mousebutton>right</mousebutton> mouse click will change the case to a
-red flag.  The second will make it blank again, thus skipping the ?
+<mousebutton>right</mousebutton> mouse click will change the square to a
+red flag.  The second will make it blank again, thus skipping the <guiicon>?</guiicon>
 symbol.</para>
 
 <para>The next option down, labeled <guilabel>Enable
 keyboard</guilabel>, determines if the keyboard shortcuts will work
-while playing the game.</para>
+while playing the game. The default keyboard shortcuts are given in <xref
+linkend="keys"/>, and can be changed by selecting
+<menuchoice><guimenu>Settings</guimenu><guimenuitem>Configure Shortcuts...</guimenuitem></menuchoice>.</para>
 
-<note><para>The only keyboard shortcuts affected, are those
+<note><para>The only keyboard shortcuts affected are those
 responsible for playing the game.  Keyboard commands such as
-<guimenuitem>New Game</guimenuitem>, and
+<guimenuitem>New Game</guimenuitem> and
 <guimenuitem>Quit</guimenuitem>, still work, regardless of this
 option.</para></note>
 
-<para>The last section of this tab, allows you to change the action of each of
+<para>The <guilabel>Pause if windows lose focus</guilabel> option will
+automatically pause the game if the &kmines; window loses focus. When the game
+is paused, the gameboard disappears, so you can't use pausing the game as a way
+to cheat!</para>
+
+<para>The <guilabel>"Magic" reveal</guilabel> option switches on <quote>Magic
+reveal</quote> mode. In this mode, &kmines; does most of the gameplay for you:
+If you have uncovered enough squares to be able to tell with certainty that a
+square contains a mine, &kmines; will automatically mark it as a mine, and
+perform an autoreveal on squares for which it has marked the correct number of
+mines. Note that when you have this mode switched on, your scores do not count
+as highscores.</para>
+
+
+<para>The last section of this tab allows you to change the action of each of
 the three mouse buttons.  Your options are:</para>
 
 <variablelist>
 <varlistentry>
 <term>Reveal</term>
-<listitem><para>This will reveal the contents of the case.  If there is no bomb,
-then a number will appear.  If there is a bomb under that case, then the bomb
+<listitem><para>This will reveal the contents of the square.  If there is no bomb,
+then a number will appear.  If there is a bomb under that square, then the bomb
 will explode, and the game will be over.</para></listitem>
 </varlistentry>
 <varlistentry>
 <term>Toggle Mark</term>
-<listitem><para>Clicking with this button on a case, will mark/unmark with a red flag.</para></listitem>
+<listitem><para>Clicking with this button on a square will mark/unmark with a red flag.</para></listitem>
 </varlistentry>
 <varlistentry>
 <term>Autoreveal</term>
-<listitem><para>Clicking on a case with this button, will automatically reveal
-all neighboring cases, that are not marked with red flags.  If one of those
-neighboring cases has a bomb under it, the bomb will explode, and the game will
+<listitem><para>Clicking on a square with this button will automatically reveal
+all neighboring squares that are not marked with red flags.  If one of those
+neighboring squares has a bomb under it, the bomb will explode, and the game will
 be over.</para></listitem>
 </varlistentry>
 
 <varlistentry>
 <term>Toggle flag</term>
-<listitem><para>Clicking with this button on a case, will flag/unflag with a
-question mark.</para></listitem>
+<listitem><para>Clicking with this button on a square will cycle through blank,
+red flag, and question mark.</para></listitem>
 </varlistentry>
 
 <varlistentry>
 <term>Toggle ? mark</term>
-<listitem><para>Clicking with this button on a case, will mark/unmark with a
+<listitem><para>Clicking with this button on a square will mark/unmark with a
 question mark.</para></listitem>
 </varlistentry>
 </variablelist>
@@ -237,8 +252,8 @@ question mark.</para></listitem>
 <listitem>
 <para>The top option, entitled <guilabel>case size</guilabel>,
 determines the size of each of the squares in the playing area.  By default,
-they are set small.  You can increase the size, if you are working on a very
-high resolution monitor.</para>
+they are set small.  You may want to increase the size if you are working on a 
+very high resolution monitor.</para>
 
 <para>The rest of this page is concerned with colors. To adjust,
 simply click the color button beside each description, and select the
@@ -262,14 +277,14 @@ harder.</para>
 <varlistentry>
 <term>Saving your changes</term>
 <listitem><para>Once your changes are complete, click
-<guibutton>OK</guibutton> to make them permeant.</para>
+<guibutton>OK</guibutton> to make them permanent.</para>
 
 <para>If you want to abandon your changes, click
 <guibutton>Cancel</guibutton> to abort the changes.</para>
 
 <para>If you click on <guilabel>Default</guilabel>, the default
 settings will be restored.  Click <guilabel>OK</guilabel> to make
-these default changes permeant, or edit the settings some
+these default changes permanent, or edit the settings some
 more.</para>
 </listitem>
 </varlistentry>
@@ -343,7 +358,7 @@ difficulty level.</para></listitem>
 </shortcut>
 <guimenu>Move</guimenu>
 <guimenuitem>Hint</guimenuitem> </menuchoice></term>
-<listitem><para>If you use that item, you will get a hint about where
+<listitem><para>If you use this item, you will get a hint about where
 you should click next. If you do that your score will not be added to the high-scores.</para>
 </listitem>
 </varlistentry>
@@ -412,13 +427,6 @@ the right mouse button.  This will bring up a small sub-menu.  Simply select
 <guimenuitem>Show Menubar</guimenuitem> from this sub-menu, and the menu-bar
 will be visible again.</para></note></listitem>
 </varlistentry>
-<varlistentry>
-<term><menuchoice>
-<guimenu>Settings</guimenu>
-<guimenuitem>Configure Shortcuts</guimenuitem> </menuchoice></term>
-<listitem><para>Allows you to change the keyboard shortcuts for &kmines;</para>
-</listitem>
-</varlistentry>
 
 <varlistentry>
 <term><menuchoice>
@@ -428,9 +436,9 @@ will be visible again.</para></note></listitem>
 <listitem>
 <para>Lets you set the difficulty level from a sub-menu.</para>
 <para>There are three default levels of difficulty:
-<guimenuitem>Easy</guimenuitem> (64 boxes, 10 mines),
-<guimenuitem>Normal</guimenuitem> (256 boxes, 40 mines), and
-<guimenuitem>Expert</guimenuitem> (480 boxes, 99 mines).  There is also a
+<guimenuitem>Easy</guimenuitem> (64 squares, 10 mines),
+<guimenuitem>Normal</guimenuitem> (256 squares, 40 mines), and
+<guimenuitem>Expert</guimenuitem> (480 squares, 99 mines).  There is also a
 <guimenuitem>Custom...</guimenuitem> level settings.</para>
 <para>If you select <guimenuitem>Custom...</guimenuitem>, then the
 settings you have configured in the <guimenuitem>Configure
@@ -440,13 +448,15 @@ settings you have configured in the <guimenuitem>Configure
 <varlistentry>
 <term><menuchoice><guimenu>Settings</guimenu><guimenuitem>Configure
 Shortcuts...</guimenuitem></menuchoice></term>
-<listitem><para>This item lets you change the key settings of &kmines;.</para></listitem>
+<listitem><para>This item lets you change the keyboard shortcuts used by &kmines;.</para></listitem>
 </varlistentry>
 
 <varlistentry>
 <term><menuchoice><guimenu>Settings</guimenu><guimenuitem>Configure
 Notifications...</guimenuitem></menuchoice></term>
-<listitem><para>This item lets you configure the notifications of &kmines;.</para></listitem>
+<listitem><para>This item displays a standard &kde; notifications configuration
+dialog, where you can change the notifications (sounds, visible messages,
+&etc;) used by &kmines;.</para></listitem>
 </varlistentry>
 
 <varlistentry>
@@ -478,23 +488,31 @@ Options</link>.</para></listitem>
 
 </sect1>
 
-<sect1 id="keys"><title>Default Key Bindings</title>
-<para>The following tables show you the default key bindings.</para>
+<sect1 id="keys"><title>Default Keyboard Shortcuts</title>
+<para>The following table shows you the default keyboard shortcuts.</para>
 
 
 <table>
-<title>Menu bindings</title>
+<title>Keyboard Shortcuts</title>
 <tgroup cols="2">
 <thead><row><entry>Key Combo</entry><entry>Action</entry></row></thead>
 <tbody>
 <row><entry><keycap>Arrows</keycap></entry><entry>Move cursor in playing area.</entry></row>
-<row><entry><keycap>Return</keycap></entry><entry>Automatically reveal all surrounding cases not marked by a flag.</entry></row>
+<row><entry><keycap>PageDown</keycap></entry><entry>Move to bottom
+edge</entry></row>
+<row><entry><keycap>PageUp</keycap></entry><entry>Move to top
+edge</entry></row>
+<row><entry><keycap>Home</keycap></entry><entry>Move to left edge</entry></row>
+<row><entry><keycap>End</keycap></entry><entry>Move to right edge</entry></row>
+<row><entry><keycap>Space</keycap></entry><entry>Reveal square.</entry></row>
+<row><entry><keycap>W</keycap></entry><entry>Mark square as mine</entry></row>
+<row><entry><keycap>Return</keycap></entry><entry>Automatically reveal all
+surrounding squares not marked by a flag.</entry></row>
 <row><entry><keycombo action="simul">&Ctrl;<keycap>N</keycap></keycombo></entry><entry>New Game</entry></row>
 <row><entry><keycap>P</keycap></entry><entry>Pause Game</entry></row>
 <row><entry><keycombo action="simul">&Ctrl;<keycap>Q</keycap></keycombo></entry><entry>Quit &kmines;</entry></row>
-<row><entry><keycombo action="simul">&Shift;<keycap>F1</keycap></keycombo></entry><entry>Whats This Help</entry></row>
-<row><entry><keycap>Space</keycap></entry><entry>Reveal Mine.</entry></row>
-<row><entry><keycap>W</keycap></entry><entry>Mark Mine</entry></row>
+<row><entry><keycombo action="simul">&Shift;<keycap>F1</keycap></keycombo></entry><entry>What's This Help</entry></row>
+
 </tbody>
 </tgroup>
 </table>
@@ -506,15 +524,18 @@ Bindings</guimenuitem> </menuchoice> from the menu-bar.</para>
 </sect1>
 
 </chapter>
+
 <chapter id="credits"><title>Credits and License</title>
 
 <para>
 &kmines;
 </para>
 <para>
-Program copyright 1996-2000 Nicolas Hadacek <email>hadacek@kde.org</email></para>
-<para>Documentation copyright 2000 Nicolas Hadacek <email>hadacek@kde.org</email></para>
-<para>Documentation updated for KDE 2.0 by Mike McBride <email>mpmcbride7@yahoo.com</email></para>
+Program copyright 1996-2000 &Nicolas.Hadacek; &Nicolas.Hadacek.mail;</para>
+<para>Documentation copyright 2000 &Nicolas.Hadacek; &Nicolas.Hadacek.mail;</para>
+<para>Documentation updated for &kde; 2.0 by &Mike.McBride;
+&Mike.McBride.mail;</para>
+<para>Some changes for &kde; 3.2 by &Philip.Rodrigues; &Philip.Rodrigues.mail;</para>
 <!-- TRANS:CREDIT_FOR_TRANSLATORS -->
 
 &underFDL;
