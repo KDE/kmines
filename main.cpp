@@ -36,7 +36,7 @@ MainWidget::MainWidget()
 						actionCollection(), "game_new");
 	(void)new KAction(i18n("Pause"), Key_P, status, SLOT(pauseGame()),
 					  actionCollection(), "game_pause");
-	(void)new KAction(i18n("High Scores..."), Key_H,
+	(void)new KAction(i18n("High Scores..."), CTRL + Key_H,
 					  status, SLOT(showHighScores()),
 					  actionCollection(), "game_highscores");
 	KStdAction::print(status, SLOT(print()), actionCollection(), "game_print");
@@ -208,8 +208,10 @@ int main(int argc, char **argv)
     KCmdLineArgs::init(argc, argv, &aboutData);
 
     KApplication a;
-    MainWidget *mw = new MainWidget;
-    a.setMainWidget(mw);
-    mw->show();
+    if ( a.isRestored() ) RESTORE(MainWidget)
+    else {
+        MainWidget *mw = new MainWidget;
+        mw->show();
+    }
     return a.exec();
 }

@@ -1,4 +1,8 @@
-2.0.10
+2.0.11 (14 March 2001)
+ * changed highscores accelerator to CTRL + H (more standard)
+ * better use of session-management
+
+2.0.10 (23 October 2000)
  * fixed mouse action in settings (autoreveal and toggle mark were inversed)
 
 2.0.9

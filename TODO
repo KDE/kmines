@@ -2,6 +2,8 @@ IDEAS:
 
  * 3 button mouse emulation [someone seems to need it for wheel mouse : I think
    it should be done at a higher level ...]
+   
+ * messages from/to a named pipe for external AI + log of game
 
  * do you have any idea ?
 
