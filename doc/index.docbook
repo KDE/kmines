@@ -3,7 +3,7 @@
   <!ENTITY kappname "&kmines;">
   <!ENTITY package "kdegames">
   <!ENTITY % addindex "IGNORE">
-  <!ENTITY % English "INCLUDE" > <!-- change language only here --> 
+  <!ENTITY % English "INCLUDE" > <!-- change language only here -->
 ]>
 
 <book lang="&language;">
@@ -89,7 +89,7 @@ cases. Here are the details :</para>
 <itemizedlist>
 <listitem><para>The <mousebutton>left</mousebutton> button will
 uncover a case. If there is a bomb below that case, the bomb will
-explode, and the game will be over </para> 
+explode, and the game will be over </para>
 <para>If there is not a bomb under the case, a number will appear.
 That is the number of neighboring cases that do have bombs under them.
 Which ones you ask? Thats the point of the game.</para>
@@ -128,7 +128,7 @@ linkend="prefs">Game Options</link>.</para></note>
 	     format="PNG"/></imageobject>
 <textobject><phrase>The &kmines; Screen</phrase></textobject>
 </mediaobject>
-</screenshot>   
+</screenshot>
 
 <para>The &kmines; screen consists of:</para>
 
@@ -163,9 +163,9 @@ simply says <guilabel>Game stopped</guilabel>.</para></listitem>
 <imageobject><imagedata fileref="kmines2.png" format="PNG"/></imageobject>
 <textobject><phrase>&kmines; Preferences</phrase></textobject>
 </mediaobject>
-</screenshot>  
+</screenshot>
 
-<para>This dialog box is divided into four sections.</para>
+<para>This dialog box is divided into three sections.</para>
 
 <variablelist>
 <varlistentry>
@@ -238,22 +238,11 @@ question mark.</para></listitem>
 <para>The top option, entitled <guilabel>case size</guilabel>,
 determines the size of each of the squares in the playing area.  By default,
 they are set small.  You can increase the size, if you are working on a very
-high resolution monitor.</para> 
+high resolution monitor.</para>
 
 <para>The rest of this page is concerned with colors. To adjust,
 simply click the color button beside each description, and select the
 new color.</para>
-</listitem>
-</varlistentry>
-
-<varlistentry>
-<term><guilabel>Highscores</guilabel></term>
-<listitem>
-<para>Here you can change your <guilabel>Nickname</guilabel> and add a
-cute <guilabel>Comment</guilabel> about yourself, to show in the high
-score table.  You can also enable the <guilabel>World-wide highscores
-enabled</guilabel> checkbox, and share your skill at &kmines; across
-the world with an online high score server.</para>
 </listitem>
 </varlistentry>
 
@@ -311,22 +300,9 @@ more.</para>
 
 <varlistentry>
 <term><menuchoice>
-<guimenu>Game</guimenu>
-<guisubmenu>Choose Level</guisubmenu>
-</menuchoice></term>
-<listitem>
-<para>Lets you set the difficulty level from a submenu.</para>
-<para>There are three default levels of difficulty:
-<guimenuitem>Easy</guimenuitem> (64 boxes, 10 mines),
-<guimenuitem>Normal</guimenuitem> (256 boxes, 40 mines), and
-<guimenuitem>Expert</guimenuitem> (480 boxes, 99 mines).  There is also a
-<guimenuitem>Custom...</guimenuitem> level settings.</para>
-<para>If you select <guimenuitem>Custom...</guimenuitem>, then the
-settings you have configured in the <guimenuitem>Configure
-&kmines;</guimenuitem> dialog will be used.</para></listitem>
-</varlistentry>
-<varlistentry>
-<term><menuchoice>
+<shortcut>
+<keycap>P</keycap>
+</shortcut>
 <guimenu>Game</guimenu>
 <guimenuitem>Pause</guimenuitem> </menuchoice></term>
 <listitem><para>Pauses the game.  This will hide the board (no cheating), and
@@ -357,6 +333,72 @@ difficulty level.</para></listitem>
 </variablelist>
 </sect1>
 
+<sect1 id="move-menu"><title><guimenu>Move</guimenu> Menu</title>
+<variablelist>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut>
+<keycap>H</keycap>
+</shortcut>
+<guimenu>Move</guimenu>
+<guimenuitem>Hint</guimenuitem> </menuchoice></term>
+<listitem><para>If you use that item, you will get a hint about where
+you should click next. If you do that your score will not be added to the highscores.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Move</guimenu>
+<guimenuitem>Solve</guimenuitem> </menuchoice></term>
+<listitem><para>This item tries to solve the current game.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Move</guimenu>
+<guimenuitem>Solving Rate...</guimenuitem> </menuchoice></term>
+<listitem><para>This item shows a dialog that calculates the solving rate for the current game type.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Move</guimenu>
+<guimenuitem>View Log</guimenuitem> </menuchoice></term>
+<listitem><para>This item shows a dialog with the log of the last game.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Move</guimenu>
+<guimenuitem>Replay Log</guimenuitem> </menuchoice></term>
+<listitem><para>This item replays the current log.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Move</guimenu>
+<guimenuitem>Save Log...</guimenuitem> </menuchoice></term>
+<listitem><para>This item shows a dialog to save the current log.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Move</guimenu>
+<guimenuitem>Load Log...</guimenuitem> </menuchoice></term>
+<listitem><para>This item shows a dialog to load a log.</para>
+</listitem>
+</varlistentry>
+
+</variablelist>
+</sect1>
+
 <sect1 id="settings-menu"><title><guimenu>Settings</guimenu> Menu</title>
 <variablelist>
 <varlistentry>
@@ -377,6 +419,46 @@ will be visible again.</para></note></listitem>
 <listitem><para>Allows you to change the keyboard shortcuts for &kmines;</para>
 </listitem>
 </varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Settings</guimenu>
+<guisubmenu>Choose Game Type</guisubmenu>
+</menuchoice></term>
+<listitem>
+<para>Lets you set the difficulty level from a submenu.</para>
+<para>There are three default levels of difficulty:
+<guimenuitem>Easy</guimenuitem> (64 boxes, 10 mines),
+<guimenuitem>Normal</guimenuitem> (256 boxes, 40 mines), and
+<guimenuitem>Expert</guimenuitem> (480 boxes, 99 mines).  There is also a
+<guimenuitem>Custom...</guimenuitem> level settings.</para>
+<para>If you select <guimenuitem>Custom...</guimenuitem>, then the
+settings you have configured in the <guimenuitem>Configure
+&kmines;</guimenuitem> dialog will be used.</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice><guimenu>Settings</guimenu><guimenuitem>Configure
+Shortcuts...</guimenuitem></menuchoice></term>
+<listitem><para>This item lets you change the key settings of &kmines;.</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice><guimenu>Settings</guimenu><guimenuitem>Configure
+Notifications...</guimenuitem></menuchoice></term>
+<listitem><para>This item lets you configure the notifications of &kmines;.</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice><guimenu>Settings</guimenu><guimenuitem>Configure
+Highscores...</guimenuitem></menuchoice></term>
+<listitem><para>Here you can change your <guilabel>Nickname</guilabel> and add a
+cute <guilabel>Comment</guilabel> about yourself, to show in the high
+score table.  You can also enable the <guilabel>World-wide highscores
+enabled</guilabel> checkbox, and share your skill at &kmines; across
+the world with an online high score server.</para></listitem>
+</varlistentry>
+
 <varlistentry>
 <term><menuchoice>
 <guimenu>Settings</guimenu>
@@ -406,15 +488,13 @@ Options</link>.</para></listitem>
 <thead><row><entry>Key Combo</entry><entry>Action</entry></row></thead>
 <tbody>
 <row><entry><keycap>Arrows</keycap></entry><entry>Move cursor in playing area.</entry></row>
-<row><entry>&Ctrl;</entry><entry>Automatically reveal all surrounding cases not marked by a flag.</entry></row>
+<row><entry><keycap>Return</keycap></entry><entry>Automatically reveal all surrounding cases not marked by a flag.</entry></row>
 <row><entry><keycombo action="simul">&Ctrl;<keycap>N</keycap></keycombo></entry><entry>New Game</entry></row>
-<row><entry><keycombo action="simul">&Ctrl;<keycap>P</keycap></keycombo></entry><entry>Pause Game</entry></row>
-<row><entry><keycombo action="simul">&Ctrl;<keycap>P</keycap></keycombo></entry><entry>Print Game</entry></row>
+<row><entry><keycap>P</keycap></entry><entry>Pause Game</entry></row>
 <row><entry><keycombo action="simul">&Ctrl;<keycap>Q</keycap></keycombo></entry><entry>Quit &kmines;</entry></row>
-<row><entry><keycap>F1</keycap></entry><entry>Help Contents</entry></row>
 <row><entry><keycombo action="simul">&Shift;<keycap>F1</keycap></keycombo></entry><entry>Whats This Help</entry></row>
-<row><entry><keycombo action="simul">&Shift;</keycombo></entry><entry>Reveal Mine.</entry></row>
-<row><entry><keycap>Space</keycap></entry><entry>Mark Mine</entry></row>
+<row><entry><keycap>Space</keycap></entry><entry>Reveal Mine.</entry></row>
+<row><entry><keycap>W</keycap></entry><entry>Mark Mine</entry></row>
 </tbody>
 </tgroup>
 </table>
@@ -427,7 +507,7 @@ Bindings</guimenuitem> </menuchoice> from the menubar.</para>
 
 </chapter>
 <chapter id="credits"><title>Credits and License</title>
- 
+
 <para>
 &kmines;
 </para>
@@ -440,24 +520,24 @@ Program copyright 1996-2000 Nicolas Hadacek <email>hadacek@kde.org</email></para
 &underFDL;
 &underGPL;
 
-</chapter>                  
+</chapter>
 
 <appendix id="installation">
 <title>Installation</title>
- 
+
 <sect1 id="getting-kmines">
 <title>How to obtain &kmines;</title>
- 
+
 &install.intro.documentation;
 
 </sect1>
 
 <sect1 id="compilation">
 <title>Compilation and Installation</title>
- 
+
 &install.compile.documentation;
- 
-</sect1>         
+
+</sect1>
 </appendix>
 
 
