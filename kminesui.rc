@@ -27,5 +27,7 @@
   <Separator/>
   <Action name="game_quit"/>
 </Menu>
-<ToolBar name="mainToolBar" noMerge="1"/>
+<ToolBar name="mainToolBar" noMerge="1"><text>Main Toolbar</text>
+</ToolBar>
+
 </kpartgui>
