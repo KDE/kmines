@@ -298,7 +298,7 @@ void Field::doMark(const Coord &c)
 	case Covered:   action = SetFlag; break;
 	case Marked:    action = (_umark ? SetUncertain : UnsetFlag); break;
 	case Uncertain:	action = UnsetUncertain; break;
-	default:        break;
+	default:        return;
 	}
     CaseState newState = doAction(action, c, _completeReveal);
     addMarkAction(c, newState, oldState);
@@ -314,7 +314,7 @@ void Field::doUmark(const Coord &c)
 	case Covered:
 	case Marked:    action = SetUncertain; break;
 	case Uncertain: action = UnsetUncertain; break;
-	default:        break;
+	default:        return;
 	}
     CaseState newState = doAction(action, c, _completeReveal);
     addMarkAction(c, newState, oldState);
