@@ -465,3 +465,13 @@ Comment[xx]=xxGame lostxx
 Comment[zh_CN]=您输了游戏
 Comment[zh_TW]=遊戲失敗
 default_presentation=0
+
+[set_uncertain]
+Name=Set Question Mark
+Comment=Set Question Mark
+default_presentation=0
+
+[unset_uncertain]
+Name=Unset Question Mark
+Comment=Unset Question Mark
+default_presentation=0

@@ -26,6 +26,7 @@
 #include <qpainter.h>
 
 #include <klocale.h>
+#include <knotifyclient.h>
 
 #include "settings.h"
 #include "solver/solver.h"
@@ -34,9 +35,13 @@
 
 using namespace KGrid2D;
 
-const char *Field::ACTION_NAMES[Nb_Actions] = {
-    "Reveal", "AutoReveal", "SetFlag", "UnsetFlag", "SetUncertain",
-    "UnsetUncertain"
+const Field::ActionData Field::ACTION_DATA[Nb_Actions] = {
+  { "Reveal",         "reveal",          I18N_NOOP("Case revealed")       },
+  { "AutoReveal",     "autoreveal",      I18N_NOOP("Case autorevealed")   },
+  { "SetFlag",        "mark",            I18N_NOOP("Flag set")            },
+  { "UnsetFlag",      "unmark",          I18N_NOOP("Flag unset")          },
+  { "SetUncertain",   "set_uncertain",   I18N_NOOP("Question mark set")   },
+  { "UnsetUncertain", "unset_uncertain", I18N_NOOP("Question mark unset") }
 };
 
 Field::Field(QWidget *parent)
@@ -325,8 +330,10 @@ KMines::CaseState Field::doAction(ActionType type, const Coord &c,
 {
     resetAdvised();
     CaseState state = Error;
-	if ( _solvingState==Solved ) complete = false;
+    if ( _solvingState==Solved ) complete = false;
 
+    KNotifyClient::event(winId(), ACTION_DATA[type].event,
+                         i18n(ACTION_DATA[type].eventMessage));
     switch (type) {
     case Reveal:
         if ( !reveal(c, autorevealed, caseUncovered) )

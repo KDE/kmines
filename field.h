@@ -30,7 +30,10 @@ class Field : public FieldFrame, public BaseField
  public:
     enum ActionType { Reveal = 0, AutoReveal, SetFlag, UnsetFlag, SetUncertain,
                       UnsetUncertain, Nb_Actions };
-    static const char *ACTION_NAMES[Nb_Actions];
+    struct ActionData {
+      const char *name, *event, *eventMessage;
+    };
+    static const ActionData ACTION_DATA[Nb_Actions];
 
  public:
 	Field(QWidget *parent);

@@ -187,6 +187,8 @@ void Status::update(bool mine)
 
 void Status::setGameOver(bool won)
 {
+    if ( !won )
+      KNotifyClient::event(winId(), "explosion", i18n("Explosion!"));
     field->showAllMines(won);
     smiley->setMood(won ? Happy : Sad);
     if ( field->gameState()==Replaying ) return;
@@ -283,7 +285,7 @@ void Status::addAction(const KGrid2D::Coord &c, Field::ActionType type)
     action.setAttribute("time", dg->pretty());
     action.setAttribute("column", c.first);
     action.setAttribute("line", c.second);
-    action.setAttribute("type", Field::ACTION_NAMES[type]);
+    action.setAttribute("type", Field::ACTION_DATA[type].name);
     _logList.appendChild(action);
     dg->addAction();
 }
@@ -424,7 +426,7 @@ bool Status::checkLog(const QDomDocument &doc)
         QString type = a.attribute("type");
         uint k = 0;
         for (; k<Field::Nb_Actions; k++)
-            if ( type==Field::ACTION_NAMES[k] ) break;
+            if ( type==Field::ACTION_DATA[k].name ) break;
         if ( k==Field::Nb_Actions ) return false;
     }
 
@@ -466,7 +468,7 @@ void Status::replayStep()
     uint j = a.attribute("line").toUInt();
     QString type = a.attribute("type");
     for (uint k=0; k<Field::Nb_Actions; k++)
-        if ( type==Field::ACTION_NAMES[k] ) {
+        if ( type==Field::ACTION_DATA[k].name ) {
             field->doAction((Field::ActionType)k,
                             KGrid2D::Coord(i, j), _completeReveal);
             break;
