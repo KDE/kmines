@@ -43,16 +43,16 @@ KMines::KMines(QWidget *parent, const char *name)
 	tog_id = popup->insertItem(i18n("Hide menu bar"),
 							   this, SLOT(toggleMenu()) );
 	popup->insertSeparator();
-	int id = popup->insertItem(i18n("New game"), status, SLOT(restartGame()) );
+	int id = popup->insertItem(i18n("&New game"), status, SLOT(restartGame()) );
 	kacc->changeMenuAccel(popup, id, "New");
 	
-	id = popup->insertItem(i18n("Pause game"), status, SLOT(pauseGame()) );
+	id = popup->insertItem(i18n("&Pause game"), status, SLOT(pauseGame()) );
 	kacc->changeMenuAccel(popup, id, "Pause");
 	popup->insertSeparator();
-	id = popup->insertItem(i18n("High scores"), status, SLOT(showHighScores()) );
+	id = popup->insertItem(i18n("&High scores"), status, SLOT(showHighScores()) );
 	kacc->changeMenuAccel(popup, id, "HighScores");
 	popup->insertSeparator();
-	id = popup->insertItem(i18n("Quit"), this, SLOT(quit()) );
+	id = popup->insertItem(i18n("&Quit"), this, SLOT(quit()) );
 	kacc->changeMenuAccel(popup, id, KAccel::Quit);
 
 	options = new QPopupMenu;
@@ -74,11 +74,11 @@ KMines::KMines(QWidget *parent, const char *name)
 										 + i18n("by") + " " + KMINES_AUTHOR);
 
 	menu = new QMenuBar(this);
-	menu->insertItem(i18n("File"), popup );
-	menu->insertItem(i18n("Options"), options );
-	menu->insertItem(i18n("Level"), level );
+	menu->insertItem(i18n("&File"), popup );
+	menu->insertItem(i18n("&Options"), options );
+	menu->insertItem(i18n("&Level"), level );
 	menu->insertSeparator();
-	menu->insertItem(i18n("Help"), help );
+	menu->insertItem(i18n("&Help"), help );
 
 	/* read the menu visible/invisible config */
 	kconf = kapp->getConfig();
