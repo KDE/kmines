@@ -63,19 +63,16 @@ class WHighScores : public QDialog
  Q_OBJECT
 	  
  public:
-	WHighScores(bool show, int sec, int min, uint mode, int &res,
-				QWidget *parent);
+	WHighScores(bool show, int sec, int min, uint mode, int &res, QWidget *parent);
 
  private slots:
 	void writeName();
   
  private:
 	uint mode;
-	KConfig *kconf;
 	QLineEdit *qle;
 	QPushButton *pb;
 	QGridLayout *gl;
-	QVBoxLayout *top;
 };
 
 #endif // DIALOGS_H

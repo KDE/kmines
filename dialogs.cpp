@@ -221,22 +221,23 @@ WHighScores::WHighScores(bool show, int newSec, int newMin, uint Mode,
 						 int &res, QWidget *parent)
 : QDialog(parent, 0, TRUE), mode(Mode)
 {
-	kconf = kapp->getConfig();
+	KConfig *conf = kapp->getConfig();
 
 	/* set highscore ? */
 	if ( !show ) {
-		kconf->setGroup(HS_GRP[mode]);
+		conf->setGroup(HS_GRP[mode]);
 		/* a better time ? */
-		int res = kconf->readNumEntry(HS_SEC_KEY)
-			      + 60*kconf->readNumEntry(HS_MIN_KEY);
-		if ( (newSec + newMin*60) >= res ) return;
+		res = conf->readNumEntry(HS_SEC, 59)
+			  + 60*conf->readNumEntry(HS_MIN, 59);
+		if ( (newSec + newMin*60)>=res ) return;
+		res = 0;
 	}
 
 	QString str = i18n("Hall of Fame");
 	setCaption(i18n("kmines: %1").arg(str));
 
 /* top layout */
-	top = new QVBoxLayout(this, BORDER);
+	QVBoxLayout *top = new QVBoxLayout(this, BORDER);
 	
 /* title */
 	QLabel *title = new QLabel(str, this);
@@ -270,10 +271,10 @@ WHighScores::WHighScores(bool show, int newSec, int newMin, uint Mode,
 		lab->setMinimumSize( lab->sizeHint() );
 		gl->addWidget(lab, k, 0);
 
-		kconf->setGroup(HS_GRP[k]);
+		conf->setGroup(HS_GRP[k]);
 		
 		if ( show || (k!=mode) ) {
-			lab = new QLabel(kconf->readEntry(HS_NAME_KEY), this);
+			lab = new QLabel(conf->readEntry(HS_NAME, i18n("Anonymous")), this);
 			lab->setAlignment(AlignCenter);
 			lab->setFont(f);
 			lab->setMinimumSize( lab->sizeHint() );
@@ -287,9 +288,10 @@ WHighScores::WHighScores(bool show, int newSec, int newMin, uint Mode,
 			qle->setFocus();
 			connect(qle, SIGNAL(returnPressed()), SLOT(writeName()));
 			gl->addWidget(qle, k, 2);
-			
-			kconf->writeEntry(HS_MIN_KEY, newMin);
-			kconf->writeEntry(HS_SEC_KEY, newSec);
+
+			conf->writeEntry(HS_NAME, i18n("Anonymous")); // default
+			conf->writeEntry(HS_MIN, newMin);
+			conf->writeEntry(HS_SEC, newSec);
 		}
 		
 		lab = new QLabel(i18n("in"), this);
@@ -297,11 +299,11 @@ WHighScores::WHighScores(bool show, int newSec, int newMin, uint Mode,
 		lab->setMinimumSize( lab->sizeHint() );
 		gl->addWidget(lab, k, 3);
 		
-		int min = kconf->readNumEntry(HS_MIN_KEY);
-		int sec = kconf->readNumEntry(HS_SEC_KEY);
+		int min = conf->readNumEntry(HS_MIN, 59);
+		int sec = conf->readNumEntry(HS_SEC, 59);
 		
 		if (min) {
-			lab = new QLabel(kconf->readEntry(HS_MIN_KEY), this);
+			lab = new QLabel(conf->readEntry(HS_MIN, "59"), this);
 			lab->setFont(f);
 			lab->setAlignment(AlignCenter);
 			lab->setMinimumSize( lab->sizeHint() );
@@ -323,7 +325,7 @@ WHighScores::WHighScores(bool show, int newSec, int newMin, uint Mode,
 				gl->addWidget(lab, k, 6);
 			}
 			
-			lab = new QLabel(kconf->readEntry(HS_SEC_KEY), this);
+			lab = new QLabel(conf->readEntry(HS_SEC, "59"), this);
 			lab->setFont(f);
 			lab->setAlignment(AlignCenter);
 			lab->setMinimumSize( lab->sizeHint() );
@@ -349,22 +351,16 @@ WHighScores::WHighScores(bool show, int newSec, int newMin, uint Mode,
 
 	if ( !show ) pb->hide();
 	else pb->setFocus();
-	
-	exec();
-	res = 0;
 }
 
 void WHighScores::writeName()
 {
+	kapp->getConfig()->setGroup(HS_GRP[mode]);
 	QString str = qle->text();
-	if ( str.length()==0 ) str = i18n("Anonymous");
-	
-	kconf->setGroup(HS_GRP[mode]);
-	kconf->writeEntry(HS_NAME_KEY, str);
+	if ( str.length() ) kapp->getConfig()->writeEntry(HS_NAME, str);
 	
 	/* show the entered highscore */
 	qle->hide();
-	qle->clearFocus();
 	QFont f( font() );
 	f.setBold(TRUE);
 	QLabel *lab = new QLabel(str, this);
@@ -375,5 +371,5 @@ void WHighScores::writeName()
 	lab->show();
 
 	pb->show();
-	pb->setFocus();
+	//	pb->setFocus(); // if I set the focus : it closes the dialog !?
 }

@@ -3,13 +3,10 @@
 
 #include <qpopmenu.h>
 
-#include <kconfig.h>
-#include <kaccel.h>
 #include <kkeydialog.h>
-#include <kmenubar.h>
 #include <ktmainwindow.h>
 
-#include "status.h"
+class Status;
 
 class MainWidget : public KTMainWindow
 {
@@ -19,32 +16,22 @@ class MainWidget : public KTMainWindow
 	MainWidget();
 
  private slots:
-	/** menu slot : change level
-	  * initialize a new game for default level ( with the constant MODES)
-	  *	or launch the custom dialog with the current value of width,
-	  *	height and number of mines
-	  */
 	void changeLevel(int level);
-    void configKeys() { KKeyDialog::configureKeys(kacc); }
-	void toggleMenu();
-	void toggleUMark();
-	void quit();
-
-signals:
-	void newGame(uint width, uint height, uint nb_mines);
-	void restartGame();
-	void UMarkChanged(bool);
+    void configKeys()           { KKeyDialog::configureKeys(kacc); }
+	void toggleMenu()           { _toggleMenu(FALSE); }
+	void toggleUMark()          { _toggleUMark(FALSE); }
 
  protected:
-	bool eventFilter(QObject *, QEvent *e);
+	bool eventFilter(QObject *, QEvent *);
 
  private:
-	KConfig      *kconf;
 	KAccel       *kacc;
-	KMenuBar     *menu;
 	QPopupMenu   *popup, *options, *level;
 	int          tog_id, um_id;
 	Status       *status;
+	
+	void _toggleMenu(bool first);
+	void _toggleUMark(bool first);
 };
 
 #endif // MAIN_H

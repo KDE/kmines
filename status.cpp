@@ -90,18 +90,6 @@ Status::Status(QWidget *parent, const char *name)
 	connect( field, SIGNAL(freezeTimer()), dg, SLOT(freeze()) );
 	connect( field, SIGNAL(updateSmiley(int)), this, SLOT(updateSmiley(int)) );
 	top->addWidget(field);
-	
-	/* configuration & highscore initialisation */
-	KConfig *kconf = kapp->getConfig();
-	for (int i=0; i<3; i++) {
-		kconf->setGroup(HS_GRP[i]);
-		if ( !kconf->hasKey(HS_NAME_KEY) )
-			kconf->writeEntry(HS_NAME_KEY, i18n("Anonymous"));
-		if ( !kconf->hasKey(HS_MIN_KEY) )
-			kconf->writeEntry(HS_MIN_KEY, 59);
-		if ( !kconf->hasKey(HS_SEC_KEY) )
-			kconf->writeEntry(HS_SEC_KEY, 59);    
-	}
 }
 
 void Status::createSmileyPixmap(QPixmap *pm, QPainter *pt)
@@ -197,7 +185,7 @@ void Status::endGame(int win)
 		emit updateSmiley(HAPPY);
 		int res = 0;
 		if ( _type!=Custom ) res = setHighScore(dg->sec(), dg->min(), _type);
-		if ( res!=0 ) setMsg(i18n("You did it ... but not in time."));
+		if (res) setMsg(i18n("You did it ... but not in time."));
 		else setMsg(i18n("Yeeessss !"));
 	} else {
 		emit updateSmiley(UNHAPPY);
@@ -209,13 +197,16 @@ void Status::showHighScores()
 {
 	int dummy;
 	WHighScores whs(TRUE, 0, 0, 0, dummy, this);
+	whs.show();
 }
 
 int Status::setHighScore(int sec, int min, int mode)
 {
-	int res = 0;
+	int res;
 	WHighScores whs(FALSE, sec, min, mode, res, this);
-	return res;
+	if (res) return res;
+	whs.show();
+	return 0;
 } 
 
 void Status::print()

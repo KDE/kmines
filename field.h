@@ -27,9 +27,10 @@ class Field : public QFrame
 	uint nbHeight() const { return nb_h; }
 	uint nbMines() const  { return nb_m; }
 	
+	void changeUMark(bool um) { u_mark = um; }
+	
  public slots:
 	void resume();
-	void changeUMark(bool um) { u_mark = um; };
 	
  signals:
 	void changeCase(uint, uint);

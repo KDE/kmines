@@ -19,6 +19,7 @@ class Status : public QWidget
 	Status( QWidget *parent=0, const char *name=0 );
 
 	bool newGame(uint i);
+	void changeUMark(bool b) { field->changeUMark(b); }
 	
  public slots:
 	void restartGame();
@@ -29,7 +30,6 @@ class Status : public QWidget
 	void showHighScores();
 	void pauseGame() { field->pause(); }
 	void print();
-	void changeUMark(bool b) { field->changeUMark(b); }
 	void setMsg(const QString &s) { mesg->setText(s); }
   
  signals:

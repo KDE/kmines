@@ -5,6 +5,7 @@
 
 #include "defines.h"
 #include "version.h"
+#include "status.h"
 
 MainWidget::MainWidget()
 {
@@ -12,7 +13,7 @@ MainWidget::MainWidget()
 	
 	status = new Status(this);
 	status->installEventFilter(this);
-	connect(status, SIGNAL(quit()), this, SLOT(quit()));
+	connect(status, SIGNAL(quit()), qApp, SLOT(quit()));
 	setView(status);
 	
 	kacc = new KAccel(this);
@@ -23,7 +24,7 @@ MainWidget::MainWidget()
 	kacc->insertStdItem(KAccel::Help);
 
 	// KAccel connections
-	kacc->connectItem(KAccel::Quit, this, SLOT(quit()));
+	kacc->connectItem(KAccel::Quit, qApp, SLOT(quit()));
 	kacc->connectItem(KAccel::New, status, SLOT(restartGame()));
 	kacc->connectItem("Pause", status, SLOT(pauseGame()));
 	kacc->connectItem("HighScores", status, SLOT(showHighScores()));
@@ -35,7 +36,7 @@ MainWidget::MainWidget()
 	// Menu
 	popup = new QPopupMenu;
 	int id;
-	tog_id = popup->insertItem(i18n("Hide menu bar"), this, SLOT(toggleMenu()) );
+	tog_id = popup->insertItem("", this, SLOT(toggleMenu()) );
 	popup->insertSeparator();
 	id = popup->insertItem(i18n("&New game"), status, SLOT(restartGame()) );
 	kacc->changeMenuAccel(popup, id, KAccel::New);
@@ -47,7 +48,7 @@ MainWidget::MainWidget()
 	id = popup->insertItem(i18n("&Print"), status, SLOT(print()));
 	kacc->changeMenuAccel(popup, id, KAccel::Print);
 	popup->insertSeparator();
-	id = popup->insertItem(i18n("&Quit"), this, SLOT(quit()) );
+	id = popup->insertItem(i18n("&Quit"), qApp, SLOT(quit()) );
 	kacc->changeMenuAccel(popup, id, KAccel::Quit);
 
 	options = new QPopupMenu;
@@ -68,37 +69,24 @@ MainWidget::MainWidget()
 										 .arg(KMINES_DATE)
 										 .arg(KMINES_AUTHOR));
 
-	menu = menuBar();
-	menu->insertItem(i18n("&File"), popup );
-	menu->insertItem(i18n("&Level"), level );
-	menu->insertItem(i18n("&Options"), options );
-	menu->insertSeparator();
-	menu->insertItem(i18n("&Help"), help );
+	menuBar()->insertItem(i18n("&File"), popup );
+	menuBar()->insertItem(i18n("&Level"), level );
+	menuBar()->insertItem(i18n("&Options"), options );
+	menuBar()->insertSeparator();
+	menuBar()->insertItem(i18n("&Help"), help );
 
-	kconf = kapp->getConfig();
-	kconf->setGroup(OP_GRP);
-
-	// read menu visible/invisible config
-	if ( !kconf->hasKey(OP_MENUBAR_VIS) )
-		kconf->writeEntry(OP_MENUBAR_VIS, 1);
-	if ( kconf->readNumEntry(OP_MENUBAR_VIS)!=1 ) menu->show();
-	else menu->hide();
-
-	// read uncertain mark option
-	kconf->setGroup(OP_GRP);
-	if ( !kconf->hasKey(OP_UMARK_KEY) )
-		kconf->writeEntry(OP_UMARK_KEY, TRUE);
-	bool um = kconf->readBoolEntry(OP_UMARK_KEY);
-	options->setItemChecked(um_id, um);
-	emit UMarkChanged(um);
-	
-	// begin easy game
-	changeLevel(0);
-	toggleMenu();
+	_toggleMenu(TRUE);
+	_toggleUMark(TRUE);
+	changeLevel(-1);
 }
 
 void MainWidget::changeLevel(int lev)
 {
+	KConfig *conf = kapp->getConfig();
+	conf->setGroup(OP_GRP);
+	if ( lev<0 ) lev = conf->readUnsignedNumEntry(OP_LEVEL, 0);
+	if ( lev<0 || lev>3 ) lev = 0; // paranoia
+	conf->writeEntry(OP_LEVEL, lev);
 	if ( !status->newGame(lev) ) return;
 	for(int i = 0; i<4; i++) level->setItemChecked(i, i==lev);
 }
@@ -110,7 +98,8 @@ bool MainWidget::eventFilter(QObject *o, QEvent *e)
 	switch (e->type()) {
 	 case QEvent::LayoutHint :
 		if ( ((QWidget *)o)!=this ) return FALSE;
-		updateRects(); return TRUE;
+		updateRects();
+		return TRUE;
 	 case QEvent::MouseButtonPress : 
 		if ( ((QMouseEvent *)e)->button()!=RightButton ) return FALSE;
 		popup->popup(QCursor::pos());
@@ -119,30 +108,26 @@ bool MainWidget::eventFilter(QObject *o, QEvent *e)
 	}
 }
 
-void MainWidget::quit()
+void MainWidget::_toggleMenu(bool first)
 {
-	kconf->setGroup(OP_GRP);
-	kconf->writeEntry(OP_MENUBAR_VIS, menu->isVisible());
-	kconf->writeEntry(OP_UMARK_KEY, options->isItemChecked(um_id));
-	kapp->quit();
+	KConfig *conf = kapp->getConfig();
+	conf->setGroup(OP_GRP);
+	bool show = conf->readBoolEntry(OP_MENU, TRUE);
+	if ( !first ) show = !show;
+	conf->writeEntry(OP_MENU, show);
+	if (show) menuBar()->show(); else menuBar()->hide();
+	popup->changeItem((show ? i18n("Hide menu") : i18n("Show menu")), tog_id);
 }
 
-void MainWidget::toggleMenu()
+void MainWidget::_toggleUMark(bool first)
 {
-	if ( menu->isVisible() ) {
-		popup->changeItem(i18n("Show menu bar"), tog_id);
-		menu->hide();
-	} else {
-		popup->changeItem(i18n("Hide menu bar"), tog_id);
-		menu->show();
-	}
-}
-
-void MainWidget::toggleUMark()
-{
-	bool um = !options->isItemChecked(um_id);
+	KConfig *conf = kapp->getConfig();
+	conf->setGroup(OP_GRP);
+	bool um = conf->readBoolEntry(OP_UMARK, TRUE);
+	if ( !first ) um = !um;
+	conf->writeEntry(OP_UMARK, um);
 	options->setItemChecked(um_id, um);
-	emit UMarkChanged(um);
+	status->changeUMark(um);
 }
 
 /* MAIN */

@@ -277,12 +277,9 @@ void Field::mousePressEvent( QMouseEvent *e )
 	} else if (e->button()==RightButton) {
 		if (pfield(ic, jc) & COVERED)
 			changeCaseState(ic, jc, MARKED);
-		else if (pfield(ic, jc) & MARKED) { /* ? mark option */
-			if (u_mark)
-				changeCaseState(ic, jc, UNCERTAIN);
-			else
-				changeCaseState(ic, jc, COVERED);
-		} else if (pfield(ic, jc) & UNCERTAIN)
+		else if (pfield(ic, jc) & MARKED) /* ? mark option */
+			changeCaseState(ic, jc, (u_mark ? UNCERTAIN : COVERED));
+		else if (pfield(ic, jc) & UNCERTAIN)
 			changeCaseState(ic, jc, COVERED);
 	} else if (e->button()==MidButton) {
 		mid_down = TRUE;
@@ -305,10 +302,10 @@ void Field::mouseReleaseEvent( QMouseEvent *e )
 				for(uint k=0; k<nb_m; k++) {
 					uint i, j;
 					do {
-						i = randomInt(0, nb_w);
-						j = randomInt(0, nb_h);
+						i = randomInt(0, nb_w-1);
+						j = randomInt(0, nb_h-1);
 					}
-					while ( (pfield(i+1, j+1) & MINE) 
+					while ( (pfield(i+1, j+1) & MINE)
 						    || ((i+1)==ic && (j+1)==jc) );
 			
 					pfield(i+1, j+1) |= MINE;

@@ -1,10 +1,3 @@
-## ############################################################################
-## This Makefile.am is intended to be generic for standard (small) applications
-## contact hadacek@kde.org for comments/suggestions
-
-## ######################
-## # Building definitions
-
 bin_PROGRAMS   = kmines
 INCLUDES       = $(all_includes)
 kmines_LDFLAGS = $(all_libraries) $(KDE_RPATH)

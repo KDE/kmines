@@ -1,6 +1,7 @@
 1.0.5
  * fixed layout handling (all those "updateGeometry" and "LayoutHint" stuff)
  * space bar hit cannot restart game anymore
+ * clean code (config) + level is saved
 
 1.0.4
  * porting to QT 2.0
