@@ -1,8 +1,10 @@
 # KDE Config File 
 [KDE Desktop Entry]
 Name=Minesweeper
+Name[pl]=Saper
 Exec=kmines -caption "%c"
 Type=Application
 DocPath=kmines.html
 Comment=KDE replacement for xbombs
 Comment[de]=Das bekannte Spiel Bombenfinden
+Comment[pl]=Wersja KDE popularnego sapera.
