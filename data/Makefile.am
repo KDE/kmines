@@ -1,9 +1,8 @@
 KDE_ICON  = kmines
 
-appsdir   = $(kde_appsdir)/Games/TacticStrategy
-apps_DATA = kmines.desktop
-EXTRA_DIST = $(apps_DATA)
+xdg_apps_DATA = kmines.desktop
+EXTRA_DIST = $(xdg_apps_DATA)
 
-datadir = $(kde_datadir)/kmines
-data_DATA = eventsrc
+appdatadir = $(kde_datadir)/kmines
+appdata_DATA = eventsrc
 

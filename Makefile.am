@@ -14,5 +14,3 @@ rc_DATA = kminesui.rc kminesconfig.rc
 messages: rc.cpp
 	$(XGETTEXT) rc.cpp *.cpp solver/*.cpp -o $(podir)/kmines.pot
 
-install-data-local:
-	rm -rf $(DESTDIR)$(kde_appsdir)/Games/kmines.desktop
