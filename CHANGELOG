@@ -1,7 +1,4 @@
-2.1.10 (17 May 2004) [CVS 3.3 devel]
- * fix bug #80721 (hint not displayed)
-
-2.1.9 (26 February 2004)
+2.1.9 (17 May 2004)
  * fix compilation of solver debugging code.
 
 2.1.8c (17 May 2004) [KDE 3.2.3 stable]
