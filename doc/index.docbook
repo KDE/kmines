@@ -116,7 +116,7 @@ game.</para></listitem>
 </itemizedlist>
 
 <note><para>These are the default settings.  The mouse buttons can be
-reprogramed. For more information, see the section entitled <link
+reprogrammed. For more information, see the section entitled <link
 linkend="prefs">Game Options</link>.</para></note>
 
 <sect1 id="screen"><title>The &kmines; Screen</title>
@@ -154,7 +154,7 @@ simply says <guilabel>Game stopped</guilabel>.</para></listitem>
 
 <chapter id="prefs"><title>Game options</title>
 <para>The options to &kmines; are set by selecting <menuchoice>
-<guimenu>Settings</guimenu> <guimenuitem>Preferences</guimenuitem>
+<guimenu>Settings</guimenu> <guimenuitem>Configure &kmines;</guimenuitem>
 </menuchoice> from the menubar.  This will bring up a dialog box.</para>
 
 <screenshot>
@@ -165,35 +165,35 @@ simply says <guilabel>Game stopped</guilabel>.</para></listitem>
 </mediaobject>
 </screenshot>  
 
-<para>This dialog box is divided into two tabs.</para>
+<para>This dialog box is divided into four sections.</para>
 
 <variablelist>
 <varlistentry>
-<term><guilabel>Main settings</guilabel></term>
-<listitem><para>The top option, entitled <guilabel>case size</guilabel>,
-determines the size of each of the squares in the playing area.  By default,
-they are set small.  You can increase the size, if you are working on a very
-high resolution monitor.</para> 
-
-<para>The next option down, labelled <guilabel>Enable ? Mark</guilabel>,
-determines whether you can mark squares as <quote>questionable</quote>.  If
-there is a mark in front of this option, then right clicking the mouse will
-first cause a case to be flaged. If you click again on the same square, the flag
-will change to a <guiicon>?</guiicon>, to indicate you don't know if there is a
-bomb there or not.  If you click again, the square will change back to
+<term><guilabel>Game</guilabel></term>
+<listitem>
+<para>The first option, labelled <guilabel>Enable ? Mark</guilabel>,
+determines whether you can mark squares as
+<quote>questionable</quote>.  If there is a mark in front of this
+option, then right clicking the mouse will first cause a case to be
+flaged. If you click again on the same square, the flag will change to
+a <guiicon>?</guiicon>, to indicate you don't know if there is a bomb
+there or not.  If you click again, the square will change back to
 blank.</para>
 
 <para>If there is not a mark in front of this option, the first
-<mousebutton>right</mousebutton> mouse click will change the case to a red flag.
-The second will make it blank again, thus skipping the ? symbol.</para>
+<mousebutton>right</mousebutton> mouse click will change the case to a
+red flag.  The second will make it blank again, thus skipping the ?
+symbol.</para>
 
-<para>The next option down, labelled <guilabel>Enable keyboard</guilabel>,
-determins if the keyboard shortcuts will work while playing the game.</para>
+<para>The next option down, labelled <guilabel>Enable
+keyboard</guilabel>, determins if the keyboard shortcuts will work
+while playing the game.</para>
 
-<note><para>The only keyboard shortcuts affected, are those responsible for
-playing the game.  Keyboard commands such as <guimenuitem>New
-Game</guimenuitem>, and <guimenuitem>Quit</guimenuitem>, still
-work, regardless of this option.</para></note>
+<note><para>The only keyboard shortcuts affected, are those
+responsible for playing the game.  Keyboard commands such as
+<guimenuitem>New Game</guimenuitem>, and
+<guimenuitem>Quit</guimenuitem>, still work, regardless of this
+option.</para></note>
 
 <para>The last section of this tab, allows you to change the action of each of
 the three mouse buttons.  Your options are:</para>
@@ -207,8 +207,7 @@ will explode, and the game will be over.</para></listitem>
 </varlistentry>
 <varlistentry>
 <term>Toggle Mark</term>
-<listitem><para>Clicking with this button on a case, will mark/unmark with a red
-flag.</para></listitem>
+<listitem><para>Clicking with this button on a case, will mark/unmark with a redflag.</para></listitem>
 </varlistentry>
 <varlistentry>
 <term>Autoreveal</term>
@@ -217,33 +216,75 @@ all neighboring cases, that are not marked with red flags.  If one of those
 neighboring cases has a bomb under it, the bomb will explode, and the game will
 be over.</para></listitem>
 </varlistentry>
+
 <varlistentry>
-<term>Toggle ? Mark</term>
+<term>Toggle flag</term>
+<listitem><para>Clicking with this button on a case, will flag/unflag with a
+question mark.</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term>Toggle ? mark</term>
 <listitem><para>Clicking with this button on a case, will mark/unmark with a
 question mark.</para></listitem>
 </varlistentry>
 </variablelist>
 </listitem>
 </varlistentry>
+
 <varlistentry>
-<term><guilabel>Color Settings</guilabel></term>
-<listitem><para>This dialog box will allow you to adjust the color of the kmines
-screen.  To adjust, simply click the color button beside each description, and
-select the new color.</para></listitem>
+<term><guilabel>Appearance</guilabel></term>
+<listitem>
+<para>The top option, entitled <guilabel>case size</guilabel>,
+determines the size of each of the squares in the playing area.  By default,
+they are set small.  You can increase the size, if you are working on a very
+high resolution monitor.</para> 
+
+<para>The rest of this page is concerned with colors. To adjust,
+simply click the color button beside each description, and select the
+new color.</para>
+</listitem>
 </varlistentry>
+
+<varlistentry>
+<term><guilabel>Highscores</guilabel></term>
+<listitem>
+<para>Here you can change your <guilabel>Nickname</guilabel> and add a
+cute <guilabel>Comment</guilabel> about yourself, to show in the high
+score table.  You can also enable the <guilabel>World-wide highscores
+enabled</guilabel> checkbox, and share your skill at &kmines; across
+the world with an online high score server.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><guilabel>Custom Game</guilabel></term>
+<listitem>
+<para>Finally, if you are not finding the existing configurations
+challenging enough, you can set up a custom game here.  Use the
+sliders to change the <guilabel>Width</guilabel>,
+<guilabel>Height</guilabel>, and the percentage of the board covered
+with <guilabel>Mines</guilabel>.  The default game has 20 percent of
+the board covered, so there is plenty of room to make the game
+harder.</para>
+</listitem>
+</varlistentry>
+
 <varlistentry>
 <term>Saving your changes</term>
 <listitem><para>Once your changes are complete, click
-"<guibutton>OK</guibutton>" to make them permenant.</para>
-<para>If you want to abandon your changes, click "<guibutton>Cancel</guibutton>"
-to abort the changes.</para>
-<para>If you click on <guilabel>Default</guilabel>, the default settings will
-be restored.  Click <guilabel>OK</guilabel> to make these default changes
-permenant, or edit the settings some more.</para>
+<guibutton>OK</guibutton> to make them permenant.</para>
+
+<para>If you want to abandon your changes, click
+<guibutton>Cancel</guibutton> to abort the changes.</para>
+
+<para>If you click on <guilabel>Default</guilabel>, the default
+settings will be restored.  Click <guilabel>OK</guilabel> to make
+these default changes permenant, or edit the settings some
+more.</para>
 </listitem>
 </varlistentry>
 </variablelist>
-
 
 </chapter>
 
@@ -264,18 +305,25 @@ permenant, or edit the settings some more.</para>
 <keycombo action="simul">&Ctrl;<keycap>N</keycap></keycombo>
 </shortcut>
 <guimenu>Game</guimenu>
-<guimenuitem>New Game</guimenuitem> </menuchoice></term>
+<guimenuitem>New</guimenuitem> </menuchoice></term>
 <listitem><para>Starts a new game.</para></listitem>
 </varlistentry>
+
 <varlistentry>
 <term><menuchoice>
-<shortcut>
-<keycombo action="simul">&Ctrl;<keycap>H</keycap></keycombo>
-</shortcut>
 <guimenu>Game</guimenu>
-<guimenuitem>High Scores...</guimenuitem> </menuchoice></term>
-<listitem><para>This shows you the high score (the shortest time) for each
-difficulty level.</para></listitem>
+<guisubmenu>Choose Level</guisubmenu>
+</menuchoice></term>
+<listitem>
+<para>Lets you set the difficulty level from a submenu.</para>
+<para>There are three default levels of difficulty:
+<guimenuitem>Easy</guimenuitem> (64 boxes, 10 mines),
+<guimenuitem>Normal</guimenuitem> (256 boxes, 40 mines), and
+<guimenuitem>Expert</guimenuitem> (480 boxes, 99 mines).  There is also a
+<guimenuitem>Custom...</guimenuitem> level settings.</para>
+<para>If you select <guimenuitem>Custom...</guimenuitem>, then the
+settings you have configured in the <guimenuitem>Configure
+&kmines;</guimenuitem> dialog will be used.</para></listitem>
 </varlistentry>
 <varlistentry>
 <term><menuchoice>
@@ -285,15 +333,18 @@ difficulty level.</para></listitem>
 give you a button to press when you want to continue this
 game.</para></listitem>
 </varlistentry>
+
 <varlistentry>
 <term><menuchoice>
 <shortcut>
-<keycombo action="simul">&Ctrl;<keycap>P</keycap></keycombo>
+<keycombo action="simul">&Ctrl;<keycap>H</keycap></keycombo>
 </shortcut>
 <guimenu>Game</guimenu>
-<guimenuitem>Print</guimenuitem> </menuchoice></term>
-<listitem><para>Prints the game board.</para></listitem>
+<guimenuitem>Show Highscores</guimenuitem> </menuchoice></term>
+<listitem><para>This shows you the high score (the shortest time) for each
+difficulty level.</para></listitem>
 </varlistentry>
+
 <varlistentry>
 <term><menuchoice>
 <shortcut>
@@ -322,33 +373,19 @@ will be visible again.</para></note></listitem>
 <varlistentry>
 <term><menuchoice>
 <guimenu>Settings</guimenu>
-<guimenuitem>Configure Key Bindings...</guimenuitem> </menuchoice></term>
+<guimenuitem>Configure Shortcuts</guimenuitem> </menuchoice></term>
 <listitem><para>Allows you to change the keyboard shortcuts for &kmines;</para>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term><menuchoice>
 <guimenu>Settings</guimenu>
-<guimenuitem>Configure KMines</guimenuitem> </menuchoice></term>
+<guimenuitem>Configure &kmines;</guimenuitem> </menuchoice></term>
 <listitem><para>Allows you to adjust game options.  For more detailed
 information, see the section entitled <link linkend="prefs">Game
 Options</link>.</para></listitem>
 </varlistentry>
-<varlistentry>
-<term><menuchoice>
-<guimenu>Settings</guimenu>
-<guisubmenu>Level</guisubmenu> </menuchoice></term>
-<listitem><para>Lets you set the difficulty level from a submenu.</para>
-<para>There are three default levels of difficulty:
-<guimenuitem>Easy</guimenuitem> (64 boxes, 10 mines),
-<guimenuitem>Normal</guimenuitem> (256 boxes, 40 mines), and
-<guimenuitem>Expert</guimenuitem> (480 boxes, 99 mines).  There is also a
-<guimenuitem>Custom...</guimenuitem> level settings.</para>
-<para>If you select <guimenuitem>Custom...</guimenuitem>, a small dialog box will
-appear, that will allow you to adjust Width (number of boxes across), Height
-(number of boxes up and down), and number of mines, using slider bars, or
-directly entering them into the text boxes.</para></listitem>
-</varlistentry>
+
 </variablelist>
 </sect1>
 
@@ -383,8 +420,8 @@ directly entering them into the text boxes.</para></listitem>
 </table>
 
 <para>These key bindings can be changed by selecting <menuchoice>
-<guimenu>Settings</guimenu> <guimenuitem>Configure Key Bindings</guimenuitem>
-</menuchoice> from the menubar.</para>
+<guimenu>Settings</guimenu> <guimenuitem>Configure Key
+Bindings</guimenuitem> </menuchoice> from the menubar.</para>
 
 </sect1>
 
