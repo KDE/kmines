@@ -1,3 +1,7 @@
+2.1.0b (19 November 2001)
+ * fix a nasty bug : uncorrect flag was not shown at game over in certain
+   cases [thanx for the bug reports from Viira and from an unnamed admin :)]
+
 2.1.0 (17 July 2001) [in CVS]
  -- version to be released with KDE 2.2 --
  * fixed checked entry in "show highscores" submenu

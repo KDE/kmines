@@ -122,7 +122,8 @@ void Status::update(bool mine)
     QColor color = (r<0 && u!=0 ? red : white);
     left->setColor(color);
 	left->display(r);
-	if ( u==0 ) _endGame(!mine);
+
+	if ( u==0 && !mine ) _endGame(true); // ends game only on wins
 }
 
 void Status::_endGame(bool win)
