@@ -85,7 +85,9 @@ void ExtManager::convertLegacy(uint gameType)
 bool ExtManager::isStrictlyLess(const Score &s1, const Score &s2) const
 {
     if ( s1.score()==s2.score() )
-        return s1.data("nb_actions").toUInt()>s2.data("nb_actions").toUInt();
+        // when time is same, favour more clicks (it means auto-reveal
+        // didn't help so much):
+        return s1.data("nb_actions").toUInt()<s2.data("nb_actions").toUInt();
     return Manager::isStrictlyLess(s1, s2);
 }
 
