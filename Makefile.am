@@ -17,3 +17,6 @@ rc_DATA = kminesui.rc
 
 messages: rc.cpp
 	$(XGETTEXT) rc.cpp $(kmines_SOURCES) -o $(podir)/kmines.pot
+
+install-data-local:
+	rm -rf $(kde_appsdir)/Games/kmines.desktop
