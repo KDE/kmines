@@ -32,7 +32,6 @@ MainWidget::MainWidget()
                                   actionCollection());
 	KStdGameAction::highscores(this, SLOT(showHighscores()),
                                actionCollection());
-	KStdGameAction::print(status, SLOT(print()), actionCollection());
 	KStdGameAction::quit(qApp, SLOT(quit()), actionCollection());
 
 	// keyboard

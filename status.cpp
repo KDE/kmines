@@ -3,15 +3,13 @@
 
 #include <qpainter.h>
 #include <qpixmap.h>
-#include <kprinter.h>
-#include <qobjectlist.h>
 #include <qwhatsthis.h>
 #include <qlayout.h>
 
 #include <kapplication.h>
 #include <klocale.h>
 #include <kconfig.h>
-#include <ghighscores.h>
+#include "ghighscores.h"
 
 
 Status::Status(QWidget *parent, const char *name)
@@ -175,29 +173,6 @@ void Status::_endGame(bool won)
 
     if ( field->level().type()==Level::Custom || !won ) return;
     kHighscores->submitScore(dg->score(), this);
-}
-
-void Status::print()
-{
-	KPrinter prt;
-	if ( !prt.setup() ) return;
-
-	// repaint all children widgets
-	repaint(false);
-	const QObjectList *ol = children();
-	QObjectListIt it(*ol);
-	QObject *o;
-	QWidget *w;
-	while ( (o=it.current()) ) {
-		++it;
-		if ( !o->isWidgetType()) continue;
-		w = (QWidget *)o;
-		w->repaint(false);
-	}
-
-	// write the screen region corresponding to the window
-	QPainter p(&prt);
-	p.drawPixmap(0, 0, QPixmap::grabWindow(winId()));
 }
 
 void Status::gameStateChangedSlot(GameState state)

@@ -1,7 +1,7 @@
 #ifndef HIGHSCORES_H
 #define HIGHSCORES_H
 
-#include <ghighscores.h>
+#include "ghighscores.h"
 #include "defines.h"
 #include "version.h"
 

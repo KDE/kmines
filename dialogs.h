@@ -7,9 +7,9 @@
 
 #include <knuminput.h>
 #include <kcolorbutton.h>
-#include <ghighscores.h>
-#include <gsettings.h>
-#include <gmisc_ui.h>
+#include "ghighscores.h"
+#include "gsettings.h"
+#include "gmisc_ui.h"
 
 #include "defines.h"
 

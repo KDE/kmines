@@ -29,7 +29,6 @@ class Status : public QWidget, public KMines
 	void update(bool);
 	void gameLost()       { _endGame(false); }
 	void pauseGame()      { field->pause(); }
-	void print();
 
 	void moveUp()     { field->up(); }
 	void moveDown()   { field->down(); }

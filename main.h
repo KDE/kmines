@@ -3,7 +3,7 @@
 
 #include <kmainwindow.h>
 #include <kaction.h>
-#include <gsettings.h>
+#include "gsettings.h"
 
 #include "defines.h"
 
