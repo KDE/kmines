@@ -1,4 +1,4 @@
-#include "field.h"
+#include "field.moc"
 
 #include <math.h>
 
