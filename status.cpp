@@ -4,6 +4,7 @@
 #include <qpixmap.h>
 #include <qprinter.h>
 #include <qobjectlist.h>
+#include <qwhatsthis.h>
 #include <kapp.h>
 #include <klocale.h>
 #include <kconfig.h>
@@ -26,6 +27,7 @@ Status::Status(QWidget *parent, const char *name)
 	// mines left LCD
 	left = new LCDNumber(this);
 	left->installEventFilter(parent);
+	QWhatsThis::add(left, i18n("Mines left"));
 	hbl->addWidget(left);
 	hbl->addStretch(1);
 	
@@ -34,12 +36,14 @@ Status::Status(QWidget *parent, const char *name)
 	connect( smiley, SIGNAL(clicked()), SLOT(restartGame()) );
 	smiley->installEventFilter(parent);
 	smiley->setFocusPolicy(QWidget::NoFocus);
+	QWhatsThis::add(smiley, i18n("Press to start a new game"));
 	hbl->addWidget(smiley);
 	hbl->addStretch(1);
 
 	// digital clock LCD
 	dg = new DigitalClock(this);
 	dg->installEventFilter(parent);
+	QWhatsThis::add(dg, i18n("Time elapsed"));
 	hbl->addWidget(dg);
 	
 // mines field	
@@ -52,10 +56,12 @@ Status::Status(QWidget *parent, const char *name)
 	connect( field, SIGNAL(freezeTimer()), dg, SLOT(freeze()) );
 	connect( field, SIGNAL(setMood(Smiley::Mood)),
 			 smiley, SLOT(setMood(Smiley::Mood)) );
+	QWhatsThis::add(field, i18n("Mines field"));
 	top->addWidget(field);
 
 	message = new QLabel(this);
 	message->setAlignment(AlignCenter);
+	QWhatsThis::add(message, i18n("Game status"));
 	connect( field, SIGNAL(putMsg(const QString &)),
 			 message, SLOT(setText(const QString &)) );
 	top->addWidget(message);

@@ -333,6 +333,7 @@ void WHighScores::writeName()
 	conf->setGroup(HS_GRP[mode]);
 	QString str = qle->text();
 	if ( str.length() ) conf->writeEntry(HS_NAME, str);
+	conf->sync();
 	str = conf->readEntry(HS_NAME);
 	qle->setText(str);
 	enableButton(Close, TRUE);
