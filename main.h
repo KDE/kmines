@@ -27,11 +27,12 @@ class KMines : public QWidget
 	  	height and number of mines */
 	void change_level(int level);
 	
-	void about();
-	void help();
 	void configKeys();
 	void quit();
 	void toggleMenu();
+
+protected slots:
+	void menuCallback(int);
 
  signals:
 	/*/ signal : start a new game */

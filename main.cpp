@@ -6,12 +6,14 @@
 #include <kkeyconf.h>
 
 #include "main.h"
+#include "version.h"
 
 #include "main.moc"
 
 KMines::KMines( QWidget *parent, const char *name )
 : QWidget( parent, name )
 {
+   	setCaption(kapp->getCaption());
 	installEventFilter(this);
 	
 	status = new KStatus(this);
@@ -21,7 +23,6 @@ KMines::KMines( QWidget *parent, const char *name )
 	kKeys->addKey(klocale->translate("Quit"), "CTRL+Q");
 	kKeys->addKey(klocale->translate("New game"), "F2");
 	kKeys->addKey(klocale->translate("Pause game"), "P");
-	kKeys->addKey(klocale->translate("Help"), "F1");
 	kKeys->addKey(klocale->translate("Options"), "O");
 	kKeys->addKey(klocale->translate("High scores"), "H");
 	kKeys->addKey(klocale->translate("Close dialog"), "Return");
@@ -33,7 +34,6 @@ KMines::KMines( QWidget *parent, const char *name )
 	kKeys->connectFunction(K_KMINES, klocale->translate("Quit"), this, SLOT(quit()));
 	kKeys->connectFunction(K_KMINES, klocale->translate("New game"), status, SLOT(restartGame()));
 	kKeys->connectFunction(K_KMINES, klocale->translate("Pause game"), status, SLOT(pauseGame()));
-	kKeys->connectFunction(K_KMINES, klocale->translate("Help"), this, SLOT(help()));
 	kKeys->connectFunction(K_KMINES, klocale->translate("Options"), status, SLOT(options()));
 	kKeys->connectFunction(K_KMINES, klocale->translate("High scores"), status, SLOT(showHighScores()));
 	
@@ -69,11 +69,13 @@ KMines::KMines( QWidget *parent, const char *name )
 	level->insertItem(klocale->translate("Custom"));
 	connect(level, SIGNAL(activated(int)), SLOT(change_level(int)));
 
-	QPopupMenu *help = new QPopupMenu;
-	help->insertItem(klocale->translate("Help"), this, SLOT(help()) );
-	help->insertSeparator();
-	help->insertItem(klocale->translate("About..."), this, SLOT(about()) );
-  
+    	QPopupMenu *help = kapp->getHelpMenu(true, QString(i18n("Minesweeper"))
+                                         + " " + KMINES_VERSION
+                                         + i18n("\n\nby Nicolas Hadacek")
+                                         + " (hadacek@kde.org)");  
+
+    	connect (help, SIGNAL (activated (int)), SLOT (menuCallback (int))); 
+
 	menu = new QMenuBar(this);
 	menu->insertItem(klocale->translate("File"), popup );
 	menu->insertItem(klocale->translate("Options"), options );
@@ -95,17 +97,12 @@ KMines::KMines( QWidget *parent, const char *name )
 	toggleMenu();
 }
 
-void KMines::about()
-{   QString str;
-	str.sprintf(klocale->translate("%s (%s) \n\nby Nicolas HADACEK  (hadacek@kde.org)\
-\n http://www.via.ecp.fr/~hadacek/KDE/kmines.html"), SNAME, SDATE);
-	KMsgBox::message(0, klocale->translate("kmines : About"),
-					 (const char *)str, KMsgBox::INFORMATION, klocale->translate("Close"));
-}
-
-void KMines::help()
+void KMines::menuCallback(int item)
 {
-	kapp->invokeHTMLHelp("", "");
+    switch (item) 
+    {   
+
+    }
 }
 
 void KMines::change_level(int lev)
@@ -193,7 +190,7 @@ int main( int argc, char ** argv )
 {
     KApplication a(argc, argv, NAME);
 	KMines *km = new KMines();
-	km->setCaption(SNAME);
+	//km->setCaption(SNAME);
 
 	a.setMainWidget(km);
 	km->show();

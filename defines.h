@@ -7,7 +7,7 @@
 
 /* Version name and date */
 #define NAME "kmines"
-#define SNAME "kmines 0.6.10 alpha"
+//#define SNAME "kmines 0.6.10 alpha"
 #define SDATE "21/01/98"
 
 /* Strings for the configuration file */
