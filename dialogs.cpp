@@ -35,7 +35,6 @@
 #include <kcombobox.h>
 #include <knuminput.h>
 #include <kcolorbutton.h>
-#include <kcombobox.h>
 
 #include "bitmaps/smile"
 #include "bitmaps/smile_happy"
