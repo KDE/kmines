@@ -45,9 +45,7 @@ void setGameType(uint type)
 bool configure(QWidget *parent)
 {
     internal->checkFirst();
-    KConfigWidget *cw = new KConfigWidget(i18n("Configure Highscores"));
-    cw->configCollection()->insert( new ConfigItem(cw) );
-    KConfigDialog *cd = new KConfigDialog(cw, parent);
+    ConfigDialog *cd = new ConfigDialog(parent);
     cd->exec();
     bool saved = cd->hasBeenSaved();
     delete cd;

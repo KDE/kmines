@@ -23,6 +23,7 @@
 #include <qcheckbox.h>
 #include <qlabel.h>
 #include <qvbox.h>
+#include <qtabwidget.h>
 
 #include <klistview.h>
 #include <klineedit.h>
@@ -30,7 +31,6 @@
 #include <kdialogbase.h>
 
 #include "ghighscores.h"
-#include "gsettings.h"
 
 
 namespace KExtHighscore
@@ -93,10 +93,18 @@ class HighscoresWidget : public QWidget
 
     void reload();
 
+ signals:
+    void tabChanged(int i);
+
+ public slots:
+    void changeTab(int i);
+
  private slots:
     void showURL(const QString &) const;
+    void tabChanged() { emit tabChanged(_tw->currentPageIndex()); }
 
  private:
+    QTabWidget     *_tw;
     HighscoresList *_scoresList, *_playersList;
     KURLLabel      *_scoresUrl, *_playersUrl;
 };
@@ -110,6 +118,7 @@ class HighscoresDialog : public KDialogBase
  private slots:
     void exportToText();
     void configure();
+    void tabChanged(int i);
 
  private:
     QValueVector<HighscoresWidget *> _widgets;
@@ -132,26 +141,29 @@ class MultipleScoresList : public ScoresList
 };
 
 //-----------------------------------------------------------------------------
-class ConfigItem : public KConfigItemBase
+class ConfigDialog : public KDialogBase
 {
  Q_OBJECT
  public:
-    ConfigItem(QWidget *widget);
+    ConfigDialog(QWidget *parent);
+
+    bool hasBeenSaved() const { return _saved; }
 
  private slots:
+    void modifiedSlot();
     void removeSlot();
+    void accept();
+    void slotApply() { save(); }
 
  private:
-    QWidget     *_widget;
+    bool         _saved;
     QCheckBox   *_WWHEnabled;
     QLineEdit   *_nickname, *_comment;
     KLineEdit   *_key, *_registeredName;
     KPushButton *_removeButton;
 
-    void loadState();
-    bool saveState();
-    void setDefaultState() {}
-    bool hasDefault() const { return true; }
+    void load();
+    bool save();
 };
 
 }; // namespace

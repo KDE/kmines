@@ -22,7 +22,6 @@
 
 #include <qlayout.h>
 #include <qtextstream.h>
-#include <qtabwidget.h>
 #include <qheader.h>
 #include <qgrid.h>
 #include <qvgroupbox.h>
@@ -100,7 +99,7 @@ void ScoresList::addLine(uint index, QListViewItem *line)
 
 void ScoresList::reload()
 {
-    uint index = _items.nbEntries() - 1 ;
+    uint index = 0;
     QListViewItem *item = firstChild();
     while (item) {
         uint k = 0;
@@ -111,7 +110,7 @@ void ScoresList::reload()
             item->setText(k, itemText(container, index));
             k++;
         }
-        index--;
+        index++;
         item = item->nextSibling();
     }
 }
@@ -146,35 +145,36 @@ HighscoresWidget::HighscoresWidget(int localRank, QWidget *parent)
 
     QVBoxLayout *vbox = new QVBoxLayout(this, KDialogBase::spacingHint());
 
-    QTabWidget *tw = new QTabWidget(this);
-    vbox->addWidget(tw);
+    _tw = new QTabWidget(this);
+    connect(_tw, SIGNAL(currentChanged(QWidget *)), SLOT(tabChanged()));
+    vbox->addWidget(_tw);
 
     // scores tab
     QWidget *w;
     if ( s.nbEntries()==0 ) {
-        QLabel *lab = new QLabel(i18n("no score entry"), tw);
+        QLabel *lab = new QLabel(i18n("no score entry"), _tw);
         lab->setAlignment(AlignCenter);
         w = lab;
         _scoresList = 0;
     } else {
-        _scoresList = new HighscoresList(s, localRank, tw);
+        _scoresList = new HighscoresList(s, localRank, _tw);
         w = _scoresList;
     }
-    tw->addTab(w, i18n("Best &Scores"));
+    _tw->addTab(w, i18n("Best &Scores"));
 
     // players tab
-    _playersList = new HighscoresList(p, p.id(), tw);
-    tw->addTab(_playersList, i18n("&Players"));
+    _playersList = new HighscoresList(p, p.id(), _tw);
+    _tw->addTab(_playersList, i18n("&Players"));
 
     // statistics tab
     if ( internal->showStatistics )
-        tw->addTab(new StatisticsTab(tw), i18n("Statistics"));
+        _tw->addTab(new StatisticsTab(_tw), i18n("Statistics"));
 
     if ( p.histogram().size()!=0 )
-        tw->addTab(new HistogramTab(tw), i18n("Histogram"));
+        _tw->addTab(new HistogramTab(_tw), i18n("Histogram"));
 
     // additionnal tabs
-    internal->additionnalTabs(tw);
+    internal->additionnalTabs(_tw);
 
     // url labels
     if ( internal->isWWHSAvailable() ) {
@@ -192,6 +192,12 @@ HighscoresWidget::HighscoresWidget(int localRank, QWidget *parent)
                 SLOT(showURL(const QString &)));
         vbox->addWidget(_playersUrl);
     }
+}
+
+void HighscoresWidget::changeTab(int i)
+{
+    if ( i!=_tw->currentPageIndex() )
+        _tw->setCurrentPage(i);
 }
 
 void HighscoresWidget::showURL(const QString &url) const
@@ -229,6 +235,7 @@ HighscoresDialog::HighscoresDialog(uint nbGameTypes, int rank, QWidget *parent)
         } else w = plainPage();
         QVBoxLayout *vbox = new QVBoxLayout(w);
         HighscoresWidget *hw = new HighscoresWidget((i==type ? rank : -1), w);
+        connect(hw, SIGNAL(tabChanged(int)), SLOT(tabChanged(int)));
         vbox->addWidget(hw);
         _widgets.append(hw);
     }
@@ -240,6 +247,12 @@ HighscoresDialog::HighscoresDialog(uint nbGameTypes, int rank, QWidget *parent)
     setButtonText(User2, i18n("Configure..."));
     connect(this, SIGNAL(user2Clicked()), SLOT(configure()));
     enableButtonSeparator(several);
+}
+
+void HighscoresDialog::tabChanged(int k)
+{
+    for (uint i=0; i<_widgets.size(); i++)
+        _widgets[i]->changeTab(k);
 }
 
 void HighscoresDialog::configure()
@@ -302,25 +315,26 @@ bool MultipleScoresList::showColumn(const ItemContainer &item) const
 }
 
 //-----------------------------------------------------------------------------
-ConfigItem::ConfigItem(QWidget *widget)
-    : KConfigItemBase(widget), _widget(widget), _WWHEnabled(0)
+ConfigDialog::ConfigDialog(QWidget *parent)
+    : KDialogBase(Swallow, i18n("Configure Highscores"),
+                  Ok|Apply|Cancel, Cancel,
+                  parent, "configure_highscores", true, true),
+      _saved(false), _WWHEnabled(0)
 {
-    bool wwhs = internal->isWWHSAvailable();
-
-    QWidget *page = widget;
+    QWidget *page = 0;
     QTabWidget *tab = 0;
-    if (wwhs) {
-        QVBoxLayout *top = new QVBoxLayout(widget);
-        tab = new QTabWidget(widget);
-        top->addWidget(tab);
-
-            // main tab
+    if ( internal->isWWHSAvailable() ) {
+        tab = new QTabWidget(this);
+        setMainWidget(tab);
         page = new QWidget(tab);
         tab->addTab(page, i18n("Main"));
+    } else {
+        page = new QWidget(this);
+        setMainWidget(page);
     }
 
-    QGridLayout *pageTop = new QGridLayout(page, 2, 2,
-                               KDialog::spacingHint(), KDialog::spacingHint());
+    QGridLayout *pageTop =
+        new QGridLayout(page, 2, 2, spacingHint(), spacingHint());
 
     QLabel *label = new QLabel(i18n("Nickname:"), page);
     pageTop->addWidget(label, 0, 0);
@@ -338,7 +352,7 @@ ConfigItem::ConfigItem(QWidget *widget)
     _comment->setMaxLength(50);
     pageTop->addWidget(_comment, 1, 1);
 
-    if (wwhs) {
+    if (tab) {
         _WWHEnabled
             = new QCheckBox(i18n("World-wide highscores enabled"), page);
         connect(_WWHEnabled, SIGNAL(toggled(bool)),
@@ -348,13 +362,13 @@ ConfigItem::ConfigItem(QWidget *widget)
         // advanced tab
         QWidget *page = new QWidget(tab);
         tab->addTab(page, i18n("Advanced"));
-        QVBoxLayout *pageTop = new QVBoxLayout(page,
-                       KDialogBase::spacingHint(), KDialogBase::spacingHint());
+        QVBoxLayout *pageTop =
+            new QVBoxLayout(page, spacingHint(), spacingHint());
 
         QVGroupBox *group = new QVGroupBox(i18n("Registration Data"), page);
         pageTop->addWidget(group);
         QGrid *grid = new QGrid(2, group);
-        grid->setSpacing(KDialogBase::spacingHint());
+        grid->setSpacing(spacingHint());
 
         label = new QLabel(i18n("Nickname:"), grid);
         _registeredName = new KLineEdit(grid);
@@ -367,15 +381,31 @@ ConfigItem::ConfigItem(QWidget *widget)
         KGuiItem gi = KStdGuiItem::clear();
         gi.setText(i18n("Remove"));
         _removeButton = new KPushButton(gi, grid);
-            connect(_removeButton, SIGNAL(clicked()), SLOT(removeSlot()));
+        connect(_removeButton, SIGNAL(clicked()), SLOT(removeSlot()));
+    }
+
+    load();
+    enableButtonApply(false);
+}
+
+void ConfigDialog::modifiedSlot()
+{
+    enableButtonApply(true);
+}
+
+void ConfigDialog::accept()
+{
+    if ( save() ) {
+        KDialogBase::accept();
+        kapp->config()->sync(); // #### safer
     }
 }
 
-void ConfigItem::removeSlot()
+void ConfigDialog::removeSlot()
 {
     KGuiItem gi = KStdGuiItem::clear();
     gi.setText(i18n("Remove"));
-    int res = KMessageBox::warningYesNo(_widget,
+    int res = KMessageBox::warningYesNo(this,
                                i18n("This will permanently remove your "
                                "registration key. You will not be able to use "
                                "the currently registered nickname anymore."),
@@ -390,7 +420,7 @@ void ConfigItem::removeSlot()
     }
 }
 
-void ConfigItem::loadState()
+void ConfigDialog::load()
 {
     const PlayerInfos &infos = internal->playerInfos();
     _nickname->setText(infos.isAnonymous() ? QString::null : infos.name());
@@ -407,7 +437,7 @@ void ConfigItem::loadState()
     }
 }
 
-bool ConfigItem::saveState()
+bool ConfigDialog::save()
 {
     bool enabled = (_WWHEnabled ? _WWHEnabled->isChecked() : false);
 
@@ -418,8 +448,12 @@ bool ConfigItem::saveState()
         return true;
 
     bool res = internal->modifySettings(_nickname->text().lower(),
-                                        _comment->text(), enabled, _widget);
-    if (res) load(); // need to update view when "apply" is clicked
+                                        _comment->text(), enabled, this);
+    if (res) {
+        load(); // needed to update view when "apply" is clicked
+        enableButtonApply(false);
+    }
+    _saved = true;
     return res;
 }
 
