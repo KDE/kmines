@@ -94,6 +94,7 @@ MainWidget::MainWidget()
 	createGUI();
 	readSettings();
 	setView(status);
+	updateRects(); // #### should be in KTMainWindow::setView
 }
 
 #define MENUBAR_ACTION \
@@ -107,9 +108,11 @@ void MainWidget::readSettings()
 {
 	GameType type = OptionDialog::readLevel();
 	levelAction[type]->setChecked(TRUE);
+	status->newGame(type);
 
 	bool visible = OptionDialog::readMenuVisible();
 	MENUBAR_ACTION->setChecked(visible);
+	toggleMenubar();
 
 	setKeyboardEnabled( OptionDialog::readKeyboard() );
 }
@@ -145,6 +148,7 @@ void MainWidget::toggleMenubar()
 	if (b) menuBar()->show();
 	else {
 		menuBar()->hide();
+	
 		// #### sort of hack : because KTMainWindow does not manage correctly
 		// main widget with a fixed layout
 		updateRects();

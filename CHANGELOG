@@ -1,12 +1,14 @@
+2.0.4
+ * hack to resize correctly when menu is hidden (due to bugs
+   in KTMainWindow)
+ * nicer (and simpler) custom level with KNumIntInput
+
 2.0.3
  * use kkeydialog for actions
  * rationalize settings (much better now)
  * animate autoreveal with keyboard
  * enable/disable and change text for pause in menu
  * configuration of mouse bindings [idea of FX Duranceau]
- * hack to resize correctly when menu is hidden (due to limitation
-   in KTMainWindow) (still broken ...)
- * nicer custom level dialog (well it is broken ...)
 
 2.0.2
  * XMLify the GUI

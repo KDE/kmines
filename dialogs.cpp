@@ -140,27 +140,32 @@ CustomDialog::CustomDialog(Level &_lev, QWidget *parent)
 	km = new KIntNumInput(lev.nbMines, plainPage());
 	connect(km, SIGNAL(valueChanged(int)), SLOT(nbMinesChanged(int)));
 	top->addWidget(km);
-	nbMinesChanged(lev.nbMines);
+	updateNbMines();
 }
 
 void CustomDialog::widthChanged(int n)
 {
 	lev.width = (uint)n;
-	nbMinesChanged(lev.nbMines);
+	updateNbMines();
 }
 
 void CustomDialog::heightChanged(int n)
 {
 	lev.height = (uint)n;
-	nbMinesChanged(lev.nbMines);
+	updateNbMines();
 }
 
 void CustomDialog::nbMinesChanged(int n)
 {
 	lev.nbMines = (uint)n;
+	updateNbMines();
+}
+
+void CustomDialog::updateNbMines()
+{
 	uint nb = lev.width * lev.height;
 	km->setRange(1, nb - 2);
-	km->setLabel(i18n("Mines (%1%)").arg(100*n/nb));
+	km->setLabel(i18n("Mines (%1%)").arg(100*lev.nbMines/nb));
 	enableButton(Ok, lev.width!=initLev.width || lev.height!=initLev.height
 				 || lev.nbMines!=initLev.nbMines);
 }

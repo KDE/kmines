@@ -22,7 +22,9 @@ Field::Field(QWidget *parent, const char *name)
 	connect(pb, SIGNAL(clicked()), this, SLOT(resume()));
 	top->addStretch(1);
 
-	setFont( QFont("Helvetica", 14, QFont::Bold) );
+	QFont f = font();
+	f.setBold(true);
+	setFont(f);
 	
 	readSettings();
 }

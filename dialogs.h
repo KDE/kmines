@@ -103,7 +103,9 @@ class CustomDialog : public DialogBase
 
  private:
 	KIntNumInput *km;
-	Level        &lev, &initLev;
+	Level        &lev, initLev;
+
+	void updateNbMines();
 };
 
 //-----------------------------------------------------------------------------
