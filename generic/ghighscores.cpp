@@ -62,10 +62,10 @@ void setGameType(uint type)
     HighscoresPrivate::setGameType(type);
 }
 
-KSettingWidget *createSettingsWidget(QWidget *parent)
+KUIConfigWidget *createConfigurationWidget(QWidget *parent)
 {
     HighscoresPrivate::checkFirst();
-    return new HighscoresSettingsWidget(parent);
+    return new HighscoresConfigWidget(parent);
 }
 
 void showMultipleScores(const QValueList<Score> &scores, QWidget *parent)

@@ -46,12 +46,13 @@ Field::Field(QWidget *parent)
 
 void Field::readSettings()
 {
-	_uMark = GameSettings::readUMark();
-    _cursorShown = GameSettings::readKeyboard();
+	_uMark = GameConfig::readUMark();
+    _cursorShown = GameConfig::readKeyboard();
+    if ( inside(_cursor) ) placeCursor(_cursor);
 	for (uint i=0; i<3; i++)
-		_mb[i] = GameSettings::readMouseBinding((MouseButton)i);
-    setCaseProperties( AppearanceSettings::readCaseProperties() );
-    _completeReveal = GameSettings::readMagicReveal();
+		_mb[i] = GameConfig::readMouseBinding((MouseButton)i);
+    setCaseProperties( AppearanceConfig::readCaseProperties() );
+    _completeReveal = GameConfig::readMagicReveal();
     if (_completeReveal) emit setCheating();
 }
 

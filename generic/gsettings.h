@@ -27,14 +27,17 @@
 
 //-----------------------------------------------------------------------------
 /**
- * The abstract class for loading and saving a setting.
+ * Abstract base class for loading and saving some setting.
+ * This class keeps track of the modification status of the setting.
  */
-class KSettingGeneric : public QObject
+class KUIConfigBase : public QObject
 {
  Q_OBJECT
+
  public:
-    KSettingGeneric(QObject *parent = 0);
-    virtual ~KSettingGeneric();
+    KUIConfigBase(QObject *parent = 0);
+
+    virtual ~KUIConfigBase();
 
     /**
      * Load the setting.
@@ -53,29 +56,29 @@ class KSettingGeneric : public QObject
     /**
      * Set the setting to its default.
      */
-    void setDefaults();
+    void setDefault();
 
     /**
      * @return true if the setting has its default state.
      */
-    virtual bool hasDefaults() const = 0;
+    virtual bool hasDefault() const = 0;
 
  public slots:
     /**
-     * Should be called when state has been modified.
+     * Should be called when the setting state has been modified.
      */
-    void hasBeenModifiedSlot();
+    void modifiedSlot();
 
  signals:
     /**
      * Emitted when the setting state has been modified.
      */
-    void hasBeenModified();
+    void modified();
 
     /**
      * Emitted when the setting state has been saved.
      */
-    void hasBeenSaved();
+    void saved();
 
  protected:
     /**
@@ -92,83 +95,120 @@ class KSettingGeneric : public QObject
     /**
      * Implement this method to set the default state.
      */
-    virtual void setDefaultsState() = 0;
+    virtual void setDefaultState() = 0;
 
  private:
     bool _modified;
 
-    class KSettingGenericPrivate;
-    KSettingGenericPrivate *d;
+    class KUIConfigBasePrivate;
+    KUIConfigBasePrivate *d;
 };
 
 //-----------------------------------------------------------------------------
 /**
- * This class manages a list of @ref KSettingGeneric.
+ * This class manages a list of @ref KUIConfigBase.
  */
-class KSettingList : public KSettingGeneric
+class KUIConfigList : public KUIConfigBase
 {
  Q_OBJECT
+
  public:
-    KSettingList(QObject *parent = 0);
-    ~KSettingList();
+    KUIConfigList(QObject *parent = 0);
+
+    ~KUIConfigList();
 
     /**
-     * Append the given @ref KSettingGeneric.
-     *
-     * Note : the given object will be deleted at destruction time.
+     * Append the given @ref KUIConfigBase to the list.
+     * Note: the list takes ownership of the given @ref KUIConfigBase
+     * (it will delete it at destruction time).
      */
-    void insert(KSettingGeneric *setting);
+    void insert(KUIConfigBase *uiconfig);
 
     /**
      * Remove the given @ref KSettingGeneric.
-     *
-     * Note : the given object will be deleted.
+     * It deletes the given @ref KUIConfigBase.
      */
-    void remove(KSettingGeneric *setting);
+    void remove(KUIConfigBase *uiconfig);
 
-    bool hasDefaults() const;
+    /**
+     * @reimplemented
+     */
+    bool hasDefault() const;
 
  protected:
-    QPtrList<KSettingGeneric> _settings;
-
+    /**
+     * @reimplemented
+     */
     void loadState();
+
+    /**
+     * @reimplemented
+     */
     bool saveState();
-    void setDefaultsState();
+
+    /**
+     * @reimplemented
+     */
+    void setDefaultState();
+
+    /**
+     * @return the @ref KUIConfigBase list.
+     */
+    const QPtrList<KUIConfigBase> &list() const { return _list; }
 
  private slots:
-    void settingDestroyed(QObject *object);
+    void UIConfigDestroyed(QObject *object);
+
+ private:
+   QPtrList<KUIConfigBase> _list;
 };
 
 //-----------------------------------------------------------------------------
-class KSettingCollection;
+class KUIConfigCollection;
 class KConfigBase;
 class QLabel;
 class QButtonGroup;
 
 /**
- * This class mangages an object that load/save its state from a config file.
+ * Abstract class that manages an UI control that load/save its state from
+ * an entry in a @KConfigBase.
  */
-class KSetting : public KSettingGeneric
+class KUIConfig : public KUIConfigBase
 {
  Q_OBJECT
- Q_PROPERTY( QString text READ text WRITE setText )
+ Q_PROPERTY(QString text READ text WRITE setText)
+
  public:
-    KSetting(const QString &group, const QString &key,
-             const QVariant &def, KSettingCollection *,
-             const QString &text, QVariant::Type);
+    /**
+     * Constructor.
+     *
+     * @param group the group of the configuration entry
+     * @param key the key of the configuration entry
+     * @param def the default value
+     * @param collection the parent collection
+     * @param text the text shown in the UI
+     * @param type the type of the value of the configuration entry
+     *
+     * The @ref KConfigBase used to load/save the state is taken from the
+     * collection. If @param collection is null, the application
+     * @ref KConfigBase is used.
+     */
+     KUIConfig(const QString &group, const QString &key,
+               const QVariant &def, KUIConfigCollection *collection,
+               const QString &text, QVariant::Type type);
 
     /**
-     * Associate an object.
+     * Associate the UI control that will be managed by this class.
      */
     virtual void associate(QObject *object);
 
     /**
-     * Set the label shown to the user.
+     * Set the text shown to the user.
      */
     void setText(const QString &text);
 
     /**
-     * Set the "proxy" label : the given @QLabel replaces the widget to display
+     * Set a "proxy" label : the given @QLabel replaces the widget to display
      * the text.
      */
     void setProxyLabel(QLabel *label);
@@ -189,8 +229,8 @@ class KSetting : public KSettingGeneric
     virtual QVariant value() const;
 
     /**
-     * @return the value read from the config file corresponding to the entry.
-     * It does not modify the object current value.
+     * @return the value read from the @ref KConfigBase.
+     * It does not modify the current value.
      */
     virtual QVariant configValue() const;
 
@@ -198,11 +238,6 @@ class KSetting : public KSettingGeneric
      * @return the managed object.
      */
     QObject *object() const { return _object; }
-
-    /**
-     * @return the managed widget. Null if it is not a @ref QWidget.
-     */
-    QWidget *widget() const;
 
     /**
      * @return the default value.
@@ -214,13 +249,34 @@ class KSetting : public KSettingGeneric
         const char *className, *signal, *property, *labelProperty;
         QVariant::Type type;
     };
+    /**
+     * @internal
+     */
     virtual const Data &data() const = 0;
 
+    /**
+     * @reimplemented
+     */
     void loadState();
-    bool saveState();
-    void setDefaultsState();
-    bool hasDefaults() const;
 
+    /**
+     * @reimplemented
+     */
+    bool saveState();
+
+    /**
+     * @reimplemented
+     */
+    void setDefaultState();
+
+    /**
+     * @reimplemented
+     */
+    bool hasDefault() const;
+
+    /**
+     * @internal
+     */
     bool checkType(const QVariant &) const;
 
  private slots:
@@ -234,16 +290,19 @@ class KSetting : public KSettingGeneric
     QLabel        *_label;
 
     KConfigBase *config() const;
+
+    class KUIConfigPrivate;
+    KUIConfigPrivate *d;
 };
 
 /**
- * This class manages a simple widget.
+ * This class manages a simple UI control (@see Type).
  */
-class KSimpleSetting : public KSetting
+class KSimpleUIConfig : public KUIConfig
 {
  Q_OBJECT
  public:
-    /** The type of the associated UI object (default value type in bracket).
+    /** The type of the associated UI control (default value type in bracket).
      * <ul>
      * <li> QCheckBox (bool) </li>
      * <li> QLineEdit/KLineEdit (QString) </li>
@@ -260,25 +319,27 @@ class KSimpleSetting : public KSetting
      */
      enum Type { CheckBox = 0, LineEdit, ColorButton, ToggleAction,
                  ColorComboBox, EditableComboBox, DatePicker, FontAction,
-                 FontSizeAction, DateTimeEdit, TextEdit, NB_TYPES };
+                 FontSizeAction, DateTimeEdit, TextEdit,
+                 Reserved1, Reserved2, Reserved3, Reserved4, Reserved5,
+                 NB_TYPES };
 
     /**
      * Constructor.
      *
-     * @param type the type of the associated UI object.
-     * @param group the group in the config file.
-     * @param key the key in the config file.
+     * @param type the type of the associated UI control.
+     * @param group the group of the configuration entry.
+     * @param key the key of the configuration entry.
      * @param def the default value ; its type should be compatible with the
-     *     object (see list above).
+     * object (see @ref Type).
      * @param text the text shown to the user.
      *
      * The @ref KConfigBase used to load/save the state is taken from the
-     * @ref KSettingCollection. If @collection is null, the application
+     * @ref KUIConfigCollection. If @param collection is null, the application
      * @ref KConfigBase is used.
      */
-    KSimpleSetting(Type type, const QString &group, const QString &key,
-                   const QVariant &def, KSettingCollection *collection,
-                   const QString &text = QString::null);
+    KSimpleUIConfig(Type type, const QString &group, const QString &key,
+                    const QVariant &def, KUIConfigCollection *collection,
+                    const QString &text = QString::null);
 
  private:
     Type _type;
@@ -288,14 +349,13 @@ class KSimpleSetting : public KSetting
 };
 
 /**
- * This class manages a ranged widget (KIntNumInput, KDoubleNumInput,
- * QSpinBox/KIntSpinBox, QSlider, QDial, KSelector).
+ * This class manages a ranged UI control (@see Type).
  */
-class KRangedSetting : public KSetting
+class KRangedUIConfig : public KUIConfig
 {
  Q_OBJECT
  public:
-    /** The type of the associated UI object (default value type in bracket).
+    /** The type of the associated UI control (default value type in bracket).
      * <ul>
      * <li> KIntNumInput (int) </li>
      * <li> KDoubleNumInput (double) </li>
@@ -306,29 +366,34 @@ class KRangedSetting : public KSetting
      * </ul>
      */
      enum Type { IntInput = 0, DoubleInput, SpinBox, Slider, Dial,
-                 Selector, NB_TYPES };
+                 Selector,
+                 Reserved1, Reserved2, Reserved3, Reserved4, Reserved5,
+                 NB_TYPES };
 
     /**
      * Constructor.
      *
-     * @param type the type of the associated UI object.
-     * @param group the group in the config file.
-     * @param key the key in the config file.
+     * @param type the type of the associated UI control.
+     * @param group the group of the configuration entry.
+     * @param key the key of the configuration entry.
      * @param def the default value ; its type should be compatible with the
-     * type.
-     * @param min minimum value.
-     * @param max maximum value.
+     * type (see @ref Type).
+     * @param min the minimal value.
+     * @param max the maximal value.
      * @param text the text shown to the user.
      *
      * The @ref KConfigBase used to load/save the state is taken from the
-     * @ref KSettingCollection. If @collection is null, the application
+     * @ref KUIConfigCollection. If @param collection is null, the application
      * @ref KConfigBase is used.
      */
-    KRangedSetting(Type type, const QString &group, const QString &key,
-                   const QVariant &def, const QVariant &min,
-                   const QVariant &max, KSettingCollection *collection,
-                   const QString &text = QString::null);
+    KRangedUIConfig(Type type, const QString &group, const QString &key,
+                    const QVariant &def, const QVariant &min,
+                    const QVariant &max, KUIConfigCollection *collection,
+                    const QString &text = QString::null);
 
+    /**
+     * @reimplemented
+     */
     void associate(QObject *object);
 
     /**
@@ -337,25 +402,23 @@ class KRangedSetting : public KSetting
     void setRange(const QVariant &min, const QVariant &max);
 
     /**
-     * @return the maximum value.
+     * @return the maximal value.
      */
     QVariant maxValue() const;
 
     /**
-     * @return the minimum value.
+     * @return the minimal value.
      */
     QVariant minValue() const;
 
     /**
      * Bound the given value to the range (see @ref setRange). It does not
-     * modify the widget.
+     * modify the current value.
      */
     QVariant bound(const QVariant &value) const;
 
     /**
-     * @return the value read from the config file corresponding to the entry.
-     * It does not modify the object current value.
-     *
+     * @reimplemented
      * The returned value is constrained to the range.
      */
     QVariant configValue() const;
@@ -369,15 +432,14 @@ class KRangedSetting : public KSetting
 };
 
 /**
- * This class manages widget that have multiple choices (readonly
- * QComboBox/KComboBox, QButtonGroup, KSelectAction).
+ * This class manages an UI control that have multiple choices (@see Type).
  */
-class KMultiSetting : public KSetting
+class KMultiUIConfig : public KUIConfig
 {
  Q_OBJECT
  public:
     /**
-     * The type of the associated UI object.
+     * The type of the associated UI control.
      * <ul>
      * <li> read-only QComboBox/KComboBox </li>
      * <li> QButtonGroup : only manages the QRadioButtons </li>
@@ -385,51 +447,63 @@ class KMultiSetting : public KSetting
      * </ul>
      */
      enum Type { ReadOnlyComboBox = 0, RadioButtonGroup, SelectAction,
+                 Reserved1, Reserved2, Reserved3, Reserved4, Reserved5,
                  NB_TYPES };
 
     /**
      * Constructor.
      *
-     * @param nbItems the number of items
-     * @param group the group in the config file.
-     * @param key the key in the config file.
-     * @param def the default value ; its type should be @ref QVariant::String.
-     *            It should be one of the entry associated with an
-     *            item id by @ref map method.
+     * @param type the type of the associated UI control.
+     * @param nbItems the number of items.
+     * @param group the group of the configuration entry.
+     * @param key the key of the configuration entry.
+     * @param def the default value; its type should be @ref QVariant::String.
+     * It should be one of the entries associated with item index by @ref map.
      * @param text the text shown to the user.
      *
      * The @ref KConfigBase used to load/save the state is taken from the
-     * @ref KSettingCollection. If @collection is null, the application
+     * @ref KUIConfigCollection. If @param collection is null, the application
      * @ref KConfigBase is used.
      */
-    KMultiSetting(Type type, uint nbItems,
-                  const QString &group, const QString &key,
-                  const QVariant &def, KSettingCollection *collection,
-                  const QString &text = QString::null);
+    KMultiUIConfig(Type type, uint nbItems,
+                   const QString &group, const QString &key,
+                   const QVariant &def, KUIConfigCollection *collection,
+                   const QString &text = QString::null);
 
     /**
      * Set the entry string that will be saved in the config file when the
      * item is selected. This method inserts the appropriate items (for
-     * @ref QButtonGroup, you need to create the @ref QRadioButton beforehand)
-     * and sets their label.
+     * @ref QButtonGroup, you need to create the @ref QRadioButton beforehand).
      *
-     * @param id the item index.
+     * @param index the item index.
      * @param entry the string that will be saved (this string should
      * not be translated).
-     * @param text the label shown to the user (shoulg be translated).
+     * @param text the text shown to the user (should be translated).
      *
-     * Note : if the entry from the
-     * config file cannot be mapped to the text of an item, it will try to
-     * convert it to an index and set the corresponding item.
+     * Note: if the value read from @ref KConfigBase is not one of the
+     * given entries, the class will try to convert it to an index and set the
+     * corresponding item.
      */
-    void map(int id, const QString &entry, const QString &text);
+    void map(int index, const QString &entry, const QString &text);
 
+    /**
+     * @reimplemented
+     */
     void associate(QObject *object);
+
+    /**
+     * @reimplemented
+     */
     void setValue(const QVariant &);
+
+    /**
+     * @reimplemented
+     */
     QVariant value() const;
 
     /**
-     * @return the item id converted from the value read in the config file.
+     * @return the item index converted from the value read from the
+     * @KConfigBase. It does not modify the current value.
      */
     int configId() const;
 
@@ -447,9 +521,9 @@ class KMultiSetting : public KSetting
 
 //-----------------------------------------------------------------------------
 /**
- * This class manages a list of KSetting.
+ * This class manages a list of @ref KUIConfig.
  */
-class KSettingCollection : public KSettingList
+class KUIConfigCollection : public KUIConfigList
 {
  Q_OBJECT
  public:
@@ -457,146 +531,158 @@ class KSettingCollection : public KSettingList
      * Constructor.
      *
      * @param config the @ref KConfigBase object used to load/save entries.
-     *               If null, uses kapp->config()
+     * If null, it uses <pre>kapp->config()</pre>.
      */
-    KSettingCollection(KConfigBase *config = 0, QObject *parent = 0);
+    KUIConfigCollection(KConfigBase *config = 0, QObject *parent = 0);
 
-    ~KSettingCollection();
+    ~KUIConfigCollection();
 
     /**
      * @return the @ref KConfigBase object.
      */
-    KConfigBase *config() const { return _config; }
+    KConfigBase *config() const;
 
     /**
-     * @return the @ref KSetting containing the given @ref QObject.
+     * @return the @ref KUIConfig containing the given @ref QObject.
      */
-    KSetting *setting(QObject *object) const;
+    KUIConfig *UIConfig(QObject *object) const;
 
  private:
     KConfigBase  *_config;
 
-    class KSettingCollectionPrivate;
-    KSettingCollectionPrivate *d;
+    class KUIConfigCollectionPrivate;
+    KUIConfigCollectionPrivate *d;
 };
 
 //-----------------------------------------------------------------------------
 /**
  * This is a helper class to make widget that contains a collection of
- * setting widgets.
+ * UI control (for example a page in a configuration dialog).
  *
  * Example of usage :
  * <pre>
- * MiscSettings::MiscSettings()
- *    : KSettingWidget(i18n("Misc"), "misc")
+ * MyConfigWidget::MyConfigWidget()
+ *    : KUIConfigWidget(i18n("Misc"), "misc")
  * {
  *     QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
  *
- *     QCheckBox *cb = new QCheckBox(i18n("Boat with sails"), this);
- *     (void)new KSetting(cb, i18n("Boat with sails"), "Options",
- *                        "with sails", true, settingCollection());
+ *     QCheckBox *cb = new QCheckBox(this);
+ *     KSimpleUIConfig *suc =
+ *         new KSimpleUIConfig(KSimpleUIConfig::CheckBox,
+ *                             "Options", "with sails", true,
+ *                             UIConfigCollection(), i18n("Boat with sails"));
+ *     uc->associate(cb);
  *     top->addWidget(cb);
  *
- *     KIntNumInput *l = new KIntNumInput(i18n("Length"), this);
- *     KRangedSetting *rs = new KRangedSetting(l, i18n("Length"), Options",
- *                                          "length", 30, settingCollection());
- *     rs->setRange(10, 100);
+ *     KIntNumInput *l = new KIntNumInput(this);
+ *     KRangedUIConfig *ruc =
+ *         new KRangedUIConfig(KRangedUIConfig::IntInput,
+ *                             "Options", "length", 30, 10, 100,
+ *                             UIConfigCollection(), i18n("Length"));
+ *     ruc->associate(l);
  *     top->addWidget(l);
  *
  *     QHBox *hbox = new QHBox(top);
- *     (void)new QLabel(i18n("Type"), hbox)
- *     QComboBox *t = new QComboBox(hbox);
- *     KMultipleSetting *ms = new KMultipleSetting(t, i18n("Type"),
- *                         "Options", "type", "catmaran", settingCollection());
- *     ms->map(0, "single_hull", i18n("single hull"));
- *     ms->map(1, "catamaran", 18n("catamaran"));
- *     ms->map(2, "trimaran", i18n("trimaran"));
+ *     QLabel *label = new QLabel(hbox)
+ *     KComboBox *t = new KComboBox(hbox);
+ *     KMultiUIConfig *muc =
+ *         new KMultiUIConfig(KMultiUIConfig::ReadOnlyComboBox, 3,
+ *                            "Options", "type", "catamaran",
+ *                            UIConfigCollection(), i18n("Type"));
+ *     muc->associate(t);
+ *     muc->setProxyLabel(label);
+ *     muc->map(0, "single_hull", i18n("single hull"));
+ *     muc->map(1, "catamaran", 18n("catamaran"));
+ *     muc->map(2, "trimaran", i18n("trimaran"));
  * }
  *
  * ...
  *
  * void configureSettings()
  * {
- *     KSettingDialog dialog(this);
- *     dialog.append(new MiscSettings);
- *     ... // other settings widgets
+ *     KUIConfigDialog dialog(this);
+ *     dialog.append(new MyConfigWidget);
+ *     // append other config widgets...
  *     dialog.exec();
  * }
  * </pre>
+ *
  * That's it : all the loading/saving/defaulting is done automagically.
  *
  */
-class KSettingWidget : public QWidget
+class KUIConfigWidget : public QWidget
 {
  Q_OBJECT
  public:
     /**
      * Constructor.
      *
-     * @param title the title used by @ref Dialog.
-     * @param icon the icon used by @ref Dialog.
+     * @param title the title used by @ref KUIConfigDialog.
+     * @param icon the icon used by @ref KUIConfigDialog.
      * @param config the @rf KConfigBase object passed to
-     * @ref KSettingCollection.
+     * @ref KUIConfigCollection.
      */
-    KSettingWidget(const QString &title = QString::null,
-                   const QString &icon = QString::null,
-                   QWidget *parent = 0, const char *name = 0,
-                   KConfigBase *config = 0);
-    ~KSettingWidget();
+    KUIConfigWidget(const QString &title = QString::null,
+                    const QString &icon = QString::null,
+                    QWidget *parent = 0, const char *name = 0,
+                    KConfigBase *config = 0);
+
+    ~KUIConfigWidget();
 
     QString title() const { return _title; }
     QString icon() const { return _icon; }
 
     /**
-     * @return the @ref KSettingCollection.
+     * @return the @ref KUIConfigCollection.
      */
-    KSettingCollection *settingCollection() { return _settings; }
+    KUIConfigCollection *UIConfigCollection() { return _UIConfigCollection; }
 
  private:
-    KSettingCollection *_settings;
+    KUIConfigCollection *_UIConfigCollection;
     QString             _title, _icon;
 
-    class KSettingWidgetPrivate;
-    KSettingWidgetPrivate *d;
+    class KUIConfigWidgetPrivate;
+    KUIConfigWidgetPrivate *d;
 };
 
 //-----------------------------------------------------------------------------
 /**
- * This class is used to display one or several @ref KSettingWidget.
+ * This class is used to display one or several @ref KUIConfigWidget.
  *
- * See @ref KSettingWidget for an example of usage.
+ * See @ref KUIConfigWidget for an example of usage.
  */
-class KSettingDialog : public KDialogBase
+class KUIConfigDialog : public KDialogBase
 {
  Q_OBJECT
  public:
-	KSettingDialog(QWidget *parent, const char *name = 0);
-    ~KSettingDialog();
+	KUIConfigDialog(QWidget *parent, const char *name = 0);
+
+    ~KUIConfigDialog();
 
     /**
-     * Append the given @KSettingWidget to the dialog.
+     * Append the given @KUIConfigWidget to the dialog.
      */
-    void append(KSettingWidget *widget);
+    void append(KUIConfigWidget *widget);
 
  signals:
     /**
-     * Emitted when some settings have been saved (with
+     * Emitted when some @ref KUIConfig have been saved (with
      * Apply button or with Ok button).
      */
-    void settingsSaved();
+    void saved();
 
  private slots:
     void accept();
     void slotDefault();
     void slotApply();
-    void changed();
-    void slotAboutToShowPage(QWidget *page);
+    void modified();
+    void aboutToShowPageSlot(QWidget *page);
 
  private:
-    QPtrList<KSettingWidget> _widgets;
+    QPtrList<KUIConfigWidget> _widgets;
 
-    class KSettingDialogPrivate;
-    KSettingDialogPrivate *d;
+    class KUIConfigDialogPrivate;
+    KUIConfigDialogPrivate *d;
 
     bool apply();
 };

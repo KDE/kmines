@@ -1,10 +1,12 @@
-2.1.6 (11 April 2002) [CVS 3.1 devel]
+2.1.6 (17 April 2002) [CVS 3.1 devel]
  * mark/unmark actions on mouse release [patch by Thomas Capricelli]
  * "magic reveal" : a new option that leave only the non trivial cases to
    solve [patch by Thomas Capricelli]
  * fix obscure flicker condition : keyboard play and moving pressed mouse
    outside field :)
  * add home/end/pageup/pagedown keyboard actions
+ * fix pause menu entry state in some situation
+ * fix resize when case size changed
 
 2.1.5 (14 February 2002) [SF 3.1 devel]
  * now include a solver/adviser ! [contributed by Mikhail Kourinny]

@@ -106,11 +106,11 @@ class MultipleScoresList : public ScoresList
 };
 
 //-----------------------------------------------------------------------------
-class HighscoresSettingsWidget : public KSettingWidget
+class HighscoresConfigWidget : public KUIConfigWidget
 {
  Q_OBJECT
  public:
-    HighscoresSettingsWidget(QWidget *parent);
+    HighscoresConfigWidget(QWidget *parent);
 
     void load();
     bool save();

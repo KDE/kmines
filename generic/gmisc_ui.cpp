@@ -38,16 +38,15 @@ void LCD::setLeadString(const QString &s)
 
 void LCD::resetColor()
 {
-    setColor(_fgColor);
+    setColor(QColor());
 }
 
 void LCD::setColor(const QColor &color)
 {
-    if ( color.isValid() ) {
-        QPalette p = palette();
-        p.setColor(QColorGroup::Foreground, color);
-        setPalette(p);
-    } else resetColor();
+    const QColor &c = (color.isValid() ? color : _fgColor);
+    QPalette p = palette();
+    p.setColor(QColorGroup::Foreground, c);
+    setPalette(p);
 }
 
 void LCD::showValue(uint v)

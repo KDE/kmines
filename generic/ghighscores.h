@@ -28,7 +28,7 @@
 
 
 class QWidget;
-class KSettingWidget;
+class KUIConfigWidget;
 class QTabWidget;
 
 namespace KExtHighscores
@@ -47,9 +47,9 @@ uint gameType();
 void setGameType(uint);
 
 /**
- * @return a @ref KSettings::Widget.
+ * @return a @ref KUICongiWidget for configuration of the highscores.
  */
-KSettingWidget *createSettingsWidget(QWidget *parent);
+KUIConfigWidget *createConfigurationWidget(QWidget *parent);
 
 /**
  * Show the highscores lists.

@@ -45,7 +45,7 @@ class Status : public QWidget
 
  public slots:
     void newGame(int type);
-	void restartGame()   { field->reset(); }
+	void restartGame();
 	void update(bool);
 	void pauseGame()     { field->pause(); }
 

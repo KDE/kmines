@@ -10,6 +10,7 @@
 class LCD : public QLCDNumber
 {
  Q_OBJECT
+
  public:
     LCD(uint nbDigits, QWidget *parent = 0, const char *name = 0);
 
@@ -23,8 +24,8 @@ class LCD : public QLCDNumber
     void resetColor();
 
     /**
-     * Set the given color.
-     * If the color is not valid, @ref resetColor is called.
+     * Set the foreground color to the given one.
+     * If the given color is not valid, the default one is used.
      */
     void setColor(const QColor &color);
 

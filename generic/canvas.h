@@ -19,7 +19,11 @@ class QCanvasView;
 class KCanvasRootPixmap : public KRootPixmap
 {
  Q_OBJECT
+
  public:
+    /**
+     * Constructor.
+     */
     KCanvasRootPixmap(QCanvasView *view, const char *name = 0);
 
  private slots:

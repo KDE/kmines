@@ -114,11 +114,18 @@ void Status::smileyClicked()
 
 void Status::newGame(int t)
 {
+    if ( field->isPaused() ) emit pause();
     Level::Type type = (Level::Type)t;
     if ( type!=Level::Custom ) {
         KExtHighscores::setGameType(type);
         field->setLevel(Level(type));
-    } else field->setLevel(CustomSettings::readLevel());
+    } else field->setLevel(CustomConfig::readLevel());
+}
+
+void Status::restartGame()
+{
+    if ( field->isPaused() ) emit pause();
+    field->reset();
 }
 
 void Status::settingsChanged()
@@ -127,9 +134,10 @@ void Status::settingsChanged()
 
     Level current = field->level();
     if ( current.type()!=Level::Custom ) return;
-    Level l = CustomSettings::readLevel();
+    Level l = CustomConfig::readLevel();
     if ( l.width()==current.width() && l.height()==current.height()
          && l.nbMines()==current.nbMines() ) return;
+    if ( field->isPaused() ) emit pause();
     field->setLevel(l);
 }
 

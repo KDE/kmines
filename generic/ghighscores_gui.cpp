@@ -194,28 +194,28 @@ bool MultipleScoresList::showColumn(const ItemContainer &item) const
 }
 
 //-----------------------------------------------------------------------------
-class HighscoresSetting : public KSettingGeneric
+class HighscoresUIConfig : public KUIConfigBase
 {
  public:
-    HighscoresSetting(HighscoresSettingsWidget *hsw)
-        : KSettingGeneric(), _hsw(hsw) {}
+    HighscoresUIConfig(HighscoresConfigWidget *hsw)
+        : _hsw(hsw) {}
 
  protected:
     void loadState() { _hsw->load(); }
     bool saveState() { return _hsw->save(); }
-    void setDefaultsState() {}
-    bool hasDefaults() const { return true; }
+    void setDefaultState() {}
+    bool hasDefault() const { return true; }
 
  private:
-    HighscoresSettingsWidget *_hsw;
+    HighscoresConfigWidget *_hsw;
 };
 
-HighscoresSettingsWidget::HighscoresSettingsWidget(QWidget *parent)
-    : KSettingWidget(i18n("Highscores"), "highscore", parent),
+HighscoresConfigWidget::HighscoresConfigWidget(QWidget *parent)
+    : KUIConfigWidget(i18n("Highscores"), "highscore", parent),
       _WWHEnabled(0)
 {
-    KSettingGeneric *sg = new HighscoresSetting(this);
-    settingCollection()->insert(sg);
+    KUIConfigBase *sg = new HighscoresUIConfig(this);
+    UIConfigCollection()->insert(sg);
 
     QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
 
@@ -226,25 +226,25 @@ HighscoresSettingsWidget::HighscoresSettingsWidget(QWidget *parent)
     (void)new QLabel(i18n("Nickname"), grid);
     _nickname = new QLineEdit(grid);
     connect(_nickname, SIGNAL(textChanged(const QString &)),
-            sg, SLOT(hasBeenModifiedSlot()));
+            sg, SLOT(modifiedSlot()));
     _nickname->setMaxLength(16);
 
     (void)new QLabel(i18n("Comment"), grid);
     _comment = new QLineEdit(grid);
     connect(_comment, SIGNAL(textChanged(const QString &)),
-            sg, SLOT(hasBeenModifiedSlot()));
+            sg, SLOT(modifiedSlot()));
     _comment->setMaxLength(50);
 
     if ( HighscoresPrivate::isWWHSAvailable() ) {
         _WWHEnabled
             = new QCheckBox(i18n("World-wide highscores enabled"), this);
         connect(_WWHEnabled, SIGNAL(toggled(bool)),
-                sg, SLOT(hasBeenModifiedSlot()));
+                sg, SLOT(modifiedSlot()));
         top->addWidget(_WWHEnabled);
     }
 }
 
-void HighscoresSettingsWidget::load()
+void HighscoresConfigWidget::load()
 {
     const PlayerInfos &infos = HighscoresPrivate::playerInfos();
     _nickname->setText(infos.isAnonymous() ? QString::null : infos.name());
@@ -252,7 +252,7 @@ void HighscoresSettingsWidget::load()
     if (_WWHEnabled) _WWHEnabled->setChecked(infos.isWWEnabled());
 }
 
-bool HighscoresSettingsWidget::save()
+bool HighscoresConfigWidget::save()
 {
     bool enabled = (_WWHEnabled ? _WWHEnabled->isChecked() : false);
 

@@ -76,11 +76,11 @@ class DigitalClock : public LCDClock
 };
 
 //-----------------------------------------------------------------------------
-class CustomSettings : public KSettingWidget
+class CustomConfig : public KUIConfigWidget
 {
  Q_OBJECT
  public:
-	CustomSettings();
+	CustomConfig();
 
     static Level readLevel();
 
@@ -89,16 +89,16 @@ class CustomSettings : public KSettingWidget
     void typeChosen(int);
 
  private:
-	KRangedSetting *_width, *_height, *_mines;
-    QComboBox      *_gameType;
+	KRangedUIConfig *_width, *_height, *_mines;
+    QComboBox       *_gameType;
 };
 
 //-----------------------------------------------------------------------------
-class GameSettings : public KSettingWidget
+class GameConfig : public KUIConfigWidget
 {
  Q_OBJECT
  public:
-    GameSettings();
+    GameConfig();
 
     static bool readUMark();
     static bool readKeyboard();
@@ -110,14 +110,14 @@ class GameSettings : public KSettingWidget
     void magicRevealToggled();
 
  private:
-    KSetting *_magic;
+    KUIConfig *_magic;
 };
 
-class AppearanceSettings : public KSettingWidget
+class AppearanceConfig : public KUIConfigWidget
 {
  Q_OBJECT
  public:
-    AppearanceSettings();
+    AppearanceConfig();
 
     static KMines::CaseProperties readCaseProperties();
 };

@@ -47,114 +47,114 @@
 
 
 //-----------------------------------------------------------------------------
-KSettingGeneric::KSettingGeneric(QObject *parent)
+KUIConfigBase::KUIConfigBase(QObject *parent)
     : QObject(parent), _modified(false)
 {}
 
-KSettingGeneric::~KSettingGeneric()
+KUIConfigBase::~KUIConfigBase()
 {}
 
-void KSettingGeneric::load()
+void KUIConfigBase::load()
 {
-    blockSignals(true); // do not emit hasBeenModified
+    blockSignals(true); // do not emit modified()
     loadState();
     blockSignals(false);
     _modified = false;
 }
 
-bool KSettingGeneric::save()
+bool KUIConfigBase::save()
 {
     if ( !_modified ) return true;
     bool success = saveState();
     if (success) {
         _modified = false;
-        emit hasBeenSaved();
+        emit saved();
     }
     return success;
 }
 
-void KSettingGeneric::setDefaults()
+void KUIConfigBase::setDefault()
 {
-    // NB: we emit hasBeenModified by hand because some widget (like QComboBox)
+    // NB: we emit modified() by hand because some widget (like QComboBox)
     // reports changes with a signal that only gets activated by user actions.
     blockSignals(true);
-    setDefaultsState();
+    setDefaultState();
     blockSignals(false);
-    hasBeenModifiedSlot();
+    modifiedSlot();
 }
 
-void KSettingGeneric::hasBeenModifiedSlot()
+void KUIConfigBase::modifiedSlot()
 {
     _modified = true;
-    emit hasBeenModified();
+    emit modified();
 }
 
 //-----------------------------------------------------------------------------
-KSettingList::KSettingList(QObject *parent)
-    : KSettingGeneric(parent)
+KUIConfigList::KUIConfigList(QObject *parent)
+    : KUIConfigBase(parent)
 {}
 
-KSettingList::~KSettingList()
+KUIConfigList::~KUIConfigList()
 {
-    QPtrListIterator<KSettingGeneric> it(_settings);
+    QPtrListIterator<KUIConfigBase> it(_list);
     for (; it.current()!=0; ++it) {
-        it.current()->disconnect(this, SLOT(settingDestroyed(QObject *)));
+        it.current()->disconnect(this, SLOT(UIConfigDestroyed(QObject *)));
         delete it.current();
     }
 }
 
-void KSettingList::insert(KSettingGeneric *setting)
+void KUIConfigList::insert(KUIConfigBase *setting)
 {
-    connect(setting, SIGNAL(hasBeenModified()), SLOT(hasBeenModifiedSlot()));
+    connect(setting, SIGNAL(modified()), SLOT(modifiedSlot()));
     connect(setting, SIGNAL(destroyed(QObject *)),
-            SLOT(settingDestroyed(QObject *)));
-    _settings.append(setting);
+            SLOT(UIConfigDestroyed(QObject *)));
+    _list.append(setting);
 }
 
-void KSettingList::remove(KSettingGeneric *setting)
+void KUIConfigList::remove(KUIConfigBase *setting)
 {
     delete setting;
 }
 
-void KSettingList::loadState()
+void KUIConfigList::loadState()
 {
-    QPtrListIterator<KSettingGeneric> it(_settings);
+    QPtrListIterator<KUIConfigBase> it(_list);
     for (; it.current()!=0; ++it) it.current()->load();
 }
 
-bool KSettingList::saveState()
+bool KUIConfigList::saveState()
 {
-    QPtrListIterator<KSettingGeneric> it(_settings);
+    QPtrListIterator<KUIConfigBase> it(_list);
     bool ok = true;
     for (; it.current()!=0; ++it)
         if ( !it.current()->save() ) ok = false;
     return ok;
 }
 
-void KSettingList::setDefaultsState()
+void KUIConfigList::setDefaultState()
 {
-    QPtrListIterator<KSettingGeneric> it(_settings);
-    for (; it.current()!=0; ++it) it.current()->setDefaults();
+    QPtrListIterator<KUIConfigBase> it(_list);
+    for (; it.current()!=0; ++it) it.current()->setDefault();
 }
 
-bool KSettingList::hasDefaults() const
+bool KUIConfigList::hasDefault() const
 {
-    QPtrListIterator<KSettingGeneric> it(_settings);
+    QPtrListIterator<KUIConfigBase> it(_list);
     for (; it.current()!=0; ++it)
-        if ( !it.current()->hasDefaults() ) return false;
+        if ( !it.current()->hasDefault() ) return false;
     return true;
 }
 
-void KSettingList::settingDestroyed(QObject *object)
+void KUIConfigList::UIConfigDestroyed(QObject *object)
 {
-    _settings.removeRef(static_cast<KSettingGeneric *>(object));
+    _list.removeRef(static_cast<KUIConfigBase *>(object));
 }
 
 //-----------------------------------------------------------------------------
-KSetting::KSetting(const QString &group, const QString &key,
-                   const QVariant &def, KSettingCollection *col,
-                   const QString &text, QVariant::Type type)
-    : KSettingGeneric(col), _object(0), _group(group), _key(key), _def(def),
+KUIConfig::KUIConfig(const QString &group, const QString &key,
+                     const QVariant &def, KUIConfigCollection *col,
+                     const QString &text, QVariant::Type type)
+    : KUIConfigBase(col), _object(0), _group(group), _key(key), _def(def),
       _text(text), _label(0)
 {
     if ( !_def.cast(type) )
@@ -163,7 +163,7 @@ KSetting::KSetting(const QString &group, const QString &key,
     if (col) col->insert(this);
 }
 
-void KSetting::associate(QObject *object)
+void KUIConfig::associate(QObject *object)
 {
     Q_ASSERT( _object==0 );
     _object = object;
@@ -172,31 +172,25 @@ void KSetting::associate(QObject *object)
             kdError() << k_funcinfo << "unsupported object type" << endl;
             return;
         }
-        QObject::connect(object, data().signal, SLOT(hasBeenModifiedSlot()));
+        QObject::connect(object, data().signal, SLOT(modifiedSlot()));
         QObject::connect(object, SIGNAL(destroyed(QObject *)),
                          SLOT(objectDestroyed()));
         if ( !_text.isNull() ) setText(_text);
     }
 }
 
-void KSetting::objectDestroyed()
+void KUIConfig::objectDestroyed()
 {
     deleteLater();
 }
 
-QWidget *KSetting::widget() const
-{
-    if ( _object==0 || !_object->inherits("QWidget") ) return 0;
-    return static_cast<QWidget *>(_object);
-}
-
-void KSetting::setText(const QString &text)
+void KUIConfig::setText(const QString &text)
 {
     _text = text;
     setProxyLabel(_label);
 }
 
-void KSetting::setProxyLabel(QLabel *label)
+void KUIConfig::setProxyLabel(QLabel *label)
 {
     _label = label;
     if (label) label->setText(_text);
@@ -208,41 +202,41 @@ void KSetting::setProxyLabel(QLabel *label)
     }
 }
 
-void KSetting::loadState()
+void KUIConfig::loadState()
 {
     setValue(configValue());
 }
 
-KConfigBase *KSetting::config() const
+KConfigBase *KUIConfig::config() const
 {
     if ( parent()==0 ) return kapp->config();
-    return static_cast<KSettingCollection *>(parent())->config();
+    return static_cast<KUIConfigCollection *>(parent())->config();
 }
 
-bool KSetting::saveState()
+bool KUIConfig::saveState()
 {
     KConfigGroupSaver cg(config(), _group);
     cg.config()->writeEntry(_key, value());
     return true;
 }
 
-void KSetting::setDefaultsState()
+void KUIConfig::setDefaultState()
 {
     setValue(_def);
 }
 
-bool KSetting::hasDefaults() const
+bool KUIConfig::hasDefault() const
 {
     return ( value()==_def );
 }
 
-QVariant KSetting::configValue() const
+QVariant KUIConfig::configValue() const
 {
     KConfigGroupSaver cg(config(), _group);
     return cg.config()->readPropertyEntry(_key, _def);
 }
 
-bool KSetting::checkType(const QVariant &v) const
+bool KUIConfig::checkType(const QVariant &v) const
 {
     bool canCast = v.canCast(_def.type());
     if ( !canCast )
@@ -251,18 +245,19 @@ bool KSetting::checkType(const QVariant &v) const
     return canCast;
 }
 
-void KSetting::setValue(const QVariant &v)
+void KUIConfig::setValue(const QVariant &v)
 {
     Q_ASSERT(_object);
     checkType(v);
 
     bool ok = false;
     const char *p = data().property;
-    if (p) ok = _object->setProperty(p, v);
+    Q_ASSERT(p);
+    ok = _object->setProperty(p, v);
     Q_ASSERT(ok);
 }
 
-QVariant KSetting::value() const
+QVariant KUIConfig::value() const
 {
     Q_ASSERT(_object);
 
@@ -274,7 +269,7 @@ QVariant KSetting::value() const
 }
 
 //-----------------------------------------------------------------------------
-const KSetting::Data KSimpleSetting::DATA[NB_TYPES] = {
+const KUIConfig::Data KSimpleUIConfig::DATA[NB_TYPES] = {
     {"QCheckBox", SIGNAL(toggled(bool)),
      "checked",     "text", QVariant::Bool},
     {"QLineEdit", SIGNAL(textChanged(const QString &)),
@@ -297,17 +292,22 @@ const KSetting::Data KSimpleSetting::DATA[NB_TYPES] = {
     {"QDateTimeEdit", SIGNAL(valueChanged(const QDateTime &)),
      "dateTime",    0,      QVariant::DateTime},
     {"QTextEdit", SIGNAL(textChanged(const QString &)),
-     "text",        0,      QVariant::String}
+     "text",        0,      QVariant::String},
+    { 0, 0, 0, 0, QVariant::Invalid },
+    { 0, 0, 0, 0, QVariant::Invalid },
+    { 0, 0, 0, 0, QVariant::Invalid },
+    { 0, 0, 0, 0, QVariant::Invalid },
+    { 0, 0, 0, 0, QVariant::Invalid }
 };
 
-KSimpleSetting::KSimpleSetting(Type type, const QString &group,
-                               const QString &key, const QVariant &def,
-                               KSettingCollection *col, const QString &text)
-    : KSetting(group, key, def, col, text, DATA[type].type), _type(type)
+KSimpleUIConfig::KSimpleUIConfig(Type type, const QString &group,
+                                 const QString &key, const QVariant &def,
+                                 KUIConfigCollection *col, const QString &text)
+    : KUIConfig(group, key, def, col, text, DATA[type].type), _type(type)
 {}
 
 //-----------------------------------------------------------------------------
-const KSetting::Data KRangedSetting::DATA[NB_TYPES] = {
+const KUIConfig::Data KRangedUIConfig::DATA[NB_TYPES] = {
     {"KIntNumInput", SIGNAL(valueChanged(int)),
      "value", "label", QVariant::Int},
     {"KDoubleNumInput", SIGNAL(valueChanged(double)),
@@ -319,27 +319,32 @@ const KSetting::Data KRangedSetting::DATA[NB_TYPES] = {
     {"QDial", SIGNAL(valueChanged(int)),
      "value", 0, QVariant::Int},
     {"KSelector", SIGNAL(valueChanged(int)),
-     "value", 0, QVariant::Int}
+     "value", 0, QVariant::Int},
+    { 0, 0, 0, 0, QVariant::Invalid },
+    { 0, 0, 0, 0, QVariant::Invalid },
+    { 0, 0, 0, 0, QVariant::Invalid },
+    { 0, 0, 0, 0, QVariant::Invalid },
+    { 0, 0, 0, 0, QVariant::Invalid }
 };
 
-KRangedSetting::KRangedSetting(Type type, const QString &group,
+KRangedUIConfig::KRangedUIConfig(Type type, const QString &group,
                                const QString &key, const QVariant &def,
                                const QVariant &min, const QVariant &max,
-                               KSettingCollection *col, const QString &text)
-    : KSetting(group, key, def, col, text, DATA[type].type),
+                               KUIConfigCollection *col, const QString &text)
+    : KUIConfig(group, key, def, col, text, DATA[type].type),
       _type(type), _min(min), _max(max)
 {
     checkType(min);
     checkType(max);
 }
 
-void KRangedSetting::associate(QObject *object)
+void KRangedUIConfig::associate(QObject *object)
 {
-    KSetting::associate(object);
+    KUIConfig::associate(object);
     setRange(_min, _max);
 }
 
-void KRangedSetting::setRange(const QVariant &min, const QVariant &max)
+void KRangedUIConfig::setRange(const QVariant &min, const QVariant &max)
 {
     checkType(min);
     _min = min;
@@ -354,17 +359,17 @@ void KRangedSetting::setRange(const QVariant &min, const QVariant &max)
     }
 }
 
-QVariant KRangedSetting::minValue() const
+QVariant KRangedUIConfig::minValue() const
 {
     return (object() ? object()->property("minValue") : _min);
 }
 
-QVariant KRangedSetting::maxValue() const
+QVariant KRangedUIConfig::maxValue() const
 {
     return (object() ? object()->property("maxValue") : _max);
 }
 
-QVariant KRangedSetting::bound(const QVariant &v) const
+QVariant KRangedUIConfig::bound(const QVariant &v) const
 {
     checkType(v);
 
@@ -386,6 +391,8 @@ QVariant KRangedSetting::bound(const QVariant &v) const
             return static_cast<const QDial *>(object())->bound(v.toInt());
         case Selector:
             return static_cast<const KSelector *>(object())->bound(v.toInt());
+        default:
+            break;
         }
     } else {
         switch ( defaultValue().type() ) {
@@ -401,32 +408,37 @@ QVariant KRangedSetting::bound(const QVariant &v) const
     return QVariant();
 }
 
-QVariant KRangedSetting::configValue() const
+QVariant KRangedUIConfig::configValue() const
 {
-    return bound( KSetting::configValue() );
+    return bound( KUIConfig::configValue() );
 }
 
 //-----------------------------------------------------------------------------
-const KSetting::Data KMultiSetting::DATA[NB_TYPES] = {
+const KUIConfig::Data KMultiUIConfig::DATA[NB_TYPES] = {
     {"QComboBox", SIGNAL(activated(const QString &)),
      "currentText", 0, QVariant::String},
     {"QButtonGroup", SIGNAL(clicked(int)),
      0, "text", QVariant::String},
     {"KSelectAction", SIGNAL(activated(int)),
-     "currentText", "text", QVariant::String}
+     "currentText", "text", QVariant::String},
+    { 0, 0, 0, 0, QVariant::Invalid },
+    { 0, 0, 0, 0, QVariant::Invalid },
+    { 0, 0, 0, 0, QVariant::Invalid },
+    { 0, 0, 0, 0, QVariant::Invalid },
+    { 0, 0, 0, 0, QVariant::Invalid }
 };
 
-KMultiSetting::KMultiSetting(Type type, uint nbItems,
+KMultiUIConfig::KMultiUIConfig(Type type, uint nbItems,
                              const QString &group, const QString &key,
-                             const QVariant &def, KSettingCollection *col,
+                             const QVariant &def, KUIConfigCollection *col,
                              const QString &text)
-    : KSetting(group, key, def, col, text, DATA[type].type),
+    : KUIConfig(group, key, def, col, text, DATA[type].type),
       _type(type), _nbItems(nbItems)
 {}
 
-void KMultiSetting::associate(QObject *object)
+void KMultiUIConfig::associate(QObject *object)
 {
-    KSetting::associate(object);
+    KUIConfig::associate(object);
     if ( _type==ReadOnlyComboBox && object->property("editable").toBool() ) {
         kdError() << k_funcinfo << "the combobox should be readonly" << endl;
         return;
@@ -448,7 +460,7 @@ void KMultiSetting::associate(QObject *object)
     }
 }
 
-void KMultiSetting::map(int id, const QString &entry, const QString &text)
+void KMultiUIConfig::map(int id, const QString &entry, const QString &text)
 {
     _entries[id] = entry;
     if ( object()==0 ) return;
@@ -473,7 +485,7 @@ void KMultiSetting::map(int id, const QString &entry, const QString &text)
     }
 }
 
-int KMultiSetting::mapToId(const QString &entry) const
+int KMultiUIConfig::mapToId(const QString &entry) const
 {
     QMap<int, QString>::ConstIterator it;
     for (it = _entries.begin(); it != _entries.end(); ++it)
@@ -485,7 +497,7 @@ int KMultiSetting::mapToId(const QString &entry) const
     return -1;
 }
 
-void KMultiSetting::setValue(const QVariant &v)
+void KMultiUIConfig::setValue(const QVariant &v)
 {
     Q_ASSERT(object());
     checkType(v);
@@ -502,7 +514,7 @@ void KMultiSetting::setValue(const QVariant &v)
     Q_ASSERT(ok);
 }
 
-uint KMultiSetting::findRadioButtonId(const QButtonGroup *group) const
+uint KMultiUIConfig::findRadioButtonId(const QButtonGroup *group) const
 {
     QObjectList *list = group->queryList("QRadioButton");
     QObjectListIt it(*list);
@@ -516,7 +528,7 @@ uint KMultiSetting::findRadioButtonId(const QButtonGroup *group) const
     return 0;
 }
 
-QVariant KMultiSetting::value() const
+QVariant KMultiUIConfig::value() const
 {
     Q_ASSERT(object());
 
@@ -532,7 +544,7 @@ QVariant KMultiSetting::value() const
     return id;
 }
 
-int KMultiSetting::configId() const
+int KMultiUIConfig::configId() const
 {
     int id = mapToId(configValue().toString());
     if ( id==-1 ) id = mapToId(defaultValue().toString());
@@ -541,212 +553,54 @@ int KMultiSetting::configId() const
 }
 
 //-----------------------------------------------------------------------------
-KSettingCollection::KSettingCollection(KConfigBase *config, QObject *parent)
-    : KSettingList(parent), _config(config)
-{
-    if ( config==0 ) _config = kapp->config();
-}
-
-KSettingCollection::~KSettingCollection()
+KUIConfigCollection::KUIConfigCollection(KConfigBase *config, QObject *parent)
+    : KUIConfigList(parent), _config(config)
 {}
 
-KSetting *KSettingCollection::setting(QObject *o) const
+KUIConfigCollection::~KUIConfigCollection()
+{}
+
+KConfigBase *KUIConfigCollection::config() const
 {
-    QPtrListIterator<KSettingGeneric> it(_settings);
+    return (_config ? _config : kapp->config());
+}
+
+KUIConfig *KUIConfigCollection::UIConfig(QObject *obj) const
+{
+    QPtrListIterator<KUIConfigBase> it(list());
     for (; it.current()!=0; ++it) {
-        if ( !it.current()->inherits("KSetting") ) continue;
-        KSetting *s = static_cast<KSetting *>(it.current());
-        if ( s->object()==o ) return s;
+        KUIConfig *s = (KUIConfig *)it.current()->qt_cast("KUIConfig");
+        if ( s && s->object()==obj ) return s;
     }
     return 0;
 }
-/*
-void KSettingCollection::createSettings(const QString &xmlFile)
-{
-    QString xml = (!xmlFile.isNull() ? xmlFile
-                 : locate("data", instance()->instanceName() + "settings.rc"));
-    QFile file(xml);
-    QString content;
-    if ( !file.open(IO_ReadOnly) ) {
-        content = QString::fromLatin1( "<!DOCTYPE ksetting>\n<ksetting name=\"empty\">\n</ksetting>");
-    }
-    QByteArray buffer(file.readAll());
-    content = QString::fromUtf8(buffer.data(), buffer.size());
-    file.close();
-    _doc.setContent(content);
-}
-
-QColor stringToColor(const QString &s)
-{
-    QColor color;
-
-    if( def.isEmpty() ) return color;
-    if ( def.at(0)=='#' ) {
-        color.setNamedColor(def);
-        return color;
-    }
-    int i = def.find(',');
-    if( i==-1 ) return color;
-    int red = def.left(i).toInt();
-    int old = i;
-    i = def.find(',', old+1);
-    if( i==-1 ) return color;
-    int green = def.mid(old+1, i-old-1 ).toInt();
-    int blue = def.right(def.length()-i-1 ).toInt();
-    color.setRgb(red, green, blue);
-    return color;
-}
-
-QStringList stringToList(const QString &s, char sep)
-{
-    QStringList list;
-    int i;
-    value = "";
-    int len = s.length();
-
-    for (i=0; i<len; i++) {
-        if ( s[i]!=sep && s[i]!='\\') {
-            value += s[i];
-            continue;
-        }
-        if ( s[i]=='\\' ) {
-            i++;
-            value += s[i];
-            continue;
-        }
-        // if we fell through to here, we are at a separator.  Append
-        // contents of value to the list
-        // !!! Sergey A. Sukiyazov <corwin@micom.don.ru> !!!
-        // A QStrList may contain values in 8bit locale cpecified
-        // encoding
-        list.append(value);
-        value.truncate(0);
-    }
-
-    if ( s[len-1]!=sep ) list.append(value);
-    return list;
-}
-
-QDateTime stringToDateTime(const QString &s)
-{
-    QDateTime dateTime;
-    QStringList list = stringToList(s, ',');
-    if( list.count() == 6 ) {
-        QTime time;
-        QDate date;
-
-        date.setYMD( QString::fromLatin1( list.at( 0 ) ).toInt(),
-                     QString::fromLatin1( list.at( 1 ) ).toInt(),
-                     QString::fromLatin1( list.at( 2 ) ).toInt() );
-        time.setHMS( QString::fromLatin1( list.at( 3 ) ).toInt(),
-                     QString::fromLatin1( list.at( 4 ) ).toInt(),
-                     QString::fromLatin1( list.at( 5 ) ).toInt() );
-
-        dateTime.setTime( time );
-        dateTime.setDate( date );
-    }
-    return dateTime;
-}
-
-void KSettingCollection::insert(const QString &name, const QString &group,
-                                KSetting *setting)
-{
-    QDomNodeList list = _doc.elementByTagName("group");
-    QDomElement elt;
-    uint k;
-    for (k=0; k<list.count(); k++) {
-        elt = list.item(k).toElement();
-        if ( elt.attribute("name")==group ) break;
-    }
-    if ( k==list.count() ) {
-        kdError() << k_funcinfo << "Unknown group \"" << group << "\"" << endl;
-        return;
-    }
-
-    list = elt.elementByTagName("setting");
-    for (k=0; k<list.count(); k++) {
-        elt = list.item(k).toElement();
-        if ( elt.attribute("name")==name ) break;
-    }
-    if ( k==list.count() ) {
-        kdError() << k_funcinfo << "Unknown setting \"" << name << "\"" <<endl;
-        return;
-    }
-
-    QVariant::Type type = QVariant::nameToType( elt.attribute("type") );
-    QString def = elt.attribute("default").toLowerCase();
-    QVariant v;
-    bool b, ok;
-    int i;
-    switch (type) {
-    case QVariant::Bool:
-        if ( def=="true" || def=="on" || def=="yes" ) b = true;
-        else {
-            i = def.toInt(&ok);
-            b = (ok && i);
-        }
-        v = QVariant(b, 0);
-        break;
-    case QVariant::String:
-        v = QVariant(def);
-        break;
-    case QVariant::Color:
-        v = QVariant(stringToColor(def));
-        break;
-    case QVariant::Int:
-        v = QVariant(def.toInt());
-        // #### TODO min/max
-        break;
-    case QVariant::Double:
-        v = QVariant(def.toDouble());
-        // #### TODO min/max
-        break;
-    case QVariant::Date:
-        v = QVariant(stringToDateTime(def).toDate());
-        break;
-    case QVariant::DateTime:
-        v = QVariant(stringToDateTime(def));
-        break;
-    case QVariant::StringList:
-        // #### TODO
-        break;
-    default:
-        kdError() << k_funcinfo << "Setting type not allowed \""
-                  << elt.attribute("type") << "\"" << endl;
-        return;
-    }
-
-    setting->set(name, group, v);
-}
-*/
 
 //-----------------------------------------------------------------------------
-KSettingWidget::KSettingWidget(const QString &title, const QString &icon,
+KUIConfigWidget::KUIConfigWidget(const QString &title, const QString &icon,
                                QWidget *parent, const char *name,
                                KConfigBase *config)
     : QWidget(parent, name), _title(title), _icon(icon)
 {
-    _settings = new KSettingCollection(config, this);
+    _UIConfigCollection = new KUIConfigCollection(config, this);
 }
 
-KSettingWidget::~KSettingWidget()
+KUIConfigWidget::~KUIConfigWidget()
 {}
 
 //-----------------------------------------------------------------------------
-KSettingDialog::KSettingDialog(QWidget *parent, const char *name)
+KUIConfigDialog::KUIConfigDialog(QWidget *parent, const char *name)
     : KDialogBase(IconList, i18n("Configure..."),
                   Ok|Apply|Cancel|Default, Cancel, parent, name, true, true)
 {
-    setIconListAllVisible(true);
     connect(this, SIGNAL(aboutToShowPage(QWidget *)),
-            SLOT(slotAboutToShowPage(QWidget *)));
+            SLOT(aboutToShowPageSlot(QWidget *)));
     enableButtonApply(false);
 }
 
-KSettingDialog::~KSettingDialog()
+KUIConfigDialog::~KUIConfigDialog()
 {}
 
-void KSettingDialog::append(KSettingWidget *w)
+void KUIConfigDialog::append(KUIConfigWidget *w)
 {
     QFrame *page = addPage(w->title(), QString::null,
                            BarIcon(w->icon(), KIcon::SizeLarge));
@@ -756,53 +610,50 @@ void KSettingDialog::append(KSettingWidget *w)
     vbox->addStretch(1);
     _widgets.append(w);
 
-    w->settingCollection()->load();
-    connect(w->settingCollection(), SIGNAL(hasBeenModified()),
-            SLOT(changed()));
+    w->UIConfigCollection()->load();
+    connect(w->UIConfigCollection(), SIGNAL(modified()), SLOT(modified()));
     if ( pageIndex(page)==0 ) aboutToShowPage(page);
 }
 
-void KSettingDialog::slotDefault()
+void KUIConfigDialog::slotDefault()
 {
     int i = activePageIndex();
-    _widgets.at(i)->settingCollection()->setDefaults();
+    _widgets.at(i)->UIConfigCollection()->setDefault();
 }
 
-void KSettingDialog::accept()
+void KUIConfigDialog::accept()
 {
     if ( apply() ) {
         KDialogBase::accept();
-        kapp->config()->sync(); // #### REMOVE when fixed in kdelibs
-                                // creating a KPushButton will lose all
-                                // unsaved data ...
+        kapp->config()->sync(); // #### safer
     }
 }
 
-void KSettingDialog::changed()
+void KUIConfigDialog::modified()
 {
     int i = activePageIndex();
-    bool hasDefaults = _widgets.at(i)->settingCollection()->hasDefaults();
-    enableButton(Default, !hasDefaults);
+    bool hasDefault = _widgets.at(i)->UIConfigCollection()->hasDefault();
+    enableButton(Default, !hasDefault);
     enableButtonApply(true);
 }
 
-bool KSettingDialog::apply()
+bool KUIConfigDialog::apply()
 {
     bool ok = true;
     for (uint i=0; i<_widgets.count(); i++)
-        if ( !_widgets.at(i)->settingCollection()->save() ) ok = false;
-    emit settingsSaved();
+        if ( !_widgets.at(i)->UIConfigCollection()->save() ) ok = false;
+    emit saved();
     return ok;
 }
 
-void KSettingDialog::slotApply()
+void KUIConfigDialog::slotApply()
 {
     if ( apply() ) enableButtonApply(false);
 }
 
-void KSettingDialog::slotAboutToShowPage(QWidget *page)
+void KUIConfigDialog::aboutToShowPageSlot(QWidget *page)
 {
     int i = pageIndex(page);
-    bool hasDefaults = _widgets.at(i)->settingCollection()->hasDefaults();
-    enableButton(Default, !hasDefaults);
+    bool hasDefault = _widgets.at(i)->UIConfigCollection()->hasDefault();
+    enableButton(Default, !hasDefault);
 }

@@ -47,8 +47,7 @@ class Item
      * <li> @p OneDecimal : with one decimal (only for Double) </li>
      * <li> @p Percentage : with one decimal + % (only for Double) </li>
      * <li> @p MinuteTime : MM:SS ie 3600 is 00:00, 1 is 59:59 and 0 is
-     *      undefined ; this format is used by KMines (only for UInt, Int and
-     *      Double) </li>
+     *      undefined (only for UInt, Int and Double) </li>
      * <li> @p DateTime : date and time according to locale (only for
      *      DateTime) </li>
      * </ul>
@@ -158,7 +157,7 @@ class ScoreItem : public Item
 
 /**
  * @ref Item for mean score. By default, only show one decimal and
- * 0 is shown "--"
+ * 0 is shown as "--"
  */
 class MeanScoreItem : public Item
 {
@@ -167,7 +166,7 @@ class MeanScoreItem : public Item
 };
 
 /**
- * @ref Item for the best highscore. 0 is shown "--".
+ * @ref Item for the best highscore. 0 is shown as "--".
  */
 class BestScoreItem : public Item
 {
@@ -177,11 +176,17 @@ class BestScoreItem : public Item
 
 //-----------------------------------------------------------------------------
 /**
- * Manage an array of datas associated with @ref Item.
+ * Manage an array of data associated with @ref Item.
  */
 class DataArray
 {
  public:
+     /**
+     * This constuctor is internal. You should never need to construct
+     * this class by yourself.
+     */
+    DataArray(const ItemArray &items);
+
     ~DataArray();
 
     /**
@@ -195,14 +200,6 @@ class DataArray
      * Item.
      */
     void setData(const QString &name, const QVariant &value);
-
- protected:
-    /**
-     * @internal
-     * This constuctor is internal. You should never need to construct
-     * this class by yourself.
-     */
-    DataArray(const ItemArray &items);
 
  private:
     QMap<QString, QVariant> _data;
@@ -235,7 +232,11 @@ enum ScoreType { Won = 0, Lost = -1, BlackMark = -2 };
 class Score : public DataArray
 {
  public:
+    /**
+     * Constructor.
+     */
     Score(ScoreType type = Won);
+
     ~Score();
 
     /**
@@ -249,12 +250,14 @@ class Score : public DataArray
     void setType(ScoreType type) { _type = type; }
 
     /**
+     * Convenience function equivalent to <pre>data("score").toUint()</pre>
      * @return the score value.
      */
     uint score() const { return data("score").toUInt(); }
 
     /**
-     * Comparison operator. It uses @ref Highscores::isStrictlyLess.
+     * Convenience comparison operator equivalent to
+     * <pre>Highscores::isStrictlyLess(*this, score)</pre>
      */
     bool operator <(const Score &score) const;
 

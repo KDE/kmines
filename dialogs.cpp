@@ -102,27 +102,27 @@ void DigitalClock::setCheating()
 }
 
 //-----------------------------------------------------------------------------
-KRangedSetting *createWidth(KSettingCollection *col)
+KRangedUIConfig *createWidth(KUIConfigCollection *col)
 {
-    return new KRangedSetting(KRangedSetting::IntInput,
+    return new KRangedUIConfig(KRangedUIConfig::IntInput,
                               KMines::OP_GROUP, "custom width",
                               Level::data(Level::Custom).width,
                               Level::MIN_CUSTOM_SIZE, Level::MAX_CUSTOM_SIZE,
                               col, i18n("Width"));
 }
 
-KRangedSetting *createHeight(KSettingCollection *col)
+KRangedUIConfig *createHeight(KUIConfigCollection *col)
 {
-    return new KRangedSetting(KRangedSetting::IntInput,
+    return new KRangedUIConfig(KRangedUIConfig::IntInput,
                               KMines::OP_GROUP, "custom height",
                               Level::data(Level::Custom).height,
                               Level::MIN_CUSTOM_SIZE, Level::MAX_CUSTOM_SIZE,
                               col, i18n("Height"));
 }
 
-KRangedSetting *createMines(KSettingCollection *col)
+KRangedUIConfig *createMines(KUIConfigCollection *col)
 {
-    return new KRangedSetting(KRangedSetting::IntInput,
+    return new KRangedUIConfig(KRangedUIConfig::IntInput,
                               KMines::OP_GROUP, "custom mines",
                               Level::data(Level::Custom).nbMines,
                               0, Level::MAX_CUSTOM_SIZE*Level::MAX_CUSTOM_SIZE,
@@ -130,26 +130,26 @@ KRangedSetting *createMines(KSettingCollection *col)
                               );
 }
 
-CustomSettings::CustomSettings()
-    : KSettingWidget(i18n("Custom Game"), "configure")
+CustomConfig::CustomConfig()
+    : KUIConfigWidget(i18n("Custom Game"), "configure")
 {
 	QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
 
     KIntNumInput *in = new KIntNumInput(this);
     in->setRange(0, 100); // #### to have a slider
-    _width = createWidth(settingCollection());
+    _width = createWidth(UIConfigCollection());
     _width->associate(in);
     top->addWidget(in);
 
     in = new KIntNumInput(this);
     in->setRange(0, 100); // #### to have a slider
-    _height = createHeight(settingCollection());
+    _height = createHeight(UIConfigCollection());
     _height->associate(in);
 	top->addWidget(in);
 
     in = new KIntNumInput(this);
     in->setRange(0, 100); // #### to have a slider
-    _mines = createMines(settingCollection());
+    _mines = createMines(UIConfigCollection());
     _mines->associate(in);
 	top->addWidget(in);
 
@@ -165,12 +165,11 @@ CustomSettings::CustomSettings()
         _gameType->insertItem(i18n(Level::data((Level::Type)i).i18nLabel));
     hbox->addWidget(_gameType);
 
-    connect(settingCollection(), SIGNAL(hasBeenModified()),
-            SLOT(updateNbMines()));
+    connect(UIConfigCollection(), SIGNAL(modified()), SLOT(updateNbMines()));
     QTimer::singleShot(0, this, SLOT(updateNbMines()));
 }
 
-void CustomSettings::updateNbMines()
+void CustomConfig::updateNbMines()
 {
     Level level(_width->value().toUInt(), _height->value().toUInt(),
                 _mines->value().toUInt());
@@ -180,7 +179,7 @@ void CustomSettings::updateNbMines()
     _gameType->setCurrentItem(level.type());
 }
 
-void CustomSettings::typeChosen(int i)
+void CustomConfig::typeChosen(int i)
 {
     blockSignals(true);
     Level level((Level::Type)i);
@@ -191,7 +190,7 @@ void CustomSettings::typeChosen(int i)
     updateNbMines();
 }
 
-Level CustomSettings::readLevel()
+Level CustomConfig::readLevel()
 {
     uint w = createWidth(0)->configValue().toUInt();
     uint h = createHeight(0)->configValue().toUInt();
@@ -208,31 +207,31 @@ const char *ACTION_BINDINGS[4] =
     { I18N_NOOP("reveal"), I18N_NOOP("autoreveal"),
       I18N_NOOP("toggle flag"), I18N_NOOP("toggle ? mark") };
 
-KSetting *createUMark(KSettingCollection *col)
+KUIConfig *createUMark(KUIConfigCollection *col)
 {
-    return new KSimpleSetting(KSimpleSetting::CheckBox,
+    return new KSimpleUIConfig(KSimpleUIConfig::CheckBox,
                               KMines::OP_GROUP, "? mark", true,
                               col, i18n("Enable ? mark"));
 }
 
-KSetting *createKeyboard(KSettingCollection *col)
+KUIConfig *createKeyboard(KUIConfigCollection *col)
 {
-    return new KSimpleSetting(KSimpleSetting::CheckBox,
+    return new KSimpleUIConfig(KSimpleUIConfig::CheckBox,
                               KMines::OP_GROUP, "keyboard game", false,
                               col, i18n("Enable keyboard"));
 }
 
-KSetting *createPauseFocus(KSettingCollection *col)
+KUIConfig *createPauseFocus(KUIConfigCollection *col)
 {
-    return new KSimpleSetting(KSimpleSetting::CheckBox,
+    return new KSimpleUIConfig(KSimpleUIConfig::CheckBox,
                               KMines::OP_GROUP, "paused if lose focus", true,
                               col, i18n("Pause if window lose focus"));
 }
 
-KMultiSetting *createMouseBinding(KSettingCollection *col, uint i)
+KMultiUIConfig *createMouseBinding(KUIConfigCollection *col, uint i)
 {
-    KMultiSetting *s =
-        new KMultiSetting(KMultiSetting::ReadOnlyComboBox, 4,
+    KMultiUIConfig *s =
+        new KMultiUIConfig(KMultiUIConfig::ReadOnlyComboBox, 4,
                           KMines::OP_GROUP, OP_MOUSE_BINDINGS[i],
                           ACTION_BINDINGS[i], col, i18n(BINDING_LABELS[i]));
     for (uint j=0; j<4; j++)
@@ -240,37 +239,37 @@ KMultiSetting *createMouseBinding(KSettingCollection *col, uint i)
     return s;
 }
 
-KSetting *createMagicReveal(KSettingCollection *col)
+KUIConfig *createMagicReveal(KUIConfigCollection *col)
 {
-    return new KSimpleSetting(KSimpleSetting::CheckBox,
+    return new KSimpleUIConfig(KSimpleUIConfig::CheckBox,
                               KMines::OP_GROUP, "magic reveal", false,
                               col, i18n("\"Magic\" reveal"));
 }
 
-GameSettings::GameSettings()
-    : KSettingWidget(i18n("Game"), "misc")
+GameConfig::GameConfig()
+    : KUIConfigWidget(i18n("Game"), "misc")
 {
     QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
 
     QCheckBox *cb = new QCheckBox(this);
-    KSetting *set = createUMark(settingCollection());
+    KUIConfig *set = createUMark(UIConfigCollection());
     set->associate(cb);
     top->addWidget(cb);
 
     cb = new QCheckBox(this);
-    set = createKeyboard(settingCollection());
+    set = createKeyboard(UIConfigCollection());
     set->associate(cb);
     top->addWidget(cb);
 
     cb = new QCheckBox(this);
-    set = createPauseFocus(settingCollection());
+    set = createPauseFocus(UIConfigCollection());
     set->associate(cb);
     top->addWidget(cb);
 
     cb = new QCheckBox(this);
-    _magic = createMagicReveal(settingCollection());
+    _magic = createMagicReveal(UIConfigCollection());
     _magic->associate(cb);
-    connect(_magic, SIGNAL(hasBeenModified()), SLOT(magicRevealToggled()));
+    connect(_magic, SIGNAL(modified()), SLOT(magicRevealToggled()));
     QWhatsThis::add(cb, i18n("Set flags and reveal cases for the non-trivial "
                              "cases."));
     top->addWidget(cb);
@@ -284,13 +283,13 @@ GameSettings::GameSettings()
     for (uint i=0; i<3; i++) {
         QLabel *l = new QLabel(grid);
         QComboBox *cb = new QComboBox(false, grid);
-        set = createMouseBinding(settingCollection(), i);
+        set = createMouseBinding(UIConfigCollection(), i);
         set->setProxyLabel(l);
         set->associate(cb);
 	}
 }
 
-void GameSettings::magicRevealToggled()
+void GameConfig::magicRevealToggled()
 {
     if ( _magic->value().toBool() )
         KMessageBox::information(this,
@@ -299,27 +298,27 @@ void GameSettings::magicRevealToggled()
                          QString::null, "magic_reveal_warning");
 }
 
-bool GameSettings::readUMark()
+bool GameConfig::readUMark()
 {
     return createUMark(0)->configValue().toBool();
 }
 
-bool GameSettings::readKeyboard()
+bool GameConfig::readKeyboard()
 {
     return createKeyboard(0)->configValue().toBool();
 }
 
-bool GameSettings::readPauseFocus()
+bool GameConfig::readPauseFocus()
 {
     return createPauseFocus(0)->configValue().toBool();
 }
 
-KMines::MouseAction GameSettings::readMouseBinding(KMines::MouseButton mb)
+KMines::MouseAction GameConfig::readMouseBinding(KMines::MouseButton mb)
 {
     return (KMines::MouseAction)createMouseBinding(0, mb)->configId();
 }
 
-bool GameSettings::readMagicReveal()
+bool GameConfig::readMagicReveal()
 {
     return createMagicReveal(0)->configValue().toBool();
 }
@@ -346,38 +345,38 @@ const QColor DEFAULT_NUMBER_COLOR[KMines::NB_NUMBER_COLORS] = {
     Qt::darkRed, Qt::black, Qt::black
 };
 
-KRangedSetting *createCaseSize(KSettingCollection *col)
+KRangedUIConfig *createCaseSize(KUIConfigCollection *col)
 {
-    return new KRangedSetting(KRangedSetting::IntInput,
+    return new KRangedUIConfig(KRangedUIConfig::IntInput,
                               KMines::OP_GROUP, "case size", DEF_CASE_SIZE,
                               MIN_CASE_SIZE, MAX_CASE_SIZE,
                               col, i18n("Case size"));
 }
 
-KSetting *createColor(KSettingCollection *col, uint i)
+KUIConfig *createColor(KUIConfigCollection *col, uint i)
 {
-    return new KSimpleSetting(KSimpleSetting::ColorButton,
+    return new KSimpleUIConfig(KSimpleUIConfig::ColorButton,
                               KMines::OP_GROUP, COLOR_DATA[i].entry,
                               COLOR_DATA[i].def,
                               col, i18n(COLOR_DATA[i].label));
 }
 
-KSetting *createNumberColor(KSettingCollection *col, uint i)
+KUIConfig *createNumberColor(KUIConfigCollection *col, uint i)
 {
-    return new KSimpleSetting(KSimpleSetting::ColorButton,
+    return new KSimpleUIConfig(KSimpleUIConfig::ColorButton,
                               KMines::OP_GROUP, QString("color #%1").arg(i),
                               DEFAULT_NUMBER_COLOR[i], col,
                               i18n("%n mine color", "%n mines color", i+1));
 }
 
-AppearanceSettings::AppearanceSettings()
-    : KSettingWidget(i18n("Appearance"), "appearance")
+AppearanceConfig::AppearanceConfig()
+    : KUIConfigWidget(i18n("Appearance"), "appearance")
 {
     QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
 
     KIntNumInput *in = new KIntNumInput(this);
     in->setRange(0, 100); // #### to have a slider
-    KSetting *set = createCaseSize(settingCollection());
+    KUIConfig *set = createCaseSize(UIConfigCollection());
     set->associate(in);
     top->addWidget(in);
 
@@ -390,7 +389,7 @@ AppearanceSettings::AppearanceSettings()
         QLabel *l = new QLabel(grid);
         KColorButton *cb = new KColorButton(grid);
         cb->setFixedWidth(100);
-        set = createColor(settingCollection(), i);
+        set = createColor(UIConfigCollection(), i);
         set->setProxyLabel(l);
         set->associate(cb);
     }
@@ -399,13 +398,13 @@ AppearanceSettings::AppearanceSettings()
 		QLabel *l = new QLabel(grid);
         KColorButton *cb = new KColorButton(grid);
         cb->setFixedWidth(100);
-        set = createNumberColor(settingCollection(), i);
+        set = createNumberColor(UIConfigCollection(), i);
         set->setProxyLabel(l);
         set->associate(cb);
 	}
 }
 
-KMines::CaseProperties AppearanceSettings::readCaseProperties()
+KMines::CaseProperties AppearanceConfig::readCaseProperties()
 {
     KMines::CaseProperties cp;
     cp.size = createCaseSize(0)->configValue().toUInt();
