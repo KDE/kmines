@@ -69,11 +69,11 @@ that if your flags are not properly positionned, you will explode on a bomb.
 </chapter>
 <chapter id="Epilogue">
 <title>Epilogue</title>
-<sect1>
+<sect1 id="developer">
 <title>Developer</title>
 <para><literal remap="tt"><ulink url="mailto:hadacek@kde.org">Nicolas Hadacek</ulink></literal></para>
 </sect1>
-<sect1>
+<sect1 id="authors">
 <title>Authors</title>
 <para><literal remap="tt"><ulink url="mailto:hadacek@kde.org">Nicolas Hadacek</ulink></literal></para>
 <para><literal remap="tt"><ulink url="mailto:rwilliams@kde.org">Robert Williams</ulink></literal> - Editor</para>
