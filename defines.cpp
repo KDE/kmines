@@ -54,11 +54,11 @@ const char *KMines::STATES[NB_STATES] =
     { "playing", "paused", "gameover", "stopped" };
 
 const char *KMines::MOUSE_CONFIG_NAMES[NB_MOUSE_BUTTONS] =
-    { "mouse_left", "mouse_mid", "mouse_right" };
+    { "mouse left", "mouse mid", "mouse right" };
 
 const char *KMines::COLOR_CONFIG_NAMES[NB_COLORS] =
-    { "flag_color", "explosion_color", "error_color" };
+    { "flag color", "explosion color", "error color" };
 
 const char *KMines::N_COLOR_CONFIG_NAMES[NB_N_COLORS] =
-    { "color_#0", "color_#1", "color_#2", "color_#3", "color_#4", "color_#5",
-      "color_#6", "color_#7" };
+    { "color #0", "color #1", "color #2", "color #3", "color #4", "color #5",
+      "color #6", "color #7" };

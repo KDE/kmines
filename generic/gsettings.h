@@ -471,6 +471,7 @@ class KMultiConfigItem : public KConfigItem
     KMultiConfigItemPrivate *d;
 
     int mapToId(const char *entry) const;
+    int simpleMapToId(const char *entry) const;
     uint findRadioButtonId(const QButtonGroup *) const;
 };
 
@@ -621,9 +622,9 @@ class KConfigWidget : public QWidget
      * @ref KConfigCollection.
      */
     KConfigWidget(const QString &title = QString::null,
-                    const QString &icon = QString::null,
-                    QWidget *parent = 0, const char *name = 0,
-                    KConfigBase *config = 0);
+                  const QString &icon = QString::null,
+                  QWidget *parent = 0, const char *name = 0,
+                  KConfigBase *config = 0);
 
     ~KConfigWidget();
 

@@ -18,7 +18,7 @@ FieldFrame::FieldFrame(QWidget *parent)
 
 void FieldFrame::readSettings()
 {
-    _caseSize = KConfigCollection::configItemValue("case_size").toUInt();
+    _caseSize = KConfigCollection::configItemValue("case size").toUInt();
     for (uint i=0; i<NB_COLORS; i++)
         _colors[i] =
           KConfigCollection::configItemValue(COLOR_CONFIG_NAMES[i]).toColor();

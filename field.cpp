@@ -44,15 +44,15 @@ Field::Field(QWidget *parent)
 
 void Field::readSettings()
 {
-    _uMark = KConfigCollection::configItemValue("uncertain_mark").toBool();
+    _uMark = KConfigCollection::configItemValue("uncertain mark").toBool();
     _cursorShown =
-        KConfigCollection::configItemValue("keyboard_game").toBool();
+        KConfigCollection::configItemValue("keyboard game").toBool();
     if ( inside(_cursor) ) placeCursor(_cursor);
 	for (uint i=0; i<NB_MOUSE_BUTTONS; i++)
 		_mb[i] =
         (MouseAction)KConfigCollection::configItemIndex(MOUSE_CONFIG_NAMES[i]);
     _completeReveal =
-        KConfigCollection::configItemValue("magic_reveal").toBool();
+        KConfigCollection::configItemValue("magic reveal").toBool();
     if (_completeReveal) emit setCheating();
 
     FieldFrame::readSettings();

@@ -1,4 +1,4 @@
-2.1.7 (01 May 2002) [CVS 3.1 devel]
+2.1.7 (28 May 2002) [CVS 3.1 devel]
  * XML configuration is working !!
 
 2.1.6 (24 April 2002)
@@ -19,7 +19,7 @@
 
 2.1.4c (1 May 2002)
  * fixed case drawing for all styles [bug reported by kanthoney and fixed by
-   Marks Orlovich]
+   Maksim Orlovich]
 
 2.1.4 (23 January 2002) [KDE 3.0 stable]
  * completely revamped API for highscores + dynamic library

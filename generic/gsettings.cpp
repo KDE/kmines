@@ -602,7 +602,7 @@ void KMultiConfigItem::map(int id, const char *entry, const QString &text)
     }
 }
 
-int KMultiConfigItem::mapToId(const char *entry) const
+int KMultiConfigItem::simpleMapToId(const char *entry) const
 {
     for (uint i=0; i<_entries.size(); i++)
         if ( _entries[i]==entry ) return i;
@@ -613,6 +613,14 @@ int KMultiConfigItem::mapToId(const char *entry) const
     return -1;
 }
 
+int KMultiConfigItem::mapToId(const char *entry) const
+{
+    int id = simpleMapToId(entry);
+    if ( id==-1 ) id = simpleMapToId(defaultValue().toString().utf8());
+    if ( id==-1 ) return 0;
+    return id;
+}
+
 void KMultiConfigItem::setValue(const QVariant &v)
 {
     Q_ASSERT(object());
@@ -620,7 +628,6 @@ void KMultiConfigItem::setValue(const QVariant &v)
 
     bool ok = false;
     int id = mapToId(v.toString().utf8());
-    if ( id==-1 ) return;
     if ( (KConfigItemPrivate::MultiType)objectType()
          ==KConfigItemPrivate::RadioButtonGroup ) {
         QButton *b = static_cast<QButtonGroup *>(object())->find(id);
@@ -664,10 +671,7 @@ QVariant KMultiConfigItem::value() const
 
 int KMultiConfigItem::configIndex() const
 {
-    int id = mapToId(configValue().toString().utf8());
-    if ( id==-1 ) id = mapToId(defaultValue().toString().utf8());
-    if ( id==-1 ) return 0;
-    return id;
+    return mapToId(configValue().toString().utf8());
 }
 
 //-----------------------------------------------------------------------------
@@ -773,7 +777,7 @@ KConfigItem *KConfigCollection::createConfigItem(const char *name,
     // read common attributes
     QString groupKey = group.attribute("name");
     QString key = entry.attribute("key");
-    if ( key.isEmpty() ) kdWarning() << ENTRY_NAME << " has empty key" << endl;
+    if ( key.isEmpty() ) key = name;
     QString text = entry.namedItem("text").toElement().text();
     QString whatsthis = entry.namedItem("whatsthis").toElement().text();
     QString tooltip = entry.namedItem("tooltip").toElement().text();

@@ -72,20 +72,17 @@ MainWidget::MainWidget()
 	KStdGameAction::quit(qApp, SLOT(quit()), actionCollection());
 
 	// keyboard
-	QPtrVector<KAction> keyAction(NB_KEYS);
-    KAccel *kacc = new KAccel(this);
     for (uint i=0; i<NB_KEYS; i++) {
         const KeyData &d = KEY_DATA[i];
-        keyAction.insert(i, new KAction(i18n(d.label), d.keycode, _status,
-                                        d.slot, actionCollection(), d.name));
-        keyAction[i]->setGroup("keyboard_group");
-		keyAction[i]->plugAccel(kacc);
+        KAction *action = new KAction(i18n(d.label), d.keycode, _status,
+                                      d.slot, actionCollection(), d.name);
+        action->setGroup("keyboard_group");
     }
 
 	// Settings
 	_menu = KStdAction::showMenubar(this, SLOT(toggleMenubar()),
                                    actionCollection());
-    _configCollection.createConfigItem("menubar_visible", _menu);
+    _configCollection.createConfigItem("menubar visible", _menu);
 	KStdAction::preferences(this, SLOT(configureSettings()),
                             actionCollection());
 	KStdAction::keyBindings(this, SLOT(configureKeys()), actionCollection());
@@ -169,20 +166,20 @@ void MainWidget::configureSettings()
 void MainWidget::settingsChanged()
 {
     bool enabled =
-        KConfigCollection::configItemValue("keyboard_game").toBool();
+        KConfigCollection::configItemValue("keyboard game").toBool();
 	QValueList<KAction *> list = actionCollection()->actions("keyboard_group");
 	QValueList<KAction *>::Iterator it;
 	for (it = list.begin(); it!=list.end(); ++it)
 		(*it)->setEnabled(enabled);
 
     _pauseIfFocusLost =
-        KConfigCollection::configItemValue("pause_focus").toBool();
+        KConfigCollection::configItemValue("pause focus").toBool();
     _status->settingsChanged();
 }
 
 void MainWidget::configureKeys()
 {
-	KKeyDialog::configureKeys(actionCollection(), xmlFile(), true, this);
+	KKeyDialog::configure(actionCollection(), this);
 }
 
 void MainWidget::gameStateChanged(KMines::GameState state)

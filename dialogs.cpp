@@ -113,17 +113,17 @@ CustomConfig::CustomConfig()
 
     KIntNumInput *in = new KIntNumInput(this);
     in->setRange(0, 100); // #### to have a slider
-    _width = configCollection()->createConfigItem("custom_width", in);
+    _width = configCollection()->createConfigItem("custom width", in);
     top->addWidget(in);
 
     in = new KIntNumInput(this);
     in->setRange(0, 100); // #### to have a slider
-    _height = configCollection()->createConfigItem("custom_height", in);
+    _height = configCollection()->createConfigItem("custom height", in);
 	top->addWidget(in);
 
     in = new KIntNumInput(this);
     in->setRange(0, 100); // #### to have a slider
-    _mines = configCollection()->createConfigItem("custom_mines", in);
+    _mines = configCollection()->createConfigItem("custom mines", in);
 	top->addWidget(in);
 
     top->addSpacing(2 * KDialog::spacingHint());
@@ -165,9 +165,9 @@ void CustomConfig::typeChosen(int i)
 
 Level CustomConfig::readLevel()
 {
-    uint w = KConfigCollection::configItemValue("custom_width").toUInt();
-    uint h = KConfigCollection::configItemValue("custom_height").toUInt();
-    uint n = KConfigCollection::configItemValue("custom_mines").toUInt();
+    uint w = KConfigCollection::configItemValue("custom width").toUInt();
+    uint h = KConfigCollection::configItemValue("custom height").toUInt();
+    uint n = KConfigCollection::configItemValue("custom mines").toUInt();
     return Level(w, h, n);
 }
 
@@ -178,19 +178,19 @@ GameConfig::GameConfig()
     QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
 
     QCheckBox *cb = new QCheckBox(this);
-    configCollection()->createConfigItem("uncertain_mark", cb);
+    configCollection()->createConfigItem("uncertain mark", cb);
     top->addWidget(cb);
 
     cb = new QCheckBox(this);
-    configCollection()->createConfigItem("keyboard_game", cb);
+    configCollection()->createConfigItem("keyboard game", cb);
     top->addWidget(cb);
 
     cb = new QCheckBox(this);
-    configCollection()->createConfigItem("pause_focus", cb);
+    configCollection()->createConfigItem("pause focus", cb);
     top->addWidget(cb);
 
     cb = new QCheckBox(this);
-    _magic = configCollection()->createConfigItem("magic_reveal", cb);
+    _magic = configCollection()->createConfigItem("magic reveal", cb);
     connect(_magic, SIGNAL(modified()), SLOT(magicRevealToggled()));
     top->addWidget(cb);
 
@@ -226,7 +226,7 @@ AppearanceConfig::AppearanceConfig()
 
     KIntNumInput *in = new KIntNumInput(this);
     in->setRange(0, 100); // #### to have a slider
-    configCollection()->createConfigItem("case_size", in);
+    configCollection()->createConfigItem("case size", in);
     top->addWidget(in);
 
     top->addSpacing(2 * KDialog::spacingHint());
