@@ -320,7 +320,7 @@ void Status::solveRate()
 
 void Status::viewLog()
 {
-    KDialogBase d(this, "view_log", true, i18n("View game log"),
+    KDialogBase d(this, "view_log", true, i18n("View Game Log"),
                   KDialogBase::Close, KDialogBase::Close);
     QTextEdit *view = new QTextEdit(&d);
     view->setReadOnly(true);
@@ -339,8 +339,8 @@ void Status::saveLog()
         KGuiItem gi = KStdGuiItem::save();
         gi.setText(i18n("Overwrite"));
         int res = KMessageBox::warningYesNo(this,
-                                 i18n("The file already exists. Overwrite ?"),
-                                 i18n("Save..."), gi, KStdGuiItem::cancel());
+                                 i18n("The file already exists. Overwrite?"),
+                                 i18n("File Exists"), gi, KStdGuiItem::cancel());
         if ( res==KMessageBox::No ) return;
     }
     KTempFile tmp;

@@ -104,7 +104,7 @@ MainWidget::MainWidget()
                       actionCollection(), "solve_rate");
 
     // Log
-    (void)new KAction(i18n("View Log..."), 0, _status, SLOT(viewLog()),
+    (void)new KAction(i18n("View Log"), 0, _status, SLOT(viewLog()),
                       actionCollection(), "log_view");
     (void)new KAction(i18n("Replay Log"), 0, _status, SLOT(replayLog()),
                       actionCollection(), "log_replay");
