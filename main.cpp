@@ -1,16 +1,23 @@
 #include "main.h"
 
 #include <time.h>
+
 #include <qdatetime.h>
+
 #include <kapp.h>
 #include <klocale.h>
 #include <kglobal.h>
 #include <kconfig.h>
 #include <kmenubar.h>
 #include <kaboutdialog.h>
+#include <kcmdlineargs.h>
+
 #include "defines.h"
 #include "version.h"
 #include "status.h"
+
+
+static const char *description = I18N_NOOP("KDE Game");
 
 MainWidget::MainWidget()
 : kacc(this), popup(this), options(this), level(this)
@@ -149,8 +156,11 @@ void MainWidget::showAboutApplication()
 //----------------------------------------------------------------------------
 int main( int argc, char ** argv )
 {
-    KApplication a(argc, argv, "kmines");
-	MainWidget *mw = new MainWidget;
+    KCmdLineArgs::init(argc, argv, "kmines", description, VERSION);
+
+    KApplication a;
+
+    MainWidget *mw = new MainWidget;
     a.setMainWidget(mw);
     mw->show();
     return a.exec();
