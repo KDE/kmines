@@ -99,8 +99,7 @@ QString AdditionalTab::percent(uint n, uint total, bool withBraces)
 
 //-----------------------------------------------------------------------------
 const char *StatisticsTab::COUNT_LABELS[Nb_Counts] = {
-    I18N_NOOP("Total:"), I18N_NOOP("Won:"), I18N_NOOP("Lost:"),
-    I18N_NOOP("Black marks:")
+    I18N_NOOP("Total:"), I18N_NOOP("Won:"), I18N_NOOP("Lost:")
 };
 const char *StatisticsTab::TREND_LABELS[Nb_Trends] = {
     I18N_NOOP("Current:"), I18N_NOOP("Max won:"), I18N_NOOP("Max lost:")
@@ -142,11 +141,9 @@ StatisticsTab::StatisticsTab(QWidget *parent)
     _data.resize(nb+1);
     for (uint i=0; i<_data.size()-1; i++) {
         _data[i].count[Total] = pi.item("nb games")->read(i).toUInt();
-        _data[i].count[Lost] = pi.item("nb lost games")->read(i).toUInt();
-        _data[i].count[BlackMark] =
-            pi.item("nb black marks")->read(i).toUInt();
-        _data[i].count[Won] = _data[i].count[Total] -
-                              _data[i].count[Lost] - _data[i].count[BlackMark];
+        _data[i].count[Lost] = pi.item("nb lost games")->read(i).toUInt()
+                               + pi.item("nb black marks")->read(i).toUInt();
+        _data[i].count[Won] = _data[i].count[Total] - _data[i].count[Lost];
         _data[i].trend[CurrentTrend] =
             pi.item("current trend")->read(i).toInt();
         _data[i].trend[WonTrend] = pi.item("max won trend")->read(i).toUInt();
