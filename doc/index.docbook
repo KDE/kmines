@@ -48,8 +48,8 @@
 
 <legalnotice>&FDLNotice;</legalnotice>
 
-<date>2001-02-03</date>
-<releaseinfo>2.00.10</releaseinfo>
+<date>2003-11-06</date>
+<releaseinfo>2.1.8</releaseinfo>
 
 <abstract><para>&kmines; is the &kde; version of the classic minesweeper
 game.</para></abstract>
@@ -93,7 +93,7 @@ explode, and the game will be over </para>
 <para>If there is not a bomb under the case, a number will appear.
 That is the number of neighboring cases that do have bombs under them.
 Which ones you ask? Thats the point of the game.</para>
-<para>For each box (excluding edge and cornerboxes), there are 8
+<para>For each box (excluding edge and corner boxes), there are 8
 neighboring boxes.</para>
 <para>If none of the neighboring boxes has a bomb, then a blank will
 be shown under the case, and all neighboring boxes will be
@@ -134,7 +134,7 @@ linkend="prefs">Game Options</link>.</para></note>
 
 <itemizedlist>
 <listitem><para>A Box showing you the number of mines still left to be marked.
-Everytime you flag a bomb site, this number will decrease by one.</para>
+Every time you flag a bomb site, this number will decrease by one.</para>
 <note><para>This box does not determine if you are right or wrong, but only how
 many mines you need to theoretically mark before you are done with this
 game.</para></note>
@@ -155,7 +155,7 @@ simply says <guilabel>Game stopped</guilabel>.</para></listitem>
 <chapter id="prefs"><title>Game options</title>
 <para>The options to &kmines; are set by selecting <menuchoice>
 <guimenu>Settings</guimenu> <guimenuitem>Configure &kmines;</guimenuitem>
-</menuchoice> from the menubar.  This will bring up a dialog box.</para>
+</menuchoice> from the menu-bar.  This will bring up a dialog box.</para>
 
 <screenshot>
 <screeninfo>&kmines; Preferences</screeninfo>
@@ -171,7 +171,7 @@ simply says <guilabel>Game stopped</guilabel>.</para></listitem>
 <varlistentry>
 <term><guilabel>Game</guilabel></term>
 <listitem>
-<para>The first option, labelled <guilabel>Enable ? Mark</guilabel>,
+<para>The first option, labeled <guilabel>Enable ? Mark</guilabel>,
 determines whether you can mark squares as
 <quote>questionable</quote>.  If there is a mark in front of this
 option, then right clicking the mouse will first cause a case to be
@@ -185,7 +185,7 @@ blank.</para>
 red flag.  The second will make it blank again, thus skipping the ?
 symbol.</para>
 
-<para>The next option down, labelled <guilabel>Enable
+<para>The next option down, labeled <guilabel>Enable
 keyboard</guilabel>, determines if the keyboard shortcuts will work
 while playing the game.</para>
 
@@ -207,7 +207,7 @@ will explode, and the game will be over.</para></listitem>
 </varlistentry>
 <varlistentry>
 <term>Toggle Mark</term>
-<listitem><para>Clicking with this button on a case, will mark/unmark with a redflag.</para></listitem>
+<listitem><para>Clicking with this button on a case, will mark/unmark with a red flag.</para></listitem>
 </varlistentry>
 <varlistentry>
 <term>Autoreveal</term>
@@ -262,14 +262,14 @@ harder.</para>
 <varlistentry>
 <term>Saving your changes</term>
 <listitem><para>Once your changes are complete, click
-<guibutton>OK</guibutton> to make them permenant.</para>
+<guibutton>OK</guibutton> to make them permeant.</para>
 
 <para>If you want to abandon your changes, click
 <guibutton>Cancel</guibutton> to abort the changes.</para>
 
 <para>If you click on <guilabel>Default</guilabel>, the default
 settings will be restored.  Click <guilabel>OK</guilabel> to make
-these default changes permenant, or edit the settings some
+these default changes permeant, or edit the settings some
 more.</para>
 </listitem>
 </varlistentry>
@@ -280,7 +280,7 @@ more.</para>
 <chapter id="command">
 <title>Commands/Keyboard Shortcuts</title>
 
-<para>The following sections briefly describe each menubar option.</para>
+<para>The following sections briefly describe each menu-bar option.</para>
 
 <sect1 id="game-menu">
 <title><guimenu>Game</guimenu> Menu</title>
@@ -344,7 +344,7 @@ difficulty level.</para></listitem>
 <guimenu>Move</guimenu>
 <guimenuitem>Hint</guimenuitem> </menuchoice></term>
 <listitem><para>If you use that item, you will get a hint about where
-you should click next. If you do that your score will not be added to the highscores.</para>
+you should click next. If you do that your score will not be added to the high-scores.</para>
 </listitem>
 </varlistentry>
 
@@ -405,11 +405,11 @@ you should click next. If you do that your score will not be added to the highsc
 <term><menuchoice>
 <guimenu>Settings</guimenu>
 <guimenuitem>Show Menubar</guimenuitem> </menuchoice></term>
-<listitem><para>If there is a check in front of this option, then the menubar
-will be visible.  Selecting this option, hides the menubar.</para>
-<note><para>To restore a hidden menubar, click outside the game play area, with
-the right mouse button.  This will bring up a small submenu.  Simply select
-<guimenuitem>Show Menubar</guimenuitem> from this submenu, and the menubar
+<listitem><para>If there is a check in front of this option, then the menu-bar
+will be visible.  Selecting this option, hides the menu-bar.</para>
+<note><para>To restore a hidden menu-bar, click outside the game play area, with
+the right mouse button.  This will bring up a small sub-menu.  Simply select
+<guimenuitem>Show Menubar</guimenuitem> from this sub-menu, and the menu-bar
 will be visible again.</para></note></listitem>
 </varlistentry>
 <varlistentry>
@@ -426,7 +426,7 @@ will be visible again.</para></note></listitem>
 <guisubmenu>Choose Game Type</guisubmenu>
 </menuchoice></term>
 <listitem>
-<para>Lets you set the difficulty level from a submenu.</para>
+<para>Lets you set the difficulty level from a sub-menu.</para>
 <para>There are three default levels of difficulty:
 <guimenuitem>Easy</guimenuitem> (64 boxes, 10 mines),
 <guimenuitem>Normal</guimenuitem> (256 boxes, 40 mines), and
@@ -501,7 +501,7 @@ Options</link>.</para></listitem>
 
 <para>These key bindings can be changed by selecting <menuchoice>
 <guimenu>Settings</guimenu> <guimenuitem>Configure Key
-Bindings</guimenuitem> </menuchoice> from the menubar.</para>
+Bindings</guimenuitem> </menuchoice> from the menu-bar.</para>
 
 </sect1>
 
