@@ -54,18 +54,6 @@ bool configure(QWidget *parent)
     return saved;
 }
 
-void showMultipleScores(const ScoreVector &scores, QWidget *parent)
-{
-    KDialogBase dialog(KDialogBase::Plain, i18n("Multiplayers Scores"),
-                       KDialogBase::Close, KDialogBase::Close,
-                       parent, "show_multiplayers_score", true, true);
-    QVBoxLayout *vbox = new QVBoxLayout(dialog.plainPage());
-    QWidget *list = new MultipleScoresList(scores, dialog.plainPage());
-    vbox->addWidget(list);
-    dialog.enableButtonSeparator(false);
-    dialog.exec();
-}
-
 void show(QWidget *parent, int rank)
 {
     HighscoresDialog *hd = new HighscoresDialog(rank, parent);

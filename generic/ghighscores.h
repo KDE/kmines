@@ -20,13 +20,10 @@
 #ifndef KEXTHIGHSCORE_H
 #define KEXTHIGHSCORE_H
 
-#include <qvaluevector.h>
-#include <kurl.h>
-
 #include "ghighscores_item.h"
 
+class KURL;
 class QTabWidget;
-class QWidget;
 
 
 namespace KExtHighscore
@@ -58,25 +55,6 @@ bool configure(QWidget *parent);
  * Show the highscores lists.
  */
 void show(QWidget *parent);
-
-typedef QValueVector<Score> ScoreVector;
-
-/**
- * Show scores for a multiplayers game.
- *
- * Usage example:
- * <pre>
- * KExtHighscore::ScoreVector scores(2);
- * scores[0].setType(KExtHighscore::Won);
- * scores[0].setScore(score1);
- * scores[0].setData("name", player1);
- * scores[1].setType(KExtHighscore::Lost);
- * scores[1].setScore(score2);
- * scores[1].setData("name", player2);
- * KExtHighscore::showMultipleScores(scores, widget);
- * </pre>
- */
-void showMultipleScores(const ScoreVector &scores, QWidget *parent);
 
 /**
  * Submit a score. See @ref Manager for usage example.

@@ -99,8 +99,7 @@ class ItemContainer
     void setSubGroup(const QString &subGroup) { _subGroup = subGroup; }
     bool canHaveSubGroup() const { return !_subGroup.isNull(); }
 
-    /** Name assigned to anonymous players. */
-    static const char *ANONYMOUS;
+    static const char *ANONYMOUS; // name assigned to anonymous players
 
     QVariant read(uint i) const;
     QString pretty(uint i) const;
@@ -114,7 +113,7 @@ class ItemContainer
     QString entryName() const;
 
     ItemContainer(const ItemContainer &);
-    ItemContainer operator =(const ItemContainer &);
+    ItemContainer &operator =(const ItemContainer &);
 };
 
 //-----------------------------------------------------------------------------

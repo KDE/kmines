@@ -1,6 +1,6 @@
 /*
     This file is part of the KDE games library
-    Copyright (C) 2001-02 Nicolas Hadacek (hadacek@kde.org)
+    Copyright (C) 2001-2003 Nicolas Hadacek (hadacek@kde.org)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -88,8 +88,7 @@ void ScoresList::addLine(const ItemArray &items,
     uint k = 0;
     for (uint i=0; i<items.size(); i++) {
         const ItemContainer &container = *items[i];
-        if ( !container.item()->isVisible() || !showColumn(container) )
-            continue;
+        if ( !container.item()->isVisible() ) continue;
         if (line) line->setText(k, itemText(container, index));
         else {
             addColumn( container.item()->label() );
@@ -270,34 +269,51 @@ void HighscoresDialog::slotUser2()
 }
 
 //-----------------------------------------------------------------------------
-MultipleScoresList::MultipleScoresList(const ScoreVector &scores,
+MultipleScoresList::MultipleScoresList(const QValueVector<Score> &scores,
                                        QWidget *parent)
     : ScoresList(parent), _scores(scores)
 {
-    Q_ASSERT( scores.size()!=0 );
-
     const ScoreInfos &s = internal->scoreInfos();
     addHeader(s);
     for (uint i=0; i<scores.size(); i++)
-        addLine(s, i, false);
+        ScoresList::addLine(s, i, scores[i].type()==Won);
+}
+
+void MultipleScoresList::addLine(const ItemArray &si,
+                                 uint index, QListViewItem *line)
+{
+    const PlayerInfos &pi = internal->playerInfos();
+    uint k = 1; // skip "id"
+    for (uint i=0; i<si.size(); i++) {
+        const ItemContainer *container;
+        if ( i==2 ) container = pi.item("nb games");
+        else if ( i==3 ) container = pi.item("mean score");
+        else {
+            if ( i==5 ) k = 5; // skip "date"
+            container = si[k];
+            k++;
+        }
+        if (line) line->setText(i, itemText(*container, index));
+        else {
+            QString label =
+                (i==2 ? i18n("Won Games") : container->item()->label());
+            addColumn(label);
+            setColumnAlignment(i, container->item()->alignment());
+        }
+    }
 }
 
 QString MultipleScoresList::itemText(const ItemContainer &item, uint row) const
 {
     QString name = item.name();
-    if ( name=="rank" ) {
-        if ( _scores[row].type()==Won ) return i18n("Winner");
-        return QString::null;
-    }
+    if ( name=="nb games" )
+        return QString::number( _scores[row].data("nb won games").toUInt() );
+    if ( name=="rank" ) return QString::number(_scores.size()-row);
     QVariant v = _scores[row].data(name);
     if ( name=="name" ) return v.toString();
     return item.item()->pretty(row, v);
 }
 
-bool MultipleScoresList::showColumn(const ItemContainer &item) const
-{
-    return ( item.name()!="date" );
-}
 
 //-----------------------------------------------------------------------------
 ConfigDialog::ConfigDialog(QWidget *parent)

@@ -66,10 +66,9 @@ class ScoresList : public KListView
  protected:
     QListViewItem *addLine(const ItemArray &, uint index, bool highlight);
     virtual QString itemText(const ItemContainer &, uint row) const = 0;
-    virtual bool showColumn(const ItemContainer &) const { return true; }
 
  private:
-    void addLine(const ItemArray &, uint index, QListViewItem *item);
+    virtual void addLine(const ItemArray &, uint index, QListViewItem *item);
 };
 
 //-----------------------------------------------------------------------------
@@ -133,13 +132,13 @@ class MultipleScoresList : public ScoresList
 {
  Q_OBJECT
  public:
-    MultipleScoresList(const ScoreVector &, QWidget *parent);
+    MultipleScoresList(const QValueVector<Score> &, QWidget *parent);
 
  private:
-    const ScoreVector _scores;
+    const QValueVector<Score> &_scores;
 
     QString itemText(const ItemContainer &, uint row) const;
-    bool showColumn(const ItemContainer &) const;
+    void addLine(const ItemArray &, uint index, QListViewItem *line);
 };
 
 //-----------------------------------------------------------------------------

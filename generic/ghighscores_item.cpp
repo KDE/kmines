@@ -1,6 +1,6 @@
 /*
     This file is part of the KDE games library
-    Copyright (C) 2001-02 Nicolas Hadacek (hadacek@kde.org)
+    Copyright (C) 2001-2003 Nicolas Hadacek (hadacek@kde.org)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -19,10 +19,14 @@
 
 #include "ghighscores_item.h"
 
+#include <qlayout.h>
 #include <kglobal.h>
+#include <kdialogbase.h>
+#include <kdebug.h>
 
 #include "khighscore.h"
 #include "ghighscores_internal.h"
+#include "ghighscores_gui.h"
 
 
 namespace KExtHighscore
@@ -180,6 +184,105 @@ QDataStream &operator >>(QDataStream &s, Score &score)
     s >> type;
     score._type = (ScoreType)type;
     s >> score._data;
+    return s;
+}
+
+//-----------------------------------------------------------------------------
+MultiplayerScores::MultiplayerScores()
+{}
+
+MultiplayerScores::~MultiplayerScores()
+{}
+
+void MultiplayerScores::clear()
+{
+    Score score;
+    for (uint i=0; i<_scores.size(); i++) {
+        _nbGames[i] = 0;
+        QVariant name = _scores[i].data("name");
+        _scores[i] = score;
+        _scores[i].setData("name", name);
+        _scores[i]._data["mean score"] = double(0);
+        _scores[i]._data["nb won games"] = uint(0);
+    }
+}
+
+void MultiplayerScores::setPlayerCount(uint nb)
+{
+    _nbGames.resize(nb);
+    _scores.resize(nb);
+    clear();
+}
+
+void MultiplayerScores::setName(uint i, const QString &name)
+{
+    _scores[i].setData("name", name);
+}
+
+void MultiplayerScores::addScore(uint i, const Score &score)
+{
+    QVariant name = _scores[i].data("name");
+    double mean = _scores[i].data("mean score").toDouble();
+    uint won = _scores[i].data("nb won games").toUInt();
+    _scores[i] = score;
+    _scores[i].setData("name", name);
+    _nbGames[i]++;
+    mean += (double(score.score()) - mean) / _nbGames[i];
+    _scores[i]._data["mean score"] = mean;
+    if ( score.type()==Won ) won++;
+    _scores[i]._data["nb won games"] = won;
+}
+
+void MultiplayerScores::show(QWidget *parent)
+{
+    // check consistency
+    if ( _nbGames.size()<2 ) kdWarning(11002) << "less than 2 players" << endl;
+    else {
+        bool ok = true;
+        uint nb = _nbGames[0];
+        for (uint i=1; i<_nbGames.size(); i++)
+            if ( _nbGames[i]!=nb ) ok = false;
+        if (!ok)
+           kdWarning(11002) << "players have not same number of games" << endl;
+    }
+
+    // order the players according to the number of won games
+    QValueVector<Score> ordered;
+    for (uint i=0; i<_scores.size(); i++) {
+        uint won = _scores[i].data("nb won games").toUInt();
+        double mean = _scores[i].data("mean score").toDouble();
+        QValueVector<Score>::iterator it;
+        for(it = ordered.begin(); it!=ordered.end(); ++it) {
+            uint cwon = (*it).data("nb won games").toUInt();
+            double cmean = (*it).data("mean score").toDouble();
+            if ( won<cwon || (won==cwon && mean<cmean) ) {
+                ordered.insert(it, _scores[i]);
+                break;
+            }
+        }
+        if ( it==ordered.end() ) ordered.push_back(_scores[i]);
+    }
+
+    // show the scores
+    KDialogBase dialog(KDialogBase::Plain, i18n("Multiplayers Scores"),
+                       KDialogBase::Close, KDialogBase::Close,
+                       parent, "show_multiplayers_score", true, true);
+    QVBoxLayout *vbox = new QVBoxLayout(dialog.plainPage());
+    QWidget *list = new MultipleScoresList(ordered, dialog.plainPage());
+    vbox->addWidget(list);
+    dialog.enableButtonSeparator(false);
+    dialog.exec();
+}
+
+QDataStream &operator <<(QDataStream &s, const MultiplayerScores &score)
+{
+    s << score._scores;
+    return s;
+}
+
+QDataStream &operator >>(QDataStream &s, MultiplayerScores &score)
+{
+    s >> score._scores;
     return s;
 }
 

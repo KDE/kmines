@@ -1,6 +1,6 @@
 /*
     This file is part of the KDE games library
-    Copyright (C) 2001-02 Nicolas Hadacek (hadacek@kde.org)
+    Copyright (C) 2001-2003 Nicolas Hadacek (hadacek@kde.org)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -23,6 +23,9 @@
 #include <qvariant.h>
 #include <qnamespace.h>
 #include <qmap.h>
+#include <qvaluevector.h>
+
+class QWidget;
 
 
 namespace KExtHighscore
@@ -223,12 +226,82 @@ class Score
     class ScorePrivate;
     ScorePrivate *d;
 
+    friend class MultiplayerScores;
+
     friend QDataStream &operator <<(QDataStream &stream, const Score &score);
     friend QDataStream &operator >>(QDataStream &stream, Score &score);
 };
 
 QDataStream &operator <<(QDataStream &stream, const Score &score);
 QDataStream &operator >>(QDataStream &stream, Score &score);
+
+/**
+ * This class is used to store and show scores for multiplayer games.
+ *
+ * Example of use:
+ * Initialize the class:
+ * <pre>
+ * KExtHighscore::MultiScore ms(2);
+ * ms.setPlayerName(0, "player 1");
+ * ms.setPlayerName(1, "player 2");
+ * </pre>
+ * At the end of each game, add the score of each players:
+ * <pre>
+ * KExtHighscore::Score score(KExtHighscore::Won);
+ * score.setScore(100);
+ * ms.addScore(0, score);
+ * score.setType(KExtHighscore::Lost);
+ * score.setScore(20);
+ * ms.addScore(1, score);
+ * </pre>
+ */
+class MultiplayerScores
+{
+ public:
+    MultiplayerScores();
+
+    ~MultiplayerScores();
+
+    /**
+     * Set the number of players and clear the scores.
+     */
+    void setPlayerCount(uint nb);
+
+    /**
+     * Set the name of player.
+     */
+    void setName(uint player, const QString &name);
+
+    /**
+     * Add the score of player.
+     */
+    void addScore(uint player, const Score &score);
+
+    /**
+     * Clear all scores.
+     */
+    void clear();
+
+    /**
+     * Show scores.
+     */
+    void show(QWidget *parent);
+
+ private:
+    QValueVector<uint>  _nbGames;
+    QValueVector<Score> _scores;
+
+    class MultiplayerScoresPrivate;
+    MultiplayerScoresPrivate *d;
+
+    friend QDataStream &operator <<(QDataStream &stream,
+                                    const MultiplayerScores &score);
+    friend QDataStream &operator >>(QDataStream &stream,
+                                    MultiplayerScores &score);
+};
+
+QDataStream &operator <<(QDataStream &stream, const MultiplayerScores &score);
+QDataStream &operator >>(QDataStream &stream, MultiplayerScores &score);
 
 }; // namespace
 
