@@ -26,11 +26,11 @@
       <default>20</default>
     </entry>
     <entry name="UncertainMark" type="Bool" key="uncertain mark">
-      <label>Whether the "uncertain" marker maybe used.</label>
+      <label>Whether the "uncertain" marker may be used.</label>
       <default>true</default>
     </entry>
     <entry name="KeyboardGame" type="Bool" key="keyboard game">
-      <label>Whether the game can be played by keyboard.</label>
+      <label>Whether the game can be played with the keyboard.</label>
       <default>false</default>
     </entry>
     <entry name="PauseFocus" type="Bool" key="pause focus">
