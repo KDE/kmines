@@ -5,9 +5,11 @@
 #include <qprinter.h>
 #include <qobjectlist.h>
 #include <qwhatsthis.h>
+
 #include <kapp.h>
 #include <klocale.h>
 #include <kconfig.h>
+
 #include "dialogs.h"
 
 #define BORDER   10
@@ -48,6 +50,7 @@ Status::Status(QWidget *parent, const char *name)
 	
 // mines field	
 	field = new Field(this);
+	field->setCaseSize(OptionDialog::caseSize());
 	connect( field, SIGNAL(changeCase(uint,uint)),
 			 SLOT(changeCase(uint,uint)) );
 	connect( field, SIGNAL(updateStatus(bool)), SLOT(update(bool)) );
@@ -85,16 +88,19 @@ void Status::restartGame()
 	initGame();
 }
 
-bool Status::newGame(uint l)
+bool Status::newGame(GameType &t)
 {
 	Level lev;
-	if ( (GameType)l==Custom ) {
+	if ( t==Custom ) {
 		lev = field->level();
 		CustomDialog cu(lev, this);
-		if ( !cu.exec() ) return FALSE;
-	} else lev = LEVELS[l];
+		if ( !cu.exec() ) {
+			t = _type;
+			return FALSE;
+		}
+	} else lev = LEVELS[t];
 
-	_type = (GameType)l;
+	_type = t;
 	field->start(lev);
 	initGame();
 	return TRUE;
@@ -171,4 +177,12 @@ void Status::print()
 	// write the screen region corresponding to the window
 	QPainter p(&prt);
 	p.drawPixmap(0, 0, QPixmap::grabWindow(winId())); 
+}
+
+void Status::options()
+{
+	uint cs = field->caseSize();
+	OptionDialog od(cs, this);
+	if ( !od.exec() || cs==field->caseSize() ) return;
+	field->setCaseSize(cs);
 }

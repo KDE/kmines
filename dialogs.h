@@ -6,7 +6,9 @@
 #include <qlineedit.h>
 #include <qlcdnumber.h>
 #include <qlayout.h>
+
 #include <kdialogbase.h>
+
 #include "defines.h"
 
 //-----------------------------------------------------------------------------
@@ -112,8 +114,7 @@ class WHighScores : public DialogBase
 	  
  public:
 	WHighScores(QWidget *parent, const Score *score = 0);
-
-	static uint time(uint mode);
+	static uint time(GameType);
 
  private slots:
 	void writeName();
@@ -122,6 +123,23 @@ class WHighScores : public DialogBase
  private:
 	uint mode;
 	QLineEdit *qle;
+};
+
+//-----------------------------------------------------------------------------
+class OptionDialog : public DialogBase
+{
+ Q_OBJECT
+
+ public:
+	OptionDialog(uint &caseSize, QWidget *parent);
+	static uint caseSize();
+
+ private slots:
+    void changed(int);
+	void accept();
+
+ private:
+	uint &cs;
 };
 
 #endif // DIALOGS_H

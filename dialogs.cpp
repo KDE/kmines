@@ -7,6 +7,7 @@
 #include <kapp.h>
 #include <klocale.h>
 #include <kconfig.h>
+#include <knuminput.h>
 #include "bitmaps/smile"
 #include "bitmaps/smile_happy"
 #include "bitmaps/smile_ohno"
@@ -233,10 +234,10 @@ void CustomDialog::nbMinesChanged(int n)
 }
 
 //-----------------------------------------------------------------------------
-uint WHighScores::time(uint mode)
+uint WHighScores::time(GameType type)
 {
 	KConfig *conf = kapp->config();
-	conf->setGroup(HS_GRP[mode]);
+	conf->setGroup(HS_GRP[type]);
 
 	int sec = conf->readNumEntry(HS_SEC, 59);
 	int min = conf->readNumEntry(HS_MIN, 59);
@@ -345,5 +346,39 @@ void WHighScores::reject()
 		qle->setEnabled(FALSE);
 		focusNextPrevChild(TRUE); // sort of hack (wonder why its call in
 		                          // setEnabled(FALSE) does nothing ...)
-	} else KDialogBase::reject();
+	} else DialogBase::reject();
+}
+
+//-----------------------------------------------------------------------------
+OptionDialog::OptionDialog(uint &caseSize, QWidget *parent)
+: DialogBase(i18n("Game settings"), Ok|Cancel, Cancel, parent),
+  cs(caseSize)
+{
+	KIntNumInput *ni = new KIntNumInput(i18n("Case size"), MIN_CASE_SIZE, MAX_CASE_SIZE, 1,
+										caseSize, QString::null, 10, true,
+										plainPage());
+	top->addWidget(ni);
+	connect(ni, SIGNAL(valueChanged(int)), SLOT(changed(int)));
+}
+
+void OptionDialog::changed(int nb)
+{
+	cs = nb;
+}
+
+void OptionDialog::accept()
+{
+	KConfig *conf = kapp->config();
+	conf->setGroup(OP_GRP);
+	conf->writeEntry(OP_CASE_SIZE, cs);
+	DialogBase::accept();
+}
+
+uint OptionDialog::caseSize()
+{
+	KConfig *conf = kapp->config();
+	conf->setGroup(OP_GRP);
+	uint cs = conf->readUnsignedNumEntry(OP_CASE_SIZE, CASE_SIZE);
+	cs = QMAX(QMIN(cs, MAX_CASE_SIZE), MIN_CASE_SIZE);
+	return cs;
 }

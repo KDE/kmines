@@ -6,7 +6,9 @@
 #include <qpushbutton.h>
 #include <qlabel.h>
 #include <qlcdnumber.h>
+
 #include "field.h"
+#include "defines.h"
 
 class DigitalClock;
 class LCDNumber;
@@ -18,8 +20,9 @@ class Status : public QWidget
  public :
 	Status(QWidget *parent=0, const char *name=0);
 
-	bool newGame(uint i);
-	void changeUMark(bool b) { field->changeUMark(b); }
+	bool newGame(GameType &);
+	void setUMark(bool b)  { field->setUMark(b); }
+	void setCursor(bool b) { field->setCursor(b); }
 	
  public slots:
 	void restartGame();
@@ -29,6 +32,7 @@ class Status : public QWidget
 	void showHighScores() { highScores(0); }
 	void pauseGame() { field->pause(); }
 	void print();
+	void options();
 
 	void moveUp()     { field->up(); }
 	void moveDown()   { field->down(); }
@@ -39,8 +43,6 @@ class Status : public QWidget
 	void autoReveal() { field->autoReveal(); }
 
  private:
-	enum GameType { Easy = 0, Normal, Expert, Custom };
-	
 	uint     uncovered, marked, uncertain;  /* number of cases in each state */
 	Field    *field;
 	GameType _type;

@@ -8,7 +8,9 @@ extern const char *OP_GRP;
 extern const char *OP_UMARK;
 extern const char *OP_MENU;
 extern const char *OP_LEVEL;
-extern const char *HS_GRP[3];
+extern const char *OP_CASE_SIZE;
+extern const char *OP_KEYBOARD;
+
 extern const char *HS_NAME;
 extern const char *HS_MIN;
 extern const char *HS_SEC;
@@ -23,13 +25,16 @@ extern const char *HS_SEC;
 #define EXPLODED   32
 #define ERROR      64                        
 
-/* Layout dimensions */
-#define CASE_W   20
-#define CASE_H   20
+/* Default case size */
+extern const uint CASE_SIZE;
+extern const uint MIN_CASE_SIZE;
+extern const uint MAX_CASE_SIZE;
 
 /* Predefined levels */
+enum GameType { Easy = 0, Normal, Expert, Custom, NbLevels };
 typedef struct { uint width, height, nbMines; } Level;
-extern const Level LEVELS[3];
+extern const Level LEVELS[NbLevels-1];
+extern const char *HS_GRP[NbLevels-1];
 
 typedef struct { uint sec, min, mode; } Score;
 

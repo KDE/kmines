@@ -15,26 +15,29 @@ class MainWidget : public KTMainWindow
 	MainWidget();
 
  private slots:
-	void easyLevel()   { changeLevel(0); }
-	void normalLevel() { changeLevel(1); }
-	void expertLevel() { changeLevel(2); }
-	void customLevel() { changeLevel(3); }
-    void configKeys()  { KKeyDialog::configureKeys(kacc); }
-	void toggleMenu()  { _toggleMenu(FALSE); }
-	void toggleUMark() { _toggleUMark(FALSE); }
+    void easyLevel()      { changeLevel(0); }
+	void normalLevel()    { changeLevel(1); }
+	void expertLevel()    { changeLevel(2); }
+	void customLevel()    { changeLevel(3); }
+    void configKeys()     { KKeyDialog::configureKeys(kacc); }
+	void toggleMenu();
+	bool toggleUMark();
+	bool toggleKeyboard();
 
  protected:
 	bool eventFilter(QObject *, QEvent *);
 
  private:
-	KAccel        *kacc;
-	KActionMenu   *popup;
-	KToggleAction *toggleMenuAction, *toggleMarkAction, *levelAction[4];
-	Status        *status;
+	bool                     init;
+	KAccel                  *kacc;
+	KActionMenu             *popup;
+	QArray<KAction *>        keyAction;
+	QArray<KRadioAction *>   levelAction;
+	KToggleAction           *menuAction;
+	Status                  *status;
 	
-	void _toggleMenu(bool first);
-	void _toggleUMark(bool first);
-	void changeLevel(int i);
+	bool toggle(const char *name);
+	void changeLevel(uint i);
 };
 
 #endif // MAIN_H
