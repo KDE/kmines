@@ -2,15 +2,13 @@
 #include "defines.h"
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <time.h>
 
 #include <qpainter.h>
 #include <qdrawutl.h>
-#include <qpixmap.h>
-#include <qimage.h>
 
 #include "field.moc"
+
 
 Field::Field(QWidget *parent, const char *name)
 : QWidget(parent, name), pfield(0), _stop(FALSE), isPaused(FALSE),
@@ -80,16 +78,18 @@ void Field::adjustSize()
 	int sw, sh, sw2, sh2;
 	
 	QFontMetrics fm = msg->fontMetrics();
-	sw = fm.width(i18n("Game paused")) + LABEL_WC;
+	QString s1 = i18n("Game paused");
+	QString s2 = i18n("Press to resume");
+	sw = fm.width(s1) + LABEL_WC;
 	sh = fm.height() + LABEL_HC;
 	QFontMetrics fm2 = pb->fontMetrics();
-	sw2 = fm2.width(i18n("Press to resume")) + LABEL_WC;
+	sw2 = fm2.width(s2) + LABEL_WC;
 	sh2 = fm2.height() + LABEL_HC;
 
 	msg->setGeometry((width() - sw)/2, (height() - sh-sh2)/3, sw,sh);
-	msg->setText(i18n("Game paused"));
+	msg->setText(s1);
 	pb->setGeometry((width() - sw2)/2, 2*(height() - sh-sh2)/3, sw2, sh2);
-	pb->setText(i18n("Press to resume"));
+	pb->setText(s2);
 }
 
 void Field::createMinePixmap()
@@ -267,6 +267,7 @@ void Field::uncover(uint i, uint j)
 
 #define icpos (ic-1)*CASE_W
 #define jcpos (jc-1)*CASE_W
+
 void Field::mousePressEvent( QMouseEvent *e )
 {
 	if (_stop) return;
@@ -394,6 +395,7 @@ void Field::pressClearFunction(uint i, uint j, uint state)
 }
 
 #define M_OR_U(i, j) ( (pfield[i][j] & MARKED) || (pfield[i][j] & UNCERTAIN) )
+
 void Field::clearFunction(uint i, uint j)
 {
 	pressClearFunction(i, j, FALSE);

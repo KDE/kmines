@@ -1,23 +1,18 @@
-
 #include "status.h"
 #include "defines.h"
-
-#include <stdlib.h>
+#include "field.h"
+#include "dialogs.h"
 
 #include <qpainter.h>
 #include <qpixmap.h>
-#include <qfile.h>
-#include <qfileinf.h>
-#include <qtstream.h>
-#include <qmsgbox.h>
 
-#include <kapp.h>
+#include <kconfig.h>
 
 #include "status.moc"
 
 
-KStatus::KStatus ( QWidget *parent, const char *name )
-: QWidget( parent, name )
+KStatus::KStatus(QWidget *parent, const char *name)
+: QWidget(parent, name)
 {
 	frame = new QFrame(this);
 	frame->setFrameStyle( QFrame::Box | QFrame::Raised );
@@ -91,9 +86,7 @@ KStatus::KStatus ( QWidget *parent, const char *name )
 	connect( field, SIGNAL(updateSmiley(int)), this, SLOT(updateSmiley(int)) );
 	
 	/* configuration & highscore initialisation */
-	kconf = kapp->getConfig();
-	isConfigWritable =
-		(kapp->getConfigState()==KApplication::APPCONFIG_READWRITE);
+	KConfig *kconf = kapp->getConfig();
 	
 	/* if the entries do not exist : create them */
 	kconf->setGroup(OP_GRP);
@@ -131,8 +124,8 @@ void KStatus::createSmileyPixmap(QPixmap *pm, QPainter *pt)
 void KStatus::adjustSize()
 { 
 	int dec_w  = (width() - 2*LCD_W - SMILEY_W)/4;
-	int dec_h  = (STATUS_H - LCD_H)/2;
-	int dec_hs = (STATUS_H - SMILEY_H)/2;
+	int dec_h  = (STAT_H - LCD_H)/2;
+	int dec_hs = (STAT_H - SMILEY_H)/2;
 	
 	left->setGeometry( dec_w, dec_h, LCD_W, LCD_H );
 	smiley->setGeometry( 2*dec_w + LCD_W, dec_hs, SMILEY_W, SMILEY_H );
@@ -140,12 +133,12 @@ void KStatus::adjustSize()
 
 	
 	dec_w = (width() - 2*FRAME_W - nb_width*CASE_W)/2;
-	dec_h = (height() - STATUS_H - LABEL_H - 2*FRAME_W - nb_height*CASE_W)/2;
+	dec_h = (height() - STAT_H - LABEL_H - 2*FRAME_W - nb_height*CASE_W)/2;
 	
-	frame->setGeometry( dec_w, STATUS_H + dec_h + LABEL_H,
+	frame->setGeometry( dec_w, STAT_H + dec_h + LABEL_H,
 					    nb_width*CASE_W + 2*FRAME_W,
 					    nb_height*CASE_W + 2*FRAME_W );
-	field->setGeometry( FRAME_W + dec_w, STATUS_H + FRAME_W + dec_h + LABEL_H,
+	field->setGeometry( FRAME_W + dec_w, STAT_H + FRAME_W + dec_h + LABEL_H,
 					    nb_width*CASE_W, nb_height*CASE_W );
 }
 
@@ -236,7 +229,7 @@ void KStatus::exmesg(const char *str)
 { 
 	QFontMetrics fm1( font() );
 	int w = fm1.width(str)+10;
-	mesg->setGeometry((width()-w)/2, STATUS_H, w, fm1.height()+5);
+	mesg->setGeometry((width()-w)/2, STAT_H, w, fm1.height()+5);
 	mesg->show();
 	mesg->setText(str);
 }
@@ -250,22 +243,6 @@ void KStatus::showHighScores()
 int KStatus::setHighScore(int sec, int min, int mode)
 {
 	int res = 0;
-	
-	if ( isConfigWritable ) {
-		WHighScores whs(FALSE, sec, min, mode, res, this);
-		
-		/* save the new score in the file to be sure it won't be lost */
-		if (isConfigWritable) kconf->sync();
-	} else errorShow(i18n("Highscore file is not writable !"));
-	
+	WHighScores whs(FALSE, sec, min, mode, res, this);
 	return res;
 } 
-
-void KStatus::errorShow(QString msg)
-{
-	QMessageBox ab;
-	ab.setCaption(i18n("kmines : Error"));
-	ab.setText(msg);
-	ab.setButtonText(i18n("Ok"));
-	ab.exec();
-}

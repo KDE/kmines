@@ -1,12 +1,9 @@
-#ifndef KMINES_D_H
-#define KMINES_D_H
+#ifndef DEFINES_H
+#define DEFINES_H
 
 #include <qstring.h>
-#include <klocale.h>
 #include <kapp.h>
 
-/* Version name and date */
-#define NAME "kmines"
 
 /* Strings for the configuration file */
 #define OP_GRP "Options"
@@ -19,13 +16,13 @@ const QString HS_GRP[3] = {
 #define HS_SEC_KEY "Sec"
 #define OP_MENUBAR_VIS "menubar visible"
 
-/* Strings for key management */
+/* Strings for keys management */
 #define K_KMINES "kmines"
 #define K_CUSTOM "custom"
 #define K_HS "highscores"
 #define K_OP "options"
 
-/* States of a case (positive) */
+/* States of a case (unsigned int) */
 #define NOTHING    0
 #define MINE       1
 #define COVERED    2
@@ -44,7 +41,7 @@ const QString HS_GRP[3] = {
 /* Layout dimensions */
 #define CASE_W   20
 
-#define STATUS_H 60
+#define STAT_H   60
 #define FRAME_W   9
 #define LABEL_H  25
 
@@ -63,18 +60,10 @@ const QString HS_GRP[3] = {
 #define EASY   0
 #define NORMAL 1
 #define EXPERT 2 
-
-/* (width, height, mines) */
-const uint MODES[3][3] =
-{
-	  {8, 8, 10},
-	  {16, 16, 40},
-	  {30, 16, 99}
+const uint MODES[3][3] = { /* (width, height, mines) */
+		{8, 8, 10},
+		{16, 16, 40},
+		{30, 16, 99}
 };
 
-/* Useful macros */
-#define ADD_LABEL( str, x, y, w, h) \
-    { label = new QLabel(str, this); \
-      label->setGeometry(x, y, w, h); }
- 
-#endif
+#endif // DEFINES_H

@@ -1,5 +1,5 @@
-#ifndef KMINES_DI_H
-#define KMINES_DI_H
+#ifndef DIALOGS_H
+#define DIALOGS_H
 
 #include <qlabel.h>
 #include <qdialog.h>
@@ -10,9 +10,7 @@
 
 #include <kconfig.h>
 
-#include "defines.h"
-
-/* digital clock widget */
+/**** digital clock widget ***************************************************/
 class DigitalClock : public QLCDNumber
 {
  Q_OBJECT
@@ -36,7 +34,7 @@ class DigitalClock : public QLCDNumber
 	void showTime();
 };
 
-/* custom dialog */
+/**** custom dialog **********************************************************/
 class Custom : public QDialog
 {
  Q_OBJECT
@@ -57,7 +55,7 @@ class Custom : public QDialog
 };
 
 
-/* highscores dialog */
+/**** highscores dialog ******************************************************/
 class WHighScores : public QDialog
 {
  Q_OBJECT
@@ -78,4 +76,4 @@ class WHighScores : public QDialog
 	QVBoxLayout *top;
 };
 
-#endif
+#endif // DIALOGS_H

@@ -1,14 +1,11 @@
-#include <stdio.h>
-
-#include <qpopmenu.h>
-
-#include <kmsgbox.h>
-#include <kkeyconf.h>
-
 #include "main.h"
+#include "defines.h"
 #include "version.h"
+#include "status.h"
+#include "dialogs.h"
 
 #include "main.moc"
+
 
 KMines::KMines(QWidget *parent, const char *name)
 : QWidget( parent, name )
@@ -24,9 +21,6 @@ KMines::KMines(QWidget *parent, const char *name)
 	kKeys->addKey(i18n("New game"), "F2");
 	kKeys->addKey(i18n("Pause game"), "P");
 	kKeys->addKey(i18n("High scores"), "H");
-	kKeys->addKey(i18n("Close dialog"), "Return");
-	kKeys->addKey(i18n("Ok dialog"), "Return");
-	kKeys->addKey(i18n("Cancel dialog"), "Escape");
 
 	/* connections for kmines */
 	kKeys->registerWidget(K_KMINES, this);
@@ -69,9 +63,8 @@ KMines::KMines(QWidget *parent, const char *name)
 
 	QPopupMenu *help = kapp->getHelpMenu(true, QString(i18n("Minesweeper"))
                                          + " " + KMINES_VERSION 
-										 + " (" + KMINES_DATE + ")"
-                                         + i18n("\n\nby Nicolas Hadacek")
-                                         + " (hadacek@kde.org)");  
+										 + " (" + KMINES_DATE + ")\n\n"
+										 + i18n("by") + " " + KMINES_AUTHOR);
 
 	menu = new QMenuBar(this);
 	menu->insertItem(i18n("File"), popup );
@@ -180,16 +173,16 @@ void KMines::changedSize()
     if ( menu->isVisible() ) mh += menu->height();
 	
 	setFixedSize( aff_w*CASE_W + 2*FRAME_W,
-				  mh + STATUS_H + LABEL_H + aff_h*CASE_W + 2*FRAME_W);
+				  mh + STAT_H + LABEL_H + aff_h*CASE_W + 2*FRAME_W);
     status->setGeometry( 0, mh, aff_w*CASE_W + 2*FRAME_W,
-						 STATUS_H + LABEL_H + aff_h*CASE_W + 2*FRAME_W );
+						 STAT_H + LABEL_H + aff_h*CASE_W + 2*FRAME_W );
 }
 
 
 /* MAIN */
 int main( int argc, char ** argv )
 {
-    KApplication a(argc, argv, NAME);
+    KApplication a(argc, argv, KMINES_NAME);
 	KMines *km = new KMines();
 
 	a.setMainWidget(km);

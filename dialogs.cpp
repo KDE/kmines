@@ -1,28 +1,30 @@
 #include "dialogs.h"
-
-#include <stdio.h>
-#include <stdlib.h>
+#include "defines.h"
+#include "version.h"
 
 #include <qpainter.h>
 #include <qpixmap.h>
 #include <qpushbt.h>
-#include <qmsgbox.h>
-#include <qfileinf.h>
-#include <qbttngrp.h>
-#include <qradiobt.h>
 #include <qfont.h>
 
-#include <kapp.h>
-#include <kkeyconf.h>
-
 #include "dialogs.moc"
+
 
 #define BORDER   10
 #define TBORDER  5
 #define PS_INC    4
 
-/** Digital Clock ************************************************************/
+/* useful function */
+void pSetCaption(const char *text, QWidget *w)
+{
+	
+	    QString tmp = KMINES_NAME;
+	    tmp += " : ";
+	    tmp += text;
+	    w->setCaption(tmp);
+}
 
+/** Digital Clock ************************************************************/
 DigitalClock::DigitalClock(QWidget *parent)
 : QLCDNumber(parent, 0)
 {
@@ -86,18 +88,18 @@ void DigitalClock::getTime(int  *t_sec, int *t_min)
 }
 
 /** Customize dialog *********************************************************/
-
 Custom::Custom(uint *nbWidth, uint *nbHeight, uint *nbMines,
 			   QWidget *parent)
 : QDialog(parent, 0, TRUE), nbW(nbWidth), nbH(nbHeight), nbM(nbMines)
 {
-	setCaption(i18n("kmines : Customize Game"));
+	QString tmp = i18n("Customize Game");
+	pSetCaption(tmp, this);
 
 /* top layout */
 	QVBoxLayout *top = new QVBoxLayout(this, BORDER);
 	
 /* title */
-	QLabel *title = new QLabel("Customize Game", this);
+	QLabel *title = new QLabel(tmp, this);
 	QFont f( title->font() );
 	QFontInfo fi(f);
 	f.setPointSize(fi.pointSize()+PS_INC);
@@ -238,7 +240,6 @@ void Custom::nbMinesChanged(int newNbMines)
 }
 
 /** HighScore dialog *********************************************************/
-
 WHighScores::WHighScores(bool show, int newSec, int newMin, uint Mode,
 						 int &res, QWidget *parent)
 : QDialog(parent, 0, TRUE), mode(Mode)
@@ -253,14 +254,15 @@ WHighScores::WHighScores(bool show, int newSec, int newMin, uint Mode,
 			      + 60*kconf->readNumEntry(HS_MIN_KEY);
 		if ( (newSec + newMin*60) >= res ) return;
 	}
-	
-	setCaption(i18n("kmines : High Scores"));
+
+	QString tmp = i18n("Hall of Fame");
+	pSetCaption(tmp, this);
 
 /* top layout */
 	top = new QVBoxLayout(this, BORDER);
 	
 /* title */
-	QLabel *title = new QLabel("Hall of Fame", this);
+	QLabel *title = new QLabel(tmp, this);
 	QFont f( title->font() );
 	QFontInfo fi(f);
 	f.setPointSize(fi.pointSize()+PS_INC);
@@ -282,11 +284,11 @@ WHighScores::WHighScores(bool show, int newSec, int newMin, uint Mode,
 	top->addLayout(gl);
 
 	/* level names */
-	QString tmp;
 	for(uint k=0; k<3; k++) {
-		if ( k==0 ) tmp = i18n("Easy :");
-		else if ( k==1 ) tmp = i18n("Normal :");
-		else tmp = i18n("Expert :");
+		if ( k==0 ) tmp = i18n("Easy");
+		else if ( k==1 ) tmp = i18n("Normal");
+		else tmp = i18n("Expert");
+		tmp += " :";
 		lab = new QLabel(tmp, this);
 		lab->setMinimumSize( lab->sizeHint() );
 		gl->addWidget(lab, k, 0);
@@ -327,8 +329,8 @@ WHighScores::WHighScores(bool show, int newSec, int newMin, uint Mode,
 			lab->setMinimumSize( lab->sizeHint() );
 			gl->addWidget(lab, k, 4);
 			
-			if ( sec==0 ) tmp = i18n("minutes.");
-			else tmp = i18n("minutes");
+			tmp = i18n("minutes");
+			if ( sec==0 ) tmp += '.';
 			lab = new QLabel(tmp, this);
 			lab->setAlignment(AlignCenter);
 			lab->setMinimumSize( lab->sizeHint() );
@@ -379,8 +381,7 @@ WHighScores::WHighScores(bool show, int newSec, int newMin, uint Mode,
 void WHighScores::writeName()
 {
 	QString str = qle->text();
-	if ( str.isNull() )
-	    str = i18n("Anonymous");
+	if ( str.isNull() ) str = i18n("Anonymous");
 	
 	kconf->setGroup(HS_GRP[mode]);
 	kconf->writeEntry(HS_NAME_KEY, str);

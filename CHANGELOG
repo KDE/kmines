@@ -1,3 +1,6 @@
+1.0.0
+ * final cleanup before 1.0 !
+
 0.6.12
  * use QLayout for "custom level dialog" and "highscore dialog"
  * some cleanup

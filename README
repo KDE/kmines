@@ -1,16 +1,18 @@
---- kmines 0.6.10 : Alpha version (21/01/98)
---- Copyright (c) 1996-97-98 Nicolas HADACEK (hadacek@kde.org)
---- Distributed under the GNU General Public License
+kmines : version 1.0.0 (18/06/1998)
+-----------------------------------
+Copyright (c) 1996-97-98 Nicolas HADACEK (hadacek@kde.org)
+Distributed under the GNU General Public License
 
 
-
-This is a very classical minesweeper written almost from scratch.
-
- - 3 levels : Easy : 8x8 with 10 mines
-              Normal : 16x16 with 40 mines
-			  Expert : 30x16 with 99 mines
+This is a very classical minesweeper written from scratch.
+ 
+ - 3 predefined levels :
+       Easy : 8x8 with 10 mines
+       Normal : 16x16 with 40 mines
+	   Expert : 30x16 with 99 mines
  - Custom levels
  - High Scores
 
 
-Requirements : uptodate "libkdecore" & "libkdeui".
+
+Requirements : up-to-date "libkdecore" & "libkdeui".

@@ -1,10 +1,15 @@
-#ifndef KMINES_S_H
-#define KMINES_S_H
+#ifndef STATUS_H
+#define STATUS_H
 
-#include "field.h"
-#include "dialogs.h"
+#include <qwidget.h>
+#include <qframe.h>
+#include <qpushbt.h>
+#include <qlabel.h>
+#include <qlcdnum.h>
 
-#include <kconfig.h>
+
+class Field;
+class DigitalClock;
 
 /* status widget */
 class KStatus : public QWidget
@@ -45,9 +50,6 @@ class KStatus : public QWidget
   
 	uint nb_width, nb_height, nb_mines; /* mines field */
 	uint uncovered, marked, uncertain;  /* number of cases in each state */
-
-	KConfig *kconf;
-	bool isConfigWritable;
 	
 	QFrame *frame;
 	Field  *field;
@@ -61,7 +63,6 @@ class KStatus : public QWidget
 	void createSmileyPixmap(QPixmap *, QPainter *);
 	void exmesg(const char *);
 	int  setHighScore(int, int, int);
-	void errorShow(QString);
 };
 
-#endif
+#endif // STATUS_H

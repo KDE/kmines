@@ -1,5 +1,5 @@
-#ifndef KMINES_F_H
-#define KMINES_F_H
+#ifndef FIELD_H
+#define FIELD_H
 
 #include <qwidget.h>
 #include <qlabel.h>
@@ -66,4 +66,4 @@ class Field : public QWidget
 	void adjustSize();
 };
 
-#endif
+#endif // FIELD_H

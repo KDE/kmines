@@ -1,13 +1,15 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include "status.h"
-
-#include <kconfig.h>
-#include <kapp.h>
-
 #include <qmenubar.h>
 #include <qpopmenu.h>
+
+#include <kconfig.h>
+#include <kkeyconf.h>
+#include <kapp.h>
+
+
+class KStatus;
 
 /** Main widget 
   * This widget contains the menu bar
