@@ -10,7 +10,7 @@
 #include "main.moc"
 
 KMines::KMines( QWidget *parent, const char *name )
-    : QWidget( parent, name )
+: QWidget( parent, name )
 {
 	installEventFilter(this);
 	

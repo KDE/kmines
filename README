@@ -1,18 +1,26 @@
---- kmines 0.6.8 : Alpha version (12/08/97)
+--- kmines 0.6.10 : Alpha version (21/01/98)
+--- Copyright (c) 1996-97-98 Nicolas HADACEK (hadacek@kde.org)
+--- Distributed under the GNU General Public License
 
 This is a very classical minesweeper written almost from scratch.
 
----------------------------------------------------------------------------
-FEATURES :
+--- REQUIREMENTS : --------------------------------------------------------
+ - libkdecore-0.0.11 or higher
+ - libkdeui-0.0.10 or higher
 
+--- FEATURES : ------------------------------------------------------------
  - 3 levels : Easy   : 8x8   with 10 bombs
               Normal : 16x16 with 40 bombs
-	  	      Expert : 30x16 with 99 bombs
+ 	  	      Expert : 30x16 with 99 bombs
  - Custom levels
  - High Scores
 
----------------------------------------------------------------------------
-CHANGELOG :
+--- CHANGELOG : ------------------------------------------------------------
+0.6.10
+ - included in the CVS tree
+
+0.6.9
+ - bugfix from Anders Widell (doesn't allow anymore to middle click on a flag)
 
 0.6.8
  - some polishing (game over message do not overwrite mines number & marked 
@@ -79,10 +87,3 @@ CHANGELOG :
  - a better look (?)
  - highscoring
  - custom level
- 
----------------------------------------------------------------------------
-AUTHOR :
- Nicolas HADACEK 
- email : hadacek@kde.org
-
-Copyright Nicolas HADACEK 1996-97 and distributed under the GPL.

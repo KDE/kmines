@@ -413,7 +413,7 @@ void Field::clearFunction(int i, int j)
 {
 	pressClearFunction(i, j, FALSE);
 	
-	if (pfield[i][j] & COVERED)
+	if (pfield[i][j] & (COVERED|MARKED|UNCERTAIN))
 		return; 
 	
 	int nm;

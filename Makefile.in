@@ -1,89 +1,466 @@
-# kmines Makefile.in 
+# Makefile.in generated automatically by automake 1.2c from Makefile.am
 
-# @CXXFLAGS@     : is set to -g -Wall (when debuging) or -O2 -Wall (when not)
-# @all_includes@ : is set to all needed include paths for QT, KDE and X11
-# -I.. 	         : needed for config.h
-CXXFLAGS= @CXXFLAGS@ @all_includes@ -DHAVE_CONFIG_H -I..
+# Copyright (C) 1994, 1995, 1996, 1997 Free Software Foundation, Inc.
+# This Makefile.in is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
 
-# @LDFLAGS@    : is set to -s (when not debuging) for stripping
-# @all_libra.@ : is set to all needed libraries paths for QT, KDE and X11
-# you need also @LIBSOCKET@, if you link with -lkfm
-LDFLAGS	= @LDFLAGS@ @all_libraries@ -lkdecore -lkdeui -lqt -lXext -lX11 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
 
-# both are clear, I think
-CXX     = @CXX@
-MOC   	= @MOC@
 
-############# INSTALL #################
+SHELL = /bin/sh
 
-install = @INSTALL@
-INSTALL = $(install) -m 0755
-INSTALL_DATA = $(install) -m 0644
-INSTALL_DIR = $(install) -d -m 0755
-INSTALL_DIR_PRIVATE = $(install) -d -m 0700
-
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+VPATH = @srcdir@
 prefix = @prefix@
-BINDIR = $(prefix)/bin
-ICONDIR = $(prefix)/share/icons
-MINIDIR = $(prefix)/share/icons/mini
-DOCDIR = $(prefix)/share/doc/HTML/en/kmines
-APPDIR = $(prefix)/share/applnk/Games
+exec_prefix = @exec_prefix@
 
-########### File Formats ###########
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+libdir = @libdir@
+infodir = @infodir@
+mandir = @mandir@
+includedir = @includedir@
+oldincludedir = /usr/include
 
-.SUFFIXES: .cpp
+pkgdatadir = $(datadir)/@PACKAGE@
+pkglibdir = $(libdir)/@PACKAGE@
+pkgincludedir = $(includedir)/@PACKAGE@
 
+top_builddir = ..
+
+ACLOCAL = @ACLOCAL@
+AUTOCONF = @AUTOCONF@
+AUTOMAKE = @AUTOMAKE@
+AUTOHEADER = @AUTOHEADER@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+transform = @program_transform_name@
+
+NORMAL_INSTALL = true
+PRE_INSTALL = true
+POST_INSTALL = true
+NORMAL_UNINSTALL = true
+PRE_UNINSTALL = true
+POST_UNINSTALL = true
+build_alias = @build_alias@
+build_triplet = @build@
+host_alias = @host_alias@
+host_triplet = @host@
+target_alias = @target_alias@
+target_triplet = @target@
+CC = @CC@
+CPP = @CPP@
+CXX = @CXX@
+GLINC = @GLINC@
+GLLIB = @GLLIB@
+GMSGFMT = @GMSGFMT@
+KDE_INCLUDES = @KDE_INCLUDES@
+KDE_LDFLAGS = @KDE_LDFLAGS@
+KDE_RPATH = @KDE_RPATH@
+LD = @LD@
+LIBCOMPAT = @LIBCOMPAT@
+LIBCRYPT = @LIBCRYPT@
+LIBDL = @LIBDL@
+LIBJPEG = @LIBJPEG@
+LIBKHTMLW = @LIBKHTMLW@
+LIBOBJS = @LIBOBJS@
+LIBSOCKET = @LIBSOCKET@
+LIBTOOL = @LIBTOOL@
+LN_S = @LN_S@
+MAKEINFO = @MAKEINFO@
+MOC = @MOC@
+MSGFMT = @MSGFMT@
+NM = @NM@
+PACKAGE = @PACKAGE@
+PAMINC = @PAMINC@
+PAMLIBPATHS = @PAMLIBPATHS@
+PAMLIBS = @PAMLIBS@
+QT_INCLUDES = @QT_INCLUDES@
+QT_LDFLAGS = @QT_LDFLAGS@
+RANLIB = @RANLIB@
+USE_NLS = @USE_NLS@
+VERSION = @VERSION@
+XGETTEXT = @XGETTEXT@
+XPMINC = @XPMINC@
+XPMLIB = @XPMLIB@
+X_INCLUDES = @X_INCLUDES@
+X_LDFLAGS = @X_LDFLAGS@
+all_includes = @all_includes@
+all_libraries = @all_libraries@
+kde_appsdir = @kde_appsdir@
+kde_bindir = @kde_bindir@
+kde_cgidir = @kde_cgidir@
+kde_confdir = @kde_confdir@
+kde_datadir = @kde_datadir@
+kde_htmldir = @kde_htmldir@
+kde_icondir = @kde_icondir@
+kde_includes = @kde_includes@
+kde_kccmodules = @kde_kccmodules@
+kde_libraries = @kde_libraries@
+kde_locale = @kde_locale@
+kde_mimedir = @kde_mimedir@
+kde_minidir = @kde_minidir@
+kde_partsdir = @kde_partsdir@
+kde_toolbardir = @kde_toolbardir@
+kde_wallpaperdir = @kde_wallpaperdir@
+qt_includes = @qt_includes@
+qt_libraries = @qt_libraries@
+topdir = @topdir@
+
+bin_PROGRAMS = kmines
+INCLUDES = $(all_includes)
+kmines_LDFLAGS = $(all_libraries) $(KDE_RPATH)
+kmines_LDADD = -lkdeui -lkdecore -lqt -lXext -lX11 $(LIBSOCKET)
+
+kmines_SOURCES= main.cpp status.cpp field.cpp dialogs.cpp
+BUILTSOURCES = main.moc status.moc field.moc dialogs.moc
+DISTCLEANFILES = $(BUILTSOURCES)
+
+icondir = $(kde_icondir)
+icon_DATA = kmines.xpm
+minidir = $(kde_minidir)
+appsdir = $(kde_appsdir)/Games
+apps_DATA = kmines.kdelnk
+htmldir = $(kde_htmldir)/en/kmines
+html_DATA = index.html
+mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+CONFIG_HEADER = ../config.h
+CONFIG_CLEAN_FILES = 
+PROGRAMS =  $(bin_PROGRAMS)
+
+
+DEFS = @DEFS@ -I. -I$(srcdir) -I..
+CPPFLAGS = @CPPFLAGS@
+LDFLAGS = @LDFLAGS@
+LIBS = @LIBS@
+kmines_OBJECTS =  main.o status.o field.o dialogs.o
+kmines_DEPENDENCIES = 
+CXXFLAGS = @CXXFLAGS@
+CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(CPPFLAGS) $(CXXFLAGS)
+LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(CPPFLAGS) $(CXXFLAGS)
+CXXLINK = $(LIBTOOL) --mode=link $(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@
+DATA =  $(apps_DATA) $(html_DATA) $(icon_DATA)
+
+DIST_COMMON =  README Makefile.am Makefile.in
+
+
+DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
+
+TAR = tar
+GZIP = --best
+DEP_FILES =  .deps/dialogs.P .deps/field.P .deps/main.P .deps/status.P
+CXXMKDEP = $(CXX) -M $(DEFS) $(INCLUDES) $(CPPFLAGS) $(CXXFLAGS)
+SOURCES = $(kmines_SOURCES)
+OBJECTS = $(kmines_OBJECTS)
+
+default: all
+
+.SUFFIXES:
+.SUFFIXES: .c .cpp .lo .o
+$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+	cd $(top_srcdir) && $(AUTOMAKE) --gnu kmines/Makefile
+
+Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status $(BUILT_SOURCES)
+	cd $(top_builddir) \
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+
+mostlyclean-binPROGRAMS:
+
+clean-binPROGRAMS:
+	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
+
+distclean-binPROGRAMS:
+
+maintainer-clean-binPROGRAMS:
+
+install-binPROGRAMS: $(bin_PROGRAMS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(bindir)
+	@list='$(bin_PROGRAMS)'; for p in $$list; do \
+	  if test -f $$p; then \
+	    echo " $(LIBTOOL)  --mode=install $(INSTALL_PROGRAM) $$p $(bindir)/`echo $$p|sed '$(transform)'`"; \
+	    $(LIBTOOL)  --mode=install $(INSTALL_PROGRAM) $$p $(bindir)/`echo $$p|sed '$(transform)'`; \
+	  else :; fi; \
+	done
+
+uninstall-binPROGRAMS:
+	$(NORMAL_UNINSTALL)
+	list='$(bin_PROGRAMS)'; for p in $$list; do \
+	  rm -f $(bindir)/`echo $$p|sed '$(transform)'`; \
+	done
+
+.c.o:
+	$(COMPILE) -c $<
+
+mostlyclean-compile:
+	-rm -f *.o core
+
+clean-compile:
+
+distclean-compile:
+	-rm -f *.tab.c
+
+maintainer-clean-compile:
+
+.c.lo:
+	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
+
+mostlyclean-libtool:
+	-rm -f *.lo
+
+clean-libtool:
+	-rm -rf .libs
+
+distclean-libtool:
+
+maintainer-clean-libtool:
+
+kmines: $(kmines_OBJECTS) $(kmines_DEPENDENCIES)
+	@rm -f kmines
+	$(CXXLINK) $(kmines_LDFLAGS) $(kmines_OBJECTS) $(kmines_LDADD) $(LIBS)
 .cpp.o:
-	$(CXX) -c $(CXXFLAGS) $<
+	$(CXXCOMPILE) -c $<
+.cpp.lo:
+	$(LTCXXCOMPILE) -c $<
 
-%.moc: %.h
-	$(MOC) $< -o $@
+install-appsDATA: $(apps_DATA)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(appsdir)
+	@list='$(apps_DATA)'; for p in $$list; do \
+	  if test -f $(srcdir)/$$p; then \
+	    echo " $(INSTALL_DATA) $(srcdir)/$$p $(appsdir)/$$p"; \
+	    $(INSTALL_DATA) $(srcdir)/$$p $(appsdir)/$$p; \
+	  else if test -f $$p; then \
+	    echo " $(INSTALL_DATA) $$p $(appsdir)/$$p"; \
+	    $(INSTALL_DATA) $$p $(appsdir)/$$p; \
+	  fi; fi; \
+	done
 
-########## Files #####################
+uninstall-appsDATA:
+	$(NORMAL_UNINSTALL)
+	list='$(apps_DATA)'; for p in $$list; do \
+	  rm -f $(appsdir)/$$p; \
+	done
 
-OBJECTS =	main.o status.o field.o dialogs.o
-SRCMETA =	main.moc status.moc field.moc dialogs.moc
-TARGET	=	kmines
-DOC		=	index.html
+install-htmlDATA: $(html_DATA)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(htmldir)
+	@list='$(html_DATA)'; for p in $$list; do \
+	  if test -f $(srcdir)/$$p; then \
+	    echo " $(INSTALL_DATA) $(srcdir)/$$p $(htmldir)/$$p"; \
+	    $(INSTALL_DATA) $(srcdir)/$$p $(htmldir)/$$p; \
+	  else if test -f $$p; then \
+	    echo " $(INSTALL_DATA) $$p $(htmldir)/$$p"; \
+	    $(INSTALL_DATA) $$p $(htmldir)/$$p; \
+	  fi; fi; \
+	done
 
-######### build rules ################
+uninstall-htmlDATA:
+	$(NORMAL_UNINSTALL)
+	list='$(html_DATA)'; for p in $$list; do \
+	  rm -f $(htmldir)/$$p; \
+	done
 
-all: Makefile $(TARGET)
+install-iconDATA: $(icon_DATA)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(icondir)
+	@list='$(icon_DATA)'; for p in $$list; do \
+	  if test -f $(srcdir)/$$p; then \
+	    echo " $(INSTALL_DATA) $(srcdir)/$$p $(icondir)/$$p"; \
+	    $(INSTALL_DATA) $(srcdir)/$$p $(icondir)/$$p; \
+	  else if test -f $$p; then \
+	    echo " $(INSTALL_DATA) $$p $(icondir)/$$p"; \
+	    $(INSTALL_DATA) $$p $(icondir)/$$p; \
+	  fi; fi; \
+	done
 
-Makefile: Makefile.in
-	cd .. && CONFIG_FILES=kmines/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+uninstall-iconDATA:
+	$(NORMAL_UNINSTALL)
+	list='$(icon_DATA)'; for p in $$list; do \
+	  rm -f $(icondir)/$$p; \
+	done
 
-$(TARGET): $(SRCMETA) $(OBJECTS)
-	$(CXX) $(OBJECTS) -o $(TARGET) $(LDFLAGS)
+tags: TAGS
 
-clean:
-	rm -f *.o *.bak *~ *% #*
-	rm -f $(SRCMETA) $(TARGET)
+ID: $(HEADERS) $(SOURCES)
+	here=`pwd` && cd $(srcdir) && mkid -f$$here/ID $(SOURCES) $(HEADERS)
 
-distclean: clean
-	rm -f Makefile
+TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES)
+	tags=; \
+	here=`pwd`; \
+	test -z "$(ETAGS_ARGS)$(SOURCES)$(HEADERS)$$tags" \
+	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags  $(SOURCES) $(HEADERS) -o $$here/TAGS)
 
-install: all
-	$(INSTALL_DIR) $(BINDIR)
-	$(INSTALL) $(TARGET) $(BINDIR)
-	$(INSTALL_DIR) $(DOCDIR)
-	$(INSTALL_DATA) $(DOC) $(DOCDIR)
-	$(INSTALL_DIR) $(APPDIR)
-	$(INSTALL_DATA) kmines.kdelnk $(APPDIR)
-	$(INSTALL_DIR) $(ICONDIR)
-	$(INSTALL_DATA) kmines.xpm $(ICONDIR)
-	$(INSTALL_DIR) $(MINIDIR)
-	$(INSTALL_DATA) mini-kmines.xpm $(MINIDIR)/kmines.xpm
+mostlyclean-tags:
 
-uninstall:
-	rm -f $(BINDIR)/$(TARGET)
-	rm -f $(DOCSDIR)/$(DOC)
-	rm -f $(APPSDIR)/kmines.kdelnk
+clean-tags:
+
+distclean-tags:
+	-rm -f TAGS ID
+
+maintainer-clean-tags:
+
+distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
+
+subdir = kmines
+
+distdir: $(DISTFILES)
+	here=`cd $(top_builddir) && pwd`; \
+	top_distdir=`cd $(top_distdir) && pwd`; \
+	distdir=`cd $(distdir) && pwd`; \
+	cd $(top_srcdir) \
+	  && $(AUTOMAKE) --include-deps --build-dir=$$here --srcdir-name=$(top_srcdir) --output-dir=$$top_distdir --gnu kmines/Makefile
+	@for file in $(DISTFILES); do \
+	  d=$(srcdir); \
+	  test -f $(distdir)/$$file \
+	  || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
+	  || cp -p $$d/$$file $(distdir)/$$file; \
+	done
+
+MKDEP = $(CC) -M $(DEFS) $(INCLUDES) $(CPPFLAGS) $(CFLAGS)
+
+DEPS_MAGIC := $(shell mkdir .deps > /dev/null 2>&1 || :)
+-include .deps/.P
+.deps/.P: $(BUILT_SOURCES)
+	echo > $@
+
+-include $(DEP_FILES)
+
+mostlyclean-depend:
+
+clean-depend:
+
+distclean-depend:
+
+maintainer-clean-depend:
+	-rm -rf .deps
+
+.deps/%.P: %.c
+	@echo "Computing dependencies for $<..."
+	@o='o'; \
+	test -n "$o" && o='$$o'; \
+	$(MKDEP) $< >$@.tmp \
+	  && sed "s,^\(.*\)\.o:,\1.$$o \1.l$$o $@:," < $@.tmp > $@ \
+	  && rm -f $@.tmp
+
+.deps/%.P: %.cpp
+	@echo "Computing dependencies for $<..."
+	@o='o'; \
+	$(CXXMKDEP) $< >$@.tmp \
+	  && sed "s,^\(.*\)\.o:,\1.$$o \1.l$$o $@:," < $@.tmp > $@ \
+	  && rm -f $@.tmp
+info:
+dvi:
+check: all
+	$(MAKE)
+installcheck:
+install-exec: install-binPROGRAMS
+	@$(NORMAL_INSTALL)
+
+install-data: install-appsDATA install-htmlDATA install-iconDATA install-data-local
+	@$(NORMAL_INSTALL)
+
+install: install-exec install-data all
+	@:
+
+uninstall: uninstall-binPROGRAMS uninstall-appsDATA uninstall-htmlDATA uninstall-iconDATA uninstall-local
+
+all: Makefile $(PROGRAMS) $(DATA)
+
+install-strip:
+	$(MAKE) INSTALL_PROGRAM='$(INSTALL_PROGRAM) -s' INSTALL_SCRIPT='$(INSTALL_PROGRAM)' install
+installdirs:
+	$(mkinstalldirs)  $(bindir) $(appsdir) $(htmldir) $(icondir)
+
+
+mostlyclean-generic:
+	-test -z "$(MOSTLYCLEANFILES)" || rm -f $(MOSTLYCLEANFILES)
+
+clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
+
+distclean-generic:
+	-rm -f Makefile $(DISTCLEANFILES)
+	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
+	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
+
+maintainer-clean-generic:
+	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
+	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
+mostlyclean:  mostlyclean-binPROGRAMS mostlyclean-compile \
+		mostlyclean-libtool mostlyclean-tags mostlyclean-depend \
+		mostlyclean-generic
+
+clean:  clean-binPROGRAMS clean-compile clean-libtool clean-tags \
+		clean-depend clean-generic mostlyclean
+
+distclean:  distclean-binPROGRAMS distclean-compile distclean-libtool \
+		distclean-tags distclean-depend distclean-generic clean
+	-rm -f config.status
+	-rm -f libtool
+
+maintainer-clean:  maintainer-clean-binPROGRAMS maintainer-clean-compile \
+		maintainer-clean-libtool maintainer-clean-tags \
+		maintainer-clean-depend maintainer-clean-generic \
+		distclean
+	@echo "This command is intended for maintainers to use;"
+	@echo "it deletes files that may require special tools to rebuild."
+
+.PHONY: default mostlyclean-binPROGRAMS distclean-binPROGRAMS \
+clean-binPROGRAMS maintainer-clean-binPROGRAMS uninstall-binPROGRAMS \
+install-binPROGRAMS mostlyclean-compile distclean-compile clean-compile \
+maintainer-clean-compile mostlyclean-libtool distclean-libtool \
+clean-libtool maintainer-clean-libtool uninstall-appsDATA \
+install-appsDATA uninstall-htmlDATA install-htmlDATA uninstall-iconDATA \
+install-iconDATA tags mostlyclean-tags distclean-tags clean-tags \
+maintainer-clean-tags distdir mostlyclean-depend distclean-depend \
+clean-depend maintainer-clean-depend info dvi installcheck install-exec \
+install-data install uninstall all installdirs mostlyclean-generic \
+distclean-generic clean-generic maintainer-clean-generic clean \
+mostlyclean distclean maintainer-clean
+
 
 messages:
-	xgettext --default-domain=$(TARGET) --keyword=translate *.cpp *.h && mv messages.po ../po/kmines.pot
+	$(XGETTEXT) -C -ktranslate -x ../../kdelibs/po/kde.pot $(kmines_SOURCES) && mv messages.po ../po/kmines.pot
 
-depend:
-	@makedepend @all_includes@ *.cpp 2> /dev/null
+install-data-local:
+	$(mkinstalldirs) $(minidir)
+	$(INSTALL_DATA) mini-kmines.xpm $(minidir)/kmines.xpm
 
-# DO NOT DELETE THIS LINE -- make depend depends on it.
+uninstall-local:
+	rm -f $(minidir)/kmines.xpm
+	rm -rf $(htmldir)
+
+main.cpp: main.moc
+main.moc: main.h
+	$(MOC) -o main.moc main.h
+
+status.cpp: status.moc
+status.moc: status.h
+	$(MOC) -o status.moc status.h
+
+field.cpp: field.moc
+field.moc: field.h
+	$(MOC) -o field.moc field.h
+
+dialogs.cpp: dialogs.moc
+dialogs.moc: dialogs.h
+	$(MOC) -o dialogs.moc dialogs.h
+
+# Tell versions [3.59,3.63) of GNU make to not export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:
