@@ -17,6 +17,7 @@
 #include <kurllabel.h>
 #include <kopenwith.h>
 #include <krun.h>
+#include <qgrid.h>
 
 
 //-----------------------------------------------------------------------------
