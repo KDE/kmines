@@ -31,78 +31,38 @@ void Smiley::setMood(Mood mood)
 }
 
 //-----------------------------------------------------------------------------
-LCDNumber::LCDNumber(QWidget *parent, const char *name)
-: QLCDNumber(parent, name)
-{
-	setFrameStyle( QFrame::Panel | QFrame::Sunken );
-	setSegmentStyle(Flat);
-    setColor(white);
-}
-
-void LCDNumber::setColor(QColor color)
-{
-	QPalette p = palette();
-	p.setColor(QColorGroup::Background, black);
-    p.setColor(QColorGroup::Foreground, color);
-	setPalette(p);
-}
-
-//-----------------------------------------------------------------------------
 DigitalClock::DigitalClock(QWidget *parent)
-: LCDNumber(parent, "digital_clock")
-{}
+: LCDClock(parent, "digital_clock")
+{
+    setFrameStyle(Panel | Sunken);
+    setDefaultColors(white, black);
+}
 
 KExtHighscores::Score DigitalClock::score() const
 {
     KExtHighscores::Score score(KExtHighscores::Won);
-    score.setData("score", 3600 - (_min*60 + _sec));
+    score.setData("score", time());
     score.setData("nb_actions", _nbActions);
     return score;
 }
 
-void DigitalClock::timerEvent(QTimerEvent *)
+void DigitalClock::timeoutClock()
 {
- 	if (_stop) return;
-
-    if ( _min==59 && _sec==59 ) return; // waiting an hour do not restart timer
-    _sec++;
-    if (_sec==60) {
-        _min++;
-        _sec = 0;
-    }
-    showTime();
+    LCDClock::timeoutClock();
 
     if ( _first<score() ) setColor(red);
     else if ( _last<score() ) setColor(blue);
     else setColor(white);
 }
 
-void DigitalClock::showTime()
-{
-	char s[6] = "00:00";
-	if (_min>=10) s[0] += _min / 10;
-	s[1] += _min % 10;
-	if (_sec>=10) s[3] += _sec / 10;
-	s[4] += _sec % 10;
-
-	display(s);
-}
-
 void DigitalClock::reset(const KExtHighscores::Score &first,
                          const KExtHighscores::Score &last)
 {
-	killTimers();
-
-	_stop = true;
-	_sec = 0;
-    _min = 0;
     _nbActions = 0;
     _first = first;
     _last = last;
-	startTimer(1000); // one second
-
-	setColor(white);
-	showTime();
+    LCDClock::reset();
+    resetColor();
 }
 
 //-----------------------------------------------------------------------------

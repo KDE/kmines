@@ -1,19 +1,13 @@
 #ifndef STATUS_H
 #define STATUS_H
 
-#include <qwidget.h>
-#include <qframe.h>
 #include <qpushbutton.h>
 #include <qlabel.h>
-#include <qlcdnumber.h>
 #include <qwidgetstack.h>
 
 #include "field.h"
-#include "defines.h"
+#include "dialogs.h"
 
-
-class DigitalClock;
-class LCDNumber;
 
 class Status : public QWidget, public KMines
 {
@@ -57,7 +51,7 @@ class Status : public QWidget, public KMines
     QWidgetStack *_stack;
 
 	Smiley       *smiley;
-	LCDNumber    *left;
+	LCD          *left;
 	DigitalClock *dg;
 
 	void exmesg(const QString &);

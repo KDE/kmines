@@ -159,11 +159,6 @@ void Field::setLevel(const Level &level)
 
 void Field::restart()
 {
-	if ( state==Paused ) { //if game is paused : resume before restart
-		resume();
-		emit freezeTimer();
-	}
-
 	state = Playing;
 	firstReveal = true;
 	currentAction = None;
@@ -448,7 +443,7 @@ void Field::pause()
 
 	if ( state==Paused ) resume(); // if already paused : resume game
 	else {
-		emit freezeTimer();
+		emit stopTimer();
 		state = Paused;
         emit setMood(Smiley::Sleeping);
 		emit gameStateChanged(Paused);

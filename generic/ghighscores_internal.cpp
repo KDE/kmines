@@ -58,10 +58,7 @@ QVariant ItemContainer::read(uint i) const
     if ( isStored() ) {
         KHighscore hs;
         hs.setHighscoreGroup(_group);
-        if ( hs.hasEntry(i+1, entryName()) ) {
-            QVariant va = hs.readEntry(i+1, entryName());
-            if ( va.cast(_item->defaultValue().type()) ) v = va;
-        }
+        v = hs.readPropertyEntry(i+1, entryName(), v);
     }
     return _item->read(i, v);
 }
@@ -77,7 +74,7 @@ void ItemContainer::write(uint i, const QVariant &value) const
     Q_ASSERT( isStored() );
     KHighscore hs;
     hs.setHighscoreGroup(_group);
-    hs.writeEntry(i+1, entryName(), value.toString());
+    hs.writeEntry(i+1, entryName(), value);
 }
 
 //-----------------------------------------------------------------------------

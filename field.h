@@ -53,7 +53,7 @@ class Field : public QFrame, public KMines
 	void setMood(Smiley::Mood);
 	void gameLost();
 	void startTimer();
-	void freezeTimer();
+	void stopTimer();
 	void gameStateChanged(GameState);
     void incActions();
 

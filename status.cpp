@@ -13,8 +13,6 @@
 #include <kconfig.h>
 #include <ghighscores.h>
 
-#include "dialogs.h"
-
 
 Status::Status(QWidget *parent, const char *name)
 : QWidget(parent, name)
@@ -27,7 +25,9 @@ Status::Status(QWidget *parent, const char *name)
 
 // status bar
 	// mines left LCD
-	left = new LCDNumber(this);
+	left = new LCD(5, this);
+    left->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+    left->setDefaultColors(white, black);
 	left->installEventFilter(parent);
 	QWhatsThis::add(left, i18n("<qt>Mines left.<br/>"
                                "It turns <font color=\"red\">red</font> "
@@ -63,7 +63,7 @@ Status::Status(QWidget *parent, const char *name)
 	connect( field, SIGNAL(updateStatus(bool)), SLOT(update(bool)) );
 	connect( field, SIGNAL(gameLost()), SLOT(gameLost()) );
 	connect( field, SIGNAL(startTimer()), dg, SLOT(start()) );
-	connect( field, SIGNAL(freezeTimer()), dg, SLOT(freeze()) );
+	connect( field, SIGNAL(stopTimer()), dg, SLOT(stop()) );
 	connect( field, SIGNAL(setMood(Smiley::Mood)),
 			 smiley, SLOT(setMood(Smiley::Mood)) );
 	connect(field, SIGNAL(gameStateChanged(GameState)),
@@ -94,7 +94,7 @@ void Status::initGame()
 	uncovered = 0;
 	uncertain = 0;
 	marked    = 0;
-	emit gameStateChanged(Stopped);
+	gameStateChangedSlot(Stopped);
 	update(false);
 	smiley->setMood(Smiley::Normal);
 
@@ -172,7 +172,7 @@ void Status::_endGame(bool won)
 {
     field->showMines();
 	field->stop();
-	dg->freeze();
+	dg->stop();
 	emit gameStateChanged(Stopped);
     smiley->setMood(won ? Smiley::Happy : Smiley::Sad);
 

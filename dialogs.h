@@ -1,7 +1,6 @@
 #ifndef DIALOGS_H
 #define DIALOGS_H
 
-#include <qlcdnumber.h>
 #include <qcheckbox.h>
 #include <qcombobox.h>
 #include <qpushbutton.h>
@@ -10,6 +9,7 @@
 #include <kcolorbutton.h>
 #include <ghighscores.h>
 #include <gsettings.h>
+#include <gmisc_ui.h>
 
 #include "defines.h"
 
@@ -31,17 +31,7 @@ class Smiley : public QPushButton
 };
 
 //-----------------------------------------------------------------------------
-class LCDNumber : public QLCDNumber
-{
- Q_OBJECT
- public:
-	LCDNumber(QWidget *parent, const char *name = 0);
-
-	void setColor(QColor color);
-};
-
-//-----------------------------------------------------------------------------
-class DigitalClock : public LCDNumber
+class DigitalClock : public LCDClock
 {
  Q_OBJECT
  public:
@@ -52,20 +42,15 @@ class DigitalClock : public LCDNumber
 
     KExtHighscores::Score score() const;
 
- protected:
-	void timerEvent(QTimerEvent *);
-
  public slots:
-	void freeze() { _stop = true;  }
-	void start()  { _stop = false; }
     void incActions() { _nbActions++; }
+
+ private slots:
+    void timeoutClock();
 
  private:
     KExtHighscores::Score _first, _last;
-	uint                  _sec, _min, _nbActions;
-	bool                  _stop;
-
-	void showTime();
+	uint                  _nbActions;
 };
 
 //-----------------------------------------------------------------------------
