@@ -1,3 +1,11 @@
+2.0.9
+ * fix obscure bug reported by Tobias Oed (was crashing version 1.0.1a !)
+   : mouse buttons were messing things when pressed simultaneously.
+ * in the same move : simplified some code and correct a small buglet due to
+   rounding error (with left mouse button pressed, the first line and first
+   column case was pressed when the mouse was moved just outside the top and
+   left side of the field).
+
 2.0.8
  * fix bug that was pausing a stopped game when calling highscores
 

@@ -71,8 +71,8 @@ class Field : public QFrame
 	bool      u_mark, cursor;
 
 	uint  ic, jc;              // current pos
-	bool _reveal, _autoreveal; // mouse button pressed
 	MouseAction mb[3];         // mouse bindings
+	MouseAction currentAction;
 
 	CaseProperties cp;
 	QPixmap        pm_flag, pm_mine, pm_exploded, pm_error;
@@ -90,6 +90,7 @@ class Field : public QFrame
 	void flagPixmap(QPixmap &, bool mask) const;
 	void autoReveal();
 	void _endGame();
+	bool revealActions(bool press);
 
 	const Case &pfield(uint i, uint j) const;
 	Case &pfield(uint i, uint j);
@@ -108,7 +109,7 @@ class Field : public QFrame
 	void setUMark(bool um) { u_mark = um; }
 	void setCaseProperties(const CaseProperties &);
 	void setCursor(bool show);
-	MouseAction mapMouseButton(QMouseEvent *e) const;
+	MouseAction mapMouseButton(QMouseEvent *) const;
 };
 
 #endif // FIELD_H

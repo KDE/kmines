@@ -1,5 +1,7 @@
 #include "field.h"
 
+#include <math.h>
+
 #include <qlayout.h>
 #include <qbitmap.h>
 #include <qapplication.h>
@@ -8,7 +10,7 @@
 
 Field::Field(QWidget *parent, const char *name)
 : QFrame(parent, name), lev(LEVELS[0]), random(0), state(Stopped),
-  u_mark(false), cursor(false), _reveal(false), _autoreveal(false)
+  u_mark(false), cursor(false)
 {
 	setFrameStyle( QFrame::Box | QFrame::Raised );
 	setLineWidth(2);
@@ -177,6 +179,7 @@ void Field::restart(bool repaint)
 
 	state = Playing;
 	first_click = true;
+	currentAction = None;
 	ic = lev.width/2;
 	jc = lev.height/2;
 
@@ -233,13 +236,14 @@ int Field::jToY(uint j) const
 
 int Field::xToI(int x) const
 {
-	// the cast is necessary when x-frameWidth() is negative (?)
-	return (int)((double)(x - frameWidth())/cp.size) + 1;
+	double d = (double)(x - frameWidth()) / cp.size;
+	return (int)floor(d) + 1;
 }
 
 int Field::yToJ(int y) const
 {
-	return (int)((double)(y - frameWidth())/cp.size) + 1;
+	double d = (double)(y - frameWidth()) / cp.size;
+	return (int)floor(d) + 1;
 }
 
 void Field::uncover(uint i, uint j)
@@ -275,51 +279,61 @@ MouseAction Field::mapMouseButton(QMouseEvent *e) const
 	}
 }
 
+bool Field::revealActions(bool press)
+{
+	switch (currentAction) {
+	case Reveal:
+		pressCase(ic, jc, press);
+		return true;
+	case AutoReveal:
+		pressClearFunction(ic, jc, press);
+		return true;
+	default:
+		return false;
+	}
+}
+
 void Field::mousePressEvent(QMouseEvent *e)
 {
-	if ( state!=Playing ) return;
-	setMood(Smiley::Stressed);
-	bool inside = placeCursor(xToI(e->pos().x()), yToJ(e->pos().y()));
+	if ( state!=Playing || currentAction!=None ) return;
 
-	switch ( mapMouseButton(e) ) {
-	case Reveal:
-		_reveal = true;
-		if (inside) pressCase(ic, jc, true);
-		break;
-	case Mark:
-		if (inside) mark();
-		break;
-	case UMark:
-		if (inside) umark();
-		break;
-	case AutoReveal:
-		_autoreveal = true;
-		if (inside) pressClearFunction(ic, jc, true);
-		break;
-	}
+	setMood(Smiley::Stressed);
+	currentAction = mapMouseButton(e);
+	if ( !placeCursor(xToI(e->pos().x()), yToJ(e->pos().y())) ) return;
+
+	if ( !revealActions(true) )
+		switch (currentAction) {
+		case Mark:
+			mark();
+			break;
+		case UMark:
+			umark();
+			break;
+		default:
+			break;
+		}
 }
 
 void Field::mouseReleaseEvent(QMouseEvent *e)
 {
 	if ( state!=Playing ) return;
-	setMood(Smiley::Normal);
 
-	if (_autoreveal) {
-		pressClearFunction(ic, jc, false);
-		_autoreveal = false;
-	}
-	_reveal = false;
+	MouseAction ma = mapMouseButton(e);
+	if ( ma!=currentAction ) return;
+	setMood(Smiley::Normal);
+	revealActions(false);
+	currentAction = None;
+
 	if ( !placeCursor(xToI(e->pos().x()), yToJ(e->pos().y())) ) return;
 
-	switch ( mapMouseButton(e) ) {
+	switch (ma) {
 	case Reveal:
 		reveal();
 		break;
-	case Mark:
-	case UMark:
-		break;
 	case AutoReveal:
 		autoReveal();
+		break;
+	default:
 		break;
 	}
 }
@@ -328,11 +342,13 @@ void Field::mouseMoveEvent(QMouseEvent *e)
 {
 	if ( state!=Playing ) return;
 
-	if (_reveal) pressCase(ic, jc, false);
-	if (_autoreveal) pressClearFunction(ic, jc, false);
-	if ( !placeCursor(xToI(e->pos().x()), yToJ(e->pos().y())) ) return;
-	if (_reveal) pressCase(ic, jc, true);
-	else if (_autoreveal) pressClearFunction(ic, jc, true);
+	int i = xToI(e->pos().x());
+	int j = yToJ(e->pos().y());
+	if ( i==(int)ic && j==(int)jc ) return; // avoid flicker
+
+	revealActions(false);
+	if ( !placeCursor(i, j) ) return;
+	revealActions(true);
 }
 
 void Field::showMines()
