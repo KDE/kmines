@@ -1,4 +1,4 @@
-INCLUDES = -I$(top_srcdir)/kmines/generic -I$(top_srcdir)/kmines $(all_includes)
+INCLUDES = -I$(top_srcdir)/kmines/generic -I$(top_srcdir)/kmines -I$(top_srcdir)/libkdegames $(all_includes)
 
 noinst_LTLIBRARIES   = libsolver.la
 noinst_HEADERS       = bfield.h solver.h headerP.h adviseFast.h adviseFull.h
