@@ -539,6 +539,7 @@ default_presentation=0
 
 [set_uncertain]
 Name=Set question mark
+Name[bg]=Поставяне на въпросителна
 Name[et]=Pane küsimärk
 Name[nl]=Vraagteken instellen
 Name[pt]=Colocar um ponto de interrogação
@@ -548,6 +549,7 @@ Name[sv]=Placerade frågetecken
 Name[ta]=கேள்விக்குறியை அமை
 Name[zh_CN]=设置了问号
 Comment=Set question mark
+Comment[bg]=Поставяне на въпросителна
 Comment[et]=Pane küsimärk
 Comment[nl]=Vraagteken instellen
 Comment[pt]=Colocar um ponto de interrogação
@@ -560,6 +562,7 @@ default_presentation=0
 
 [unset_uncertain]
 Name=Unset question mark
+Name[bg]=Премахване на въпросителна
 Name[et]=Eemalda küsimärk
 Name[nl]=Vraagteken weghalen
 Name[pt]=Retirar um ponto de interrogação
@@ -569,6 +572,7 @@ Name[sv]=Tog bort frågetecken
 Name[ta]=கேள்விக் குறி அமைக்கவில்லை
 Name[zh_CN]=取消了问号
 Comment=Unset question mark
+Comment[bg]=Премахване на въпросителна
 Comment[et]=Eemalda küsimärk
 Comment[nl]=Vraagteken weghalen
 Comment[pt]=Retirar um ponto de interrogação
