@@ -50,7 +50,7 @@ QString ExtHighscores::gameTypeLabel(uint level, LabelType type) const
     case I18N:     return i18n(data.i18nLabel);
     case WW:       return data.wwLabel;
     }
-    ASSERT(false);
+    Q_ASSERT(false);
     return QString::null;
 };
 
@@ -61,7 +61,7 @@ void ExtHighscores::convertLegacy(uint level) const
     case Easy: group = "Easy level"; break;
     case Normal: group = "Normal level"; break;
     case Expert: group = "Expert level"; break;
-    case NbLevels: ASSERT(false);
+    case NbLevels: Q_ASSERT(false);
     }
 
     KConfig *config = kapp->config();

@@ -35,7 +35,7 @@ QString ItemBase::entryName() const
 
 QVariant ItemBase::read(uint i) const
 {
-    ASSERT( stored() );
+    Q_ASSERT( stored() );
     KHighscore hs;
     hs.setHighscoreGroup(_group);
     QVariant v = hs.readEntry(i+1, entryName(), _default.toString());
@@ -50,7 +50,7 @@ QString ItemBase::pretty(uint i) const
 
 void ItemBase::write(uint i, const QVariant &value) const
 {
-    ASSERT( stored() );
+    Q_ASSERT( stored() );
     KHighscore hs;
     hs.setHighscoreGroup(_group);
     hs.writeEntry(i+1, entryName(), value.toString());
@@ -58,7 +58,7 @@ void ItemBase::write(uint i, const QVariant &value) const
 
 void ItemBase::moveDown(uint newIndex) const
 {
-    ASSERT( newIndex!=0 );
+    Q_ASSERT( newIndex!=0 );
     write(newIndex, read(newIndex-1));
 }
 
@@ -245,7 +245,7 @@ void PlayerInfos::submitScore(bool won, const Score &score) const
 
 void PlayerInfos::submitBlackMark() const
 {
-    ASSERT( highscores().isBlackMarkEnabled() );
+    Q_ASSERT( highscores().isBlackMarkEnabled() );
     uint nb_bm = item("black mark").read(_id).toUInt();
     item("black mark").write(_id, nb_bm+1);
 }
@@ -456,9 +456,9 @@ Highscores::Highscores(const QString version, const KURL &baseURL,
     : _version(version), _baseURL(baseURL), _nbGameTypes(nbGameTypes),
       _nbEntries(nbEntries), _gameType(0)
 {
-    ASSERT( nbGameTypes!=0 );
-    ASSERT( nbEntries!=0 );
-    ASSERT( baseURL.isEmpty()
+    Q_ASSERT( nbGameTypes!=0 );
+    Q_ASSERT( nbEntries!=0 );
+    Q_ASSERT( baseURL.isEmpty()
             || (baseURL.isValid() && baseURL.fileName(false).isEmpty()) );
 }
 
@@ -475,7 +475,7 @@ void Highscores::init()
 
 void Highscores::setGameType(uint type)
 {
-    ASSERT( type<_nbGameTypes );
+    Q_ASSERT( type<_nbGameTypes );
     _gameType = type;
 }
 
@@ -528,7 +528,7 @@ void Highscores::_showHighscores(QWidget *parent, int rank)
 
 void Highscores::submitScore(bool won, Score &score, QWidget *parent)
 {
-    ASSERT( won || isLostGameEnabled() );
+    Q_ASSERT( won || isLostGameEnabled() );
 
     PlayerInfos *i = infos();
     if ( i->isAnonymous() )
@@ -547,7 +547,7 @@ void Highscores::submitScore(bool won, Score &score, QWidget *parent)
 
 void Highscores::submitBlackMark(QWidget *parent) const
 {
-    ASSERT( isBlackMarkEnabled() );
+    Q_ASSERT( isBlackMarkEnabled() );
     PlayerInfos *i = infos();
     i->submitBlackMark();
     submitWorldWide(BLACK_MARK_ID, *i, parent);

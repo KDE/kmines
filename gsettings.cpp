@@ -21,7 +21,7 @@ BaseSettingsWidget::BaseSettingsWidget(BaseSettings *settings,
                                        QWidget *parent, const char *name)
     : QWidget(parent, name), _settings(settings)
 {
-    ASSERT(settings);
+    Q_ASSERT(settings);
 }
 
 BaseSettingsWidget::~BaseSettingsWidget()
