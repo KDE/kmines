@@ -278,14 +278,14 @@ bool Highscores::doQuery(QDomNamedNodeMap &attributes, QWidget *parent) const
     QString tmpFile;
     if ( !KIO::NetAccess::download(_url, tmpFile) ) {
         QString msg = i18n("Unable to contact world-wide highscore server");
-        QString details = i18n("Host url : %1").arg(_url.host());
+        QString details = i18n("Host URL: %1").arg(_url.host());
         KMessageBox::detailedSorry(parent, msg, details);
         return false;
     }
 
 	QFile file(tmpFile);
 	if ( !file.open(IO_ReadOnly) ) {
-        QString msg = i18n("Unable to contact world-wide highscore server");
+        QString msg = i18n("Unable to contact world-wide highscore server.");
         QString details = i18n("Unable to open temporary file.");
         KMessageBox::detailedSorry(parent, msg, details);
         return false;
@@ -314,7 +314,7 @@ bool Highscores::doQuery(QDomNamedNodeMap &attributes, QWidget *parent) const
         }
     }
     QString msg = i18n("Invalid answer from world-wide highscores server.");
-    QString details = i18n("Raw message is : %1").arg(content);
+    QString details = i18n("Raw message is: %1").arg(content);
     KMessageBox::detailedSorry(parent, msg, details);
     return false;
 }
@@ -327,7 +327,7 @@ bool Highscores::getFromQuery(const QDomNamedNodeMap &map,
     if ( attr.isNull() ) {
 	    KMessageBox::sorry(parent,
                i18n("Invalid answer from world-wide "
-                    "highscores server (missing item : %1).").arg(name));
+                    "highscores server (missing item: %1).").arg(name));
 		return false;
 	}
 	value = attr.value();
