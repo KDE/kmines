@@ -575,7 +575,7 @@ HighscoresOption::HighscoresOption(KDialogBase *dialog)
 
     _WWHEnabled = new QCheckBox(i18n("world-wide highscores enabled"), page);
     _WWHEnabled->setChecked(pi.WWEnabled());
-    _WWHEnabled->setEnabled(false); // #### FIXME
+    _WWHEnabled->setEnabled(false); // #### fixme
     top->addWidget(_WWHEnabled);
 
     top->addStretch(1);

@@ -11,5 +11,3 @@ KNOWN BUGS:
 
  * bug in Aqua theme (rectangle in the upper left part of the field : probably
    a bug in the theme ...)
-
- * fix keyboard autoreveal (when not succesful ...)
