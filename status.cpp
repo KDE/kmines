@@ -240,7 +240,7 @@ void Status::advise()
 {
     int res = KMessageBox::warningContinueCancel(this,
                i18n("When the solver gives "
-               "you an advice, you lose the ability to enter the highscores."),
+               "you advice, your score will not be added to the highscores."),
                 QString::null, QString::null, "advice_warning");
     if ( res==KMessageBox::Cancel ) return;
     dg->setCheating();
