@@ -17,8 +17,8 @@
     Boston, MA 02111-1307, USA.
 */
 
-#ifndef G_HIGHSCORES_TAB_H
-#define G_HIGHSCORES_TAB_H
+#ifndef KEXTHIGHSCORE_TAB_H
+#define KEXTHIGHSCORE_TAB_H
 
 #include <qcombobox.h>
 #include <qmemarray.h>
@@ -35,7 +35,9 @@ class PlayersCombo : public QComboBox
 {
  Q_OBJECT
  public:
-    PlayersCombo(bool addNoneItem, QWidget *parent = 0, const char *name = 0);
+    PlayersCombo(QWidget *parent = 0, const char *name = 0);
+
+    void load();
 
  signals:
     void playerSelected(uint i);
@@ -53,7 +55,7 @@ class AdditionalTab : public QWidget
  public:
     AdditionalTab(QWidget *parent, const char *name);
 
-    virtual void load() = 0;
+    virtual void load();
 
  private slots:
     void playerSelected(uint i) { display(i) ; }
@@ -65,7 +67,7 @@ class AdditionalTab : public QWidget
     virtual void display(uint i) = 0;
 
  private:
-    QComboBox *_combo;
+    PlayersCombo *_combo;
 };
 
 //-----------------------------------------------------------------------------

@@ -17,12 +17,10 @@
     Boston, MA 02111-1307, USA.
 */
 
-#ifndef G_HIGHSCORES_H
-#define G_HIGHSCORES_H
+#ifndef KEXTHIGHSCORE_H
+#define KEXTHIGHSCORE_H
 
 #include <qvaluevector.h>
-#include <kurl.h>
-
 #include <kurl.h>
 
 #include "ghighscores_item.h"
@@ -102,7 +100,7 @@ Score firstScore();
 /**
  * This class manages highscores and players entries (several players can
  * share the same highscores list if the libkdegame library is built to
- * support a common highscores file : NOTE that to correctly implement such
+ * support a common highscores file; NOTE that to correctly implement such
  * feature we probably need a locking mechanism in @ref KHighscore).
  *
  * You need one instance of this class during the application lifetime ; in
@@ -137,14 +135,8 @@ Score firstScore();
  * <li> "name" : the player name (as defined by the user in the configuration
  *      dialog) </li>
  * <li> "nb game" : the number of games </li>
- * <li> "success" : the number of successes (only if @ref setTrackLostGame is
- *      enabled) </li>
  * <li> "mean score" : the mean score </li>
  * <li> "best score" : the best score </li>
- * <li> "black mark" : the number of black marks (only if
- *      @ref setTrackBlackMark is enabled) ; black marks should be submitted
- *      if the user aborts a game and you consider this practice is somehow
- *      cheating the statistics </li>
  * <li> "date" : the best score time and date </li>
  * <li> "comment" : the player comment (as defined by the user in the
  *      configuration dialog) </li>

@@ -17,8 +17,8 @@
     Boston, MA 02111-1307, USA.
 */
 
-#ifndef G_HIGHSCORES_GUI_H
-#define G_HIGHSCORES_GUI_H
+#ifndef KEXTHIGHSCORE_GUI_H
+#define KEXTHIGHSCORE_GUI_H
 
 #include <qcheckbox.h>
 #include <qlabel.h>

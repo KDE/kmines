@@ -122,8 +122,8 @@ void HighscoresList::load(const ItemArray &items, int highlight)
 
 //-----------------------------------------------------------------------------
 HighscoresWidget::HighscoresWidget(QWidget *parent)
-    : QWidget(parent, "show_highscores_widget"), _scoresList(0), _scoresUrl(0),
-      _playersUrl(0), _statsTab(0), _histoTab(0)
+    : QWidget(parent, "show_highscores_widget"),
+      _scoresUrl(0), _playersUrl(0), _statsTab(0), _histoTab(0)
 {
     const ScoreInfos &s = internal->scoreInfos();
     const PlayerInfos &p = internal->playerInfos();
@@ -135,18 +135,9 @@ HighscoresWidget::HighscoresWidget(QWidget *parent)
     vbox->addWidget(_tw);
 
     // scores tab
-    QWidget *w;
-    if ( s.nbEntries()==0 ) {
-        QLabel *lab = new QLabel(i18n("no score entry"), _tw);
-        lab->setAlignment(AlignCenter);
-        w = lab;
-        _scoresList = 0;
-    } else {
-        _scoresList = new HighscoresList(_tw);
-        _scoresList->addHeader(s);
-        w = _scoresList;
-    }
-    _tw->addTab(w, i18n("Best &Scores"));
+    _scoresList = new HighscoresList(_tw);
+    _scoresList->addHeader(s);
+    _tw->addTab(_scoresList, i18n("Best &Scores"));
 
     // players tab
     _playersList = new HighscoresList(_tw);
@@ -197,7 +188,7 @@ void HighscoresWidget::showURL(const QString &url) const
 
 void HighscoresWidget::load(int rank)
 {
-    if (_scoresList) _scoresList->load(internal->scoreInfos(), rank);
+    _scoresList->load(internal->scoreInfos(), rank);
     _playersList->load(internal->playerInfos(), internal->playerInfos().id());
     if (_scoresUrl)
         _scoresUrl->setURL(internal->queryURL(ManagerPrivate::Scores).url());

@@ -17,8 +17,8 @@
     Boston, MA 02111-1307, USA.
 */
 
-#ifndef G_HIGHSCORES_ITEM_H
-#define G_HIGHSCORES_ITEM_H
+#ifndef KEXTHIGHSCORE_ITEM_H
+#define KEXTHIGHSCORE_ITEM_H
 
 #include <qvariant.h>
 #include <qmap.h>
@@ -258,8 +258,8 @@ class Score : public DataArray
     void setType(ScoreType type) { _type = type; }
 
     /**
-     * Convenience function equivalent to <pre>data("score").toUint()</pre>
      * @return the score value.
+     * Convenience function equivalent to <pre>data("score").toUInt()</pre>
      */
     uint score() const { return data("score").toUInt(); }
 
@@ -271,7 +271,7 @@ class Score : public DataArray
 
     /**
      * Convenience comparison operator equivalent to
-     * <pre>Highscores::isStrictlyLess(*this, score)</pre>
+     * <pre>Manager::isStrictlyLess(*this, score)</pre>
      */
     bool operator <(const Score &score) const;
 

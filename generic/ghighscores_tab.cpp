@@ -39,16 +39,13 @@ namespace KExtHighscore
 {
 
 //-----------------------------------------------------------------------------
-PlayersCombo::PlayersCombo(bool addNoneElement,
-                           QWidget *parent, const char *name)
+PlayersCombo::PlayersCombo(QWidget *parent, const char *name)
     : QComboBox(parent, name)
 {
     const PlayerInfos &p = internal->playerInfos();
     for (uint i = 0; i<p.nbEntries(); i++)
         insertItem(p.prettyName(i));
     insertItem(QString("<") + i18n("all") + '>');
-    if (addNoneElement) insertItem(QString("<") + i18n("none") + '>');
-
     connect(this, SIGNAL(activated(int)), SLOT(activatedSlot(int)));
 }
 
@@ -58,6 +55,13 @@ void PlayersCombo::activatedSlot(int i)
     if ( i==(int)p.nbEntries() ) emit allSelected();
     else if ( i==(int)p.nbEntries()+1 ) emit noneSelected();
     else emit playerSelected(i);
+}
+
+void PlayersCombo::load()
+{
+    const PlayerInfos &p = internal->playerInfos();
+    for (uint i = 0; i<p.nbEntries(); i++)
+        changeItem(p.prettyName(i), i);
 }
 
 //-----------------------------------------------------------------------------
@@ -70,7 +74,7 @@ AdditionalTab::AdditionalTab(QWidget *parent, const char *name)
     QHBoxLayout *hbox = new QHBoxLayout(top);
     QLabel *label = new QLabel(i18n("Select player:"), this);
     hbox->addWidget(label);
-    _combo = new PlayersCombo(false, this);
+    _combo = new PlayersCombo(this);
     connect(_combo, SIGNAL(playerSelected(uint)),
             SLOT(playerSelected(uint)));
     connect(_combo, SIGNAL(allSelected()), SLOT(allSelected()));
@@ -95,6 +99,11 @@ QString AdditionalTab::percent(uint n, uint total, bool withBraces)
     if ( n==0 || total==0 ) return QString::null;
     QString s =  QString("%1%").arg(100.0 * n / total, 0, 'f', 1);
     return (withBraces ? QString("(") + s + ")" : s);
+}
+
+void AdditionalTab::load()
+{
+    _combo->load();
 }
 
 
@@ -139,6 +148,7 @@ StatisticsTab::StatisticsTab(QWidget *parent)
 
 void StatisticsTab::load()
 {
+    AdditionalTab::load();
     const PlayerInfos &pi = internal->playerInfos();
     uint nb = pi.nbEntries();
     _data.resize(nb+1);
@@ -226,6 +236,7 @@ HistogramTab::HistogramTab(QWidget *parent)
 
 void HistogramTab::load()
 {
+    AdditionalTab::load();
     const PlayerInfos &pi = internal->playerInfos();
     uint n = pi.nbEntries();
     uint s = pi.histoSize() - 1;

@@ -17,8 +17,8 @@
     Boston, MA 02111-1307, USA.
 */
 
-#ifndef G_HIGHSCORES_INTERNAL_H
-#define G_HIGHSCORES_INTERNAL_H
+#ifndef KEXTHIGHSCORE_INTERNAL_H
+#define KEXTHIGHSCORE_INTERNAL_H
 
 #include <kapplication.h>
 #include <kconfig.h>
