@@ -19,23 +19,15 @@
 #ifndef BASE_FIELD_H
 #define BASE_FIELD_H
 
-#include "grid2d.h"
+#include <qcstring.h>
 
 #include <krandomsequence.h>
 
+#include "grid2d.h"
+#include "defines.h"
 
-//-----------------------------------------------------------------------------
-namespace KMines
-{
-    enum CaseState { Covered, Uncovered, Uncertain, Marked, Exploded, Error };
-    struct Case {
-        bool      mine;
-        CaseState state;
-    };
-}
 
-//-----------------------------------------------------------------------------
-class BaseField : public Grid2D::Square<KMines::Case>
+class BaseField : public Grid2D::Square<KMines::Case>, public KMines
 {
  public:
     // seed for KRandomSequence (used by solver check programs)
@@ -64,6 +56,7 @@ class BaseField : public Grid2D::Square<KMines::Case>
 // -------------------------
 
     uint nbMarked() const { return _nbMarked; }
+    QCString string() const;
 
     void showAllMines();
 

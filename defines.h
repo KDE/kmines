@@ -53,15 +53,23 @@ class Level
     uint _width, _height, _nbMines;
 };
 
-namespace KMines
+class KMines
 {
+ public:
     enum GameState   { Playing = 0, Paused, GameOver, Stopped, NB_STATES };
-    extern const char *STATES[NB_STATES];
+    static const char *STATES[NB_STATES];
     enum MouseAction { Reveal = 0, AutoReveal, Mark, UMark, None };
     enum MouseButton { LeftButton = 0, MidButton, RightButton };
 
+    enum CaseState { Covered, Uncovered, Uncertain, Marked, Exploded, Error };
+    struct Case {
+        bool      mine;
+        CaseState state;
+    };
+
     enum Color { FlagColor = 0, ExplosionColor, ErrorColor, NB_COLORS };
     enum NumberColor { NB_NUMBER_COLORS = 8 };
+    enum Mood { Normal = 0, Stressed, Happy, Sad, Sleeping, NbMoods };
 
     struct CaseProperties {
         uint size;
@@ -69,7 +77,7 @@ namespace KMines
         QColor colors[NB_COLORS];
     };
 
-    extern const char *OP_GROUP;
+    static const char *OP_GROUP;
 };
 
 #endif

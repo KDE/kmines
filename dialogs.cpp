@@ -28,9 +28,14 @@
 #include <qlabel.h>
 #include <qtimer.h>
 #include <qwhatsthis.h>
+#include <qcheckbox.h>
 
 #include <klocale.h>
 #include <kmessagebox.h>
+#include <kcombobox.h>
+#include <knuminput.h>
+#include <kcolorbutton.h>
+#include <kcombobox.h>
 
 #include "bitmaps/smile"
 #include "bitmaps/smile_happy"
@@ -40,7 +45,7 @@
 
 
 //-----------------------------------------------------------------------------
-const char **Smiley::XPM_NAMES[Smiley::NbPixmaps] = {
+const char **Smiley::XPM_NAMES[NbMoods] = {
     smile_xpm, smile_stress_xpm, smile_happy_xpm, smile_ohno_xpm,
     smile_sleep_xpm
 };
@@ -61,7 +66,6 @@ DigitalClock::DigitalClock(QWidget *parent)
 
 KExtHighscores::Score DigitalClock::score() const
 {
-    Q_ASSERT( !_cheating );
     KExtHighscores::Score score(KExtHighscores::Won);
     score.setData("score", time());
     score.setData("nb_actions", _nbActions);
@@ -105,19 +109,19 @@ void DigitalClock::setCheating()
 KRangedUIConfig *createWidth(KUIConfigCollection *col)
 {
     return new KRangedUIConfig(KRangedUIConfig::IntInput,
-                              KMines::OP_GROUP, "custom width",
-                              Level::data(Level::Custom).width,
-                              Level::MIN_CUSTOM_SIZE, Level::MAX_CUSTOM_SIZE,
-                              col, i18n("Width"));
+                               KMines::OP_GROUP, "custom width",
+                               Level::data(Level::Custom).width,
+                               Level::MIN_CUSTOM_SIZE, Level::MAX_CUSTOM_SIZE,
+                               col, i18n("Width"));
 }
 
 KRangedUIConfig *createHeight(KUIConfigCollection *col)
 {
     return new KRangedUIConfig(KRangedUIConfig::IntInput,
-                              KMines::OP_GROUP, "custom height",
-                              Level::data(Level::Custom).height,
-                              Level::MIN_CUSTOM_SIZE, Level::MAX_CUSTOM_SIZE,
-                              col, i18n("Height"));
+                               KMines::OP_GROUP, "custom height",
+                               Level::data(Level::Custom).height,
+                               Level::MIN_CUSTOM_SIZE, Level::MAX_CUSTOM_SIZE,
+                               col, i18n("Height"));
 }
 
 KRangedUIConfig *createMines(KUIConfigCollection *col)
@@ -159,7 +163,7 @@ CustomConfig::CustomConfig()
     QHBoxLayout *hbox = new QHBoxLayout(top);
     QLabel *label = new QLabel(i18n("Choose level"), this);
     hbox->addWidget(label);
-    _gameType = new QComboBox(false, this);
+    _gameType = new KComboBox(false, this);
     connect(_gameType, SIGNAL(activated(int)), SLOT(typeChosen(int)));
     for (uint i=0; i<=Level::NbLevels; i++)
         _gameType->insertItem(i18n(Level::data((Level::Type)i).i18nLabel));
@@ -210,22 +214,22 @@ const char *ACTION_BINDINGS[4] =
 KUIConfig *createUMark(KUIConfigCollection *col)
 {
     return new KSimpleUIConfig(KSimpleUIConfig::CheckBox,
-                              KMines::OP_GROUP, "? mark", true,
-                              col, i18n("Enable ? mark"));
+                               KMines::OP_GROUP, "? mark", true,
+                               col, i18n("Enable ? mark"));
 }
 
 KUIConfig *createKeyboard(KUIConfigCollection *col)
 {
     return new KSimpleUIConfig(KSimpleUIConfig::CheckBox,
-                              KMines::OP_GROUP, "keyboard game", false,
-                              col, i18n("Enable keyboard"));
+                               KMines::OP_GROUP, "keyboard game", false,
+                               col, i18n("Enable keyboard"));
 }
 
 KUIConfig *createPauseFocus(KUIConfigCollection *col)
 {
     return new KSimpleUIConfig(KSimpleUIConfig::CheckBox,
-                              KMines::OP_GROUP, "paused if lose focus", true,
-                              col, i18n("Pause if window lose focus"));
+                               KMines::OP_GROUP, "paused if lose focus", true,
+                               col, i18n("Pause if window lose focus"));
 }
 
 KMultiUIConfig *createMouseBinding(KUIConfigCollection *col, uint i)
@@ -242,8 +246,8 @@ KMultiUIConfig *createMouseBinding(KUIConfigCollection *col, uint i)
 KUIConfig *createMagicReveal(KUIConfigCollection *col)
 {
     return new KSimpleUIConfig(KSimpleUIConfig::CheckBox,
-                              KMines::OP_GROUP, "magic reveal", false,
-                              col, i18n("\"Magic\" reveal"));
+                               KMines::OP_GROUP, "magic reveal", false,
+                               col, i18n("\"Magic\" reveal"));
 }
 
 GameConfig::GameConfig()
@@ -313,9 +317,9 @@ bool GameConfig::readPauseFocus()
     return createPauseFocus(0)->configValue().toBool();
 }
 
-KMines::MouseAction GameConfig::readMouseBinding(KMines::MouseButton mb)
+KMines::MouseAction GameConfig::readMouseBinding(MouseButton mb)
 {
-    return (KMines::MouseAction)createMouseBinding(0, mb)->configId();
+    return (MouseAction)createMouseBinding(0, mb)->configId();
 }
 
 bool GameConfig::readMagicReveal()
@@ -348,25 +352,25 @@ const QColor DEFAULT_NUMBER_COLOR[KMines::NB_NUMBER_COLORS] = {
 KRangedUIConfig *createCaseSize(KUIConfigCollection *col)
 {
     return new KRangedUIConfig(KRangedUIConfig::IntInput,
-                              KMines::OP_GROUP, "case size", DEF_CASE_SIZE,
-                              MIN_CASE_SIZE, MAX_CASE_SIZE,
-                              col, i18n("Case size"));
+                               KMines::OP_GROUP, "case size", DEF_CASE_SIZE,
+                               MIN_CASE_SIZE, MAX_CASE_SIZE,
+                               col, i18n("Case size"));
 }
 
 KUIConfig *createColor(KUIConfigCollection *col, uint i)
 {
     return new KSimpleUIConfig(KSimpleUIConfig::ColorButton,
-                              KMines::OP_GROUP, COLOR_DATA[i].entry,
-                              COLOR_DATA[i].def,
-                              col, i18n(COLOR_DATA[i].label));
+                               KMines::OP_GROUP, COLOR_DATA[i].entry,
+                               COLOR_DATA[i].def,
+                               col, i18n(COLOR_DATA[i].label));
 }
 
 KUIConfig *createNumberColor(KUIConfigCollection *col, uint i)
 {
     return new KSimpleUIConfig(KSimpleUIConfig::ColorButton,
-                              KMines::OP_GROUP, QString("color #%1").arg(i),
-                              DEFAULT_NUMBER_COLOR[i], col,
-                              i18n("%n mine color", "%n mines color", i+1));
+                               KMines::OP_GROUP, QString("color #%1").arg(i),
+                               DEFAULT_NUMBER_COLOR[i], col,
+                               i18n("%n mine color", "%n mines color", i+1));
 }
 
 AppearanceConfig::AppearanceConfig()
@@ -385,7 +389,7 @@ AppearanceConfig::AppearanceConfig()
     QGrid *grid = new QGrid(2, this);
     top->addWidget(grid);
 
-    for (uint i=0; i<KMines::NB_COLORS; i++) {
+    for (uint i=0; i<NB_COLORS; i++) {
         QLabel *l = new QLabel(grid);
         KColorButton *cb = new KColorButton(grid);
         cb->setFixedWidth(100);
@@ -394,7 +398,7 @@ AppearanceConfig::AppearanceConfig()
         set->associate(cb);
     }
 
-	for (uint i=0; i<KMines::NB_NUMBER_COLORS; i++) {
+	for (uint i=0; i<NB_NUMBER_COLORS; i++) {
 		QLabel *l = new QLabel(grid);
         KColorButton *cb = new KColorButton(grid);
         cb->setFixedWidth(100);
@@ -406,11 +410,11 @@ AppearanceConfig::AppearanceConfig()
 
 KMines::CaseProperties AppearanceConfig::readCaseProperties()
 {
-    KMines::CaseProperties cp;
+    CaseProperties cp;
     cp.size = createCaseSize(0)->configValue().toUInt();
-    for (uint i=0; i<KMines::NB_COLORS; i++)
+    for (uint i=0; i<NB_COLORS; i++)
         cp.colors[i] = createColor(0, i)->configValue().toColor();
-	for (uint i=0; i<KMines::NB_NUMBER_COLORS; i++)
+	for (uint i=0; i<NB_NUMBER_COLORS; i++)
         cp.numberColors[i] = createNumberColor(0, i)->configValue().toColor();
 	return cp;
 }

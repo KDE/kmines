@@ -5,7 +5,7 @@ bin_PROGRAMS       = kmines
 kmines_LDFLAGS     = $(all_libraries) $(KDE_RPATH)
 kmines_LDADD       = ./solver/libsolver.la ./generic/libkdehighscores.la
 kmines_SOURCES     = defines.cpp highscores.cpp \
-                     dialogs.cpp field.cpp status.cpp main.cpp
+                     dialogs.cpp frame.cpp field.cpp status.cpp main.cpp
 kmines_METASOURCES = dialogs.moc field.moc status.moc main.moc
 
 rcdir   = $(kde_datadir)/kmines

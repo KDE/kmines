@@ -20,15 +20,17 @@
 #define MAIN_H
 
 #include <kmainwindow.h>
-#include <kaction.h>
 #include "gsettings.h"
 
 #include "defines.h"
 
 
+class KAction;
+class KToggleAction;
+class KSelectAction;
 class Status;
 
-class MainWidget : public KMainWindow
+class MainWidget : public KMainWindow, public KMines
 {
  Q_OBJECT
  public:

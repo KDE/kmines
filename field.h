@@ -19,23 +19,19 @@
 #ifndef FIELD_H
 #define FIELD_H
 
-#include <qframe.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qpainter.h>
-#include <qpixmap.h>
-
-#include "defines.h"
 #include "solver/bfield.h"
-#include "dialogs.h"
+#include "frame.h"
 
-
-using namespace KMines;
 
 //-----------------------------------------------------------------------------
-class Field : public QFrame, public BaseField
+class Field : public FieldFrame, public BaseField
 {
  Q_OBJECT
+ public:
+    enum ActionType { Reveal = 0, AutoReveal, SetFlag, UnsetFlag, SetUncertain,
+                      UnsetUncertain, Nb_Actions };
+    static const char *ACTION_NAMES[Nb_Actions];
+
  public:
 	Field(QWidget *parent);
 
@@ -51,6 +47,7 @@ class Field : public QFrame, public BaseField
 	bool isPaused() const { return _state==Paused; }
 	void pause();
 	void gameOver() { _state = GameOver; }
+    bool completeReveal() const { return _completeReveal; }
 
     void moveCursor(Neighbour);
     void moveToEdge(Neighbour);
@@ -60,17 +57,15 @@ class Field : public QFrame, public BaseField
 	void keyboardAutoReveal();
 
 	void readSettings();
-	void setCaseSize(uint s);
-	uint caseSize() const { return _cp.size; }
 
     void setAdvised(const Grid2D::Coord &c, double proba);
 
  signals:
 	void updateStatus(bool);
 	void gameStateChanged(GameState, bool won);
-    void incActions();
-    void setMood(Smiley::Mood);
+    void setMood(Mood);
     void setCheating();
+    void addAction(const Grid2D::Coord &, Field::ActionType);
 
  protected:
 	void paintEvent(QPaintEvent *);
@@ -88,18 +83,11 @@ class Field : public QFrame, public BaseField
     double         _advisedProba;
 	MouseAction    _mb[3];
 	MouseAction    _currentAction;
-	CaseProperties _cp;
-	QPixmap        _pm_flag, _pm_mine, _pm_exploded, _pm_error;
-    QPixmap        _pm_advised[5];
-	QPushButton    _button;
     Level          _level;
 
-	void minePixmap(QPixmap &, bool mask, CaseState) const;
 	void pressCase(const Grid2D::Coord &, bool);
 	void pressClearFunction(const Grid2D::Coord &, bool);
 	void placeCursor(const Grid2D::Coord &);
-	void flagPixmap(QPixmap &, bool mask) const;
-    void advisedPixmap(QPixmap &, bool mask, uint i) const;
 	void revealActions(bool press);
 
     void doAutoReveal(const Grid2D::Coord &);
@@ -107,19 +95,13 @@ class Field : public QFrame, public BaseField
     void doMark(const Grid2D::Coord &);
     void doUmark(const Grid2D::Coord &);
     void changeCase(const Grid2D::Coord &, CaseState newState);
+    void addMarkAction(const Grid2D::Coord &, CaseState old);
 
     QPoint toPoint(const Grid2D::Coord &) const;
     Grid2D::Coord fromPoint(const QPoint &) const;
 
 	void drawCase(QPainter &, const Grid2D::Coord &) const;
-	void drawBox(QPainter &, const Grid2D::Coord &, bool, const QPixmap * = 0,
-                 const QString &text = QString::null,
-                 const QColor &textColor = black) const;
-    void drawItem(QPainter &, const QPoint &, const QPixmap *,
-                  const QString &text = QString::null,
-                  const QColor &textColor = black) const;
 
-	void setCaseProperties(const CaseProperties &);
 	MouseAction mapMouseButton(QMouseEvent *) const;
     void resetAdvised();
     void setState(GameState);

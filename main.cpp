@@ -31,10 +31,12 @@
 #include <kkeydialog.h>
 #include <kstdgameaction.h>
 #include <kcmenumngr.h>
+#include <kaction.h>
 
 #include "status.h"
 #include "highscores.h"
 #include "version.h"
+#include "dialogs.h"
 
 const MainWidget::KeyData MainWidget::KEY_DATA[NB_KEYS] = {
 {I18N_NOOP("Move up"),     "keyboard_moveup",    Key_Up,    SLOT(moveUp())},

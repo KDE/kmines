@@ -86,11 +86,16 @@ void LCDClock::timeoutClock()
     showTime();
 }
 
-void LCDClock::showTime()
+QString LCDClock::pretty() const
 {
     QString sec = QString::number(_sec).rightJustify(2, '0', true);
     QString min = QString::number(_min).rightJustify(2, '0', true);
-    display(min + ':' + sec);
+    return min + ':' + sec;
+}
+
+void LCDClock::showTime()
+{
+    display(pretty());
 }
 
 void LCDClock::reset()

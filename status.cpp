@@ -23,16 +23,19 @@
 #include <qpixmap.h>
 #include <qwhatsthis.h>
 #include <qlayout.h>
+#include <qwidgetstack.h>
 
 #include <kapplication.h>
 #include <klocale.h>
 #include <kconfig.h>
 #include <kmessagebox.h>
 #include <kaction.h>
+#include <kdebug.h>
 
 #include "ghighscores.h"
 #include "solver/solver.h"
 #include "dialogs.h"
+#include "version.h"
 
 
 Status::Status(QWidget *parent)
@@ -78,14 +81,15 @@ Status::Status(QWidget *parent)
     _fieldContainer = new QWidget(this);
     QGridLayout *g = new QGridLayout(_fieldContainer, 1, 1);
     field = new Field(_fieldContainer);
+    field->readSettings();
     g->addWidget(field, 0, 0, AlignCenter);
 	connect( field, SIGNAL(updateStatus(bool)), SLOT(update(bool)) );
 	connect(field, SIGNAL(gameStateChanged(GameState, bool)),
 			SLOT(gameStateChanged(GameState, bool)) );
-    connect(field, SIGNAL(setMood(Smiley::Mood)), smiley,
-            SLOT(setMood(Smiley::Mood)));
+    connect(field, SIGNAL(setMood(Mood)), smiley, SLOT(setMood(Mood)));
     connect(field, SIGNAL(setCheating()), dg, SLOT(setCheating()));
-    connect(field, SIGNAL(incActions()), dg, SLOT(incActions()));
+    connect(field,SIGNAL(addAction(const Grid2D::Coord &, Field::ActionType)),
+            SLOT(addAction(const Grid2D::Coord &, Field::ActionType)));
 	QWhatsThis::add(field, i18n("Mines field."));
 
 // resume button
@@ -152,6 +156,50 @@ void Status::update(bool mine)
         gameStateChanged(GameOver, true); // ends only for wins
 }
 
+void Status::setGameOver(bool won)
+{
+    field->showAllMines();
+    field->gameOver();
+    smiley->setMood(won ? Happy : Sad);
+    dg->stop();
+    if ( field->level().type()!=Level::Custom && won && !dg->cheating() )
+        KExtHighscores::submitScore(dg->score(), this);
+    _logList.setAttribute("nb", dg->nbActions());
+    if ( field->completeReveal() )
+        _logRoot.setAttribute("CompleteReveal", "CompleteReveal");
+    QDomElement f = _log.createElement("Field");
+    _logRoot.appendChild(f);
+    QDomText data = _log.createTextNode(field->string());
+    f.appendChild(data);
+//    kdDebug() << _log.toString() << endl; // #### REMOVE ME
+}
+
+void Status::setStopped()
+{
+    smiley->setMood(Normal);
+    update(false);
+    KExtHighscores::Score first(KExtHighscores::Won);
+    KExtHighscores::Score last(KExtHighscores::Won);
+    const Level &level = field->level();
+    if ( level.type()!=Level::Custom ) {
+        first = KExtHighscores::firstScore();
+        last = KExtHighscores::lastScore();
+    }
+    dg->reset(first, last);
+
+    _log = QDomDocument("kmineslog");
+    _logRoot = _log.createElement("KMinesLog");
+    _logRoot.setAttribute("version", VERSION);
+    QDateTime date = QDateTime::currentDateTime();
+    _logRoot.setAttribute("date", date.toString());
+    _logRoot.setAttribute("width", level.width());
+    _logRoot.setAttribute("height", level.height());
+    _logRoot.setAttribute("mines", level.nbMines());
+    _log.appendChild(_logRoot);
+    _logList = _log.createElement("ActionList");
+    _logRoot.appendChild(_logList);
+}
+
 void Status::gameStateChanged(GameState state, bool won)
 {
     switch (state) {
@@ -160,33 +208,32 @@ void Status::gameStateChanged(GameState state, bool won)
         dg->start();
         break;
     case GameOver:
-        field->showAllMines();
-        field->gameOver();
-        smiley->setMood(won ? Smiley::Happy : Smiley::Sad);
-        dg->stop();
-        if ( field->level().type()!=Level::Custom && won && !dg->cheating() )
-            KExtHighscores::submitScore(dg->score(), this);
+        setGameOver(won);
         break;
     case Paused:
         smiley->setMood(Smiley::Sleeping);
         dg->stop();
         break;
     case Stopped:
-        smiley->setMood(Smiley::Normal);
-        update(false);
-        KExtHighscores::Score first(KExtHighscores::Won);
-        KExtHighscores::Score last(KExtHighscores::Won);
-        if ( field->level().type()!=Level::Custom ) {
-            first = KExtHighscores::firstScore();
-            last = KExtHighscores::lastScore();
-        }
-        dg->reset(first, last);
+        setStopped();
         break;
     }
 
     if ( state==Paused ) _stack->raiseWidget(_resumeContainer);
     else _stack->raiseWidget(_fieldContainer);
     emit gameStateChangedSignal(state);
+}
+
+void Status::addAction(const Grid2D::Coord &c, Field::ActionType type)
+{
+    QDomElement action = _log.createElement("Action");
+    action.setAttribute("index", dg->nbActions());
+    action.setAttribute("time", dg->pretty());
+    action.setAttribute("column", c.first);
+    action.setAttribute("line", c.second);
+    action.setAttribute("type", Field::ACTION_NAMES[type]);
+    _logList.appendChild(action);
+    dg->addAction();
 }
 
 void Status::advise()

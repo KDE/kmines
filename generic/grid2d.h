@@ -1,5 +1,5 @@
-#ifndef __GRID2D_H
-#define __GRID2D_H
+#ifndef __GRID2D_H_
+#define __GRID2D_H_
 
 #include <set>
 #include <math.h>
@@ -12,6 +12,9 @@
 //-----------------------------------------------------------------------------
 namespace Grid2D
 {
+    /**
+     * This type represent coordinates on a bidimensionnal grid.
+     */
     typedef std::pair<int, int> Coord;
 };
 
@@ -24,10 +27,16 @@ operator -(const Grid2D::Coord &c1, const Grid2D::Coord &c2) {
     return Grid2D::Coord(c1.first - c2.first, c1.second - c2.second);
 }
 
+/**
+ * @return the maximum of both coordinates.
+ */
 inline Grid2D::Coord
 maximum(const Grid2D::Coord &c1, const Grid2D::Coord &c2) {
     return Grid2D::Coord(kMax(c1.first, c2.first), kMax(c1.second, c2.second));
 }
+/**
+ * @return the minimum of both coordinates.
+ */
 inline Grid2D::Coord
 minimum(const Grid2D::Coord &c1, const Grid2D::Coord &c2) {
     return Grid2D::Coord(kMin(c1.first, c2.first), kMin(c1.second, c2.second));
@@ -52,6 +61,9 @@ inline QDataStream &operator >>(QDataStream &s, Grid2D::Coord &c) {
 //-----------------------------------------------------------------------------
 namespace Grid2D
 {
+    /**
+     * This type represents a set of @ref Coord.
+     */
     typedef std::set<Coord, std::less<Coord> > CoordSet;
 };
 
@@ -83,60 +95,123 @@ inline QDataStream &operator >>(QDataStream &s, Grid2D::CoordSet &set) {
 namespace Grid2D
 {
 /**
- * This class represents a generic bidimensionnal grid.
+ * This template class represents a generic bidimensionnal grid. Each node
+ * contains an element of the template type.
  */
 template <class Type>
 class Generic
 {
  public:
+    /**
+     * Cosntructor.
+     */
     Generic(uint width = 0, uint height = 0) {
         resize(width, height);
     }
 
     virtual ~Generic() {}
 
+    /**
+     * Resize the grid.
+     */
     void resize(uint width, uint height) {
         _width = width;
         _height = height;
         _vector.resize(width*height);
     }
 
+    /**
+     * Fill the nodes with the given value.
+     */
     void fill(const Type &value) {
         std::fill(_vector.begin(), _vector.end(), value);
     }
 
+    /**
+     * @return the width.
+     */
     uint width() const  { return _width; }
+    /**
+     * @return the height.
+     */
     uint height() const { return _height; }
+    /**
+     * @return the number of nodes (ie width*height).
+     */
     uint size() const   { return _width*_height; }
 
+    /**
+     * @return the linear index for the given coordinate.
+     */
     uint index(const Coord &c) const {
         return c.first + c.second*_width;
     }
 
+    /**
+     * @return the coordinate correspoding to the linear index.
+     */
     Coord coord(uint index) const {
         return Coord(index % _width, index / _width);
     }
 
+    /**
+     * @return the value at the given coordinate.
+     */
     const Type &at(const Coord &c) const { return _vector[index(c)]; }
+    /**
+     * @return the value at the given coordinate.
+     */
     Type &at(const Coord &c)             { return _vector[index(c)]; }
+    /**
+     * @return the value at the given coordinate.
+     */
     const Type &operator [](const Coord &c) const { return _vector[index(c)]; }
+    /**
+     * @return the value at the given coordinate.
+     */
     Type &operator [](const Coord &c)             { return _vector[index(c)]; }
 
+    /**
+     * @return the value at the given linear index.
+     */
     const Type &at(uint index) const          { return _vector[index]; }
+    /**
+     * @return the value at the given linear index.
+     */
     Type &at(uint index)                      { return _vector[index]; }
+    /**
+     * @return the value at the given linear index.
+     */
     const Type &operator [](uint index) const { return _vector[index]; }
+    /**
+     * @return the value at the given linear index.
+     */
     Type &operator [](uint index)             { return _vector[index]; }
 
+    /**
+     * @return if the given coordinate is inside the grid.
+     */
     bool inside(const Coord &c) const {
         return ( c.first>=0 && c.first<(int)_width
                  && c.second>=0 && c.second<(int)_height );
     }
 
+    /**
+     * Bound the given coordinate with the grid dimensions.
+     */
     void bound(Coord &c) const {
         c.first = kMax(kMin(c.first, (int)_width-1), 0);
         c.second = kMax(kMin(c.second, (int)_height-1), 0);
     }
 
+    /**
+     * Compute the neighbours of the given coordinate @param c and add them
+     * to the given set of coordinates @param neighbours.
+     *
+     * @param insideOnly only add the neighbours inside the grid.
+     * @param directOnly only add direct neighbours (it only makes sense for
+     * square grid where the direct neighbours are the four nearest ones).
+     */
     virtual void neighbours(const Coord &c, CoordSet &neighbours,
                    bool insideOnly = true, bool directOnly = false) const = 0;
 
@@ -167,13 +242,21 @@ namespace Grid2D
 {
 
 //-----------------------------------------------------------------------------
+/**
+ * This base class contains methods to manipulate coordinates for a square
+ * bidimensionnal grid.
+ */
 class SquareBase
 {
  public:
+    /**
+     * Identify the eight neighbours.
+     */
     enum Neighbour { Left=0, Right, Up, Down, LeftUp, LeftDown,
                      RightUp, RightDown, Nb_Neighbour };
+
     /**
-     * @return the trigonometric angle in  radians.
+     * @return the trigonometric angle in radians for the given neighbour.
      */
     static double angle(Neighbour n) {
         switch (n) {
@@ -189,6 +272,9 @@ class SquareBase
         return 0;
     }
 
+    /**
+     * @return the opposed neihgbour.
+     */
     static Neighbour opposed(Neighbour n) {
         switch (n) {
         case Left:      return Right;
@@ -203,8 +289,15 @@ class SquareBase
         return Nb_Neighbour;
     }
 
+    /**
+     * @return true if the neighbour is a direct one (ie is one of the four
+     * nearest).
+     */
     static bool isDirect(Neighbour n) { return n<LeftUp; }
 
+    /**
+     * @return the neighbour for the given coordinate.
+     */
     static Coord neighbour(const Coord &c, Neighbour n) {
         switch (n) {
         case Left:      return c + Coord(-1,  0);
@@ -220,13 +313,23 @@ class SquareBase
     }
 };
 
+/**
+ * This class is a @ref Generic implementation for a square bidimensionnal
+ * grid.
+ */
 template <class Type>
 class Square : public Generic<Type>, public SquareBase
 {
  public:
+    /**
+     * Constructor.
+     */
     Square(uint width = 0, uint height = 0)
         : Generic<Type>(width, height) {}
 
+    /**
+     * @reimplemented
+     */
     void neighbours(const Coord &c, CoordSet &neighbours,
                     bool insideOnly = true, bool directOnly = false) const {
         for (uint i=0; i<(directOnly ? LeftUp : Nb_Neighbour); i++) {
@@ -236,6 +339,11 @@ class Square : public Generic<Type>, public SquareBase
         }
     }
 
+    /**
+     * @return the "projection" of the given coordinate on the grid edges.
+     *
+     * @param n the direction of projection.
+     */
     Coord toEdge(const Coord &c, Neighbour n) const {
         switch (n) {
         case Left:      return Coord(0, c.second);
@@ -253,8 +361,8 @@ class Square : public Generic<Type>, public SquareBase
 
 //-----------------------------------------------------------------------------
 /**
- * This class represents an hexagonal grid where hexagons form horizontal
- * lines :
+ * This base class contains methods to manipulate coordinates on an hexagonal
+ * grid where hexagons form horizontal lines:
  * <pre>
  * (0,0)   (0,1)   (0,2)
  *     (1,0)   (1,1)   (1,2)
@@ -264,11 +372,14 @@ class Square : public Generic<Type>, public SquareBase
 class HexagonalBase
 {
  public:
-     enum Neighbour { Left = 0, Right, LeftUp, LeftDown,
+    /**
+     * Identify the six neighbours.
+     */
+    enum Neighbour { Left = 0, Right, LeftUp, LeftDown,
                      RightUp, RightDown, Nb_Neighbour };
 
      /**
-     * @return the trigonometric angle in radians.
+     * @return the trigonometric angle in radians for the given neighbour.
      */
     static double angle(Neighbour n) {
         switch (n) {
@@ -282,6 +393,9 @@ class HexagonalBase
         return 0;
     }
 
+    /**
+     * @return the opposed neighbour.
+     */
     static Neighbour opposed(Neighbour n) {
         switch (n) {
         case Left:      return Right;
@@ -294,6 +408,9 @@ class HexagonalBase
         return Nb_Neighbour;
     }
 
+    /**
+     * @return the neighbour of the given coordinate.
+     */
     static Coord neighbour(const Coord &c, Neighbour n) {
         bool oddRow = c.second%2;
         switch (n) {
@@ -308,14 +425,22 @@ class HexagonalBase
     }
 };
 
+/**
+ * This class implements @Generic for an hexagonal bidimensionnal grid.
+ */
 template <class Type>
 class Hexagonal : public Generic<Type>, public HexagonalBase
 {
  public:
+    /**
+     * Constructor.
+     */
     Hexagonal(uint width = 0, uint height = 0)
         : Generic<Type>(width, height) {}
 
     /**
+     * @reimplemented
+     *
      * @param directOnly means nothing for hexagonal grid
      */
     void neighbours(const Coord &c, CoordSet &neighbours,

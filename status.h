@@ -19,7 +19,7 @@
 #ifndef STATUS_H
 #define STATUS_H
 
-#include <qwidgetstack.h>
+#include <qdom.h>
 
 #include "field.h"
 
@@ -28,8 +28,9 @@ class Smiley;
 class LCD;
 class DigitalClock;
 class Solver;
+class QWidgetStack;
 
-class Status : public QWidget
+class Status : public QWidget, public KMines
 {
  Q_OBJECT
  public :
@@ -64,6 +65,7 @@ class Status : public QWidget
     void advise();
     void solve();
     void solveRate();
+    void addAction(const Grid2D::Coord &, Field::ActionType type);
 
  private slots:
     void gameStateChanged(GameState, bool won);
@@ -79,6 +81,12 @@ class Status : public QWidget
 	LCD          *left;
 	DigitalClock *dg;
     Solver       *_solver;
+
+    QDomDocument  _log;
+    QDomElement   _logRoot, _logList;
+
+    void setGameOver(bool won);
+    void setStopped();
 };
 
 #endif // STATUS_H

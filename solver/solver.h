@@ -20,14 +20,13 @@
 #ifndef __SOLVER_H
 #define __SOLVER_H
 
-#include <qlabel.h>
-
-#include <kprogress.h>
 #include <kdialogbase.h>
 
 #include "bfield.h"
 
 
+class QLabel;
+class KProgress;
 class SolverPrivate;
 
 class Solver : public QObject

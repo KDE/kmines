@@ -58,6 +58,8 @@ class LCDClock : public LCD
      */
     uint time() const;
 
+    QString pretty() const;
+
  public slots:
 	virtual void stop();
 	virtual void start();

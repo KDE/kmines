@@ -24,8 +24,9 @@
 
 #include <qtimer.h>
 #include <qlayout.h>
+#include <qlabel.h>
+#include <kprogress.h>
 
-#include <krandomsequence.h>
 #include <klocale.h>
 
 #include "headerP.h"

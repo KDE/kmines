@@ -19,12 +19,8 @@
 #ifndef DIALOGS_H
 #define DIALOGS_H
 
-#include <qcheckbox.h>
-#include <qcombobox.h>
 #include <qpushbutton.h>
 
-#include <knuminput.h>
-#include <kcolorbutton.h>
 #include "ghighscores.h"
 #include "gsettings.h"
 #include "gmisc_ui.h"
@@ -32,20 +28,21 @@
 #include "defines.h"
 
 
+class KComboBox;
+
 //-----------------------------------------------------------------------------
-class Smiley : public QPushButton
+class Smiley : public QPushButton, public KMines
 {
  Q_OBJECT
  public:
     Smiley(QWidget *parent, const char *name = 0)
         : QPushButton(QString::null, parent, name) {}
-	enum Mood { Normal = 0, Stressed, Happy, Sad, Sleeping, NbPixmaps };
 
  public slots:
-    void setMood(Smiley::Mood);
+    void setMood(Mood);
 
  private:
-    static const char **XPM_NAMES[NbPixmaps];
+    static const char **XPM_NAMES[NbMoods];
 };
 
 //-----------------------------------------------------------------------------
@@ -57,26 +54,27 @@ class DigitalClock : public LCDClock
 
     void reset(const KExtHighscores::Score &first,
                const KExtHighscores::Score &last);
-    bool cheating() const { return _cheating; }
 
+    bool cheating() const { return _cheating; }
+    uint nbActions() const { return _nbActions; }
     KExtHighscores::Score score() const;
 
  public slots:
-    void incActions() { _nbActions++; }
     void start();
     void setCheating();
+    void addAction() { _nbActions++; }
 
  private slots:
     void timeoutClock();
 
  private:
     KExtHighscores::Score _first, _last;
-	uint                  _nbActions;
-    bool                  _cheating;
+    uint _nbActions;
+    bool _cheating;
 };
 
 //-----------------------------------------------------------------------------
-class CustomConfig : public KUIConfigWidget
+class CustomConfig : public KUIConfigWidget, public KMines
 {
  Q_OBJECT
  public:
@@ -90,11 +88,11 @@ class CustomConfig : public KUIConfigWidget
 
  private:
 	KRangedUIConfig *_width, *_height, *_mines;
-    QComboBox       *_gameType;
+    KComboBox       *_gameType;
 };
 
 //-----------------------------------------------------------------------------
-class GameConfig : public KUIConfigWidget
+class GameConfig : public KUIConfigWidget, public KMines
 {
  Q_OBJECT
  public:
@@ -104,7 +102,7 @@ class GameConfig : public KUIConfigWidget
     static bool readKeyboard();
     static bool readPauseFocus();
     static bool readMagicReveal();
-    static KMines::MouseAction readMouseBinding(KMines::MouseButton);
+    static MouseAction readMouseBinding(MouseButton);
 
  private slots:
     void magicRevealToggled();
@@ -113,13 +111,13 @@ class GameConfig : public KUIConfigWidget
     KUIConfig *_magic;
 };
 
-class AppearanceConfig : public KUIConfigWidget
+class AppearanceConfig : public KUIConfigWidget, public KMines
 {
  Q_OBJECT
  public:
     AppearanceConfig();
 
-    static KMines::CaseProperties readCaseProperties();
+    static CaseProperties readCaseProperties();
 };
 
 #endif
