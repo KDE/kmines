@@ -36,6 +36,7 @@
 #include <knotifyclient.h>
 #include <knotifydialog.h>
 #include <khighscore.h>
+#include <kautoconfigdialog.h>
 
 #include "status.h"
 #include "highscores.h"
@@ -61,7 +62,6 @@ MainWidget::MainWidget()
 {
     KNotifyClient::startDaemon();
 	installEventFilter(this);
-    KConfigCollection::init();
 
 	_status = new Status(this);
 	connect(_status, SIGNAL(gameStateChangedSignal(KMines::GameState)),
@@ -87,7 +87,6 @@ MainWidget::MainWidget()
 	// Settings
 	_menu = KStdAction::showMenubar(this, SLOT(toggleMenubar()),
                                    actionCollection());
-    _configCollection.plug("menubar visible", _menu);
 	KStdAction::preferences(this, SLOT(configureSettings()),
                             actionCollection());
 	KStdAction::keyBindings(this, SLOT(configureKeys()), actionCollection());
@@ -95,11 +94,13 @@ MainWidget::MainWidget()
                                        actionCollection());
     KStdGameAction::configureHighscores(this, SLOT(configureHighscores()),
                                         actionCollection());
-
 	// Levels
     _levels = KStdGameAction::chooseGameType(0, 0, actionCollection());
+    QStringList list;
+    for (uint i=0; i<=Level::NB_TYPES; i++)
+        list += i18n(Level::LABELS[i]);
+    _levels->setItems(list);
     connect(_levels, SIGNAL(activated(int)), _status, SLOT(newGame(int)));
-    _configCollection.plug("level", _levels);
 
     // Adviser
     _advise =
@@ -131,24 +132,21 @@ MainWidget::MainWidget()
     if (popup) KContextMenuManager::insert(this, popup);
 }
 
-MainWidget::~MainWidget()
-{
-    KConfigCollection::cleanUp();
-}
-
 bool MainWidget::queryExit()
 {
     _status->checkBlackMark();
-    _configCollection.save();
+    AppearanceConfig::saveMenubarVisible(_menu->isChecked());
     return true;
 }
 
 void MainWidget::readSettings()
 {
-    _configCollection.load();
-    _status->newGame( _levels->currentItem() );
-	toggleMenubar();
     settingsChanged();
+    _menu->setChecked( AppearanceConfig::isMenubarVisible() );
+    toggleMenubar();
+    Level::Type type = GameConfig::level();
+    _levels->setCurrentItem(type);
+    _status->newGame(type);
 }
 
 void MainWidget::showHighscores()
@@ -174,19 +172,24 @@ void MainWidget::focusOutEvent(QFocusEvent *e)
 
 void MainWidget::toggleMenubar()
 {
-	if ( _menu->isChecked() ) menuBar()->show();
-	else menuBar()->hide();
+    if ( _menu->isChecked() ) menuBar()->show();
+    else menuBar()->hide();
 }
 
 void MainWidget::configureSettings()
 {
-    KConfigDialog d(this);
-    d.setIconListAllVisible(true);
-    d.append(new GameConfig);
-    d.append(new AppearanceConfig);
-    d.append(new CustomConfig);
-    connect(&d, SIGNAL(saved()), SLOT(settingsChanged()));
-    d.exec();
+    if ( KAutoConfigDialog::showDialog("settings") ) return;
+
+    KAutoConfigDialog *dialog = new KAutoConfigDialog(this, "settings");
+    GameConfig *gc = new GameConfig;
+    dialog->addPage(gc, i18n("Game"), "Options", "package_system");
+    dialog->addPage(new AppearanceConfig, i18n("Appearance"), "Options", "style");
+    CustomConfig *cc = new CustomConfig;
+    dialog->addPage(cc, i18n("Custom Game"), "Options", "package_settings");
+    connect(dialog, SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
+    dialog->show();
+    cc->init();
+    gc->init();
 }
 
 void MainWidget::configureHighscores()
@@ -196,13 +199,13 @@ void MainWidget::configureHighscores()
 
 void MainWidget::settingsChanged()
 {
-    bool enabled = KConfigCollection::configValue("keyboard game").toBool();
-	QValueList<KAction *> list = _keybCollection->actions();
-	QValueList<KAction *>::Iterator it;
-	for (it = list.begin(); it!=list.end(); ++it)
-		(*it)->setEnabled(enabled);
+    bool enabled = GameConfig::isKeyboardEnabled();
+    QValueList<KAction *> list = _keybCollection->actions();
+    QValueList<KAction *>::Iterator it;
+    for (it = list.begin(); it!=list.end(); ++it)
+        (*it)->setEnabled(enabled);
 
-    _pauseIfFocusLost = KConfigCollection::configValue("pause focus").toBool();
+    _pauseIfFocusLost = GameConfig::isPauseFocusEnabled();
     _status->settingsChanged();
 }
 

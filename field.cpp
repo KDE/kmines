@@ -44,13 +44,15 @@ Field::Field(QWidget *parent)
 
 void Field::readSettings()
 {
-    _umark = KConfigCollection::configValue("uncertain mark").toBool();
-    _cursorShown = KConfigCollection::configValue("keyboard game").toBool();
-    if ( inside(_cursor) ) placeCursor(_cursor);
-	for (uint i=0; i<NB_MOUSE_BUTTONS; i++)
-		_mb[i] =
-            (MouseAction)KConfigCollection::configIndex(MOUSE_CONFIG_NAMES[i]);
-    _completeReveal = KConfigCollection::configValue("magic reveal").toBool();
+    _umark = GameConfig::isUncertainMarkEnabled();
+    _cursorShown = GameConfig::isKeyboardEnabled();
+    if ( inside(_cursor) ) {
+        QPainter p(this);
+        drawCase(p, _cursor);
+    }
+    for (uint i=0; i<NB_MOUSE_BUTTONS; i++)
+        _mb[i] = GameConfig::mouseAction((MouseButton)i);
+    _completeReveal = GameConfig::isMagicRevealEnabled();
     if (_completeReveal) emit setCheating();
 
     FieldFrame::readSettings();
@@ -196,13 +198,13 @@ void Field::mouseReleaseEvent(QMouseEvent *e)
     if ( !inside(p) ) return;
     placeCursor(p);
 
-	switch (ma) {
+    switch (ma) {
     case Mark:       doMark(p); break;
     case UMark:      doUmark(p); break;
-	case Reveal:     doReveal(p); break;
-	case AutoReveal: doAutoReveal(p); break;
-    case None:       Q_ASSERT(false); break;
-	}
+    case Reveal:     doReveal(p); break;
+    case AutoReveal: doAutoReveal(p); break;
+    case NB_MOUSE_ACTIONS: Q_ASSERT(false); break;
+    }
 }
 
 void Field::mouseMoveEvent(QMouseEvent *e)
@@ -380,16 +382,16 @@ void Field::addMarkAction(const Coord &c, CaseState newS, CaseState oldS)
 
 void Field::placeCursor(const Coord &p)
 {
-	if ( !isActive() ) return;
+    if ( !isActive() ) return;
 
     Q_ASSERT( inside(p) );
     Coord old = _cursor;
     _cursor = p;
-	if ( _cursorShown ) {
+    if ( _cursorShown ) {
         QPainter painter(this);
-		drawCase(painter, old);
-		drawCase(painter, _cursor);
-	}
+        drawCase(painter, old);
+        drawCase(painter, _cursor);
+    }
 }
 
 void Field::resetAdvised()

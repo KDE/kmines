@@ -31,7 +31,7 @@ namespace KExtHighscore
 {
 
 ExtManager::ExtManager()
-    : Manager(Level::NbLevels)
+    : Manager(Level::NB_TYPES)
 {
     setScoreType(MinuteTime);
     setWWHighscores(HOMEPAGE, VERSION);
@@ -48,11 +48,11 @@ ExtManager::ExtManager()
 
 QString ExtManager::gameTypeLabel(uint gameType, LabelType type) const
 {
-    const Level::Data &data = Level::data((Level::Type)gameType);
+    const Level::Data &data = Level::DATA[gameType];
     switch (type) {
     case Icon:
     case Standard: return data.label;
-    case I18N:     return i18n(data.i18nLabel);
+    case I18N:     return i18n(Level::LABELS[gameType]);
     case WW:       return data.wwLabel;
     }
     return QString::null;
@@ -65,7 +65,7 @@ void ExtManager::convertLegacy(uint gameType)
     case Level::Easy:     group = "Easy level"; break;
     case Level::Normal:   group = "Normal level"; break;
     case Level::Expert:   group = "Expert level"; break;
-    case Level::NbLevels: Q_ASSERT(false);
+    case Level::NB_TYPES: Q_ASSERT(false);
     }
 
     KConfigGroupSaver cg(kapp->config(), group);

@@ -20,16 +20,20 @@
 
 #include <klocale.h>
 
-const Level::Data Level::DATA[Level::NbLevels+1] = {
-	{ 8,  8, 10, "easy",   "8x8x10",   I18N_NOOP("Easy")   },
-	{16, 16, 40, "normal", "16x16x40", I18N_NOOP("Normal") },
-	{30, 16, 99, "expert", "30x16x99", I18N_NOOP("Expert") },
-    {10, 10, 20, "custom", "",         I18N_NOOP("Custom") }
+const char *Level::LABELS[NB_TYPES+1] = {
+  I18N_NOOP("Easy"), I18N_NOOP("Normal"), I18N_NOOP("Expert"),
+  I18N_NOOP("Custom")
+};
+
+const Level::Data Level::DATA[NB_TYPES] = {
+    { 8,  8, 10, "easy",   "8x8x10",   },
+    {16, 16, 40, "normal", "16x16x40", },
+    {30, 16, 99, "expert", "30x16x99", }
 };
 
 Level::Level(Type type)
 {
-    Q_ASSERT( type<=NbLevels );
+    Q_ASSERT( type!=Custom );
     _width   = DATA[type].width;
     _height  = DATA[type].height;
     _nbMines = DATA[type].nbMines;
@@ -44,21 +48,12 @@ Level::Level(uint width, uint height, uint nbMines)
 
 Level::Type Level::type() const
 {
-    for (uint i=0; i<NbLevels; i++)
+    for (uint i=0; i<NB_TYPES; i++)
         if ( _width==DATA[i].width && _height==DATA[i].height
              && _nbMines==DATA[i].nbMines ) return (Type)i;
     return Custom;
 }
 
-const char *KMines::STATES[NB_STATES] =
-    { "playing", "paused", "gameover", "stopped", "replaying", "init" };
-
-const char *KMines::MOUSE_CONFIG_NAMES[NB_MOUSE_BUTTONS] =
-    { "mouse left", "mouse mid", "mouse right" };
-
-const char *KMines::COLOR_CONFIG_NAMES[NB_COLORS] =
-    { "flag color", "explosion color", "error color" };
-
-const char *KMines::N_COLOR_CONFIG_NAMES[NB_N_COLORS] =
-    { "color #0", "color #1", "color #2", "color #3", "color #4", "color #5",
-      "color #6", "color #7" };
+const char *KMines::STATES[NB_STATES] = {
+    "playing", "paused", "gameover", "stopped", "replaying", "init"
+};

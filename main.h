@@ -21,7 +21,6 @@
 
 #include <kmainwindow.h>
 
-#include "gsettings.h"
 #include "defines.h"
 
 
@@ -34,11 +33,10 @@ class MainWidget : public KMainWindow, public KMines
 {
  Q_OBJECT
  public:
-	MainWidget();
-    ~MainWidget();
+     MainWidget();
 
  private slots:
-	void toggleMenubar();
+    void toggleMenubar();
     void configureKeys();
     void configureSettings();
     void configureNotifications();
@@ -55,7 +53,6 @@ class MainWidget : public KMainWindow, public KMines
 
  private:
 	Status            *_status;
-    KConfigCollection  _configCollection;
     KToggleAction     *_menu, *_pause;
     KSelectAction     *_levels;
     KAction           *_advise, *_solve;

@@ -1,15 +1,15 @@
-SUBDIRS  = generic data bitmaps solver
-INCLUDES = -I$(top_srcdir)/libkdegames -I$(top_srcdir)/libkdegames/highscore -I$(top_srcdir)/kmines/generic $(all_includes)
+SUBDIRS  = data bitmaps solver
+INCLUDES = -I$(top_srcdir)/libkdegames -I$(top_srcdir)/libkdegames/highscore $(all_includes)
 
 bin_PROGRAMS       = kmines
 kmines_LDFLAGS     = $(all_libraries) $(KDE_RPATH)
-kmines_LDADD       = ./solver/libsolver.la ./generic/libkmines.la $(LIB_KDEGAMES)
+kmines_LDADD       = ./solver/libsolver.la $(LIB_KDEGAMES)
 kmines_SOURCES     = defines.cpp highscores.cpp \
                      dialogs.cpp frame.cpp field.cpp status.cpp main.cpp
 kmines_METASOURCES = dialogs.moc field.moc status.moc main.moc
 
 rcdir   = $(kde_datadir)/kmines
-rc_DATA = kminesui.rc kminesconfig.rc
+rc_DATA = kminesui.rc
 
 messages: rc.cpp
 	$(XGETTEXT) rc.cpp *.cpp solver/*.cpp -o $(podir)/kmines.pot

@@ -130,8 +130,9 @@ void Status::newGame(int t)
 {
     if ( field->gameState()==Paused ) emit pause();
     Level::Type type = (Level::Type)t;
+    GameConfig::saveLevel(type);
     if ( type!=Level::Custom ) newGame( Level(type) );
-    else newGame( CustomConfig::readLevel() );
+    else newGame( CustomConfig::level() );
 }
 
 void Status::newGame(const Level &level)
@@ -165,11 +166,9 @@ void Status::settingsChanged()
 {
     field->readSettings();
 
-    Level current = field->level();
-    if ( current.type()!=Level::Custom ) return;
-    Level l = CustomConfig::readLevel();
-    if ( l.width()==current.width() && l.height()==current.height()
-         && l.nbMines()==current.nbMines() ) return;
+    if ( GameConfig::level()!=Level::Custom ) return;
+    Level l = CustomConfig::level();
+    if ( l==field->level() ) return;
     if ( field->gameState()==Paused ) emit pause();
     field->setLevel(l);
 }
@@ -397,12 +396,10 @@ bool Status::checkLog(const QDomDocument &doc)
     if ( root.isNull() ) return false;
     bool ok;
     uint w = root.attribute("width").toUInt(&ok);
-    if ( !ok || w>KConfigCollection::maxValue("custom width").toUInt()
-         || w<KConfigCollection::minValue("custom height").toUInt() )
+    if ( !ok || w>CustomConfig::maxWidth || w<CustomConfig::minWidth )
         return false;
     uint h = root.attribute("height").toUInt(&ok);
-    if ( !ok || h>KConfigCollection::maxValue("custom height").toUInt()
-         || h<KConfigCollection::minValue("custom height").toUInt() )
+    if ( !ok || h>CustomConfig::maxHeight || h<CustomConfig::minHeight )
         return false;
     uint nb = root.attribute("mines").toUInt(&ok);
     if ( !ok || nb==0 || nb>Level::maxNbMines(w, h) ) return false;

@@ -25,26 +25,29 @@
 class Level
 {
  public:
-    enum Type { Easy = 0, Normal, Expert, NbLevels, Custom = NbLevels };
+    enum Type { Easy = 0, Normal, Expert, NB_TYPES, Custom = NB_TYPES };
+    static const char *LABELS[NB_TYPES+1];
     struct Data {
-        uint        width, height, nbMines;
-        const char *label, *wwLabel, *i18nLabel;
+        uint width, height, nbMines;
+        const char *label, *wwLabel;
     };
+    static const Data DATA[NB_TYPES];
 
     Level(Type);
     Level(uint width, uint height, uint nbMines);
-
-    static const Data &data(Type type) { return DATA[type]; }
 
     uint width() const   { return _width; }
     uint height() const  { return _height; }
     uint nbMines() const { return _nbMines; }
     Type type() const;
-    const Data &data() const { return data(type()); }
     static uint maxNbMines(uint width, uint height) { return width*height - 2;}
 
+    bool operator ==(const Level &level) const {
+        return ( _width==level._width && _height==level._height &&
+                 _nbMines==level._nbMines );
+    }
+
  private:
-    static const Data DATA[NbLevels+1];
     uint _width, _height, _nbMines;
 };
 
@@ -54,10 +57,10 @@ class KMines
     enum GameState   { Playing = 0, Paused, GameOver, Stopped, Replaying,
                        Init, NB_STATES };
     static const char *STATES[NB_STATES];
-    enum MouseAction { Reveal = 0, AutoReveal, Mark, UMark, None };
+    enum MouseAction { Reveal = 0, AutoReveal, Mark, UMark, NB_MOUSE_ACTIONS,
+                       None = NB_MOUSE_ACTIONS };
     enum MouseButton { LeftButton = 0, MidButton, RightButton,
                        NB_MOUSE_BUTTONS };
-    static const char *MOUSE_CONFIG_NAMES[NB_MOUSE_BUTTONS];
 
     enum CaseState { Covered, Uncovered, Uncertain, Marked, Exploded, Error };
     struct Case {
@@ -66,9 +69,7 @@ class KMines
     };
 
     enum Color { FlagColor = 0, ExplosionColor, ErrorColor, NB_COLORS };
-    static const char *COLOR_CONFIG_NAMES[NB_COLORS];
     enum NumberColor { NB_N_COLORS = 8 };
-    static const char *N_COLOR_CONFIG_NAMES[NB_N_COLORS];
     enum Mood { Normal = 0, Stressed, Happy, Sad, Sleeping, NbMoods };
 };
 
