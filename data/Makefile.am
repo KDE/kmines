@@ -1,16 +1,9 @@
 ## ##########################
 ## # Installation definitions
 
-kde_icon_DATA = kmines.xpm
-minidir = $(kde_minidir)
+KDE_ICON = kmines
 appsdir = $(kde_appsdir)/Games
 apps_DATA = kmines.desktop
 
-EXTRA_DIST = $(kde_icon_DATA) $(apps_DATA) mini-kmines.xpm kmines.xpm
+EXTRA_DIST = $(apps_DATA) 
 
-install-data-local:
-	$(mkinstalldirs) $(minidir)
-	$(INSTALL_DATA) $(srcdir)/mini-kmines.xpm $(minidir)/kmines.xpm
-
-uninstall-local:
-	rm -f $(minidir)/kmines.xpm
