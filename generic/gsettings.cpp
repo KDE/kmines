@@ -104,9 +104,58 @@ bool KSettingList::hasDefaults() const
 }
 
 //-----------------------------------------------------------------------------
+class KSettingItem : public KSettingGeneric
+{
+ public:
+    KSettingItem(QObject *object, const QString &group, const QString &key,
+                 const QVariant &def);
+    bool objectRecognized() const { return _type!=NB_TYPES; }
 
-const KSettingCollection::Item::Data
-KSettingCollection::Item::DATA[KSettingCollection::Item::NB_TYPES] = {
+    void map(int id, const QString &entry);
+    QVariant currentValue() const;
+    void setCurrentValue(const QVariant &);
+    QVariant loadValue() const;
+    QVariant read() const;
+    int readId() const;
+
+    void load();
+    void save();
+    void setDefaults();
+    bool hasDefaults() const;
+
+    bool contains(const QObject *object) const { return object==_obj; }
+
+ private:
+    enum Type { CheckBox = 0, ToggleAction,
+                LineEdit, TextEdit, //URLRequester,
+                DatePicker, DateTimeEdit,
+                ColorButton, ButtonGroup,
+                ColorComboBox, ComboBox,
+                SpinBox, Slider, Dial, Selector,
+                IntInput, DoubleInput,
+                FontAction, FontSizeAction, SelectAction,
+                NB_TYPES };
+
+    struct Data {
+        const char     *className, *signal;
+        QVariant::Type  type;
+        bool            multi;
+    };
+    static const Data DATA[NB_TYPES];
+
+    const QString         _group, _key;
+    QGuardedPtr<QObject>  _gobj;
+    QObject              *_obj;
+    Type                  _type;
+    QVariant              _def;
+    QMap<int, QString>    _entries;
+
+    bool isMulti() const;
+    int mapToId(const QString &entry) const;
+    static int findRadioButtonId(const QButtonGroup *group);
+};
+
+const KSettingItem::Data KSettingItem::DATA[KSettingItem::NB_TYPES] = {
 { "QCheckBox", SIGNAL(toggled(bool)),                  QVariant::Bool, false },
 { "KToggleAction", SIGNAL(toggled(bool)),              QVariant::Bool, false },
 
@@ -139,8 +188,8 @@ KSettingCollection::Item::DATA[KSettingCollection::Item::NB_TYPES] = {
 { "KSelectAction", SIGNAL(activated(int)),           QVariant::String, true  }
 };
 
-KSettingCollection::Item::Item(QObject *o, const QString &group,
-                               const QString &key, const QVariant &def)
+KSettingItem::KSettingItem(QObject *o, const QString &group,
+    const QString &key, const QVariant &def)
     : _group(group), _key(key), _gobj(o), _obj(o), _def(def)
 {
     uint i = 0;
@@ -164,7 +213,7 @@ KSettingCollection::Item::Item(QObject *o, const QString &group,
     if ( !cg.config()->hasKey(key) ) cg.config()->writeEntry(key, _def);
 }
 
-void KSettingCollection::Item::map(int id, const QString &entry)
+void KSettingItem::map(int id, const QString &entry)
 {
     if ( !isMulti() ) {
         kdError() << k_funcinfo
@@ -175,7 +224,7 @@ void KSettingCollection::Item::map(int id, const QString &entry)
     _entries[id] = entry;
 }
 
-int KSettingCollection::Item::mapToId(const QString &entry) const
+int KSettingItem::mapToId(const QString &entry) const
 {
     QMap<int, QString>::ConstIterator it;
     for ( it = _entries.begin(); it != _entries.end(); ++it )
@@ -187,7 +236,7 @@ int KSettingCollection::Item::mapToId(const QString &entry) const
     return -1;
 }
 
-int KSettingCollection::Item::findRadioButtonId(const QButtonGroup *group)
+int KSettingItem::findRadioButtonId(const QButtonGroup *group)
 {
     QObjectList *list = group->queryList("QRadioButton");
     QObjectListIt it(*list);
@@ -201,7 +250,7 @@ int KSettingCollection::Item::findRadioButtonId(const QButtonGroup *group)
     return -1;
 }
 
-bool KSettingCollection::Item::isMulti() const
+bool KSettingItem::isMulti() const
 {
     if ( !DATA[_type].multi ) return false;
     if ( _type==ComboBox && static_cast<const QComboBox *>(_obj)->editable() )
@@ -209,7 +258,7 @@ bool KSettingCollection::Item::isMulti() const
     return true;
 }
 
-QVariant KSettingCollection::Item::currentValue() const
+QVariant KSettingItem::currentValue() const
 {
     const QComboBox *combo;
     int id;
@@ -273,7 +322,7 @@ QVariant KSettingCollection::Item::currentValue() const
     return id;
 }
 
-void KSettingCollection::Item::setCurrentValue(const QVariant &value)
+void KSettingItem::setCurrentValue(const QVariant &value)
 {
     int id;
     if ( isMulti() ) {
@@ -353,39 +402,39 @@ void KSettingCollection::Item::setCurrentValue(const QVariant &value)
     }
 }
 
-QVariant KSettingCollection::Item::loadValue() const
+QVariant KSettingItem::loadValue() const
 {
     KConfigGroupSaver cg(kapp->config(), _group);
     return cg.config()->readPropertyEntry(_key, _def);
 }
 
-void KSettingCollection::Item::load()
+void KSettingItem::load()
 {
     if ( _gobj.isNull() ) return; // object destroyed
     setCurrentValue(loadValue());
 }
 
-void KSettingCollection::Item::save()
+void KSettingItem::save()
 {
     if ( _gobj.isNull() ) return; // object destroyed
     KConfigGroupSaver cg(kapp->config(), _group);
     cg.config()->writeEntry(_key, currentValue());
 }
 
-void KSettingCollection::Item::setDefaults()
+void KSettingItem::setDefaults()
 {
     if ( _gobj.isNull() ) return; // object destroyed
     setCurrentValue(_def);
     proxy()->emitChanged();
 }
 
-bool KSettingCollection::Item::hasDefaults() const
+bool KSettingItem::hasDefaults() const
 {
     if ( _gobj.isNull() ) return true; // object destroyed
     return ( currentValue()==_def );
 }
 
-QVariant KSettingCollection::Item::read() const
+QVariant KSettingItem::read() const
 {
     if ( _gobj.isNull() ) return QVariant(); // object destroyed
     QVariant v = loadValue();
@@ -416,7 +465,7 @@ QVariant KSettingCollection::Item::read() const
     return v;
 }
 
-int KSettingCollection::Item::readId() const
+int KSettingItem::readId() const
 {
     if ( _gobj.isNull() ) return 0; // object destroyed
     if (  !isMulti() ) {
@@ -433,32 +482,41 @@ int KSettingCollection::Item::readId() const
 }
 
 //-----------------------------------------------------------------------------
+class KSettingCollectionPrivate
+{
+ public:
+    KSettingCollectionPrivate() {}
+
+    KSettingItem *find(const QObject *object) const {
+        QPtrListIterator<KSettingItem> it(_items);
+        for (; it.current()!=0; ++it)
+            if ( it.current()->contains(object) ) return it.current();
+        return 0;
+    }
+
+    QPtrList<KSettingItem> _items;
+};
+
 KSettingCollection::KSettingCollection()
-{}
+{
+    d = new KSettingCollectionPrivate;
+}
 
 void KSettingCollection::plug(QObject *o, const QString &group,
                               const QString &key, const QVariant &def)
 {
-    Item *item = new Item(o, group, key, def);
+    KSettingItem *item = new KSettingItem(o, group, key, def);
     if ( !item->objectRecognized() ) {
         delete item;
         return;
     }
     KSettingList::plug(item);
-    _items.append(item);
-}
-
-KSettingCollection::Item *KSettingCollection::find(const QObject *o) const
-{
-    QPtrListIterator<Item> it(_items);
-    for (; it.current()!=0; ++it)
-        if ( it.current()->contains(o) ) return it.current();
-    return 0;
+    d->_items.append(item);
 }
 
 void KSettingCollection::map(const QObject *o, int id, const QString &entry)
 {
-    Item *item = find(o);
+    KSettingItem *item = d->find(o);
     if ( item==0 ) {
         kdError() << k_funcinfo << "you need to plug the object before"
                   << endl;
@@ -469,7 +527,7 @@ void KSettingCollection::map(const QObject *o, int id, const QString &entry)
 
 QVariant KSettingCollection::readValue(const QObject *o) const
 {
-    const Item *item = find(o);
+    const KSettingItem *item = d->find(o);
     if ( item==0 ) {
         kdError() << k_funcinfo << "you need to plug the object before"
                   << endl;
@@ -480,7 +538,7 @@ QVariant KSettingCollection::readValue(const QObject *o) const
 
 int KSettingCollection::readId(const QObject *o) const
 {
-    const Item *item = find(o);
+    const KSettingItem *item = d->find(o);
     if ( item==0 ) {
         kdError() << k_funcinfo << "you need to plug the object before"
                   << endl;
