@@ -8,8 +8,8 @@ libkdehighscores_la_SOURCES = gsettings.cpp \
                               ghighscores_item.cpp ghighscores_internal.cpp \
                               ghighscores_gui.cpp ghighscores.cpp \
                               gmisc_ui.cpp canvas.cpp
-include_HEADERS = gsettings.h ghighscores_item.h ghighscores.h
-noinst_HEADERS  = ghighscores_gui.h ghighscores_internal.h gmisc_ui.h canvas.h
+noinst_HEADERS  = ghighscores_gui.h ghighscores_internal.h gmisc_ui.h \
+                  canvas.h gsettings.h ghighscores_item.h ghighscores.h
 METASOURCES     = gsettings.moc ghighscores_gui.moc gmisc_ui.moc canvas.moc
 
 messages:
