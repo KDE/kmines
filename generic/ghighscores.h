@@ -31,7 +31,7 @@
 
 class QDomNamedNodeMap;
 class QWidget;
-class SettingsWidget;
+class KSettingWidget;
 
 namespace KExtHighscores
 {
@@ -134,9 +134,9 @@ class Highscores
     static Highscores *highscores() { return _highscores; }
 
     /**
-     * @return a @ref SettingsWidget.
+     * @return a @ref KSettings::Widget.
      */
-    SettingsWidget *createSettingsWidget(QWidget *parent);
+    KSettingWidget *createSettingsWidget(QWidget *parent);
 
     /**
      * Show the highscores lists.

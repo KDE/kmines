@@ -1,9 +1,6 @@
 #ifndef DIALOGS_H
 #define DIALOGS_H
 
-#include <qlabel.h>
-#include <qscrollbar.h>
-#include <qlineedit.h>
 #include <qlcdnumber.h>
 #include <qcheckbox.h>
 #include <qcombobox.h>
@@ -11,7 +8,6 @@
 
 #include <knuminput.h>
 #include <kcolorbutton.h>
-#include <kdialogbase.h>
 #include <ghighscores.h>
 #include <gsettings.h>
 
@@ -73,36 +69,33 @@ class DigitalClock : public LCDNumber
 };
 
 //-----------------------------------------------------------------------------
-class CustomDialog : public KDialogBase, public KMines
+class CustomSettings : public KSettingWidget, public KMines
 {
  Q_OBJECT
  public:
-	CustomDialog(Level &, QWidget *parent);
+	CustomSettings();
+
+    static Level readLevel();
 
  private slots:
-	void widthChanged(int);
-	void heightChanged(int);
-	void nbMinesChanged(int);
+    void updateNbMines();
     void typeChosen(int);
 
  private:
 	KIntNumInput *_width, *_height, *_mines;
     QComboBox    *_gameType;
-	Level        &_level;
 
-	void updateNbMines();
+    static KIntNumInput *createWidth(KSettingWidget *);
+    static KIntNumInput *createHeight(KSettingWidget *);
+    static KIntNumInput *createMines(KSettingWidget *);
 };
 
 //-----------------------------------------------------------------------------
-class GameSettingsWidget : public SettingsWidget, public KMines
+class GameSettings : public KSettingWidget, public KMines
 {
  Q_OBJECT
  public:
-    GameSettingsWidget();
-
-    void load();
-    void save();
-    void defaults();
+    GameSettings();
 
     static bool readUMark();
     static bool readKeyboard();
@@ -110,42 +103,33 @@ class GameSettingsWidget : public SettingsWidget, public KMines
     static MouseAction readMouseBinding(MouseButton);
 
  private:
-    QCheckBox *_umark, *_keyb, *_focus;
-	QComboBox *_cb[3];
+    static QCheckBox *createUMark(KSettingWidget *);
+    static QCheckBox *createKeyboard(KSettingWidget *);
+    static QCheckBox *createPauseFocus(KSettingWidget *);
+    static QComboBox *createMouseBinding(KSettingCollection *, QWidget *,
+                                         MouseButton);
 };
 
-class AppearanceSettingsWidget : public SettingsWidget, public KMines
+class AppearanceSettings : public KSettingWidget, public KMines
 {
  Q_OBJECT
  public:
-    AppearanceSettingsWidget();
-
-    void load();
-    void save();
-    void defaults();
+    AppearanceSettings();
 
     static CaseProperties readCaseProperties();
-    static void writeCaseSize(uint size);
 
  private:
-    KIntNumInput             *_caseSize;
-    KColorButton             *_flag, *_explosion, *_error;
-    QPtrVector<KColorButton>  _numbers;
-
-    static uint readCaseSize();
-    static QColor readColor(const QString & key, QColor defaultColor);
+    static KIntNumInput *createCaseSize(KSettingWidget *);
+    static KColorButton *createColor(KSettingCollection *, QWidget *, uint i);
+    static KColorButton *createNumberColor(KSettingCollection *, QWidget *,
+                                           uint i);
 };
 
-class ExtSettingsDialog : public SettingsDialog, public KMines
+class SettingsDialog : public KSettingDialog, public KMines
 {
  Q_OBJECT
  public:
-	ExtSettingsDialog(QWidget *parent);
-
-	static Level readLevel();
-	static void writeLevel(const Level &);
-	static bool readMenuVisible();
-	static void writeMenuVisible(bool visible);
+	SettingsDialog(QWidget *parent);
 };
 
 #endif

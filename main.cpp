@@ -1,21 +1,17 @@
 #include "main.h"
 #include "main.moc"
 
-#include <qcstring.h>
 #include <qwhatsthis.h>
+#include <qptrvector.h>
 
 #include <kaccel.h>
 #include <kapplication.h>
 #include <klocale.h>
-#include <kglobal.h>
-#include <kconfig.h>
 #include <kcmdlineargs.h>
 #include <kaboutdata.h>
 #include <kmenubar.h>
-#include <khelpmenu.h>
 #include <kstdaction.h>
 #include <kkeydialog.h>
-#include <kstatusbar.h>
 #include <kstdgameaction.h>
 
 #include "status.h"
@@ -33,9 +29,10 @@ MainWidget::MainWidget()
 
 	// Game & Popup
 	KStdGameAction::gameNew(status, SLOT(restartGame()), actionCollection());
-	KStdGameAction::pause(status, SLOT(pauseGame()), actionCollection());
+	pause = KStdGameAction::pause(status, SLOT(pauseGame()),
+                                  actionCollection());
 	KStdGameAction::highscores(this, SLOT(showHighscores()),
-                                   actionCollection());
+                               actionCollection());
 	KStdGameAction::print(status, SLOT(print()), actionCollection());
 	KStdGameAction::quit(qApp, SLOT(quit()), actionCollection());
 
@@ -69,71 +66,43 @@ MainWidget::MainWidget()
 	}
 
 	// Settings
-	KStdAction::showMenubar(this, SLOT(toggleMenubar()), actionCollection());
+	menu = KStdAction::showMenubar(this, SLOT(toggleMenubar()),
+                                   actionCollection());
+    collection.plug(menu, OP_GROUP, "menubar visible", true);
 	KStdAction::preferences(this, SLOT(configureSettings()),
                             actionCollection());
 	KStdAction::keyBindings(this, SLOT(configureKeys()), actionCollection());
 
 	// Levels
-    levelAction.resize(Level::NbLevels+1);
+    levels = new KSelectAction(i18n("Choose &level"), 0,
+                   0, 0, actionCollection(), "levels");
+    collection.plug(levels, OP_GROUP, "Level", Level::data(Level::Easy).label);
+    connect(levels, SIGNAL(activated(int)), status, SLOT(newGame(int)));
+    QStringList list;
     for (uint i=0; i<Level::NbLevels+1; i++) {
-        levelAction.insert(i,
-              new KRadioAction(i18n(Level::data((Level::Type)i).i18nLabel), 0,
-                               this, SLOT(changeLevel()), actionCollection(),
-                               Level::actionName((Level::Type)i)));
-        levelAction[i]->setExclusiveGroup("level");
+        list.append(i18n(Level::data((Level::Type)i).i18nLabel));
+        collection.map(levels, i, Level::data((Level::Type)i).label);
     }
+    levels->setItems(list);
 
 	createGUI();
 	readSettings();
 	setCentralWidget(status);
 }
 
-#define MENUBAR_ACTION \
-    ((KToggleAction *)action(KStdAction::stdName(KStdAction::ShowMenubar)))
-
-#define PAUSE_ACTION ((KToggleAction *)action("game_pause"))
+bool MainWidget::queryExit()
+{
+    collection.save();
+    return true;
+}
 
 void MainWidget::readSettings()
 {
-	Level level = ExtSettingsDialog::readLevel();
-	if ( level.type()!=Level::Custom )
-        levelAction[level.type()]->setChecked(true);
-	status->newGame(level);
+    collection.load();
 
-	bool visible = ExtSettingsDialog::readMenuVisible();
-	MENUBAR_ACTION->setChecked(visible);
+    status->newGame( levels->currentItem() );
 	toggleMenubar();
-
     settingsChanged();
-}
-
-void MainWidget::changeLevel()
-{
-    Level::Type type = Level::Easy;
-    for (uint i=0; i<levelAction.size(); i++)
-        if ( levelAction[i]==sender() ) {
-            type = (Level::Type)i;
-            break;
-        }
-
-	if ( !levelAction[type]->isChecked() ) return;
-
-	Level level = (type==Level::Custom ? status->currentLevel() : Level(type));
-	if ( type==Level::Custom ) {
-		levelAction[Level::Custom]->setChecked(false);
-        type = level.type();
-		CustomDialog cu(level, this);
-		bool res = cu.exec();
-        if ( level.type()!=Level::Custom ) {
-            levelAction[type]->setChecked(true);
-            if ( level.type()==type ) return; // level unchanged
-        }
-        if ( !res ) return; // canceled
-	}
-
-	status->newGame(level);
-	ExtSettingsDialog::writeLevel(level);
 }
 
 void MainWidget::showHighscores()
@@ -148,7 +117,7 @@ bool MainWidget::eventFilter(QObject *, QEvent *e)
 	case QEvent::MouseButtonPress :
 		if ( ((QMouseEvent *)e)->button()!=RightButton ) return false;
 		popup = (QPopupMenu*)factory()->container("popup", this);
-		if ( popup ) popup->popup(QCursor::pos());
+		if (popup) popup->popup(QCursor::pos());
 		return true;
 	case QEvent::LayoutHint:
 		setFixedSize(minimumSize()); // because QMainWindow and KMainWindow
@@ -168,28 +137,25 @@ void MainWidget::focusOutEvent(QFocusEvent *e)
 
 void MainWidget::toggleMenubar()
 {
-	bool b = MENUBAR_ACTION->isChecked();
-	if (b) menuBar()->show();
+	if ( menu->isChecked() ) menuBar()->show();
 	else menuBar()->hide();
-	ExtSettingsDialog::writeMenuVisible(b);
 }
 
 void MainWidget::configureSettings()
 {
-	ExtSettingsDialog od(this);
-	if ( !od.exec() ) return;
-    settingsChanged();
+	SettingsDialog od(this);
+    od.exec();
 }
 
 void MainWidget::settingsChanged()
 {
-    bool enabled = GameSettingsWidget::readKeyboard();
+    bool enabled = GameSettings::readKeyboard();
 	QValueList<KAction *> list = actionCollection()->actions("keyboard_group");
 	QValueList<KAction *>::Iterator it;
 	for (it = list.begin(); it!=list.end(); ++it)
 		(*it)->setEnabled(enabled);
 
-    pauseFocus = GameSettingsWidget::readPauseFocus();
+    pauseFocus = GameSettings::readPauseFocus();
 
     status->settingsChanged();
 }
@@ -203,14 +169,14 @@ void MainWidget::gameStateChanged(GameState s)
 {
 	switch (s) {
 	case Stopped:
-		PAUSE_ACTION->setEnabled(false);
+		pause->setEnabled(false);
         break;
 	case Paused:
-		PAUSE_ACTION->setChecked(true);
+		pause->setChecked(true);
 		break;
 	case Playing:
-		PAUSE_ACTION->setChecked(false);
-		PAUSE_ACTION->setEnabled(true);
+		pause->setChecked(false);
+		pause->setEnabled(true);
         setFocus();
 		break;
 	}

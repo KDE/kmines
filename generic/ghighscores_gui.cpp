@@ -170,7 +170,7 @@ bool MultipleScoresList::showColumn(const ItemContainer &item) const
 //-----------------------------------------------------------------------------
 HighscoresSettingsWidget::HighscoresSettingsWidget(const PlayerInfos &infos,
                                            bool WWHSAvailable, QWidget *parent)
-    : SettingsWidget(i18n("Highscores"), "highscores", parent),
+    : KSettingWidget(i18n("Highscores"), "highscores", parent),
       _ok(true), _infos(infos), _WWHEnabled(0)
 {
     QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
@@ -181,15 +181,21 @@ HighscoresSettingsWidget::HighscoresSettingsWidget(const PlayerInfos &infos,
 
     (void)new QLabel(i18n("Nickname"), grid);
     _nickname = new QLineEdit(grid);
+    connect(_nickname, SIGNAL(textChanged(const QString &)),
+            proxy(), SIGNAL(changed()));
     _nickname->setMaxLength(16);
 
     (void)new QLabel(i18n("Comment"), grid);
     _comment = new QLineEdit(grid);
+    connect(_comment, SIGNAL(textChanged(const QString &)),
+            proxy(), SIGNAL(changed()));
     _comment->setMaxLength(50);
 
     if (WWHSAvailable) {
         _WWHEnabled
             = new QCheckBox(i18n("world-wide highscores enabled"), this);
+        connect(_WWHEnabled, SIGNAL(toggled(bool)),
+                proxy(), SIGNAL(changed()));
         top->addWidget(_WWHEnabled);
     }
 }

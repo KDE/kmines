@@ -25,11 +25,11 @@ Field::Field(QWidget *parent)
 
 void Field::readSettings()
 {
-	setCaseProperties( AppearanceSettingsWidget::readCaseProperties() );
-	setUMark( GameSettingsWidget::readUMark() );
-	setCursor( GameSettingsWidget::readKeyboard() );
+	setCaseProperties( AppearanceSettings::readCaseProperties() );
+	setUMark( GameSettings::readUMark() );
+	setCursor( GameSettings::readKeyboard() );
 	for (uint i=0; i<3; i++)
-		mb[i] = GameSettingsWidget::readMouseBinding((MouseButton)i);
+		mb[i] = GameSettings::readMouseBinding((MouseButton)i);
 }
 
 void Field::setCaseProperties(const CaseProperties &_cp)
@@ -73,8 +73,8 @@ void Field::flagPixmap(QPixmap &pix, bool mask) const
 	p.drawLine(8, 12, 12, 12);
 	p.drawLine(9, 11, 11, 11);
 	p.drawLine(10, 2, 10, 10);
-	if (!mask) p.setPen(cp.flagColor);
-	p.setBrush( (mask ? color1 : cp.flagColor) );
+	if (!mask) p.setPen(cp.colors[FlagColor]);
+	p.setBrush( (mask ? color1 : cp.colors[FlagColor]) );
 	p.drawRect(4, 3, 6, 5);
 }
 
@@ -86,7 +86,7 @@ void Field::minePixmap(QPixmap &pix, bool mask, CaseState type) const
 	p.setWindow(0, 0, 20, 20);
 
 	if ( type==Exploded )
-		p.fillRect(2, 2, 16, 16, (mask ? color1 : cp.explosionColor));
+		p.fillRect(2, 2, 16, 16, (mask ? color1 : cp.colors[ExplosionColor]));
 
 	QPen pen(mask ? color1 : black, 1);
 	p.setPen(pen);
@@ -101,7 +101,7 @@ void Field::minePixmap(QPixmap &pix, bool mask, CaseState type) const
 
 	if ( type==Marked ) {
 		if (!mask) {
-			pen.setColor(cp.errorColor);
+			pen.setColor(cp.colors[ErrorColor]);
 			p.setPen(pen);
 		}
 		p.drawLine(3, 3, 17, 17);

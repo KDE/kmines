@@ -1,10 +1,9 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include <qptrvector.h>
-
 #include <kmainwindow.h>
 #include <kaction.h>
+#include <gsettings.h>
 
 #include "defines.h"
 
@@ -18,24 +17,26 @@ class MainWidget : public KMainWindow, public KMines
 	MainWidget();
 
  private slots:
-    void changeLevel();
 	void toggleMenubar();
     void configureKeys();
     void configureSettings();
 	void gameStateChanged(GameState);
     void showHighscores();
+    void settingsChanged();
 
  protected:
 	bool eventFilter(QObject *, QEvent *);
     void focusOutEvent(QFocusEvent *);
+    bool queryExit();
 
  private:
-	QPtrVector<KRadioAction>  levelAction;
-	Status                   *status;
-    bool                      pauseFocus;
+	Status             *status;
+    bool                pauseFocus;
+    KSettingCollection  collection;
+    KToggleAction      *menu, *pause;
+    KSelectAction      *levels;
 
 	void readSettings();
-    void settingsChanged();
 };
 
 #endif

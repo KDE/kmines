@@ -119,12 +119,29 @@ void Status::restartGame()
 	initGame();
 }
 
-void Status::newGame(const Level &level)
+void Status::newGame(int t)
 {
-    if ( level.type()!=Level::Custom ) kHighscores->setGameType(level.type());
-	field->setLevel(level);
+    Level::Type type = (Level::Type)t;
+    if ( type!=Level::Custom ) {
+        kHighscores->setGameType(type);
+        field->setLevel(Level(type));
+    } else field->setLevel(CustomSettings::readLevel());
+
 	initGame();
     updateGeometry();
+}
+
+void Status::settingsChanged()
+{
+    field->readSettings();
+
+    Level current = field->level();
+    if ( current.type()!=Level::Custom ) return;
+    Level l = CustomSettings::readLevel();
+    if ( l.width()==current.width() && l.height()==current.height()
+         && l.nbMines()==current.nbMines() ) return;
+    field->setLevel(l);
+    initGame();
 }
 
 void Status::changeCase(CaseState cs, int inc)

@@ -88,7 +88,7 @@ void Highscores::setGameType(uint type)
     if ( !label.isEmpty() ) _playerInfos->setSubGroup(label);
 }
 
-SettingsWidget *Highscores::createSettingsWidget(QWidget *parent)
+KSettingWidget *Highscores::createSettingsWidget(QWidget *parent)
 {
     if (_first) setGameType(0);
     return new HighscoresSettingsWidget(*_playerInfos, !_baseURL.isEmpty(),

@@ -1,18 +1,15 @@
 #include "dialogs.h"
 #include "dialogs.moc"
 
-#include <qpainter.h>
 #include <qpixmap.h>
-#include <qfont.h>
 #include <qvgroupbox.h>
 #include <qlayout.h>
 #include <qhbox.h>
 #include <qvbox.h>
 #include <qgrid.h>
+#include <qlabel.h>
 
-#include <kapplication.h>
 #include <klocale.h>
-#include <kconfig.h>
 
 #include "bitmaps/smile"
 #include "bitmaps/smile_happy"
@@ -109,352 +106,292 @@ void DigitalClock::reset(const KExtHighscores::Score &first,
 }
 
 //-----------------------------------------------------------------------------
-CustomDialog::CustomDialog(Level &level, QWidget *parent)
-: KDialogBase(Plain, i18n("Customize Your Game"), Ok|Cancel, Cancel,
-			  parent, 0, true, true), _level(level)
+CustomSettings::CustomSettings()
+    : KSettingWidget(i18n("Custom game"), "configure")
 {
-	QVBoxLayout *top = new QVBoxLayout(plainPage(), spacingHint());
+	QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
 
-	// width
-	_width = new KIntNumInput(level.width(), plainPage());
-	_width->setLabel(i18n("Width"));
-	_width->setRange(Level::MIN_CUSTOM_SIZE, Level::MAX_CUSTOM_SIZE);
-	connect(_width, SIGNAL(valueChanged(int)), SLOT(widthChanged(int)));
+    _width = createWidth(this);
+	connect(_width, SIGNAL(valueChanged(int)), SLOT(updateNbMines()));
 	top->addWidget(_width);
 
-	// height
-	_height = new KIntNumInput(level.height(), plainPage());
-	_height->setLabel(i18n("Height"));
-	_height->setRange(Level::MIN_CUSTOM_SIZE, Level::MAX_CUSTOM_SIZE);
-	connect(_height, SIGNAL(valueChanged(int)), SLOT(heightChanged(int)));
+    _height = createHeight(this);
+	connect(_height, SIGNAL(valueChanged(int)), SLOT(updateNbMines()));
 	top->addWidget(_height);
 
-	// mines
-	_mines = new KIntNumInput(level.nbMines(), plainPage());
-	connect(_mines, SIGNAL(valueChanged(int)), SLOT(nbMinesChanged(int)));
+    _mines = createMines(this);
+	connect(_mines, SIGNAL(valueChanged(int)), SLOT(updateNbMines()));
 	top->addWidget(_mines);
 
-    // combo to choose game type
+    top->addSpacing(2 * KDialog::spacingHint());
+
+    // combo to choose level
     QHBoxLayout *hbox = new QHBoxLayout(top);
-    QLabel *label = new QLabel(i18n("Game type :"), plainPage());
+    QLabel *label = new QLabel(i18n("Choose level"), this);
     hbox->addWidget(label);
-    _gameType = new QComboBox(false, plainPage());
+    _gameType = new QComboBox(false, this);
     connect(_gameType, SIGNAL(activated(int)), SLOT(typeChosen(int)));
     for (uint i=0; i<=Level::NbLevels; i++)
         _gameType->insertItem(i18n(Level::data((Level::Type)i).i18nLabel));
     hbox->addWidget(_gameType);
+}
 
+void CustomSettings::updateNbMines()
+{
+    Level level(_width->value(), _height->value(), _mines->value());
+	_mines->setRange(1, level.maxNbMines());
+	uint nb = level.width() * level.height();
+	_mines->setLabel(i18n("Mines (%1%)").arg(100*level.nbMines()/nb));
+    _gameType->setCurrentItem(level.type());
+}
+
+void CustomSettings::typeChosen(int i)
+{
+    blockSignals(true);
+    Level level((Level::Type)i);
+    _width->setValue(level.width());
+    _height->setValue(level.height());
+    _mines->setValue(level.nbMines());
+    blockSignals(false);
     updateNbMines();
 }
 
-void CustomDialog::widthChanged(int n)
+KIntNumInput *CustomSettings::createWidth(KSettingWidget *sw)
 {
-    _level = Level(n, _level.height(), _level.nbMines());
-	updateNbMines();
+    KIntNumInput *w = new KIntNumInput(sw);
+    w->setLabel(i18n("Width"));
+    w->setRange(Level::MIN_CUSTOM_SIZE, Level::MAX_CUSTOM_SIZE);
+    sw->plug(w, OP_GROUP, "custom width", Level::data(Level::Custom).width);
+    return w;
 }
 
-void CustomDialog::heightChanged(int n)
+KIntNumInput *CustomSettings::createHeight(KSettingWidget *sw)
 {
-    _level = Level(_level.width(), n, _level.nbMines());
-	updateNbMines();
+    KIntNumInput *h = new KIntNumInput(sw);
+    h->setLabel(i18n("Height"));
+    h->setRange(Level::MIN_CUSTOM_SIZE, Level::MAX_CUSTOM_SIZE);
+    sw->plug(h, OP_GROUP, "custom height", Level::data(Level::Custom).height);
+    return h;
 }
 
-void CustomDialog::nbMinesChanged(int n)
+KIntNumInput *CustomSettings::createMines(KSettingWidget *sw)
 {
-    _level = Level(_level.width(), _level.height(), n);
-	updateNbMines();
+    KIntNumInput *m = new KIntNumInput(sw);
+    sw->plug(m, OP_GROUP, "custom mines", Level::data(Level::Custom).nbMines);
+    return m;
 }
 
-void CustomDialog::updateNbMines()
+Level CustomSettings::readLevel()
 {
-	_mines->setRange(1, _level.maxNbMines());
-	uint nb = _level.width() * _level.height();
-	_mines->setLabel(i18n("Mines (%1%)").arg(100*_level.nbMines()/nb));
-    _gameType->setCurrentItem(_level.type());
-}
-
-void CustomDialog::typeChosen(int i)
-{
-    _level = Level((Level::Type)i);
-    _width->setValue(_level.width());
-    _height->setValue(_level.height());
-    _mines->setValue(_level.nbMines());
+    KSettingWidget sw;
+    KIntNumInput *i = createWidth(&sw);
+    uint w = sw.readValue(i).toUInt();
+    i = createHeight(&sw);
+    uint h = sw.readValue(i).toUInt();
+    i = createMines(&sw);
+    uint n = sw.readValue(i).toUInt();
+    return Level(w, h, n);
 }
 
 //-----------------------------------------------------------------------------
-class SettingsConfigGroup : public KConfigGroupSaver
-{
- public:
-    SettingsConfigGroup() : KConfigGroupSaver(kapp->config(), "Options") {}
-};
+const char *BINDING_LABELS[3]
+    = { I18N_NOOP("Left button"), I18N_NOOP("Mid button"),
+        I18N_NOOP("Right button") };
+const char *OP_MOUSE_BINDINGS[3] = { "mouse left", "mouse mid", "mouse right"};
+const char *ACTION_BINDINGS[4] =
+    { I18N_NOOP("reveal"), I18N_NOOP("autoreveal"),
+      I18N_NOOP("toggle flag"), I18N_NOOP("toggle ? mark") };
 
-const char *OP_UMARK             = "? mark";
-const char *OP_KEYBOARD          = "keyboard game";
-const char *OP_PAUSE_FOCUS       = "paused if lose focus";
-const char *OP_MOUSE_BINDINGS[3] =
-    { "mouse left", "mouse mid", "mouse right" };
-
-GameSettingsWidget::GameSettingsWidget()
-    : SettingsWidget(i18n("Game"), "misc")
+GameSettings::GameSettings()
+    : KSettingWidget(i18n("Game"), "misc")
 {
     QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
 
-    _umark = new QCheckBox(i18n("Enable ? mark"), this);
-	top->addWidget(_umark);
+    QCheckBox *cb = createUMark(this);
+    top->addWidget(cb);
 
-	_keyb = new QCheckBox(i18n("Enable keyboard"), this);
-	top->addWidget(_keyb);
+    cb = createKeyboard(this);
+	top->addWidget(cb);
 
-    _focus = new QCheckBox(i18n("Pause if window lose focus"), this);
-	top->addWidget(_focus);
+    cb = createPauseFocus(this);
+	top->addWidget(cb);
 
-	top->addSpacing( 2*KDialog::spacingHint() );
+	top->addSpacing(2 * KDialog::spacingHint());
 
 	QVGroupBox *gb = new QVGroupBox(i18n("Mouse bindings"), this);
 	top->addWidget(gb);
 	QGrid *grid = new QGrid(2, gb);
 	grid->setSpacing(10);
-	(void)new QLabel(i18n("Left button"), grid);
-	_cb[KMines::Left] = new QComboBox(false, grid);
-	(void)new QLabel(i18n("Mid button"), grid);
-	_cb[KMines::Mid] = new QComboBox(false, grid);
-	(void)new QLabel(i18n("Right button"), grid);
-	_cb[KMines::Right] = new QComboBox(false, grid);
-
-	for (uint i=0; i<3; i++) {
-		_cb[i]->insertItem(i18n("reveal"), 0);
-		_cb[i]->insertItem(i18n("autoreveal"), 1);
-		_cb[i]->insertItem(i18n("toggle flag"), 2);
-		_cb[i]->insertItem(i18n("toggle ? mark"), 3);
+    for (uint i=0; i<3; i++) {
+        (void)new QLabel(i18n(BINDING_LABELS[i]), grid);
+        createMouseBinding(this, grid, (MouseButton)i);
 	}
 }
 
-bool GameSettingsWidget::readUMark()
+QCheckBox *GameSettings::createUMark(KSettingWidget *sw)
 {
-    SettingsConfigGroup cg;
-	return cg.config()->readBoolEntry(OP_UMARK, true);
+    QCheckBox *cb = new QCheckBox(i18n("Enable ? mark"), sw);
+    sw->plug(cb, OP_GROUP, "? mark", true);
+    return cb;
 }
 
-bool GameSettingsWidget::readKeyboard()
+bool GameSettings::readUMark()
 {
-    SettingsConfigGroup cg;
-	return cg.config()->readBoolEntry(OP_KEYBOARD, false);
+    KSettingWidget sw;
+    QCheckBox *cb = createUMark(&sw);
+    return sw.readValue(cb).toBool();
 }
 
-bool GameSettingsWidget::readPauseFocus()
+QCheckBox *GameSettings::createKeyboard(KSettingWidget *sw)
 {
-    SettingsConfigGroup cg;
-	return cg.config()->readBoolEntry(OP_PAUSE_FOCUS, true);
+    QCheckBox *cb = new QCheckBox(i18n("Enable keyboard"), sw);
+    sw->plug(cb, OP_GROUP, "keyboard game", false);
+    return cb;
 }
 
-KMines::MouseAction GameSettingsWidget::readMouseBinding(MouseButton mb)
+bool GameSettings::readKeyboard()
 {
-    SettingsConfigGroup cg;
-	MouseAction ma = (MouseAction)cg.config()
-                     ->readUnsignedNumEntry(OP_MOUSE_BINDINGS[mb], mb);
-	return ma>UMark ? Reveal : ma;
+    KSettingWidget sw;
+    QCheckBox *cb = createKeyboard(&sw);
+    return sw.readValue(cb).toBool();
 }
 
-void GameSettingsWidget::load()
+QCheckBox *GameSettings::createPauseFocus(KSettingWidget *sw)
 {
-    _umark->setChecked( readUMark() );
-    _keyb->setChecked( readKeyboard() );
-    _focus->setChecked( readPauseFocus() );
-    for (uint i=0; i<3; i++)
-        _cb[i]->setCurrentItem( readMouseBinding((MouseButton)i) );
+    QCheckBox *cb = new QCheckBox(i18n("Pause if window lose focus"), sw);
+    sw->plug(cb, OP_GROUP, "paused if lose focus", true);
+    return cb;
 }
 
-void GameSettingsWidget::save()
+bool GameSettings::readPauseFocus()
 {
-    SettingsConfigGroup cg;
-	cg.config()->writeEntry(OP_UMARK, _umark->isChecked());
-	cg.config()->writeEntry(OP_KEYBOARD, _keyb->isChecked());
-    cg.config()->writeEntry(OP_PAUSE_FOCUS, _focus->isChecked());
-	for (uint i=0; i<3; i++)
-		cg.config()->writeEntry(OP_MOUSE_BINDINGS[i], _cb[i]->currentItem());
+    KSettingWidget sw;
+    QCheckBox *cb = createPauseFocus(&sw);
+    return sw.readValue(cb).toBool();
 }
 
-void GameSettingsWidget::defaults()
+QComboBox *GameSettings::createMouseBinding(KSettingCollection *col,
+                                            QWidget *parent, MouseButton i)
 {
-    _umark->setChecked(true);
-    _keyb->setChecked(false);
-    _focus->setChecked(true);
-    for (uint i=0; i<3; i++) _cb[i]->setCurrentItem(i);
+    QComboBox *cb = new QComboBox(parent);
+    col->plug(cb, OP_GROUP, OP_MOUSE_BINDINGS[i], ACTION_BINDINGS[i]);
+    for (uint j=0; j<4; j++) {
+        cb->insertItem(i18n(ACTION_BINDINGS[j]), j);
+        col->map(cb, j, ACTION_BINDINGS[j]);
+    }
+    return cb;
+}
+
+KMines::MouseAction GameSettings::readMouseBinding(MouseButton mb)
+{
+    KSettingWidget sw;
+    QComboBox *cb = createMouseBinding(&sw, &sw, mb);
+    return (MouseAction)sw.readId(cb);
 }
 
 //-----------------------------------------------------------------------------
-const char *OP_CASE_SIZE         = "case size";
-const uint MIN_CASE_SIZE     = 20;
-const uint DEFAULT_CASE_SIZE = MIN_CASE_SIZE;
-const uint MAX_CASE_SIZE     = 100;
-const char *OP_NUMBER_COLOR    = "color #";
-const char *OP_FLAG_COLOR      = "flag color";
-const char *OP_EXPLOSION_COLOR = "explosion color";
-const char *OP_ERROR_COLOR     = "error color";
-#define NCName(i) QString("%1%2").arg(OP_NUMBER_COLOR).arg(i)
-const QColor DEFAULT_NUMBER_COLORS[NB_NUMBER_COLORS] =
-   { Qt::blue, Qt::darkGreen, Qt::darkYellow, Qt::darkMagenta, Qt::red,
-	 Qt::darkRed, Qt::black, Qt::black };
-const QColor DEFAULT_FLAG_COLOR      = Qt::red;
-const QColor DEFAULT_EXPLOSION_COLOR = Qt::red;
-const QColor DEFAULT_ERROR_COLOR     = Qt::red;
+const uint MIN_CASE_SIZE = 20;
+const uint MAX_CASE_SIZE = 100;
 
-AppearanceSettingsWidget::AppearanceSettingsWidget()
-    : SettingsWidget(i18n("Appearance"), "appearance")
+struct ColorData {
+    const char *entry;
+    const char *label;
+    QColor      def;
+};
+
+const ColorData COLOR_DATA[KMines::NB_COLORS] = {
+    { "flag color",      I18N_NOOP("Flag color"),      Qt::red },
+    { "explosion color", I18N_NOOP("Explosion color"), Qt::red },
+    { "error color",     I18N_NOOP("Error color"),     Qt::red }
+};
+
+const QColor DEFAULT_NUMBER_COLOR[KMines::NB_NUMBER_COLORS] = {
+    Qt::blue, Qt::darkGreen, Qt::darkYellow, Qt::darkMagenta, Qt::red,
+    Qt::darkRed, Qt::black, Qt::black
+};
+
+AppearanceSettings::AppearanceSettings()
+    : KSettingWidget(i18n("Appearance"), "appearance")
 {
     QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
 
-    QHBox *hbox = new QHBox(this);
-    hbox->setSpacing(KDialog::spacingHint());
-    top->addWidget(hbox);
-    (void)new QLabel(i18n("Case size"), hbox);
-    _caseSize = new KIntNumInput(hbox);
-	_caseSize->setRange(MIN_CASE_SIZE, MAX_CASE_SIZE);
+    KIntNumInput *cs = createCaseSize(this);
+    top->addWidget(cs);
 
-    top->addSpacing( 2*KDialog::spacingHint() );
+    top->addSpacing(2 * KDialog::spacingHint());
 
     QGrid *grid = new QGrid(2, this);
     top->addWidget(grid);
 
-    (void)new QLabel(i18n("Flag color"), grid);
-	_flag = new KColorButton(grid);
-    _flag->setFixedWidth(100);
+    for (uint i=0; i<NB_COLORS; i++) {
+        (void)new QLabel(i18n(COLOR_DATA[i].label), grid);
+        createColor(this, grid, i);
+    }
 
-	(void)new QLabel(i18n("Explosion color"), grid);
-	_explosion = new KColorButton(grid);
-    _explosion->setFixedWidth(100);
-
-	(void)new QLabel(i18n("Error color"), grid);
-	_error = new KColorButton(grid);
-    _error->setFixedWidth(100);
-
-	_numbers.resize(NB_NUMBER_COLORS);
 	for (uint i=0; i<NB_NUMBER_COLORS; i++) {
-		(void)new QLabel(i==0 ? i18n("One mine color")
+		(void)new QLabel(i==0 ? i18n("1 mine color")
 						 : i18n("%1 mines color").arg(i+1), grid);
-        KColorButton *b = new KColorButton(grid);
-        b->setFixedWidth(100);
-		_numbers.insert(i, b);
+        createNumberColor(this, grid, i);
 	}
 }
 
-uint AppearanceSettingsWidget::readCaseSize()
+KIntNumInput *AppearanceSettings::createCaseSize(KSettingWidget *sw)
 {
-    SettingsConfigGroup cg;
-	uint cs
-        = cg.config()->readUnsignedNumEntry(OP_CASE_SIZE, DEFAULT_CASE_SIZE);
-	cs = QMAX(QMIN(cs, MAX_CASE_SIZE), MIN_CASE_SIZE);
-	return cs;
+    KIntNumInput *cs = new KIntNumInput(sw);
+    cs->setLabel(i18n("Case size"));
+    cs->setRange(MIN_CASE_SIZE, MAX_CASE_SIZE);
+    sw->plug(cs, OP_GROUP, "case size", MIN_CASE_SIZE);
+    return cs;
 }
 
-void AppearanceSettingsWidget::writeCaseSize(uint size)
+KColorButton *AppearanceSettings::createColor(KSettingCollection *col,
+                                              QWidget *parent, uint i)
 {
-    SettingsConfigGroup cg;
-    cg.config()->writeEntry(OP_CASE_SIZE, size);
+    KColorButton *cb = new KColorButton(parent);
+    cb->setFixedWidth(100);
+    col->plug(cb, OP_GROUP, COLOR_DATA[i].entry, COLOR_DATA[i].def);
+    return cb;
 }
 
-QColor AppearanceSettingsWidget::readColor(const QString & key,
-                                           QColor defaultColor)
+KColorButton *AppearanceSettings::createNumberColor(KSettingCollection *col,
+                                                    QWidget *parent, uint i)
 {
-    SettingsConfigGroup cg;
-	return cg.config()->readColorEntry(key, &defaultColor);
+    KColorButton *cb = new KColorButton(parent);
+    cb->setFixedWidth(100);
+    col->plug(cb, OP_GROUP, QString("color #%1").arg(i),
+              DEFAULT_NUMBER_COLOR[i]);
+    return cb;
 }
 
-KMines::CaseProperties AppearanceSettingsWidget::readCaseProperties()
+KMines::CaseProperties AppearanceSettings::readCaseProperties()
 {
-	CaseProperties cp;
-	cp.size = readCaseSize();
-	cp.flagColor = readColor(OP_FLAG_COLOR, DEFAULT_FLAG_COLOR);
-	cp.explosionColor
-        = readColor(OP_EXPLOSION_COLOR, DEFAULT_EXPLOSION_COLOR);
-	cp.errorColor
-        = readColor(OP_ERROR_COLOR, DEFAULT_ERROR_COLOR);
-	for (uint i=0; i<NB_NUMBER_COLORS; i++)
-		cp.numberColors[i]
-            = readColor(NCName(i), DEFAULT_NUMBER_COLORS[i]);
+    CaseProperties cp;
+    KSettingWidget sw;
+
+    KIntNumInput *cs = createCaseSize(&sw);
+    cp.size = sw.readValue(cs).toUInt();
+
+    for (uint i=0; i<NB_COLORS; i++) {
+        KColorButton *cb = createColor(&sw, &sw, i);
+        cp.colors[i] = sw.readValue(cb).toColor();
+    }
+
+	for (uint i=0; i<NB_NUMBER_COLORS; i++) {
+        KColorButton *cb = createNumberColor(&sw, &sw, i);
+		cp.numberColors[i] = sw.readValue(cb).toColor();
+    }
+
 	return cp;
 }
 
-void AppearanceSettingsWidget::load()
-{
-    CaseProperties cp = readCaseProperties();
-    _caseSize->setValue(cp.size);
-    _flag->setColor(cp.flagColor);
-    _explosion->setColor(cp.explosionColor);
-    _error->setColor(cp.errorColor);
-    for (uint i=0; i<NB_NUMBER_COLORS; i++)
-        _numbers[i]->setColor(cp.numberColors[i]);
-}
-
-void AppearanceSettingsWidget::save()
-{
-    writeCaseSize( _caseSize->value() );
-    SettingsConfigGroup cg;
-    cg.config()->writeEntry(OP_FLAG_COLOR, _flag->color());
-	cg.config()->writeEntry(OP_EXPLOSION_COLOR, _explosion->color());
-	cg.config()->writeEntry(OP_ERROR_COLOR, _error->color());
-	for (uint i=0; i<NB_NUMBER_COLORS; i++)
-		cg.config()->writeEntry(NCName(i), _numbers[i]->color());
-}
-
-void AppearanceSettingsWidget::defaults()
-{
-    _caseSize->setValue(DEFAULT_CASE_SIZE);
-    _flag->setColor(DEFAULT_FLAG_COLOR);
-	_explosion->setColor(DEFAULT_EXPLOSION_COLOR);
-	_error->setColor(DEFAULT_ERROR_COLOR);
-	for (uint i=0; i<NB_NUMBER_COLORS; i++)
-		_numbers[i]->setColor(DEFAULT_NUMBER_COLORS[i]);
-}
-
 //-----------------------------------------------------------------------------
-const char *OP_MENUBAR         = "menubar visible";
-const char *OP_LEVEL           = "Level";
-const char *OP_CUSTOM_WIDTH    = "custom width";
-const char *OP_CUSTOM_HEIGHT   = "custom height";
-const char *OP_CUSTOM_MINES    = "custom mines";
-
-ExtSettingsDialog::ExtSettingsDialog(QWidget *parent)
-    : SettingsDialog(parent)
+SettingsDialog::SettingsDialog(QWidget *parent)
+    : KSettingDialog(parent)
 {
-    addModule(new GameSettingsWidget);
-    addModule(new AppearanceSettingsWidget);
-    addModule( kHighscores->createSettingsWidget(this) );
-}
+    append(new GameSettings);
+    append(new AppearanceSettings);
+    append( kHighscores->createSettingsWidget(this) );
+    append(new CustomSettings);
 
-Level ExtSettingsDialog::readLevel()
-{
-    SettingsConfigGroup cg;
-	Level::Type type
-        = (Level::Type)cg.config()->readUnsignedNumEntry(OP_LEVEL, 0);
-    if ( type>Level::Custom ) type = Level::Easy;
-    if ( type!=Level::Custom ) return Level(type);
-
-    uint width = cg.config()->readUnsignedNumEntry(OP_CUSTOM_WIDTH, 0);
-    uint height = cg.config()->readUnsignedNumEntry(OP_CUSTOM_HEIGHT, 0);
-    uint nbMines = cg.config()->readUnsignedNumEntry(OP_CUSTOM_MINES, 0);
-    return Level(width, height, nbMines);
-}
-
-void ExtSettingsDialog::writeLevel(const Level &level)
-{
-    SettingsConfigGroup cg;
-	if ( level.type()==Level::Custom ) {
-		cg.config()->writeEntry(OP_CUSTOM_WIDTH, level.width());
-		cg.config()->writeEntry(OP_CUSTOM_HEIGHT, level.height());
-		cg.config()->writeEntry(OP_CUSTOM_MINES, level.nbMines());
-	}
-	cg.config()->writeEntry(OP_LEVEL, (uint)level.type());
-}
-
-bool ExtSettingsDialog::readMenuVisible()
-{
-    SettingsConfigGroup cg;
-	return cg.config()->readBoolEntry(OP_MENUBAR, true);
-}
-
-void ExtSettingsDialog::writeMenuVisible(bool visible)
-{
-    SettingsConfigGroup cg;
-	cg.config()->writeEntry(OP_MENUBAR, visible);
+    connect(this, SIGNAL(settingsSaved()), parent, SLOT(settingsChanged()));
 }

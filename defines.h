@@ -48,12 +48,16 @@ class KMines
     enum MouseAction { Reveal = 0, AutoReveal, Mark, UMark, None };
     enum MouseButton { Left = 0, Mid, Right };
 
-    #define NB_NUMBER_COLORS 8
+    enum Color { FlagColor = 0, ExplosionColor, ErrorColor, NB_COLORS };
+    enum NumberColor { NB_NUMBER_COLORS = 8 };
+
     struct CaseProperties {
         uint size;
         QColor numberColors[NB_NUMBER_COLORS];
-        QColor flagColor, explosionColor, errorColor;
+        QColor colors[NB_COLORS];
     };
+
+    static const char *OP_GROUP;
 };
 
 #endif

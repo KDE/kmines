@@ -4,10 +4,10 @@
 
 
 const Level::Data Level::DATA[Level::NbLevels+1] = {
-	{ 8,  8, 10, "easy",   "8x8x10",   I18N_NOOP("Easy")      },
-	{16, 16, 40, "normal", "16x16x40", I18N_NOOP("Normal")    },
-	{30, 16, 99, "expert", "30x16x99", I18N_NOOP("Expert")    },
-    { 5,  5,  1, "custom", "",         I18N_NOOP("Custom...") }
+	{ 8,  8, 10, "easy",   "8x8x10",   I18N_NOOP("Easy")   },
+	{16, 16, 40, "normal", "16x16x40", I18N_NOOP("Normal") },
+	{30, 16, 99, "expert", "30x16x99", I18N_NOOP("Expert") },
+    {10, 10, 20, "custom", "",         I18N_NOOP("Custom") }
 };
 
 Level::Level(Type type)
@@ -38,3 +38,5 @@ Level::Type Level::type() const
              && _nbMines==DATA[i].nbMines ) return (Type)i;
     return Custom;
 }
+
+const char *KMines::OP_GROUP = "Options";

@@ -104,7 +104,7 @@ class MultipleScoresList : public ScoresList
 };
 
 //-----------------------------------------------------------------------------
-class HighscoresSettingsWidget : public SettingsWidget
+class HighscoresSettingsWidget : public KSettingWidget
 {
  Q_OBJECT
  public:
@@ -114,6 +114,8 @@ class HighscoresSettingsWidget : public SettingsWidget
     void load();
     void save();
     bool isSaved() const { return _ok; }
+    void setDefaults() {}
+    bool hasDefaults() const { return true; }
 
  private:
     bool               _ok;
