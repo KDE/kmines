@@ -24,7 +24,7 @@
   </Entry>
   <Entry name="custom_mines" key="custom mines" type="ranged" vtype="int"
          defaultValue="20" minValue="1" maxValue="2500">
-  <text>No of mines</text>
+  <text>No. of mines</text>
   </Entry>
 
   <Entry name="uncertain_mark" key="? mark" vtype="bool" defaultValue="true">
