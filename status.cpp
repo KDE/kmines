@@ -32,7 +32,10 @@ Status::Status(QWidget *parent, const char *name)
 	// mines left LCD
 	left = new LCDNumber(this);
 	left->installEventFilter(parent);
-	QWhatsThis::add(left, i18n("Mines left"));
+	QWhatsThis::add(left, i18n("<qt>Mines left.<br/>"
+                               "It turns <font color=\"red\">red</font> "
+                               "when you have flagged more cases than "
+                               "present mines.</qt>"));
 	hbl->addWidget(left);
 	hbl->addStretch(1);
 
@@ -48,7 +51,11 @@ Status::Status(QWidget *parent, const char *name)
 	// digital clock LCD
 	dg = new DigitalClock(this);
 	dg->installEventFilter(parent);
-	QWhatsThis::add(dg, i18n("Time elapsed"));
+	QWhatsThis::add(dg, i18n("<qt>Time elapsed.<br/>"
+                             "It turns <font color=\"blue\">blue</font> "
+                             "if it is a highscore "
+                             "and <font color=\"red\">red</font> "
+                             "if it is the best time.</qt>"));
 	hbl->addWidget(dg);
 
 // mines field
@@ -62,19 +69,9 @@ Status::Status(QWidget *parent, const char *name)
 	connect( field, SIGNAL(setMood(Smiley::Mood)),
 			 smiley, SLOT(setMood(Smiley::Mood)) );
 	connect(field, SIGNAL(gameStateChanged(GameState)),
-			SLOT(setGameState(GameState)) );
-	QWhatsThis::add(field, i18n("Mines field"));
+			SIGNAL(gameStateChanged(GameState)) );
+	QWhatsThis::add(field, i18n("Mines field."));
 	top->addWidget(field);
-}
-
-void Status::setGameState(GameState s)
-{
-	switch (s) {
-	case Stopped: emit message(i18n("Game stopped")); break;
-	case Playing: emit message(i18n("Playing"));      break;
-	case Paused:  emit message(i18n("Game paused"));  break;
-	}
-	emit gameStateChanged(s);
 }
 
 void Status::initGame()
@@ -82,7 +79,7 @@ void Status::initGame()
 	uncovered = 0;
 	uncertain = 0;
 	marked    = 0;
-	setGameState(Stopped);
+	emit gameStateChanged(Stopped);
 	update(false);
 	smiley->setMood(Smiley::Normal);
 	Level level = field->level().level;
@@ -133,11 +130,10 @@ void Status::_endGame(bool win)
 	field->stop();
 	dg->freeze();
 	field->showMines();
-	setGameState(Stopped);
+	emit gameStateChanged(Stopped);
 
 	if ( !win ) {
         smiley->setMood(Smiley::Sad);
-		emit message(i18n("Bad luck!"));
         return;
 	}
 
@@ -147,24 +143,18 @@ void Status::_endGame(bool win)
         ExtScore score(level, dg->score());
         ExtPlayerInfos infos(level);
         int localRank = infos.submitScore(score, this);
-        if ( localRank==-1 ) {
-            emit message(i18n("You did it ... but not in time."));
-            return;
-        }
+        if ( localRank==-1 ) return;
         ShowHighscores hs(localRank, this, score, infos);
         hs.exec();
     }
-    emit message(i18n("Yeeeesssssss!"));
 }
 
 void Status::showHighscores(int level)
 {
-	if ( !field->isPaused() ) field->pause();
     ExtScore score((Level)level);
     ExtPlayerInfos infos((Level)level);
     ShowHighscores hs(-1, this, score, infos);
 	hs.exec();
-	field->pause();
 }
 
 void Status::print()
@@ -188,12 +178,4 @@ void Status::print()
 	// write the screen region corresponding to the window
 	QPainter p(&prt);
 	p.drawPixmap(0, 0, QPixmap::grabWindow(winId()));
-}
-
-void Status::preferences()
-{
-	OptionDialog od(this);
-	if ( !od.exec() ) return;
-	field->readSettings();
-	emit keyboardEnabled(OptionDialog::readKeyboard());
 }

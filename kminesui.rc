@@ -2,12 +2,11 @@
 <kpartgui name="kmines" version="5">
 <MenuBar>
   <Menu name="game"><text>&amp;Game</text>
-    <Menu name="level"><text>Choose &amp;level</text>
+    <Menu name="level" append="new_merge"><text>Choose &amp;level</text>
 	  <Action name="level_easy"/>
 	  <Action name="level_normal"/>
 	  <Action name="level_expert"/>
     </Menu>
-    <Action name="highscores"/>
   </Menu>
   <Menu name="settings"><text>&amp;Settings</text>
 	<Action name="level_custom"/>
@@ -25,8 +24,8 @@
   </Menu>
   <Separator/>
   <Action name="game_pause"/>
+  <Action name="game_highscores"/>
   <Action name="game_print"/>
-  <Action name="highscores"/>
   <Separator/>
   <Action name="game_quit"/>
 </Menu>

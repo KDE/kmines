@@ -1,7 +1,11 @@
-2.0.12 (18 May 2001)
+2.0.12 (29 May 2001)
+ * option to put the game in pause mode if the window loses focus [proposed by
+   Bernhard Berger]
+ * better default keys + fixed autoreveal display for keyboard game
  * use KStdGameAction
  * big revamping of highscores
  * use of KHighscore
+ * removed status bar (ugly and not very useful)
 
 2.0.11 (14 March 2001)
  * changed highscores accelerator to CTRL + H (more standard)
@@ -92,7 +96,7 @@
  * the LCDs gets red when there are more flagged cases than mines
    and when you have used more time than the better player.
  * use of a status bar.
- * the smiley moods are now XPMs (made by Andreas Zehender)
+ * the smiley moods are now XPMs [made by Andreas Zehender]
 
 1.0.5
  * fixed layout handling (all this "updateGeometry" and "LayoutHint" stuff)
@@ -110,14 +114,14 @@
  * level menu items are now checked
 
 1.0.2
- * bug fix : argh! a "brown paper bag" one (bug report by Szokovacs Robert)
+ * bug fix : argh! a "brown paper bag" one [bug report by Szokovacs Robert]
 
 1.0.1
  * bug fix : when paused a game can be continued by changing desktops or
-   iconifying/deiconifying without time consumption ... (bug report by
-   François-Xavier Duranceau, Frank Pieczynski & Oliver Eiden)
+   iconifying/deiconifying without time consumption ... [bug report by
+   François-Xavier Duranceau, Frank Pieczynski & Oliver Eiden]
  * add printing facility : well it seems hacky to me and certainly not perfect
-   but it works ... (feature suggested by Tomislav Marsic)
+   but it works ... [feature suggested by Tomislav Marsic]
 
 1.0.0
  * final cleanup before 1.0 !
@@ -140,7 +144,7 @@
 0.6.8
  * some polishing (game over message do not overwrite mines number & marked
    mines stay marked even when the game is lost : so you can completely analyse
-   why you have lost :) -- thanx to Christoph Rummel for pointing these to me.
+   why you have lost :) [thanx to Christoph Rummel for pointing these to me]
 
 0.6.7
  * internationalization

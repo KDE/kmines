@@ -195,8 +195,10 @@ class PlayerInfos : public ItemContainer
     QString name() const       { return item("name")->read(_id); }
     bool isAnonymous() const;
     QString prettyName() const { return item("name")->pretty(_id); }
+    QString registeredName() const;
     QString comment() const    { return item("comment")->read(_id); }
     bool WWEnabled() const;
+    QString key() const;
     uint id() const            { return _id; }
 
     int submitScore(Score &, QWidget *parent) const;
@@ -204,19 +206,24 @@ class PlayerInfos : public ItemContainer
                         const QString &comment, bool WWEnabled,
                         QWidget *parent) const;
 
+    virtual QString playersURL() const;
+    virtual QString highscoresURL() const;
+    virtual QString showHighscoresCaption() const;
+
  protected:
+    enum QueryType { Submit, Register, Change, Players, Highscores };
     bool _newPlayer;
+
+    virtual void additionnalQueries(KURL &, QueryType) const {}
+    static KURL URL(QueryType, const QString &nickname);
+    static void addToURL(KURL &, const QString &entry, const QString &content);
 
  private:
     uint _id;
-    enum QueryType { Submit, Register, Change, Highscores };
 
     KConfig *config() const;
     void addPlayer();
-    QString key() const;
 
-    static KURL URL(QueryType, const QString &nickname);
-    static void addToURL(KURL &, const QString &entry, const QString &content);
     static bool _doQuery(const KURL &url, QDomNamedNodeMap &attributes,
                          QString &error);
     static bool doQuery(const KURL &url, QDomNamedNodeMap &map,
@@ -256,10 +263,12 @@ class ShowScores
 class ShowHighscores : public KDialogBase, public ShowScores
 {
  Q_OBJECT
-
  public:
     ShowHighscores(int localRank, QWidget *parent, const Score &scoreDummy,
                    const PlayerInfos &playerDummy);
+
+ private slots:
+    void showURL(const QString &) const;
 
   private:
     QListView *_bestList, *_playersList;

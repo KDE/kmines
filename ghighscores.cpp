@@ -14,6 +14,9 @@
 #include <kmdcodec.h>
 #include <kio/netaccess.h>
 #include <khighscore.h>
+#include <kurllabel.h>
+#include <kopenwith.h>
+#include <krun.h>
 
 #include "version.h"
 #include "defines.h"
@@ -195,9 +198,10 @@ int Score::submit(QWidget *parent, bool warn) const
 }
 
 //-----------------------------------------------------------------------------
-const char *HS_ID         = "player id";
-const char *HS_KEY        = "player key";
-const char *HS_WW_ENABLED = "ww hs enabled";
+const char *HS_ID              = "player id";
+const char *HS_REGISTERED_NAME = "registered name";
+const char *HS_KEY             = "player key";
+const char *HS_WW_ENABLED      = "ww hs enabled";
 
 PlayerInfos::PlayerInfos(const QString &subGroup, ItemBase *bestScoreItem,
                          ItemBase *meanScoreItem)
@@ -274,13 +278,14 @@ int PlayerInfos::submitScore(Score &score, QWidget *parent) const
     int rank = score.submit(parent, true);
 
     if ( WWEnabled() ) {
-        KURL url = URL(Submit, name());
+        KURL url = URL(Submit, registeredName());
         addToURL(url, "key", key());
         addToURL(url, "version", VERSION);
         QString str =  QString::number(score.score());
         addToURL(url, "score", str);
-        KMD5 context(name() + str);
+        KMD5 context(registeredName() + str);
         addToURL(url, "check", context.hexDigest());
+        additionnalQueries(url, Submit);
         QDomNamedNodeMap map;
         doQuery(url, map, parent);
     }
@@ -300,12 +305,13 @@ bool PlayerInfos::modifySettings(const QString &newName,
     QString newKey;
     if (WWEnabled) {
         KURL url;
-        bool newPlayer = key().isEmpty();
+        bool newPlayer = key().isEmpty() || registeredName().isEmpty();
 	    if (newPlayer) url = URL(Register, newName);
 		else {
-		    url = URL(Change, name());
+		    url = URL(Change, registeredName());
 			addToURL(url, "key", key());
-			if ( name()!=newName ) addToURL(url, "new_nickname", newName);
+			if ( registeredName()!=newName )
+                addToURL(url, "new_nickname", newName);
 		}
 		addToURL(url, "comment", comment);
 		addToURL(url, "version", VERSION);
@@ -315,6 +321,7 @@ bool PlayerInfos::modifySettings(const QString &newName,
             if ( !getFromQuery(map, "key", newKey, parent) ) return false;
             config()->writeEntry(HS_KEY, newKey);
         }
+        config()->writeEntry(HS_REGISTERED_NAME, newName);
     }
 
     item("name")->write(_id, newName);
@@ -324,25 +331,49 @@ bool PlayerInfos::modifySettings(const QString &newName,
     return true;
 }
 
+QString PlayerInfos::registeredName() const
+{
+    return config()->readEntry(HS_REGISTERED_NAME, QString::null);
+}
+
 KURL PlayerInfos::URL(QueryType type, const QString &nickname)
 {
-    KURL url;
-    url.setProtocol("http");
-    url.setHost(WORLD_WIDE_HS_HOST);
+    KURL url(WORLD_WIDE_HS_URL);
 	switch (type) {
-	case Submit:     url.setPath("submit.php");     break;
-	case Register:   url.setPath("register.php");   break;
-	case Change:     url.setPath("change.php");     break;
-	case Highscores: url.setPath("highscores.php"); break;
+        case Submit:     url.addPath("submit.php");     break;
+        case Register:   url.addPath("register.php");   break;
+        case Change:     url.addPath("change.php");     break;
+        case Players:    url.addPath("players.php");    break;
+        case Highscores: url.addPath("highscores.php"); break;
 	}
-	QString query = "nickname=" + KURL::encode_string(nickname);
-	url.setQuery(query);
+    if ( !nickname.isEmpty() ) {
+        QString query = "nickname=" + KURL::encode_string(nickname);
+        url.setQuery(query);
+    }
 	return url;
+}
+
+QString PlayerInfos::playersURL() const
+{
+    KURL url = URL(Players, QString::null);
+    addToURL(url, "highlight", registeredName());
+    return url.url();
+}
+
+QString PlayerInfos::highscoresURL() const
+{
+    return URL(Highscores, registeredName()).url();
+}
+
+QString PlayerInfos::showHighscoresCaption() const
+{
+    return i18n("Highscores");
 }
 
 void PlayerInfos::addToURL(KURL &url, const QString &entry,
                            const QString &content)
 {
+    if ( entry.isEmpty() ) return;
     QString query = url.query();
     if ( !query.isEmpty() ) query += '&';
 	query += entry + '=' + KURL::encode_string(content);
@@ -353,24 +384,25 @@ bool PlayerInfos::_doQuery(const KURL &url, QDomNamedNodeMap &attributes,
                            QString &error)
 {
     QString tmpFile;
+    qDebug("do query %s", url.prettyURL().latin1());
     if ( !KIO::NetAccess::download(url, tmpFile) ) {
-  	    error = KIO::NetAccess::lastErrorString();
+  	    error = i18n("Unable to contact remote host.");
 	    return false;
 	}
 	QFile file(tmpFile);
 	if ( !file.open(IO_ReadOnly) ) {
-	    error = i18n("Unable to open temporary file");
+	    error = i18n("Unable to open temporary file.");
 	    return false;
 	}
 	QTextStream t(&file);
 	QString content = t.read();
 	file.close();
 	if ( content.isEmpty() ) {
-        error = i18n("no data in answer");
+        error = i18n("No data in answer.");
         return false;
     }
     if ( content.mid(0, 5)!="<xml>" ) {
-        error = content;
+        error = i18n("Error from server : %1").arg(content);
         return false;
     }
 	QDomDocument doc;
@@ -378,7 +410,7 @@ bool PlayerInfos::_doQuery(const KURL &url, QDomNamedNodeMap &attributes,
     QDomElement root = doc.documentElement();
     QDomElement element = root.firstChild().toElement();
     if ( element.isNull() || element.tagName()!="success" ) {
- 	    error = i18n("Invalid answer");
+ 	    error = i18n("Invalid answer.");
 	    return false;
 	}
 	attributes = element.attributes();
@@ -390,7 +422,11 @@ bool PlayerInfos::doQuery(const KURL &url, QDomNamedNodeMap &map,
 {
   QString error;
   bool ok = _doQuery(url, map, error);
-  if ( !ok ) KMessageBox::sorry(parent, error);
+  if ( !ok ) {
+      error = i18n("An error occured while contacting\n"
+                   "the world-wide highscores server :\n%1").arg(error);
+      KMessageBox::sorry(parent, error);
+  }
   return ok;
 }
 
@@ -400,7 +436,7 @@ bool PlayerInfos::getFromQuery(const QDomNamedNodeMap &map,
 {
     QDomAttr attr = map.namedItem(name).toAttr();
     if ( attr.isNull() ) {
-	    KMessageBox::sorry(parent, i18n("Invalid answer"));
+	    KMessageBox::sorry(parent, i18n("Missing argument."));
 		return false;
 	}
 	value = attr.value();
@@ -458,7 +494,7 @@ void ShowScores::addLine(QListView *list, const ItemContainer &container,
 ShowHighscores::ShowHighscores(int localRank, QWidget *parent,
                                const Score &scoreDummy,
                                const PlayerInfos &playerDummy)
-    : KDialogBase(Tabbed, i18n("Highscores"), Close, Close,
+    : KDialogBase(Tabbed, playerDummy.showHighscoresCaption(), Close, Close,
                   parent, "show_highscores", true, true)
 {
     // best scores
@@ -471,12 +507,30 @@ ShowHighscores::ShowHighscores(int localRank, QWidget *parent,
         fillList(_bestList, scoreDummy, localRank);
     }
 
+    KURLLabel *urlLabel = new KURLLabel(playerDummy.highscoresURL(),
+                                    i18n("View world-wide highscores"), page);
+    urlLabel->setEnabled(playerDummy.WWEnabled());
+    connect(urlLabel, SIGNAL(leftClickedURL(const QString &)),
+            SLOT(showURL(const QString &)));
+
     // player infos
     page = addVBoxPage(i18n("Players"));
     _playersList = createList(page);
     fillList(_playersList, playerDummy, playerDummy.id());
 
+    urlLabel = new KURLLabel(playerDummy.playersURL(),
+                                    i18n("View world-wide players"), page);
+    urlLabel->setEnabled(playerDummy.WWEnabled());
+    connect(urlLabel, SIGNAL(leftClickedURL(const QString &)),
+            SLOT(showURL(const QString &)));
+
     enableButtonSeparator(false);
+}
+
+void ShowHighscores::showURL(const QString &url) const
+{
+    KFileOpenWithHandler foo;
+    (void)new KRun(KURL(url));
 }
 
 QString ShowHighscores::itemText(const ItemBase *item, uint row) const
@@ -509,6 +563,12 @@ HighscoresOption::HighscoresOption(KDialogBase *dialog)
     _nickname = new QLineEdit((pi.isAnonymous() ? QString::null : pi.name()),
                               grid);
     _nickname->setMaxLength(16);
+    QString name = pi.registeredName();
+    if ( !pi.key().isEmpty() && !name.isEmpty() ) {
+        (void)new QLabel(i18n("Registered nickname :"), grid);
+        (void)new QLabel(name, grid);
+    }
+
     label = new QLabel(i18n("Comment"), grid);
     _comment = new QLineEdit(pi.comment(), grid);
     _comment->setMaxLength(50);

@@ -17,7 +17,7 @@ enum MouseButton { Left = 0, Mid, Right };
 struct LevelData {
 	uint        width, height, nbMines;
     Level       level;
-    const char *label;
+    const char *label, *wwLabel, *i18nLabel;
 };
 extern const LevelData LEVELS[NbLevels];
 

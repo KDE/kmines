@@ -6,9 +6,12 @@
 #include <qpushbutton.h>
 #include <qpainter.h>
 #include <qpixmap.h>
+
 #include <krandomsequence.h>
+
 #include "defines.h"
 #include "dialogs.h"
+
 
 /* mines field widget */
 class Field : public QFrame

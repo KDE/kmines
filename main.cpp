@@ -20,28 +20,22 @@
 #include "status.h"
 
 MainWidget::MainWidget()
-: KMainWindow(0), levelAction(NbLevels+1)
+    : KMainWindow(0), levelAction(NbLevels+1)
 {
 	installEventFilter(this);
 
 	status = new Status(this);
 	status->installEventFilter(this);
-	connect(status, SIGNAL(keyboardEnabled(bool)),
-			SLOT(setKeyboardEnabled(bool)));
 	connect(status, SIGNAL(gameStateChanged(GameState)),
 			SLOT(gameStateChanged(GameState)));
-	connect(status, SIGNAL(message(const QString &)),
-			statusBar(), SLOT(message(const QString &)));
 
 	// Game & Popup
 	KStdGameAction::gameNew(status, SLOT(restartGame()), actionCollection());
     KStdGameAction::pause(status, SLOT(pauseGame()), actionCollection());
-    KListAction *la = new KListAction(i18n("Show Highscores"), 0, 0, 0,
-                                      actionCollection(), "highscores");
+    KListAction *la = new KListAction(i18n("Show highscores"), 0, 0, 0,
+                                      actionCollection(), "game_highscores");
     QStringList list;
-    list.append("Easy");
-    list.append("Normal");
-    list.append("Expert");
+    for (uint i=0; i<NbLevels; i++) list.append(i18n(LEVELS[i].i18nLabel));
     la->setItems(list);
     connect(la, SIGNAL(activated(int)), status, SLOT(showHighscores(int)));
 
@@ -62,13 +56,13 @@ MainWidget::MainWidget()
 	keyAction[3] = new KAction(i18n("Move right"), Key_Right,
 							   status, SLOT(moveRight()),
 							   actionCollection(), "keyboard_moveright");
-	keyAction[4] = new KAction(i18n("Reveal mine"), Key_Shift,
+	keyAction[4] = new KAction(i18n("Reveal mine"), Key_Space,
 							   status, SLOT(reveal()),
 							   actionCollection(), "keyboard_revealmine");
-	keyAction[5] = new KAction(i18n("Mark mine"), Key_Space,
+	keyAction[5] = new KAction(i18n("Mark mine"), Key_Tab,
 							   status, SLOT(mark()),
 							   actionCollection(), "keyboard_markmine");
-	keyAction[6] = new KAction(i18n("Automatic reveal"), Key_Control,
+	keyAction[6] = new KAction(i18n("Automatic reveal"), Key_Shift,
 							   status, SLOT(autoReveal()),
 							   actionCollection(), "keyboard_autoreveal");
 	KAccel *kacc = new KAccel(this);
@@ -79,18 +73,22 @@ MainWidget::MainWidget()
 
 	// Settings
 	KStdAction::showMenubar(this, SLOT(toggleMenubar()), actionCollection());
-	KStdAction::preferences(status, SLOT(preferences()), actionCollection());
+	KStdAction::preferences(this, SLOT(configureSettings()),
+                            actionCollection());
 	KStdAction::keyBindings(this, SLOT(configureKeys()), actionCollection());
 
 	// Levels
 	levelAction[Easy]
-		= new KRadioAction(i18n("Easy"), 0, this, SLOT(easyLevel()),
+		= new KRadioAction(i18n(LEVELS[Easy].i18nLabel), 0,
+                           this, SLOT(easyLevel()),
 						   actionCollection(), "level_easy");
 	levelAction[Normal]
-		= new KRadioAction(i18n("Normal"), 0, this, SLOT(normalLevel()),
+		= new KRadioAction(i18n(LEVELS[Normal].i18nLabel), 0,
+                           this, SLOT(normalLevel()),
 						   actionCollection(), "level_normal");
 	levelAction[Expert]
-		= new KRadioAction(i18n("Expert"), 0, this, SLOT(expertLevel()),
+		= new KRadioAction(i18n(LEVELS[Expert].i18nLabel), 0,
+                           this, SLOT(expertLevel()),
 						   actionCollection(), "level_expert");
 	levelAction[Custom]
 		= new KRadioAction(i18n("Custom mine field ..."), 0,
@@ -98,9 +96,6 @@ MainWidget::MainWidget()
 						   actionCollection(), "level_custom");
 	for (uint i=0; i<levelAction.size(); i++)
 		levelAction[i]->setExclusiveGroup("level");
-
-	// status bar
-	QWhatsThis::add(statusBar(), i18n("Game status"));
 
 	createGUI();
 	readSettings();
@@ -122,7 +117,7 @@ void MainWidget::readSettings()
 	MENUBAR_ACTION->setChecked(visible);
 	toggleMenubar();
 
-	setKeyboardEnabled( OptionDialog::readKeyboard() );
+    settingsChanged();
 }
 
 void MainWidget::changeLevel(Level level)
@@ -163,6 +158,13 @@ bool MainWidget::eventFilter(QObject *, QEvent *e)
 	}
 }
 
+void MainWidget::focusOutEvent(QFocusEvent *e)
+{
+    if ( pauseFocus && e->reason()==QFocusEvent::ActiveWindow
+         && !status->isPaused() ) status->pauseGame();
+    KMainWindow::focusOutEvent(e);
+}
+
 void MainWidget::toggleMenubar()
 {
 	bool b = MENUBAR_ACTION->isChecked();
@@ -171,12 +173,24 @@ void MainWidget::toggleMenubar()
 	OptionDialog::writeMenuVisible(b);
 }
 
-void MainWidget::setKeyboardEnabled(bool enable)
+void MainWidget::configureSettings()
 {
+	OptionDialog od(this);
+	if ( !od.exec() ) return;
+    settingsChanged();
+}
+
+void MainWidget::settingsChanged()
+{
+    bool enabled = OptionDialog::readKeyboard();
 	QValueList<KAction *> list = actionCollection()->actions("keyboard_group");
 	QValueList<KAction *>::Iterator it;
 	for (it = list.begin(); it!=list.end(); ++it)
-		(*it)->setEnabled(enable);
+		(*it)->setEnabled(enabled);
+
+    pauseFocus = OptionDialog::readPauseFocus();
+
+    status->settingsChanged();
 }
 
 void MainWidget::configureKeys()
@@ -196,6 +210,7 @@ void MainWidget::gameStateChanged(GameState s)
 	case Playing:
 		PAUSE_ACTION->setText(i18n("&Pause"));
 		PAUSE_ACTION->setEnabled(true);
+        setFocus();
 		break;
 	}
 }

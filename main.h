@@ -22,18 +22,21 @@ class MainWidget : public KMainWindow
 	void customLevel()          { changeLevel(Custom); }
 	void toggleMenubar();
     void configureKeys();
-	void setKeyboardEnabled(bool);
+    void configureSettings();
 	void gameStateChanged(GameState);
 
  protected:
 	bool eventFilter(QObject *, QEvent *);
+    void focusOutEvent(QFocusEvent *);
 
  private:
 	QArray<KRadioAction *>   levelAction;
 	Status                  *status;
+    bool                     pauseFocus;
 
 	void readSettings();
 	void changeLevel(Level);
+    void settingsChanged();
 };
 
 #endif // MAIN_H

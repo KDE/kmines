@@ -59,7 +59,7 @@ class ExtPlayerItemBestScore : public PlayerItemBestScore
 
 ExtPlayerInfos::ExtPlayerInfos(Level level)
     : PlayerInfos(LEVELS[level].label, new ExtPlayerItemBestScore,
-                  new ExtPlayerItemMeanScore)
+                  new ExtPlayerItemMeanScore), _level(level)
 {
     if ( !_newPlayer ) return;
 
@@ -67,6 +67,28 @@ ExtPlayerInfos::ExtPlayerInfos(Level level)
     convertLegacy(Easy, "Easy level");
     convertLegacy(Normal, "Normal level");
     convertLegacy(Expert, "Expert level");
+}
+
+QString ExtPlayerInfos::highscoresURL() const
+{
+    KURL url = URL(Highscores, registeredName());
+    addToURL(url, "level", LEVELS[_level].wwLabel);
+    return url.url();
+}
+
+QString ExtPlayerInfos::showHighscoresCaption() const
+{
+    return i18n("Highscores : %1").arg(i18n(LEVELS[_level].i18nLabel));
+}
+
+void ExtPlayerInfos::additionnalQueries(KURL &url, QueryType type) const
+{
+    switch (type) {
+        case Submit:
+            addToURL(url, "level", LEVELS[_level].wwLabel);
+            break;
+        default: break;
+    }
 }
 
 void ExtPlayerInfos::convertLegacy(Level level, const QString &group) const

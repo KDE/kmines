@@ -104,6 +104,7 @@ class OptionDialog : public KDialogBase
     static uint readCaseSize();
     static bool readUMark();
     static bool readKeyboard();
+    static bool readPauseFocus();
     static MouseAction readMouseBinding(MouseButton);
 
     static QColor readColor(const QString & key, QColor defaultColor);
@@ -120,7 +121,7 @@ class OptionDialog : public KDialogBase
 
  private:
     KIntNumInput *_caseSize;
-	QCheckBox    *_umark, *_keyb;
+	QCheckBox    *_umark, *_keyb, *_focus;
 	QComboBox    *_cb[3];
 
     KColorButton *_flag, *_explosion, *_error;

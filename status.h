@@ -21,10 +21,10 @@ class Status : public QWidget
 
 	void newGame(const LevelData &);
 	const LevelData &currentLevel() const { return field->level(); }
+    bool isPaused() const                 { return field->isPaused(); }
+    void settingsChanged()                { field->readSettings(); }
 
  signals:
-	void keyboardEnabled(bool);
-	void message(const QString &);
 	void gameStateChanged(GameState);
 
  public slots:
@@ -35,8 +35,6 @@ class Status : public QWidget
 	void showHighscores(int);
 	void pauseGame()      { field->pause(); }
 	void print();
-	void preferences();
-	void setGameState(GameState);
 
 	void moveUp()     { field->up(); }
 	void moveDown()   { field->down(); }

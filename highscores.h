@@ -20,6 +20,11 @@ class ExtPlayerInfos : public PlayerInfos
     ExtPlayerInfos(Level);
 
  private:
+    Level _level;
+
+    QString highscoresURL() const;
+    QString showHighscoresCaption() const;
+    void additionnalQueries(KURL &, QueryType) const;
     void convertLegacy(Level, const QString &group) const;
 };
 

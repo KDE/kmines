@@ -3,11 +3,11 @@
 
 #include <math.h>
 
-#include <qlayout.h>
 #include <qbitmap.h>
-#include <qapplication.h>
+#include <qlayout.h>
 
 #include <klocale.h>
+
 
 Field::Field(QWidget *parent, const char *name)
 : QFrame(parent, name), lev(LEVELS[0]), random(0), state(Stopped),
@@ -17,13 +17,16 @@ Field::Field(QWidget *parent, const char *name)
 	setLineWidth(2);
 	setMidLineWidth(2);
 
-	QVBoxLayout *top = new QVBoxLayout(this, 0);
-	top->addStretch(1);
-	pb = new QPushButton(i18n("Press to resume"), this);
-	pb->hide();
-	top->addWidget(pb, 0, AlignCenter);
-	connect(pb, SIGNAL(clicked()), this, SLOT(resume()));
-	top->addStretch(1);
+    QVBoxLayout *top = new QVBoxLayout(this);
+    top->addStretch(1);
+    QFont f = font();
+    f.setBold(true);
+    pb = new QPushButton(i18n("Press to resume"), this);
+    pb->setFont(f);
+    top->addWidget(pb, 0, AlignCenter);
+    connect(pb, SIGNAL(clicked()), this, SLOT(resume()));
+    pb->hide();
+    top->addStretch(1);
 
 	dummy = new QPushButton(0);
 
@@ -385,13 +388,13 @@ void Field::pressClearFunction(uint i, uint j, bool pressed)
 
 void Field::keyboardAutoReveal()
 {
-	pressClearFunction(ic, jc, false);
+	pressClearFunction(ic, jc, true);
 	QTimer::singleShot(50, this, SLOT(keyboardAutoRevealSlot()));
 }
 
 void Field::keyboardAutoRevealSlot()
 {
-	pressClearFunction(ic, jc, true);
+	pressClearFunction(ic, jc, false);
 	autoReveal();
 }
 
@@ -462,11 +465,8 @@ void Field::pause()
 	if ( state==Paused ) resume();
 	else {
 		emit freezeTimer();
-		QFont f = QApplication::font();
-		f.setBold(true);
-		pb->setFont(f);
-		pb->show();
-		pb->setFocus();
+        pb->show();
+        pb->setFocus();
 		state = Paused;
 		emit gameStateChanged(Paused);
 		update();
@@ -477,7 +477,7 @@ void Field::resume()
 {
 	state = Playing;
 	emit gameStateChanged(Playing);
-	pb->hide();
+    pb->hide();
 	emit startTimer();
 	update();
 }

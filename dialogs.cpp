@@ -169,6 +169,7 @@ const char *OP_GRP = "Options";
 const char *OP_UMARK             = "? mark";
 const char *OP_CASE_SIZE         = "case size";
 const char *OP_KEYBOARD          = "keyboard game";
+const char *OP_PAUSE_FOCUS       = "paused if lose focus";
 const char *OP_MOUSE_BINDINGS[3] =
     { "mouse left", "mouse mid", "mouse right" };
 
@@ -217,6 +218,10 @@ OptionDialog::OptionDialog(QWidget *parent)
 	_keyb = new QCheckBox(i18n("Enable keyboard"), page);
 	_keyb->setChecked(readKeyboard());
 	top->addWidget(_keyb);
+
+    _focus = new QCheckBox(i18n("Pause if window lose focus"), page);
+	_focus->setChecked(readPauseFocus());
+	top->addWidget(_focus);
 	top->addSpacing(10);
 
 	QVGroupBox *gb = new QVGroupBox(i18n("Mouse bindings"), page);
@@ -289,6 +294,7 @@ void OptionDialog::accept()
 	conf->writeEntry(OP_CASE_SIZE, _caseSize->value());
 	conf->writeEntry(OP_UMARK, _umark->isChecked());
 	conf->writeEntry(OP_KEYBOARD, _keyb->isChecked());
+    conf->writeEntry(OP_PAUSE_FOCUS, _focus->isChecked());
 	for (uint i=0; i<3; i++)
 		conf->writeEntry(OP_MOUSE_BINDINGS[i], _cb[i]->currentItem());
 
@@ -376,6 +382,11 @@ bool OptionDialog::readUMark()
 bool OptionDialog::readKeyboard()
 {
 	return config()->readBoolEntry(OP_KEYBOARD, false);
+}
+
+bool OptionDialog::readPauseFocus()
+{
+	return config()->readBoolEntry(OP_PAUSE_FOCUS, true);
 }
 
 MouseAction OptionDialog::readMouseBinding(MouseButton mb)
