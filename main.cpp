@@ -159,7 +159,7 @@ void MainWidget::showAboutApplication()
 int main( int argc, char ** argv )
 {
     KAboutData aboutData( "kmines", I18N_NOOP("KMines"), 
-        VERSION, description, KAboutData::GPL, 
+        VERSION, description, KAboutData::License_GPL, 
         "(c) 1996-1999, Nicolas Hadacek");
     aboutData.addAuthor("Nicolas Hadacek",0, "hadacek@kde.org");
     KCmdLineArgs::init( argc, argv, &aboutData );
