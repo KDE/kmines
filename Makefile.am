@@ -3,7 +3,7 @@ INCLUDES = -I$(top_srcdir)/libkdegames -I$(top_srcdir)/kmines/generic $(all_incl
 
 bin_PROGRAMS       = kmines
 kmines_LDFLAGS     = $(all_libraries) $(KDE_RPATH)
-kmines_LDADD       = ./generic/libkdehighscores.la -lkdeprint
+kmines_LDADD       = ./generic/libkdehighscores.la
 kmines_SOURCES     = defines.cpp highscores.cpp \
                      dialogs.cpp field.cpp status.cpp main.cpp
 kmines_METASOURCES = dialogs.moc field.moc status.moc main.moc

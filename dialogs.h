@@ -44,6 +44,7 @@ class DigitalClock : public LCDClock
 
  public slots:
     void incActions() { _nbActions++; }
+    void start();
 
  private slots:
     void timeoutClock();

@@ -58,8 +58,8 @@ class LCDClock : public LCD
     uint time() const;
 
  public slots:
-	void stop();
-	void start();
+	virtual void stop();
+	virtual void start();
 
  protected slots:
     virtual void timeoutClock();

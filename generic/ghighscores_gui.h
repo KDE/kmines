@@ -60,10 +60,13 @@ class ScoresList : public KListView
     ScoresList(QWidget *parent);
 
  protected:
-    // index==-1 : header
-    void addLine(const ItemArray &, int index, bool highlight);
+    void addHeader(const ItemArray &);
+    QListViewItem *addLine(const ItemArray &, uint index, bool highlight);
     virtual QString itemText(const ItemContainer &, uint row) const = 0;
     virtual bool showColumn(const ItemContainer &) const { return true; }
+
+ private:
+    void addLine(const ItemArray &, uint index, QListViewItem *item);
 };
 
 //-----------------------------------------------------------------------------
@@ -81,8 +84,8 @@ class HighscoresWidget : public QWidget
 {
  Q_OBJECT
  public:
-    HighscoresWidget(int localRank, QWidget *parent, int spacingHint,
-                     const QString &typeLabel);
+    HighscoresWidget(int localRank, QWidget *parent,
+                     const QString &playersURL, const QString &scoresURL);
 
  private slots:
     void showURL(const QString &) const;

@@ -110,7 +110,7 @@ void MainWidget::readSettings()
 
 void MainWidget::showHighscores()
 {
-    kHighscores->showHighscores(this);
+    KExtHighscores::showHighscores(this);
 }
 
 bool MainWidget::eventFilter(QObject *, QEvent *e)
@@ -140,7 +140,7 @@ void MainWidget::configureSettings()
     KSettingDialog d(this);
     d.append(new GameSettings);
     d.append(new AppearanceSettings);
-    d.append( kHighscores->createSettingsWidget(this) );
+    d.append( KExtHighscores::createSettingsWidget(this) );
     d.append(new CustomSettings);
     connect(&d, SIGNAL(settingsSaved()), SLOT(settingsChanged()));
     d.exec();

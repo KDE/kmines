@@ -96,8 +96,8 @@ void Status::initGame()
     KExtHighscores::Score first(KExtHighscores::Won);
     KExtHighscores::Score last(KExtHighscores::Won);
 	if ( field->level().type()!=Level::Custom ) {
-        first = kHighscores->firstScore();
-        last = kHighscores->lastScore();
+        first = KExtHighscores::firstScore();
+        last = KExtHighscores::lastScore();
     }
 	dg->reset(first, last);
 }
@@ -118,7 +118,7 @@ void Status::newGame(int t)
 {
     Level::Type type = (Level::Type)t;
     if ( type!=Level::Custom ) {
-        kHighscores->setGameType(type);
+        KExtHighscores::setGameType(type);
         field->setLevel(Level(type));
     } else field->setLevel(CustomSettings::readLevel());
 
@@ -172,7 +172,7 @@ void Status::_endGame(bool won)
     smiley->setMood(won ? Smiley::Happy : Smiley::Sad);
 
     if ( field->level().type()==Level::Custom || !won ) return;
-    kHighscores->submitScore(dg->score(), this);
+    KExtHighscores::submitScore(dg->score(), this);
 }
 
 void Status::gameStateChangedSlot(GameState state)

@@ -35,6 +35,7 @@ namespace KExtHighscores
 
 class PlayerInfos;
 class Score;
+class Highscores;
 
 //-----------------------------------------------------------------------------
 class RankItem : public Item
@@ -197,37 +198,44 @@ class HighscoresPrivate
 {
  public:
     HighscoresPrivate(const QString &version, const KURL &url,
-                      uint maxNbentries, bool trackLostGames,
-                      bool trackBlackMarks);
+                      uint nbGameTypes, uint maxNbentries, bool trackLostGames,
+                      bool trackBlackMarks, Highscores *highscores);
     ~HighscoresPrivate();
-
-    enum QueryType { Submit, Register, Change, Players, Scores };
-    static KURL queryURL(QueryType type, const QString &nickname);
-    static void addToQueryURL(KURL &url, const QString &item,
-                              const QString &content);
-    static QDomNamedNodeMap doQuery(const KURL &url, QWidget *parent,
-                                    bool &ok);
-    static bool getFromQuery(const QDomNamedNodeMap &map, const QString &name,
-                             QString &value, QWidget *parent);
 
     static bool modifySettings(const QString &newName, const QString &comment,
                                bool WWEnabled, QWidget *parent);
-    static KURL highscoresURL(const QString &typeLabel);
-    static KURL playersURL();
 
-    // return -1 if not a local best score
-    static int rank(const Score &score);
+    static void setGameType(uint type);
+    static void checkFirst();
+    static void showHighscores(QWidget *parent, int rank);
+    static int submitLocal(const Score &score);
+    static void submitScore(const Score &score, QWidget *parent);
 
-    static bool isWWHSAvailable() { return !_baseURL->isEmpty(); }
-    static QString version() { return *_version; }
-    static ScoreInfos &scoreInfos() { return *_scoreInfos; }
+    static bool isWWHSAvailable()     { return !_baseURL->isEmpty(); }
+    static ScoreInfos &scoreInfos()   { return *_scoreInfos; }
     static PlayerInfos &playerInfos() { return *_playerInfos; }
+    static Highscores &highscores()   { return *_highscores; }
 
  private:
     static PlayerInfos *_playerInfos;
     static ScoreInfos  *_scoreInfos;
     static KURL        *_baseURL;
     static QString     *_version;
+    static bool         _first;
+    static uint         _nbGameTypes;
+    static uint         _gameType;
+    static Highscores  *_highscores;
+
+    enum QueryType { Submit, Register, Change, Players, Scores };
+    static KURL queryURL(QueryType type,
+                         const QString &newName = QString::null);
+    // return -1 if not a local best score
+    static int rank(const Score &score);
+    static bool submitWorldWide(const Score &score, QWidget *parent);
+    static bool doQuery(const KURL &url, QWidget *parent,
+                        QDomNamedNodeMap *map = 0);
+    static bool getFromQuery(const QDomNamedNodeMap &map, const QString &name,
+                             QString &value, QWidget *parent);
 };
 
 }; // namespace

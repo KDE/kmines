@@ -19,9 +19,9 @@
 
 #include "ghighscores_item.h"
 
-#include <khighscore.h>
 #include <kglobal.h>
 
+#include "khighscore.h"
 #include "ghighscores_internal.h"
 #include "ghighscores.h"
 
@@ -227,7 +227,7 @@ Score::~Score()
 
 bool Score::operator <(const Score &score) const
 {
-    return kHighscores->isStrictlyLess(*this, score);
+    return HighscoresPrivate::highscores().isStrictlyLess(*this, score);
 }
 
 QDataStream &operator <<(QDataStream &s, const Score &score)

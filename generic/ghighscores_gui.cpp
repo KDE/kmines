@@ -65,19 +65,33 @@ ScoresList::ScoresList(QWidget *parent)
     header()->setMovingEnabled(false);
 }
 
-void ScoresList::addLine(const ItemArray &items, int index, bool highlight)
+void ScoresList::addHeader(const ItemArray &items)
 {
-    QListViewItem *line = (index==-1 ? 0 : new ShowItem(this, highlight));
-    int k = -1;
+    addLine(items, 0, (QListViewItem *)0);
+}
+
+QListViewItem *ScoresList::addLine(const ItemArray &items, uint index,
+                                   bool highlight)
+{
+    QListViewItem *item = new ShowItem(this, highlight);
+    addLine(items, index, item);
+    return item;
+}
+
+void ScoresList::addLine(const ItemArray &items, uint index,
+                         QListViewItem *line)
+{
+    uint k = 0;
     for (uint i=0; i<items.size(); i++) {
-        const ItemContainer &item = *items[i];
-        if ( !item.item()->isVisible() || !showColumn(item) ) continue;
-        k++;
-        if (line) line->setText(k, itemText(item, index));
+        const ItemContainer &container = *items[i];
+        if ( !container.item()->isVisible() || !showColumn(container) )
+            continue;
+        if (line) line->setText(k, itemText(container, index));
         else {
-            addColumn( item.item()->label() );
-            setColumnAlignment(k, item.item()->alignment());
+            addColumn( container.item()->label() );
+            setColumnAlignment(k, container.item()->alignment());
         }
+        k++;
     }
 }
 
@@ -86,9 +100,15 @@ HighscoresList::HighscoresList(const ItemArray &array, int highlight,
                                QWidget *parent)
     : ScoresList(parent)
 {
+    addHeader(array);
+
     uint nb = array.nbEntries();
-    for (int j=nb; j>=0; j--)
-        addLine(array, (j==(int)nb ? -1 : j), j==highlight);
+    QListViewItem *line = 0;
+    for (int j=nb-1; j>=0; j--) {
+        QListViewItem *item = addLine(array, j, j==highlight);
+        if ( j==highlight ) line = item;
+    }
+    if (line) ensureItemVisible(line);
 }
 
 QString HighscoresList::itemText(const ItemContainer &item, uint row) const
@@ -98,13 +118,13 @@ QString HighscoresList::itemText(const ItemContainer &item, uint row) const
 
 //-----------------------------------------------------------------------------
 HighscoresWidget::HighscoresWidget(int localRank, QWidget *parent,
-                                   int spacingHint, const QString &typeLabel)
+                       const QString &playersURL, const QString &scoresURL)
     : QWidget(parent, "show_highscores_widget")
 {
     const ScoreInfos &s = HighscoresPrivate::scoreInfos();
     const PlayerInfos &p = HighscoresPrivate::playerInfos();
 
-    QVBoxLayout *vbox = new QVBoxLayout(this, spacingHint);
+    QVBoxLayout *vbox = new QVBoxLayout(this, KDialogBase::spacingHint());
 
     QTabWidget *tw = new QTabWidget(this);
     vbox->addWidget(tw);
@@ -122,14 +142,13 @@ HighscoresWidget::HighscoresWidget(int localRank, QWidget *parent,
 
     if ( HighscoresPrivate::isWWHSAvailable() ) {
         KURLLabel *urlLabel =
-            new KURLLabel(HighscoresPrivate::highscoresURL(typeLabel).url(),
-                          i18n("View world-wide highscores"), this);
+            new KURLLabel(scoresURL, i18n("View world-wide highscores"), this);
         connect(urlLabel, SIGNAL(leftClickedURL(const QString &)),
                 SLOT(showURL(const QString &)));
         vbox->addWidget(urlLabel);
 
-        urlLabel = new KURLLabel(HighscoresPrivate::playersURL().url(),
-                                 i18n("View world-wide players"), this);
+        urlLabel =
+            new KURLLabel(playersURL, i18n("View world-wide players"), this);
         connect(urlLabel, SIGNAL(leftClickedURL(const QString &)),
                 SLOT(showURL(const QString &)));
         vbox->addWidget(urlLabel);
@@ -150,7 +169,7 @@ MultipleScoresList::MultipleScoresList(const QValueList<Score> &scores,
     Q_ASSERT( scores.size()!=0 );
 
     const ItemArray &items = scores[0].items();
-    addLine(items, -1, false);
+    addHeader(items);
     for (uint i=0; i<scores.size(); i++) addLine(items, i, false);
 }
 

@@ -55,6 +55,12 @@ void DigitalClock::timeoutClock()
     else setColor(white);
 }
 
+void DigitalClock::start()
+{
+    LCDClock::start();
+    setColor(red);
+}
+
 void DigitalClock::reset(const KExtHighscores::Score &first,
                          const KExtHighscores::Score &last)
 {
