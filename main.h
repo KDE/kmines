@@ -8,7 +8,7 @@
 
 class Status;
 
-class MainWidget : public KMainWindow
+class MainWidget : public KMainWindow, public KMines
 {
   Q_OBJECT
 
@@ -31,14 +31,14 @@ class MainWidget : public KMainWindow
     void focusOutEvent(QFocusEvent *);
 
  private:
-	QMemArray<KRadioAction *>   levelAction;
-	Status                  *status;
-    bool                     pauseFocus;
-    KSelectAction           *hs;
+	QMemArray<KRadioAction *>  levelAction;
+	Status                    *status;
+    bool                       pauseFocus;
+    KSelectAction             *hs;
 
 	void readSettings();
 	void changeLevel(Level);
     void settingsChanged();
 };
 
-#endif // MAIN_H
+#endif

@@ -72,7 +72,7 @@ class DigitalClock : public LCDNumber
 };
 
 //-----------------------------------------------------------------------------
-class CustomDialog : public KDialogBase
+class CustomDialog : public KDialogBase, public KMines
 {
  Q_OBJECT
 
@@ -94,7 +94,7 @@ class CustomDialog : public KDialogBase
 };
 
 //-----------------------------------------------------------------------------
-class OptionDialog : public KDialogBase
+class OptionDialog : public KDialogBase, public KMines
 {
  Q_OBJECT
 

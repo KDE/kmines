@@ -13,7 +13,7 @@
 class DigitalClock;
 class LCDNumber;
 
-class Status : public QWidget
+class Status : public QWidget, public KMines
 {
  Q_OBJECT
  public :

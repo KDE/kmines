@@ -3,30 +3,35 @@
 
 #include <qcolor.h>
 
-enum CaseState { Covered, Uncovered, Uncertain, Marked, Exploded, Error };
-struct Case {
-	bool      mine;
-	CaseState state;
-};
 
-enum Level       { Easy = 0, Normal, Expert, NbLevels, Custom = NbLevels };
-enum GameState   { Stopped, Playing, Paused };
-enum MouseAction { Reveal = 0, AutoReveal, Mark, UMark, None };
-enum MouseButton { Left = 0, Mid, Right };
+class KMines
+{
+ public:
+    enum CaseState { Covered, Uncovered, Uncertain, Marked, Exploded, Error };
+    struct Case {
+        bool      mine;
+        CaseState state;
+    };
 
-struct LevelData {
-	uint        width, height, nbMines;
-    Level       level;
-    const char *label, *wwLabel, *i18nLabel;
-};
-extern const LevelData LEVELS[NbLevels];
+    enum Level       { Easy = 0, Normal, Expert, NbLevels, Custom = NbLevels };
+    enum GameState   { Stopped, Playing, Paused };
+    enum MouseAction { Reveal = 0, AutoReveal, Mark, UMark, None };
+    enum MouseButton { Left = 0, Mid, Right };
+
+    struct LevelData {
+        uint        width, height, nbMines;
+        Level       level;
+        const char *label, *wwLabel, *i18nLabel;
+    };
 
 #define NB_NUMBER_COLORS 8
+    struct CaseProperties {
+        uint size;
+        QColor numberColors[NB_NUMBER_COLORS];
+        QColor flagColor, explosionColor, errorColor;
+    };
 
-struct CaseProperties {
-	uint size;
-	QColor numberColors[NB_NUMBER_COLORS];
-	QColor flagColor, explosionColor, errorColor;
+    static const LevelData LEVELS[NbLevels];
 };
 
 #define NB_HS_ENTRIES 10

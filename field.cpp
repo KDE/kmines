@@ -30,14 +30,7 @@ Field::Field(QWidget *parent, const char *name)
     pb->hide();
     top->addStretch(1);
 
-	dummy = new QPushButton(0);
-
 	readSettings();
-}
-
-Field::~Field()
-{
-	delete dummy;
 }
 
 void Field::readSettings()
@@ -52,7 +45,6 @@ void Field::readSettings()
 void Field::setCaseProperties(const CaseProperties &_cp)
 {
 	cp = _cp;
-	dummy->resize(cp.size, cp.size);
 
 	QBitmap mask;
 
@@ -142,12 +134,12 @@ QSizePolicy Field::sizePolicy() const
 	return QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 }
 
-const Case &Field::pfield(uint i, uint j) const
+const KMines::Case &Field::pfield(uint i, uint j) const
 {
 	return _pfield[i + j*(lev.width+2)];
 }
 
-Case &Field::pfield(uint i, uint j)
+KMines::Case &Field::pfield(uint i, uint j)
 {
 	return _pfield[i + j*(lev.width+2)];
 }
@@ -275,12 +267,12 @@ bool Field::inside(int i, int j) const
 	return ( i>=1 && i<=(int)lev.width && j>=1 && j<=(int)lev.height);
 }
 
-MouseAction Field::mapMouseButton(QMouseEvent *e) const
+KMines::MouseAction Field::mapMouseButton(QMouseEvent *e) const
 {
 	switch (e->button()) {
-	case LeftButton:  return mb[Left];
-	case MidButton:   return mb[Mid];
-	case RightButton: return mb[Right];
+	case LeftButton:  return mb[KMines::Left];
+	case MidButton:   return mb[KMines::Mid];
+	case RightButton: return mb[KMines::Right];
 	default:          return Mark;
 	}
 }
@@ -581,23 +573,25 @@ void Field::drawBox(uint i, uint j, bool pressed,
 	int y = jToY(j);
 
 	// draw button
-	p.translate(x, y);
-	dummy->setDown(pressed);
+    int s = QStyle::Style_Enabled;
+    if (pressed) s |= QStyle::Style_Down;
+    style().drawPrimitive(QStyle::PE_ButtonCommand, &p,
+                          QRect(x, y, cp.size, cp.size),
+                          colorGroup(), s);
 
-#warning ### fixme
+    // draw text and pixmap
+    style().drawItem(&p, QRect(x, y, cp.size, cp.size),
+                     AlignCenter, colorGroup(), true,
+                     pixmap, text, -1, textColor);
 
-//	style().drawPushButton(dummy, &p); ###
-	p.resetXForm();
-
-	// draw text and pixmap
-//	style().drawItem(&p, x, y, cp.size, cp.size, AlignCenter, colorGroup(),
-//					 true, pixmap, text, -1, textColor); ###
-
-	// draw cursor
-	if ( cursor && i==ic && j==jc ) {
-//		QRect r = style().buttonRect(x+1, y+1, cp.size-2, cp.size-2);
-//		style().drawFocusRect(&p, r, colorGroup()); ###
-	}
+    // draw cursor
+    if ( cursor && i==ic && j==jc ) {
+        QPushButton dummy(0);
+        dummy.resize(cp.size, cp.size);
+        QRect r = style().subRect(QStyle::SR_PushButtonFocusRect, &dummy);
+        r.moveBy(x, y);
+        style().drawPrimitive(QStyle::PE_FocusRect, &p, r, colorGroup());
+    }
 }
 
 void Field::drawCase(uint i, uint j)

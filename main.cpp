@@ -59,7 +59,7 @@ MainWidget::MainWidget()
 	keyAction[4] = new KAction(i18n("Reveal mine"), Key_Space,
 							   status, SLOT(reveal()),
 							   actionCollection(), "keyboard_revealmine");
-	keyAction[5] = new KAction(i18n("Mark mine"), Key_Tab,
+	keyAction[5] = new KAction(i18n("Mark mine"), Key_Control,
 							   status, SLOT(mark()),
 							   actionCollection(), "keyboard_markmine");
 	keyAction[6] = new KAction(i18n("Automatic reveal"), Key_Shift,
@@ -236,7 +236,7 @@ int main(int argc, char **argv)
     KCmdLineArgs::init(argc, argv, &aboutData);
 
     KApplication a;
-    KGlobal::locale()->insertCatalogue("libkdegames");  
+    KGlobal::locale()->insertCatalogue("libkdegames");
     if ( a.isRestored() ) RESTORE(MainWidget)
     else {
         MainWidget *mw = new MainWidget;

@@ -15,19 +15,16 @@
 #include "dialogs.h"
 #include "highscores.h"
 
-#define BORDER   10
-#define SEP      10
 
 Status::Status(QWidget *parent, const char *name)
 : QWidget(parent, name)
 {
 // top layout
-	QVBoxLayout *top = new QVBoxLayout(this, BORDER);
-	top->setResizeMode( QLayout::Fixed );
+	QVBoxLayout *top = new QVBoxLayout(this, 10);
+	top->setResizeMode(QLayout::Fixed);
 
 // status bar
-	QHBoxLayout *hbl = new QHBoxLayout(SEP);
-	top->addLayout(hbl);
+	QHBoxLayout *hbl = new QHBoxLayout(top);
 
 	// mines left LCD
 	left = new LCDNumber(this);
@@ -59,6 +56,9 @@ Status::Status(QWidget *parent, const char *name)
 	hbl->addWidget(dg);
 
 // mines field
+    hbl = new QHBoxLayout(top);
+    hbl->addStretch(1);
+
 	field = new Field(this);
 	connect( field, SIGNAL(changeCase(CaseState, int)),
 			 SLOT(changeCase(CaseState, int)) );
@@ -70,8 +70,9 @@ Status::Status(QWidget *parent, const char *name)
 			 smiley, SLOT(setMood(Smiley::Mood)) );
 	connect(field, SIGNAL(gameStateChanged(GameState)),
 			SIGNAL(gameStateChanged(GameState)) );
-	QWhatsThis::add(field, i18n("Mines field."));
-	top->addWidget(field);
+	QWhatsThis::add(field, i18n("Mis field."));
+	hbl->addWidget(field);
+    hbl->addStretch(1);
 }
 
 void Status::initGame()

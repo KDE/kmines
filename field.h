@@ -13,14 +13,12 @@
 #include "dialogs.h"
 
 
-/* mines field widget */
-class Field : public QFrame
+class Field : public QFrame, public KMines
 {
  Q_OBJECT
 
  public:
     Field(QWidget *parent, const char *name=0);
-	virtual ~Field();
 
 	QSize sizeHint() const;
 	QSizePolicy sizePolicy() const;
@@ -66,7 +64,7 @@ class Field : public QFrame
     void keyboardAutoRevealSlot();
 
  private:
-	QMemArray<Case>    _pfield;
+	QMemArray<Case> _pfield;
 	LevelData       lev;
 	KRandomSequence random;
 
@@ -80,7 +78,7 @@ class Field : public QFrame
 
 	CaseProperties cp;
 	QPixmap        pm_flag, pm_mine, pm_exploded, pm_error;
-	QPushButton   *pb, *dummy;
+	QPushButton   *pb;
 
 	uint computeNeighbours(uint, uint) const;
 	void uncover(uint, uint);

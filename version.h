@@ -1,5 +1,5 @@
-#define VERSION	     "2.1.0"
-#define LONG_VERSION "2.1.0 (17 July 2001)"
+#define VERSION	     "2.1.1"
+#define LONG_VERSION "2.1.1 (08 September 2001)"
 #define COPYLEFT     "(c) 1996-2001, Nicolas Hadacek"
 #define EMAIL        "hadacek@kde.org"
 

@@ -229,11 +229,11 @@ OptionDialog::OptionDialog(QWidget *parent)
 	QGrid *grid = new QGrid(2, gb);
 	grid->setSpacing(10);
 	QLabel *lab = new QLabel(i18n("Left button"), grid);
-	_cb[Left] = new QComboBox(false, grid);
+	_cb[KMines::Left] = new QComboBox(false, grid);
 	lab = new QLabel(i18n("Mid button"), grid);
-	_cb[Mid] = new QComboBox(false, grid);
+	_cb[KMines::Mid] = new QComboBox(false, grid);
 	lab = new QLabel(i18n("Right button"), grid);
-	_cb[Right] = new QComboBox(false, grid);
+	_cb[KMines::Right] = new QComboBox(false, grid);
 	top->addStretch(1);
 
 	for (uint i=0; i<3; i++) {
@@ -320,7 +320,7 @@ void OptionDialog::slotDefault()
 		_numbers[i]->setColor(DEFAULT_NUMBER_COLORS[i]);
 }
 
-LevelData OptionDialog::readLevel()
+KMines::LevelData OptionDialog::readLevel()
 {
 	LevelData l;
 	l.level = (Level)config()->readUnsignedNumEntry(OP_LEVEL, 0);
@@ -359,7 +359,7 @@ void OptionDialog::writeMenuVisible(bool visible)
 	config()->writeEntry(OP_MENUBAR, visible);
 }
 
-CaseProperties OptionDialog::readCaseProperties()
+KMines::CaseProperties OptionDialog::readCaseProperties()
 {
 	CaseProperties cp;
 	cp.size = readCaseSize();
@@ -389,7 +389,7 @@ bool OptionDialog::readPauseFocus()
 	return config()->readBoolEntry(OP_PAUSE_FOCUS, true);
 }
 
-MouseAction OptionDialog::readMouseBinding(MouseButton mb)
+KMines::MouseAction OptionDialog::readMouseBinding(MouseButton mb)
 {
 	MouseAction ma = (MouseAction)config()
                      ->readUnsignedNumEntry(OP_MOUSE_BINDINGS[mb], mb);

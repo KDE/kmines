@@ -1,5 +1,6 @@
 <!DOCTYPE kpartgui>
 <kpartgui name="kmines" version="5">
+
 <MenuBar>
   <Menu name="game"><text>&amp;Game</text>
     <Menu name="level" append="new_merge"><text>Choose &amp;level</text>
@@ -12,6 +13,7 @@
 	<Action name="level_custom"/>
   </Menu>
 </MenuBar>
+
 <Menu name="popup">
   <Action name="options_show_menubar"/>
   <Separator/>
@@ -29,6 +31,7 @@
   <Separator/>
   <Action name="game_quit"/>
 </Menu>
+
 <ToolBar name="mainToolBar" noMerge="1"><text>Main Toolbar</text>
 </ToolBar>
 

@@ -5,7 +5,7 @@
 #include "defines.h"
 
 //-----------------------------------------------------------------------------
-class ExtScore : public Score
+class ExtScore : public Score, public KMines
 {
  public:
     ExtScore(Level, uint score = 0);
@@ -14,7 +14,7 @@ class ExtScore : public Score
 };
 
 //-----------------------------------------------------------------------------
-class ExtPlayerInfos : public PlayerInfos
+class ExtPlayerInfos : public PlayerInfos, public KMines
 {
  public:
     ExtPlayerInfos(Level);
