@@ -20,9 +20,12 @@
 #ifndef G_HIGHSCORES_INTERNAL_H
 #define G_HIGHSCORES_INTERNAL_H
 
+#include <qdom.h>
+
 #include <kapplication.h>
 #include <kconfig.h>
 #include <klocale.h>
+#include <kurl.h>
 
 #include "ghighscores_item.h"
 
@@ -187,6 +190,44 @@ class PlayerInfos : public ItemArray
  private:
     bool _trackLostGames, _trackBlackMarks, _newPlayer;
     uint _id;
+};
+
+//-----------------------------------------------------------------------------
+class HighscoresPrivate
+{
+ public:
+    HighscoresPrivate(const QString &version, const KURL &url,
+                      uint maxNbentries, bool trackLostGames,
+                      bool trackBlackMarks);
+    ~HighscoresPrivate();
+
+    enum QueryType { Submit, Register, Change, Players, Scores };
+    static KURL queryURL(QueryType type, const QString &nickname);
+    static void addToQueryURL(KURL &url, const QString &item,
+                              const QString &content);
+    static QDomNamedNodeMap doQuery(const KURL &url, QWidget *parent,
+                                    bool &ok);
+    static bool getFromQuery(const QDomNamedNodeMap &map, const QString &name,
+                             QString &value, QWidget *parent);
+
+    static bool modifySettings(const QString &newName, const QString &comment,
+                               bool WWEnabled, QWidget *parent);
+    static KURL highscoresURL(const QString &typeLabel);
+    static KURL playersURL();
+
+    // return -1 if not a local best score
+    static int rank(const Score &score);
+
+    static bool isWWHSAvailable() { return !_baseURL->isEmpty(); }
+    static QString version() { return *_version; }
+    static ScoreInfos &scoreInfos() { return *_scoreInfos; }
+    static PlayerInfos &playerInfos() { return *_playerInfos; }
+
+ private:
+    static PlayerInfos *_playerInfos;
+    static ScoreInfos  *_scoreInfos;
+    static KURL        *_baseURL;
+    static QString     *_version;
 };
 
 }; // namespace

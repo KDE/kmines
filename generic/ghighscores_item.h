@@ -271,7 +271,7 @@ class Score : public DataArray
     uint score() const { return data("score").toUInt(); }
 
     /**
-     * Comparison operator. It uses @ref Highscores::isStrictlyWorse.
+     * Comparison operator. It uses @ref Highscores::isStrictlyLess.
      */
     bool operator <(const Score &score) const;
 

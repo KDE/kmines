@@ -219,7 +219,7 @@ QDataStream &operator >>(QDataStream &s, DataArray &array)
 
 //-----------------------------------------------------------------------------
 Score::Score(ScoreType type)
-    : DataArray(*kHighscores->scoreInfos()), _type(type)
+    : DataArray(HighscoresPrivate::scoreInfos()), _type(type)
 {}
 
 Score::~Score()
@@ -227,7 +227,7 @@ Score::~Score()
 
 bool Score::operator <(const Score &score) const
 {
-    return kHighscores->isStrictlyWorse(*this, score);
+    return kHighscores->isStrictlyLess(*this, score);
 }
 
 QDataStream &operator <<(QDataStream &s, const Score &score)

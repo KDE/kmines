@@ -19,8 +19,12 @@
 
 #include "ghighscores_internal.h"
 
+#include <qfile.h>
+
 #include <khighscore.h>
 #include <kglobal.h>
+#include <kio/netaccess.h>
+#include <kmessagebox.h>
 
 
 namespace KExtHighscores
@@ -300,5 +304,203 @@ QString PlayerInfos::registeredName() const
 }
 
 
+//-----------------------------------------------------------------------------
+KURL *HighscoresPrivate::_baseURL = 0;
+QString *HighscoresPrivate::_version = 0;
+PlayerInfos *HighscoresPrivate::_playerInfos = 0;
+ScoreInfos *HighscoresPrivate::_scoreInfos = 0;
+
+HighscoresPrivate::HighscoresPrivate(const QString &version, const KURL &burl,
+                                     uint maxNbEntries, bool trackLostGames,
+                                     bool trackBlackMarks)
+{
+    _baseURL = new KURL(burl);
+    _version = new QString(version);
+    _playerInfos = new PlayerInfos(trackLostGames, trackBlackMarks);
+    _scoreInfos = new ScoreInfos(maxNbEntries, *_playerInfos);
+}
+
+HighscoresPrivate::~HighscoresPrivate()
+{
+    delete _scoreInfos;
+    delete _playerInfos;
+    delete _baseURL;
+    delete _version;
+}
+
+KURL HighscoresPrivate::queryURL(QueryType type, const QString &nickname)
+{
+    KURL url = *_baseURL;
+	switch (type) {
+        case Submit:   url.addPath("submit.php");     break;
+        case Register: url.addPath("register.php");   break;
+        case Change:   url.addPath("change.php");     break;
+        case Players:  url.addPath("players.php");    break;
+        case Scores:   url.addPath("highscores.php"); break;
+	}
+    if ( !nickname.isEmpty() ) addToQueryURL(url, "nickname", nickname);
+    return url;
+}
+
+void HighscoresPrivate::addToQueryURL(KURL &url, const QString &item,
+                                      const QString &content)
+{
+    Q_ASSERT( !item.isEmpty() && url.queryItem(item).isNull() );
+
+    QString query = url.query();
+    if ( !query.isEmpty() ) query += '&';
+	query += item + '=' + KURL::encode_string(content);
+	url.setQuery(query);
+}
+
+// strings that needs to be translated (coming from the highscores server)
+const char *DUMMY_STRINGS[] = {
+    I18N_NOOP("Undefined error."),
+    I18N_NOOP("Missing argument(s)."),
+    I18N_NOOP("Invalid argument(s)."),
+
+    I18N_NOOP("Unable to connect to MySQL server."),
+    I18N_NOOP("Unable to select database."),
+    I18N_NOOP("Error on database query."),
+    I18N_NOOP("Error on database insert."),
+
+    I18N_NOOP("Nickname already registered."),
+    I18N_NOOP("Nickname not registered."),
+    I18N_NOOP("Invalid key."),
+    I18N_NOOP("Invalid submit key."),
+
+    I18N_NOOP("Invalid level."),
+    I18N_NOOP("Invalid score.")
+};
+
+QDomNamedNodeMap HighscoresPrivate::doQuery(const KURL &url, QWidget *parent,
+                                            bool &ok)
+{
+    ok = false;
+
+    QString tmpFile;
+    if ( !KIO::NetAccess::download(url, tmpFile) ) {
+        QString msg = i18n("Unable to contact world-wide highscore server");
+        QString details = i18n("Server URL: %1").arg(url.host());
+        KMessageBox::detailedSorry(parent, msg, details);
+        return QDomNamedNodeMap();
+    }
+
+	QFile file(tmpFile);
+	if ( !file.open(IO_ReadOnly) ) {
+        KIO::NetAccess::removeTempFile(tmpFile);
+        QString msg = i18n("Unable to contact world-wide highscore server.");
+        QString details = i18n("Unable to open temporary file.");
+        KMessageBox::detailedSorry(parent, msg, details);
+        return QDomNamedNodeMap();
+    }
+
+	QTextStream t(&file);
+	QString content = t.read().stripWhiteSpace();
+	file.close();
+    KIO::NetAccess::removeTempFile(tmpFile);
+
+	QDomDocument doc;
+    if ( doc.setContent(content) ) {
+        QDomElement root = doc.documentElement();
+        QDomElement element = root.firstChild().toElement();
+        if ( element.tagName()=="success" ) {
+            ok = true;
+            return element.attributes();
+        }
+        if ( element.tagName()=="error" ) {
+            QDomAttr attr = element.attributes().namedItem("label").toAttr();
+            if ( !attr.isNull() ) {
+                QString msg = i18n(attr.value().latin1());
+                QString caption = i18n("Message from world-wide highscores "
+                                       "server");
+                KMessageBox::sorry(parent, msg, caption);
+                return QDomNamedNodeMap();
+            }
+        }
+    }
+    QString msg = i18n("Invalid answer from world-wide highscores server.");
+    QString details = i18n("Raw message: %1").arg(content);
+    KMessageBox::detailedSorry(parent, msg, details);
+    return QDomNamedNodeMap();
+}
+
+bool HighscoresPrivate::getFromQuery(const QDomNamedNodeMap &map,
+                                     const QString &name, QString &value,
+                                     QWidget *parent)
+{
+    QDomAttr attr = map.namedItem(name).toAttr();
+    if ( attr.isNull() ) {
+	    KMessageBox::sorry(parent,
+               i18n("Invalid answer from world-wide "
+                    "highscores server (missing item: %1).").arg(name));
+		return false;
+	}
+	value = attr.value();
+	return true;
+}
+
+int HighscoresPrivate::rank(const Score &score)
+{
+    Score tmp(Won);
+    uint nb = _scoreInfos->nbEntries();
+    uint i = 0;
+	for (; i<nb; i++) {
+        tmp.read(i);
+		if ( tmp<score ) break;
+    }
+	return (i<_scoreInfos->maxNbEntries() ? (int)i : -1);
+}
+
+bool HighscoresPrivate::modifySettings(const QString &newName,
+                                       const QString &comment, bool WWEnabled,
+                                       QWidget *parent)
+{
+    if ( newName.isEmpty() ) {
+        KMessageBox::sorry(parent,i18n("Please choose a non empty nickname."));
+	    return false;
+	}
+
+    QString newKey;
+    bool newPlayer = false;
+
+    if (WWEnabled) {
+        KURL url;
+        newPlayer = _playerInfos->key().isEmpty()
+                    || _playerInfos->registeredName().isEmpty();
+        if (newPlayer) url = queryURL(Register, newName);
+        else {
+            url = queryURL(Change, _playerInfos->registeredName());
+            addToQueryURL(url, "key", _playerInfos->key());
+            if ( _playerInfos->registeredName()!=newName )
+                addToQueryURL(url, "new_nickname", newName);
+        }
+        addToQueryURL(url, "comment", comment);
+        addToQueryURL(url, "version", *_version);
+
+        bool ok;
+        QDomNamedNodeMap map = doQuery(url, parent, ok);
+        if ( !ok || (newPlayer && !getFromQuery(map, "key", newKey, parent)) )
+            return false;
+    }
+
+    _playerInfos->modifySettings(newName, comment, WWEnabled, newKey);
+    return true;
+}
+
+KURL HighscoresPrivate::highscoresURL(const QString &typeLabel)
+{
+    KURL url = queryURL(Scores, _playerInfos->registeredName());
+    if ( !typeLabel.isEmpty() ) addToQueryURL(url, "level", typeLabel);
+    return url;
+}
+
+KURL HighscoresPrivate::playersURL()
+{
+    KURL url = queryURL(Players, QString::null);
+    if ( !_playerInfos->registeredName().isEmpty() )
+        addToQueryURL(url, "highlight", _playerInfos->registeredName());
+    return url;
+}
 
 }; // namespace

@@ -97,36 +97,38 @@ QString HighscoresList::itemText(const ItemContainer &item, uint row) const
 }
 
 //-----------------------------------------------------------------------------
-HighscoresWidget::HighscoresWidget(int localRank,
-         QWidget *parent, const ScoreInfos &score, const PlayerInfos &player,
-         int spacingHint, bool WWHSAvailable, const QString &highscoresURL,
-         const QString &playersURL)
+HighscoresWidget::HighscoresWidget(int localRank, QWidget *parent,
+                                   int spacingHint, const QString &typeLabel)
     : QWidget(parent, "show_highscores_widget")
 {
+    const ScoreInfos &s = HighscoresPrivate::scoreInfos();
+    const PlayerInfos &p = HighscoresPrivate::playerInfos();
+
     QVBoxLayout *vbox = new QVBoxLayout(this, spacingHint);
 
     QTabWidget *tw = new QTabWidget(this);
     vbox->addWidget(tw);
 
     QWidget *w;
-    if ( score.nbEntries()==0 ) {
+    if ( s.nbEntries()==0 ) {
         QLabel *lab = new QLabel(i18n("no score entry"), this);
         lab->setAlignment(AlignCenter);
         w = lab;
-    } else w = new HighscoresList(score, localRank, this);
+    } else w = new HighscoresList(s, localRank, this);
     tw->addTab(w, i18n("Best &Scores"));
 
-    w = new HighscoresList(player, player.id(), this);
+    w = new HighscoresList(p, p.id(), this);
     tw->addTab(w, i18n("&Players"));
 
-    if (WWHSAvailable) {
-        KURLLabel *urlLabel = new KURLLabel(highscoresURL,
-                                     i18n("View world-wide highscores"), this);
+    if ( HighscoresPrivate::isWWHSAvailable() ) {
+        KURLLabel *urlLabel =
+            new KURLLabel(HighscoresPrivate::highscoresURL(typeLabel).url(),
+                          i18n("View world-wide highscores"), this);
         connect(urlLabel, SIGNAL(leftClickedURL(const QString &)),
                 SLOT(showURL(const QString &)));
         vbox->addWidget(urlLabel);
 
-        urlLabel = new KURLLabel(playersURL,
+        urlLabel = new KURLLabel(HighscoresPrivate::playersURL().url(),
                                  i18n("View world-wide players"), this);
         connect(urlLabel, SIGNAL(leftClickedURL(const QString &)),
                 SLOT(showURL(const QString &)));
@@ -141,7 +143,7 @@ void HighscoresWidget::showURL(const QString &url) const
 }
 
 //-----------------------------------------------------------------------------
-MultipleScoresList::MultipleScoresList(const ScoreList &scores,
+MultipleScoresList::MultipleScoresList(const QValueList<Score> &scores,
                                        QWidget *parent)
     : ScoresList(parent), _scores(scores)
 {
@@ -186,10 +188,9 @@ class HighscoresSetting : public KSettingGeneric
     HighscoresSettingsWidget *_hsw;
 };
 
-HighscoresSettingsWidget::HighscoresSettingsWidget(const PlayerInfos &infos,
-                                           bool WWHSAvailable, QWidget *parent)
+HighscoresSettingsWidget::HighscoresSettingsWidget(QWidget *parent)
     : KSettingWidget(i18n("Highscores"), "highscores", parent),
-      _infos(infos), _WWHEnabled(0)
+      _WWHEnabled(0)
 {
     KSettingGeneric *sg = new HighscoresSetting(this);
     settings()->append(sg);
@@ -212,7 +213,7 @@ HighscoresSettingsWidget::HighscoresSettingsWidget(const PlayerInfos &infos,
             sg, SLOT(hasBeenModifiedSlot()));
     _comment->setMaxLength(50);
 
-    if (WWHSAvailable) {
+    if ( HighscoresPrivate::isWWHSAvailable() ) {
         _WWHEnabled
             = new QCheckBox(i18n("World-wide highscores enabled"), this);
         connect(_WWHEnabled, SIGNAL(toggled(bool)),
@@ -223,9 +224,10 @@ HighscoresSettingsWidget::HighscoresSettingsWidget(const PlayerInfos &infos,
 
 void HighscoresSettingsWidget::load()
 {
-    _nickname->setText(_infos.isAnonymous() ? QString::null : _infos.name());
-    _comment->setText(_infos.comment());
-    if (_WWHEnabled) _WWHEnabled->setChecked(_infos.isWWEnabled());
+    const PlayerInfos &infos = HighscoresPrivate::playerInfos();
+    _nickname->setText(infos.isAnonymous() ? QString::null : infos.name());
+    _comment->setText(infos.comment());
+    if (_WWHEnabled) _WWHEnabled->setChecked(infos.isWWEnabled());
 }
 
 bool HighscoresSettingsWidget::save()
@@ -234,10 +236,11 @@ bool HighscoresSettingsWidget::save()
 
     // do not bother the user with "nickname empty" if he has not
     // messed with nickname settings ...
-    if ( _nickname->text().isEmpty() && !_infos.isAnonymous() && !enabled )
+    if ( _nickname->text().isEmpty()
+         && !HighscoresPrivate::playerInfos().isAnonymous() && !enabled )
         return true;
 
-    return kHighscores->modifySettings(_nickname->text().lower(),
+    return HighscoresPrivate::modifySettings(_nickname->text().lower(),
                                _comment->text(), enabled, (QWidget *)parent());
 }
 

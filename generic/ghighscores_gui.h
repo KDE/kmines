@@ -30,13 +30,14 @@
 #include <klocale.h>
 
 #include "gsettings.h"
-#include "ghighscores.h"
 
 
 namespace KExtHighscores
 {
 
 class ItemContainer;
+class ItemArray;
+class Score;
 
 //-----------------------------------------------------------------------------
 class ShowItem : public KListViewItem
@@ -80,10 +81,8 @@ class HighscoresWidget : public QWidget
 {
  Q_OBJECT
  public:
-    HighscoresWidget(int localRank, QWidget *parent, const ScoreInfos &,
-                     const PlayerInfos &, int spacingHint,
-                     bool WWHSAvailable, const QString &highscoresURL,
-                     const QString &playersURL);
+    HighscoresWidget(int localRank, QWidget *parent, int spacingHint,
+                     const QString &typeLabel);
 
  private slots:
     void showURL(const QString &) const;
@@ -94,10 +93,10 @@ class MultipleScoresList : public ScoresList
 {
  Q_OBJECT
  public:
-    MultipleScoresList(const ScoreList &, QWidget *parent);
+    MultipleScoresList(const QValueList<Score> &, QWidget *parent);
 
  private:
-    const ScoreList &_scores;
+    const QValueList<Score> &_scores;
 
     QString itemText(const ItemContainer &, uint row) const;
     bool showColumn(const ItemContainer &) const;
@@ -108,16 +107,14 @@ class HighscoresSettingsWidget : public KSettingWidget
 {
  Q_OBJECT
  public:
-    HighscoresSettingsWidget(const PlayerInfos &infos, bool WWHSAvailable,
-                             QWidget *parent);
+    HighscoresSettingsWidget(QWidget *parent);
 
     void load();
     bool save();
 
  private:
-    const PlayerInfos &_infos;
-    QCheckBox         *_WWHEnabled;
-    QLineEdit         *_nickname, *_comment;
+    QCheckBox *_WWHEnabled;
+    QLineEdit *_nickname, *_comment;
 };
 
 }; // namespace

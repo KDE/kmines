@@ -1,4 +1,4 @@
-2.1.4 (08 January 2001) [CVS 3.0 devel]
+2.1.4 (23 January 2001) [CVS 3.0 devel]
  * completely revamped API for highscores + dynamic library
  * revamped the settings (include Custom minefield)
  * fixed repaint of LCDs in inactive mode

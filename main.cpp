@@ -16,6 +16,7 @@
 
 #include "status.h"
 #include "highscores.h"
+#include "version.h"
 
 
 MainWidget::MainWidget()
