@@ -11,7 +11,7 @@
 #include <qfileinf.h>
 #include <qtstream.h>
 
-#include <Kconfig.h>
+#include <kconfig.h>
 #include <kapp.h>
 
 #include "status.moc"

@@ -4,7 +4,7 @@
 #include "field.h"
 #include "dialogs.h"
 
-#include <Kconfig.h>
+#include <kconfig.h>
 
 /* status widget */
 class KStatus : public QWidget

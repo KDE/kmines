@@ -3,7 +3,7 @@
 #include <qpopmenu.h>
 
 #include <kmsgbox.h>
-#include <Kconfig.h>
+#include <kconfig.h>
 #include <kkeyconf.h>
 
 #include "kmines.h"

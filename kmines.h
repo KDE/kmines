@@ -3,7 +3,7 @@
 
 #include "status.h"
 
-#include <Kconfig.h>
+#include <kconfig.h>
 #include <kapp.h>
 
 #include <qmenubar.h>

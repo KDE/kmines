@@ -7,7 +7,7 @@
 #include <qlined.h>
 #include <qlcdnum.h>
 
-#include <Kconfig.h>
+#include <kconfig.h>
 
 #include "defines.h"
 
