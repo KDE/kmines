@@ -19,6 +19,7 @@ class Score : public DataContainer
     uint nbEntries() const;
     uint score() const { return data("score").toUInt(); }
     QDateTime date() const { return data("date").toDateTime(); }
+    uint id() const { return data("id").toUInt(); }
     void setName(const QString &name) { data("name") = name; }
 };
 
@@ -30,14 +31,15 @@ class PlayerInfos : public ItemContainer
 
     static bool isNewPlayer();
     uint nbEntries() const;
-    QString name() const       { return item("name").read(_id).toString(); }
+    QString name() const { return item("name").read(_id).toString(); }
     bool isAnonymous() const;
-    QString prettyName() const { return item("name").pretty(_id); }
+    QString prettyName() const        { return prettyName(_id); }
+    QString prettyName(uint id) const { return item("name").pretty(id); }
     QString registeredName() const;
-    QString comment() const    { return item("comment").pretty(_id); }
+    QString comment() const { return item("comment").pretty(_id); }
     bool WWEnabled() const;
     QString key() const;
-    uint id() const            { return _id; }
+    uint id() const { return _id; }
 
     void submitScore(bool won, const Score &) const;
     void submitBlackMark() const;
@@ -75,6 +77,8 @@ class Highscores
     virtual bool isStrictlyBetter(const Score &, const Score &) const;
 
     QString scoreGroup() const;
+    uint playerId() const;
+    QString prettyPlayerName(uint id) const;
     virtual ItemBase *scoreItem() const { return new ScoreItem; }
 
     QString playerSubGroup() const;

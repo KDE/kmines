@@ -97,6 +97,7 @@ class HighscoresSettingsWidget : public BaseSettingsWidget
     bool writeConfig();
 
  private:
+    bool       _isAnonymous;
     QCheckBox *_WWHEnabled;
     QLineEdit *_nickname, *_comment;
 };

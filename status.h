@@ -33,7 +33,7 @@ class Status : public QWidget, public KMines
 	void restartGame();
 	void changeCase(CaseState, int inc);
 	void update(bool);
-	void endGame()        { _endGame(false); }
+	void gameLost()       { _endGame(false); }
 	void pauseGame()      { field->pause(); }
 	void print();
 

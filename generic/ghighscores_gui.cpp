@@ -167,8 +167,9 @@ HighscoresSettingsWidget::HighscoresSettingsWidget(BaseSettingsDialog *parent,
     grid->setSpacing(parent->spacingHint());
     top->addWidget(grid);
     (void)new QLabel(i18n("Nickname"), grid);
-    _nickname = new QLineEdit((infos->isAnonymous() ? QString::null
-                               : infos->name()), grid);
+    _isAnonymous = infos->isAnonymous();
+    _nickname
+        = new QLineEdit((_isAnonymous ? QString::null : infos->name()), grid);
     _nickname->setMaxLength(16);
     QString name = infos->registeredName();
     if ( !infos->key().isEmpty() && !name.isEmpty() ) {
@@ -191,10 +192,14 @@ HighscoresSettingsWidget::HighscoresSettingsWidget(BaseSettingsDialog *parent,
 bool HighscoresSettingsWidget::writeConfig()
 {
     bool enabled = (_WWHEnabled ? _WWHEnabled->isChecked() : false);
-    bool res
-        =  highscores().modifySettings(_nickname->text().lower(),
-                                       _comment->text(), enabled,
-                                       (QWidget *)parent());
+
+    // do not bother the user with "nickname empty" if he has not
+    // messed with nickname settings ...
+    if ( _nickname->text().isEmpty() && !_isAnonymous && !enabled )
+        return true;
+
+    bool res =  highscores().modifySettings(_nickname->text().lower(),
+                               _comment->text(), enabled, (QWidget *)parent());
     if ( !res ) emit showPage();
     return res;
 }

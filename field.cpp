@@ -379,9 +379,6 @@ void Field::pressClearFunction(uint i, uint j, bool pressed)
 	pressCase(i+1, j+1, pressed);
 }
 
-#define M_OR_U(i, j) ( pfield(i, j).state==Marked \
-					   || pfield(i, j).state==Uncertain )
-
 void Field::keyboardAutoReveal()
 {
 	pressClearFunction(ic, jc, true);
@@ -397,27 +394,21 @@ void Field::keyboardAutoRevealSlot()
 void Field::autoReveal()
 {
 	if ( state!=Playing ) return;
+    if ( pfield(ic, jc).state!=Uncovered ) return;
 	nb_actions++;
-	switch (pfield(ic, jc).state) {
-	case Covered:
-	case Marked:
-	case Uncertain: return;
-	default:        break;
-	}
 
-	/* number of mines around the case */
+	// number of mines around the case
 	uint nm = computeNeighbours(ic, jc);
-	if M_OR_U(ic-1,   jc) nm--;
-	if M_OR_U(ic-1, jc+1) nm--;
-	if M_OR_U(ic-1, jc-1) nm--;
-	if M_OR_U(  ic, jc+1) nm--;
-	if M_OR_U(  ic, jc-1) nm--;
-	if M_OR_U(ic+1,   jc) nm--;
-	if M_OR_U(ic+1, jc+1) nm--;
-	if M_OR_U(ic+1, jc-1) nm--;
+	if ( pfield(ic-1,   jc).state==Marked ) nm--;
+	if ( pfield(ic-1, jc+1).state==Marked ) nm--;
+	if ( pfield(ic-1, jc-1).state==Marked ) nm--;
+	if ( pfield(  ic, jc+1).state==Marked ) nm--;
+	if ( pfield(  ic, jc-1).state==Marked ) nm--;
+	if ( pfield(ic+1,   jc).state==Marked ) nm--;
+	if ( pfield(ic+1, jc+1).state==Marked ) nm--;
+	if ( pfield(ic+1, jc-1).state==Marked ) nm--;
 
-	if (!nm) { /* the number of surrounding mines is equal */
-		       /* to the number of marks :) */
+	if (!nm) { // number of surrounding mines == number of marks :)
 		uncoverCase(ic+1, jc+1);
 		uncoverCase(ic+1,   jc);
 		uncoverCase(ic+1, jc-1);
@@ -431,27 +422,25 @@ void Field::autoReveal()
 
 void Field::uncoverCase(uint i, uint j)
 {
-	if ( pfield(i, j).state==Covered ) {
-		if ( pfield(i, j).mine ) changeCaseState(i, j, Uncovered);
-		else uncover(i, j);
-	}
+	if ( pfield(i, j).state!=Covered ) return;
 
-	/* to enable multiple explosions ... */
-	if ( pfield(i, j).mine && pfield(i, j).state==Uncovered ) {
-		changeCaseState(i, j, Exploded);
-		_endGame();
-	}
-}
+    if ( !pfield(i, j).mine ) {
+        uncover(i, j);
+        return;
+    }
 
-void Field::_endGame()
-{
-	if ( state==Stopped ) return;
-	/* find all errors */
-	for (uint ii=1; ii<_level.width()+1; ii++)
-		for (uint jj=1; jj<_level.height()+1; jj++)
-			if ( pfield(ii, jj).state==Marked && !pfield(ii, jj).mine )
-				changeCaseState(ii, jj, Error);
-	emit endGame();
+    // explosion
+    changeCaseState(i, j, Exploded);
+    // if this is not the first explosion, the game is already stopped
+    if ( state==Stopped ) return;
+
+    // find all errors
+    for (uint ii=1; ii<_level.width()+1; ii++)
+        for (uint jj=1; jj<_level.height()+1; jj++)
+            if ( pfield(ii, jj).state==Marked && !pfield(ii, jj).mine )
+                changeCaseState(ii, jj, Error);
+
+    emit gameLost();
 }
 
 void Field::pause()

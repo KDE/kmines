@@ -28,7 +28,8 @@ class ItemBase
     };
 
     ItemBase() {}
-    ItemBase(const QVariant &def, const QString &label, int alignment,
+    ItemBase(const QVariant &def, const QString &label = QString::null,
+             int alignment = Qt::AlignRight,
              bool canHaveSubGroup = false);
     virtual ~ItemBase() {}
 

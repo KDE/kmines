@@ -61,7 +61,7 @@ Status::Status(QWidget *parent, const char *name)
     connect( field, SIGNAL(changeCase(CaseState, int)),
 			 SLOT(changeCase(CaseState, int)) );
 	connect( field, SIGNAL(updateStatus(bool)), SLOT(update(bool)) );
-	connect( field, SIGNAL(endGame()), SLOT(endGame()) );
+	connect( field, SIGNAL(gameLost()), SLOT(gameLost()) );
 	connect( field, SIGNAL(startTimer()), dg, SLOT(start()) );
 	connect( field, SIGNAL(freezeTimer()), dg, SLOT(freeze()) );
 	connect( field, SIGNAL(setMood(Smiley::Mood)),
@@ -148,14 +148,15 @@ void Status::update(bool mine)
     QColor color = (r<0 && u!=0 ? red : white);
     left->setColor(color);
 	left->display(r);
-	if ( u==0 ) _endGame(!mine);
+
+	if ( u==0 && !mine ) _endGame(true); // ends only for wins
 }
 
 void Status::_endGame(bool won)
 {
+    field->showMines();
 	field->stop();
 	dg->freeze();
-	field->showMines();
 	emit gameStateChanged(Stopped);
     smiley->setMood(won ? Smiley::Happy : Smiley::Sad);
 

@@ -14,12 +14,29 @@
 
 
 //-----------------------------------------------------------------------------
+class ScoreNameItem : public NameItem
+{
+ public:
+    ScoreNameItem(const ItemBase *idItem) : _idItem(idItem) {}
+
+    QString pretty(uint i) const {
+        uint id = _idItem->read(i).toUInt();
+        if ( id==0 ) return NameItem::pretty(i);
+        return highscores().prettyPlayerName(id-1);
+    }
+
+ private:
+    const ItemBase *_idItem;
+};
+
+//-----------------------------------------------------------------------------
 Score::Score(uint score)
     : DataContainer(highscores().scoreGroup(), QString::null)
 {
+    ItemBase *idItem = new ItemBase((uint)0);
+    addData("id", idItem, true, highscores().playerId()+1);
     addData("rank", new RankItem, false, (uint)0);
-    addData("name", new ItemBase(i18n("anonymous"), i18n("Player"),
-                                 Qt::AlignLeft), true, QString::null);
+    addData("name", new ScoreNameItem(idItem), true, QString::null);
     addData("score", highscores().scoreItem(), true, score);
     addData("date", new DateItem, true, QDateTime::currentDateTime());
 }
@@ -234,18 +251,15 @@ void Highscores::submitScore(bool won, Score &score, QWidget *parent)
     Q_ASSERT( won || isLostGameEnabled() );
 
     PlayerInfos *i = infos();
-    if ( i->isAnonymous() )
-        KMessageBox::sorry(parent, i18n("Please enter your nickname\n"
-                                        "in the settings dialog."));
     i->submitScore(won, score);
     submitWorldWide((won ? (int)score.score() : LOST_GAME_ID), *i, parent);
+    delete i;
 
     if (won) {
-        int rank = submitLocal(score, i->prettyName());
+        int rank = submitLocal(score, QString::null);
         if ( rank!=-1 ) _showHighscores(parent, rank);
     }
 
-    delete i;
 }
 
 void Highscores::submitBlackMark(QWidget *parent) const
@@ -309,6 +323,22 @@ int Highscores::rank(const Score &s) const
     }
     delete tmp;
 	return (i<_nbEntries ? (int)i : -1);
+}
+
+uint Highscores::playerId() const
+{
+    PlayerInfos *i = infos();
+    uint id = i->id();
+    delete i;
+    return id;
+}
+
+QString Highscores::prettyPlayerName(uint id) const
+{
+    PlayerInfos *i = infos();
+    QString name = i->prettyName(id);
+    delete i;
+    return name;
 }
 
 KURL Highscores::URL(QueryType type, const QString &nickname) const

@@ -27,7 +27,7 @@ class Field : public QFrame, public KMines
 	bool isPaused() const { return state==Paused; }
 	void pause();
 	void stop() { state = Stopped; }
-	void showMines();
+    void showMines();
 
 	void up();
 	void down();
@@ -52,7 +52,7 @@ class Field : public QFrame, public KMines
 	void changeCase(CaseState, int);
 	void updateStatus(bool);
 	void setMood(Smiley::Mood);
-	void endGame();
+	void gameLost();
 	void startTimer();
 	void freezeTimer();
 	void gameStateChanged(GameState);
@@ -94,7 +94,6 @@ class Field : public QFrame, public KMines
 	bool placeCursor(int, int);
 	void flagPixmap(QPixmap &, bool mask) const;
 	void autoReveal();
-	void _endGame();
 	bool revealActions(bool press);
 
 	const Case &pfield(uint i, uint j) const;
