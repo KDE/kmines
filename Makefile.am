@@ -8,7 +8,7 @@
 bin_PROGRAMS = kmines
 INCLUDES = $(all_includes)
 kmines_LDFLAGS = $(all_libraries) $(KDE_RPATH)
-kmines_LDADD = -lkdeui -lkdecore  -lXext  $(LIB_QT)
+kmines_LDADD =       $(LIB_KDEUI)
 
 kmines_SOURCES= dialogs.cpp field.cpp status.cpp main.cpp
 BUILTSOURCES = dialogs.moc field.moc status.moc main.moc
