@@ -61,7 +61,7 @@ Field::Field(QWidget *parent, const char *name)
 	pt->drawLine(4, 17, 17, 4);
 	pt->end();
 	
-	setFont( QFont::QFont("Helvetica", 13, QFont::Bold) );
+	setFont( QFont("Helvetica", 13, QFont::Bold) );
 	
 	msg = new QLabel(this);
 	msg->hide();
