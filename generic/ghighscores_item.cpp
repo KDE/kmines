@@ -172,7 +172,7 @@ const QVariant &DataArray::data(const QString &name) const
     Q_ASSERT( _data.contains(name) );
     return _data[name];
 }
-/*
+
 QDataStream &operator <<(QDataStream &s, const DataArray &array)
 {
     s << array._data;
@@ -184,7 +184,7 @@ QDataStream &operator >>(QDataStream &s, DataArray &array)
     s >> array._data;
     return s;
 }
-*/
+
 //-----------------------------------------------------------------------------
 Score::Score(ScoreType type)
     : DataArray(internal->scoreInfos()), _type(type)
@@ -197,7 +197,7 @@ bool Score::operator <(const Score &score) const
 {
     return internal->manager.isStrictlyLess(*this, score);
 }
-/*
+
 QDataStream &operator <<(QDataStream &s, const Score &score)
 {
     s << (Q_UINT8)score.type();
@@ -213,5 +213,5 @@ QDataStream &operator >>(QDataStream &s, Score &score)
     s >> (DataArray &)score;
     return s;
 }
-*/
+
 }; // namespace
