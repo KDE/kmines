@@ -1,11 +1,8 @@
 #include "defines.h"
-#include <stdlib.h>
-#include <time.h>
-#include <config.h>
 
 const char *OP_GRP       = "Options";
 const char *OP_UMARK     = "? mark";
-const char *OP_MENU      = "menubar visible";
+const char *OP_MENUBAR   = "menubar visible";
 const char *OP_LEVEL     = "Level";
 const char *OP_CASE_SIZE = "case size";
 const char *OP_KEYBOARD  = "keyboard game";

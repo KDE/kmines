@@ -6,7 +6,7 @@
 /* Strings for the configuration file */
 extern const char *OP_GRP;
 extern const char *OP_UMARK;
-extern const char *OP_MENU;
+extern const char *OP_MENUBAR;
 extern const char *OP_LEVEL;
 extern const char *OP_CASE_SIZE;
 extern const char *OP_KEYBOARD;

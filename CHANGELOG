@@ -4,7 +4,7 @@
  * can choose case size (font is scaled)
  * less flicker in repainting (+ fixed a strange divide negative int by
    uint thing)
- * fix the pixmaps drawing to be not too bad in other case sizes
+ * fix the pixmaps drawing so that they are not too bad in custom case sizes
 
 2.0.0
  * use of KDialogBase and KAboutData/KAboutDialog

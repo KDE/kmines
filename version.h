@@ -1,4 +1,2 @@
-#define VERSION	"2.0.1"
-#define YEAR     2000
-#define MONTH    2
-#define DAY      18
+#define VERSION	     "2.0.1"
+#define LONG_VERSION "2.0.1 (19 Fev 2000)"

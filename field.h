@@ -73,21 +73,18 @@ class Field : public QFrame
 	bool mid_down;  // mid button pressed
   
 	uint         _caseSize;
-	QPainter     pt;
 	QPixmap      pm_flag, pm_mine, pm_exploded, pm_error, pm_cursor;
 	QPushButton *pb;
   
 	uint computeNeighbours(uint, uint) const;
-	void drawCase(uint, uint);
 	void uncover(uint, uint);
 	void changeCaseState(uint, uint, uint);
 	void minePixmap(QPixmap &, bool mask, uint type) const;
-	void pressCase(uint, uint, uint);
-	void pressClearFunction(uint, uint, uint);
+	void pressCase(uint, uint, bool, QPainter * = 0);
+	void pressClearFunction(uint, uint, bool);
 	void uncoverCase(uint, uint);
 	bool inside(int, int) const;
 	bool placeCursor(int, int, bool check = FALSE);
-	void drawCursor(bool show);
 	void flagPixmap(QPixmap &, bool mask) const;
 	void cursorPixmap(QPixmap &, bool mask) const;
 	bool locked() const { return stopped || paused; }
@@ -97,6 +94,13 @@ class Field : public QFrame
 	int yToJ(int y) const;
 	int iToX(uint i) const;
 	int jToY(uint j) const;
+
+	QPainter *begin(QPainter *);
+	void end(QPainter *, const QPainter *);
+	void drawCase(uint, uint, QPainter * = 0);
+	void drawBox(int, int, bool, QPainter * = 0);
+	void eraseField();
+	void drawCursor(bool show, QPainter * = 0);
 };
 
 #endif // FIELD_H

@@ -1,3 +1,1 @@
 - layout bug when changing level/case size (fvwm specific ?)
-- when size is just changed (and hence font point size is changed), the
-  QPainter mess things up and do not paint some area ... (strange thing)

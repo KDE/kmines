@@ -8,53 +8,51 @@
 #include <klocale.h>
 #include <kglobal.h>
 #include <kconfig.h>
-#include <kaboutdialog.h>
 #include <kcmdlineargs.h>
 #include <kaboutdata.h>
 #include <kmenubar.h>
+#include <khelpmenu.h>
+#include <kstdaction.h>
 
 #include "defines.h"
 #include "version.h"
 #include "status.h"
 
-MainWidget::MainWidget()
+MainWidget::MainWidget(const KAboutData *aboutData)
 : keyAction(7), levelAction(NbLevels)
 {
 	installEventFilter(this);
-	
+
 	status = new Status(this);
 	status->installEventFilter(this);
-	
+
 	kacc = new KAccel(this);
-	
+
 	// popup
 	popup = new KActionMenu(i18n("&File"), this);
-	menuBar()->insertItem(i18n("&File"), popup->popupMenu());
-	menuAction = new KToggleAction(QString::null, 0,
-								   this, SLOT(toggleMenu()), this);
+	menuBar()->insertItem(popup->text(), popup->popupMenu());
+	menuAction = new KAction(QString::null, 0,
+							 this, SLOT(toggleMenu()), this);
 	popup->insert(menuAction);
 	popup->insert( new KActionSeparator(this) );
-	KAction *action = new KAction(i18n("&New game"), 0,
-								  status, SLOT(restartGame()), this);
-	action->plugStdAccel(kacc, KStdAccel::New);
+	KAction *action = KStdAction::openNew(status, SLOT(restartGame()), this);
+	action->setText(i18n("&New game"));
 	popup->insert(action);
 	action = new KAction(i18n("&Pause game"), Key_P,
 						 status, SLOT(pauseGame()), this);
 	action->plugAccel(kacc, "pause");
 	popup->insert(action);
 	popup->insert( new KActionSeparator(this) );
-	action = new KAction(i18n("&High scores"), Key_H,
+	action = new KAction(i18n("&High scores..."), Key_H,
 						 status, SLOT(showHighScores()), this);
 	action->plugAccel(kacc, "highscores");
 	popup->insert(action);
-	action = new KAction(i18n("P&rint"), 0, status, SLOT(print()), this);
-	action->plugStdAccel(kacc, KStdAccel::Print);
+	action = KStdAction::print(status, SLOT(print()), this);
 	popup->insert(action);
 	popup->insert( new KActionSeparator(this) );
-	action = new KAction(i18n("&Quit"), 0, qApp, SLOT(quit()), this);
-	action->plugStdAccel(kacc, KStdAccel::Quit);
+	action = KStdAction::quit(qApp, SLOT(quit()), this);
 	popup->insert(action);
-	
+
 	// keyboard
 	keyAction[0] = new KAction(i18n("Move up"), Key_Up, 
 							   status, SLOT(moveUp()), this);
@@ -80,30 +78,29 @@ MainWidget::MainWidget()
 
 	// options
 	KActionMenu *options = new KActionMenu(i18n("&Settings"), this);
-	menuBar()->insertItem(i18n("&Settings"), options->popupMenu());
-	QArray<KToggleAction *> toggleAction(2);
-	toggleAction[0] = new KToggleAction(i18n("? &mark"), 0,
-										this, SLOT(toggleUMark()), this);
-	options->insert(toggleAction[0]);
-	toggleAction[1] = new KToggleAction(i18n("keyboard play"), 0,
-										this, SLOT(toggleKeyboard()), this);
-	options->insert(toggleAction[1]);
-	action = new KAction(i18n("Other settings"), 0,
+	menuBar()->insertItem(options->text(), options->popupMenu());
+	KToggleAction *markAction = new KToggleAction(i18n("? &mark"), 0,
+											  this, SLOT(toggleUMark()), this);
+	options->insert(markAction);
+	KToggleAction *keyboardAction = new KToggleAction(i18n("&keyboard play"),
+										0, this, SLOT(toggleKeyboard()), this);
+	options->insert(keyboardAction);
+	action = new KAction(i18n("&Other settings..."), 0,
 						 status, SLOT(options()), this);
 	options->insert(action);
-	action = new KAction(i18n("&Keys"), 0, this, SLOT(configKeys()), this);
+	action = KStdAction::keyBindings(this, SLOT(configKeys()), this);
 	options->insert(action);
-	
+
 	// levels
 	KActionMenu *levels = new KActionMenu(i18n("&Level"), this);
-	menuBar()->insertItem(i18n("&Level"), levels->popupMenu());
+	menuBar()->insertItem(levels->text(), levels->popupMenu());
 	levelAction[0] = new KRadioAction(i18n("&Easy"), 0,
 									  this, SLOT(easyLevel()), this);
 	levelAction[1] = new KRadioAction(i18n("&Normal"), 0,
 									  this, SLOT(normalLevel()), this);
 	levelAction[2] = new KRadioAction(i18n("&Expert"), 0,
 									  this, SLOT(expertLevel()), this);
-	levelAction[3] = new KRadioAction(i18n("&Custom"), 0,
+	levelAction[3] = new KRadioAction(i18n("&Custom..."), 0,
 									  this, SLOT(customLevel()), this);
 	for (uint i=0; i<levelAction.size(); i++) {
 		levelAction[i]->setExclusiveGroup("level");
@@ -113,7 +110,8 @@ MainWidget::MainWidget()
 
 	// help
 	menuBar()->insertSeparator();
-	menuBar()->insertItem(i18n("&Help"), helpMenu());
+	KHelpMenu *help = new KHelpMenu(this, aboutData);
+	menuBar()->insertItem(i18n("&Help"), help->menu());
 
 	// read key settings
 	kacc->readSettings();
@@ -122,8 +120,8 @@ MainWidget::MainWidget()
 	init = TRUE;
 	toggleMenu();
 	changeLevel(0);
-	toggleAction[0]->setChecked( toggleUMark() );
-	toggleAction[1]->setChecked( toggleKeyboard() );
+	markAction->setChecked( toggleUMark() );
+	keyboardAction->setChecked( toggleKeyboard() );
 	init = FALSE;
 
 	setView(status);
@@ -172,7 +170,7 @@ bool MainWidget::toggle(const char *name)
 
 void MainWidget::toggleMenu()
 {
-	bool show = toggle(OP_MENU);
+	bool show = toggle(OP_MENUBAR);
 	if (show) menuBar()->show(); else menuBar()->hide();
 	menuAction->setText((show ? i18n("Hide menu") : i18n("Show menu")));
 }
@@ -199,15 +197,14 @@ static const char *DESCRIPTION
 int main(int argc, char **argv)
 {
     KAboutData aboutData("kmines", I18N_NOOP("KMines"),
-		QString("%1 (%2/%3/%4)").arg(VERSION).arg(DAY).arg(MONTH).
-		arg(YEAR).latin1(), DESCRIPTION, KAboutData::License_GPL, 
+		LONG_VERSION, DESCRIPTION, KAboutData::License_GPL, 
         "(c) 1996-2000, Nicolas Hadacek",
 		0, "http://azhyd.free.fr/KDE/kmines.php3");
     aboutData.addAuthor("Nicolas Hadacek", 0, "hadacek@kde.org");
     KCmdLineArgs::init(argc, argv, &aboutData);
 
     KApplication a;
-    MainWidget *mw = new MainWidget;
+    MainWidget *mw = new MainWidget(&aboutData);
     a.setMainWidget(mw);
     mw->show();
     return a.exec();
