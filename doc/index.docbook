@@ -1,5 +1,5 @@
 <!DOCTYPE book PUBLIC  "-//KDE//DTD DocBook V3.1-Based Variant V1.0//EN" [
-  <!ENTITY kapp "<application>KMines</application>">
+  <!ENTITY kapp "<application> KMines</application>">
   <!ENTITY kappname "&kapp;" -- this only *seems* redundant -->
   <!ENTITY % addindex "IGNORE">
   <!ENTITY % ents PUBLIC "-//KDE//ENTITIES Application-Variable Entities V1.0//EN">
@@ -7,8 +7,10 @@
 ]>
 
 <book lang="en">
+
 <bookinfo>
 <title>The KMines Handbook</title>
+
 <authorgroup>
 <author>
 <firstname>Nicolas</firstname>
@@ -17,12 +19,35 @@
 <address><email>hadacek@kde.org</email></address>
 </affiliation>
 </author>
+<author>
+<firstname>Michael</firstname>
+<surname>McBride</surname>
+<affiliation><address><email>mmcbride@ematic.org</email></address></affiliation>
+</author>
+<othercredit>
+<firstname>Nicolas</firstname>
+<surname>Hadacek</surname>
+<affiliation>
+<address><email>hadacek@kde.org</email></address>
+</affiliation>
+<contrib>Developer</contrib>
+</othercredit>
+<othercredit>
+<firstname>Lauri</firstname>
+<surname>Watts</surname>
+<affiliation><address><email>vampyr@atconnex.net</email></address></affiliation>
+<contrib>Reviewer</contrib>
+</othercredit>
 </authorgroup>
+
 <date>04/08/2000</date>
 <releaseinfo>2.00.05</releaseinfo>
+
 <abstract>
-<para>This documentation was last updated for kmines version 2.00.05. </para>
+<para>&kapp; is the KDE version of the classic minesweeper game.  This
+documentation was last updated for kmines version 2.00.05. </para>
 </abstract>
+
 <keywordset>
 <keyword>KDE</keyword>
 <keyword>game</keyword>
@@ -32,42 +57,46 @@
 
 <chapter id="introduction">
 <title>Introduction</title>
-<para>KMines is the classical Minesweeper game. You must uncover all the empty cases
-without blowing on a mine.</para>
+
+<para>&kapp; is the classic Minesweeper game. You must uncover all the empty
+cases without blowing on a mine.</para>
+
 <para>When you uncover a case, a number appears : it indicates how many mines
-surround this case. If there is no number the neighbour cases are
-automatically uncovered.
-In your process of uncovering secure cases, it is <emphasis>very</emphasis> useful to put
-a flag on the cases which contain a mine.</para>
+surround this case. If there is no number the neighbour cases are automatically
+uncovered.  In your process of uncovering secure cases, it is
+<emphasis>very</emphasis> useful to put a flag on the cases which contain a
+mine.</para>
+
 </chapter>
+
 <chapter id="installation">
 <title>Installation</title>
  
 <sect1 id="getting-kapp">
-<title>How to obtain KMines</title>
+<title>How to obtain &kapp;</title>
  
-<para>
-&kapp; is part of the KDE project
+<para>&kapp; is part of the KDE project
 <ulink url="http://www.kde.org">http://www.kde.org</ulink>.
 &kapp; can be found in the kdegames package on
 <ulink url="ftp://ftp.kde.org/pub/kde/">ftp://ftp.kde.org/pub/kde/</ulink>, the
 main ftp site of the KDE project. </para>
 </sect1>
-   <sect1 id="compilation">
+
+<sect1 id="compilation">
 <title>Compilation and installation</title>
  
-<para>
-In order to compile and install &kapp on your system, type the following in the base
-directory of the KDE distribution:
+<para>In order to compile and install &kapp on your system, type the following
+in the base directory of the KDE distribution:</para>
+
 <screen width="40">
 <prompt>%</prompt> <userinput>cd kdegames</userinput>
 <prompt>%</prompt> <userinput>./configure</userinput>
 <prompt>%</prompt> <userinput>make</userinput>
 <prompt>%</prompt> <userinput>make install</userinput>
 </screen>
-</para>
- 
-<para>Since &kapp uses autoconf and automake you should have not trouble compiling it.
+
+<para>Since &kapp uses <application>autoconf</application> and
+<application>automake</application> you should have not trouble compiling it.
 Should you run into problems please report them to the KDE mailing lists.</para>
  
 </sect1>         
@@ -75,40 +104,45 @@ Should you run into problems please report them to the KDE mailing lists.</para>
 
 <chapter id="Howtoplay">
 <title>How to play</title>
-<para>You have to use the mouse and its three buttons (with two-buttonned mouses,
-clicking the middle button is generally achieved by simultaneously pressing
-the left and the right buttons) to uncover or to flag the cases. Here are the
-details :</para>
-<para><itemizedlist>
-<listitem>
-<para>The left button will uncover a case. If there is a bomb below that case, the bomb will explode, and the game will be over </para>
-<para>If there is not a bomb under the case, a number will appear.  That is the number of neighboring cases that do have bombs under them.  Which ones you ask?  Thats the point of the game.</para><para>For each box (excluding edge and corner boxes), there are 8 neighboring boxes.  </para>
-<para>If none of the neighboring boxes has a bomb, then a blank will be shown under the case, and all neighboring boxes will be automatically uncovered.</para>
 
-<note><para> Left clicking
-a flagged case is secure and does nothing.
-</para></note>
-</listitem>
-<listitem>
-<para>The right-button will mark a case as containing a mine (draw a
-red flag) or, if the option is set, as being uncertain (draw a question mark).
-The uncertain tag can be useful when you are puzzled about the positions of
-mines.
-</para>
-</listitem>
-<listitem>
-<para>The middle-button will clear the surrounding cases if
-there is the right number of cases already flagged. It is very
-useful since it is much quicker than uncovering all individual cases. </para>
-<warning><para>If your flags are not properly positionned, you will explode on a bomb.</para></warning>
-</listitem>
-<listitem>
-<para>Pressing the <emphasis>yellow smiley</emphasis> will start a new game.</para>
-</listitem>
+<para>You have to use the mouse and its three buttons (with two-buttoned mouses,
+clicking the middle button is generally achieved by simultaneously pressing
+the <mousebutton>left</mousebutton> and the <mousebutton>right</mousebutton>
+buttons) to uncover or to flag the cases. Here are the details :</para>
+
+<itemizedlist>
+<listitem><para>The left button will uncover a case. If there is a bomb below
+that case, the bomb will explode, and the game will be over </para>
+<para>If there is not a bomb under the case, a number will appear.  That is the
+number of neighboring cases that do have bombs under them.  Which ones you ask?
+Thats the point of the game.</para>
+<para>For each box (excluding edge and cornerboxes), there are 8 neighboring
+boxes.</para>
+<para>If none of the neighboring boxes has a bomb, then a blank will be shown
+under the case, and all neighboring boxes will be automatically
+uncovered.</para>
+<note><para><mousebutton>Left</mousebutton> clicking a flagged case is secure
+and does nothing.</para></note></listitem>
+<listitem><para>The <mousebutton>right</mousebutton> button will mark a case as
+containing a mine (draw a red flag) or, if the option is set, as being uncertain
+(draw a question mark). The uncertain tag can be useful when you are puzzled
+about the positions of mines.</para></listitem>
+<listitem><para>The <mousebutton>middle</mousebutton> button will clear the
+surrounding cases if there is the right number of cases already flagged. It is
+very useful since it is much quicker than uncovering all individual
+cases. </para>
+<warning><para>If your flags are not properly positionned, you will explode on a
+bomb.</para></warning></listitem>
+<listitem><para>Pressing the <guiicon>yellow smiley</guiicon> will start a new
+game.</para></listitem>
 </itemizedlist>
-</para>
-<note><para>These are the default settings.  The mouse buttons can be reprogramed. For more information, see the section entitled <link linkend="prefs">Game Options</link>.</para></note>
+
+<note><para>These are the default settings.  The mouse buttons can be
+reprogramed. For more information, see the section entitled <link
+linkend="prefs">Game Options</link>.</para></note>
+
 <sect1 id="screen"><title>The KMines Screen</title>
+
 <screenshot>
 <screeninfo>The KMines Screen</screeninfo>
 <mediaobject>
@@ -117,60 +151,132 @@ useful since it is much quicker than uncovering all individual cases. </para>
 </screenshot>   
 
 <para>The &kapp; screen consists of:</para>
+
 <itemizedlist>
-<listitem><para>A Box showing you the number of mines still left to be marked.  Everytime you flag a bomb site, this number will decrease by one.</para><note><para>This box does not determine if you are right or wrong, but only how many mines you need to theoretically mark before you are done with this game.</para></note><para>In this example, there are 10 mines to be marked.</para></listitem>
-<listitem><para>A Yellow Smiley Face.  Clicking this will start a new game.  If you loose the game, it will become a frown.</para></listitem>
-<listitem><para>The box on the right, shows how much time this round has taken.  The shortest time for each level, gets to list their name as the high score.</para></listitem>
-<listitem><para>The playing area.  This will vary in size depending on the difficulty level of the game.  In this example, it consists of 64 boxes (one of which is uncovered as a "2".  This is where you play the game.</para></listitem>
-<listitem><para>A status line at the bottom of the window.  In this example, it simply says "Playing".</para></listitem>
+<listitem><para>A Box showing you the number of mines still left to be marked.
+Everytime you flag a bomb site, this number will decrease by one.</para>
+<note><para>This box does not determine if you are right or wrong, but only how
+many mines you need to theoretically mark before you are done with this
+game.</para></note>
+<para>In this example, there are 10 mines to be marked.</para></listitem>
+<listitem><para>A Yellow Smiley Face.  Clicking this will start a new game.  If
+you loose the game, it will become a frown.</para></listitem>
+<listitem><para>The box on the right, shows how much time this round has taken.
+The shortest time for each level, gets to list their name as the high
+score.</para></listitem>
+<listitem><para>The playing area.  This will vary in size depending on the
+difficulty level of the game.  In this example, it consists of 64 boxes (one of
+which is uncovered as a "2".  This is where you play the game.</para></listitem>
+<listitem><para>A status line at the bottom of the window.  In this example, it
+simply says "Playing".</para></listitem>
 </itemizedlist>
 </sect1>
 </chapter>
+
 <chapter id="prefs"><title>Game options</title>
 <para>The options to &kapp; are set by selecting <menuchoice>
+<guimenu>Settings</guimenu> <guimenuitem>Preferences</guimenuitem> </menuchoice>
+from the menubar.  This will bring up a dialog box.</para>
 
-<guimenu>Settings</guimenu>
-<guimenuitem>Preferences</guimenuitem> </menuchoice> from the menubar.  This will bring up a dialog box.</para>
 <screenshot>
 <screeninfo>&kapp; Preferences</screeninfo>
 <mediaobject>
 <imageobject><imagedata fileref="kmines2.png" format="png"></imageobject>
 </mediaobject>
-</screenshot>   <para></para>
+</screenshot>  
+
 <para>This dialog box is divided into two tabs.</para>
-<para><emphasis>Main settings</emphasis></para>
-<para>The top option, entitled case size, determines the size of each of the squares in the playing area.  By default, they are set small.  You can increase the size, if you are working on a very high resolution monitor.</para>
-<para>The next option down, labled "Enable ? Mark", determines whether you can mark squares as "questionable".  If there is a mark in front of this option, then right clicking the mouse will first cause a case to be flaged. If you click again on the same square, the flag will change to a "?", to indicate you don't know if there is a bomb there or not.  If you click again, the square will change back to blank.</para>
-<para>If there is not a mark in front of this option, the first right mouse click will change the case to a red flag.  The second will make it blank again.  Thus skipping the ? symbol.</para>
-<para>The next option down, labled "Enable keyboard", determins if the keyboard shortcuts will work while playing the game.</para>
-<note><para>The only keyboard shortcuts affected, are those responsible for playing the game.  Keyboard commands such as "New Game", and "Quit", still work, reguardless of this option.</para></note>
-<para>The last section of this tab, allows you to change the action of each of the three mouse buttons.  Your options are:</para>
+
 <variablelist>
-<varlistentry><term>Reveal</term>
-<listitem><para>This will reveal the contents of the case.  If there is no bomb, then a number will appear.  If there is a bomb under that case, then the bomb will explode, and the game will be over.</para></listitem>
+<varlistentry>
+<term><guilabel>Main settings</guilabel></term>
+<listitem><para>The top option, entitled <guilabel>case size</guilabel>,
+determines the size of each of the squares in the playing area.  By default,
+they are set small.  You can increase the size, if you are working on a very
+high resolution monitor.</para> 
+
+<para>The next option down, labled "<guilabel>Enable ? Mark</guilabel>",
+determines whether you can mark squares as "questionable".  If there is a mark
+in front of this option, then right clicking the mouse will first cause a case
+to be flaged. If you click again on the same square, the flag will change to a
+"?", to indicate you don't know if there is a bomb there or not.  If you click
+again, the square will change back to blank.</para>
+
+<para>If there is not a mark in front of this option, the first right mouse
+click will change the case to a red flag.  The second will make it blank again,
+thus skipping the ? symbol.</para>
+
+<para>The next option down, labelled "<guilabel>Enable keyboard</guilabel>",
+determins if the keyboard shortcuts will work while playing the game.</para>
+
+<note><para>The only keyboard shortcuts affected, are those responsible for
+playing the game.  Keyboard commands such as "<guimenuitem>New
+Game</guimenuitem>", and "<guimenuitem>Quit</guimenuitem>", still
+work, regardless of this option.</para></note>
+
+<para>The last section of this tab, allows you to change the action of each of
+the three mouse buttons.  Your options are:</para>
+
+<variablelist>
+<varlistentry>
+<term>Reveal</term>
+<listitem><para>This will reveal the contents of the case.  If there is no bomb,
+then a number will appear.  If there is a bomb under that case, then the bomb
+will explode, and the game will be over.</para></listitem>
 </varlistentry>
-<varlistentry><term>Toggle Mark</term>
-<listitem><para>Clicking with this button on a case, will mark/unmark with a red flag.</para></listitem>
+<varlistentry>
+<term>Toggle Mark</term>
+<listitem><para>Clicking with this button on a case, will mark/unmark with a red
+flag.</para></listitem>
 </varlistentry>
-<varlistentry><term>Autoreveal</term>
-<listitem><para>Clicking on a case with this button, will automatically reveal all neighboring cases, that are not marked with red flags.  If one of those neighboring cases has a bomb under it, the bomb will explode, and the game will be over.</para></listitem>
+<varlistentry>
+<term>Autoreveal</term>
+<listitem><para>Clicking on a case with this button, will automatically reveal
+all neighboring cases, that are not marked with red flags.  If one of those
+neighboring cases has a bomb under it, the bomb will explode, and the game will
+be over.</para></listitem>
 </varlistentry>
-<varlistentry><term>Toggle ? Mark</term>
-<listitem><para>Clicking with this button on a case, will mark/unmark with a question mark.</para></listitem>
+<varlistentry>
+<term>Toggle ? Mark</term>
+<listitem><para>Clicking with this button on a case, will mark/unmark with a
+question mark.</para></listitem>
 </varlistentry>
 </variablelist>
-<para><emphasis>Color Settings</emphasis></para>
-<para>This dialog box will allow you to adjust the color of the kmines screen.  To adjust, simply click the color button beside each description, and select the new color.</para>
-<para><emphasis>Saving your changes</emphasis></para>
-<para>Once your changes are complete, click "OK" to make them permenant.</para>
-<para>If you want to abandon your changes, click "Cancel" to abort the changes.</para>
-<para>If you click on "Default", the default settings will be restored.  Click "OK" to make these default changes permenant, or edit the settings some more.</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term><guilabel>Color Settings</guilabel></term>
+<listitem><para>This dialog box will allow you to adjust the color of the kmines
+screen.  To adjust, simply click the color button beside each description, and
+select the new color.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>Saving your changes</term>
+<listitem><para>Once your changes are complete, click
+"<guibutton>OK</guibutton>" to make them permenant.</para>
+<para>If you want to abandon your changes, click "<guibutton>Cancel</guibutton>"
+to abort the changes.</para>
+<para>If you click on "<guilabel>Default</guilabel>", the default settings will
+be restored.  Click "<guilabel>OK</guilabel>" to make these default changes
+permenant, or edit the settings some more.</para>
+</listitem>
+</varlistentry>
+</variablelist>
+
+
 </chapter>
 
-<chapter id="command"><title>Commands/Keyboard Shortcuts</title>
+<chapter id="command">
+<title>Commands/Keyboard Shortcuts</title>
+
 <para>The following sections briefly describe each menubar option.</para>
-<sect1 id="game-menu"><title>Game Menu</title><para>
-The Game menu consists of 5 options.<variablelist>
+
+<sect1 id="game-menu">
+<title><guimenu>Game Menu</guimenu></title>
+
+<para>The <guimenu>Game menu</guimenu> consists of 5 options.</para>
+
+<variablelist>
 <varlistentry>
 <term><menuchoice>
 <shortcut>
@@ -187,7 +293,8 @@ The Game menu consists of 5 options.<variablelist>
 </shortcut>
 <guimenu>Game</guimenu>
 <guimenuitem>High Scores.</guimenuitem> </menuchoice></term>
-<listitem><para>This shows you the high score (the shortest time) for each difficulty level.</para></listitem>
+<listitem><para>This shows you the high score (the shortest time) for each
+difficulty level.</para></listitem>
 </varlistentry>
 <varlistentry>
 <term><menuchoice>
@@ -196,7 +303,9 @@ The Game menu consists of 5 options.<variablelist>
 </shortcut>
 <guimenu>Game</guimenu>
 <guimenuitem>Pause</guimenuitem> </menuchoice></term>
-<listitem><para>Pauses the game.  This will hide the board (no cheating), and give you a button to press when you want to continue this game.</para></listitem>
+<listitem><para>Pauses the game.  This will hide the board (no cheating), and
+give you a button to press when you want to continue this
+game.</para></listitem>
 </varlistentry>
 <varlistentry>
 <term><menuchoice>
@@ -217,15 +326,20 @@ The Game menu consists of 5 options.<variablelist>
 <listitem><para><action>Quits</action> &kapp;</para></listitem>
 </varlistentry>
 </variablelist>
-</para></sect1>
+</sect1>
+
 <sect1 id="settings-menu"><title>Settings Menu</title>
 <variablelist>
 <varlistentry>
 <term><menuchoice>
 <guimenu>Settings</guimenu>
 <guimenuitem>Show Menubar</guimenuitem> </menuchoice></term>
-<listitem><para>If there is a check in front of this option, then the menubar will be visible.  Selecting this option, hides the menubar.</para>
-<note><para>To restore a hidden menubar, click outside the game play area, with the right mouse button.  This will bring up a small submenu.  Simply select "Show Menubar" from this submenu, and the menubar will be visible again.</para></note></listitem>
+<listitem><para>If there is a check in front of this option, then the menubar
+will be visible.  Selecting this option, hides the menubar.</para>
+<note><para>To restore a hidden menubar, click outside the game play area, with
+the right mouse button.  This will bring up a small submenu.  Simply select
+"<guimenuitem>Show Menubar</guimenuitem>" from this submenu, and the menubar
+will be visible again.</para></note></listitem>
 </varlistentry>
 <varlistentry>
 <term><menuchoice>
@@ -236,10 +350,11 @@ The Game menu consists of 5 options.<variablelist>
 </varlistentry>
 <varlistentry>
 <term><menuchoice>
-
 <guimenu>Settings</guimenu>
 <guimenuitem>Preferences</guimenuitem> </menuchoice></term>
-<listitem><para>Allows you to adjust game options.  For more detailed information, see the section entitled <link linkend="prefs">Game Options</link>.</para></listitem>
+<listitem><para>Allows you to adjust game options.  For more detailed
+information, see the section entitled <link linkend="prefs">Game
+Options</link>.</para></listitem>
 </varlistentry>
 <varlistentry>
 <term><menuchoice>
@@ -249,20 +364,28 @@ The Game menu consists of 5 options.<variablelist>
 <guimenu>Settings</guimenu>
 <guimenuitem>Level</guimenuitem> </menuchoice></term>
 <listitem><para>Lets you set the difficulty level from a submenu.</para>
-<para>There are three default levels of difficulty: Easy (64 boxes, 10 mines), Normal (256 boxes, 40 mines), and Expert (480 boxes, 99 mines).  There is also a custom level settings.</para>
-<para>If you select "Custom", a small dialog box will appear, that will allow you to adjust Width (number of boxes across), Height (number of boxes up and down), and number of mines, using slider bars, or directly entering them into the text boxes.</para>
-</listitem>
+<para>There are three default levels of difficulty: Easy (64 boxes, 10 mines),
+Normal (256 boxes, 40 mines), and Expert (480 boxes, 99 mines).  There is also a
+custom level settings.</para>
+<para>If you select "<guimenuitem>Custom</guimenuitem>", a small dialog box will
+appear, that will allow you to adjust Width (number of boxes across), Height
+(number of boxes up and down), and number of mines, using slider bars, or
+directly entering them into the text boxes.</para></listitem>
 </varlistentry>
 </variablelist>
 </sect1>
-<sect1 id="help-menu"><title>Help Menu</title><para></para>
+
+<sect1 id="help-menu">
+<title>Help Menu</title>
+
 <variablelist>
 <varlistentry>
 <term><anchor id="contents"><menuchoice>
 <shortcut><keycombo><keycap>F1</keycap></keycombo></shortcut>
 <guimenu>Help</guimenu><guimenuitem>Contents</guimenuitem></menuchoice></term>
 <listitem>
-<para>This invokes the KDE help system starting at the &kapp; help pages (this document).</para>
+<para>This invokes the KDE help system starting at the &kapp; help pages (this
+document).</para>
 </listitem>
 </varlistentry>
 
@@ -270,22 +393,20 @@ The Game menu consists of 5 options.<variablelist>
 <term><anchor id="bug"><menuchoice>
 <shortcut><keycombo><keycap>Shift</keycap><keycap>F1</keycap></keycombo></shortcut>
 <guimenu>Help</guimenu><guimenuitem>What's This?</guimenuitem></menuchoice></term>
-<listitem>
-<para>This changes the mouse cursor to a combination arrow and question mark.  Clicking on items within
-&kapp; with this arrow will open a help window (if one exists for the particular item) explaining the
-item's function.</para>
-</listitem>
+<listitem><para>This changes the mouse cursor to a combination arrow and
+question mark.  Clicking on items within &kapp; with this arrow will open a help
+window (if one exists for the particular item) explaining the item's
+function.</para></listitem>
 </varlistentry>
-
 <varlistentry>
 <term><anchor id="whats-this"><menuchoice>
-
 <guimenu>Help</guimenu><guimenuitem>Report Bug...</guimenuitem></menuchoice></term>
 <listitem>
-<para>If you have a good idea for the next version of the game, or the program crashes on you, you can select this option to send a bug report to the author.</para>
+<para>If you have a good idea for the next version of the game, or the program
+crashes on you, you can select this option to send a bug report to the
+author.</para>
 </listitem>
 </varlistentry>
-
 <varlistentry>
 <term><anchor id="about-kmines"><menuchoice>
 <guimenu>Help</guimenu><guimenuitem>About KMines</guimenuitem></menuchoice></term>
@@ -303,8 +424,10 @@ item's function.</para>
 </varlistentry>
 </variablelist>
 </sect1>
+
 <sect1 id="keys"><title>Default Key Bindings</title>
 <para>The following tables show you the default key bindings.</para>
+
 <para><emphasis>Menu bindings</emphasis></para>
 <informaltable frame=all>
 <tgroup cols=2>
@@ -324,9 +447,11 @@ item's function.</para>
 </tbody>
 </tgroup>
 </informaltable>
+
 <para>These key bindings can be changed by selecting <menuchoice>
-<guimenu>Settings</guimenu>
-<guimenuitem>Configure Key Bindings</guimenuitem> </menuchoice> from the menubar.</para>
+<guimenu>Settings</guimenu> <guimenuitem>Configure Key Bindings</guimenuitem>
+</menuchoice> from the menubar.</para>
+
 </sect1>
 
 </chapter>
@@ -342,8 +467,6 @@ Program copyright 1996-2000 Nicolas Hadacek <email>hadacek@kde.org</email></para
 
 &license-links;
 </chapter>                  
-
-
 
 </book>
 <!--
