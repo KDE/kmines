@@ -77,7 +77,7 @@ class CustomConfig : public KConfigWidget, public KMines
 {
  Q_OBJECT
  public:
-	CustomConfig();
+    CustomConfig();
 
     static Level readLevel();
 
@@ -86,7 +86,8 @@ class CustomConfig : public KConfigWidget, public KMines
     void typeChosen(int);
 
  private:
-	KConfigItem *_width, *_height, *_mines;
+    bool _block;
+    KConfigItem *_width, *_height, *_mines;
     KComboBox   *_gameType;
 };
 

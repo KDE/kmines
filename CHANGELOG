@@ -1,3 +1,6 @@
+2.1.7d (30 April 2003) [ KDE 3.1.2 stable]
+ * fix assert in custom dialog [reported by Albert Astals Cid]
+
 2.1.7c (17 January 2003) [ KDE 3.1.1 stable]
  * fix score lcd colors for custom games
 

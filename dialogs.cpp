@@ -109,7 +109,7 @@ void DigitalClock::setCheating()
 
 //-----------------------------------------------------------------------------
 CustomConfig::CustomConfig()
-    : KConfigWidget(i18n("Custom Game"), "configure")
+    : KConfigWidget(i18n("Custom Game"), "configure"),  _block(false)
 {
 	QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
 
@@ -147,6 +147,7 @@ CustomConfig::CustomConfig()
 
 void CustomConfig::updateNbMines()
 {
+    if (_block) return;
     Level l(_width->value().toUInt(), _height->value().toUInt(),
             _mines->value().toUInt());
 	static_cast<KRangedConfigItem *>(_mines)
@@ -158,12 +159,12 @@ void CustomConfig::updateNbMines()
 
 void CustomConfig::typeChosen(int i)
 {
-    blockSignals(true);
+    _block = true;
     Level level((Level::Type)i);
     _width->setValue(level.width());
     _height->setValue(level.height());
     _mines->setValue(level.nbMines());
-    blockSignals(false);
+    _block = false;
     updateNbMines();
 }
 
