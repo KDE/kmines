@@ -347,7 +347,9 @@ void PlayerInfos::submitScore(const Score &score) const
     }
 
     // update best score
-    if ( score.score()>item("best score")->read(_id).toUInt() ) {
+    Score best = score;
+    best.setData("score", item("best score")->read(_id).toUInt());
+    if ( best<score ) {
         item("best score")->write(_id, score.score());
         item("date")->write(_id, score.data("date").toDateTime());
     }

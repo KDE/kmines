@@ -69,7 +69,7 @@ class Item
      * </ul>
      */
     enum Special { NoSpecial, ZeroNotDefined, NegativeNotDefined,
-                   Anonymous };
+                   DefaultNotDefined, Anonymous };
 
     /**
      * Constructor.
@@ -166,12 +166,12 @@ class MeanScoreItem : public Item
 };
 
 /**
- * @ref Item for the best highscore. 0 is shown as "--".
+ * @ref Item for the best highscore. worstScore is shown as "--".
  */
 class BestScoreItem : public Item
 {
  public:
-    BestScoreItem();
+    BestScoreItem(uint worstScore = 0);
 };
 
 //-----------------------------------------------------------------------------

@@ -80,6 +80,8 @@ void Item::setPrettySpecial(Special special)
     case NegativeNotDefined:
         Q_ASSERT(bnum && !buint);
         break;
+    case DefaultNotDefined:
+        break;
     case Anonymous:
         Q_ASSERT( _default.type()==QVariant::String );
         break;
@@ -106,6 +108,9 @@ QString Item::pretty(uint, const QVariant &value) const
         break;
     case NegativeNotDefined:
         if ( value.toInt()<0 ) return "--";
+        break;
+    case DefaultNotDefined:
+        if ( value==_default ) return "--";
         break;
     case Anonymous:
         if ( value.toString()==ItemContainer::ANONYMOUS )
@@ -144,10 +149,10 @@ MeanScoreItem::MeanScoreItem()
     setPrettySpecial(ZeroNotDefined);
 }
 
-BestScoreItem::BestScoreItem()
-    : Item((uint)0, i18n("Best Score"), Qt::AlignRight)
+BestScoreItem::BestScoreItem(uint worstScore)
+    : Item(worstScore, i18n("Best Score"), Qt::AlignRight)
 {
-    setPrettySpecial(ZeroNotDefined);
+    setPrettySpecial(DefaultNotDefined);
 }
 
 //-----------------------------------------------------------------------------
