@@ -334,7 +334,7 @@ class Square : public Generic<Type>, public SquareBase
                     bool insideOnly = true, bool directOnly = false) const {
         for (uint i=0; i<(directOnly ? LeftUp : Nb_Neighbour); i++) {
             Coord n = neighbour(c, (Neighbour)i);
-            if ( insideOnly && !inside(n) ) continue;
+            if ( insideOnly && !Generic<Type>::inside(n) ) continue;
             neighbours.insert(n);
         }
     }
@@ -347,13 +347,13 @@ class Square : public Generic<Type>, public SquareBase
     Coord toEdge(const Coord &c, Neighbour n) const {
         switch (n) {
         case Left:      return Coord(0, c.second);
-        case Right:     return Coord(width()-1, c.second);
+        case Right:     return Coord(Generic<Type>::width()-1, c.second);
         case Up:        return Coord(c.first, 0);
-        case Down:      return Coord(c.first, height()-1);
+        case Down:      return Coord(c.first, Generic<Type>::height()-1);
         case LeftUp:    return Coord(0, 0);
-        case LeftDown:  return Coord(0, height()-1);
-        case RightUp:   return Coord(width()-1, 0);
-        case RightDown: return Coord(width()-1, height()-1);
+        case LeftDown:  return Coord(0, Generic<Type>::height()-1);
+        case RightUp:   return Coord(Generic<Type>::width()-1, 0);
+        case RightDown: return Coord(Generic<Type>::width()-1, Generic<Type>::height()-1);
         }
         return c;
     }
@@ -447,7 +447,7 @@ class Hexagonal : public Generic<Type>, public HexagonalBase
                     bool insideOnly = true, bool = false) const {
         for (uint i=0; i<Nb_Neighbour; i++) {
             Coord n = neighbour(c, (Neighbour)i);
-            if ( insideOnly && !inside(n) ) continue;
+            if ( insideOnly && !Generic<Type>::inside(n) ) continue;
             neighbours.insert(n);
         }
     }
