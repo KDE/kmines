@@ -19,24 +19,22 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include <kmainwindow.h>
+#include "kzoommainwindow.h"
 
 #include "defines.h"
-
 
 class KAction;
 class KToggleAction;
 class KSelectAction;
 class Status;
 
-class MainWidget : public KMainWindow, public KMines
+class MainWidget : public KZoomMainWindow, public KMines
 {
  Q_OBJECT
  public:
      MainWidget();
 
  private slots:
-    void toggleMenubar();
     void configureKeys();
     void configureSettings();
     void configureNotifications();
@@ -47,13 +45,12 @@ class MainWidget : public KMainWindow, public KMines
     void pause();
 
  protected:
-	bool eventFilter(QObject *, QEvent *);
-    void focusOutEvent(QFocusEvent *);
-    bool queryExit();
+    virtual void focusOutEvent(QFocusEvent *);
+    virtual bool queryExit();
 
  private:
-	Status            *_status;
-    KToggleAction     *_menu, *_pause;
+    Status            *_status;
+    KToggleAction     *_pause;
     KSelectAction     *_levels;
     KAction           *_advise, *_solve;
     KActionCollection *_keybCollection;
@@ -66,7 +63,11 @@ class MainWidget : public KMainWindow, public KMines
     enum Key { NB_KEYS = 11 };
     static const KeyData KEY_DATA[NB_KEYS];
 
-	void readSettings();
+    void readSettings();
+    virtual void writeZoomSetting(uint zoom);
+    virtual uint readZoomSetting() const;
+    virtual void writeMenubarVisibleSetting(bool visible);
+    virtual bool menubarVisibleSetting() const;
 };
 
 #endif

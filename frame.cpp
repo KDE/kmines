@@ -34,14 +34,12 @@ FieldFrame::FieldFrame(QWidget *parent)
 	setMidLineWidth(2);
 }
 
-void FieldFrame::readSettings()
+void FieldFrame::adjustSize()
 {
-    _caseSize = Settings::caseSize();
-
-    _button.resize(_caseSize, _caseSize);
+    setFixedSize(sizeHint());
+    _button.resize(Settings::caseSize(), Settings::caseSize());
 
     QBitmap mask;
-
     for (uint i=0; i<Nb_Pixmap_Types; i++) {
         drawPixmap(mask, (PixmapType)i, true);
         drawPixmap(_pixmaps[i], (PixmapType)i, false);
@@ -54,14 +52,14 @@ void FieldFrame::readSettings()
     }
 
     QFont f = font();
-	f.setPointSize(_caseSize-6);
-	f.setBold(true);
-	setFont(f);
+    f.setPointSize(QMAX(1, Settings::caseSize()-6));
+    f.setBold(true);
+    setFont(f);
 }
 
 void FieldFrame::initPixmap(QPixmap &pix, bool mask) const
 {
-    pix.resize(_caseSize, _caseSize);
+    pix.resize(Settings::caseSize(), Settings::caseSize());
     if (mask) pix.fill(color0);
 }
 

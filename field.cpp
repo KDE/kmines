@@ -55,28 +55,19 @@ void Field::readSettings()
         drawCase(p, _cursor);
     }
     if ( Settings::magicReveal() ) emit setCheating();
-
-    FieldFrame::readSettings();
-    updateGeometry();
-    emit setMood(Normal); // #### necessary to correctly resize the widget !!!
 }
 
 QSize Field::sizeHint() const
 {
-	return QSize(2*frameWidth() + _level.width()*caseSize(),
-				 2*frameWidth() + _level.height()*caseSize());
-}
-
-QSizePolicy Field::sizePolicy() const
-{
-	return QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+  return QSize(2*frameWidth() + _level.width()*Settings::caseSize(),
+               2*frameWidth() + _level.height()*Settings::caseSize());
 }
 
 void Field::setLevel(const Level &level)
 {
     _level = level;
-    updateGeometry();
     reset(false);
+    adjustSize();
 }
 
 void Field::setReplayField(const QString &field)
@@ -132,15 +123,15 @@ void Field::changeCase(const Coord &p, CaseState newState)
 QPoint Field::toPoint(const Coord &p) const
 {
     QPoint qp;
-    qp.setX( p.first*caseSize() + frameWidth() );
-    qp.setY( p.second*caseSize() + frameWidth() );
+    qp.setX( p.first*Settings::caseSize() + frameWidth() );
+    qp.setY( p.second*Settings::caseSize() + frameWidth() );
     return qp;
 }
 
 Coord Field::fromPoint(const QPoint &qp) const
 {
-	double i = (double)(qp.x() - frameWidth()) / caseSize();
-    double j = (double)(qp.y() - frameWidth()) / caseSize();
+	double i = (double)(qp.x() - frameWidth()) / Settings::caseSize();
+    double j = (double)(qp.y() - frameWidth()) / Settings::caseSize();
     return Coord((int)floor(i), (int)floor(j));
 }
 

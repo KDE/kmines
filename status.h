@@ -23,7 +23,6 @@
 
 #include "field.h"
 
-
 class Smiley;
 class KGameLCD;
 class DigitalClock;
@@ -35,11 +34,12 @@ class Status : public QWidget, public KMines
 {
  Q_OBJECT
  public :
-	Status(QWidget *parent);
+    Status(QWidget *parent);
 
-	const Level &currentLevel() const { return field->level(); }
-    bool isPlaying() const            { return field->gameState()==Playing; }
+    const Level &currentLevel() const { return _field->level(); }
+    bool isPlaying() const            { return _field->gameState()==Playing; }
     void settingsChanged();
+    Field *field() { return _field; }
 
     bool checkBlackMark();
 
@@ -50,20 +50,20 @@ class Status : public QWidget, public KMines
  public slots:
     void newGame(int type);
 	void restartGame();
-	void update(bool);
-	void pauseGame()     { field->pause(); }
+	void updateStatus(bool);
+    void pauseGame()     { _field->pause(); }
 
-	void moveUp()        { field->moveCursor(KGrid2D::SquareBase::Up); }
-	void moveDown()      { field->moveCursor(KGrid2D::SquareBase::Down); }
-	void moveLeft()      { field->moveCursor(KGrid2D::SquareBase::Left); }
-	void moveRight()     { field->moveCursor(KGrid2D::SquareBase::Right); }
-    void moveLeftEdge()  { field->moveToEdge(KGrid2D::SquareBase::Left); }
-    void moveRightEdge() { field->moveToEdge(KGrid2D::SquareBase::Right); }
-    void moveTop()       { field->moveToEdge(KGrid2D::SquareBase::Up); }
-    void moveBottom()    { field->moveToEdge(KGrid2D::SquareBase::Down); }
-	void reveal()        { field->doReveal(); }
-	void mark()          { field->doMark(); }
-	void autoReveal()    { field->keyboardAutoReveal(); }
+    void moveUp()        { _field->moveCursor(KGrid2D::SquareBase::Up); }
+    void moveDown()      { _field->moveCursor(KGrid2D::SquareBase::Down); }
+    void moveLeft()      { _field->moveCursor(KGrid2D::SquareBase::Left); }
+    void moveRight()     { _field->moveCursor(KGrid2D::SquareBase::Right); }
+    void moveLeftEdge()  { _field->moveToEdge(KGrid2D::SquareBase::Left); }
+    void moveRightEdge() { _field->moveToEdge(KGrid2D::SquareBase::Right); }
+    void moveTop()       { _field->moveToEdge(KGrid2D::SquareBase::Up); }
+    void moveBottom()    { _field->moveToEdge(KGrid2D::SquareBase::Down); }
+    void reveal()        { _field->doReveal(); }
+    void mark()          { _field->doMark(); }
+    void autoReveal()    { _field->keyboardAutoReveal(); }
 
     void advise();
     void solve();
@@ -83,7 +83,7 @@ class Status : public QWidget, public KMines
     void replayStep();
 
  private:
-	Field        *field;
+	Field        *_field;
     QWidget      *_fieldContainer, *_resumeContainer;
     QWidgetStack *_stack;
 

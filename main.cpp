@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996-2002 Nicolas HADACEK (hadacek@kde.org)
+ * Copyright (c) 1996-2004 Nicolas HADACEK (hadacek@kde.org)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,11 +26,9 @@
 #include <klocale.h>
 #include <kcmdlineargs.h>
 #include <kaboutdata.h>
-#include <kmenubar.h>
 #include <kstdaction.h>
 #include <kkeydialog.h>
 #include <kstdgameaction.h>
-#include <kcmenumngr.h>
 #include <kaction.h>
 #include <kdebug.h>
 #include <knotifyclient.h>
@@ -60,13 +58,13 @@ const MainWidget::KeyData MainWidget::KEY_DATA[NB_KEYS] = {
 
 
 MainWidget::MainWidget()
+  : KZoomMainWindow(4, 100, 1, "kmines")
 {
     KNotifyClient::startDaemon();
-	installEventFilter(this);
 
-	_status = new Status(this);
-	connect(_status, SIGNAL(gameStateChangedSignal(KMines::GameState)),
-			SLOT(gameStateChanged(KMines::GameState)));
+    _status = new Status(this);
+    connect(_status, SIGNAL(gameStateChangedSignal(KMines::GameState)),
+            SLOT(gameStateChanged(KMines::GameState)));
     connect(_status, SIGNAL(pause()), SLOT(pause()));
 
 	// Game & Popup
@@ -86,8 +84,6 @@ MainWidget::MainWidget()
     }
 
 	// Settings
-	_menu = KStdAction::showMenubar(this, SLOT(toggleMenubar()),
-                                   actionCollection());
 	KStdAction::preferences(this, SLOT(configureSettings()),
                             actionCollection());
 	KStdAction::keyBindings(this, SLOT(configureKeys()), actionCollection());
@@ -126,26 +122,20 @@ MainWidget::MainWidget()
 
 	setupGUI( KMainWindow::Save | Create );
 	readSettings();
-	setCentralWidget(_status);
-
-    QPopupMenu *popup =
-        static_cast<QPopupMenu *>(factory()->container("popup", this));
-    if (popup) KContextMenuManager::insert(this, popup);
+        setCentralWidget(_status);
+        init("popup");
+        addWidget(_status->field());
 }
 
 bool MainWidget::queryExit()
 {
     _status->checkBlackMark();
-    Settings::setMenubarVisible(_menu->isChecked());
-    Settings::writeConfig();
-    return true;
+    return KZoomMainWindow::queryExit();
 }
 
 void MainWidget::readSettings()
 {
     settingsChanged();
-    _menu->setChecked( Settings::menubarVisible() );
-    toggleMenubar();
     Level::Type type = (Level::Type) Settings::level();
     _levels->setCurrentItem(type);
     _status->newGame(type);
@@ -156,26 +146,11 @@ void MainWidget::showHighscores()
     KExtHighscore::show(this);
 }
 
-bool MainWidget::eventFilter(QObject *, QEvent *e)
-{
-    if ( e->type()==QEvent::LayoutHint )
-		setFixedSize(minimumSize()); // because QMainWindow and KMainWindow
-		                             // do not manage fixed central widget and
-		                             // hidden menubar ...
-    return false;
-}
-
 void MainWidget::focusOutEvent(QFocusEvent *e)
 {
     if ( Settings::pauseFocus() && e->reason()==QFocusEvent::ActiveWindow
           && _status->isPlaying() ) pause();
     KMainWindow::focusOutEvent(e);
-}
-
-void MainWidget::toggleMenubar()
-{
-    if ( _menu->isChecked() ) menuBar()->show();
-    else menuBar()->hide();
 }
 
 void MainWidget::configureSettings()
@@ -188,7 +163,7 @@ void MainWidget::configureSettings()
     dialog->addPage(new AppearanceConfig, i18n("Appearance"), "style");
     CustomConfig *cc = new CustomConfig;
     dialog->addPage(cc, i18n("Custom Game"), "package_settings");
-    connect(dialog, SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
+    connect(dialog, SIGNAL(settingsChanged()), SLOT(settingsChanged()));
     dialog->show();
     cc->init();
     gc->init();
@@ -206,7 +181,6 @@ void MainWidget::settingsChanged()
     QValueList<KAction *>::Iterator it;
     for (it = list.begin(); it!=list.end(); ++it)
         (*it)->setEnabled(enabled);
-
     _status->settingsChanged();
 }
 
@@ -232,6 +206,28 @@ void MainWidget::gameStateChanged(KMines::GameState state)
 void MainWidget::pause()
 {
     _pause->activate();
+}
+
+void MainWidget::writeZoomSetting(uint zoom)
+{
+  Settings::setCaseSize(zoom);
+  Settings::writeConfig();
+}
+
+uint MainWidget::readZoomSetting() const
+{
+  return Settings::caseSize();
+}
+
+void MainWidget::writeMenubarVisibleSetting(bool visible)
+{
+  Settings::setMenubarVisible(visible);
+  Settings::writeConfig();
+}
+
+bool MainWidget::menubarVisibleSetting() const
+{
+  return Settings::menubarVisible();
 }
 
 //----------------------------------------------------------------------------

@@ -3,5 +3,5 @@ File=kmines.kcfg
 IncludeFiles=defines.h
 ClassName=Settings
 Singleton=true
-Mutators=level,MenubarVisible
+Mutators=level,MenubarVisible,CaseSize
 CustomAdditions=true

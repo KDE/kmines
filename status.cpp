@@ -46,7 +46,7 @@
 
 
 Status::Status(QWidget *parent)
-    : QWidget(parent, "status"), _oldLevel(Level::Easy)
+  : QWidget(parent, "status"), _oldLevel(Level::Easy)
 {
     _timer  = new QTimer(this);
     connect(_timer, SIGNAL(timeout()), SLOT(replayStep()));
@@ -56,7 +56,6 @@ Status::Status(QWidget *parent)
 
 // top layout
 	QGridLayout *top = new QGridLayout(this, 2, 5, 10, 10);
-    top->setResizeMode(QLayout::Fixed);
     top->setColStretch(1, 1);
     top->setColStretch(3, 1);
 
@@ -91,17 +90,17 @@ Status::Status(QWidget *parent)
 // mines field
     _fieldContainer = new QWidget(this);
     QGridLayout *g = new QGridLayout(_fieldContainer, 1, 1);
-    field = new Field(_fieldContainer);
-    field->readSettings();
-    g->addWidget(field, 0, 0, AlignCenter);
-	connect( field, SIGNAL(updateStatus(bool)), SLOT(update(bool)) );
-	connect(field, SIGNAL(gameStateChanged(GameState)),
+    _field = new Field(_fieldContainer);
+    _field->readSettings();
+    g->addWidget(_field, 0, 0, AlignCenter);
+	connect( _field, SIGNAL(updateStatus(bool)), SLOT(updateStatus(bool)) );
+	connect(_field, SIGNAL(gameStateChanged(GameState)),
 			SLOT(gameStateChangedSlot(GameState)) );
-    connect(field, SIGNAL(setMood(Mood)), smiley, SLOT(setMood(Mood)));
-    connect(field, SIGNAL(setCheating()), dg, SLOT(setCheating()));
-    connect(field,SIGNAL(addAction(const KGrid2D::Coord &, Field::ActionType)),
+    connect(_field, SIGNAL(setMood(Mood)), smiley, SLOT(setMood(Mood)));
+    connect(_field, SIGNAL(setCheating()), dg, SLOT(setCheating()));
+    connect(_field,SIGNAL(addAction(const KGrid2D::Coord &, Field::ActionType)),
             SLOT(addAction(const KGrid2D::Coord &, Field::ActionType)));
-	QWhatsThis::add(field, i18n("Mines field."));
+	QWhatsThis::add(_field, i18n("Mines field."));
 
 // resume button
     _resumeContainer = new QWidget(this);
@@ -123,13 +122,13 @@ Status::Status(QWidget *parent)
 
 void Status::smileyClicked()
 {
-    if ( field->gameState()==Paused ) emit pause();
+    if ( _field->gameState()==Paused ) emit pause();
     else restartGame();
 }
 
 void Status::newGame(int t)
 {
-    if ( field->gameState()==Paused ) emit pause();
+    if ( _field->gameState()==Paused ) emit pause();
     Level::Type type = (Level::Type)t;
     Settings::setLevel(type);
     if ( type!=Level::Custom ) newGame( Level(type) );
@@ -141,47 +140,47 @@ void Status::newGame(const Level &level)
 	_timer->stop();
     if ( level.type()!=Level::Custom )
         KExtHighscore::setGameType(level.type());
-    field->setLevel(level);
+    _field->setLevel(level);
 }
 
 bool Status::checkBlackMark()
 {
-    bool bm = ( field->gameState()==Playing );
+    bool bm = ( _field->gameState()==Playing );
     if (bm) KExtHighscore::submitScore(KExtHighscore::Lost, this);
     return bm;
 }
 
 void Status::restartGame()
 {
-    if ( field->gameState()==Paused ) emit pause();
-    else if ( field->gameState()==Replaying ) {
+    if ( _field->gameState()==Paused ) emit pause();
+    else if ( _field->gameState()==Replaying ) {
         _timer->stop();
-        field->setLevel(_oldLevel);
+        _field->setLevel(_oldLevel);
     } else {
         bool bm = checkBlackMark();
-        field->reset(bm);
+        _field->reset(bm);
     }
 }
 
 void Status::settingsChanged()
 {
-    field->readSettings();
+    _field->readSettings();
 
     if ( Settings::level()!=Level::Custom ) return;
     Level l = Settings::customLevel();
-    if ( l==field->level() ) return;
-    if ( field->gameState()==Paused ) emit pause();
-    field->setLevel(l);
+    if ( l==_field->level() ) return;
+    if ( _field->gameState()==Paused ) emit pause();
+    newGame(l);
 }
 
-void Status::update(bool mine)
+void Status::updateStatus(bool mine)
 {
-	int r = field->nbMines() - field->nbMarked();
-    QColor color = (r<0 && !field->isSolved() ? red : white);
+	int r = _field->nbMines() - _field->nbMarked();
+    QColor color = (r<0 && !_field->isSolved() ? red : white);
     left->setColor(color);
 	left->display(r);
 
-	if ( field->isSolved() && !mine )
+	if ( _field->isSolved() && !mine )
         gameStateChanged(GameOver, true); // ends only for wins
 }
 
@@ -189,13 +188,13 @@ void Status::setGameOver(bool won)
 {
     if ( !won )
       KNotifyClient::event(winId(), "explosion", i18n("Explosion!"));
-    field->showAllMines(won);
+    _field->showAllMines(won);
     smiley->setMood(won ? Happy : Sad);
-    if ( field->gameState()==Replaying ) return;
+    if ( _field->gameState()==Replaying ) return;
 
-    field->setGameOver();
+    _field->setGameOver();
     dg->stop();
-    if ( field->level().type()!=Level::Custom && !dg->cheating() ) {
+    if ( _field->level().type()!=Level::Custom && !dg->cheating() ) {
         if (won) KExtHighscore::submitScore(dg->score(), this);
         else KExtHighscore::submitScore(KExtHighscore::Lost, this);
     }
@@ -209,33 +208,33 @@ void Status::setGameOver(bool won)
     if ( Settings::magicReveal() )
         _logRoot.setAttribute("complete_reveal", "true");
     QString sa = "none";
-    if ( field->solvingState()==Solved ) sa = "solving";
-    else if ( field->solvingState()==Advised ) sa = "advising";
+    if ( _field->solvingState()==Solved ) sa = "solving";
+    else if ( _field->solvingState()==Advised ) sa = "advising";
     _logRoot.setAttribute("solver", sa);
 
     QDomElement f = _log.createElement("Field");
     _logRoot.appendChild(f);
-    QDomText data = _log.createTextNode(field->string());
+    QDomText data = _log.createTextNode(_field->string());
     f.appendChild(data);
 }
 
 void Status::setStopped()
 {
     smiley->setMood(Normal);
-    update(false);
-    bool custom = ( field->level().type()==Level::Custom );
+    updateStatus(false);
+    bool custom = ( _field->level().type()==Level::Custom );
     dg->reset(custom);
-	field->setSolvingState(Regular);
+	_field->setSolvingState(Regular);
 }
 
 void Status::setPlaying()
 {
     smiley->setMood(Normal);
     dg->start();
-    if ( field->gameState()==Paused ) return; // do not restart game log...
+    if ( _field->gameState()==Paused ) return; // do not restart game log...
 
     // game log
-    const Level &level = field->level();
+    const Level &level = _field->level();
     _log = QDomDocument("kmineslog");
     _logRoot = _log.createElement("kmineslog");
     _logRoot.setAttribute("version", VERSION);
@@ -301,15 +300,15 @@ void Status::advise()
     if ( res==KMessageBox::Cancel ) return;
     dg->setCheating();
     float probability;
-    KGrid2D::Coord c = _solver->advise(*field, probability);
-    field->setAdvised(c, probability);
+    KGrid2D::Coord c = _solver->advise(*_field, probability);
+    _field->setAdvised(c, probability);
 }
 
 void Status::solve()
 {
     dg->setCheating();
-    _solver->solve(*field, false);
-	field->setSolvingState(Solved);
+    _solver->solve(*_field, false);
+	_field->setSolvingState(Solved);
 }
 
 void Status::solvingDone(bool success)
@@ -319,7 +318,7 @@ void Status::solvingDone(bool success)
 
 void Status::solveRate()
 {
-    SolvingRateDialog sd(*field, this);
+    SolvingRateDialog sd(*_field, this);
     sd.exec();
 }
 
@@ -443,9 +442,9 @@ void Status::replayLog()
     uint n = _logRoot.attribute("mines").toUInt();
     Level level(w, h, n);
     QDomNode f = _logRoot.namedItem("Field");
-    _oldLevel = field->level();
+    _oldLevel = _field->level();
     newGame(level);
-    field->setReplayField(f.toElement().text());
+    _field->setReplayField(f.toElement().text());
     QString s = _logRoot.attribute("complete_reveal");
     _completeReveal = ( s=="true" );
 
@@ -471,11 +470,9 @@ void Status::replayStep()
     QString type = a.attribute("type");
     for (uint k=0; k<Field::Nb_Actions; k++)
         if ( type==Field::ACTION_DATA[k].name ) {
-            field->doAction((Field::ActionType)k,
+            _field->doAction((Field::ActionType)k,
                             KGrid2D::Coord(i, j), _completeReveal);
             break;
         }
     _index++;
 }
-
-

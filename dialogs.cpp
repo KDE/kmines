@@ -273,13 +273,6 @@ AppearanceConfig::AppearanceConfig()
 {
     QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
 
-    KIntNumInput *in = new KIntNumInput(this, "kcfg_CaseSize");
-    in->setLabel(i18n("Square size:"));
-    in->setRange(4, 100);
-    top->addWidget(in);
-
-    top->addSpacing(2 * KDialog::spacingHint());
-
     QHBoxLayout *hbox = new QHBoxLayout(top);
     QGrid *grid = new QGrid(2, this);
     grid->setSpacing(KDialog::spacingHint());

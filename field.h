@@ -36,10 +36,9 @@ class Field : public FieldFrame, public BaseField
     static const ActionData ACTION_DATA[Nb_Actions];
 
  public:
-	Field(QWidget *parent);
+    Field(QWidget *parent);
 
-	QSize sizeHint() const;
-	QSizePolicy sizePolicy() const;
+    virtual QSize sizeHint() const;
 
     void setLevel(const Level &level);
     void setReplayField(const QString &field);

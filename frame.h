@@ -25,7 +25,6 @@
 
 #include "defines.h"
 
-
 class QPainter;
 
 class FieldFrame : public QFrame, public KMines
@@ -34,8 +33,6 @@ class FieldFrame : public QFrame, public KMines
     FieldFrame(QWidget *parent);
 
  protected:
-    virtual void readSettings();
-
     enum PixmapType { FlagPixmap = 0, MinePixmap, ExplodedPixmap,
                       ErrorPixmap, Nb_Pixmap_Types,
                       NoPixmap = Nb_Pixmap_Types };
@@ -44,11 +41,9 @@ class FieldFrame : public QFrame, public KMines
     void drawBox(QPainter &, const QPoint &, bool pressed,
                  PixmapType, const QString &text,
                  uint nbMines, int advised, bool hasFocus) const;
-
-    uint caseSize() const { return _caseSize; }
+    virtual void adjustSize();
 
  private:
-    uint           _caseSize;
     QPushButton    _button;
     QPixmap        _pixmaps[Nb_Pixmap_Types];
     QPixmap        _advised[Nb_Advised];

@@ -5,9 +5,9 @@ bin_PROGRAMS       = kmines
 kmines_LDFLAGS     = $(all_libraries) $(KDE_RPATH)
 kmines_LDADD       = ./solver/libsolver.la $(LIB_KDEGAMES)
 kmines_DEPENDENCIES = $(LIB_KDEGAMES_DEP)
-kmines_SOURCES     = defines.cpp highscores.cpp settings.kcfgc \
+kmines_SOURCES     = kzoommainwindow.cpp defines.cpp highscores.cpp settings.kcfgc \
                      dialogs.cpp frame.cpp field.cpp status.cpp main.cpp
-kmines_METASOURCES = dialogs.moc field.moc status.moc main.moc
+kmines_METASOURCES = AUTO
 
 rcdir   = $(kde_datadir)/kmines
 rc_DATA = kminesui.rc

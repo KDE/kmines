@@ -1,6 +1,7 @@
-2.1.9 (31 May 2004) [KDE 3.3 devel]
+2.1.9 (27 Jun 2004) [KDE 3.3 devel]
  * fix compilation of solver debugging code.
  * add missing events
+ * replace case size option by zoom in/zoom out actions
 
 2.1.8c (31 May 2004) [KDE 3.2.3 stable]
  * fix bug: hint not displayed [reported by Daniel Schepler]
