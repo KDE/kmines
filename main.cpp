@@ -41,7 +41,7 @@ MainWidget::MainWidget()
 	KStdAction::openNew(status, SLOT(restartGame()),
 						actionCollection(), "game_new");
 	KAction *action
-		= new KAction(i18n("&Pause game"), Key_P, status, SLOT(pauseGame()),
+		= new KAction(i18n("&Pause"), Key_P, status, SLOT(pauseGame()),
 					  actionCollection(), "game_pause");
 	action->plugAccel(kacc);
 	action = new KAction(i18n("&High scores..."), Key_H,
@@ -195,6 +195,7 @@ int main(int argc, char **argv)
         "(c) 1996-2000, Nicolas Hadacek",
 		0, "http://azhyd.free.fr/KDE/kmines.php3");
     aboutData.addAuthor("Nicolas Hadacek", 0, "hadacek@kde.org");
+	aboutData.addCredit("Andreas Zehender", "Smiley pixmaps");
     KCmdLineArgs::init(argc, argv, &aboutData);
 
     KApplication a;
