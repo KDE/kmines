@@ -24,6 +24,7 @@ class Field : public QFrame
 	void restart(bool repaint = TRUE);
 	void pause();
 	void stop() { _stop = TRUE; }
+	void showMines();
 
 	const Level &level() const { return lev; }
 	
@@ -67,13 +68,13 @@ class Field : public QFrame
 	uint computeNeighbours(uint, uint) const;
 	void drawCase(uint, uint);
 	void uncover(uint, uint);
-	void showMines(uint, uint);
 	void changeCaseState(uint, uint, uint);
 	void createMinePixmap(QPainter &p) const;
 	void pressCase(uint, uint, uint);
 	void pressClearFunction(uint, uint, uint);
 	void clearFunction(uint, uint);
 	void uncoverCase(uint, uint);
+	bool inside(uint, uint) const;
 	
 	uint &pfield(uint i, uint j) const;
 	int xToI(int x) const;

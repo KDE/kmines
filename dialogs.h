@@ -6,7 +6,7 @@
 #include <qlineedit.h>
 #include <qlcdnumber.h>
 #include <qlayout.h>
-#include <kdialog.h>
+#include <kdialogbase.h>
 
 #include "defines.h"
 
@@ -41,7 +41,7 @@ class DigitalClock : public QLCDNumber
 };
 
 /**** custom dialog **********************************************************/
-class CustomDialog : public KDialog
+class CustomDialog : public KDialogBase
 {
  Q_OBJECT
 	  
@@ -65,7 +65,7 @@ class CustomDialog : public KDialog
 
 
 /**** highscores dialog ******************************************************/
-class WHighScores : public KDialog
+class WHighScores : public KDialogBase
 {
  Q_OBJECT
 	  
@@ -76,11 +76,11 @@ class WHighScores : public KDialog
 
  private slots:
 	void writeName();
+	void reject();
   
  private:
-	uint         mode;
-	QLineEdit   *qle;
-	QPushButton *pb;
+	uint       mode;
+	QLineEdit *qle;
 };
 
 #endif // DIALOGS_H

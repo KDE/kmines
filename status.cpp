@@ -17,6 +17,9 @@
 #include "bitmaps/smile_ohno"
 #include "bitmaps/smile_stress"
 
+#define BORDER   10
+#define SEP      10
+
 Status::Status(QWidget *parent, const char *name)
 : QWidget(parent, name), s_ok(smile_xpm), s_happy(smile_happy_xpm),
   s_ohno(smile_ohno_xpm), s_stress(smile_stress_xpm)
@@ -32,6 +35,7 @@ Status::Status(QWidget *parent, const char *name)
 	// mines left LCD
 	left = new QLCDNumber(this);
 	left->setFrameStyle( QFrame::Panel | QFrame::Sunken );
+	left->setSegmentStyle(QLCDNumber::Flat);
 	left->installEventFilter(parent);
 	hbl->addWidget(left);
 	hbl->addStretch(1);
@@ -55,19 +59,23 @@ Status::Status(QWidget *parent, const char *name)
 	connect( field, SIGNAL(changeCase(uint,uint)),
 			 SLOT(changeCase(uint,uint)) );
 	connect( field, SIGNAL(putMsg(const QString &)),
-			 parent, SLOT(message(const QString &)) );
+			 SLOT(putMessage(const QString &)) );
 	connect( field, SIGNAL(updateStatus(bool)), SLOT(update(bool)) );
 	connect( field, SIGNAL(endGame(int)), SLOT(endGame(int)) );
 	connect( field, SIGNAL(startTimer()), dg, SLOT(start()) );
 	connect( field, SIGNAL(freezeTimer()), dg, SLOT(freeze()) );
 	connect( field, SIGNAL(updateSmiley(int)), this, SLOT(updateSmiley(int)) );
 	top->addWidget(field);
+
+	message = new QLabel(this);
+	message->setAlignment(AlignCenter);
+	top->addWidget(message);
 }
 
 void Status::initGame()
 {
 	uncovered = 0; uncertain = 0; marked = 0;
-	emit message(i18n("Game stopped"));
+	message->setText(i18n("Game stopped"));
 	update(FALSE);
 	updateSmiley(OK);
 	if ( _type!=Custom ) dg->setMaxTime( WHighScores::time(_type) );
@@ -129,23 +137,32 @@ void Status::updateSmiley(int mood)
 	}
 }
 
+void Status::putMessage(const QString &str)
+{
+	message->setText(str);
+}
+
 void Status::endGame(int win)
 {
 	field->stop();
 	dg->freeze();
+	field->showMines();
 	
 	if (win) {
-		emit updateSmiley(HAPPY);
+		updateSmiley(HAPPY);
 		if ( _type==Custom || dg->better() ) {
+			message->setText(i18n("Yeeeesssssss!"));
 			if ( dg->better() ) {
-				Score score; score.sec = dg->sec(); score.min = dg->min(); score.mode = _type;
+				Score score;
+				score.sec = dg->sec();
+				score.min = dg->min();
+				score.mode = _type;
 				highScores(&score);
 			}
-			emit message(i18n("Yeeeesssssss!"));
-		} else emit message(i18n("You did it ... but not in time."));
+		} else message->setText(i18n("You did it ... but not in time."));
 	} else {
-		emit updateSmiley(UNHAPPY);
-		emit message(i18n("Bad luck!"));
+		updateSmiley(UNHAPPY);
+		message->setText(i18n("Bad luck!"));
 	}
 }
 
@@ -176,6 +193,4 @@ void Status::print()
 	// write the screen region corresponding to the window
 	QPainter p(&prt);
 	p.drawPixmap(0, 0, QPixmap::grabWindow(winId())); 
-
-//  QRect r = p.viewport();
 }

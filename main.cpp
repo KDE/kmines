@@ -1,18 +1,17 @@
 #include "main.h"
 
+#include <time.h>
 #include <qdatetime.h>
-
 #include <kapp.h>
 #include <klocale.h>
 #include <kglobal.h>
 #include <kconfig.h>
 #include <kmenubar.h>
+#include <kaboutdialog.h>
 
 #include "defines.h"
 #include "version.h"
 #include "status.h"
-
-#include <time.h>
 
 MainWidget::MainWidget()
 {
@@ -20,9 +19,6 @@ MainWidget::MainWidget()
 	
 	status = new Status(this);
 	status->installEventFilter(this);
-	connect(status, SIGNAL(quit()), qApp, SLOT(quit()));
-	connect(status, SIGNAL(message(const QString &)),
-			SLOT(message(const QString &)));
 	setView(status);
 	
 	kacc = new KAccel(this);
@@ -73,21 +69,13 @@ MainWidget::MainWidget()
 	level->insertItem(i18n("Custom"), 3);
 	connect(level, SIGNAL(activated(int)), SLOT(changeLevel(int)));
 
-	QDate date(KMINES_YEAR, KMINES_MONTH, KMINES_DAY);
-	QString sdate = KGlobal::locale()->formatDate(date);
-	QString s = i18n("%1 %2 (%3)\n\nby %4").arg(KMINES_NAME)
-   		        .arg(KMINES_VERSION).arg(sdate).arg(KMINES_AUTHOR);
-	QPopupMenu *help = helpMenu(s);
-
-	menuBar()->insertItem(i18n("&File"), popup );
-	menuBar()->insertItem(i18n("&Level"), level );
-	menuBar()->insertItem(i18n("&Options"), options );
+	menuBar()->insertItem(i18n("&File"), popup);
+	menuBar()->insertItem(i18n("&Level"), level);
+	menuBar()->insertItem(i18n("&Options"), options);
 	menuBar()->insertSeparator();
-	menuBar()->insertItem(i18n("&Help"), help );
+	menuBar()->insertItem(i18n("&Help"), helpMenu());
 
-	statusLab = new QLabel(statusBar());
-	statusLab->setAlignment( AlignCenter );
-	statusBar()->insertWidget(statusLab, 0, 0);
+	helpMenu()->connectItem(helpMenu()->idAt(2), this, SLOT(about())); // HACK
 	
 	_toggleMenu(TRUE);
 	_toggleUMark(TRUE);
@@ -140,15 +128,35 @@ void MainWidget::_toggleUMark(bool first)
 	status->changeUMark(um);
 }
 
-void MainWidget::message(const QString &str)
+void MainWidget::about()
 {
-	statusLab->setText(str);
+	QDate date(YEAR, MONTH, DAY);
+	QString sdate = KGlobal::locale()->formatDate(date);
+
+	KAboutDialog about(KAboutDialog::AbtAppStandard, kapp->name(),
+					   KDialogBase::Close, KDialogBase::Close, this, 0, true);
+
+	about.setProduct("KMines", QString("%2 (%3)").arg(VERSION).arg(sdate),
+					 "Nicolas Hadacek (hadacek@kde.org)", "1996-1999");
+
+	QString sa = i18n(
+		"KMines is a classical mine sweeper game.");
+	about.addTextPage(i18n("About"), sa);
+
+	QString sl = i18n(
+	   "This program is free software; you can redistribute it and/or modify\n"
+  	   "it under the terms of the GNU General Public License as published by\n"
+	   "the Free Software Foundation; either version 2 of the License, or\n"
+	   "(at your option) any later version.");
+	about.addTextPage(i18n("Licence"), sl);
+
+	about.show();
 }
 
 //----------------------------------------------------------------------------
 int main( int argc, char ** argv )
 {
-    KApplication a(argc, argv, KMINES_NAME);
+    KApplication a(argc, argv, "kmines");
 	MainWidget *mw = new MainWidget;
     a.setMainWidget(mw);
     mw->show();

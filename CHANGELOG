@@ -1,3 +1,10 @@
+2.0.0
+ * use of KDialogBase and KAboutDialog
+ * unflagged mines are shown at game end
+ * hack for focus handling in highscores dialog ...
+ * slightly better LCDs and message label
+ * fixed a bug when clicking slightly outside the mine field
+
 1.0.6
  * slightly better highscores dialog
  * fixed a bug in flagged mines display (cannot be negative) 

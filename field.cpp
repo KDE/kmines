@@ -256,14 +256,20 @@ void Field::uncover(uint i, uint j)
 	    changeCaseState(i,j,UNCOVERED);
 }
 
+bool Field::inside(uint i, uint j) const
+{
+	return ( i>=1 && i<=lev.width && j>=1 && j<=lev.height);
+}
+
 void Field::mousePressEvent( QMouseEvent *e )
 {
 	if ( _stop || isPaused ) return;
-
-	updateSmiley(STRESS);
-
+	
 	ic = xToI(e->pos().x());
 	jc = yToJ(e->pos().y());
+	if ( !inside(ic, jc) ) return;
+
+	updateSmiley(STRESS);
 
 	if (e->button()==LeftButton) {
 		left_down = TRUE;
@@ -284,39 +290,37 @@ void Field::mousePressEvent( QMouseEvent *e )
 void Field::mouseReleaseEvent( QMouseEvent *e )
 {
 	if ( _stop || isPaused ) return;
+	updateSmiley(OK);
+	if ( !inside(ic, jc) ) return;
 
-	/* if not out of the limits of the field */
-	if (ic>=1 && ic<=lev.width && jc>=1 && jc<=lev.height) {
-		if (e->button()==LeftButton) {
-			left_down = FALSE;
-			
-			if ( first_click ) {
-				// set mines positions on field ; must avoid the first 
-				// clicked case
-				for(uint k=0; k<lev.nbMines; k++) {
-					uint i, j;
-					do {
-						i = randomInt(0, lev.width-1);
-						j = randomInt(0, lev.height-1);
-					}
-					while ( (pfield(i+1, j+1) & MINE)
-						    || ((i+1)==ic && (j+1)==jc) );
-			
-					pfield(i+1, j+1) |= MINE;
+	if (e->button()==LeftButton) {
+		if (!left_down) return;
+		left_down = FALSE;
+		
+		if ( first_click ) {
+			// set mines positions on field ; must avoid the first 
+			// clicked case
+			for(uint k=0; k<lev.nbMines; k++) {
+				uint i, j;
+				do {
+					i = randomInt(0, lev.width-1);
+					j = randomInt(0, lev.height-1);
 				}
-				emit startTimer();
-				first_click = FALSE;
-				emit putMsg(i18n("Playing"));
+				while ( (pfield(i+1, j+1) & MINE)
+						|| ((i+1)==ic && (j+1)==jc) );
+				
+				pfield(i+1, j+1) |= MINE;
 			}
-			
-			uncoverCase(ic, jc);
-		} else if (e->button()==MidButton) {
-			mid_down = FALSE;
-			clearFunction(ic, jc);
+			emit startTimer();
+			first_click = FALSE;
+			emit putMsg(i18n("Playing"));
 		}
+		
+		uncoverCase(ic, jc);
+	} else if (e->button()==MidButton) {
+		mid_down = FALSE;
+		clearFunction(ic, jc);
 	}
-  
-	if (!_stop)	updateSmiley(OK);
 }
 
 void Field::mouseMoveEvent( QMouseEvent *e )
@@ -324,7 +328,7 @@ void Field::mouseMoveEvent( QMouseEvent *e )
 	if (_stop) return; 
 
 	/* if not out of the limits of the field */
-	if (ic>=1 && ic<=lev.width && jc>=1 && jc<=lev.height) {
+	if ( inside(ic, jc) ) {
 		if (left_down)
 			pressCase(ic, jc, FALSE);
 		else if (mid_down)
@@ -335,7 +339,7 @@ void Field::mouseMoveEvent( QMouseEvent *e )
 	jc = yToJ(e->pos().y());
 
 	/* if not out of the limits of the field */
-	if (ic>=1 && ic<=lev.width && jc>=1 && jc<=lev.height) {
+	if ( inside(ic, jc) ) {
 		if (left_down)
 			pressCase(ic, jc, TRUE);
 		else if (mid_down)
@@ -343,8 +347,7 @@ void Field::mouseMoveEvent( QMouseEvent *e )
 	} 
 }
 
-/* Shown mines on explosion */
-void Field::showMines(uint i0, uint j0)
+void Field::showMines()
 {
 	for(uint i=1; i<=lev.width; i++)
 		for(uint j=1; j<=lev.height; j++)
@@ -352,8 +355,6 @@ void Field::showMines(uint i0, uint j0)
 				if ( !(pfield(i, j) & EXPLODED) && !(pfield(i, j) & MARKED) ) 
 					changeCaseState(i,j,UNCOVERED);
 			} else if (pfield(i, j) & MARKED) changeCaseState(i, j, ERROR);
-			
-	changeCaseState(i0, j0, EXPLODED);
 }
 
 void Field::pressCase(uint i, uint j, uint state)
@@ -423,8 +424,8 @@ void Field::uncoverCase(uint i, uint j)
   
 	/* to enable multiple explosions ... */
 	if ( (pfield(i, j) & MINE) && (pfield(i, j) & UNCOVERED) ) {
+		changeCaseState(i, j, EXPLODED);
 		emit endGame(FALSE);
-		showMines(i, j);
 	}
 }
 

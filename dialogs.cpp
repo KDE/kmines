@@ -4,22 +4,16 @@
 #include <qpixmap.h>
 #include <qpushbutton.h>
 #include <qfont.h>
-
 #include <kapp.h>
 #include <klocale.h>
 #include <kconfig.h>
-
-#include "version.h"
-
-#define BORDER   10
-#define TBORDER   5
-#define PS_INC    2
-
+#include <qobjcoll.h>
 /** Digital Clock ************************************************************/
 DigitalClock::DigitalClock(QWidget *parent)
 : QLCDNumber(parent, 0), max_secs(0)
 {
 	setFrameStyle( QFrame::Panel | QFrame::Sunken );
+	setSegmentStyle(Flat);
 }
 
 void DigitalClock::timerEvent( QTimerEvent *)
@@ -65,132 +59,110 @@ void DigitalClock::zero()
 
 /** Customize dialog *********************************************************/
 CustomDialog::CustomDialog(Level &_lev, QWidget *parent)
-: KDialog(parent, 0, TRUE), lev(&_lev)
+: KDialogBase(Plain, i18n("Customize your game"),
+			  Ok|Cancel, Cancel, parent), lev(&_lev)
 {
 	QLabel      *lab;
 	QScrollBar  *scb;
 	QHBoxLayout *hbl;
-		
-	QString str = i18n("Customize Game");
-	setCaption(i18n("kmines: %1").arg(str));
 
 /* top layout */
-	QVBoxLayout *top = new QVBoxLayout(this, BORDER);
+	QVBoxLayout *top = new QVBoxLayout(plainPage(), spacingHint());
 	top->setResizeMode(QLayout::Fixed);
 	
 /* title */
-	lab = new QLabel(str, this);
-	QFont f( lab->font() );
-	QFontInfo fi(f);
-	f.setPointSize(fi.pointSize()+PS_INC);
+	lab = new QLabel(i18n("Customize your game"), plainPage());
+	QFont f( font() );
 	f.setBold(TRUE);
 	lab->setFont(f);
 	lab->setAlignment(AlignCenter);
-	lab->setFrameStyle(QFrame::Panel | QFrame::Sunken);
-	lab->setFixedSize( lab->sizeHint() + QSize(2*TBORDER, TBORDER) );
-	lab->setBackgroundMode( QWidget::PaletteMidlight );
+	lab->setFrameStyle(QFrame::Panel | QFrame::Raised);
 	top->addWidget(lab);
-	top->addSpacing(2*BORDER); // some additional space
-	top->addStretch(1);
+	top->addSpacing(2*spacingHint());
 
 /* Width */
 	/* labels */
-	hbl = new QHBoxLayout(BORDER);
+	hbl = new QHBoxLayout(spacingHint());
 	top->addLayout(hbl);
 	
-	lab = new QLabel(i18n("Width"), this);
+	lab = new QLabel(i18n("Width"), plainPage());
 	lab->setFixedSize( lab->sizeHint() );
 	hbl->addWidget(lab);
 	hbl->addStretch(1);
 	
-	lab = new QLabel(this);
+	lab = new QLabel(plainPage());
 	lab->setNum((int)_lev.width);
 	lab->setAlignment( AlignRight );
-	lab->setFixedSize( lab->fontMetrics().maxWidth()*2, lab->sizeHint().height());
+	lab->setFixedSize( lab->fontMetrics().maxWidth()*2,
+					   lab->sizeHint().height());
 	connect(this, SIGNAL(setWidth(int)), lab, SLOT(setNum(int)));
 	hbl->addWidget(lab);
 
 	/* scrollbar */
-	scb = new QScrollBar(8, 50, 1, 5, _lev.width, QScrollBar::Horizontal, this);
+	scb = new QScrollBar(8, 50, 1, 5, _lev.width,
+						 QScrollBar::Horizontal, plainPage());
 	scb->setMinimumWidth( scb->sizeHint().width() );
 	scb->setFixedHeight( scb->sizeHint().height() );
 	connect(scb, SIGNAL(valueChanged(int)), SLOT(widthChanged(int)));
 	top->addWidget(scb);
-	top->addSpacing(2*BORDER);
-	top->addStretch(1);
+	top->addSpacing(2*spacingHint());
 	
 /* Height */
 	/* labels */
-	hbl = new QHBoxLayout(BORDER);
+	hbl = new QHBoxLayout(spacingHint());
 	top->addLayout(hbl);
 	
-	lab = new QLabel(i18n("Height"), this);
+	lab = new QLabel(i18n("Height"), plainPage());
 	lab->setFixedSize( lab->sizeHint() );
 	hbl->addWidget(lab);
 	hbl->addStretch(1);
 	
-	lab = new QLabel(this);
+	lab = new QLabel(plainPage());
 	lab->setNum((int)_lev.height);
 	lab->setAlignment( AlignRight );
-	lab->setFixedSize( lab->fontMetrics().maxWidth()*2, lab->sizeHint().height());
+	lab->setFixedSize( lab->fontMetrics().maxWidth()*2,
+					   lab->sizeHint().height());
 	connect(this, SIGNAL(setHeight(int)), lab, SLOT(setNum(int)));
 	hbl->addWidget(lab);
 
 	/* scrollbar */
-	scb = new QScrollBar(8, 50, 1, 5, _lev.height, QScrollBar::Horizontal, this);
+	scb = new QScrollBar(8, 50, 1, 5, _lev.height,
+						 QScrollBar::Horizontal, plainPage());
 	scb->setMinimumWidth( scb->sizeHint().width() );
 	scb->setFixedHeight( scb->sizeHint().height() );
 	connect(scb, SIGNAL(valueChanged(int)), SLOT(heightChanged(int)));
     top->addWidget(scb);
-	top->addSpacing(2*BORDER);
-	top->addStretch(1);
+	top->addSpacing(2*spacingHint());
 
 /* Mines */
 	/* labels */
-	hbl = new QHBoxLayout(BORDER);
+	hbl = new QHBoxLayout(spacingHint());
 	top->addLayout(hbl);
 	
-	lab = new QLabel(i18n("Mines"), this);
+	lab = new QLabel(i18n("Mines"), plainPage());
 	lab->setFixedSize( lab->sizeHint() );
 	hbl->addWidget(lab);
 	hbl->addStretch(1);
 	
-	lab = new QLabel(" ", this);
+	lab = new QLabel(" ", plainPage());
 	lab->setAlignment( AlignRight );
-	lab->setFixedSize(lab->fontMetrics().maxWidth()*11, lab->sizeHint().height());
-	connect(this, SIGNAL(setNbMines(const QString &)), lab, SLOT(setText(const QString &)));
+	lab->setFixedSize(lab->fontMetrics().maxWidth()*11,
+					  lab->sizeHint().height());
+	connect(this, SIGNAL(setNbMines(const QString &)), lab,
+			SLOT(setText(const QString &)));
 	hbl->addWidget(lab);
 
 	/* scrollbar */
 	sm = new QScrollBar(1, _lev.width*_lev.height, 1, 5, _lev.nbMines,
-						 QScrollBar::Horizontal, this);
+						 QScrollBar::Horizontal, plainPage());
 	sm->setMinimumWidth( sm->sizeHint().width() );
 	sm->setFixedHeight( sm->sizeHint().height() );
 	connect(sm, SIGNAL(valueChanged(int)), SLOT(nbMinesChanged(int)));
 	top->addWidget(sm);
-	top->addSpacing(2*BORDER);
-	top->addStretch(1);
 
 	nbMinesChanged(_lev.nbMines);
-	
-/* buttons */
-	hbl = new QHBoxLayout(BORDER);
-	top->addLayout(hbl);
-	
-	QPushButton *pok = new QPushButton(i18n("OK"), this);
-	connect(pok, SIGNAL(clicked()), SLOT(accept()));
-	QPushButton *pcancel = new QPushButton(i18n("Cancel"), this);
-	connect(pcancel, SIGNAL(clicked()), SLOT(reject()));
-	int minW = QMAX(pok->sizeHint().width(), pcancel->sizeHint().width());
-	int minH = pok->sizeHint().height();
-	pok->setFixedSize(minW, minH);
-	pok->setFocus();
-	pcancel->setFixedSize(minW, minH);
-	hbl->addStretch(1);
-	hbl->addWidget(pok, 0, AlignBottom);
-	hbl->addSpacing(BORDER);
-	hbl->addWidget(pcancel, 0, AlignBottom);
-	hbl->addStretch(1);
+
+	enableButtonSeparator(TRUE);
 }
 
 void CustomDialog::widthChanged(int n)
@@ -223,12 +195,14 @@ uint WHighScores::time(uint mode)
 
 	int sec = conf->readNumEntry(HS_SEC, 59);
 	int min = conf->readNumEntry(HS_MIN, 59);
-	if ( sec<0 || sec>59 || min<0 || min>59 ) return 0;
+	if ( sec<0 || sec>59 || min<0 || min>59 )
+		return DigitalClock::toSec(59, 59);
 	return DigitalClock::toSec(sec, min);
 }
 
 WHighScores::WHighScores(QWidget *parent, const Score *score)
-: KDialog(parent, 0, TRUE), mode((score ? score->mode : 0))
+: KDialogBase(Plain, i18n("Hall of Fame"), Close, Close, parent),
+  mode((score ? score->mode : 0)), qle(0)
 {
 	KConfig *conf = kapp->config();
 	conf->setGroup(HS_GRP[mode]);
@@ -240,44 +214,36 @@ WHighScores::WHighScores(QWidget *parent, const Score *score)
 	}
 
 	QLabel *lab;
-	QString str = i18n("Hall of Fame");
-	setCaption(i18n("%1: %2").arg(KMINES_NAME).arg(str));
+	QFont f( font() );
+	f.setBold(TRUE);
 
 /* top layout */
-	QVBoxLayout *top = new QVBoxLayout(this, BORDER);
+	QVBoxLayout *top = new QVBoxLayout(plainPage(), spacingHint());
 	top->setResizeMode( QLayout::Fixed );
 	
 /* title */
-	lab = new QLabel(str, this);
-	QFont f( lab->font() );
-	QFontInfo fi(f);
-	f.setPointSize(fi.pointSize()+PS_INC);
-	f.setBold(TRUE);
+	lab = new QLabel(i18n("Hall of Fame"), plainPage());
 	lab->setFont(f);
 	lab->setAlignment(AlignCenter);
-	lab->setFrameStyle(QFrame::Panel | QFrame::Sunken);
-	lab->setFixedSize( lab->sizeHint()+QSize(2*TBORDER, TBORDER) );
-	lab->setBackgroundMode( QWidget::PaletteMidlight );
+	lab->setFrameStyle(QFrame::Panel | QFrame::Raised);
 	top->addWidget(lab);
-	top->addSpacing(2*BORDER); // some additional space
-
-	f = font();
-	f.setBold(TRUE);
+	top->addSpacing(2*spacingHint());
 	
 /* Grid layout */
-	QGridLayout *gl = new QGridLayout(3, 4, BORDER);
+	QGridLayout *gl = new QGridLayout(3, 4, spacingHint());
 	top->addLayout(gl);
 
 	/* level names */
+	QString str;
 	for(uint k=0; k<3; k++) {
 		if ( k==0 ) str = i18n("Easy");
 		else if ( k==1 ) str = i18n("Normal");
 		else str = i18n("Expert");
-		lab = new QLabel(str, this);
+		lab = new QLabel(str, plainPage());
 		lab->setMinimumSize( lab->sizeHint() );
 		gl->addWidget(lab, k, 0);
 
-		lab = new QLabel(":", this);
+		lab = new QLabel(":", plainPage());
 		lab->setMinimumSize( lab->sizeHint() );
 		gl->addWidget(lab, k, 1);
 		
@@ -287,7 +253,7 @@ WHighScores::WHighScores(QWidget *parent, const Score *score)
 		bool no_score = FALSE;
 		
 		if ( !score || (k!=mode) ) {
-			lab = new QLabel(this);
+			lab = new QLabel(plainPage());
 			lab->setFont(f);
 			QString name = conf->readEntry(HS_NAME, "");
 			no_score = name.isEmpty() || (!min && !sec);
@@ -303,7 +269,7 @@ WHighScores::WHighScores(QWidget *parent, const Score *score)
 				gl->addWidget(lab, k, 2);
 			}
 		} else {
-			qle = new QLineEdit(this);
+			qle = new QLineEdit(plainPage());
 			qle->setMaxLength(10);
 			qle->setFont(f);
 			qle->setMinimumSize(qle->fontMetrics().maxWidth()*10,
@@ -313,26 +279,21 @@ WHighScores::WHighScores(QWidget *parent, const Score *score)
 			gl->addWidget(qle, k, 2);
 		}
 
-		QString str;
 		if (min) {
-			if (sec) str = i18n("in %1 minutes and %2 seconds.").arg(min).arg(sec);
+			if (sec) str = i18n("in %1 minutes and %2 seconds.")
+						 .arg(min).arg(sec);
 			else str = i18n("in %1 minutes.").arg(min);
 		} else str = i18n("in %1 seconds.").arg(sec);
 
-		lab = new QLabel(str, this);
+		lab = new QLabel(str, plainPage());
 		lab->setAlignment(AlignCenter);
 		lab->setMinimumSize( lab->sizeHint() );
 		gl->addWidget(lab, k, 3);
 	}
 
 /* button */
-	pb = new QPushButton(i18n("Close"), this);
-	pb->setFixedSize( pb->sizeHint() );
-	connect(pb, SIGNAL(clicked()), SLOT(accept()));
-	if (score) pb->setEnabled(FALSE);
-	else pb->setFocus();
-	top->addSpacing(2*BORDER);
-	top->addWidget(pb);
+	enableButtonSeparator(TRUE);
+	if (score) enableButtonOK(FALSE);
 }
 
 void WHighScores::writeName()
@@ -345,9 +306,14 @@ void WHighScores::writeName()
 	// show the entered highscore
 	str = conf->readEntry(HS_NAME);
 	qle->setText(str);
-	qle->setEnabled(FALSE);
-	qle->clearFocus();
+}
 
-	pb->setEnabled(TRUE);
-//	pb->setFocus(); //cannot set focus here ... it quits ...
+void WHighScores::reject()
+{
+	if ( qle && qle->isEnabled() ) {
+		enableButtonOK(TRUE);
+		qle->setEnabled(FALSE);
+		focusNextPrevChild(TRUE); // sort of hack (wonder why its call in
+		                          // setEnabled(FALSE) does nothing ...)
+	} else KDialogBase::reject();
 }

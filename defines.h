@@ -33,9 +33,6 @@ enum SmileyState { OK = 0, STRESS, HAPPY, UNHAPPY };
 #define CASE_W   20
 #define CASE_H   20
 
-#define BORDER   10
-#define SEP      10
-
 #define SMILEY_W 29
 #define SMILEY_H 29
 

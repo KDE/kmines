@@ -30,11 +30,7 @@ class Status : public QWidget
 	void showHighScores() { highScores(0); }
 	void pauseGame() { field->pause(); }
 	void print();
-	void setMsg(const QString &s) { mesg->setText(s); }
-  
- signals:
-	void message(const QString &);
-	void quit();
+	void putMessage(const QString &);
 	
  private:
 	enum GameType { Easy = 0, Normal, Expert, Custom };
@@ -47,7 +43,7 @@ class Status : public QWidget
 	
 	QPushButton  *smiley;
 	QLCDNumber   *left;
-	QLabel       *mesg;
+	QLabel       *message;
 	DigitalClock *dg;
   
 	void createSmileyPixmap(QPixmap *, QPainter *);

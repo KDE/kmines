@@ -20,7 +20,7 @@ class MainWidget : public KTMainWindow
     void configKeys()           { KKeyDialog::configureKeys(kacc); }
 	void toggleMenu()           { _toggleMenu(FALSE); }
 	void toggleUMark()          { _toggleUMark(FALSE); }
-	void message(const QString &str);
+	void about();
 
  protected:
 	bool eventFilter(QObject *, QEvent *);
@@ -30,7 +30,6 @@ class MainWidget : public KTMainWindow
 	QPopupMenu   *popup, *options, *level;
 	int          tog_id, um_id;
 	Status       *status;
-	QLabel       *statusLab;
 	
 	void _toggleMenu(bool first);
 	void _toggleUMark(bool first);
