@@ -464,7 +464,7 @@ main ftp site of the KDE project. </para>
 </sect1>
 
 <sect1 id="compilation">
-<title>Compilation and installation</title>
+<title>Compilation and Installation</title>
  
 <para>In order to compile and install &kmines; on your system, type the following
 in the base directory of the KDE distribution:</para>
