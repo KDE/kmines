@@ -53,8 +53,7 @@ class DigitalClock : public KGameLCDClock
  public:
     DigitalClock(QWidget *parent);
 
-    void reset(const KExtHighscore::Score &first,
-               const KExtHighscore::Score &last);
+    void reset(bool customGame);
 
     bool cheating() const { return _cheating; }
     uint nbActions() const { return _nbActions; }
@@ -71,7 +70,7 @@ class DigitalClock : public KGameLCDClock
  private:
     KExtHighscore::Score _first, _last;
     uint _nbActions;
-    bool _cheating;
+    bool _cheating, _customGame;
 };
 
 //-----------------------------------------------------------------------------

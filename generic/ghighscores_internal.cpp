@@ -116,7 +116,7 @@ int ItemArray::findIndex(const QString &name) const
 const ItemContainer *ItemArray::item(const QString &name) const
 {
     int i = findIndex(name);
-    if ( i==-1 ) kdDebug(11002) << k_funcinfo << "no item named \"" << name
+    if ( i==-1 ) kdError(11002) << k_funcinfo << "no item named \"" << name
                                 << "\"" << endl;
     return at(i);
 }
@@ -124,7 +124,7 @@ const ItemContainer *ItemArray::item(const QString &name) const
 void ItemArray::setItem(const QString &name, Item *item)
 {
     int i = findIndex(name);
-    if ( i==-1 ) kdDebug(11002) << k_funcinfo << "no item named \"" << name
+    if ( i==-1 ) kdError(11002) << k_funcinfo << "no item named \"" << name
                                 << "\"" << endl;
     bool stored = at(i)->isStored();
     bool canHaveSubGroup = at(i)->canHaveSubGroup();
@@ -135,7 +135,7 @@ void ItemArray::addItem(const QString &name, Item *item,
                         bool stored, bool canHaveSubGroup)
 {
     if ( findIndex(name)!=-1 )
-        kdDebug(11002) << "item already exists \"" << name << "\"" << endl;
+        kdError(11002) << "item already exists \"" << name << "\"" << endl;
     uint i = size();
     resize(i+1);
     at(i) = new ItemContainer;
@@ -167,7 +167,7 @@ void ItemArray::setSubGroup(const QString &subGroup)
         if ( at(i)->canHaveSubGroup() ) at(i)->setSubGroup(subGroup);
 }
 
-void ItemArray::read(uint k, DataArray &data) const
+void ItemArray::read(uint k, Score &data) const
 {
     for (uint i=0; i<size(); i++) {
         if ( !at(i)->isStored() ) continue;
@@ -175,7 +175,7 @@ void ItemArray::read(uint k, DataArray &data) const
     }
 }
 
-void ItemArray::write(uint k, const DataArray &data, uint nb) const
+void ItemArray::write(uint k, const Score &data, uint nb) const
 {
     for (uint i=0; i<size(); i++) {
         if ( !at(i)->isStored() ) continue;
@@ -224,7 +224,7 @@ ScoreInfos::ScoreInfos(uint maxNbEntries, const PlayerInfos &infos)
     addItem("id", new Item((uint)0));
     addItem("rank", new RankItem, false);
     addItem("name", new ScoreNameItem(*this, infos));
-    addItem("score", new ScoreItem);
+    addItem("score", Manager::createItem(Manager::ScoreDefault));
     addItem("date", new DateItem);
 }
 
@@ -249,13 +249,15 @@ PlayerInfos::PlayerInfos()
 
     // standard items
     addItem("name", new NameItem);
-    addItem("nb games", new Item((uint)0, i18n("Games Count"),
-                                 Qt::AlignRight), true, true);
-    addItem("mean score", new MeanScoreItem, true, true);
-    addItem("best score", new BestScoreItem, true, true);
+    Item *it = new Item((uint)0, i18n("Games Count"),Qt::AlignRight);
+    addItem("nb games", it, true, true);
+    it = Manager::createItem(Manager::MeanScoreDefault);
+    addItem("mean score", it, true, true);
+    it = Manager::createItem(Manager::BestScoreDefault);
+    addItem("best score", it, true, true);
     addItem("date", new DateItem, true, true);
-    addItem("comment", new Item(QString::null, i18n("Comment"),
-                                Qt::AlignLeft));
+    it = new Item(QString::null, i18n("Comment"), Qt::AlignLeft);
+    addItem("comment", it);
 
     // statistics items
     addItem("nb black marks", new Item((uint)0), true, true); // legacy
@@ -579,15 +581,19 @@ bool ManagerPrivate::getFromQuery(const QDomNamedNodeMap &map,
 	return true;
 }
 
+Score ManagerPrivate::readScore(uint i) const
+{
+    Score score(Won);
+    _scoreInfos->read(i, score);
+    return score;
+}
+
 int ManagerPrivate::rank(const Score &score) const
 {
-    Score tmp(Won);
     uint nb = _scoreInfos->nbEntries();
     uint i = 0;
-	for (; i<nb; i++) {
-        _scoreInfos->read(i, tmp);
-		if ( tmp<score ) break;
-    }
+	for (; i<nb; i++)
+        if ( readScore(i)<score ) break;
 	return (i<_scoreInfos->maxNbEntries() ? (int)i : -1);
 }
 

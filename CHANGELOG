@@ -1,6 +1,9 @@
-2.1.8 (18 December 2002) [CVS 3.2 devel]
+2.1.8 (17 January 2003) [CVS 3.2 devel]
  * config button in highscores dialog
  * notifications
+
+2.1.7c (17 January 2003) [ KDE 3.1.1 stable]
+ * fix score lcd colors for custom games
 
 2.1.7b (3 December 2002) [KDE 3.1 stable]
  * fix bug in highscores dialog in statistics and histogram tabs

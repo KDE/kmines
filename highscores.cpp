@@ -43,7 +43,7 @@ ExtManager::ExtManager()
     setScoreHistogram(s, ScoreBound);
 
     Item *item = new Item((uint)0, i18n("Clicks"), Qt::AlignRight);
-    setScoreItem("nb_actions", item);
+    addScoreItem("nb_actions", item);
 }
 
 QString ExtManager::gameTypeLabel(uint gameType, LabelType type) const
@@ -77,7 +77,7 @@ void ExtManager::convertLegacy(uint gameType)
     int score = 3600 - (minutes*60 + seconds);
     if ( score<=0 ) return;
     Score s(Won);
-    s.setData("score", score);
+    s.setScore(score);
     s.setData("name", name);
     submitLegacyScore(s);
 }

@@ -39,6 +39,7 @@ class PlayerInfos;
 class Score;
 class Manager;
 
+
 //-----------------------------------------------------------------------------
 class RankItem : public Item
 {
@@ -139,8 +140,8 @@ class ItemArray : public QMemArray<ItemContainer *>
     void setGroup(const QString &group);
     void setSubGroup(const QString &subGroup);
 
-    void read(uint k, DataArray &data) const;
-    void write(uint k, const DataArray &data, uint maxNbLines) const;
+    void read(uint k, Score &data) const;
+    void write(uint k, const Score &data, uint maxNbLines) const;
 
     void exportToText(QTextStream &) const;
 
@@ -223,6 +224,7 @@ class ManagerPrivate
     void checkFirst();
     int submitLocal(const Score &score);
     int submitScore(const Score &score, QWidget *parent);
+    Score readScore(uint i) const;
 
     uint gameType() const            { return _gameType; }
     uint nbGameTypes() const         { return _nbGameTypes; }

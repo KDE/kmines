@@ -35,6 +35,7 @@
 #include <kcombobox.h>
 #include <knuminput.h>
 #include <kcolorbutton.h>
+#include <kdebug.h>
 
 #include "bitmaps/smile"
 #include "bitmaps/smile_happy"
@@ -67,7 +68,7 @@ DigitalClock::DigitalClock(QWidget *parent)
 KExtHighscore::Score DigitalClock::score() const
 {
     KExtHighscore::Score score(KExtHighscore::Won);
-    score.setData("score", 3600 - seconds());
+    score.setScore(3600 - seconds());
     score.setData("nb_actions", _nbActions);
     return score;
 }
@@ -76,7 +77,7 @@ void DigitalClock::timeoutClock()
 {
     KGameLCDClock::timeoutClock();
 
-    if (_cheating) setColor(white);
+    if ( _cheating || _customGame ) setColor(white);
     else if ( _first<score() ) setColor(red);
     else if ( _last<score() ) setColor(blue);
     else setColor(white);
@@ -85,15 +86,17 @@ void DigitalClock::timeoutClock()
 void DigitalClock::start()
 {
     KGameLCDClock::start();
-    if ( !_cheating ) setColor(red);
+    if ( !_cheating && !_customGame ) setColor(red);
 }
 
-void DigitalClock::reset(const KExtHighscore::Score &first,
-                         const KExtHighscore::Score &last)
+void DigitalClock::reset(bool customGame)
 {
     _nbActions = 0;
-    _first = first;
-    _last = last;
+    _customGame = customGame;
+    if ( !customGame ) {
+        _first = KExtHighscore::firstScore();
+        _last = KExtHighscore::lastScore();
+    }
     _cheating = false;
     KGameLCDClock::reset();
     resetColor();

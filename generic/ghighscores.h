@@ -59,8 +59,8 @@ bool configure(QWidget *parent);
  */
 void show(QWidget *parent);
 
-
 typedef QValueVector<Score> ScoreVector;
+
 /**
  * Show scores for a multiplayers game.
  *
@@ -68,10 +68,10 @@ typedef QValueVector<Score> ScoreVector;
  * <pre>
  * KExtHighscore::ScoreVector scores(2);
  * scores[0].setType(KExtHighscore::Won);
- * scores[0].setData("score", score1);
+ * scores[0].setScore(score1);
  * scores[0].setData("name", player1);
  * scores[1].setType(KExtHighscore::Lost);
- * scores[1].setData("score", score2);
+ * scores[1].setScore(score2);
  * scores[1].setData("name", player2);
  * KExtHighscore::showMultipleScores(scores, widget);
  * </pre>
@@ -121,39 +121,37 @@ Score firstScore();
  *
  * The highscores list contains by default :
  * <ul>
- * <li> "id" : the index of the player (internal and not shown) </li>
- * <li> "name" : the player name (automatically set from the config value)</li>
- * <li> "score" : the score value </li>
- * <li> "date" : the time and date of the highscore (automatically set) </li>
+ * <li> the player name (automatically set from the config value)</li>
+ * <li> the score value </li>
+ * <li> the time and date of the highscore (automatically set) </li>
  * </ul>
- * You can add an item or replace the default item for the score value
- * (for e.g. displaying it differently) by calling @ref setScoreItem just after
- * construction.
+ * You can replace the score item (for e.g. displaying it differently) with
+ * @ref setScoreItem or add an item with @ref addScoreItem.
  *
  * The players list contains :
  * <ul>
- * <li> "name" : the player name (as defined by the user in the configuration
+ * <li> the player name (as defined by the user in the configuration
  *      dialog) </li>
- * <li> "nb game" : the number of games </li>
- * <li> "mean score" : the mean score </li>
- * <li> "best score" : the best score </li>
- * <li> "date" : the best score time and date </li>
- * <li> "comment" : the player comment (as defined by the user in the
+ * <li> the number of games played </li>
+ * <li> the mean score </li>
+ * <li> the best score </li>
+ * <li> the best score time and date </li>
+ * <li> the player comment (as defined by the user in the
  *      configuration dialog) </li>
  * </ul>
  * You can replace the best score and the mean score item
- * by calling @ref setPlayerItem just after construction.
+ * by calling @ref setPlayerItem.
  *
  * To submit a new score at game end, just construct a @ref Score, set the
  * score data and then call @ref submitScore.
  * <pre>
  *     KExtHighscore::Score score(KExtHighscore::Won);
- *     score.setData("score", myScore);
+ *     score.setScore(myScore);
  *     KExtHighscore::submitScore(score, widget);
  * </pre>
- * You only need to set the score value ("name" and "date" are set
- * automatically) and the value of the items you have optionnally added with
- * @ref setScoreItem.
+ * You only need to set the score value with @ref Score::setScore
+ * and the value of the items that you have optionnally added
+ * with @ref Score::setData ; player name and date are set automatically.
  */
 class Manager
 {
@@ -230,36 +228,54 @@ class Manager
     void setScoreType(ScoreType type);
 
     /**
-     * @return true is the first score is strictly worse than the second one.
-     * By default return s1.score()<s2.score(). You can reimplement
+     * Some predefined item types.
+     * @p Score default item for the score in the highscores list.
+     * @p MeanScore default item for the mean score (only show one decimal and
+     * 0 is shown as "--".
+     * @p BestScore default item for the best score (0 is shown as "--").
+     * @p Optionnal item for elapsed time (maximum value is 3599 seconds).
+     */
+    enum ItemType { ScoreDefault, MeanScoreDefault, BestScoreDefault,
+                    ElapsedTime };
+    /**
+     * Create a predefined item.
+     */
+    static Item *createItem(ItemType type);
+
+    /**
+     * Replace the default score item in the highscores list by the given one.
+     * @p worstScore is the worst possible score. By default it is 0.
+     *
+     * Note : This method should be called at construction time.
+     */
+    void setScoreItem(uint worstScore, Item *item);
+
+    /**
+     * Add an item in the highscores list (it will add a column to this list).
+     *
+     * Note : This method should be called at construction time.
+     */
+    void addScoreItem(const QString &name, Item *item);
+
+    enum PlayerItemType { MeanScore, BestScore };
+    /**
+     * Replace an item in the players list.
+     *
+     * Note : This method should be called at construction time.
+     */
+    void setPlayerItem(PlayerItemType type, Item *item);
+
+    /**
+     * @return true if the first score is strictly worse than the second one.
+     * By default return <pre>s1.score()<s2.score()</pre>. You can reimplement
      * this method if additionnal items added to @ref Score can further
      * differentiate the scores (for e.g. the time spent).
      *
      * Note that you do not need to use directly this method, simply write
-     * <pre>s1<s2</pre> since @ref Score::operator< calls this method.
+     * <pre>s1<s2</pre> since the operator calls this method.
      */
     virtual bool isStrictlyLess(const Score &s1, const Score &s2) const;
 
-    /**
-     * Add/replace an item in the highscores list. It will add a column to the
-     * highscores list.
-     *
-     * Note : This method should be called at construction time.
-     *
-     * If @p name is "score" the default item will be replaced by the given
-     * one.
-     */
-    void setScoreItem(const QString &name, Item *item);
-
-    /**
-     * Replace an item in the players list (the @p name should be "best score"
-     * or "mean score").
-     *
-     * Note : This method should be called at construction time.
-     */
-    void setPlayerItem(const QString &name, Item *item);
-
- protected:
     /**
      * Possible type of label (@see gameTypeLabel).
      * @p Standard label used in config file.
@@ -276,6 +292,7 @@ class Manager
      */
     virtual QString gameTypeLabel(uint gameType, LabelType type) const;
 
+ protected:
     /**
      * This method is called once for each player (ie for each user). You
      * can reimplement it to convert old style highscores to the new mechanism
@@ -291,7 +308,7 @@ class Manager
      * For each score do something like:
      * <pre>
      * Score score(Won);
-     * score.setData("score", oldScore);
+     * score.setScore(oldScore);
      * score.setData("name", name);
      * submitLegacyScore(score);
      * </pre>
@@ -319,7 +336,6 @@ class Manager
     static void addToQueryURL(KURL &url, const QString &item,
                               const QString &content);
 
-    friend class HighscoresDialog;
     friend class ManagerPrivate;
 
  private:

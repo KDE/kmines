@@ -21,6 +21,8 @@
 
 #include <qlayout.h>
 
+#include <kdebug.h>
+
 #include "ghighscores_internal.h"
 #include "ghighscores_gui.h"
 
@@ -100,18 +102,14 @@ void show(QWidget *parent)
 Score lastScore()
 {
     internal->checkFirst();
-    Score score(Won);
     uint nb = internal->scoreInfos().maxNbEntries();
-    internal->scoreInfos().read(nb - 1, score);
-    return score;
+    return internal->readScore(nb-1);
 }
 
 Score firstScore()
 {
     internal->checkFirst();
-    Score score(Won);
-    internal->scoreInfos().read(0, score);
-    return score;
+    return internal->readScore(0);
 }
 
 
@@ -120,7 +118,8 @@ Manager::Manager(uint nbGameTypes, uint maxNbEntries)
 {
     Q_ASSERT(nbGameTypes);
     Q_ASSERT(maxNbEntries);
-    if (internal) qFatal("A highscore object already exists");
+    if (internal)
+        kdFatal(11002) << "A highscore object already exists" << endl;
     internal = new ManagerPrivate(nbGameTypes, maxNbEntries, *this);
 }
 
@@ -172,17 +171,17 @@ void Manager::setScoreType(ScoreType type)
     case Normal:
         return;
     case MinuteTime: {
-        ScoreItem *scoreItem = new ScoreItem;
-        scoreItem->setPrettyFormat(Item::MinuteTime);
-        setScoreItem("score", scoreItem);
+        Item *item = createItem(ScoreDefault);
+        item->setPrettyFormat(Item::MinuteTime);
+        setScoreItem(0, item);
 
-        MeanScoreItem *meanScoreItem = new MeanScoreItem;
-        meanScoreItem->setPrettyFormat(Item::MinuteTime);
-        setPlayerItem("mean score", meanScoreItem);
+        item = createItem(MeanScoreDefault);
+        item->setPrettyFormat(Item::MinuteTime);
+        setPlayerItem(MeanScore, item);
 
-        BestScoreItem *bestScoreItem = new BestScoreItem;
-        bestScoreItem->setPrettyFormat(Item::MinuteTime);
-        setPlayerItem("best score", bestScoreItem);
+        item = createItem(BestScoreDefault);
+        item->setPrettyFormat(Item::MinuteTime);
+        setPlayerItem(BestScore, item);
         return;
     }
     }
@@ -198,22 +197,61 @@ bool Manager::isStrictlyLess(const Score &s1, const Score &s2) const
     return s1.score()<s2.score();
 }
 
-void Manager::setScoreItem(const QString &name, Item *item)
+Item *Manager::createItem(ItemType type)
 {
-    if ( name=="score" ) internal->scoreInfos().setItem("score", item);
-    else internal->scoreInfos().addItem(name, item, true);
+    Item *item = 0;
+    switch (type) {
+    case ScoreDefault:
+        item = new Item((uint)0, i18n("Score"), Qt::AlignRight);
+        break;
+    case MeanScoreDefault:
+        item = new Item((double)0, i18n("Mean Score"), Qt::AlignRight);
+        item->setPrettyFormat(Item::OneDecimal);
+        item->setPrettySpecial(Item::ZeroNotDefined);
+        break;
+    case BestScoreDefault:
+        item = new Item((uint)0, i18n("Best Score"), Qt::AlignRight);
+        item->setPrettySpecial(Item::ZeroNotDefined);
+        break;
+    case ElapsedTime:
+        item = new Item((uint)0, i18n("Elapsed Time"), Qt::AlignRight);
+        item->setPrettyFormat(Item::MinuteTime);
+        item->setPrettySpecial(Item::ZeroNotDefined);
+        break;
+    }
+    return item;
 }
 
-void Manager::setPlayerItem(const QString &name, Item *item)
+void Manager::setScoreItem(uint worstScore, Item *item)
 {
+    item->setDefaultValue(worstScore);
+    internal->scoreInfos().setItem("score", item);
+}
+
+void Manager::addScoreItem(const QString &name, Item *item)
+{
+    internal->scoreInfos().addItem(name, item, true);
+}
+
+void Manager::setPlayerItem(PlayerItemType type, Item *item)
+{
+    QString name;
+    switch (type) {
+    case MeanScore:
+        name = "mean score";
+        break;
+    case BestScore:
+        name = "best score";
+        break;
+    }
     internal->playerInfos().setItem(name, item);
 }
 
 QString Manager::gameTypeLabel(uint gameType, LabelType type) const
 {
     if ( gameType!=0 )
-        qFatal("You need to reimplement KExtHighscore::Manager for "
-               "multiple game types");
+        kdFatal(11002) << "You need to reimplement KExtHighscore::Manager for "
+                       << "multiple game types" << endl;
     switch (type) {
     case Icon:
     case Standard:

@@ -21,14 +21,12 @@
 #define KEXTHIGHSCORE_ITEM_H
 
 #include <qvariant.h>
-#include <qmap.h>
 #include <qnamespace.h>
+#include <qmap.h>
 
 
 namespace KExtHighscore
 {
-
-class ItemArray;
 
 //-----------------------------------------------------------------------------
 /**
@@ -112,6 +110,11 @@ class Item
     int alignment() const { return _alignment; }
 
     /**
+     * Set default value.
+     */
+    void setDefaultValue(const QVariant &value) { _default = value; }
+
+    /**
      * @return the default value.
      */
     const QVariant &defaultValue() const { return _default; }
@@ -147,86 +150,6 @@ class Item
 
 //-----------------------------------------------------------------------------
 /**
- * @ref Item for the score. By default no special formating.
- */
-class ScoreItem : public Item
-{
- public:
-    ScoreItem(uint worstScore = 0);
-};
-
-/**
- * @ref Item for mean score. By default, only show one decimal and
- * 0 is shown as "--"
- */
-class MeanScoreItem : public Item
-{
- public:
-    MeanScoreItem();
-};
-
-/**
- * @ref Item for the best highscore. 0 is shown as "--".
- */
-class BestScoreItem : public Item
-{
- public:
-    BestScoreItem();
-};
-
-/**
- * Optionnal @ref Item for elapsed time (maximum value is 3599 seconds).
- */
-class ElapsedTimeItem : public Item
-{
- public:
-    ElapsedTimeItem();
-};
-
-//-----------------------------------------------------------------------------
-/**
- * Manage an array of data associated with an @ref Item.
- */
-class DataArray
-{
- public:
-    ~DataArray();
-
-    /**
-     * @return the data associated with the named @ref Item.
-     */
-    const QVariant &data(const QString &name) const;
-
-    /**
-     * Set the data associated with the named @ref Item. Note that the
-     * value should have the type of the default value of the @ref
-     * Item.
-     */
-    void setData(const QString &name, const QVariant &value);
-
- protected:
-     /**
-      * @internal
-      */
-    DataArray(const ItemArray &items);
-
- private:
-    QMap<QString, QVariant> _data;
-
-    class DataArrayPrivate;
-    DataArrayPrivate *d;
-
-
-    friend QDataStream &operator <<(QDataStream &, const DataArray &);
-    friend QDataStream &operator >>(QDataStream &, DataArray &);
-};
-
-QDataStream &operator <<(QDataStream &stream, const DataArray &array);
-QDataStream &operator >>(QDataStream &stream, DataArray &array);
-
-
-//-----------------------------------------------------------------------------
-/**
  * Possible score type.
  * @p Won the game has been won.
  * @p Lost the game has been lost or has been aborted.
@@ -237,12 +160,9 @@ enum ScoreType { Won = 0, Lost = -1 };
  * This class contains data for a score. You should not inherit from
  * this class but reimplement the methods in @ref Highscores.
  */
-class Score : public DataArray
+class Score
 {
  public:
-    /**
-     * Constructor.
-     */
     Score(ScoreType type = Won);
 
     ~Score();
@@ -258,10 +178,30 @@ class Score : public DataArray
     void setType(ScoreType type) { _type = type; }
 
     /**
+     * @return the data associated with the named @ref Item.
+     */
+    const QVariant &data(const QString &name) const;
+
+    /**
+     * Set the data associated with the named @ref Item. Note that the
+     * value should have the type of the default value of the @ref
+     * Item.
+     */
+    void setData(const QString &name, const QVariant &value);
+
+    /**
      * @return the score value.
-     * Convenience function equivalent to <pre>data("score").toUInt()</pre>
+     *
+     * Equivalent to <pre>data("score").toUInt()</pre>.
      */
     uint score() const { return data("score").toUInt(); }
+
+    /**
+     * Set the score value.
+     *
+     * Equivalent to <pre>setData("score", score)</pre>.
+     */
+    void setScore(uint score) { setData("score", score); }
 
     /**
      * @return true if this is the worst possible score (ie the default
@@ -270,13 +210,15 @@ class Score : public DataArray
     bool isTheWorst() const;
 
     /**
-     * Convenience comparison operator equivalent to
-     * <pre>Manager::isStrictlyLess(*this, score)</pre>
+     * Comparison operator.
+     *
+     * @see Manager::isStrictlyLess
      */
-    bool operator <(const Score &score) const;
+    bool operator <(const Score &score);
 
  private:
-    ScoreType _type;
+    ScoreType  _type;
+    QMap<QString, QVariant> _data;
 
     class ScorePrivate;
     ScorePrivate *d;

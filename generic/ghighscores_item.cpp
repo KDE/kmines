@@ -132,76 +132,28 @@ QString Item::pretty(uint, const QVariant &value) const
 }
 
 //-----------------------------------------------------------------------------
-ScoreItem::ScoreItem(uint minScore)
-    : Item(minScore, i18n("Score"), Qt::AlignRight)
-{}
-
-MeanScoreItem::MeanScoreItem()
-    : Item((double)0, i18n("Mean Score"), Qt::AlignRight)
+Score::Score(ScoreType type)
+    : _type(type)
 {
-    setPrettyFormat(OneDecimal);
-    setPrettySpecial(ZeroNotDefined);
-}
-
-BestScoreItem::BestScoreItem()
-    : Item((uint)0, i18n("Best Score"), Qt::AlignRight)
-{
-    setPrettySpecial(ZeroNotDefined);
-}
-
-ElapsedTimeItem::ElapsedTimeItem()
-    : Item((uint)0, i18n("Elapsed Time"), Qt::AlignRight)
-{
-    setPrettyFormat(MinuteTime);
-    setPrettySpecial(ZeroNotDefined);
-}
-
-//-----------------------------------------------------------------------------
-DataArray::DataArray(const ItemArray &items)
-{
+    const ItemArray &items = internal->scoreInfos();
     for (uint i=0; i<items.size(); i++)
         _data[items[i]->name()] = items[i]->item()->defaultValue();
 }
 
-DataArray::~DataArray()
+Score::~Score()
 {}
 
-void DataArray::setData(const QString &name, const QVariant &value)
-{
-    Q_ASSERT( _data.contains(name) );
-    Q_ASSERT( _data[name].type()==value.type() );
-    _data[name] = value;
-}
-
-const QVariant &DataArray::data(const QString &name) const
+const QVariant &Score::data(const QString &name) const
 {
     Q_ASSERT( _data.contains(name) );
     return _data[name];
 }
 
-QDataStream &operator <<(QDataStream &s, const DataArray &array)
+void Score::setData(const QString &name, const QVariant &value)
 {
-    s << array._data;
-    return s;
-}
-
-QDataStream &operator >>(QDataStream &s, DataArray &array)
-{
-    s >> array._data;
-    return s;
-}
-
-//-----------------------------------------------------------------------------
-Score::Score(ScoreType type)
-    : DataArray(internal->scoreInfos()), _type(type)
-{}
-
-Score::~Score()
-{}
-
-bool Score::operator <(const Score &score) const
-{
-    return internal->manager.isStrictlyLess(*this, score);
+    Q_ASSERT( _data.contains(name) );
+    Q_ASSERT( _data[name].type()==value.type() );
+    _data[name] = value;
 }
 
 bool Score::isTheWorst() const
@@ -210,10 +162,15 @@ bool Score::isTheWorst() const
     return score()==s.score();
 }
 
+bool Score::operator <(const Score &score)
+{
+    return internal->manager.isStrictlyLess(*this, score);
+}
+
 QDataStream &operator <<(QDataStream &s, const Score &score)
 {
     s << (Q_UINT8)score.type();
-    s << (const DataArray &)score;
+    s << score._data;
     return s;
 }
 
@@ -222,7 +179,7 @@ QDataStream &operator >>(QDataStream &s, Score &score)
     Q_UINT8 type;
     s >> type;
     score._type = (ScoreType)type;
-    s >> (DataArray &)score;
+    s >> score._data;
     return s;
 }
 
