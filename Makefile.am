@@ -12,7 +12,7 @@ rcdir   = $(kde_datadir)/kmines
 rc_DATA = kminesui.rc kminesconfig.rc
 
 messages: rc.cpp
-	$(XGETTEXT) rc.cpp `find . -name \*.h -o -name \*.cpp` -o $(podir)/kmines.pot
+	$(XGETTEXT) rc.cpp *.cpp solver/*.cpp -o $(podir)/kmines.pot
 
 install-data-local:
 	rm -rf $(DESTDIR)$(kde_appsdir)/Games/kmines.desktop
