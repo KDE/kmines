@@ -8,7 +8,8 @@
  * track lost games and black marks for kmines
  * histogram for kmines
  * some cosmetic fixes in configuration dialog
- * view/save/replay game log
+ * view/save/replay/load game log
+ * fix a bug in KMultiConfigItem [reported by ...]
 
 2.1.6 (24 April 2002)
  * mark/unmark actions on mouse release [patch by Thomas Capricelli]
