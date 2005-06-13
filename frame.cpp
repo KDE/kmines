@@ -130,7 +130,7 @@ void FieldFrame::drawBox(QPainter &painter, const QPoint &p,
     if (hasFocus) {
         painter.translate(p.x(), p.y());
         QRect fbr = style().subRect(QStyle::SR_PushButtonFocusRect, &_button);
-        style().drawPrimitive(QStyle::PE_FocusRect, &painter, fbr,
+        style().drawPrimitive(QStyle::PE_FrameFocusRect, &painter, fbr,
                               colorGroup(), QStyle::State_Enabled);
         painter.resetXForm();
     }
