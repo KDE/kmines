@@ -21,6 +21,9 @@
 #define KZOOMMAINWINDOW_H
 
 #include <kmainwindow.h>
+//Added by qt3to4:
+#include <QEvent>
+#include <Q3PtrList>
 
 class KToggleAction;
 
@@ -115,7 +118,7 @@ private slots:
   
 private:
   uint _zoom, _zoomStep, _minZoom, _maxZoom;
-  QPtrList<QWidget> _widgets;
+  Q3PtrList<QWidget> _widgets;
   KAction *_zoomInAction, *_zoomOutAction;
   KToggleAction *_menu;
   

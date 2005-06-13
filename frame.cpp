@@ -22,14 +22,17 @@
 #include <qbitmap.h>
 #include <qstyle.h>
 #include <qdrawutil.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <Q3Frame>
 
 #include "settings.h"
 
 
 FieldFrame::FieldFrame(QWidget *parent)
-    : QFrame(parent, "field"), _button(0)
+    : Q3Frame(parent, "field"), _button(0)
 {
-    setFrameStyle( QFrame::Box | QFrame::Raised );
+    setFrameStyle( Q3Frame::Box | Q3Frame::Raised );
 	setLineWidth(2);
 	setMidLineWidth(2);
 }
@@ -70,29 +73,29 @@ void FieldFrame::drawPixmap(QPixmap &pix, PixmapType type, bool mask) const
 
     if ( type==FlagPixmap ) {
         p.setWindow(0, 0, 16, 16);
-        p.setPen( (mask ? color1 : black) );
+        p.setPen( (mask ? Qt::color1 : Qt::black) );
         p.drawLine(6, 13, 14, 13);
         p.drawLine(8, 12, 12, 12);
         p.drawLine(9, 11, 11, 11);
         p.drawLine(10, 2, 10, 10);
-        if (!mask) p.setPen(black);
-        p.setBrush( (mask ? color1 : Settings::color(Settings::EnumType::flag)) );
+        if (!mask) p.setPen(Qt::black);
+        p.setBrush( (mask ? Qt::color1 : Settings::color(Settings::EnumType::flag)) );
         p.drawRect(4, 3, 6, 5);
         return;
     }
 
     p.setWindow(0, 0, 20, 20);
 	if ( type==ExplodedPixmap )
-		p.fillRect(2, 2, 16, 16, (mask ? color1 : Settings::color(Settings::EnumType::explosion)));
-	QPen pen(mask ? color1 : black, 1);
+		p.fillRect(2, 2, 16, 16, (mask ? Qt::color1 : Settings::color(Settings::EnumType::explosion)));
+	QPen pen(mask ? Qt::color1 : Qt::black, 1);
 	p.setPen(pen);
-	p.setBrush(mask ? color1 : black);
+	p.setBrush(mask ? Qt::color1 : Qt::black);
 	p.drawLine(10,3,10,18);
 	p.drawLine(3,10,18,10);
 	p.drawLine(5, 5, 16, 16);
 	p.drawLine(5, 15, 15, 5);
 	p.drawEllipse(5, 5, 11, 11);
-	p.fillRect(8, 8, 2, 2, (mask ? color1 : white));
+	p.fillRect(8, 8, 2, 2, (mask ? Qt::color1 : Qt::white));
 	if ( type==ErrorPixmap ) {
 		if (!mask) {
 			pen.setColor(Settings::color(Settings::EnumType::error));
@@ -112,7 +115,7 @@ void FieldFrame::drawAdvised(QPixmap &pix, uint i, bool mask) const
     initPixmap(pix, mask);
     QPainter p(&pix);
     p.setWindow(0, 0, 16, 16);
-    p.setPen( QPen(mask ? color1 : Settings::mineColor(i), 2) );
+    p.setPen( QPen(mask ? Qt::color1 : Settings::mineColor(i), 2) );
     p.drawRect(3, 3, 11, 11);
 }
 
@@ -128,16 +131,16 @@ void FieldFrame::drawBox(QPainter &painter, const QPoint &p,
         painter.translate(p.x(), p.y());
         QRect fbr = style().subRect(QStyle::SR_PushButtonFocusRect, &_button);
         style().drawPrimitive(QStyle::PE_FocusRect, &painter, fbr,
-                              colorGroup(), QStyle::Style_Enabled);
+                              colorGroup(), QStyle::State_Enabled);
         painter.resetXForm();
     }
 
 	QRect r(p, _button.size());
     const QPixmap *pixmap = (type==NoPixmap ? 0 : &_pixmaps[type]);
-    QColor color = (nbMines==0 ? black : Settings::mineColor(nbMines-1));
-    style().drawItem(&painter, r, AlignCenter, colorGroup(), true, pixmap,
+    QColor color = (nbMines==0 ? Qt::black : Settings::mineColor(nbMines-1));
+    style().drawItem(&painter, r, Qt::AlignCenter, colorGroup(), true, pixmap,
                      text, -1, &color);
     if ( advised!=-1 )
-        style().drawItem(&painter, r, AlignCenter, colorGroup(), true,
+        style().drawItem(&painter, r, Qt::AlignCenter, colorGroup(), true,
                          &_advised[advised], QString::null);
 }

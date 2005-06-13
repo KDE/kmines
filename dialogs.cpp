@@ -22,13 +22,16 @@
 #include <qpixmap.h>
 #include <qvgroupbox.h>
 #include <qlayout.h>
-#include <qhbox.h>
-#include <qvbox.h>
-#include <qgrid.h>
+#include <q3hbox.h>
+#include <q3vbox.h>
+#include <q3grid.h>
 #include <qlabel.h>
 #include <qtimer.h>
-#include <qwhatsthis.h>
+
 #include <qcheckbox.h>
+//Added by qt3to4:
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 
 #include <klocale.h>
 #include <kmessagebox.h>
@@ -223,7 +226,7 @@ GameConfig::GameConfig()
     top->addWidget(cb);
 
     cb = new QCheckBox(i18n("\"Magic\" reveal"), this, "kcfg_MagicReveal");
-    QWhatsThis::add(cb, i18n("Set flags and reveal squares where they are trivial."));
+    cb->setWhatsThis( i18n("Set flags and reveal squares where they are trivial."));
     connect(cb, SIGNAL(toggled(bool)), SLOT(magicModified(bool)));
     top->addWidget(cb);
 
@@ -232,7 +235,7 @@ GameConfig::GameConfig()
     QHBoxLayout *hbox = new QHBoxLayout(top);
     QVGroupBox *gb = new QVGroupBox(i18n("Mouse Bindings"), this);
     hbox->addWidget(gb);
-    QGrid *grid = new QGrid(2, gb);
+    Q3Grid *grid = new Q3Grid(2, gb);
     grid->setSpacing(KDialog::spacingHint());
     for (uint i=0; i< Settings::EnumButton::COUNT; i++) {
         (void)new QLabel(i18n(MOUSE_BUTTON_LABELS[i]), grid);
@@ -274,7 +277,7 @@ AppearanceConfig::AppearanceConfig()
     QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
 
     QHBoxLayout *hbox = new QHBoxLayout(top);
-    QGrid *grid = new QGrid(2, this);
+    Q3Grid *grid = new Q3Grid(2, this);
     grid->setSpacing(KDialog::spacingHint());
     hbox->addWidget(grid);
     for (uint i=0; i<Settings::EnumType::COUNT; i++) {

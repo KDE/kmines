@@ -25,6 +25,8 @@
 
 #include "version.h"
 #include "defines.h"
+//Added by qt3to4:
+#include <Q3MemArray>
 
 
 namespace KExtHighscore
@@ -38,7 +40,7 @@ ExtManager::ExtManager()
     setShowStatistics(true);
     const uint RANGE[16] = {    1, 3120, 3180, 3240, 3300, 3360, 3420, 3480,
                              3510, 3540, 3550, 3560, 3570, 3580, 3590, 3600  };
-    QMemArray<uint> s;
+    Q3MemArray<uint> s;
     s.duplicate(RANGE, 16);
     setScoreHistogram(s, ScoreBound);
 

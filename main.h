@@ -22,6 +22,8 @@
 #include "kzoommainwindow.h"
 
 #include "defines.h"
+//Added by qt3to4:
+#include <QFocusEvent>
 
 class KAction;
 class KToggleAction;

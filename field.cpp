@@ -24,6 +24,9 @@
 #include <qlayout.h>
 #include <qtimer.h>
 #include <qpainter.h>
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <QPaintEvent>
 
 #include <klocale.h>
 #include <knotifyclient.h>
