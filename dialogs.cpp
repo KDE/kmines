@@ -20,7 +20,7 @@
 #include "dialogs.moc"
 
 #include <qpixmap.h>
-#include <qvgroupbox.h>
+
 #include <qlayout.h>
 #include <q3hbox.h>
 #include <q3vbox.h>
@@ -41,7 +41,7 @@
 #include <kconfig.h>
 #include <kapplication.h>
 #include <kdialogbase.h>
-
+#include <Q3GroupBox>
 #include "settings.h"
 
 #include "bitmaps/smile"
@@ -68,8 +68,8 @@ DigitalClock::DigitalClock(QWidget *parent)
 : KGameLCDClock(parent, "digital_clock")
 {
     setFrameStyle(Panel | Sunken);
-    setDefaultBackgroundColor(black);
-    setDefaultColor(white);
+    setDefaultBackgroundColor(Qt::black);
+    setDefaultColor(Qt::white);
 }
 
 KExtHighscore::Score DigitalClock::score() const
@@ -84,16 +84,16 @@ void DigitalClock::timeoutClock()
 {
     KGameLCDClock::timeoutClock();
 
-    if ( _cheating || _customGame ) setColor(white);
-    else if ( _first<score() ) setColor(red);
-    else if ( _last<score() ) setColor(blue);
-    else setColor(white);
+    if ( _cheating || _customGame ) setColor(Qt::white);
+    else if ( _first<score() ) setColor(Qt::red);
+    else if ( _last<score() ) setColor(Qt::blue);
+    else setColor(Qt::white);
 }
 
 void DigitalClock::start()
 {
     KGameLCDClock::start();
-    if ( !_cheating && !_customGame ) setColor(red);
+    if ( !_cheating && !_customGame ) setColor(Qt::red);
 }
 
 void DigitalClock::reset(bool customGame)
@@ -112,7 +112,7 @@ void DigitalClock::reset(bool customGame)
 void DigitalClock::setCheating()
 {
     _cheating = true;
-    setColor(white);
+    setColor(Qt::white);
 }
 
 //-----------------------------------------------------------------------------
@@ -127,19 +127,20 @@ CustomConfig::CustomConfig()
 {
     QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
 
-    _width = new KIntNumInput(this, "kcfg_CustomWidth");
+#warning "kde4 kintnuminput without argiument"	
+    _width = new KIntNumInput(this/*, "kcfg_CustomWidth"*/);
     _width->setLabel(i18n("Width:"));
     _width->setRange(minWidth, maxWidth);
     connect(_width, SIGNAL(valueChanged(int)), SLOT(updateNbMines()));
     top->addWidget(_width);
 
-    _height = new KIntNumInput(this, "kcfg_CustomHeight");
+    _height = new KIntNumInput(this/*, "kcfg_CustomHeight"*/);
     _height->setLabel(i18n("Height:"));
     _height->setRange(minWidth, maxWidth);
     connect(_height, SIGNAL(valueChanged(int)), SLOT(updateNbMines()));
     top->addWidget(_height);
 
-    _mines = new KIntNumInput(this, "kcfg_CustomMines");
+    _mines = new KIntNumInput(this/*, "kcfg_CustomMines"*/);
     _mines->setLabel(i18n("No. of mines:"));
     _mines->setRange(1, Level::maxNbMines(maxWidth, maxHeight));
     connect(_mines, SIGNAL(valueChanged(int)), SLOT(updateNbMines()));
@@ -233,7 +234,7 @@ GameConfig::GameConfig()
     top->addSpacing(2 * KDialog::spacingHint());
 
     QHBoxLayout *hbox = new QHBoxLayout(top);
-    QVGroupBox *gb = new QVGroupBox(i18n("Mouse Bindings"), this);
+    Q3GroupBox *gb = new Q3GroupBox(1, Qt::Horizontal,i18n("Mouse Bindings"), this);
     hbox->addWidget(gb);
     Q3Grid *grid = new Q3Grid(2, gb);
     grid->setSpacing(KDialog::spacingHint());

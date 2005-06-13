@@ -23,6 +23,8 @@
 #include <kdialogbase.h>
 
 #include "bfield.h"
+//Added by qt3to4:
+#include <QLabel>
 
 
 class QLabel;

@@ -63,7 +63,7 @@ void FieldFrame::adjustSize()
 void FieldFrame::initPixmap(QPixmap &pix, bool mask) const
 {
     pix.resize(Settings::caseSize(), Settings::caseSize());
-    if (mask) pix.fill(color0);
+    if (mask) pix.fill(Qt::color0);
 }
 
 void FieldFrame::drawPixmap(QPixmap &pix, PixmapType type, bool mask) const

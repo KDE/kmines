@@ -62,8 +62,8 @@ void KZoomMainWindow::addWidget(QWidget *widget)
 {
   widget->adjustSize();
   QWidget *tlw = widget->topLevelWidget();
-  KZoomMainWindow *zm = 
-    static_cast<KZoomMainWindow *>(tlw->qt_cast("KZoomMainWindow"));
+  KZoomMainWindow *zm = static_cast<KZoomMainWindow *>(qobject_cast<KZoomMainWindow*>(tlw)); 
+    //static_cast<KZoomMainWindow *>(tlw->qt_cast("KZoomMainWindow"));
   Q_ASSERT(zm);
   zm->_widgets.append(widget);
   connect(widget, SIGNAL(destroyed()), zm, SLOT(widgetDestroyed()));
