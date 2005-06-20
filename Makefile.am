@@ -17,7 +17,8 @@ messages: rc.cpp
 
 # for system-wide highscore file
 DESTBIN = $(DESTDIR)$(bindir)/$(bin_PROGRAMS)
-DESTSCORES = $(HIGHSCORE_DIRECTORY)/$(bin_PROGRAMS).scores
+DESTHIGHSCORES = $(DESTDIR)$(HIGHSCORE_DIRECTORY)
+DESTSCORES = $(DESTDIR)$(HIGHSCORE_DIRECTORY)/$(bin_PROGRAMS).scores
 
 install-data-local:
 	@(test x$(HIGHSCORE_DIRECTORY) != x \
@@ -35,12 +36,28 @@ install-data-local:
 
 install-exec-hook:
 	@(test x$(HIGHSCORE_DIRECTORY) != x \
-        && ((chown root:games $(DESTBIN) && chmod 2755  $(DESTBIN)) \
+        && ((chown $(highscore_user):$(highscore_group) $(DESTBIN)) \
 	|| echo "Error: Could not install the game with correct permissions !!" \
 	)) || true
 
 	@(test x$(HIGHSCORE_DIRECTORY) != x \
-        && ((touch $(DESTSCORES) && chown root.games $(DESTSCORES) \
+		&& ((mkdir -p $(DESTHIGHSCORES) && chown $(highscore_user):$(highscore_group) $(DESTHIGHSCORES) \
+		&& chmod 750 $(DESTHIGHSCORES)) \
+	|| echo "Error: Could not create the highscore directory with correct permissions !!" \
+	)) || true
+
+	@(test x$(HIGHSCORE_DIRECTORY) != x \
+        && ((chown $(highscore_user):$(highscore_group) $(DESTBIN)) \
+	|| echo "Error: Could not install the game with correct permissions !!" \
+	)) || true
+
+	@(test ${setgid} = true \
+        && ((chmod 2755  $(DESTBIN)) \
+	|| echo "Error: Could not install the game with correct permissions !!" \
+	)) || true
+
+	@(test x$(HIGHSCORE_DIRECTORY) != x \
+        && ((touch $(DESTSCORES) && chown $(highscore_user):$(highscore_group) $(DESTSCORES) \
 	&& chmod 0660 $(DESTSCORES)) \
 	|| echo "Error: Could not create system-wide highscore file with correct permissions !!" \
 	)) || true
