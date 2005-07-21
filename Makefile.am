@@ -4,8 +4,8 @@ INCLUDES = -I$(top_srcdir)/libkdegames -I$(top_srcdir)/libkdegames/highscore $(a
 KDE_CXXFLAGS = $(KDE_USE_FPIE)
     
 bin_PROGRAMS       = kmines
-kmines_LDFLAGS     = $(all_libraries) $(KDE_RPATH)
-kmines_LDADD       = $(KDE_USE_PIE) ./solver/libsolver.la $(LIB_KDEGAMES)
+kmines_LDFLAGS     = $(all_libraries) $(KDE_RPATH) $(KDE_USE_PIE)
+kmines_LDADD       = ./solver/libsolver.la $(LIB_KDEGAMES)
 kmines_DEPENDENCIES = $(LIB_KDEGAMES_DEP)
 kmines_SOURCES     = kzoommainwindow.cpp defines.cpp highscores.cpp settings.kcfgc \
                      dialogs.cpp frame.cpp field.cpp status.cpp main.cpp
