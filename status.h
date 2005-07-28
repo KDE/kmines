@@ -27,7 +27,7 @@ class Smiley;
 class KGameLCD;
 class DigitalClock;
 class Solver;
-class QWidgetStack;
+class Q3WidgetStack;
 class QTimer;
 
 class Status : public QWidget, public KMines
@@ -85,7 +85,7 @@ class Status : public QWidget, public KMines
  private:
 	Field        *_field;
     QWidget      *_fieldContainer, *_resumeContainer;
-    QWidgetStack *_stack;
+    Q3WidgetStack *_stack;
 
 	Smiley       *smiley;
 	KGameLCD     *left;

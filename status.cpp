@@ -21,11 +21,14 @@
 
 #include <qpainter.h>
 #include <qpixmap.h>
-#include <qwhatsthis.h>
+
 #include <qlayout.h>
-#include <qwidgetstack.h>
-#include <qtextedit.h>
+#include <q3widgetstack.h>
+#include <q3textedit.h>
 #include <qtimer.h>
+//Added by qt3to4:
+#include <QGridLayout>
+#include <Q3Frame>
 
 #include <kapplication.h>
 #include <klocale.h>
@@ -62,10 +65,10 @@ Status::Status(QWidget *parent)
 // status bar
 	// mines left LCD
 	left = new KGameLCD(5, this);
-    left->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+    left->setFrameStyle(Q3Frame::Panel | Q3Frame::Sunken);
     left->setDefaultBackgroundColor(black);
     left->setDefaultColor(white);
-	QWhatsThis::add(left, i18n("<qt>Mines left.<br/>"
+	left->setWhatsThis( i18n("<qt>Mines left.<br/>"
                                "It turns <font color=\"red\">red</font> "
                                "when you have flagged more cases than "
                                "present mines.</qt>"));
@@ -75,12 +78,12 @@ Status::Status(QWidget *parent)
 	smiley = new Smiley(this);
 	connect(smiley, SIGNAL(clicked()), SLOT(smileyClicked()));
 	smiley->setFocusPolicy(QWidget::NoFocus);
-	QWhatsThis::add(smiley, i18n("Press to start a new game"));
+	smiley->setWhatsThis( i18n("Press to start a new game"));
     top->addWidget(smiley, 0, 2);
 
 	// digital clock LCD
 	dg = new DigitalClock(this);
-	QWhatsThis::add(dg, i18n("<qt>Time elapsed.<br/>"
+	dg->setWhatsThis( i18n("<qt>Time elapsed.<br/>"
                              "It turns <font color=\"blue\">blue</font> "
                              "if it is a highscore "
                              "and <font color=\"red\">red</font> "
@@ -100,7 +103,7 @@ Status::Status(QWidget *parent)
     connect(_field, SIGNAL(setCheating()), dg, SLOT(setCheating()));
     connect(_field,SIGNAL(addAction(const KGrid2D::Coord &, Field::ActionType)),
             SLOT(addAction(const KGrid2D::Coord &, Field::ActionType)));
-	QWhatsThis::add(_field, i18n("Mines field."));
+	_field->setWhatsThis( i18n("Mines field."));
 
 // resume button
     _resumeContainer = new QWidget(this);
@@ -113,7 +116,7 @@ Status::Status(QWidget *parent)
     connect(pb, SIGNAL(clicked()), SIGNAL(pause()));
     g->addWidget(pb, 0, 0, AlignCenter);
 
-    _stack = new QWidgetStack(this);
+    _stack = new Q3WidgetStack(this);
     _stack->addWidget(_fieldContainer);
     _stack->addWidget(_resumeContainer);
     _stack->raiseWidget(_fieldContainer);
@@ -326,7 +329,7 @@ void Status::viewLog()
 {
     KDialogBase d(this, "view_log", true, i18n("View Game Log"),
                   KDialogBase::Close, KDialogBase::Close);
-    QTextEdit *view = new QTextEdit(&d);
+    Q3TextEdit *view = new Q3TextEdit(&d);
     view->setReadOnly(true);
     view->setTextFormat(PlainText);
     view->setText(_log.toString());
@@ -363,7 +366,7 @@ void Status::loadLog()
     QDomDocument doc;
     if( KIO::NetAccess::download(url, tmpFile, this) ) {
         QFile file(tmpFile);
-        if ( file.open(IO_ReadOnly) ) {
+        if ( file.open(QIODevice::ReadOnly) ) {
             int errorLine;
             bool ok = doc.setContent(&file, 0, &errorLine);
             if ( !ok ) {

@@ -19,7 +19,10 @@
 #include "main.h"
 #include "main.moc"
 
-#include <qptrvector.h>
+#include <q3ptrvector.h>
+//Added by qt3to4:
+#include <QFocusEvent>
+#include <Q3ValueList>
 
 #include <kaccel.h>
 #include <kapplication.h>
@@ -43,17 +46,17 @@
 #include "dialogs.h"
 
 const MainWidget::KeyData MainWidget::KEY_DATA[NB_KEYS] = {
-{I18N_NOOP("Move Up"),     "keyboard_moveup",    Key_Up,    SLOT(moveUp())},
-{I18N_NOOP("Move Down"),   "keyboard_movedown",  Key_Down,  SLOT(moveDown())},
-{I18N_NOOP("Move Right"),  "keyboard_moveright", Key_Right, SLOT(moveRight())},
-{I18N_NOOP("Move Left"),   "keyboard_moveleft",  Key_Left,  SLOT(moveLeft())},
-{I18N_NOOP("Move at Left Edge"), "keyboard_leftedge", Key_Home, SLOT(moveLeftEdge())},
-{I18N_NOOP("Move at Right Edge"), "keyboard_rightedge", Key_End, SLOT(moveRightEdge())},
-{I18N_NOOP("Move at Top Edge"), "keyboard_topedge", Key_PageUp, SLOT(moveTop())},
-{I18N_NOOP("Move at Bottom Edge"), "keyboard_bottomedge", Key_PageDown, SLOT(moveBottom())},
-{I18N_NOOP("Reveal Mine"), "keyboard_revealmine", Key_Space, SLOT(reveal())},
-{I18N_NOOP("Mark Mine"),   "keyboard_markmine",  Key_W,     SLOT(mark())},
-{I18N_NOOP("Automatic Reveal"), "keyboard_autoreveal", Key_Return, SLOT(autoReveal())}
+{I18N_NOOP("Move Up"),     "keyboard_moveup",    Qt::Key_Up,    SLOT(moveUp())},
+{I18N_NOOP("Move Down"),   "keyboard_movedown",  Qt::Key_Down,  SLOT(moveDown())},
+{I18N_NOOP("Move Right"),  "keyboard_moveright", Qt::Key_Right, SLOT(moveRight())},
+{I18N_NOOP("Move Left"),   "keyboard_moveleft",  Qt::Key_Left,  SLOT(moveLeft())},
+{I18N_NOOP("Move at Left Edge"), "keyboard_leftedge", Qt::Key_Home, SLOT(moveLeftEdge())},
+{I18N_NOOP("Move at Right Edge"), "keyboard_rightedge", Qt::Key_End, SLOT(moveRightEdge())},
+{I18N_NOOP("Move at Top Edge"), "keyboard_topedge", Qt::Key_PageUp, SLOT(moveTop())},
+{I18N_NOOP("Move at Bottom Edge"), "keyboard_bottomedge", Qt::Key_PageDown, SLOT(moveBottom())},
+{I18N_NOOP("Reveal Mine"), "keyboard_revealmine", Qt::Key_Space, SLOT(reveal())},
+{I18N_NOOP("Mark Mine"),   "keyboard_markmine",  Qt::Key_W,     SLOT(mark())},
+{I18N_NOOP("Automatic Reveal"), "keyboard_autoreveal", Qt::Key_Return, SLOT(autoReveal())}
 };
 
 
@@ -177,8 +180,8 @@ void MainWidget::configureHighscores()
 void MainWidget::settingsChanged()
 {
     bool enabled = Settings::keyboardGame();
-    QValueList<KAction *> list = _keybCollection->actions();
-    QValueList<KAction *>::Iterator it;
+    Q3ValueList<KAction *> list = _keybCollection->actions();
+    Q3ValueList<KAction *>::Iterator it;
     for (it = list.begin(); it!=list.end(); ++it)
         (*it)->setEnabled(enabled);
     _status->settingsChanged();

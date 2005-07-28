@@ -19,7 +19,7 @@
 #ifndef BASE_FIELD_H
 #define BASE_FIELD_H
 
-#include <qcstring.h>
+#include <q3cstring.h>
 
 #include <krandomsequence.h>
 #include <kgrid2d.h>
@@ -56,7 +56,7 @@ class BaseField : public KGrid2D::Square<KMines::Case>, public KMines
 // -------------------------
 
     uint nbMarked() const { return _nbMarked; }
-    QCString string() const;
+    Q3CString string() const;
 
     void showAllMines(bool won);
 

@@ -17,6 +17,8 @@
  */
 
 #include "bfield.h"
+//Added by qt3to4:
+#include <Q3CString>
 
 
 using namespace KGrid2D;
@@ -64,8 +66,8 @@ bool BaseField::checkField(uint w, uint h, uint nb, const QString &s)
     uint n = 0;
 	unsigned int strLength(s.length());
     for (uint i=0; i<strLength; i++)
-        if ( s[i]=="1" ) n++;
-        else if ( s[i]!="0" ) return false;
+        if ( s.at(i)=='1' ) n++;
+        else if ( s.at(i)!='0' ) return false;
     return ( n==nb );
 }
 
@@ -79,7 +81,7 @@ void BaseField::initReplay(const QString &s)
     tmp.state = Covered;
 	unsigned int strLength(s.length());
     for (uint i=0; i<strLength; i++) {
-        tmp.mine = ( s[i]=="1" );
+        tmp.mine = ( s[i]=='1' );
         at(i) = tmp;
     }
 }
@@ -212,9 +214,9 @@ void BaseField::doMark(const Coord &c)
     changeCase(c, Marked);
 }
 
-QCString BaseField::string() const
+Q3CString BaseField::string() const
 {
-    QCString s(size());
+    Q3CString s(size());
     for (uint i=0; i<size(); i++)
         s[i] = (hasMine(coord(i)) ? '1' : '0');
     return s;

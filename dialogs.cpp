@@ -20,15 +20,18 @@
 #include "dialogs.moc"
 
 #include <qpixmap.h>
-#include <qvgroupbox.h>
+
 #include <qlayout.h>
-#include <qhbox.h>
-#include <qvbox.h>
-#include <qgrid.h>
+#include <q3hbox.h>
+#include <q3vbox.h>
+#include <q3grid.h>
 #include <qlabel.h>
 #include <qtimer.h>
-#include <qwhatsthis.h>
+
 #include <qcheckbox.h>
+//Added by qt3to4:
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 
 #include <klocale.h>
 #include <kmessagebox.h>
@@ -38,7 +41,7 @@
 #include <kconfig.h>
 #include <kapplication.h>
 #include <kdialogbase.h>
-
+#include <Q3GroupBox>
 #include "settings.h"
 
 #include "bitmaps/smile"
@@ -65,8 +68,8 @@ DigitalClock::DigitalClock(QWidget *parent)
 : KGameLCDClock(parent, "digital_clock")
 {
     setFrameStyle(Panel | Sunken);
-    setDefaultBackgroundColor(black);
-    setDefaultColor(white);
+    setDefaultBackgroundColor(Qt::black);
+    setDefaultColor(Qt::white);
 }
 
 KExtHighscore::Score DigitalClock::score() const
@@ -81,16 +84,16 @@ void DigitalClock::timeoutClock()
 {
     KGameLCDClock::timeoutClock();
 
-    if ( _cheating || _customGame ) setColor(white);
-    else if ( _first<score() ) setColor(red);
-    else if ( _last<score() ) setColor(blue);
-    else setColor(white);
+    if ( _cheating || _customGame ) setColor(Qt::white);
+    else if ( _first<score() ) setColor(Qt::red);
+    else if ( _last<score() ) setColor(Qt::blue);
+    else setColor(Qt::white);
 }
 
 void DigitalClock::start()
 {
     KGameLCDClock::start();
-    if ( !_cheating && !_customGame ) setColor(red);
+    if ( !_cheating && !_customGame ) setColor(Qt::red);
 }
 
 void DigitalClock::reset(bool customGame)
@@ -109,7 +112,7 @@ void DigitalClock::reset(bool customGame)
 void DigitalClock::setCheating()
 {
     _cheating = true;
-    setColor(white);
+    setColor(Qt::white);
 }
 
 //-----------------------------------------------------------------------------
@@ -124,19 +127,20 @@ CustomConfig::CustomConfig()
 {
     QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
 
-    _width = new KIntNumInput(this, "kcfg_CustomWidth");
+#warning "kde4 kintnuminput without argiument"	
+    _width = new KIntNumInput(this/*, "kcfg_CustomWidth"*/);
     _width->setLabel(i18n("Width:"));
     _width->setRange(minWidth, maxWidth);
     connect(_width, SIGNAL(valueChanged(int)), SLOT(updateNbMines()));
     top->addWidget(_width);
 
-    _height = new KIntNumInput(this, "kcfg_CustomHeight");
+    _height = new KIntNumInput(this/*, "kcfg_CustomHeight"*/);
     _height->setLabel(i18n("Height:"));
     _height->setRange(minWidth, maxWidth);
     connect(_height, SIGNAL(valueChanged(int)), SLOT(updateNbMines()));
     top->addWidget(_height);
 
-    _mines = new KIntNumInput(this, "kcfg_CustomMines");
+    _mines = new KIntNumInput(this/*, "kcfg_CustomMines"*/);
     _mines->setLabel(i18n("No. of mines:"));
     _mines->setRange(1, Level::maxNbMines(maxWidth, maxHeight));
     connect(_mines, SIGNAL(valueChanged(int)), SLOT(updateNbMines()));
@@ -223,16 +227,16 @@ GameConfig::GameConfig()
     top->addWidget(cb);
 
     cb = new QCheckBox(i18n("\"Magic\" reveal"), this, "kcfg_MagicReveal");
-    QWhatsThis::add(cb, i18n("Set flags and reveal squares where they are trivial."));
+    cb->setWhatsThis( i18n("Set flags and reveal squares where they are trivial."));
     connect(cb, SIGNAL(toggled(bool)), SLOT(magicModified(bool)));
     top->addWidget(cb);
 
     top->addSpacing(2 * KDialog::spacingHint());
 
     QHBoxLayout *hbox = new QHBoxLayout(top);
-    QVGroupBox *gb = new QVGroupBox(i18n("Mouse Bindings"), this);
+    Q3GroupBox *gb = new Q3GroupBox(1, Qt::Horizontal,i18n("Mouse Bindings"), this);
     hbox->addWidget(gb);
-    QGrid *grid = new QGrid(2, gb);
+    Q3Grid *grid = new Q3Grid(2, gb);
     grid->setSpacing(KDialog::spacingHint());
     for (uint i=0; i< Settings::EnumButton::COUNT; i++) {
         (void)new QLabel(i18n(MOUSE_BUTTON_LABELS[i]), grid);
@@ -274,7 +278,7 @@ AppearanceConfig::AppearanceConfig()
     QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
 
     QHBoxLayout *hbox = new QHBoxLayout(top);
-    QGrid *grid = new QGrid(2, this);
+    Q3Grid *grid = new Q3Grid(2, this);
     grid->setSpacing(KDialog::spacingHint());
     hbox->addWidget(grid);
     for (uint i=0; i<Settings::EnumType::COUNT; i++) {
