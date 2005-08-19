@@ -414,6 +414,34 @@ you should click next. If you do that your score will not be added to the high-s
 </variablelist>
 </sect1>
 
+<sect1 id="view-menu"><title><guimenu>View</guimenu> Menu</title>
+<variablelist>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut>
+<keycombo action="simul">&Ctrl;<keycap>+</keycap></keycombo>
+</shortcut>
+<guimenu>View</guimenu>
+<guimenuitem>Zoom In</guimenuitem></menuchoice></term>
+<listitem><para>Increase the size of the gameplay canvas.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut>
+<keycombo action="simul">&Ctrl;<keycap>-</keycap></keycombo>
+</shortcut>
+<guimenu>View</guimenu>
+<guimenuitem>Zoom Out</guimenuitem></menuchoice></term>
+<listitem><para>Decrease the size of the gameplay canvas.</para>
+</listitem>
+</varlistentry>
+
+</variablelist>
+</sect1>
+
 <sect1 id="settings-menu"><title><guimenu>Settings</guimenu> Menu</title>
 <variablelist>
 <varlistentry>
