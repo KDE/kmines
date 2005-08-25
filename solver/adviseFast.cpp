@@ -124,7 +124,7 @@ bool AdviseFast::FactSet::reveal(
 	autorevealed.insert(point);
 	affectedFacts->insert(autorevealed.begin(), autorevealed.end());
 
-	CoordSet::iterator i, j;
+	CoordSet::const_iterator i;
 	for(i=autorevealed.begin(); i!=autorevealed.end(); ++i)
 	{
 		// I still think that each poing will belong to
@@ -134,7 +134,7 @@ bool AdviseFast::FactSet::reveal(
 			CoordSet const &affF = _containingFacts[*i];
 			affectedFacts->insert(
 				affF.begin(), affF.end());
-			for(	j=affF.begin();
+			for(CoordSet::const_iterator j=affF.begin();
 				j!=affF.end();
 				++j)
 			{
@@ -165,8 +165,7 @@ void AdviseFast::FactSet::mark(
 	if(_containingFacts.count(point)){
 		CoordSet const &affF = _containingFacts[point];
 		affectedFacts->insert(affF.begin(), affF.end());
-		CoordSet::iterator i;
-		for(i=affF.begin(); i!=affF.end(); ++i){
+		for(CoordSet::const_iterator i=affF.begin(); i!=affF.end(); ++i){
 			(*this)[*i].pointSet.erase(point);
 			(*this)[*i].mines--;
 			if((*this)[*i].pointSet.empty())
