@@ -424,9 +424,9 @@ bool Status::checkLog(const QDomDocument &doc)
         QDomElement a = actions.item(i).toElement();
         if ( a.isNull() ) return false;
         uint i0 = a.attribute("line").toUInt(&ok);
-        if ( !ok || i0>=w ) return false;
+        if ( !ok || i0>=h ) return false;
         uint j = a.attribute("column").toUInt(&ok);
-        if ( !ok || j>=h ) return false;
+        if ( !ok || j>=w ) return false;
         QString type = a.attribute("type");
         uint k = 0;
         for (; k<Field::Nb_Actions; k++)
