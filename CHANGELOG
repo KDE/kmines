@@ -1,7 +1,7 @@
 2.1.10 (25 Aug 2005) [KDE 3.5 devel]
 
 2.1.9a (25 Aug 2005) [KDE 3.4.3 stable]
- * fix constness in solver [reported by ]
+ * fix constness in solver [reported by Garrett Kajmowicz]
  * fix bug: cannot load log [reported by Tobias Meyer]
 
 2.1.9 (27 Jun 2004) [KDE 3.3 stable]
