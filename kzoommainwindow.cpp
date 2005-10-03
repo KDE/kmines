@@ -27,6 +27,7 @@
 //Added by qt3to4:
 #include <QEvent>
 #include <Q3PopupMenu>
+#include <kxmlguifactory.h>
 
 KZoomMainWindow::KZoomMainWindow(uint min, uint max, uint step, const char *name)
   : KMainWindow(0, name), _zoomStep(step), _minZoom(min), _maxZoom(max)
