@@ -66,8 +66,8 @@ Status::Status(QWidget *parent)
 	// mines left LCD
 	left = new KGameLCD(5, this);
     left->setFrameStyle(Q3Frame::Panel | Q3Frame::Sunken);
-    left->setDefaultBackgroundColor(black);
-    left->setDefaultColor(white);
+    left->setDefaultBackgroundColor(Qt::black);
+    left->setDefaultColor(Qt::white);
 	left->setWhatsThis( i18n("<qt>Mines left.<br/>"
                                "It turns <font color=\"red\">red</font> "
                                "when you have flagged more cases than "
@@ -77,7 +77,7 @@ Status::Status(QWidget *parent)
 	// smiley
 	smiley = new Smiley(this);
 	connect(smiley, SIGNAL(clicked()), SLOT(smileyClicked()));
-	smiley->setFocusPolicy(QWidget::NoFocus);
+	smiley->setFocusPolicy(Qt::NoFocus);
 	smiley->setWhatsThis( i18n("Press to start a new game"));
     top->addWidget(smiley, 0, 2);
 
@@ -95,7 +95,7 @@ Status::Status(QWidget *parent)
     QGridLayout *g = new QGridLayout(_fieldContainer, 1, 1);
     _field = new Field(_fieldContainer);
     _field->readSettings();
-    g->addWidget(_field, 0, 0, AlignCenter);
+    g->addWidget(_field, 0, 0, Qt::AlignCenter);
 	connect( _field, SIGNAL(updateStatus(bool)), SLOT(updateStatus(bool)) );
 	connect(_field, SIGNAL(gameStateChanged(GameState)),
 			SLOT(gameStateChangedSlot(GameState)) );
@@ -114,7 +114,7 @@ Status::Status(QWidget *parent)
         = new QPushButton(i18n("Press to Resume"), _resumeContainer);
     pb->setFont(f);
     connect(pb, SIGNAL(clicked()), SIGNAL(pause()));
-    g->addWidget(pb, 0, 0, AlignCenter);
+    g->addWidget(pb, 0, 0, Qt::AlignCenter);
 
     _stack = new Q3WidgetStack(this);
     _stack->addWidget(_fieldContainer);
@@ -179,7 +179,7 @@ void Status::settingsChanged()
 void Status::updateStatus(bool mine)
 {
 	int r = _field->nbMines() - _field->nbMarked();
-    QColor color = (r<0 && !_field->isSolved() ? red : white);
+    QColor color = (r<0 && !_field->isSolved() ? Qt::red : Qt::white);
     left->setColor(color);
 	left->display(r);
 
@@ -299,7 +299,7 @@ void Status::advise()
     int res = KMessageBox::warningContinueCancel(this,
                i18n("When the solver gives "
                "you advice, your score will not be added to the highscores."),
-                QString::null, QString::null, "advice_warning");
+                QString(), KStdGuiItem::cont(), "advice_warning");
     if ( res==KMessageBox::Cancel ) return;
     dg->setCheating();
     float probability;
@@ -331,7 +331,7 @@ void Status::viewLog()
                   KDialogBase::Close, KDialogBase::Close);
     Q3TextEdit *view = new Q3TextEdit(&d);
     view->setReadOnly(true);
-    view->setTextFormat(PlainText);
+    view->setTextFormat(Qt::PlainText);
     view->setText(_log.toString());
     d.setMainWidget(view);
     d.resize(500, 400);

@@ -25,6 +25,8 @@
 //Added by qt3to4:
 #include <QPixmap>
 #include <Q3Frame>
+#include <QStyleOptionFocusRect>
+#include <QPalette>
 
 #include "settings.h"
 
@@ -129,18 +131,22 @@ void FieldFrame::drawBox(QPainter &painter, const QPoint &p,
                     &colorGroup().brush(QColorGroup::Background));
     if (hasFocus) {
         painter.translate(p.x(), p.y());
-        QRect fbr = style().subRect(QStyle::SR_PushButtonFocusRect, &_button);
-        style().drawPrimitive(QStyle::PE_FrameFocusRect, &painter, fbr,
-                              colorGroup(), QStyle::State_Enabled);
+        QStyleOptionFocusRect option;
+        option.init(this);
+        option.fontMetrics = painter.fontMetrics();
+        option.state = QStyle::State_Enabled;
+        QRect fbr = style()->subElementRect(QStyle::SE_PushButtonFocusRect, &option, &_button);
+        option.rect = fbr;
+        style()->drawPrimitive(QStyle::PE_FrameFocusRect, &option, &painter);
         painter.resetXForm();
     }
 
 	QRect r(p, _button.size());
     const QPixmap *pixmap = (type==NoPixmap ? 0 : &_pixmaps[type]);
     QColor color = (nbMines==0 ? Qt::black : Settings::mineColor(nbMines-1));
-    style().drawItem(&painter, r, Qt::AlignCenter, colorGroup(), true, pixmap,
-                     text, -1, &color);
+    style()->drawItemText(&painter, r, Qt::AlignCenter, QPalette(color), true, text);
+    if (pixmap)
+      style()->drawItemPixmap(&painter, r, Qt::AlignCenter, *pixmap);
     if ( advised!=-1 )
-        style().drawItem(&painter, r, Qt::AlignCenter, colorGroup(), true,
-                         &_advised[advised], QString::null);
+        style()->drawItemPixmap(&painter, r, Qt::AlignCenter, _advised[advised]);
 }
