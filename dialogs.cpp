@@ -283,12 +283,14 @@ AppearanceConfig::AppearanceConfig()
     hbox->addWidget(grid);
     for (uint i=0; i<Settings::EnumType::COUNT; i++) {
         (void)new QLabel(i18n(COLOR_LABELS[i]), grid);
-        KColorButton *cb = new KColorButton(grid, COLOR_CONFIG_NAMES[i]);
+        KColorButton *cb = new KColorButton(grid);
+		cb->setObjectName( COLOR_CONFIG_NAMES[i]);
         cb->setFixedWidth(100);
     }
     for (uint i=0; i<NB_N_COLORS; i++) {
         (void)new QLabel(i18n("%n mine color:", "%n mines color:", i+1), grid);
-        KColorButton *cb = new KColorButton(grid, N_COLOR_CONFIG_NAMES[i]);
+        KColorButton *cb = new KColorButton(grid);
+		cb->setObjectName(N_COLOR_CONFIG_NAMES[i]);
         cb->setFixedWidth(100);
     }
     hbox->addStretch(1);
