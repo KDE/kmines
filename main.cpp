@@ -254,7 +254,7 @@ int main(int argc, char **argv)
     KGlobal::locale()->insertCatalog("libkdegames");
     KExtHighscore::ExtManager manager;
 
-    if ( a.isRestored() ) RESTORE(MainWidget)
+    if ( a.isSessionRestored() ) RESTORE(MainWidget)
     else {
         MainWidget *mw = new MainWidget;
         mw->show();
