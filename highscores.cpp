@@ -71,12 +71,12 @@ void ExtManager::convertLegacy(uint gameType)
     case Level::NB_TYPES: Q_ASSERT(false);
     }
 
-    KConfigGroupSaver cg(KGlobal::config(), group);
-    QString name = cg.config()->readEntry("Name", QString::null);
+    KConfigGroup cg(KGlobal::config(), group);
+    QString name = cg.readEntry("Name", QString::null);
     if ( name.isNull() ) return;
     if ( name.isEmpty() ) name = i18n("anonymous");
-    uint minutes = cg.config()->readUnsignedNumEntry("Min", 0);
-    uint seconds = cg.config()->readUnsignedNumEntry("Sec", 0);
+    uint minutes = cg.readUnsignedNumEntry("Min", 0);
+    uint seconds = cg.readUnsignedNumEntry("Sec", 0);
     int score = 3600 - (minutes*60 + seconds);
     if ( score<=0 ) return;
     Score s(Won);
