@@ -27,6 +27,7 @@
 #include "defines.h"
 //Added by qt3to4:
 #include <Q3MemArray>
+#include <kglobal.h>
 
 
 namespace KExtHighscore
@@ -70,7 +71,7 @@ void ExtManager::convertLegacy(uint gameType)
     case Level::NB_TYPES: Q_ASSERT(false);
     }
 
-    KConfigGroupSaver cg(kapp->config(), group);
+    KConfigGroupSaver cg(KGlobal::config(), group);
     QString name = cg.config()->readEntry("Name", QString::null);
     if ( name.isNull() ) return;
     if ( name.isEmpty() ) name = i18n("anonymous");
