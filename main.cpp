@@ -166,7 +166,7 @@ void MainWidget::configureSettings()
     dialog->addPage(new AppearanceConfig, i18n("Appearance"), "style");
     CustomConfig *cc = new CustomConfig;
     dialog->addPage(cc, i18n("Custom Game"), "package_settings");
-    connect(dialog, SIGNAL(settingsChanged()), SLOT(settingsChanged()));
+    connect(dialog, SIGNAL(settingsChanged(const QString &)), SLOT(settingsChanged()));
     dialog->show();
     cc->init();
     gc->init();
