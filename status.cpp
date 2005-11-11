@@ -465,7 +465,7 @@ void Status::replayStep()
         return;
     }
 
-    _timer->changeInterval(200);
+    _timer->start(200);
     QDomElement a = _actions.item(_index).toElement();
     dg->setTime(a.attribute("time"));
     uint i = a.attribute("column").toUInt();
