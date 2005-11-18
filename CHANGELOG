@@ -105,17 +105,17 @@
    forbidden as keys now ...
  * count nb of clicks (reveal, autoreveal, mark) and display it in highscores.
 
-2.1.0b (19 November 2001) [SF 2.2 stable]
+2.1.0b (19 November 2001)
  * fix a nasty bug : uncorrect flag was not shown at game over in certain
    cases [thanx for the bug reports from Viira and from an anonymous admin :)]
 
 2.1.0 (17 July 2001) [KDE 2.2 stable]
  * fixed checked entry in "show highscores" submenu
 
-2.0.13 (10 June 2001) [SF 2.2 devel]
+2.0.13 (10 June 2001)
  * enable world-wide highscores !!
 
-2.0.12 (09 June 2001) [SF 2.2 devel]
+2.0.12 (09 June 2001)
  * option to put the game in pause mode if the window loses focus [proposed by
    Bernhard Berger]
  * better default keys + fixed autoreveal display for keyboard game
