@@ -449,8 +449,10 @@ float AdviseFull::variantNumberFraction(
 			dvr = size - dvr;
 			dvd = size - dvd;
 		}
-		while(dvr < dvd)
-			quotient *= ((float)(size-dvr))/++dvr;
+		while(dvr < dvd) {
+                        float num = size-dvr++;
+			quotient *= num/dvr;
+                }
 	}
 
 	// Sorry, expensive call, but I'm lazy :((
