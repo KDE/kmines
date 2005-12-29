@@ -16,7 +16,7 @@
 <firstname>Nicolas</firstname>
 <surname>Hadacek</surname>
 <affiliation>
-<address><email>hadacek@kde.org</email></address>
+<address>&Nicolas.Hadacek.mail;</address>
 </affiliation>
 </author>
 <author>
@@ -28,14 +28,14 @@
 <firstname>Nicolas</firstname>
 <surname>Hadacek</surname>
 <affiliation>
-<address><email>hadacek@kde.org</email></address>
+<address>&Nicolas.Hadacek.mail;</address>
 </affiliation>
 <contrib>Developer</contrib>
 </othercredit>
 <othercredit role="reviewer">
 <firstname>Lauri</firstname>
 <surname>Watts</surname>
-<affiliation><address><email>lauri@kde.org</email></address></affiliation>
+<affiliation><address>&Lauri.Watts.mail;</address></affiliation>
 <contrib>Reviewer</contrib>
 </othercredit>
 <!-- TRANS:ROLES_OF_TRANSLATORS -->
@@ -43,13 +43,13 @@
 
 <copyright>
 <year>2000</year>
-<holder>Nicolas Hadacek, Michael McBride</holder>
+<holder>&Nicolas.Hadacek;, Michael McBride</holder>
 </copyright>
 
 <legalnotice>&FDLNotice;</legalnotice>
 
-<date>2004-01-12</date>
-<releaseinfo>2.1.8</releaseinfo>
+<date>2005-12-28</date>
+<releaseinfo>2.1.10</releaseinfo>
 
 <abstract><para>&kmines; is the &kde; version of the classic minesweeper
 game.</para></abstract>
@@ -76,7 +76,7 @@ uncovered. When you find a square that you are sure contains a mine, it is
 </chapter>
 
 <chapter id="how-to-play">
-<title>How to play</title>
+<title>How to Play</title>
 
 <para>You have to use the mouse and its three buttons to uncover or to flag the
 squares (with two-buttoned mice, clicking the
@@ -136,14 +136,14 @@ Every time you flag a bomb site, this number will decrease by one.</para>
 <note><para>This box does not determine if you are right or wrong, but only how
 many mines you need to theoretically mark before you are done with this
 game.</para></note>
-<para>In this example, there are 10 mines to be marked.</para></listitem>
+<para>In this example, there are 40 mines to be marked.</para></listitem>
 <listitem><para>A Yellow Smiley Face.  Clicking this will start a new game.  If
 you lose the game, it will become a frown.</para></listitem>
 <listitem><para>The box on the right shows how much time this round has taken.
 The shortest time for each level is listed as the high
 score.</para></listitem>
 <listitem><para>The playing area. This will vary in size depending on the
-difficulty level of the game.  In this example, it consists of 64 squares. This is where you play the game.</para></listitem>
+difficulty level of the game.  In this example, it consists of 256 squares. This is where you play the game.</para></listitem>
 <!-- This doesn't seem to be there any more.
 <listitem><para>A status line at the bottom of the window.  In this example, it
 simply says <guilabel>Game stopped</guilabel>.</para></listitem>
@@ -152,10 +152,10 @@ simply says <guilabel>Game stopped</guilabel>.</para></listitem>
 </sect1>
 </chapter>
 
-<chapter id="prefs"><title>Game options</title>
+<chapter id="prefs"><title>Game Options</title>
 <para>The options to &kmines; are set by selecting <menuchoice>
 <guimenu>Settings</guimenu> <guimenuitem>Configure &kmines;</guimenuitem>
-</menuchoice> from the menu-bar.  This will bring up a dialog box.</para>
+</menuchoice> from the menubar.  This will bring up a dialog box.</para>
 
 <screenshot>
 <screeninfo>&kmines; Preferences</screeninfo>
@@ -171,7 +171,7 @@ simply says <guilabel>Game stopped</guilabel>.</para></listitem>
 <varlistentry>
 <term><guilabel>Game</guilabel></term>
 <listitem>
-<para>The first option, labeled <guilabel>Enable ? Mark</guilabel>,
+<para>The first option, labeled <guilabel>Enable ? mark</guilabel>,
 determines whether you can mark squares as
 <quote>questionable</quote>.  If this option is checked, then right clicking the mouse will first cause a square to be
 flagged. If you right click again on the same square, the flag will change to
@@ -196,9 +196,9 @@ responsible for playing the game.  Keyboard commands such as
 <guimenuitem>Quit</guimenuitem>, still work, regardless of this
 option.</para></note>
 
-<para>The <guilabel>Pause if windows lose focus</guilabel> option will
+<para>The <guilabel>Pause if windows loses focus</guilabel> option will
 automatically pause the game if the &kmines; window loses focus. When the game
-is paused, the gameboard disappears, so you can't use pausing the game as a way
+is paused, the gameboard disappears, so you cannot use pausing the game as a way
 to cheat!</para>
 
 <para>The <guilabel>"Magic" reveal</guilabel> option switches on <quote>Magic
@@ -220,10 +220,10 @@ the three mouse buttons.  Your options are:</para>
 then a number will appear.  If there is a bomb under that square, then the bomb
 will explode, and the game will be over.</para></listitem>
 </varlistentry>
-<varlistentry>
+<!-- <varlistentry>
 <term>Toggle Mark</term>
 <listitem><para>Clicking with this button on a square will mark/unmark with a red flag.</para></listitem>
-</varlistentry>
+</varlistentry> -->
 <varlistentry>
 <term>Autoreveal</term>
 <listitem><para>Clicking on a square with this button will automatically reveal
@@ -233,13 +233,13 @@ be over.</para></listitem>
 </varlistentry>
 
 <varlistentry>
-<term>Toggle flag</term>
+<term>Toggle Flag</term>
 <listitem><para>Clicking with this button on a square will cycle through blank,
 red flag, and question mark.</para></listitem>
 </varlistentry>
 
 <varlistentry>
-<term>Toggle ? mark</term>
+<term>Toggle ? Flag</term>
 <listitem><para>Clicking with this button on a square will mark/unmark with a
 question mark.</para></listitem>
 </varlistentry>
@@ -250,12 +250,11 @@ question mark.</para></listitem>
 <varlistentry>
 <term><guilabel>Appearance</guilabel></term>
 <listitem>
-<para>The top option, entitled <guilabel>case size</guilabel>,
-determines the size of each of the squares in the playing area.  By default,
-they are set small.  You may want to increase the size if you are working on a 
-very high resolution monitor.</para>
+<para>The top three color buttons determine the 
+<guilabel>Flag Color</guilabel>, <guilabel>Explosion Color</guilabel> 
+and <guilabel>Error Color</guilabel>.</para>
 
-<para>The rest of this page is concerned with colors. To adjust,
+<para>The rest of this page is concerned with mines colors. To adjust,
 simply click the color button beside each description, and select the
 new color.</para>
 </listitem>
@@ -268,7 +267,7 @@ new color.</para>
 challenging enough, you can set up a custom game here.  Use the
 sliders to change the <guilabel>Width</guilabel>,
 <guilabel>Height</guilabel>, and the percentage of the board covered
-with <guilabel>Mines</guilabel>.  The default game has 20 percent of
+with <guilabel>Mines</guilabel>.  The default game has 15 percent of
 the board covered, so there is plenty of room to make the game
 harder.</para>
 </listitem>
@@ -282,7 +281,7 @@ harder.</para>
 <para>If you want to abandon your changes, click
 <guibutton>Cancel</guibutton> to abort the changes.</para>
 
-<para>If you click on <guilabel>Default</guilabel>, the default
+<para>If you click on <guilabel>Defaults</guilabel>, the default
 settings will be restored.  Click <guilabel>OK</guilabel> to make
 these default changes permanent, or edit the settings some
 more.</para>
@@ -295,12 +294,12 @@ more.</para>
 <chapter id="command">
 <title>Commands/Keyboard Shortcuts</title>
 
-<para>The following sections briefly describe each menu-bar option.</para>
+<para>The following sections briefly describe each menubar option.</para>
 
 <sect1 id="game-menu">
 <title><guimenu>Game</guimenu> Menu</title>
 
-<para>The <guimenu>Game</guimenu> menu consists of 5 options.</para>
+<para>The <guimenu>Game</guimenu> menu consists of 4 options.</para>
 
 <variablelist>
 <varlistentry>
@@ -320,7 +319,7 @@ more.</para>
 </shortcut>
 <guimenu>Game</guimenu>
 <guimenuitem>Pause</guimenuitem> </menuchoice></term>
-<listitem><para>Pauses the game.  This will hide the board (no cheating), and
+<listitem><para>Pauses or resumes the game.  This will hide the board (no cheating), and
 give you a button to press when you want to continue this
 game.</para></listitem>
 </varlistentry>
@@ -414,17 +413,45 @@ you should click next. If you do that your score will not be added to the high-s
 </variablelist>
 </sect1>
 
+<sect1 id="view-menu"><title><guimenu>View</guimenu> Menu</title>
+<variablelist>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut>
+<keycombo action="simul">&Ctrl;<keycap>+</keycap></keycombo>
+</shortcut>
+<guimenu>View</guimenu>
+<guimenuitem>Zoom In</guimenuitem></menuchoice></term>
+<listitem><para>Increase the size of the gameplay canvas.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut>
+<keycombo action="simul">&Ctrl;<keycap>-</keycap></keycombo>
+</shortcut>
+<guimenu>View</guimenu>
+<guimenuitem>Zoom Out</guimenuitem></menuchoice></term>
+<listitem><para>Decrease the size of the gameplay canvas.</para>
+</listitem>
+</varlistentry>
+
+</variablelist>
+</sect1>
+
 <sect1 id="settings-menu"><title><guimenu>Settings</guimenu> Menu</title>
 <variablelist>
 <varlistentry>
 <term><menuchoice>
 <guimenu>Settings</guimenu>
 <guimenuitem>Show Menubar</guimenuitem> </menuchoice></term>
-<listitem><para>If there is a check in front of this option, then the menu-bar
-will be visible.  Selecting this option, hides the menu-bar.</para>
-<note><para>To restore a hidden menu-bar, click outside the game play area, with
+<listitem><para>If there is a check in front of this option, then the menubar
+will be visible.  Selecting this option, hides the menubar.</para>
+<note><para>To restore a hidden menubar, click outside the game play area, with
 the right mouse button.  This will bring up a small sub-menu.  Simply select
-<guimenuitem>Show Menubar</guimenuitem> from this sub-menu, and the menu-bar
+<guimenuitem>Show Menubar</guimenuitem> from this sub-menu, and the menubar
 will be visible again.</para></note></listitem>
 </varlistentry>
 
@@ -472,7 +499,7 @@ the world with an online high score server.</para></listitem>
 <varlistentry>
 <term><menuchoice>
 <guimenu>Settings</guimenu>
-<guimenuitem>Configure &kmines;</guimenuitem> </menuchoice></term>
+<guimenuitem>Configure &kmines;...</guimenuitem> </menuchoice></term>
 <listitem><para>Allows you to adjust game options.  For more detailed
 information, see the section entitled <link linkend="prefs">Game
 Options</link>.</para></listitem>
@@ -511,15 +538,20 @@ surrounding squares not marked by a flag.</entry></row>
 <row><entry><keycombo action="simul">&Ctrl;<keycap>N</keycap></keycombo></entry><entry>New Game</entry></row>
 <row><entry><keycap>P</keycap></entry><entry>Pause Game</entry></row>
 <row><entry><keycombo action="simul">&Ctrl;<keycap>Q</keycap></keycombo></entry><entry>Quit &kmines;</entry></row>
+<row><entry><keycap>F1</keycap></entry><entry>&kmines; Handbook</entry></row>
 <row><entry><keycombo action="simul">&Shift;<keycap>F1</keycap></keycombo></entry><entry>What's This Help</entry></row>
+<row><entry><keycombo action="simul">&Ctrl;<keycap>H</keycap></keycombo></entry><entry>Show Highscores</entry></row>
+<row><entry><keycombo action="simul">&Ctrl;<keycap>M</keycap></keycombo></entry><entry>Show Menubar</entry></row>
+<row><entry><keycombo action="simul">&Ctrl;<keycap>+</keycap></keycombo></entry><entry>Zoom In</entry></row>
+<row><entry><keycombo action="simul">&Ctrl;<keycap>-</keycap></keycombo></entry><entry>Zoom Out</entry></row>
 
 </tbody>
 </tgroup>
 </table>
 
-<para>These key bindings can be changed by selecting <menuchoice>
-<guimenu>Settings</guimenu> <guimenuitem>Configure Key
-Bindings</guimenuitem> </menuchoice> from the menu-bar.</para>
+<para>These shortcuts can be changed by selecting <menuchoice>
+<guimenu>Settings</guimenu> <guimenuitem>Configure 
+Shortcuts...</guimenuitem> </menuchoice> from the menubar.</para>
 
 </sect1>
 
