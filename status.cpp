@@ -23,7 +23,7 @@
 #include <qpixmap.h>
 
 #include <qlayout.h>
-#include <q3widgetstack.h>
+#include <QStackedWidget>
 #include <q3textedit.h>
 #include <qtimer.h>
 //Added by qt3to4:
@@ -116,10 +116,10 @@ Status::Status(QWidget *parent)
     connect(pb, SIGNAL(clicked()), SIGNAL(pause()));
     g->addWidget(pb, 0, 0, Qt::AlignCenter);
 
-    _stack = new Q3WidgetStack(this);
+    _stack = new QStackedWidget (this);
     _stack->addWidget(_fieldContainer);
     _stack->addWidget(_resumeContainer);
-    _stack->raiseWidget(_fieldContainer);
+    _stack->setCurrentWidget(_fieldContainer);
     top->addMultiCellWidget(_stack, 1, 1, 0, 4);
 }
 
@@ -279,7 +279,7 @@ void Status::gameStateChanged(GameState state, bool won)
         break;
     }
 
-    _stack->raiseWidget(w);
+    _stack->setCurrentWidget(w);
     emit gameStateChangedSignal(state);
 }
 

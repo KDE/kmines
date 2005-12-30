@@ -26,7 +26,7 @@
 #include <kcmenumngr.h>
 //Added by qt3to4:
 #include <QEvent>
-#include <Q3PopupMenu>
+#include <QMenu>
 #include <kxmlguifactory.h>
 
 KZoomMainWindow::KZoomMainWindow(uint min, uint max, uint step, const char *name)
@@ -52,8 +52,8 @@ void KZoomMainWindow::init(const char *popupName)
   
   // context popup
   if (popupName) {
-    Q3PopupMenu *popup =
-      static_cast<Q3PopupMenu *>(factory()->container(popupName, this));
+    QMenu *popup =
+      static_cast<QMenu *>(factory()->container(popupName, this));
     Q_ASSERT(popup);
     if (popup) KContextMenuManager::insert(this, popup);
   }
