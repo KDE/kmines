@@ -17,8 +17,6 @@
  */
 
 #include "bfield.h"
-//Added by qt3to4:
-#include <Q3CString>
 
 
 using namespace KGrid2D;
@@ -214,10 +212,11 @@ void BaseField::doMark(const Coord &c)
     changeCase(c, Marked);
 }
 
-Q3CString BaseField::string() const
+QByteArray BaseField::string() const
 {
-    Q3CString s(size());
+    QByteArray s(size());
     for (uint i=0; i<size(); i++)
         s[i] = (hasMine(coord(i)) ? '1' : '0');
     return s;
 }
+

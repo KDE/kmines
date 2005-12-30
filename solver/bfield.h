@@ -56,7 +56,7 @@ class BaseField : public KGrid2D::Square<KMines::Case>, public KMines
 // -------------------------
 
     uint nbMarked() const { return _nbMarked; }
-    Q3CString string() const;
+    QByteArray string() const;
 
     void showAllMines(bool won);
 
