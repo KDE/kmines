@@ -22,7 +22,6 @@
 #include <q3ptrvector.h>
 //Added by qt3to4:
 #include <QFocusEvent>
-#include <Q3ValueList>
 
 #include <kaccel.h>
 #include <kapplication.h>
@@ -180,8 +179,8 @@ void MainWidget::configureHighscores()
 void MainWidget::settingsChanged()
 {
     bool enabled = Settings::keyboardGame();
-    Q3ValueList<KAction *> list = _keybCollection->actions();
-    Q3ValueList<KAction *>::Iterator it;
+    QList<KAction *> list = _keybCollection->actions();
+    QList<KAction *>::Iterator it;
     for (it = list.begin(); it!=list.end(); ++it)
         (*it)->setEnabled(enabled);
     _status->settingsChanged();
