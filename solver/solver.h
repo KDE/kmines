@@ -28,7 +28,7 @@
 
 
 class QLabel;
-class KProgress;
+class KProgressBar;
 class SolverPrivate;
 
 class Solver : public QObject
@@ -78,7 +78,7 @@ class SolvingRateDialog : public KDialogBase
     Solver           _solver;
     uint             _i, _success;
     QLabel          *_label;
-    KProgress       *_progress;
+    KProgressBar       *_progress;
 
     static const uint NB_STEPS = 200;
 };

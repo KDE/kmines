@@ -75,8 +75,8 @@ void ExtManager::convertLegacy(uint gameType)
     QString name = cg.readEntry("Name", QString());
     if ( name.isNull() ) return;
     if ( name.isEmpty() ) name = i18n("anonymous");
-    uint minutes = cg.readUnsignedNumEntry("Min", 0);
-    uint seconds = cg.readUnsignedNumEntry("Sec", 0);
+    uint minutes = cg.readEntry("Min", 0);
+    uint seconds = cg.readEntry("Sec", 0);
     int score = 3600 - (minutes*60 + seconds);
     if ( score<=0 ) return;
     Score s(Won);

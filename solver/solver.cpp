@@ -212,8 +212,8 @@ SolvingRateDialog::SolvingRateDialog(const BaseField &field, QWidget *parent)
 
     top->addSpacing(spacingHint());
 
-    _progress = new KProgress(NB_STEPS, plainPage());
-    _progress->setTextEnabled(true);
+    _progress = new KProgressBar(NB_STEPS, plainPage());
+    _progress->setTextVisible(true);
     _progress->setFormat("%v");
     top->addWidget(_progress);
 
