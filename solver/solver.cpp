@@ -197,7 +197,7 @@ SolvingRateDialog::SolvingRateDialog(const BaseField &field, QWidget *parent)
 
 	KGuiItem item = KStdGuiItem::ok();
 	item.setText(i18n("Start"));
-	setButtonOK(item);
+	setButtonGuiItem( KDialogBase::Ok,item);
     
     QVBoxLayout *top = new QVBoxLayout(plainPage(), 0, spacingHint());
     QLabel *label = new QLabel(i18n("Width: %1").arg(field.width()),
