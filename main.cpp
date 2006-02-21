@@ -78,7 +78,7 @@ MainWidget::MainWidget()
 	KStdGameAction::quit(qApp, SLOT(quit()), actionCollection());
 
 	// keyboard
-    _keybCollection = new KActionCollection(this);
+    _keybCollection = new KActionCollection(static_cast<QWidget*>(this));
     for (uint i=0; i<NB_KEYS; i++) {
         const KeyData &d = KEY_DATA[i];
         (void)new KAction(i18n(d.label), d.keycode, _status,
