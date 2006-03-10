@@ -9,7 +9,15 @@ include_directories( ${CMAKE_SOURCE_DIR}/libkdegames ${CMAKE_SOURCE_DIR}/libkdeg
 
 ########### next target ###############
 
-set(kmines_SRCS 
+set(libsolver_SRCS 
+	${CMAKE_SOURCE_DIR}/kmines/solver/bfield.cpp 
+	${CMAKE_SOURCE_DIR}/kmines/solver/solver.cpp 
+	${CMAKE_SOURCE_DIR}/kmines/solver/advFastRules.cpp 
+	${CMAKE_SOURCE_DIR}/kmines/solver/adviseFast.cpp
+	${CMAKE_SOURCE_DIR}/kmines/solver/adviseFull.cpp
+	)
+
+set(kmines_SRCS ${libsolver_SRCS}
    kzoommainwindow.cpp 
    defines.cpp 
    highscores.cpp 
@@ -25,7 +33,7 @@ kde4_add_kcfg_files(kmines_SRCS settings.kcfgc )
 
 kde4_add_executable(kmines ${kmines_SRCS})
 
-target_link_libraries(kmines  ${QT_AND_KDECORE_LIBS} solver )
+target_link_libraries(kmines  ${LIB_KDEUI} kdegames  )
 
 install_targets(/bin kmines )
 
