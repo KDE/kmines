@@ -1,4 +1,5 @@
 kde4_header()
+project(kmines)
 
 add_subdirectory( data ) 
 add_subdirectory( bitmaps ) 
