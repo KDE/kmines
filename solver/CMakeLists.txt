@@ -16,7 +16,7 @@ if(KDE4_BUILD_TESTS)
 
 kde4_add_executable(test ${test_SRCS})
 
-target_link_libraries(test  ${QT_AND_KDECORE_LIBS} )
+target_link_libraries(test  ${KDE4_KDECORE_LIBS} )
 
 endif(KDE4_BUILD_TESTS)
 
@@ -30,7 +30,7 @@ if(KDE4_BUILD_TESTS)
 
 kde4_add_executable(testFast ${testFast_SRCS})
 
-target_link_libraries(testFast  ${QT_AND_KDECORE_LIBS} )
+target_link_libraries(testFast  ${KDE4_KDECORE_LIBS} )
 
 endif(KDE4_BUILD_TESTS)
 
@@ -44,7 +44,7 @@ if(KDE4_BUILD_TESTS)
 
 kde4_add_executable(testSolve ${testSolve_SRCS})
 
-target_link_libraries(testSolve  ${QT_AND_KDECORE_LIBS} )
+target_link_libraries(testSolve  ${KDE4_KDECORE_LIBS} )
 
 endif(KDE4_BUILD_TESTS)
 
@@ -58,7 +58,7 @@ if(KDE4_BUILD_TESTS)
 
 kde4_add_executable(testRate ${testRate_SRCS})
 
-target_link_libraries(testRate  ${QT_AND_KDECORE_LIBS} )
+target_link_libraries(testRate  ${KDE4_KDECORE_LIBS} )
 
 endif(KDE4_BUILD_TESTS)
 
