@@ -23,7 +23,7 @@
 //Added by qt3to4:
 #include <QFocusEvent>
 
-#include <kaccel.h>
+
 #include <kapplication.h>
 #include <klocale.h>
 #include <kcmdlineargs.h>
