@@ -168,8 +168,8 @@ void CustomConfig::updateNbMines()
     _block = true;
     Level l(_width->value(), _height->value(), _mines->value());
     _mines->setRange(1, Level::maxNbMines(l.width(), l.height()));
-    _mines->setLabel(i18n("Mines (%1%):")
-                     .arg( (100*l.nbMines()) / (l.width() * l.height()) ));
+    _mines->setLabel(i18n("Mines (%1%):",
+                       (100*l.nbMines()) / (l.width() * l.height()) ));
     _gameType->setCurrentItem(l.type());
     _block = false;
 }
@@ -288,7 +288,7 @@ AppearanceConfig::AppearanceConfig()
         cb->setFixedWidth(100);
     }
     for (uint i=0; i<NB_N_COLORS; i++) {
-        (void)new QLabel(i18n("%n mine color:", "%n mines color:", i+1), grid);
+        (void)new QLabel(i18np("%n mine color:", "%n mines color:", i+1), grid);
         KColorButton *cb = new KColorButton(grid);
 		cb->setObjectName(N_COLOR_CONFIG_NAMES[i]);
         cb->setFixedWidth(100);

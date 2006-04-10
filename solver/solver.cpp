@@ -200,13 +200,13 @@ SolvingRateDialog::SolvingRateDialog(const BaseField &field, QWidget *parent)
 	setButtonGuiItem( KDialogBase::Ok,item);
     
     QVBoxLayout *top = new QVBoxLayout(plainPage(), 0, spacingHint());
-    QLabel *label = new QLabel(i18n("Width: %1").arg(field.width()),
+    QLabel *label = new QLabel(i18n("Width: %1", field.width()),
                                plainPage());
     top->addWidget(label);
-    label = new QLabel(i18n("Height: %1").arg(field.height()), plainPage());
+    label = new QLabel(i18n("Height: %1", field.height()), plainPage());
     top->addWidget(label);
-    label = new QLabel(i18n("Mines: %1 (%2%)").arg(field.nbMines())
-          .arg( field.nbMines() * 100.0 / field.size()),
+    label = new QLabel(i18n("Mines: %1 (%2%)", field.nbMines(),
+            field.nbMines() * 100.0 / field.size()),
                        plainPage());
     top->addWidget(label);
 
@@ -244,8 +244,8 @@ void SolvingRateDialog::step()
 void SolvingRateDialog::solvingDone(bool success)
 {
     if (success) _success++;
-    _label->setText(i18n("Success rate: %1%")
-                    .arg(_success * 100.0 / _i, 0, 'f', 3));
+    _label->setText(ki18n("Success rate: %1%")
+                    .subs(_success * 100.0 / _i, 0, 'f', 3).toString());
     _progress->advance(1);
     QTimer::singleShot(0, this, SLOT(step()));
 }

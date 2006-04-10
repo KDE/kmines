@@ -370,8 +370,8 @@ void Status::loadLog()
             int errorLine;
             bool ok = doc.setContent(&file, 0, &errorLine);
             if ( !ok ) {
-               KMessageBox::sorry(this, i18n("Cannot read XML file on line %1")
-                                  .arg(errorLine));
+               KMessageBox::sorry(this, i18n("Cannot read XML file on line %1",
+                                   errorLine));
                return;
             }
             success = true;
