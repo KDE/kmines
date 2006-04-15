@@ -65,7 +65,7 @@ void Smiley::setMood(Mood mood)
 
 //-----------------------------------------------------------------------------
 DigitalClock::DigitalClock(QWidget *parent)
-: KGameLCDClock(parent, "digital_clock")
+: KGameLCDClock(parent)
 {
     setFrameStyle(Panel | Sunken);
     setDefaultBackgroundColor(Qt::black);

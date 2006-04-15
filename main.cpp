@@ -188,7 +188,7 @@ void MainWidget::settingsChanged()
 
 void MainWidget::configureKeys()
 {
-    KKeyDialog d(true, this);
+    KKeyDialog d(KKeyChooser::AllActions, KKeyChooser::LetterShortcutsAllowed, this);
     d.insert(_keybCollection, i18n("Keyboard game"));
     d.insert(actionCollection(), i18n("General"));
     d.configure();
@@ -207,7 +207,7 @@ void MainWidget::gameStateChanged(KMines::GameState state)
 
 void MainWidget::pause()
 {
-    _pause->activate();
+    _pause->trigger();
 }
 
 void MainWidget::writeZoomSetting(uint zoom)
