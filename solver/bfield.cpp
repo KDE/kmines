@@ -214,7 +214,7 @@ void BaseField::doMark(const Coord &c)
 
 QByteArray BaseField::string() const
 {
-    QByteArray s(size());
+    QByteArray s(size(), 0);
     for (uint i=0; i<size(); i++)
         s[i] = (hasMine(coord(i)) ? '1' : '0');
     return s;

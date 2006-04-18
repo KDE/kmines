@@ -49,8 +49,9 @@
 
 
 Status::Status(QWidget *parent)
-  : QWidget(parent, "status"), _oldLevel(Level::Easy)
+  : QWidget(parent), _oldLevel(Level::Easy)
 {
+    setObjectName( "status" );
     _timer  = new QTimer(this);
     connect(_timer, SIGNAL(timeout()), SLOT(replayStep()));
 

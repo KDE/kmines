@@ -64,7 +64,7 @@ void FieldFrame::adjustSize()
 
 void FieldFrame::initPixmap(QPixmap &pix, bool mask) const
 {
-    pix.resize(Settings::caseSize(), Settings::caseSize());
+    pix = QPixmap( Settings::caseSize(), Settings::caseSize() );
     if (mask) pix.fill(Qt::color0);
 }
 
@@ -138,7 +138,7 @@ void FieldFrame::drawBox(QPainter &painter, const QPoint &p,
         QRect fbr = style()->subElementRect(QStyle::SE_PushButtonFocusRect, &option, &_button);
         option.rect = fbr;
         style()->drawPrimitive(QStyle::PE_FrameFocusRect, &option, &painter);
-        painter.resetXForm();
+        painter.resetMatrix();
     }
 
 	QRect r(p, _button.size());

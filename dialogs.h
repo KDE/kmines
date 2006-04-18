@@ -35,8 +35,8 @@ class Smiley : public QPushButton, public KMines
 {
  Q_OBJECT
  public:
-    Smiley(QWidget *parent, const char *name = 0)
-        : QPushButton(QString::null, parent, name) {}
+    Smiley(QWidget *parent)
+        : QPushButton(QString::null, parent) {}
 
  public slots:
     void setMood(Mood);

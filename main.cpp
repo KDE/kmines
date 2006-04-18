@@ -150,7 +150,7 @@ void MainWidget::showHighscores()
 
 void MainWidget::focusOutEvent(QFocusEvent *e)
 {
-    if ( Settings::pauseFocus() && e->reason()==QFocusEvent::ActiveWindow
+    if ( Settings::pauseFocus() && e->reason()==Qt::ActiveWindowFocusReason
           && _status->isPlaying() ) pause();
     KMainWindow::focusOutEvent(e);
 }

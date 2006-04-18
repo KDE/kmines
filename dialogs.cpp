@@ -60,7 +60,7 @@ const char **Smiley::XPM_NAMES[NbMoods] = {
 void Smiley::setMood(Mood mood)
 {
     QPixmap p(XPM_NAMES[mood]);
-    setPixmap(p);
+    setIcon(p);
 }
 
 //-----------------------------------------------------------------------------
@@ -123,11 +123,13 @@ const uint CustomConfig::maxHeight = 50;
 const uint CustomConfig::minHeight = 5;
 
 CustomConfig::CustomConfig()
-    : QWidget(0, "custom_config_widget"), _block(false)
+    : _block(false)
 {
-    QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
+    setObjectName( "custom_config_widget" );
+    QVBoxLayout *top = new QVBoxLayout(this);
+    top->setMargin( KDialog::spacingHint() );
 
-#warning "kde4 kintnuminput without argiument"	
+#warning "kde4 kintnuminput without argiument"
     _width = new KIntNumInput(this/*, "kcfg_CustomWidth"*/);
     _width->setLabel(i18n("Width:"));
     _width->setRange(minWidth, maxWidth);
@@ -149,13 +151,14 @@ CustomConfig::CustomConfig()
     top->addSpacing(2 * KDialog::spacingHint());
 
     // combo to choose level
-    QHBoxLayout *hbox = new QHBoxLayout(top);
+    QHBoxLayout *hbox = new QHBoxLayout;
+    top->addLayout( hbox );
     QLabel *label = new QLabel(i18n("Choose level:"), this);
     hbox->addWidget(label);
     _gameType = new KComboBox(false, this);
     connect(_gameType, SIGNAL(activated(int)), SLOT(typeChosen(int)));
     for (uint i=0; i<=Level::NB_TYPES; i++)
-        _gameType->insertItem(i18n(Level::LABELS[i]));
+        _gameType->insertItem(i, i18n(Level::LABELS[i]));
     hbox->addWidget(_gameType);
     hbox->addWidget(new QWidget(this), 1);
 
@@ -170,7 +173,7 @@ void CustomConfig::updateNbMines()
     _mines->setRange(1, Level::maxNbMines(l.width(), l.height()));
     _mines->setLabel(i18n("Mines (%1%):",
                        (100*l.nbMines()) / (l.width() * l.height()) ));
-    _gameType->setCurrentItem(l.type());
+    _gameType->setCurrentIndex(l.type());
     _block = false;
 }
 
@@ -203,7 +206,7 @@ static const char *MOUSE_BUTTON_LABELS[Settings::EnumButton::COUNT] = {
 };
 
 static const char *MOUSE_CONFIG_NAMES[Settings::EnumButton::COUNT] = {
-    "kcfg_leftMouseAction", "kcfg_midMouseAction", 
+    "kcfg_leftMouseAction", "kcfg_midMouseAction",
     "kcfg_rightMouseAction"
 };
 
@@ -213,37 +216,45 @@ static const char *MOUSE_ACTION_LABELS[Settings::EnumMouseAction::COUNT-1] = {
 };
 
 GameConfig::GameConfig()
-    : QWidget(0, "game_config_widget"), _magicDialogEnabled(false)
+    : _magicDialogEnabled(false)
 {
-    QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
+    setObjectName( "game_config_widget" );
+    QVBoxLayout *top = new QVBoxLayout(this);
+    top->setMargin( KDialog::spacingHint() );
 
-    QCheckBox *cb = new QCheckBox(i18n("Enable ? mark"), this, "kcfg_UncertainMark");
+    QCheckBox *cb = new QCheckBox(i18n("Enable ? mark"), this);
+    cb->setObjectName( "kcfg_UncertainMark" );
     top->addWidget(cb);
 
-    cb = new QCheckBox(i18n("Enable keyboard"), this, "kcfg_KeyboardGame");
+    cb = new QCheckBox(i18n("Enable keyboard"), this);
+    cb->setObjectName( "kcfg_KeyboardGame" );
     top->addWidget(cb);
 
-    cb = new QCheckBox(i18n("Pause if window loses focus"), this, "kcfg_PauseFocus");
+    cb = new QCheckBox(i18n("Pause if window loses focus"), this);
+    cb->setObjectName( "kcfg_PauseFocus" );
     top->addWidget(cb);
 
-    cb = new QCheckBox(i18n("\"Magic\" reveal"), this, "kcfg_MagicReveal");
+    cb = new QCheckBox(i18n("\"Magic\" reveal"), this);
+    cb->setObjectName( "kcfg_MagicReveal" );
     cb->setWhatsThis( i18n("Set flags and reveal squares where they are trivial."));
     connect(cb, SIGNAL(toggled(bool)), SLOT(magicModified(bool)));
     top->addWidget(cb);
 
     top->addSpacing(2 * KDialog::spacingHint());
 
-    QHBoxLayout *hbox = new QHBoxLayout(top);
+    QHBoxLayout *hbox = new QHBoxLayout;
+    top->addLayout( hbox );
     Q3GroupBox *gb = new Q3GroupBox(1, Qt::Horizontal,i18n("Mouse Bindings"), this);
     hbox->addWidget(gb);
     Q3Grid *grid = new Q3Grid(2, gb);
     grid->setSpacing(KDialog::spacingHint());
     for (uint i=0; i< Settings::EnumButton::COUNT; i++) {
         (void)new QLabel(i18n(MOUSE_BUTTON_LABELS[i]), grid);
-        QComboBox *cb = new QComboBox(false, grid, MOUSE_CONFIG_NAMES[i]);
+        QComboBox *cb = new QComboBox(grid);
+        cb->setObjectName( MOUSE_CONFIG_NAMES[i] );
         for (uint k=0; k< (Settings::EnumMouseAction::COUNT-1); k++)
-            cb->insertItem(i18n(MOUSE_ACTION_LABELS[k]));
-        cb->setCurrentItem(i);
+            cb->insertItem(k, i18n(MOUSE_ACTION_LABELS[k]));
+        cb->setCurrentIndex(i);
     }
     hbox->addStretch(1);
 
@@ -267,17 +278,19 @@ static const char *COLOR_CONFIG_NAMES[Settings::EnumType::COUNT] = {
 };
 
 static const char *N_COLOR_CONFIG_NAMES[KMines::NB_N_COLORS] = {
-    "kcfg_MineColor0", "kcfg_MineColor1", "kcfg_MineColor2", 
-    "kcfg_MineColor3", "kcfg_MineColor4", "kcfg_MineColor5", 
+    "kcfg_MineColor0", "kcfg_MineColor1", "kcfg_MineColor2",
+    "kcfg_MineColor3", "kcfg_MineColor4", "kcfg_MineColor5",
     "kcfg_MineColor6", "kcfg_MineColor7"
 };
 
 AppearanceConfig::AppearanceConfig()
-    : QWidget(0, "appearance_config_widget")
 {
-    QVBoxLayout *top = new QVBoxLayout(this, KDialog::spacingHint());
+    setObjectName( "appearance_config_widget" );
+    QVBoxLayout *top = new QVBoxLayout(this);
+    top->setMargin( KDialog::spacingHint() );
 
-    QHBoxLayout *hbox = new QHBoxLayout(top);
+    QHBoxLayout *hbox = new QHBoxLayout;
+    top->addLayout( hbox );
     Q3Grid *grid = new Q3Grid(2, this);
     grid->setSpacing(KDialog::spacingHint());
     hbox->addWidget(grid);
