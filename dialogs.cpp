@@ -158,7 +158,7 @@ CustomConfig::CustomConfig()
     _gameType = new KComboBox(false, this);
     connect(_gameType, SIGNAL(activated(int)), SLOT(typeChosen(int)));
     for (uint i=0; i<=Level::NB_TYPES; i++)
-        _gameType->insertItem(i, i18n(Level::LABELS[i]));
+        _gameType->addItem(i18n(Level::LABELS[i]));
     hbox->addWidget(_gameType);
     hbox->addWidget(new QWidget(this), 1);
 
@@ -253,7 +253,7 @@ GameConfig::GameConfig()
         QComboBox *cb = new QComboBox(grid);
         cb->setObjectName( MOUSE_CONFIG_NAMES[i] );
         for (uint k=0; k< (Settings::EnumMouseAction::COUNT-1); k++)
-            cb->insertItem(k, i18n(MOUSE_ACTION_LABELS[k]));
+            cb->addItem(i18n(MOUSE_ACTION_LABELS[k]));
         cb->setCurrentIndex(i);
     }
     hbox->addStretch(1);
