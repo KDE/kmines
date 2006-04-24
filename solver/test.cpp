@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
     QString s;
 	for(uint i=0;i<H;++i) {
 		for(uint j=0;j<W;++j)
-            cout << s.sprintf("%+.02f ", pic[i][j]).latin1();
+            cout << s.sprintf("%+.02f ", pic[i][j]).toLatin1();
         cout << endl;
 	}
 
