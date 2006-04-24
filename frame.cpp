@@ -57,7 +57,7 @@ void FieldFrame::adjustSize()
     }
 
     QFont f = font();
-    f.setPointSize(QMAX(1, Settings::caseSize()-6));
+    f.setPointSize(qMax(1, Settings::caseSize()-6));
     f.setBold(true);
     setFont(f);
 }
