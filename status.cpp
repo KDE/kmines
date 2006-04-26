@@ -421,7 +421,7 @@ bool Status::checkLog(const QDomDocument &doc)
     if ( list.isNull() ) return false;
     QDomNodeList actions = list.elementsByTagName("Action");
     if ( actions.count()==0 ) return false;
-    for (uint i=0; i<actions.count(); i++) {
+    for (int i=0; i<actions.count(); i++) {
         QDomElement a = actions.item(i).toElement();
         if ( a.isNull() ) return false;
         uint i0 = a.attribute("line").toUInt(&ok);
@@ -460,7 +460,7 @@ void Status::replayLog()
 
 void Status::replayStep()
 {
-    if ( _index>=_actions.count() ) {
+    if ( ( int )_index>=_actions.count() ) {
         _timer->stop();
         _actions = QDomNodeList();
         return;
