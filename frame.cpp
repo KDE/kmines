@@ -127,8 +127,8 @@ void FieldFrame::drawBox(QPainter &painter, const QPoint &p,
                       bool hasFocus) const
 {
     qDrawShadePanel(&painter, p.x(), p.y(), _button.width(), _button.height(),
-                    colorGroup(),  pressed, 2,
-                    &colorGroup().brush(QColorGroup::Background));
+                    palette(),  pressed, 2,
+                    &palette().brush(QPalette::Background));
     if (hasFocus) {
         painter.translate(p.x(), p.y());
         QStyleOptionFocusRect option;
