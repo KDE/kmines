@@ -23,7 +23,6 @@
 #include <kaction.h>
 #include <kstdaction.h>
 #include <kmenubar.h>
-#include <kcmenumngr.h>
 //Added by qt3to4:
 #include <QEvent>
 #include <QMenu>
@@ -55,7 +54,10 @@ void KZoomMainWindow::init(const char *popupName)
     QMenu *popup =
       static_cast<QMenu *>(factory()->container(popupName, this));
     Q_ASSERT(popup);
-    if (popup) KContextMenuManager::insert(this, popup);
+    if (popup) {
+        setContextMenuPolicy(Qt::ActionsContextMenu);
+        addActions(popup->actions());
+    }
   }
 }
 
