@@ -59,7 +59,9 @@ Status::Status(QWidget *parent)
     connect(_solver, SIGNAL(solvingDone(bool)), SLOT(solvingDone(bool)));
 
 // top layout
-	QGridLayout *top = new QGridLayout(this, 2, 5, 10, 10);
+    QGridLayout *top = new QGridLayout( this );
+    top->setMargin( 10 );
+    top->setSpacing( 10 );
     top->setColStretch(1, 1);
     top->setColStretch(3, 1);
 
@@ -93,7 +95,7 @@ Status::Status(QWidget *parent)
 
 // mines field
     _fieldContainer = new QWidget(this);
-    QGridLayout *g = new QGridLayout(_fieldContainer, 1, 1);
+    QGridLayout *g = new QGridLayout(_fieldContainer );
     _field = new Field(_fieldContainer);
     _field->readSettings();
     g->addWidget(_field, 0, 0, Qt::AlignCenter);
@@ -108,7 +110,7 @@ Status::Status(QWidget *parent)
 
 // resume button
     _resumeContainer = new QWidget(this);
-    g = new QGridLayout(_resumeContainer, 1, 1);
+    g = new QGridLayout(_resumeContainer);
     QFont f = font();
     f.setBold(true);
     QPushButton *pb
