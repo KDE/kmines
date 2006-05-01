@@ -14,8 +14,6 @@ kmines_METASOURCES = AUTO
 rcdir   = $(kde_datadir)/kmines
 rc_DATA = kminesui.rc
 
-messages: rc.cpp
-	$(XGETTEXT) rc.cpp *.cpp solver/*.cpp -o $(podir)/kmines.pot
 
 # for system-wide highscore file
 DESTBIN = $(DESTDIR)$(bindir)/$(bin_PROGRAMS)
