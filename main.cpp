@@ -81,8 +81,9 @@ MainWidget::MainWidget()
     _keybCollection = new KActionCollection(static_cast<QWidget*>(this));
     for (uint i=0; i<NB_KEYS; i++) {
         const KeyData &d = KEY_DATA[i];
-        (void)new KAction(i18n(d.label), d.keycode, _status,
-                          d.slot, _keybCollection, d.name);
+        KAction *action = new KAction(i18n(d.label), _keybCollection, d.name);
+        connect(action, SIGNAL(triggered(bool) ), _status, d.slot);
+        action->setShortcut(d.keycode);
     }
 
 	// Settings
