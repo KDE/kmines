@@ -10,13 +10,7 @@ include_directories( ${CMAKE_SOURCE_DIR}/libkdegames ${CMAKE_SOURCE_DIR}/libkdeg
 
 ########### next target ###############
 
-set(libsolver_SRCS 
-	${CMAKE_SOURCE_DIR}/kmines/solver/bfield.cpp 
-	${CMAKE_SOURCE_DIR}/kmines/solver/solver.cpp 
-	${CMAKE_SOURCE_DIR}/kmines/solver/advFastRules.cpp 
-	${CMAKE_SOURCE_DIR}/kmines/solver/adviseFast.cpp
-	${CMAKE_SOURCE_DIR}/kmines/solver/adviseFull.cpp
-	)
+set(libsolver_SRCS solver/bfield.cpp solver/solver.cpp solver/advFastRules.cpp solver/adviseFast.cpp solver/adviseFull.cpp)
 
 set(kmines_SRCS ${libsolver_SRCS}
    kzoommainwindow.cpp 
