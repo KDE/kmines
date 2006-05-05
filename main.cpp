@@ -106,8 +106,8 @@ MainWidget::MainWidget()
     _advise =
         KStdGameAction::hint(_status, SLOT(advise()), actionCollection());
     _solve = KStdGameAction::solve(_status, SLOT(solve()), actionCollection());
-    (void)new KAction(i18n("Solving Rate..."), 0, _status, SLOT(solveRate()),
-                      actionCollection(), "solve_rate");
+    KAction *action = new KAction(i18n("Solving Rate..."), actionCollection(), "solve_rate");
+    connect(action, SIGNAL(triggered(bool) ), _status, SLOT(solveRate()));
 
     // Log
     (void)new KAction(KGuiItem(i18n("View Log"), "viewmag"), 0,
