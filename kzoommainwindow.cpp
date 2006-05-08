@@ -22,6 +22,7 @@
 
 #include <kaction.h>
 #include <kstdaction.h>
+#include <ktoggleaction.h>
 #include <kmenubar.h>
 //Added by qt3to4:
 #include <QEvent>

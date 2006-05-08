@@ -32,6 +32,8 @@
 #include <kkeydialog.h>
 #include <kstdgameaction.h>
 #include <kaction.h>
+#include <kactioncollection.h>
+#include <ktoggleaction.h>
 #include <kdebug.h>
 #include <knotifyclient.h>
 #include <knotifydialog.h>
