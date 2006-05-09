@@ -24,8 +24,8 @@
 #include <assert.h>
 
 #include <qtimer.h>
-#include <qlayout.h>
-#include <qlabel.h>
+#include <QLayout>
+#include <QLabel>
 //Added by qt3to4:
 #include <QVBoxLayout>
 #include <kprogressbar.h>

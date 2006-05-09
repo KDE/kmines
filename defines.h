@@ -19,7 +19,7 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
-#include <qcolor.h>
+#include <QColor>
 
 
 class Level

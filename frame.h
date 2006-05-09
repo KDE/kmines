@@ -21,7 +21,7 @@
 
 #include <q3frame.h>
 #include <qpixmap.h>
-#include <qpushbutton.h>
+#include <QPushButton>
 
 #include "defines.h"
 

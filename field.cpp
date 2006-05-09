@@ -21,7 +21,7 @@
 
 #include <math.h>
 
-#include <qlayout.h>
+#include <QLayout>
 #include <qtimer.h>
 #include <qpainter.h>
 //Added by qt3to4:

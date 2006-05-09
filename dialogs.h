@@ -19,7 +19,7 @@
 #ifndef DIALOGS_H
 #define DIALOGS_H
 
-#include <qpushbutton.h>
+#include <QPushButton>
 
 #include <kgamelcd.h>
 #include <kexthighscore.h>

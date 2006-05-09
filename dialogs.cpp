@@ -21,14 +21,14 @@
 
 #include <qpixmap.h>
 
-#include <qlayout.h>
+#include <QLayout>
 #include <q3hbox.h>
 #include <q3vbox.h>
 #include <q3grid.h>
-#include <qlabel.h>
+#include <QLabel>
 #include <qtimer.h>
 
-#include <qcheckbox.h>
+#include <QCheckBox>
 //Added by qt3to4:
 #include <QVBoxLayout>
 #include <QHBoxLayout>

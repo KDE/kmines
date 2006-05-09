@@ -22,7 +22,7 @@
 #include <qpainter.h>
 #include <qpixmap.h>
 
-#include <qlayout.h>
+#include <QLayout>
 #include <QStackedWidget>
 #include <q3textedit.h>
 #include <qtimer.h>
