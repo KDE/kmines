@@ -22,7 +22,7 @@
 #include <math.h>
 
 #include <QLayout>
-#include <qtimer.h>
+#include <QTimer>
 #include <qpainter.h>
 //Added by qt3to4:
 #include <QMouseEvent>

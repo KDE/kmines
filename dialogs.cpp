@@ -26,7 +26,7 @@
 #include <q3vbox.h>
 #include <q3grid.h>
 #include <QLabel>
-#include <qtimer.h>
+#include <QTimer>
 
 #include <QCheckBox>
 //Added by qt3to4:

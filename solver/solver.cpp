@@ -23,7 +23,7 @@
 #include <algorithm>
 #include <assert.h>
 
-#include <qtimer.h>
+#include <QTimer>
 #include <QLayout>
 #include <QLabel>
 //Added by qt3to4:
