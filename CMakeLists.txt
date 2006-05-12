@@ -1,4 +1,3 @@
-kde4_header()
 project(kmines)
 
 add_subdirectory( data ) 
@@ -37,7 +36,6 @@ install_targets(/bin kmines )
 
 install_files( ${DATA_INSTALL_DIR}/kmines FILES kminesui.rc )
 
-kde4_footer()
 
 
 
