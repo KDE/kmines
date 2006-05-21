@@ -207,7 +207,7 @@ If you have uncovered enough squares to be able to tell with certainty that a
 square contains a mine, &kmines; will automatically mark it as a mine, and
 perform an autoreveal on squares for which it has marked the correct number of
 mines. Note that when you have this mode switched on, your scores do not count
-as highscores.</para>
+as highs cores.</para>
 
 
 <para>The last section of this tab allows you to change the action of each of
@@ -494,16 +494,16 @@ Highscores...</guimenuitem></menuchoice></term>
 cute <guilabel>Comment</guilabel> about yourself, to show in the high
 score table. You can also activate the <guilabel>World-wide highscores
 enabled</guilabel> checkbox, and share your skill at &kmines; across
-the world with an online highscore server. If you are connected to the 
+the world with an online high score server. If you are connected to the 
 Internet, &kmines; will send your score automatically at the end of the 
-game to the highscore web server (kmines.sf.net).</para>
+game to the high score web server (kmines.sf.net).</para>
 <para>The <guilabel>Advanced</guilabel> tab displays your <guilabel>Registration Data</guilabel> 
-on kmines.sf.net: Your <guilabel>Nickname:</guilabel> from the <guilabel>Main</guilabel> 
+on kmines.sf.net, your <guilabel>Nickname:</guilabel> from the <guilabel>Main</guilabel> 
 tab and the <guilabel>Key:</guilabel>. This key was generated when you registered on kmines.sf.net by 
 selecting <guilabel>World-wide highscores enabled</guilabel> the first time.
 The registration key is used in conjunction with the 
 nickname to identify uniquely users, but users cannot have the same nickname.
-Click on the <guibutton>Remove</guibutton> button to delete you from the world highscores
+Click on the <guibutton>Remove</guibutton> button to delete you from the world high scores
 list.</para></listitem>
 </varlistentry>
 
