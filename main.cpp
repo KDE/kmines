@@ -86,6 +86,7 @@ MainWidget::MainWidget()
         KAction *action = new KAction(i18n(d.label), _keybCollection, d.name);
         connect(action, SIGNAL(triggered(bool) ), _status, d.slot);
         action->setShortcut(d.keycode);
+        addAction(action);
     }
 
 	// Settings
@@ -112,18 +113,17 @@ MainWidget::MainWidget()
     connect(action, SIGNAL(triggered(bool) ), _status, SLOT(solveRate()));
 
     // Log
-    (void)new KAction(KGuiItem(i18n("View Log"), "viewmag"), 0,
-                      _status, SLOT(viewLog()),
-                      actionCollection(), "log_view");
-    (void)new KAction(KGuiItem(i18n("Replay Log"), "player_play"),
-                      0, _status, SLOT(replayLog()),
-                      actionCollection(), "log_replay");
-    (void)new KAction(KGuiItem(i18n("Save Log..."), "filesave"), 0,
-                      _status, SLOT(saveLog()),
-                      actionCollection(), "log_save");
-    (void)new KAction(KGuiItem(i18n("Load Log..."), "fileopen"), 0,
-                      _status, SLOT(loadLog()),
-                      actionCollection(), "log_load");
+    KAction* logAct = new KAction(KIcon("viewmag"), i18n("View Log"), actionCollection(), "log_view" ); 
+    connect(logAct, SIGNAL(triggered(bool)), _status, SLOT(viewLog()));
+
+    KAction* replayAct = new KAction(KIcon("player_play"), i18n("Replay Log"), actionCollection(), "log_replay" ); 
+    connect(replayAct, SIGNAL(triggered(bool)), _status, SLOT(replayLog()));
+
+    KAction* saveAct = new KAction(KIcon("filesave"), i18n("Save Log..."), actionCollection(), "log_save" ); 
+    connect(saveAct, SIGNAL(triggered(bool)), _status, SLOT(saveLog()));
+
+    KAction* loadAct = new KAction(KIcon("fileopen"), i18n("Load Log..."), actionCollection(), "log_load" ); 
+    connect(loadAct, SIGNAL(triggered(bool)), _status, SLOT(loadLog()));
 
 	setupGUI( KMainWindow::Save | Create );
 	readSettings();

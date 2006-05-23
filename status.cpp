@@ -62,8 +62,8 @@ Status::Status(QWidget *parent)
     QGridLayout *top = new QGridLayout( this );
     top->setMargin( 10 );
     top->setSpacing( 10 );
-    top->setColStretch(1, 1);
-    top->setColStretch(3, 1);
+    top->setColumnStretch(1, 1);
+    top->setColumnStretch(3, 1);
 
 // status bar
 	// mines left LCD
@@ -123,7 +123,7 @@ Status::Status(QWidget *parent)
     _stack->addWidget(_fieldContainer);
     _stack->addWidget(_resumeContainer);
     _stack->setCurrentWidget(_fieldContainer);
-    top->addMultiCellWidget(_stack, 1, 1, 0, 4);
+    top->addWidget(_stack, 1, 0, 1, 5);
 }
 
 void Status::smileyClicked()
