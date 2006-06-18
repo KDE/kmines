@@ -40,7 +40,7 @@
 #include <kcolorbutton.h>
 #include <kconfig.h>
 #include <kapplication.h>
-#include <kdialogbase.h>
+#include <kdialog.h>
 #include <Q3GroupBox>
 #include "settings.h"
 

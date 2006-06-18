@@ -20,7 +20,7 @@
 #ifndef __SOLVER_H
 #define __SOLVER_H
 
-#include <kdialogbase.h>
+#include <kdialog.h>
 
 #include "bfield.h"
 //Added by qt3to4:
@@ -61,7 +61,7 @@ class Solver : public QObject
     bool initSolve(bool oneStep, bool noGuess);
 };
 
-class SolvingRateDialog : public KDialogBase
+class SolvingRateDialog : public KDialog
 {
  Q_OBJECT
  public:

@@ -330,9 +330,12 @@ void Status::solveRate()
 
 void Status::viewLog()
 {
-    KDialogBase d(this, "view_log", true, i18n("View Game Log"),
-                  KDialogBase::Close, KDialogBase::Close);
-    Q3TextEdit *view = new Q3TextEdit(&d);
+    KDialog d(this);
+    d.setButtons(KDialog::Close);
+	d.setDefaultButton(KDialog::Close);
+	d.setCaption(i18n("View Game Log"));
+	d.setModal(true);
+	Q3TextEdit *view = new Q3TextEdit(&d);
     view->setReadOnly(true);
     view->setTextFormat(Qt::PlainText);
     view->setText(_log.toString());

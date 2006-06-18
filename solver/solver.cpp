@@ -189,37 +189,41 @@ bool Solver::solveOneStep(BaseField &field)
 
 //-----------------------------------------------------------------------------
 SolvingRateDialog::SolvingRateDialog(const BaseField &field, QWidget *parent)
-    : KDialogBase(Plain, i18n("Compute Solving Rate"), Ok|Close,
-                  Close, parent, "compute_solving_rate", true, true),
-      _refField(field)
+    : KDialog(parent)
+      ,_refField(field)
 {
     connect(&_solver, SIGNAL(solvingDone(bool)), SLOT(solvingDone(bool)));
-
+	setCaption(i18n("Compute Solving Rate"));
+	setButtons(Ok|Close);
+	setDefaultButton(Close);
+	setModal(true);
+	enableButtonSeparator(true);
 	KGuiItem item = KStdGuiItem::ok();
 	item.setText(i18n("Start"));
-	setButtonGuiItem( KDialogBase::Ok,item);
-
-    QVBoxLayout *top = new QVBoxLayout(plainPage());
+	setButtonGuiItem( KDialog::Ok,item);
+	QFrame *frame = new QFrame(this);
+	setMainWidget(frame);
+    QVBoxLayout *top = new QVBoxLayout(frame);
     top->setMargin( 0 );
     top->setSpacing( spacingHint() );
     QLabel *label = new QLabel(i18n("Width: %1", field.width()),
-                               plainPage());
+                               frame);
     top->addWidget(label);
-    label = new QLabel(i18n("Height: %1", field.height()), plainPage());
+    label = new QLabel(i18n("Height: %1", field.height()), frame);
     top->addWidget(label);
     label = new QLabel(i18n("Mines: %1 (%2%)", field.nbMines(),
             field.nbMines() * 100.0 / field.size()),
-                       plainPage());
+                       frame);
     top->addWidget(label);
 
     top->addSpacing(spacingHint());
 
-    _progress = new KProgressBar(NB_STEPS, plainPage());
+    _progress = new KProgressBar(NB_STEPS, frame);
     _progress->setTextVisible(true);
     _progress->setFormat("%v");
     top->addWidget(_progress);
 
-    _label = new QLabel(i18n("Success rate:"), plainPage());
+    _label = new QLabel(i18n("Success rate:"), frame);
     top->addWidget(_label);
 }
 
