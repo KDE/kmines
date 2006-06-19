@@ -229,7 +229,7 @@ SolvingRateDialog::SolvingRateDialog(const BaseField &field, QWidget *parent)
 
 void SolvingRateDialog::slotOk()
 {
-    enableButtonOK(false);
+    enableButtonOk(false);
     _i = 0;
     _success = 0;
     _progress->setValue(0);
@@ -239,7 +239,7 @@ void SolvingRateDialog::slotOk()
 void SolvingRateDialog::step()
 {
     if ( _i==NB_STEPS ) {
-        enableButtonOK(true);
+        enableButtonOk(true);
         return;
     }
     _i++;
