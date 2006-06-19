@@ -57,6 +57,7 @@ GenericName[sv]=Minröjarliknande spel
 GenericName[ta]=சுரங்கம்வெட்டும் விளையாட்டு
 GenericName[uk]=Гра в сапера
 GenericName[zh_CN]=扫雷
+GenericName[zh_TW]=類似踩地雷的遊戲
 X-KDE-StartupNotify=true
 X-DCOP-ServiceType=Multi
 Categories=Qt;KDE;Game;StrategyGame;
