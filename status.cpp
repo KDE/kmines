@@ -346,7 +346,7 @@ void Status::viewLog()
 
 void Status::saveLog()
 {
-    KUrl url = KFileDialog::getSaveURL( KUrl(), QString(), this);
+    KUrl url = KFileDialog::getSaveUrl( KUrl(), QString(), this);
     if ( url.isEmpty() ) return;
     if ( KIO::NetAccess::exists(url, false, this) ) {
         KGuiItem gi = KStdGuiItem::save();
@@ -365,7 +365,7 @@ void Status::saveLog()
 
 void Status::loadLog()
 {
-    KUrl url = KFileDialog::getOpenURL(KUrl(), QString(), this);
+    KUrl url = KFileDialog::getOpenUrl(KUrl(), QString(), this);
     if ( url.isEmpty() ) return;
     QString tmpFile;
     bool success = false;
