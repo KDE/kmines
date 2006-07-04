@@ -34,7 +34,7 @@ install_targets(/bin kmines )
 
 ########### install files ###############
 
-install_files( ${DATA_INSTALL_DIR}/kmines FILES kminesui.rc )
+install( FILES kminesui.rc  DESTINATION  ${DATA_INSTALL_DIR}/kmines )
 
 
 
