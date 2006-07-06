@@ -29,7 +29,7 @@ kde4_add_executable(kmines ${kmines_SRCS})
 
 target_link_libraries(kmines  ${KDE4_KDEUI_LIBS} kdegames  )
 
-install_targets(/bin kmines )
+install(TARGETS kmines  DESTINATION ${BIN_INSTALL_DIR} )
 
 
 ########### install files ###############
