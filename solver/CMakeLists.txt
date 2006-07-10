@@ -21,7 +21,7 @@ endif(KDE4_BUILD_TESTS)
 
 ########### next target ###############
 
-set(testFast_SRCS testFast.cpp )
+set(testFast_SRCS testFast.cpp ${libsolver_SRCS} )
 
 kde4_automoc(${testFast_SRCS})
 
@@ -49,7 +49,7 @@ endif(KDE4_BUILD_TESTS)
 
 ########### next target ###############
 
-set(testRate_SRCS testRate.cpp )
+set(testRate_SRCS testRate.cpp ${libsolver_SRCS} )
 
 kde4_automoc(${testRate_SRCS})
 
@@ -63,23 +63,3 @@ endif(KDE4_BUILD_TESTS)
 
 ########### install files ###############
 
-
-
-
-
-#original Makefile.am contents follow:
-
-#INCLUDES = -I$(top_srcdir)/kmines/generic -I$(top_srcdir)/kmines -I$(top_srcdir)/libkdegames $(all_includes)
-#
-#noinst_LTLIBRARIES   = libsolver.la
-#noinst_HEADERS       = bfield.h solver.h headerP.h adviseFast.h adviseFull.h
-#libsolver_la_SOURCES = bfield.cpp solver.cpp advFastRules.cpp adviseFast.cpp \
-#                       adviseFull.cpp
-#METASOURCES          = solver.moc
-#
-#check_PROGRAMS = test testFast testSolve testRate
-#LDADD = $(LIB_KDEGAMES) ./libsolver.la
-#test_SOURCES = test.cpp
-#testFast_SOURCES = testFast.cpp
-#testSolve_SOURCES = testSolve.cpp
-#testRate_SOURCES = testRate.cpp
