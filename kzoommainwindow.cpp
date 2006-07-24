@@ -24,13 +24,12 @@
 #include <kstdaction.h>
 #include <ktoggleaction.h>
 #include <kmenubar.h>
-//Added by qt3to4:
-#include <QEvent>
-#include <QMenu>
 #include <kxmlguifactory.h>
 
-KZoomMainWindow::KZoomMainWindow(uint min, uint max, uint step, const char *name)
-  : KMainWindow(0, name), _zoomStep(step), _minZoom(min), _maxZoom(max)
+#include <QEvent>
+
+KZoomMainWindow::KZoomMainWindow(uint min, uint max, uint step)
+  : KMainWindow(0), _zoomStep(step), _minZoom(min), _maxZoom(max)
 {
   installEventFilter(this);
   
@@ -75,7 +74,7 @@ void KZoomMainWindow::addWidget(QWidget *widget)
 
 void KZoomMainWindow::widgetDestroyed()
 {
-  _widgets.remove(static_cast<const QWidget *>(sender()));
+  _widgets.removeAll(static_cast<QWidget *>(sender()));
 }
 
 bool KZoomMainWindow::eventFilter(QObject *o, QEvent *e)
@@ -91,9 +90,9 @@ void KZoomMainWindow::setZoom(uint zoom)
 {
   _zoom = zoom;
   writeZoomSetting(_zoom);
-  Q3PtrListIterator<QWidget> it(_widgets);
-  for (; it.current(); ++it)
-    (*it)->adjustSize();; 
+
+  foreach(QWidget* wid, _widgets)
+    wid->adjustSize();; 
   _zoomOutAction->setEnabled( _zoom>_minZoom );
   _zoomInAction->setEnabled( _zoom<_maxZoom );
 }

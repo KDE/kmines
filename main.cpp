@@ -19,8 +19,6 @@
 #include "main.h"
 #include "main.moc"
 
-#include <q3ptrvector.h>
-//Added by qt3to4:
 #include <QFocusEvent>
 
 
@@ -62,7 +60,7 @@ const MainWidget::KeyData MainWidget::KEY_DATA[NB_KEYS] = {
 
 
 MainWidget::MainWidget()
-  : KZoomMainWindow(4, 100, 1, "kmines")
+  : KZoomMainWindow(4, 100, 1)
 {
     KNotifyClient::startDaemon();
 

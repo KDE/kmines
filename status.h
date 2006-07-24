@@ -45,7 +45,7 @@ class Status : public QWidget, public KMines
 
  signals:
     void pause();
-	void gameStateChangedSignal(KMines::GameState);
+    void gameStateChangedSignal(KMines::GameState);
 
  public slots:
     void newGame(int type);

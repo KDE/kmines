@@ -19,8 +19,6 @@
 #ifndef BASE_FIELD_H
 #define BASE_FIELD_H
 
-#include <q3cstring.h>
-
 #include <krandomsequence.h>
 #include <kgrid2d.h>
 
@@ -49,7 +47,7 @@ class BaseField : public KGrid2D::Square<KMines::Case>, public KMines
     bool isSolved() const { return (size() - _nbUncovered)==_nbMines; }
 
     // return false if the case revealed contains a mine.
-	virtual bool doReveal(const KGrid2D::Coord &c,
+    virtual bool doReveal(const KGrid2D::Coord &c,
                          KGrid2D::CoordList *autorevealed, bool *caseUncovered)
         { return reveal(c, autorevealed, caseUncovered); }
     virtual void doMark(const KGrid2D::Coord &);
@@ -72,11 +70,11 @@ class BaseField : public KGrid2D::Square<KMines::Case>, public KMines
     void completeReveal();
 
  private:
-	bool            _firstReveal;
+    bool            _firstReveal;
     uint            _nbUncovered, _nbMarked, _nbUncertain, _nbMines;
     KRandomSequence _random;
 
-	void uncover(const KGrid2D::Coord &, KGrid2D::CoordList *autoreveal);
+    void uncover(const KGrid2D::Coord &, KGrid2D::CoordList *autoreveal);
     void changeState(KMines::CaseState, int increment);
 };
 

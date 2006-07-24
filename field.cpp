@@ -23,8 +23,7 @@
 
 #include <QLayout>
 #include <QTimer>
-#include <qpainter.h>
-//Added by qt3to4:
+#include <QPainter>
 #include <QMouseEvent>
 #include <QPaintEvent>
 
@@ -54,8 +53,7 @@ Field::Field(QWidget *parent)
 void Field::readSettings()
 {
     if ( inside(_cursor) ) {
-        QPainter p(this);
-        drawCase(p, _cursor);
+        update( toRect(_cursor) );
     }
     if ( Settings::magicReveal() ) emit setCheating();
 }
@@ -102,25 +100,25 @@ void Field::reset(bool init)
 
 void Field::paintEvent(QPaintEvent *e)
 {
-	QPainter painter(this);
-	drawFrame(&painter);
-	if ( _state==Paused ) return;
+    QPainter painter(this);
+    drawFrame(&painter);
+    if ( _state==Paused ) return;
 
     Coord min = fromPoint(e->rect().topLeft());
     bound(min);
     Coord max = fromPoint(e->rect().bottomRight());
     bound(max);
-	for (short i=min.first; i<=max.first; i++)
-	    for (short j=min.second; j<=max.second; j++)
-            drawCase(painter, Coord(i,j));
+    for (short i=min.first; i<=max.first; i++)
+        for (short j=min.second; j<=max.second; j++)
+            drawCase(painter, Coord(i,j), _pressedCoords.contains(Coord(i,j)));
+    _pressedCoords.clear();
 }
 
 void Field::changeCase(const Coord &p, CaseState newState)
 {
     BaseField::changeCase(p, newState);
-    QPainter painter(this);
-	drawCase(painter, p);
-	if ( isActive() ) emit updateStatus( hasMine(p) );
+    update( toRect(p) );
+    if ( isActive() ) emit updateStatus( hasMine(p) );
 }
 
 QPoint Field::toPoint(const Coord &p) const
@@ -133,19 +131,24 @@ QPoint Field::toPoint(const Coord &p) const
 
 Coord Field::fromPoint(const QPoint &qp) const
 {
-	double i = (double)(qp.x() - frameWidth()) / Settings::caseSize();
+    double i = (double)(qp.x() - frameWidth()) / Settings::caseSize();
     double j = (double)(qp.y() - frameWidth()) / Settings::caseSize();
     return Coord((int)floor(i), (int)floor(j));
 }
 
+QRect Field::toRect(const Coord &p) const
+{
+    return QRect(toPoint(p), QSize( Settings::caseSize(), Settings::caseSize() ));
+}
+
 int Field::mapMouseButton(QMouseEvent *e) const
 {
-	switch (e->button()) {
-	case Qt::LeftButton:  return Settings::mouseAction(Settings::EnumButton::left);
+    switch (e->button()) {
+        case Qt::LeftButton:  return Settings::mouseAction(Settings::EnumButton::left);
 	case Qt::MidButton:   return Settings::mouseAction(Settings::EnumButton::mid);
 	case Qt::RightButton: return Settings::mouseAction(Settings::EnumButton::right);
 	default:              return Settings::EnumMouseAction::ToggleFlag;
-	}
+    }
 }
 
 void Field::revealActions(bool press)
@@ -209,17 +212,18 @@ void Field::mouseMoveEvent(QMouseEvent *e)
     Coord p = fromPoint(e->pos());
     if ( p==_cursor ) return; // avoid flicker
 
-	revealActions(false);
+    revealActions(false);
     if ( !inside(p) ) return;
     placeCursor(p);
-	revealActions(true);
+    revealActions(true);
 }
 
 void Field::pressCase(const Coord &c, bool pressed)
 {
 	if ( state(c)==Covered ) {
-        QPainter painter(this);
-        drawCase(painter, c, pressed);
+            if(pressed)
+                _pressedCoords.append(c);
+            update( toRect(c) );
     }
 }
 
@@ -227,9 +231,12 @@ void Field::pressClearFunction(const Coord &p, bool pressed)
 {
     pressCase(p, pressed);
     CoordList n = coveredNeighbours(p);
-    QPainter painter(this);
+    if(pressed)
+        _pressedCoords = n;
+    QRect rect;
     for (CoordList::const_iterator it=n.begin(); it!=n.end(); ++it)
-        drawCase(painter, *it, pressed);
+        rect = rect.unite(toRect(*it));
+    update(rect);
 }
 
 void Field::keyboardAutoReveal()
@@ -387,30 +394,27 @@ void Field::placeCursor(const Coord &p)
     Coord old = _cursor;
     _cursor = p;
     if ( Settings::keyboardGame() ) {
-        QPainter painter(this);
-        drawCase(painter, old);
-        drawCase(painter, _cursor);
+        update(toRect(old));
+        update(toRect(_cursor));
     }
 }
 
 void Field::resetAdvised()
 {
     if ( !inside(_advisedCoord) ) return;
-    QPainter p(this);
     Coord tmp = _advisedCoord;
     _advisedCoord = Coord(-1, -1);
-    drawCase(p, tmp);
+    update( toRect(tmp) );
 }
 
 void Field::setAdvised(const Coord &c, double proba)
 {
     resetAdvised();
-	_solvingState = Advised;
-	_advisedCoord = c;
+    _solvingState = Advised;
+    _advisedCoord = c;
     _advisedProba = proba;
     if ( inside(c) ) {
-        QPainter p(this);
-        drawCase(p, c);
+        update( toRect(c) );
     }
 }
 
