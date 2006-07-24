@@ -19,19 +19,11 @@
 #include "dialogs.h"
 #include "dialogs.moc"
 
-#include <qpixmap.h>
-
-#include <QLayout>
-#include <q3hbox.h>
-#include <q3vbox.h>
-#include <q3grid.h>
+#include <QPixmap>
+#include <QGridLayout>
 #include <QLabel>
 #include <QTimer>
-
 #include <QCheckBox>
-//Added by qt3to4:
-#include <QVBoxLayout>
-#include <QHBoxLayout>
 
 #include <klocale.h>
 #include <kmessagebox.h>
@@ -41,7 +33,7 @@
 #include <kconfig.h>
 #include <kapplication.h>
 #include <kdialog.h>
-#include <Q3GroupBox>
+#include <QGroupBox>
 #include "settings.h"
 
 #include "bitmaps/smile"
@@ -129,20 +121,22 @@ CustomConfig::CustomConfig()
     QVBoxLayout *top = new QVBoxLayout(this);
     top->setMargin( KDialog::spacingHint() );
 
-#warning "kde4 kintnuminput without argiument"
-    _width = new KIntNumInput(this/*, "kcfg_CustomWidth"*/);
+    _width = new KIntNumInput(this);
+    _width->setObjectName("kcfg_CustomWidth");
     _width->setLabel(i18n("Width:"));
     _width->setRange(minWidth, maxWidth);
     connect(_width, SIGNAL(valueChanged(int)), SLOT(updateNbMines()));
     top->addWidget(_width);
 
-    _height = new KIntNumInput(this/*, "kcfg_CustomHeight"*/);
+    _height = new KIntNumInput(this);
+    _height->setObjectName("kcfg_CustomHeight");
     _height->setLabel(i18n("Height:"));
     _height->setRange(minWidth, maxWidth);
     connect(_height, SIGNAL(valueChanged(int)), SLOT(updateNbMines()));
     top->addWidget(_height);
 
-    _mines = new KIntNumInput(this/*, "kcfg_CustomMines"*/);
+    _mines = new KIntNumInput(this);
+    _mines->setObjectName("kcfg_CustomMines");
     _mines->setLabel(i18n("No. of mines:"));
     _mines->setRange(1, Level::maxNbMines(maxWidth, maxHeight));
     connect(_mines, SIGNAL(valueChanged(int)), SLOT(updateNbMines()));
@@ -242,21 +236,19 @@ GameConfig::GameConfig()
 
     top->addSpacing(2 * KDialog::spacingHint());
 
-    QHBoxLayout *hbox = new QHBoxLayout;
-    top->addLayout( hbox );
-    Q3GroupBox *gb = new Q3GroupBox(1, Qt::Horizontal,i18n("Mouse Bindings"), this);
-    hbox->addWidget(gb);
-    Q3Grid *grid = new Q3Grid(2, gb);
+    QGroupBox *gb = new QGroupBox(i18n("Mouse Bindings"), this);
+    top->addWidget(gb);
+    QGridLayout *grid = new QGridLayout(gb);
     grid->setSpacing(KDialog::spacingHint());
     for (uint i=0; i< Settings::EnumButton::COUNT; i++) {
-        (void)new QLabel(i18n(MOUSE_BUTTON_LABELS[i]), grid);
-        QComboBox *cb = new QComboBox(grid);
+        grid->addWidget( new QLabel(i18n(MOUSE_BUTTON_LABELS[i]), gb), i, 0);
+        QComboBox *cb = new QComboBox(gb);
         cb->setObjectName( MOUSE_CONFIG_NAMES[i] );
         for (uint k=0; k< (Settings::EnumMouseAction::COUNT-1); k++)
             cb->addItem(i18n(MOUSE_ACTION_LABELS[k]));
         cb->setCurrentIndex(i);
+        grid->addWidget( cb, i, 1 );
     }
-    hbox->addStretch(1);
 
     top->addStretch(1);
 }
@@ -289,24 +281,23 @@ AppearanceConfig::AppearanceConfig()
     QVBoxLayout *top = new QVBoxLayout(this);
     top->setMargin( KDialog::spacingHint() );
 
-    QHBoxLayout *hbox = new QHBoxLayout;
-    top->addLayout( hbox );
-    Q3Grid *grid = new Q3Grid(2, this);
+    QGridLayout *grid = new QGridLayout;
+    top->addLayout( grid );
     grid->setSpacing(KDialog::spacingHint());
-    hbox->addWidget(grid);
     for (uint i=0; i<Settings::EnumType::COUNT; i++) {
-        (void)new QLabel(i18n(COLOR_LABELS[i]), grid);
-        KColorButton *cb = new KColorButton(grid);
-		cb->setObjectName( COLOR_CONFIG_NAMES[i]);
+        grid->addWidget(new QLabel(i18n(COLOR_LABELS[i]), this), i, 0);
+        KColorButton *cb = new KColorButton(this);
+        cb->setObjectName( COLOR_CONFIG_NAMES[i]);
         cb->setFixedWidth(100);
+        grid->addWidget( cb, i, 1 );
     }
     for (uint i=0; i<NB_N_COLORS; i++) {
-        (void)new QLabel(i18np("%n mine color:", "%n mines color:", i+1), grid);
-        KColorButton *cb = new KColorButton(grid);
-		cb->setObjectName(N_COLOR_CONFIG_NAMES[i]);
+        grid->addWidget( new QLabel(i18np("%n mine color:", "%n mines color:", i+1), this), Settings::EnumType::COUNT+i, 0);
+        KColorButton *cb = new KColorButton(this);
+        cb->setObjectName(N_COLOR_CONFIG_NAMES[i]);
         cb->setFixedWidth(100);
+        grid->addWidget( cb, Settings::EnumType::COUNT+i, 1 );
     }
-    hbox->addStretch(1);
 
     top->addStretch(1);
 }

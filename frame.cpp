@@ -18,13 +18,8 @@
 
 #include "frame.h"
 
-#include <qpainter.h>
-#include <qbitmap.h>
-#include <qstyle.h>
-#include <qdrawutil.h>
-//Added by qt3to4:
-#include <QPixmap>
-#include <Q3Frame>
+#include <QPainter>
+#include <QBitmap>
 #include <QStyleOptionFocusRect>
 #include <QPalette>
 
@@ -32,11 +27,11 @@
 
 
 FieldFrame::FieldFrame(QWidget *parent)
-    : Q3Frame(parent, "field"), _button(0)
+    : QFrame(parent), _button(0)
 {
-    setFrameStyle( Q3Frame::Box | Q3Frame::Raised );
-	setLineWidth(2);
-	setMidLineWidth(2);
+    setFrameStyle( QFrame::Box | QFrame::Raised );
+    setLineWidth(2);
+    setMidLineWidth(2);
 }
 
 void FieldFrame::adjustSize()
@@ -44,7 +39,7 @@ void FieldFrame::adjustSize()
     setFixedSize(sizeHint());
     _button.resize(Settings::caseSize(), Settings::caseSize());
 
-    QBitmap mask;
+    QPixmap mask;
     for (uint i=0; i<Nb_Pixmap_Types; i++) {
         drawPixmap(mask, (PixmapType)i, true);
         drawPixmap(_pixmaps[i], (PixmapType)i, false);
@@ -141,7 +136,7 @@ void FieldFrame::drawBox(QPainter &painter, const QPoint &p,
         painter.resetMatrix();
     }
 
-	QRect r(p, _button.size());
+    QRect r(p, _button.size());
     const QPixmap *pixmap = (type==NoPixmap ? 0 : &_pixmaps[type]);
     QColor color = (nbMines==0 ? Qt::black : Settings::mineColor(nbMines-1));
     style()->drawItemText(&painter, r, Qt::AlignCenter, QPalette(color), true, text);

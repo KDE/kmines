@@ -21,9 +21,7 @@
 #define KZOOMMAINWINDOW_H
 
 #include <kmainwindow.h>
-//Added by qt3to4:
-#include <QEvent>
-#include <Q3PtrList>
+#include <QList>
 
 class KToggleAction;
 
@@ -47,8 +45,7 @@ class KZoomMainWindow : public KMainWindow
   Q_OBJECT
 public:
   /** Constructor. */
-  KZoomMainWindow(uint minZoom, uint maxZoom, uint zoomStep,
-                  const char *name = 0);
+  KZoomMainWindow(uint minZoom, uint maxZoom, uint zoomStep);
 
   /** Add a widget to be managed i.e. the adjustSize() method of the
    * widget is called whenever the zoom is changed.
@@ -118,7 +115,7 @@ private slots:
   
 private:
   uint _zoom, _zoomStep, _minZoom, _maxZoom;
-  Q3PtrList<QWidget> _widgets;
+  QList<QWidget*> _widgets;
   KAction *_zoomInAction, *_zoomOutAction;
   KToggleAction *_menu;
   

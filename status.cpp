@@ -24,11 +24,9 @@
 
 #include <QLayout>
 #include <QStackedWidget>
-#include <q3textedit.h>
+#include <QTextEdit>
 #include <QTimer>
-//Added by qt3to4:
 #include <QGridLayout>
-#include <Q3Frame>
 
 #include <kapplication.h>
 #include <klocale.h>
@@ -67,11 +65,11 @@ Status::Status(QWidget *parent)
 
 // status bar
 	// mines left LCD
-	left = new KGameLCD(5, this);
-    left->setFrameStyle(Q3Frame::Panel | Q3Frame::Sunken);
+    left = new KGameLCD(5, this);
+    left->setFrameStyle(QFrame::Panel | QFrame::Sunken);
     left->setDefaultBackgroundColor(Qt::black);
     left->setDefaultColor(Qt::white);
-	left->setWhatsThis( i18n("<qt>Mines left.<br/>"
+    left->setWhatsThis( i18n("<qt>Mines left.<br/>"
                                "It turns <font color=\"red\">red</font> "
                                "when you have flagged more cases than "
                                "present mines.</qt>"));
@@ -94,7 +92,7 @@ Status::Status(QWidget *parent)
     top->addWidget(dg, 0, 4);
 
 // mines field
-    _fieldContainer = new QWidget(this);
+    _fieldContainer = new QWidget;
     QGridLayout *g = new QGridLayout(_fieldContainer );
     _field = new Field(_fieldContainer);
     _field->readSettings();
@@ -109,7 +107,7 @@ Status::Status(QWidget *parent)
 	_field->setWhatsThis( i18n("Mines field."));
 
 // resume button
-    _resumeContainer = new QWidget(this);
+    _resumeContainer = new QWidget;
     g = new QGridLayout(_resumeContainer);
     QFont f = font();
     f.setBold(true);
@@ -332,13 +330,12 @@ void Status::viewLog()
 {
     KDialog d(this);
     d.setButtons(KDialog::Close);
-	d.setDefaultButton(KDialog::Close);
-	d.setCaption(i18n("View Game Log"));
-	d.setModal(true);
-	Q3TextEdit *view = new Q3TextEdit(&d);
+    d.setDefaultButton(KDialog::Close);
+    d.setCaption(i18n("View Game Log"));
+    d.setModal(true);
+    QTextEdit *view = new QTextEdit(&d);
     view->setReadOnly(true);
-    view->setTextFormat(Qt::PlainText);
-    view->setText(_log.toString());
+    view->append(_log.toString());
     d.setMainWidget(view);
     d.resize(500, 400);
     d.exec();

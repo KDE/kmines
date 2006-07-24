@@ -19,15 +19,15 @@
 #ifndef FRAME_H
 #define FRAME_H
 
-#include <q3frame.h>
-#include <qpixmap.h>
+#include <QFrame>
+#include <QPixmap>
 #include <QPushButton>
 
 #include "defines.h"
 
 class QPainter;
 
-class FieldFrame : public Q3Frame, public KMines
+class FieldFrame : public QFrame, public KMines
 {
  public:
     FieldFrame(QWidget *parent);

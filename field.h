@@ -21,10 +21,6 @@
 
 #include "solver/bfield.h"
 #include "frame.h"
-//Added by qt3to4:
-#include <QMouseEvent>
-#include <QPaintEvent>
-
 
 //-----------------------------------------------------------------------------
 class Field : public FieldFrame, public BaseField
@@ -90,6 +86,7 @@ class Field : public FieldFrame, public BaseField
 	bool              _reveal;
 	SolvingState _solvingState;
 	KGrid2D::Coord  _cursor, _advisedCoord;
+        KGrid2D::CoordList     _pressedCoords;
 	double        _advisedProba;
 	int               _currentAction;
 	Level          _level;
@@ -109,6 +106,7 @@ class Field : public FieldFrame, public BaseField
 
     QPoint toPoint(const KGrid2D::Coord &) const;
     KGrid2D::Coord fromPoint(const QPoint &) const;
+    QRect toRect(const KGrid2D::Coord &) const;
 
     void drawCase(QPainter &, const KGrid2D::Coord &,
                   bool forcePressed = false) const;
