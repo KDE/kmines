@@ -39,6 +39,7 @@
 #include <kio/netaccess.h>
 #include <knotifyclient.h>
 #include <kexthighscore.h>
+#include <knotification.h>
 
 #include "settings.h"
 #include "solver/solver.h"
@@ -191,7 +192,7 @@ void Status::updateStatus(bool mine)
 void Status::setGameOver(bool won)
 {
     if ( !won )
-      KNotifyClient::event(winId(), "explosion", i18n("Explosion!"));
+      KNotification::event("explosion", i18n("Explosion!"), QPixmap() , this);
     _field->showAllMines(won);
     smiley->setMood(won ? Happy : Sad);
     if ( _field->gameState()==Replaying ) return;
@@ -203,8 +204,8 @@ void Status::setGameOver(bool won)
         else KExtHighscore::submitScore(KExtHighscore::Lost, this);
     }
 
-    KNotifyClient::event(winId(), won ? "won" : "lost",
-                         won ? i18n("Game won!") : i18n("Game lost!"));
+    KNotification::event(won ? "won" : "lost",
+                         won ? i18n("Game won!") : i18n("Game lost!"),QPixmap() , this);
 
     // game log
     _logRoot.setAttribute("count", dg->nbActions());
