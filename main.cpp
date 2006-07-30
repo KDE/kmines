@@ -31,6 +31,7 @@
 #include <kstdgameaction.h>
 #include <kaction.h>
 #include <kactioncollection.h>
+#include <knotifyconfigwidget.h>
 #include <ktoggleaction.h>
 #include <kdebug.h>
 #include <knotifyclient.h>
@@ -62,7 +63,6 @@ const MainWidget::KeyData MainWidget::KEY_DATA[NB_KEYS] = {
 MainWidget::MainWidget()
   : KZoomMainWindow(4, 100, 1)
 {
-    KNotifyClient::startDaemon();
 
     _status = new Status(this);
     connect(_status, SIGNAL(gameStateChangedSignal(KMines::GameState)),
@@ -197,7 +197,7 @@ void MainWidget::configureKeys()
 
 void MainWidget::configureNotifications()
 {
-    KNotifyDialog::configure(this);
+    KNotifyConfigWidget::configure(this);
 }
 
 void MainWidget::gameStateChanged(KMines::GameState state)

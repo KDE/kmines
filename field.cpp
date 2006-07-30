@@ -28,7 +28,7 @@
 #include <QPaintEvent>
 
 #include <klocale.h>
-#include <knotifyclient.h>
+#include <knotification.h>
 
 #include "settings.h"
 #include "solver/solver.h"
@@ -333,8 +333,8 @@ KMines::CaseState Field::doAction(ActionType type, const Coord &c,
     CaseState state = Error;
     if ( _solvingState==Solved ) complete = false;
 
-    KNotifyClient::event(winId(), ACTION_DATA[type].event,
-                         i18n(ACTION_DATA[type].eventMessage));
+    KNotification::event(ACTION_DATA[type].event,
+                         i18n(ACTION_DATA[type].eventMessage), QPixmap() , this);
     switch (type) {
     case Reveal:
         if ( !reveal(c, autorevealed, caseUncovered) )

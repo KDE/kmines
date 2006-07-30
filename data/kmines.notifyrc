@@ -1,83 +1,83 @@
-[!Global!]
+[Global]
 IconName=kmines
 Comment=KMines
 Comment[x-test]=xxKMinesxx
 
-[reveal]
+[Event/reveal]
 Name=Reveal case
 Name[fr]=Révéler la case
 Name[x-test]=xxReveal casexx
 Comment=Reveal case
 Comment[fr]=Révéler la case
 Comment[x-test]=xxReveal casexx
-default_presentation=0
+Action=None
 
-[autoreveal]
+[Event/autoreveal]
 Name=Autoreveal case
 Name[fr]=Révéler automatiquement la case
 Name[x-test]=xxAutoreveal casexx
 Comment=Autoreveal case
 Comment[fr]=Révéler automatiquement la case
 Comment[x-test]=xxAutoreveal casexx
-default_presentation=0
+Action=None
 
-[mark]
+[Event/mark]
 Name=Mark case
 Name[fr]=Marquer la case
 Name[x-test]=xxMark casexx
 Comment=Mark case
 Comment[fr]=Marquer la case
 Comment[x-test]=xxMark casexx
-default_presentation=0
+Action=None
 
-[unmark]
+[Event/unmark]
 Name=Unmark case
 Name[fr]=Ne plus marquer la case
 Name[x-test]=xxUnmark casexx
 Comment=Unmark case
 Comment[fr]=Ne plus marquer la case
 Comment[x-test]=xxUnmark casexx
-default_presentation=0
+Action=None
 
-[explosion]
+[Event/explosion]
 Name=Explosion
 Name[x-test]=xxExplosionxx
 Comment=Explosion
 Comment[x-test]=xxExplosionxx
-default_presentation=0
+Action=None
 
-[won]
+[Event/won]
 Name=Game won
 Name[fr]=Partie gagnée
 Name[x-test]=xxGame wonxx
 Comment=Game won
 Comment[fr]=Partie gagnée
 Comment[x-test]=xxGame wonxx
-default_presentation=0
+Action=None
 
-[lost]
+[Event/lost]
 Name=Game lost
 Name[fr]=Partie perdue
 Name[x-test]=xxGame lostxx
 Comment=Game lost
 Comment[fr]=Partie perdue
 Comment[x-test]=xxGame lostxx
-default_presentation=0
+Action=None
 
-[set_uncertain]
+[Event/set_uncertain]
 Name=Set question mark
 Name[fr]=Ajout d'un point d'interrogation
 Name[x-test]=xxSet question markxx
 Comment=Set question mark
 Comment[fr]=Ajout d'un point d'interrogation
 Comment[x-test]=xxSet question markxx
-default_presentation=0
+Action=None
 
-[unset_uncertain]
+[Event/unset_uncertain]
 Name=Unset question mark
 Name[fr]=Retrait d'un point d'interrogation
 Name[x-test]=xxUnset question markxx
 Comment=Unset question mark
 Comment[fr]=Retrait d'un point d'interrogation
 Comment[x-test]=xxUnset question markxx
-default_presentation=0
+Action=None
