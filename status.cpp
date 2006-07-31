@@ -37,7 +37,6 @@
 #include <kfiledialog.h>
 #include <ktempfile.h>
 #include <kio/netaccess.h>
-#include <knotifyclient.h>
 #include <kexthighscore.h>
 #include <knotification.h>
 
