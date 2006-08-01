@@ -19,11 +19,9 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include "kzoommainwindow.h"
+#include <kzoommainwindow.h>
 
 #include "defines.h"
-//Added by qt3to4:
-#include <QFocusEvent>
 
 class KAction;
 class KToggleAction;
