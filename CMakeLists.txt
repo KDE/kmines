@@ -13,7 +13,6 @@ include_directories( ${CMAKE_SOURCE_DIR}/libkdegames ${CMAKE_SOURCE_DIR}/libkdeg
 set(libsolver_SRCS solver/bfield.cpp solver/solver.cpp solver/advFastRules.cpp solver/adviseFast.cpp solver/adviseFull.cpp)
 
 set(kmines_SRCS ${libsolver_SRCS}
-   kzoommainwindow.cpp 
    defines.cpp 
    highscores.cpp 
    dialogs.cpp 

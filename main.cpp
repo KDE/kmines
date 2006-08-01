@@ -34,8 +34,6 @@
 #include <knotifyconfigwidget.h>
 #include <ktoggleaction.h>
 #include <kdebug.h>
-#include <knotifyclient.h>
-#include <knotifydialog.h>
 #include <khighscore.h>
 #include <kconfigdialog.h>
 
