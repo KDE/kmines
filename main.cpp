@@ -125,7 +125,7 @@ MainWidget::MainWidget()
 	readSettings();
         setCentralWidget(_status);
         init("popup");
-        addWidget(_status->field());
+        addZoomable(_status->field());
 }
 
 bool MainWidget::queryExit()
