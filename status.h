@@ -20,7 +20,6 @@
 #define STATUS_H
 
 #include <qdom.h>
-
 #include "field.h"
 
 class Smiley;
@@ -83,13 +82,13 @@ class Status : public QWidget, public KMines
     void replayStep();
 
  private:
-	Field        *_field;
+    Field        *_field;
     QWidget      *_fieldContainer, *_resumeContainer;
     QStackedWidget *_stack;
 
-	Smiley       *smiley;
-	KGameLCD     *left;
-	DigitalClock *dg;
+    Smiley       *smiley;
+    KGameLCD     *left;
+    DigitalClock *dg;
     Solver       *_solver;
 
     QDomDocument  _log;

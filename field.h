@@ -19,11 +19,12 @@
 #ifndef FIELD_H
 #define FIELD_H
 
+#include <kzoommainwindow.h>
 #include "solver/bfield.h"
 #include "frame.h"
 
 //-----------------------------------------------------------------------------
-class Field : public FieldFrame, public BaseField
+class Field : public FieldFrame, public BaseField, public Zoomable
 {
  Q_OBJECT
  public:
@@ -38,6 +39,7 @@ class Field : public FieldFrame, public BaseField
     Field(QWidget *parent);
 
     virtual QSize sizeHint() const;
+    virtual void  zoomChanged() { adjustSize(); }
 
     void setLevel(const Level &level);
     void setReplayField(const QString &field);
