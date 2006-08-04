@@ -36,6 +36,7 @@
 #include <kdebug.h>
 #include <khighscore.h>
 #include <kconfigdialog.h>
+#include <kicon.h>
 
 #include "settings.h"
 #include "status.h"
