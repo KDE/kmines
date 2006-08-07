@@ -95,12 +95,11 @@ MainWidget::MainWidget()
     KStdGameAction::configureHighscores(this, SLOT(configureHighscores()),
             actionCollection());
 	// Levels
-    _levels = KStdGameAction::chooseGameType(0, 0, actionCollection());
+    _levels = KStdGameAction::chooseGameType(_status, SLOT(newGame(int)), actionCollection());
     QStringList list;
     for (uint i=0; i<=Level::NB_TYPES; i++)
         list += i18n(Level::LABELS[i]);
     _levels->setItems(list);
-    connect(_levels, SIGNAL(activated(int)), _status, SLOT(newGame(int)));
 
     // Adviser
     _advise =
