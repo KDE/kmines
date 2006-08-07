@@ -61,27 +61,27 @@ class Field : public FieldFrame, public BaseField, public Zoomable
                      bool completeReveal, KGrid2D::CoordList *autorevealed = 0,
                      bool *caseUncovered = 0);
 
-	void readSettings();
+    void readSettings();
 
     void setAdvised(const KGrid2D::Coord &c, double proba);
-	void setSolvingState(SolvingState state) { _solvingState = state; }
-	SolvingState solvingState() const { return _solvingState; }
+    void setSolvingState(SolvingState state) { _solvingState = state; }
+    SolvingState solvingState() const { return _solvingState; }
 	
  signals:
-	void updateStatus(bool);
-	void gameStateChanged(GameState);
+    void updateStatus(bool);
+    void gameStateChanged(GameState);
     void setMood(Mood);
     void setCheating();
     void addAction(const KGrid2D::Coord &, Field::ActionType);
 
  protected:
-	void paintEvent(QPaintEvent *);
-	void mousePressEvent(QMouseEvent *);
-	void mouseReleaseEvent(QMouseEvent *);
-	void mouseMoveEvent(QMouseEvent *);
+    void paintEvent(QPaintEvent *);
+    void mousePressEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent *);
+    void mouseMoveEvent(QMouseEvent *);
 
  private slots:
-	void keyboardAutoRevealSlot();
+     void keyboardAutoRevealSlot();
 
  private:
 	GameState   _state;

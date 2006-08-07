@@ -139,7 +139,9 @@ void FieldFrame::drawBox(QPainter &painter, const QPoint &p,
     QRect r(p, _button.size());
     const QPixmap *pixmap = (type==NoPixmap ? 0 : &_pixmaps[type]);
     QColor color = (nbMines==0 ? Qt::black : Settings::mineColor(nbMines-1));
-    style()->drawItemText(&painter, r, Qt::AlignCenter, QPalette(color), true, text);
+    QPalette pal;
+    pal.setColor( QPalette::WindowText, color );
+    style()->drawItemText(&painter, r, Qt::AlignCenter, pal, true, text, QPalette::WindowText);
     if (pixmap)
       style()->drawItemPixmap(&painter, r, Qt::AlignCenter, *pixmap);
     if ( advised!=-1 )

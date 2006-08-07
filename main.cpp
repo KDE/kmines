@@ -69,12 +69,12 @@ MainWidget::MainWidget()
     connect(_status, SIGNAL(pause()), SLOT(pause()));
 
 	// Game & Popup
-	KStdGameAction::gameNew(_status, SLOT(restartGame()), actionCollection());
-	_pause = KStdGameAction::pause(_status, SLOT(pauseGame()),
-                                  actionCollection());
-	KStdGameAction::highscores(this, SLOT(showHighscores()),
-                               actionCollection());
-	KStdGameAction::quit(qApp, SLOT(quit()), actionCollection());
+    KStdGameAction::gameNew(_status, SLOT(restartGame()), actionCollection());
+    _pause = KStdGameAction::pause(_status, SLOT(pauseGame()),
+            actionCollection());
+    KStdGameAction::highscores(this, SLOT(showHighscores()),
+            actionCollection());
+    KStdGameAction::quit(qApp, SLOT(quit()), actionCollection());
 
 	// keyboard
     _keybCollection = new KActionCollection(static_cast<QWidget*>(this));
@@ -87,13 +87,13 @@ MainWidget::MainWidget()
     }
 
 	// Settings
-	KStdAction::preferences(this, SLOT(configureSettings()),
-                            actionCollection());
-	KStdAction::keyBindings(this, SLOT(configureKeys()), actionCollection());
+    KStdAction::preferences(this, SLOT(configureSettings()),
+            actionCollection());
+    KStdAction::keyBindings(this, SLOT(configureKeys()), actionCollection());
     KStdAction::configureNotifications(this, SLOT(configureNotifications()),
-                                       actionCollection());
+            actionCollection());
     KStdGameAction::configureHighscores(this, SLOT(configureHighscores()),
-                                        actionCollection());
+            actionCollection());
 	// Levels
     _levels = KStdGameAction::chooseGameType(0, 0, actionCollection());
     QStringList list;
@@ -122,11 +122,13 @@ MainWidget::MainWidget()
     KAction* loadAct = new KAction(KIcon("fileopen"), i18n("Load Log..."), actionCollection(), "log_load" ); 
     connect(loadAct, SIGNAL(triggered(bool)), _status, SLOT(loadLog()));
 
-	setupGUI( KMainWindow::Save | Create );
-	readSettings();
-        setCentralWidget(_status);
-        init("popup");
-        addZoomable(_status->field());
+    setupGUI( KMainWindow::Save | Create );
+    readSettings();
+    setCentralWidget(_status);
+    init("popup");
+    // we want to receive RMB event's on field rather than context menu
+    _status->field()->setContextMenuPolicy(Qt::PreventContextMenu);
+    addZoomable(_status->field());
 }
 
 bool MainWidget::queryExit()
