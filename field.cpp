@@ -420,39 +420,39 @@ void Field::setAdvised(const Coord &c, double proba)
 
 void Field::drawCase(QPainter &painter, const Coord &c, bool pressed) const
 {
-	Q_ASSERT( inside(c) );
+    Q_ASSERT( inside(c) );
 
     QString text;
     uint nbMines = 0;
     PixmapType type = NoPixmap;
 
-	switch ( state(c) ) {
+    switch ( state(c) ) {
     case Covered:
         break;
-	case Marked:
+    case Marked:
         type = FlagPixmap;
         pressed = false;
         break;
-	case Error:
+    case Error:
         type = ErrorPixmap;
         pressed = true;
         break;
-	case Uncertain:
+    case Uncertain:
         text = '?';
         pressed = false;
         break;
-	case Exploded:
+    case Exploded:
         type = ExplodedPixmap;
         pressed = true;
         break;
-	case Uncovered:
+    case Uncovered:
         pressed = true;
         if ( hasMine(c) ) type = MinePixmap;
         else {
             nbMines = nbMinesAround(c);
             if (nbMines) text.setNum(nbMines);
         }
-	}
+    }
 
     int i = -1;
     if ( c==_advisedCoord ) {
