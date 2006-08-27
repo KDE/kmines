@@ -28,7 +28,7 @@
 #include <QLabel>
 //Added by qt3to4:
 #include <QVBoxLayout>
-#include <kprogressbar.h>
+#include <qprogressbar.h>
 
 #include <klocale.h>
 #include <kstdguiitem.h>
@@ -219,7 +219,8 @@ SolvingRateDialog::SolvingRateDialog(const BaseField &field, QWidget *parent)
 
     top->addSpacing(spacingHint());
 
-    _progress = new KProgressBar(NB_STEPS, frame);
+    _progress = new QProgressBar(frame);
+    _progress->setRange(0, NB_STEPS);
     _progress->setTextVisible(true);
     _progress->setFormat("%v");
     top->addWidget(_progress);
@@ -253,6 +254,6 @@ void SolvingRateDialog::solvingDone(bool success)
     if (success) _success++;
     _label->setText(ki18n("Success rate: %1%")
                     .subs(_success * 100.0 / _i, 0, 'f', 3).toString());
-    _progress->advance(1);
+    _progress->setValue(_progress->value() + 1);
     QTimer::singleShot(0, this, SLOT(step()));
 }
