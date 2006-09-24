@@ -358,6 +358,7 @@ void Status::saveLog()
     tmp.open();
     QTextStream stream(&tmp);
     stream << _log.toString();
+    stream.flush();
     KIO::NetAccess::upload(tmp.fileName(), url, this);
 }
 
