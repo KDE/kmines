@@ -27,6 +27,7 @@
 #include <QTextEdit>
 #include <QTimer>
 #include <QGridLayout>
+#include <QTextStream>
 
 #include <kapplication.h>
 #include <klocale.h>
@@ -35,7 +36,7 @@
 #include <kaction.h>
 #include <kdebug.h>
 #include <kfiledialog.h>
-#include <ktempfile.h>
+#include <ktemporaryfile.h>
 #include <kio/netaccess.h>
 #include <kexthighscore.h>
 #include <knotification.h>
@@ -353,11 +354,11 @@ void Status::saveLog()
                                  i18n("File Exists"), gi, KStdGuiItem::cancel());
         if ( res==KMessageBox::No ) return;
     }
-    KTempFile tmp;
-    (*tmp.textStream()) << _log.toString();
-    tmp.close();
-    KIO::NetAccess::upload(tmp.name(), url, this);
-    tmp.unlink();
+    KTemporaryFile tmp;
+    tmp.open();
+    QTextStream stream(&tmp);
+    stream << _log.toString();
+    KIO::NetAccess::upload(tmp.fileName(), url, this);
 }
 
 void Status::loadLog()
