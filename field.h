@@ -36,7 +36,7 @@ class Field : public FieldFrame, public BaseField, public Zoomable
     static const ActionData ACTION_DATA[Nb_Actions];
 
  public:
-    Field(QWidget *parent);
+    explicit Field(QWidget *parent);
 
     virtual QSize sizeHint() const;
     virtual void  zoomChanged() { adjustSize(); }

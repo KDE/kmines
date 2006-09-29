@@ -30,7 +30,7 @@ class QPainter;
 class FieldFrame : public QFrame, public KMines
 {
  public:
-    FieldFrame(QWidget *parent);
+    explicit FieldFrame(QWidget *parent);
 
  protected:
     enum PixmapType { FlagPixmap = 0, MinePixmap, ExplodedPixmap,
