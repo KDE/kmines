@@ -35,7 +35,7 @@ class Smiley : public QPushButton, public KMines
 {
  Q_OBJECT
  public:
-    Smiley(QWidget *parent)
+    explicit Smiley(QWidget *parent)
         : QPushButton(QString::null, parent) {}
 
  public slots:

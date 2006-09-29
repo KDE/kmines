@@ -33,7 +33,7 @@ class Status : public QWidget, public KMines
 {
  Q_OBJECT
  public :
-    Status(QWidget *parent);
+    explicit Status(QWidget *parent);
 
     const Level &currentLevel() const { return _field->level(); }
     bool isPlaying() const            { return _field->gameState()==Playing; }

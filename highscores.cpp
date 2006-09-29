@@ -57,7 +57,7 @@ QString ExtManager::gameTypeLabel(uint gameType, LabelType type) const
     case I18N:     return i18n(Level::LABELS[gameType]);
     case WW:       return data.wwLabel;
     }
-    return QString::null;
+    return QString();
 }
 
 void ExtManager::convertLegacy(uint gameType)

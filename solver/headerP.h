@@ -74,7 +74,7 @@ namespace AdviseFast {
     /** A set of facts that can be generated out of Field */
     class FactSet : public std::map<Coord, Fact> {
     public:
-        FactSet(BaseField *);
+        explicit FactSet(BaseField *);
         BaseField const *getField() const { return _field;}
 
         /** Reveals a point on the field underlining

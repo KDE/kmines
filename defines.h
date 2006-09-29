@@ -33,7 +33,7 @@ class Level
     };
     static const Data DATA[NB_TYPES];
 
-    Level(Type);
+    explicit Level(Type);
     Level(uint width, uint height, uint nbMines);
 
     uint width() const   { return _width; }
