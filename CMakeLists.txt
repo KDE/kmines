@@ -23,7 +23,7 @@ set(kmines_SRCS ${libsolver_SRCS}
 
 kde4_automoc(kmines ${kmines_SRCS})
 
-kde4_add_kcfg_files(kmines_SRCS settings.kcfgc )
+kde4_add_kcfg_files(kmines kmines_SRCS settings.kcfgc )
 
 kde4_add_executable(kmines ${kmines_SRCS})
 
