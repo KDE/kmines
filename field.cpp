@@ -241,14 +241,15 @@ void Field::pressClearFunction(const Coord &p, bool pressed)
 
 void Field::keyboardAutoReveal()
 {
-	pressClearFunction(_cursor, true);
+	_cursor_back = _cursor;
+	pressClearFunction(_cursor_back, true);
 	QTimer::singleShot(50, this, SLOT(keyboardAutoRevealSlot()));
 }
 
 void Field::keyboardAutoRevealSlot()
 {
-	pressClearFunction(_cursor, false);
-	doAutoReveal(_cursor);
+	pressClearFunction(_cursor_back, false);
+	doAutoReveal(_cursor_back);
 }
 
 void Field::doAutoReveal(const Coord &c)
