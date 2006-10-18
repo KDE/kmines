@@ -86,7 +86,7 @@ class Field : public FieldFrame, public BaseField
 	GameState   _state;
 	bool              _reveal;
 	SolvingState _solvingState;
-	KGrid2D::Coord  _cursor, _advisedCoord;
+	KGrid2D::Coord  _cursor, _cursor_back, _advisedCoord;
 	double        _advisedProba;
 	int               _currentAction;
 	Level          _level;
