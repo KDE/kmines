@@ -87,7 +87,7 @@ class Field : public FieldFrame, public BaseField, public Zoomable
 	GameState   _state;
 	bool              _reveal;
 	SolvingState _solvingState;
-	KGrid2D::Coord  _cursor, _advisedCoord;
+	KGrid2D::Coord  _cursor, _cursor_back, _advisedCoord;
         KGrid2D::CoordList     _pressedCoords;
 	double        _advisedProba;
 	int               _currentAction;
