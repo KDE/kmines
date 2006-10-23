@@ -9,7 +9,7 @@ include_directories( ${CMAKE_SOURCE_DIR}/kmines/generic ${CMAKE_SOURCE_DIR}/kmin
 
 set(test_SRCS test.cpp )
 
-kde4_automoc(test ${test_SRCS})
+kde4_automoc(${test_SRCS})
 
 if(KDE4_BUILD_TESTS)
 
@@ -23,7 +23,7 @@ endif(KDE4_BUILD_TESTS)
 
 set(testFast_SRCS testFast.cpp ${libsolver_SRCS} )
 
-kde4_automoc(testFast ${testFast_SRCS})
+kde4_automoc(${testFast_SRCS})
 
 if(KDE4_BUILD_TESTS)
 
@@ -37,7 +37,7 @@ endif(KDE4_BUILD_TESTS)
 
 set(testSolve_SRCS testSolve.cpp )
 
-kde4_automoc(testSolve ${testSolve_SRCS})
+kde4_automoc(${testSolve_SRCS})
 
 if(KDE4_BUILD_TESTS)
 
@@ -51,7 +51,7 @@ endif(KDE4_BUILD_TESTS)
 
 set(testRate_SRCS testRate.cpp ${libsolver_SRCS} )
 
-kde4_automoc(testRate ${testRate_SRCS})
+kde4_automoc(${testRate_SRCS})
 
 if(KDE4_BUILD_TESTS)
 
