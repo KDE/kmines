@@ -10,5 +10,5 @@ GenericName=Minesweeper-like Game
 GenericName[fr]=Jeu dans le style du démineur
 GenericName[x-test]=xxMinesweeper-like Gamexx
 X-KDE-StartupNotify=true
-X-DCOP-ServiceType=Multi
+X-DBUS-StartupType=Multi
 Categories=Qt;KDE;Game;StrategyGame;
