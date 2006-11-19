@@ -291,7 +291,7 @@ AdviseFast::FullRule::FullRule(
 {}
 
 bool AdviseFast::FullRule::apply(
-	CoordSet */*surePoints*/)
+	CoordSet * /*surePoints*/)
 {
 
 #if defined(DEBUG) && DEBUG >= 2
@@ -342,7 +342,7 @@ AdviseFast::InclusionRule::InclusionRule(
 {}
 
 bool AdviseFast::InclusionRule::apply(
-	CoordSet */*surePoints*/)
+	CoordSet * /*surePoints*/)
 {
 
 #if defined(DEBUG) && DEBUG >= 2
