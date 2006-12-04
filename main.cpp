@@ -180,8 +180,8 @@ void MainWidget::configureHighscores()
 void MainWidget::settingsChanged()
 {
     bool enabled = Settings::keyboardGame();
-    QList<KAction *> list = _keybCollection->actions();
-    QList<KAction *>::Iterator it;
+    QList<QAction *> list = _keybCollection->actions();
+    QList<QAction *>::Iterator it;
     for (it = list.begin(); it!=list.end(); ++it)
         (*it)->setEnabled(enabled);
     _status->settingsChanged();
