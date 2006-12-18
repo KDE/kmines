@@ -26,7 +26,7 @@
 #include <klocale.h>
 #include <kcmdlineargs.h>
 #include <kaboutdata.h>
-#include <kstdaction.h>
+#include <kstandardaction.h>
 #include <kkeydialog.h>
 #include <kstdgameaction.h>
 #include <kaction.h>
@@ -87,10 +87,10 @@ MainWidget::MainWidget()
     }
 
 	// Settings
-    KStdAction::preferences(this, SLOT(configureSettings()),
+    KStandardAction::preferences(this, SLOT(configureSettings()),
             actionCollection());
-    KStdAction::keyBindings(this, SLOT(configureKeys()), actionCollection());
-    KStdAction::configureNotifications(this, SLOT(configureNotifications()),
+    KStandardAction::keyBindings(this, SLOT(configureKeys()), actionCollection());
+    KStandardAction::configureNotifications(this, SLOT(configureNotifications()),
             actionCollection());
     KStdGameAction::configureHighscores(this, SLOT(configureHighscores()),
             actionCollection());
