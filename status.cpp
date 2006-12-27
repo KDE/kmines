@@ -301,7 +301,7 @@ void Status::advise()
     int res = KMessageBox::warningContinueCancel(this,
                i18n("When the solver gives "
                "you advice, your score will not be added to the highscores."),
-                QString(), KStdGuiItem::cont(), "advice_warning");
+                QString(), KStandardGuiItem::cont(), "advice_warning");
     if ( res==KMessageBox::Cancel ) return;
     dg->setCheating();
     float probability;
@@ -347,11 +347,11 @@ void Status::saveLog()
     KUrl url = KFileDialog::getSaveUrl( KUrl(), QString(), this);
     if ( url.isEmpty() ) return;
     if ( KIO::NetAccess::exists(url, false, this) ) {
-        KGuiItem gi = KStdGuiItem::save();
+        KGuiItem gi = KStandardGuiItem::save();
         gi.setText(i18n("Overwrite"));
         int res = KMessageBox::warningYesNo(this,
                                  i18n("The file already exists. Overwrite?"),
-                                 i18n("File Exists"), gi, KStdGuiItem::cancel());
+                                 i18n("File Exists"), gi, KStandardGuiItem::cancel());
         if ( res==KMessageBox::No ) return;
     }
     KTemporaryFile tmp;
