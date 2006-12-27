@@ -28,7 +28,7 @@
 #include <kaboutdata.h>
 #include <kstandardaction.h>
 #include <kkeydialog.h>
-#include <kstdgameaction.h>
+#include <kstandardgameaction.h>
 #include <kaction.h>
 #include <kactioncollection.h>
 #include <knotifyconfigwidget.h>
@@ -69,12 +69,12 @@ MainWidget::MainWidget()
     connect(_status, SIGNAL(pause()), SLOT(pause()));
 
 	// Game & Popup
-    KStdGameAction::gameNew(_status, SLOT(restartGame()), actionCollection());
-    _pause = KStdGameAction::pause(_status, SLOT(pauseGame()),
+    KStandardGameAction::gameNew(_status, SLOT(restartGame()), actionCollection());
+    _pause = KStandardGameAction::pause(_status, SLOT(pauseGame()),
             actionCollection());
-    KStdGameAction::highscores(this, SLOT(showHighscores()),
+    KStandardGameAction::highscores(this, SLOT(showHighscores()),
             actionCollection());
-    KStdGameAction::quit(qApp, SLOT(quit()), actionCollection());
+    KStandardGameAction::quit(qApp, SLOT(quit()), actionCollection());
 
 	// keyboard
     _keybCollection = new KActionCollection(static_cast<QWidget*>(this));
@@ -92,10 +92,10 @@ MainWidget::MainWidget()
     KStandardAction::keyBindings(this, SLOT(configureKeys()), actionCollection());
     KStandardAction::configureNotifications(this, SLOT(configureNotifications()),
             actionCollection());
-    KStdGameAction::configureHighscores(this, SLOT(configureHighscores()),
+    KStandardGameAction::configureHighscores(this, SLOT(configureHighscores()),
             actionCollection());
 	// Levels
-    _levels = KStdGameAction::chooseGameType(_status, SLOT(newGame(int)), actionCollection());
+    _levels = KStandardGameAction::chooseGameType(_status, SLOT(newGame(int)), actionCollection());
     QStringList list;
     for (uint i=0; i<=Level::NB_TYPES; i++)
         list += i18n(Level::LABELS[i]);
@@ -103,8 +103,8 @@ MainWidget::MainWidget()
 
     // Adviser
     _advise =
-        KStdGameAction::hint(_status, SLOT(advise()), actionCollection());
-    _solve = KStdGameAction::solve(_status, SLOT(solve()), actionCollection());
+        KStandardGameAction::hint(_status, SLOT(advise()), actionCollection());
+    _solve = KStandardGameAction::solve(_status, SLOT(solve()), actionCollection());
     KAction *action = new KAction(i18n("Solving Rate..."), actionCollection(), "solve_rate");
     connect(action, SIGNAL(triggered(bool) ), _status, SLOT(solveRate()));
 
