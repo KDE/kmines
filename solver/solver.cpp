@@ -31,7 +31,7 @@
 #include <qprogressbar.h>
 
 #include <klocale.h>
-#include <kstdguiitem.h>
+#include <KStandardGuiItem>
 
 #include "headerP.h"
 
@@ -199,7 +199,7 @@ SolvingRateDialog::SolvingRateDialog(const BaseField &field, QWidget *parent)
 	setDefaultButton(Close);
 	setModal(true);
 	showButtonSeparator(true);
-	KGuiItem item = KStdGuiItem::ok();
+	KGuiItem item = KStandardGuiItem::ok();
 	item.setText(i18n("Start"));
 	setButtonGuiItem( KDialog::Ok,item);
 	QFrame *frame = new QFrame(this);
