@@ -68,34 +68,42 @@ MainWidget::MainWidget()
             SLOT(gameStateChanged(KMines::GameState)));
     connect(_status, SIGNAL(pause()), SLOT(pause()));
 
+    QAction *action;
+
 	// Game & Popup
-    KStandardGameAction::gameNew(_status, SLOT(restartGame()), actionCollection());
-    _pause = KStandardGameAction::pause(_status, SLOT(pauseGame()),
-            actionCollection());
-    KStandardGameAction::highscores(this, SLOT(showHighscores()),
-            actionCollection());
-    KStandardGameAction::quit(qApp, SLOT(quit()), actionCollection());
+    action = KStandardGameAction::gameNew(_status, SLOT(restartGame()), this);
+    actionCollection()->addAction(action->objectName(), action);
+    _pause = KStandardGameAction::pause(_status, SLOT(pauseGame()), this);
+    actionCollection()->addAction(_pause->objectName(), _pause);
+    action = KStandardGameAction::highscores(this, SLOT(showHighscores()), this);
+    actionCollection()->addAction(action->objectName(), action);
+    action = KStandardGameAction::quit(qApp, SLOT(quit()), this);
+    actionCollection()->addAction(action->objectName(), action);
 
 	// keyboard
     _keybCollection = new KActionCollection(static_cast<QWidget*>(this));
     for (uint i=0; i<NB_KEYS; i++) {
         const KeyData &d = KEY_DATA[i];
-        KAction *action = new KAction(i18n(d.label), _keybCollection, d.name);
+        QAction *action = _keybCollection->addAction(d.name);
+        action->setText(i18n(d.label));
         connect(action, SIGNAL(triggered(bool) ), _status, d.slot);
         action->setShortcut(d.keycode);
         addAction(action);
     }
 
 	// Settings
-    KStandardAction::preferences(this, SLOT(configureSettings()),
-            actionCollection());
-    KStandardAction::keyBindings(this, SLOT(configureKeys()), actionCollection());
-    KStandardAction::configureNotifications(this, SLOT(configureNotifications()),
-            actionCollection());
-    KStandardGameAction::configureHighscores(this, SLOT(configureHighscores()),
-            actionCollection());
+    action = KStandardAction::preferences(this, SLOT(configureSettings()), this);
+    actionCollection()->addAction(action->objectName(), action);
+    action = KStandardAction::keyBindings(this, SLOT(configureKeys()), this);
+    actionCollection()->addAction(action->objectName(), action);
+    action = KStandardAction::configureNotifications(this, SLOT(configureNotifications()), this);
+    actionCollection()->addAction(action->objectName(), action);
+    action = KStandardGameAction::configureHighscores(this, SLOT(configureHighscores()), this);
+    actionCollection()->addAction(action->objectName(), action);
+
 	// Levels
     _levels = KStandardGameAction::chooseGameType(_status, SLOT(newGame(int)), actionCollection());
+    actionCollection()->addAction(_levels->objectName(), _levels);
     QStringList list;
     for (uint i=0; i<=Level::NB_TYPES; i++)
         list += i18n(Level::LABELS[i]);
@@ -105,20 +113,29 @@ MainWidget::MainWidget()
     _advise =
         KStandardGameAction::hint(_status, SLOT(advise()), actionCollection());
     _solve = KStandardGameAction::solve(_status, SLOT(solve()), actionCollection());
-    KAction *action = new KAction(i18n("Solving Rate..."), actionCollection(), "solve_rate");
+    action = actionCollection()->addAction("solve_rate");
+    action->setText(i18n("Solving Rate..."));
     connect(action, SIGNAL(triggered(bool) ), _status, SLOT(solveRate()));
 
     // Log
-    KAction* logAct = new KAction(KIcon("viewmag"), i18n("View Log"), actionCollection(), "log_view" ); 
+    QAction* logAct = actionCollection()->addAction( "log_view" );
+    logAct->setIcon( KIcon("viewmag") );
+    logAct->setText( i18n("View Log") );
     connect(logAct, SIGNAL(triggered(bool)), _status, SLOT(viewLog()));
 
-    KAction* replayAct = new KAction(KIcon("player_play"), i18n("Replay Log"), actionCollection(), "log_replay" ); 
+    QAction* replayAct = actionCollection()->addAction( "log_replay" );
+    replayAct->setIcon( KIcon("player_play") );
+    replayAct->setText( i18n("Replay Log") );
     connect(replayAct, SIGNAL(triggered(bool)), _status, SLOT(replayLog()));
 
-    KAction* saveAct = new KAction(KIcon("filesave"), i18n("Save Log..."), actionCollection(), "log_save" ); 
+    QAction* saveAct = actionCollection()->addAction( "log_save" );
+    saveAct->setIcon( KIcon("filesave") );
+    saveAct->setText( i18n("Save Log...") );
     connect(saveAct, SIGNAL(triggered(bool)), _status, SLOT(saveLog()));
 
-    KAction* loadAct = new KAction(KIcon("fileopen"), i18n("Load Log..."), actionCollection(), "log_load" ); 
+    QAction* loadAct = actionCollection()->addAction( "log_load" );
+    loadAct->setIcon( KIcon("fileopen") );
+    loadAct->setText( i18n("Load Log...") );
     connect(loadAct, SIGNAL(triggered(bool)), _status, SLOT(loadLog()));
 
     setupGUI( KMainWindow::Save | Create );
