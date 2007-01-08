@@ -23,7 +23,7 @@
 
 #include "defines.h"
 
-class KAction;
+class QAction;
 class KToggleAction;
 class KSelectAction;
 class Status;
@@ -52,7 +52,7 @@ class MainWidget : public KZoomMainWindow, public KMines
     Status            *_status;
     KToggleAction     *_pause;
     KSelectAction     *_levels;
-    KAction           *_advise, *_solve;
+    QAction           *_advise, *_solve;
     KActionCollection *_keybCollection;
 
     struct KeyData {
