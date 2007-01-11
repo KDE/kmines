@@ -29,7 +29,6 @@
 #include <QGridLayout>
 #include <QTextStream>
 
-#include <kapplication.h>
 #include <klocale.h>
 #include <kconfig.h>
 #include <kmessagebox.h>

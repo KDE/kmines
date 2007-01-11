@@ -31,7 +31,6 @@
 #include <knuminput.h>
 #include <kcolorbutton.h>
 #include <kconfig.h>
-#include <kapplication.h>
 #include <kdialog.h>
 #include <QGroupBox>
 #include "settings.h"
