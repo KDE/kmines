@@ -20,7 +20,6 @@
 
 #include <kurl.h>
 #include <klocale.h>
-#include <kapplication.h>
 #include <kconfig.h>
 
 #include "version.h"
