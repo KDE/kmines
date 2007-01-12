@@ -227,6 +227,7 @@ SolvingRateDialog::SolvingRateDialog(const BaseField &field, QWidget *parent)
 
     _label = new QLabel(i18n("Success rate:"), frame);
     top->addWidget(_label);
+    connect(this,SIGNAL(okClicked()),this,SLOT(slotOk()));
 }
 
 void SolvingRateDialog::slotOk()
