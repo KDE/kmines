@@ -7,6 +7,7 @@ Exec=kmines -caption "%c"
 Type=Application
 DocPath=kmines/index.html
 GenericName=Minesweeper-like Game
+GenericName[el]=Παιχνίδι παρόμοιο με το ναρκαλιευτή
 GenericName[fr]=Jeu dans le style du démineur
 GenericName[ja]=地雷ゲーム
 GenericName[x-test]=xxMinesweeper-like Gamexx
