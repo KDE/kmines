@@ -2,6 +2,7 @@
 IconName=kmines
 Comment=KMines
 Comment[ar]=لعبة الألغام (KMines)
+Comment[be]=Сапёр
 Comment[bn]=কে-মাইন্স
 Comment[hi]=के-माइन्स
 Comment[hr]=KMine
@@ -17,6 +18,7 @@ Comment[zh_TW]=KMine 踩地雷
 [reveal]
 Name=Reveal case
 Name[ar]=أظهر القضية
+Name[be]=Адкрыццё поля
 Name[bg]=Разкриване
 Name[bn]=মাইন প্রদর্শন করো
 Name[bs]=Otkrij polja
@@ -64,6 +66,7 @@ Name[uk]=Відкриття комірки
 Name[zh_CN]=揭开盒盖
 Name[zh_TW]=開挖方格
 Comment=Reveal case
+Comment[be]=Адкрыццё поля
 Comment[bg]=Разкриване
 Comment[bn]=মাইন প্রদর্শন করো
 Comment[bs]=Otkrij polja
@@ -114,6 +117,7 @@ default_presentation=0
 
 [autoreveal]
 Name=Autoreveal case
+Name[be]=Адкрыццё пустых палёў
 Name[bg]=Автоматично разкриване
 Name[bn]=স্বয়ংক্রিয়ভাবে মাইন প্রদর্শন করো
 Name[bs]=Automatski otkrij polja
@@ -162,6 +166,7 @@ Name[uk]=Автоматичне відкрити комірки
 Name[zh_CN]=自动揭开盒盖
 Name[zh_TW]=周圍自動開挖方格
 Comment=Autoreveal case
+Comment[be]=Адкрыццё пустых палёў
 Comment[bg]=Автоматично разкриване
 Comment[bn]=স্বয়ংক্রিয়ভাবে মাইন প্রদর্শন করো
 Comment[bs]=Automatski otkrij polja
@@ -212,6 +217,7 @@ default_presentation=0
 
 [mark]
 Name=Mark case
+Name[be]=Пазнака міны
 Name[bg]=Поставяне на флаг
 Name[bn]=মাইন-এ চিহ্ন দাও
 Name[bs]=Označi polje
@@ -260,6 +266,7 @@ Name[uk]=Позначення комірки
 Name[zh_CN]=标记盒子
 Name[zh_TW]=標記方格
 Comment=Mark case
+Comment[be]=Пазнака міны
 Comment[bg]=Поставяне на флаг
 Comment[bn]=সম্ভাব্য মাইন-এ চিহ্ন দাও
 Comment[bs]=Označi polje
@@ -310,6 +317,7 @@ default_presentation=0
 
 [unmark]
 Name=Unmark case
+Name[be]=Здыманне пазнакі
 Name[bg]=Премахване на флаг
 Name[bn]=মাইন-এ দেওয়া চিহ্ন মুছে ফেল
 Name[bs]=Odznači polje
@@ -358,6 +366,7 @@ Name[uk]=Зняття помітки з комірки
 Name[zh_CN]=不标记盒子
 Name[zh_TW]=去標記方格
 Comment=Unmark case
+Comment[be]=Здыманне пазнакі
 Comment[bg]=Премахване на флаг
 Comment[bn]=মাইন-এ দেওয়া চিহ্ন মুছে ফেল
 Comment[bs]=Odznači polje
@@ -409,6 +418,7 @@ default_presentation=0
 [explosion]
 Name=Explosion
 Name[ar]=انفجار
+Name[be]=Выбух
 Name[bg]=Експлозия
 Name[bn]=বিস্ফোরণ
 Name[br]=Tarzhad
@@ -458,6 +468,7 @@ Name[wa]=Esplôzion
 Name[zh_CN]=爆炸
 Name[zh_TW]=爆炸
 Comment=Explosion
+Comment[be]=Выбух
 Comment[bg]=Експлозия
 Comment[bn]=বিস্ফোরণ
 Comment[br]=Tarzhad
@@ -511,6 +522,7 @@ default_presentation=0
 [won]
 Name=Game won
 Name[ar]=ربحت اللعبة
+Name[be]=Перамога
 Name[bg]=Спечелихте
 Name[bn]=খেলা জিতেছেন
 Name[br]=Gounezet eo ar c'hoari
@@ -563,6 +575,7 @@ Name[zh_CN]=您赢了游戏
 Name[zh_TW]=遊戲獲勝
 Comment=Game won
 Comment[ar]=ربحت اللعبة
+Comment[be]=Перамога
 Comment[bg]=Спечелихте
 Comment[bn]=খেল খতম
 Comment[br]=Gounezet eo ar c'hoari
@@ -618,6 +631,7 @@ default_presentation=0
 [lost]
 Name=Game lost
 Name[ar]=خسرت اللعبة
+Name[be]=Параза
 Name[bg]=Загубихте
 Name[bn]=খেলায় হেরে গিয়েছেন
 Name[br]=Kollet eo ar c'hoari
@@ -670,6 +684,7 @@ Name[zh_CN]=您输了游戏
 Name[zh_TW]=遊戲失敗
 Comment=Game lost
 Comment[ar]=خسرت اللعبة
+Comment[be]=Параза
 Comment[bg]=Загубихте
 Comment[bn]=খেলায় হেরে গিয়েছেন
 Comment[br]=Koll eo ar c'hoari
@@ -724,6 +739,7 @@ default_presentation=0
 
 [set_uncertain]
 Name=Set question mark
+Name[be]=Пазначыць пытальнікам
 Name[bg]=Поставяне на въпросителна
 Name[bn]=প্রশ্নবোধক চিহ্ন দিন
 Name[bs]=Postavi upitnik
@@ -768,6 +784,7 @@ Name[uk]=Поставити знак питання
 Name[zh_CN]=设置了问号
 Name[zh_TW]=設定問號
 Comment=Set question mark
+Comment[be]=Пазначыць пытальнікам
 Comment[bg]=Поставяне на въпросителна
 Comment[bn]=প্রশ্নবোধক চিহ্ন দিন
 Comment[bs]=Postavi upitnik
@@ -815,6 +832,7 @@ default_presentation=0
 
 [unset_uncertain]
 Name=Unset question mark
+Name[be]=Зняць пытальнік
 Name[bg]=Премахване на въпросителна
 Name[bn]=প্রশ্নবোধক চিহ্ন সরিয়ে ফেলুন
 Name[bs]=Isključi upitnik
@@ -860,6 +878,7 @@ Name[uk]=Зняти знак питання
 Name[zh_CN]=取消了问号
 Name[zh_TW]=取消問號
 Comment=Unset question mark
+Comment[be]=Зняць пытальнік
 Comment[bg]=Премахване на въпросителна
 Comment[bn]=প্রশ্নবোধক চিহ্ন সরিয়ে ফেলুন
 Comment[bs]=Isključi upitnik
