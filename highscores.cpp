@@ -25,6 +25,7 @@
 #include "version.h"
 #include "defines.h"
 #include <kglobal.h>
+#include <kconfiggroup.h>
 
 
 namespace KExtHighscore
