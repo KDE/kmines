@@ -29,7 +29,7 @@ class BaseField : public KGrid2D::Square<KMines::Case>, public KMines
 {
  public:
     // seed for KRandomSequence (used by solver check programs)
-	BaseField(long seed = 0);
+	explicit BaseField(long seed = 0);
     virtual ~BaseField() {}
 
     void reset(uint width, uint height, uint nbMines);

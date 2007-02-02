@@ -35,7 +35,7 @@ class Solver : public QObject
 {
  Q_OBJECT
  public:
-    Solver(QObject *parent = 0);
+    explicit Solver(QObject *parent = 0);
     ~Solver();
 
     /** A method to advice a point placement */
