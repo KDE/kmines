@@ -26,6 +26,7 @@
 
 #include "defines.h"
 #include "settings.h"
+#include "ksvgrenderer.h"
 
 class KComboBox;
 class KIntNumInput;
@@ -35,14 +36,15 @@ class Smiley : public QPushButton, public KMines
 {
  Q_OBJECT
  public:
-    explicit Smiley(QWidget *parent)
-        : QPushButton(QString::null, parent) {}
+    explicit Smiley(QWidget *parent);
 
  public slots:
     void setMood(Mood);
 
  private:
-    static const char **XPM_NAMES[NbMoods];
+    //static const char **XPM_NAMES[NbMoods];
+    QVector<QString> moodNames;
+    KSvgRenderer svg;
 };
 
 //-----------------------------------------------------------------------------

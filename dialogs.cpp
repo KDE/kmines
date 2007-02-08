@@ -35,23 +35,36 @@
 #include <QGroupBox>
 #include "settings.h"
 
-#include "bitmaps/smile"
-#include "bitmaps/smile_happy"
-#include "bitmaps/smile_ohno"
-#include "bitmaps/smile_stress"
-#include "bitmaps/smile_sleep"
+#include "kstandarddirs.h"
+#include <QPainter>
 
+Smiley::Smiley(QWidget *parent)
+        : QPushButton(QString::null, parent) {
+    moodNames.append("smile");
+    moodNames.append("smile_stress");
+    moodNames.append("smile_happy");
+    moodNames.append("smile_ohno");
+    moodNames.append("smile_sleep");
 
-//-----------------------------------------------------------------------------
-const char **Smiley::XPM_NAMES[NbMoods] = {
-    smile_xpm, smile_stress_xpm, smile_happy_xpm, smile_ohno_xpm,
-    smile_sleep_xpm
-};
+    QString themePath = KStandardDirs::locate("appdata", QString("themes/kmines_classic.svgz"));
+    if (themePath.isNull()) {
+        qDebug () << "KMines theme svg not found!!!";
+    };
+    svg.load(themePath);
+}
 
 void Smiley::setMood(Mood mood)
 {
-    QPixmap p(XPM_NAMES[mood]);
-    setIcon(p);
+    //Prob need to trigger a resize here? Use older size (fixed) for now
+    QImage qiRend(QSize(16, 16),QImage::Format_ARGB32_Premultiplied);
+    qiRend.fill(0);
+
+    if (svg.isValid()) {
+//qDebug() << "rendering" << moodNames.at(mood);
+            QPainter painter(&qiRend);
+	    svg.render(&painter, moodNames.at(mood));
+    }
+    setIcon(QPixmap::fromImage(qiRend));
 }
 
 //-----------------------------------------------------------------------------

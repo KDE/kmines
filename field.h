@@ -111,7 +111,7 @@ class Field : public FieldFrame, public BaseField, public Zoomable
     QRect toRect(const KGrid2D::Coord &) const;
 
     void drawCase(QPainter &, const KGrid2D::Coord &,
-                  bool forcePressed = false) const;
+                  bool forcePressed = false);
 
     int mapMouseButton(QMouseEvent *) const;
     void resetAdvised();

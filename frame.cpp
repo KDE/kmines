@@ -25,6 +25,8 @@
 
 #include "settings.h"
 
+#include "kstandarddirs.h"
+
 
 FieldFrame::FieldFrame(QWidget *parent)
     : QFrame(parent), _button(0)
@@ -32,6 +34,12 @@ FieldFrame::FieldFrame(QWidget *parent)
     setFrameStyle( QFrame::Box | QFrame::Raised );
     setLineWidth(2);
     setMidLineWidth(2);
+
+    QString themePath = KStandardDirs::locate("appdata", QString("themes/kmines_classic.svgz"));
+    if (themePath.isNull()) {
+        qDebug () << "theme svg not found!!!";
+    };
+    svg.load(themePath);
 }
 
 void FieldFrame::adjustSize()
@@ -41,14 +49,10 @@ void FieldFrame::adjustSize()
 
     QPixmap mask;
     for (uint i=0; i<Nb_Pixmap_Types; i++) {
-        drawPixmap(mask, (PixmapType)i, true);
-        drawPixmap(_pixmaps[i], (PixmapType)i, false);
-        _pixmaps[i].setMask(mask);
+        drawPixmap(_pixmaps[i], (PixmapType)i, true);
     }
     for (uint i=0; i<Nb_Advised; i++) {
-        drawAdvised(mask, i, true);
-        drawAdvised(_advised[i], i, false);
-        _advised[i].setMask(mask);
+        drawAdvised(_advised[i], i, true);;
     }
 
     QFont f = font();
@@ -57,73 +61,65 @@ void FieldFrame::adjustSize()
     setFont(f);
 }
 
-void FieldFrame::initPixmap(QPixmap &pix, bool mask) const
+void FieldFrame::initPixmap(QPixmap &pix, bool mask) 
 {
     pix = QPixmap( Settings::caseSize(), Settings::caseSize() );
     if (mask) pix.fill(Qt::color0);
 }
 
-void FieldFrame::drawPixmap(QPixmap &pix, PixmapType type, bool mask) const
+void FieldFrame::drawPixmap(QPixmap &pix, PixmapType type, bool mask) 
 {
     initPixmap(pix, mask);
-    QPainter p(&pix);
+
+    QImage qiRend(QSize(pix.width(), pix.height()),QImage::Format_ARGB32_Premultiplied);
+    qiRend.fill(0);
+    QPainter p(&qiRend);
 
     if ( type==FlagPixmap ) {
-        p.setWindow(0, 0, 16, 16);
-        p.setPen( (mask ? Qt::color1 : Qt::black) );
-        p.drawLine(6, 13, 14, 13);
-        p.drawLine(8, 12, 12, 12);
-        p.drawLine(9, 11, 11, 11);
-        p.drawLine(10, 2, 10, 10);
-        if (!mask) p.setPen(Qt::black);
-        p.setBrush( (mask ? Qt::color1 : Settings::color(Settings::EnumType::flag)) );
-        p.drawRect(4, 3, 6, 5);
+        svg.render(&p, "flag");
+        pix = QPixmap::fromImage(qiRend);
         return;
     }
 
-    p.setWindow(0, 0, 20, 20);
-	if ( type==ExplodedPixmap )
-		p.fillRect(2, 2, 16, 16, (mask ? Qt::color1 : Settings::color(Settings::EnumType::explosion)));
-	QPen pen(mask ? Qt::color1 : Qt::black, 1);
-	p.setPen(pen);
-	p.setBrush(mask ? Qt::color1 : Qt::black);
-	p.drawLine(10,3,10,18);
-	p.drawLine(3,10,18,10);
-	p.drawLine(5, 5, 16, 16);
-	p.drawLine(5, 15, 15, 5);
-	p.drawEllipse(5, 5, 11, 11);
-	p.fillRect(8, 8, 2, 2, (mask ? Qt::color1 : Qt::white));
-	if ( type==ErrorPixmap ) {
-		if (!mask) {
-			pen.setColor(Settings::color(Settings::EnumType::error));
-			p.setPen(pen);
-		}
-		p.drawLine(3, 3, 17, 17);
-		p.drawLine(4, 3, 17, 16);
-		p.drawLine(3, 4, 16, 17);
-		p.drawLine(3, 17, 17, 3);
-		p.drawLine(3, 16, 16, 3);
-		p.drawLine(4, 17, 17, 4);
-	}
+    //If exploding...;
+    if ( type==ExplodedPixmap ) {
+        svg.render(&p, "explosion");;
+    }
+
+    //Now render mine graphic
+    svg.render(&p, "mine");
+
+    //Finally render the error marker
+    if ( type==ErrorPixmap ) {
+      svg.render(&p, "error");
+    }
+    pix = QPixmap::fromImage(qiRend);
 }
 
-void FieldFrame::drawAdvised(QPixmap &pix, uint i, bool mask) const
+void FieldFrame::drawAdvised(QPixmap &pix, uint i, bool mask) 
 {
     initPixmap(pix, mask);
-    QPainter p(&pix);
+    QImage qiRend(QSize(pix.width(), pix.height()),QImage::Format_ARGB32_Premultiplied);
+    qiRend.fill(0);
+    QPainter p(&qiRend);
+    /*QPainter p(&pix);
     p.setWindow(0, 0, 16, 16);
     p.setPen( QPen(mask ? Qt::color1 : Settings::mineColor(i), 2) );
-    p.drawRect(3, 3, 11, 11);
+    p.drawRect(3, 3, 11, 11);*/
+    svg.render(&p, "hint");
+    pix = QPixmap::fromImage(qiRend);
 }
 
 void FieldFrame::drawBox(QPainter &painter, const QPoint &p,
                       bool pressed, PixmapType type, const QString &text,
                       uint nbMines, int advised,
-                      bool hasFocus) const
+                      bool hasFocus) 
 {
-    qDrawShadePanel(&painter, p.x(), p.y(), _button.width(), _button.height(),
+    //Use SVG theme instead
+    /*qDrawShadePanel(&painter, p.x(), p.y(), _button.width(), _button.height(),
                     palette(),  pressed, 2,
                     &palette().brush(QPalette::Background));
+
     if (hasFocus) {
         painter.translate(p.x(), p.y());
         QStyleOptionFocusRect option;
@@ -134,9 +130,14 @@ void FieldFrame::drawBox(QPainter &painter, const QPoint &p,
         option.rect = fbr;
         style()->drawPrimitive(QStyle::PE_FrameFocusRect, &option, &painter);
         painter.resetMatrix();
-    }
+    }*/
 
     QRect r(p, _button.size());
+    if (pressed) {
+        svg.render(&painter, "cell_down", r);
+    } else {
+        svg.render(&painter, "cell_up", r);
+    }
     const QPixmap *pixmap = (type==NoPixmap ? 0 : &_pixmaps[type]);
     QColor color = (nbMines==0 ? Qt::black : Settings::mineColor(nbMines-1));
     QPalette pal;

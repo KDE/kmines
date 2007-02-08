@@ -1,7 +1,7 @@
 project(kmines)
 
 add_subdirectory( data ) 
-add_subdirectory( bitmaps ) 
+add_subdirectory( themes ) 
 message(STATUS "TODO: someone knowing cmake has to fix the solver tests")
 #add_subdirectory( solver ) 
 

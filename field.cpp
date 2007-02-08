@@ -47,8 +47,7 @@ const Field::ActionData Field::ACTION_DATA[Nb_Actions] = {
 };
 
 Field::Field(QWidget *parent)
-    : FieldFrame(parent), _state(Init), _solvingState(Regular), _level(Level::Easy)
-{}
+    : FieldFrame(parent), _state(Init), _solvingState(Regular), _level(Level::Easy){}
 
 void Field::readSettings()
 {
@@ -419,7 +418,7 @@ void Field::setAdvised(const Coord &c, double proba)
     }
 }
 
-void Field::drawCase(QPainter &painter, const Coord &c, bool pressed) const
+void Field::drawCase(QPainter &painter, const Coord &c, bool pressed) 
 {
     Q_ASSERT( inside(c) );
 
