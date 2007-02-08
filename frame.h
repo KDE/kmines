@@ -22,6 +22,7 @@
 #include <QFrame>
 #include <QPixmap>
 #include <QPushButton>
+#include "ksvgrenderer.h"
 
 #include "defines.h"
 
@@ -40,17 +41,18 @@ class FieldFrame : public QFrame, public KMines
 
     void drawBox(QPainter &, const QPoint &, bool pressed,
                  PixmapType, const QString &text,
-                 uint nbMines, int advised, bool hasFocus) const;
+                 uint nbMines, int advised, bool hasFocus) ;
     virtual void adjustSize();
 
  private:
     QPushButton    _button;
     QPixmap        _pixmaps[Nb_Pixmap_Types];
     QPixmap        _advised[Nb_Advised];
+    KSvgRenderer svg;
 
-    void drawPixmap(QPixmap &, PixmapType, bool mask) const;
-    void drawAdvised(QPixmap &, uint i, bool mask) const;
-    void initPixmap(QPixmap &, bool mask) const;
+    void drawPixmap(QPixmap &, PixmapType, bool mask);
+    void drawAdvised(QPixmap &, uint i, bool mask) ;
+    void initPixmap(QPixmap &, bool mask) ;
 };
 
 #endif
