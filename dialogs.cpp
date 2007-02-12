@@ -304,7 +304,7 @@ AppearanceConfig::AppearanceConfig()
         grid->addWidget( cb, i, 1 );
     }
     for (uint i=0; i<NB_N_COLORS; i++) {
-        grid->addWidget( new QLabel(i18np("%n mine color:", "%n mines color:", i+1), this), Settings::EnumType::COUNT+i, 0);
+        grid->addWidget( new QLabel(i18np("%1 mine color:", "%1 mines color:", i+1), this), Settings::EnumType::COUNT+i, 0);
         KColorButton *cb = new KColorButton(this);
         cb->setObjectName(N_COLOR_CONFIG_NAMES[i]);
         cb->setFixedWidth(100);
