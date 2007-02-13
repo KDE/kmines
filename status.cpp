@@ -124,6 +124,12 @@ Status::Status(QWidget *parent)
     top->addWidget(_stack, 1, 0, 1, 5);
 }
 
+void Status::resizeEvent ( QResizeEvent * event )
+{
+    //Tell the field to recalculate itself
+    _field->adjustCaseSize(event->size());
+}
+
 void Status::smileyClicked()
 {
     if ( _field->gameState()==Paused ) emit pause();

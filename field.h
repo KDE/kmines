@@ -19,12 +19,11 @@
 #ifndef FIELD_H
 #define FIELD_H
 
-#include <kzoommainwindow.h>
 #include "solver/bfield.h"
 #include "frame.h"
 
 //-----------------------------------------------------------------------------
-class Field : public FieldFrame, public BaseField, public Zoomable
+class Field : public FieldFrame, public BaseField
 {
  Q_OBJECT
  public:
@@ -39,7 +38,7 @@ class Field : public FieldFrame, public BaseField, public Zoomable
     explicit Field(QWidget *parent);
 
     virtual QSize sizeHint() const;
-    virtual void  zoomChanged() { adjustSize(); }
+    //virtual void  zoomChanged() { adjustSize(); }
 
     void setLevel(const Level &level);
     void setReplayField(const QString &field);
@@ -66,6 +65,8 @@ class Field : public FieldFrame, public BaseField, public Zoomable
     void setAdvised(const KGrid2D::Coord &c, double proba);
     void setSolvingState(SolvingState state) { _solvingState = state; }
     SolvingState solvingState() const { return _solvingState; }
+
+    void adjustCaseSize(const QSize & boardsize);
 	
  signals:
     void updateStatus(bool);

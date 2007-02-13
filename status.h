@@ -20,6 +20,7 @@
 #define STATUS_H
 
 #include <qdom.h>
+#include <QResizeEvent>
 #include "field.h"
 
 class Smiley;
@@ -80,6 +81,9 @@ class Status : public QWidget, public KMines
     void smileyClicked();
     void solvingDone(bool success);
     void replayStep();
+
+protected:
+    virtual void resizeEvent ( QResizeEvent * event );
 
  private:
     Field        *_field;
