@@ -88,8 +88,8 @@ void Field::adjustCaseSize(const QSize & boardsize)
     
     Settings::setCaseSize(newcase);
     borderSize = Settings::caseSize();
-    reset(false);
     adjustSize();
+    update();
 }
 
 void Field::setLevel(const Level &level)
