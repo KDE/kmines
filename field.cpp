@@ -62,8 +62,34 @@ void Field::readSettings()
 
 QSize Field::sizeHint() const
 {
-  return QSize( 2* borderSize + _level.width()*Settings::caseSize(),
-               2*borderSize + _level.height()*Settings::caseSize());
+  return QSize( (_level.width()+2)*Settings::caseSize(),
+               (_level.height()+2)*Settings::caseSize());
+}
+
+void Field::adjustCaseSize(const QSize & boardsize) 
+{
+    //calculate our best case size to fit the boardsize passed to us
+    qreal aspectratio;
+    int newcase;
+    qreal bw = boardsize.width();
+    qreal bh = boardsize.height();
+
+    //use fixed size for calculation, adding borders. 
+    qreal fullh = (16 * (_level.height()+2));
+    qreal fullw = (16 * (_level.width()+2));
+
+    if ((fullw/fullh)>(bw/bh)) {
+        //space will be left on height, use width as limit
+	aspectratio = bw/fullw;
+    } else {
+	aspectratio = bh/fullh;
+    }
+    newcase = (int) aspectratio * 16;
+    
+    Settings::setCaseSize(newcase);
+    borderSize = Settings::caseSize();
+    reset(false);
+    adjustSize();
 }
 
 void Field::setLevel(const Level &level)

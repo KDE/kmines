@@ -19,7 +19,7 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include <kzoommainwindow.h>
+#include <kmainwindow.h>
 
 #include "defines.h"
 
@@ -28,11 +28,11 @@ class KToggleAction;
 class KSelectAction;
 class Status;
 
-class MainWidget : public KZoomMainWindow, public KMines
+class MainWidget : public KMainWindow, public KMines
 {
  Q_OBJECT
  public:
-     MainWidget();
+    explicit MainWidget( QWidget* parent = 0 );
 
  private slots:
     void configureKeys();
@@ -64,10 +64,10 @@ class MainWidget : public KZoomMainWindow, public KMines
     static const KeyData KEY_DATA[NB_KEYS];
 
     void readSettings();
-    virtual void writeZoomSetting(uint zoom);
+    /*virtual void writeZoomSetting(uint zoom);
     virtual uint readZoomSetting() const;
     virtual void writeMenubarVisibleSetting(bool visible);
-    virtual bool menubarVisibleSetting() const;
+    virtual bool menubarVisibleSetting() const;*/
 };
 
 #endif

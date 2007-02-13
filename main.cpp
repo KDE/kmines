@@ -59,8 +59,8 @@ const MainWidget::KeyData MainWidget::KEY_DATA[NB_KEYS] = {
 };
 
 
-MainWidget::MainWidget()
-  : KZoomMainWindow(4, 100, 1)
+MainWidget::MainWidget( QWidget* parent)
+    : KMainWindow(parent)
 {
 
     _status = new Status(this);
@@ -141,16 +141,17 @@ MainWidget::MainWidget()
     setupGUI( KMainWindow::Save | Create );
     readSettings();
     setCentralWidget(_status);
-    init("popup");
+    //TODO: previously required by KZoomMainWindow, do we keep it? 
+    //init("popup");
     // we want to receive RMB event's on field rather than context menu
     _status->field()->setContextMenuPolicy(Qt::PreventContextMenu);
-    addZoomable(_status->field());
+    //addZoomable(_status->field());
 }
 
 bool MainWidget::queryExit()
 {
     _status->checkBlackMark();
-    return KZoomMainWindow::queryExit();
+    return KMainWindow::queryExit();
 }
 
 void MainWidget::readSettings()
@@ -228,7 +229,7 @@ void MainWidget::pause()
     _pause->trigger();
 }
 
-void MainWidget::writeZoomSetting(uint zoom)
+/*void MainWidget::writeZoomSetting(uint zoom)
 {
   Settings::setCaseSize(zoom);
   Settings::writeConfig();
@@ -248,7 +249,7 @@ void MainWidget::writeMenubarVisibleSetting(bool visible)
 bool MainWidget::menubarVisibleSetting() const
 {
   return Settings::menubarVisible();
-}
+}*/
 
 //----------------------------------------------------------------------------
 static const char *DESCRIPTION
