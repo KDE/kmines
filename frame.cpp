@@ -29,11 +29,11 @@
 
 
 FieldFrame::FieldFrame(QWidget *parent)
-    : QFrame(parent), _button(0)
+    : QWidget(parent), _button(0)
 {
-    setFrameStyle( QFrame::Box | QFrame::Raised );
-    setLineWidth(2);
-    setMidLineWidth(2);
+    //setFrameStyle( QFrame::Box | QFrame::Raised );
+    //setLineWidth(2);
+    //setMidLineWidth(2);
 
     QString themePath = KStandardDirs::locate("appdata", QString("themes/kmines_classic.svgz"));
     if (themePath.isNull()) {
