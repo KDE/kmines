@@ -28,7 +28,7 @@
 
 class QPainter;
 
-class FieldFrame : public QFrame, public KMines
+class FieldFrame : public QWidget, public KMines
 {
  public:
     explicit FieldFrame(QWidget *parent);

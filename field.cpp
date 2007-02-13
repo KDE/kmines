@@ -47,7 +47,10 @@ const Field::ActionData Field::ACTION_DATA[Nb_Actions] = {
 };
 
 Field::Field(QWidget *parent)
-    : FieldFrame(parent), _state(Init), _solvingState(Regular), _level(Level::Easy){}
+    : FieldFrame(parent), _state(Init), _solvingState(Regular), _level(Level::Easy)
+{
+    borderSize = Settings::caseSize();
+}
 
 void Field::readSettings()
 {
@@ -59,8 +62,8 @@ void Field::readSettings()
 
 QSize Field::sizeHint() const
 {
-  return QSize(2*frameWidth() + _level.width()*Settings::caseSize(),
-               2*frameWidth() + _level.height()*Settings::caseSize());
+  return QSize( 2* borderSize + _level.width()*Settings::caseSize(),
+               2*borderSize + _level.height()*Settings::caseSize());
 }
 
 void Field::setLevel(const Level &level)
@@ -100,7 +103,8 @@ void Field::reset(bool init)
 void Field::paintEvent(QPaintEvent *e)
 {
     QPainter painter(this);
-    drawFrame(&painter);
+    //TODO: draw border?
+    //drawFrame(&painter);
     if ( _state==Paused ) return;
 
     Coord min = fromPoint(e->rect().topLeft());
@@ -123,15 +127,15 @@ void Field::changeCase(const Coord &p, CaseState newState)
 QPoint Field::toPoint(const Coord &p) const
 {
     QPoint qp;
-    qp.setX( p.first*Settings::caseSize() + frameWidth() );
-    qp.setY( p.second*Settings::caseSize() + frameWidth() );
+    qp.setX( p.first*Settings::caseSize() + borderSize );
+    qp.setY( p.second*Settings::caseSize() + borderSize );
     return qp;
 }
 
 Coord Field::fromPoint(const QPoint &qp) const
 {
-    double i = (double)(qp.x() - frameWidth()) / Settings::caseSize();
-    double j = (double)(qp.y() - frameWidth()) / Settings::caseSize();
+    double i = (double)(qp.x() - borderSize ) / Settings::caseSize();
+    double j = (double)(qp.y() - borderSize) / Settings::caseSize();
     return Coord((int)floor(i), (int)floor(j));
 }
 

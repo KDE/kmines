@@ -92,6 +92,7 @@ class Field : public FieldFrame, public BaseField, public Zoomable
 	double        _advisedProba;
 	int               _currentAction;
 	Level          _level;
+        int     borderSize;
 
 	void pressCase(const KGrid2D::Coord &, bool);
 	void pressClearFunction(const KGrid2D::Coord &, bool);
