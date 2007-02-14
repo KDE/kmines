@@ -67,6 +67,12 @@ void Field::readSettings()
     if ( Settings::magicReveal() ) emit setCheating();
 }
 
+QSize Field::minimumSize() const
+{
+  return QSize( (_level.width()+2)*16,
+               (_level.height()+2)*16);
+}
+
 QSize Field::sizeHint() const
 {
   return QSize( (_level.width()+2)*Settings::caseSize(),
@@ -506,7 +512,8 @@ void Field::drawCase(QPainter &painter, const Coord &c, bool pressed)
 
 void Field::adjustSize()
 {
-    setFixedSize(sizeHint());
+    QWidget::resize(  QSize( (_level.width()+2)*Settings::caseSize(),
+               (_level.height()+2)*Settings::caseSize()) );
     _button.resize(Settings::caseSize(), Settings::caseSize());
 
     QPixmap mask;

@@ -43,6 +43,7 @@ class Field : public QWidget, public BaseField
     explicit Field(QWidget *parent);
 
     virtual QSize sizeHint() const;
+    virtual QSize minimumSize() const;
     //virtual void  zoomChanged() { adjustSize(); }
 
     void setLevel(const Level &level);
