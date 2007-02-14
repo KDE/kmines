@@ -126,8 +126,7 @@ Status::Status(QWidget *parent)
 
 void Status::resizeEvent ( QResizeEvent * event )
 {
-    //Tell the field to recalculate itself
-    _field->adjustCaseSize(event->size());
+   _field->adjustCaseSize(event->size());
 }
 
 void Status::smileyClicked()

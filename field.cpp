@@ -50,7 +50,7 @@ const Field::ActionData Field::ACTION_DATA[Nb_Actions] = {
 Field::Field(QWidget *parent)
     : QWidget(parent), _state(Init), _solvingState(Regular), _level(Level::Easy)
 {
-    borderSize = Settings::caseSize();
+    borderSize = 0; //Settings::caseSize();
 
     QString themePath = KStandardDirs::locate("appdata", QString("themes/kmines_classic.svgz"));
     if (themePath.isNull()) {
@@ -83,13 +83,18 @@ void Field::adjustCaseSize(const QSize & boardsize)
 {
     //calculate our best case size to fit the boardsize passed to us
     qreal aspectratio;
-    int newcase;
+    qreal newcase;
+
+    //actually the boardsize contains the smiley/clock/status bar as well at this point
+    // :(
+    //take this into account for now, this will change when these elements are migrated a proper status bar 
+    //or to in-game elements, according to the theme
     qreal bw = boardsize.width();
-    qreal bh = boardsize.height();
+    qreal bh = boardsize.height() - 64.0;
 
     //use fixed size for calculation, adding borders. 
-    qreal fullh = (16 * (_level.height()+2));
-    qreal fullw = (16 * (_level.width()+2));
+    qreal fullh = (16.0 * (_level.height()+2.0));
+    qreal fullw = (16.0 * (_level.width()+2.0));
 
     if ((fullw/fullh)>(bw/bh)) {
         //space will be left on height, use width as limit
@@ -97,9 +102,11 @@ void Field::adjustCaseSize(const QSize & boardsize)
     } else {
 	aspectratio = bh/fullh;
     }
-    newcase = (int) aspectratio * 16;
+    newcase =  aspectratio * 16.0;
+
+qDebug() << "Preferred case size is"<< newcase;
     
-    Settings::setCaseSize(newcase);
+    Settings::setCaseSize((int) newcase);
     borderSize = Settings::caseSize();
     adjustSize();
     update();
