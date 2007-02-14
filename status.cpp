@@ -150,6 +150,8 @@ void Status::newGame(const Level &level)
     if ( level.type()!=Level::Custom )
         KExtHighscore::setGameType(level.type());
     _field->setLevel(level);
+    //Recalculate metrics for new game
+    _field->adjustCaseSize(size());
 }
 
 bool Status::checkBlackMark()
