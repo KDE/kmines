@@ -82,7 +82,7 @@ class Status : public QWidget, public KMines
     void solvingDone(bool success);
     void replayStep();
 
-protected:
+ protected:
     virtual void resizeEvent ( QResizeEvent * event );
 
  private:
