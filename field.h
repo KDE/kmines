@@ -19,11 +19,16 @@
 #ifndef FIELD_H
 #define FIELD_H
 
+#include <QPixmap>
+#include <QPushButton>
+
+#include <ksvgrenderer.h>
+
 #include "solver/bfield.h"
-#include "frame.h"
+#include "defines.h"
 
 //-----------------------------------------------------------------------------
-class Field : public FieldFrame, public BaseField
+class Field : public QWidget, public BaseField
 {
  Q_OBJECT
  public:
@@ -81,10 +86,31 @@ class Field : public FieldFrame, public BaseField
     void mouseReleaseEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
 
+//was Frame
+    enum PixmapType { FlagPixmap = 0, MinePixmap, ExplodedPixmap,
+                      ErrorPixmap, Nb_Pixmap_Types,
+                      NoPixmap = Nb_Pixmap_Types };
+    enum { Nb_Advised = 5 };
+
+    void drawBox(QPainter &, const QPoint &, bool pressed,
+                 PixmapType, const QString &text,
+                 uint nbMines, int advised, bool hasFocus) ;
+    virtual void adjustSize();//end frame
+
  private slots:
      void keyboardAutoRevealSlot();
 
  private:
+//was Frame
+    QPushButton    _button;
+    QPixmap        _pixmaps[Nb_Pixmap_Types];
+    QPixmap        _advised[Nb_Advised];
+    KSvgRenderer svg;
+
+    void drawPixmap(QPixmap &, PixmapType, bool mask);
+    void drawAdvised(QPixmap &, uint i, bool mask) ;
+    void initPixmap(QPixmap &, bool mask) ;//end Frame
+
 	GameState   _state;
 	bool              _reveal;
 	SolvingState _solvingState;

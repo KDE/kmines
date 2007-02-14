@@ -15,8 +15,7 @@ set(libsolver_SRCS solver/bfield.cpp solver/solver.cpp solver/advFastRules.cpp s
 set(kmines_SRCS ${libsolver_SRCS}
    defines.cpp 
    highscores.cpp 
-   dialogs.cpp 
-   frame.cpp 
+   dialogs.cpp  
    field.cpp 
    status.cpp 
    main.cpp )
