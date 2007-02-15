@@ -70,7 +70,8 @@ Status::Status(QWidget *parent)
     // mines left LCD
     left = new KGameLCD(5, this);
     left->setFrameStyle(QFrame::Panel | QFrame::Sunken);
-    left->setDefaultBackgroundColor(Qt::black);
+    //TODO KGameLCD background color is broken, but it will be replaced anyway by nice SVG-based LCD digits soon...
+    //left->setDefaultBackgroundColor(Qt::black);
     left->setDefaultColor(Qt::white);
     left->setWhatsThis( i18n("<qt>Mines left.<br/>"
                                "It turns <font color=\"red\">red</font> "
