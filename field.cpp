@@ -75,8 +75,8 @@ QSize Field::minimumSize() const
 
 QSize Field::sizeHint() const
 {
-  return QSize( (_level.width()+2)*Settings::caseSize(),
-               (_level.height()+2)*Settings::caseSize());
+  return QSize( (_level.width()+0)*Settings::caseSize(),
+               (_level.height()+0)*Settings::caseSize());
 }
 
 void Field::adjustCaseSize(const QSize & boardsize) 
@@ -93,8 +93,8 @@ void Field::adjustCaseSize(const QSize & boardsize)
     qreal bh = boardsize.height() - 64.0;
 
     //use fixed size for calculation, adding borders. 
-    qreal fullh = (16.0 * (_level.height()+2.0));
-    qreal fullw = (16.0 * (_level.width()+2.0));
+    qreal fullh = (16.0 * (_level.height()+0.0));
+    qreal fullw = (16.0 * (_level.width()+0.0));
 
     if ((fullw/fullh)>(bw/bh)) {
         //space will be left on height, use width as limit
@@ -107,7 +107,7 @@ void Field::adjustCaseSize(const QSize & boardsize)
 qDebug() << "Preferred case size is"<< newcase;
     
     Settings::setCaseSize((int) newcase);
-    borderSize = Settings::caseSize();
+    borderSize = 0;
     adjustSize();
     update();
 }

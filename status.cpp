@@ -56,15 +56,18 @@ Status::Status(QWidget *parent)
     _solver = new Solver(this);
     connect(_solver, SIGNAL(solvingDone(bool)), SLOT(solvingDone(bool)));
 
+// new grid layout
+    QGridLayout *gridLayout = new QGridLayout(this);
+    gridLayout->setSpacing(6);
+    gridLayout->setMargin(9);
+
 // top layout
-    QGridLayout *top = new QGridLayout( this );
-    top->setMargin( 10 );
-    top->setSpacing( 10 );
-    top->setColumnStretch(1, 1);
-    top->setColumnStretch(3, 1);
+    QHBoxLayout *top = new QHBoxLayout();
+    top->setMargin( 0 );
+    top->setSpacing( 6 );
 
 // status bar
-	// mines left LCD
+    // mines left LCD
     left = new KGameLCD(5, this);
     left->setFrameStyle(QFrame::Panel | QFrame::Sunken);
     left->setDefaultBackgroundColor(Qt::black);
@@ -73,14 +76,30 @@ Status::Status(QWidget *parent)
                                "It turns <font color=\"red\">red</font> "
                                "when you have flagged more cases than "
                                "present mines.</qt>"));
-    top->addWidget(left, 0, 0);
+    left->setMaximumSize(QSize(16777215, 64));
+    top->addWidget(left);
+
+    QSpacerItem *spacerItem = new QSpacerItem(21, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+    top->addItem(spacerItem);
 
 	// smiley
 	smiley = new Smiley(this);
 	connect(smiley, SIGNAL(clicked()), SLOT(smileyClicked()));
 	smiley->setFocusPolicy(Qt::NoFocus);
 	smiley->setWhatsThis( i18n("Press to start a new game"));
-    top->addWidget(smiley, 0, 2);
+
+        QSizePolicy sizePolicy(static_cast<QSizePolicy::Policy>(5), static_cast<QSizePolicy::Policy>(5));
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(smiley->sizePolicy().hasHeightForWidth());
+        smiley->setSizePolicy(sizePolicy);
+        smiley->setMinimumSize(QSize(32, 32));
+        smiley->setMaximumSize(QSize(64, 64));
+
+        top->addWidget(smiley);
+
+    QSpacerItem *spacerItem1 = new QSpacerItem(21, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+    top->addItem(spacerItem1);
 
 	// digital clock LCD
 	dg = new DigitalClock(this);
@@ -89,11 +108,14 @@ Status::Status(QWidget *parent)
                              "if it is a highscore "
                              "and <font color=\"red\">red</font> "
                              "if it is the best time.</qt>"));
-    top->addWidget(dg, 0, 4);
+        dg->setMaximumSize(QSize(16777215, 64));
+        top->addWidget(dg);
 
-// mines field
+    // mines field
     _fieldContainer = new QWidget;
     QGridLayout *g = new QGridLayout(_fieldContainer );
+    g->setSpacing(0);
+    g->setMargin(0);
     _field = new Field(_fieldContainer);
     _field->readSettings();
     g->addWidget(_field, 0, 0, Qt::AlignCenter);
@@ -108,20 +130,24 @@ Status::Status(QWidget *parent)
 
 // resume button
     _resumeContainer = new QWidget;
-    g = new QGridLayout(_resumeContainer);
+    QGridLayout *r = new QGridLayout(_resumeContainer);
+    r->setSpacing(0);
+    r->setMargin(0);
     QFont f = font();
     f.setBold(true);
     QPushButton *pb
         = new QPushButton(i18n("Press to Resume"), _resumeContainer);
     pb->setFont(f);
     connect(pb, SIGNAL(clicked()), SIGNAL(pause()));
-    g->addWidget(pb, 0, 0, Qt::AlignCenter);
+    r->addWidget(pb, 0, 0, Qt::AlignCenter);
 
     _stack = new QStackedWidget (this);
     _stack->addWidget(_fieldContainer);
     _stack->addWidget(_resumeContainer);
     _stack->setCurrentWidget(_fieldContainer);
-    top->addWidget(_stack, 1, 0, 1, 5);
+
+    gridLayout->addWidget(_stack, 1, 0, 1, 1);
+    gridLayout->addLayout(top, 0, 0, 1, 1);
 }
 
 void Status::resizeEvent ( QResizeEvent * event )
