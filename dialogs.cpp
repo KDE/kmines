@@ -72,7 +72,9 @@ DigitalClock::DigitalClock(QWidget *parent)
 : KGameLCDClock(parent)
 {
     setFrameStyle(Panel | Sunken);
-    setDefaultBackgroundColor(Qt::black);
+    //TODO DefaultBackground is broken, appears to be a QLCDNumber issue
+    // It will be replaced anyway by nice SVG-based LCD digits soon...
+    //setDefaultBackgroundColor(Qt::black);
     setDefaultColor(Qt::white);
 }
 
