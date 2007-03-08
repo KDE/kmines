@@ -119,22 +119,22 @@ MainWidget::MainWidget( QWidget* parent)
 
     // Log
     QAction* logAct = actionCollection()->addAction( "log_view" );
-    logAct->setIcon( KIcon("viewmag") );
+    logAct->setIcon( KIcon("zoom-original") );
     logAct->setText( i18n("View Log") );
     connect(logAct, SIGNAL(triggered(bool)), _status, SLOT(viewLog()));
 
     QAction* replayAct = actionCollection()->addAction( "log_replay" );
-    replayAct->setIcon( KIcon("player_play") );
+    replayAct->setIcon( KIcon("media-playback-start") );
     replayAct->setText( i18n("Replay Log") );
     connect(replayAct, SIGNAL(triggered(bool)), _status, SLOT(replayLog()));
 
     QAction* saveAct = actionCollection()->addAction( "log_save" );
-    saveAct->setIcon( KIcon("filesave") );
+    saveAct->setIcon( KIcon("document-save") );
     saveAct->setText( i18n("Save Log...") );
     connect(saveAct, SIGNAL(triggered(bool)), _status, SLOT(saveLog()));
 
     QAction* loadAct = actionCollection()->addAction( "log_load" );
-    loadAct->setIcon( KIcon("fileopen") );
+    loadAct->setIcon( KIcon("document-open") );
     loadAct->setText( i18n("Load Log...") );
     connect(loadAct, SIGNAL(triggered(bool)), _status, SLOT(loadLog()));
 
