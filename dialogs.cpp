@@ -46,7 +46,7 @@ Smiley::Smiley(QWidget *parent)
     moodNames.append("smile_ohno");
     moodNames.append("smile_sleep");
 
-    QString themePath = KStandardDirs::locate("appdata", QString("themes/kmines_classic.svgz"));
+    QString themePath = KStandardDirs::locate("appdata", QString("themes/kmines_oxygen.svgz"));
     if (themePath.isNull()) {
         qDebug () << "KMines theme svg not found!!!";
     };
