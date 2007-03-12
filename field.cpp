@@ -500,7 +500,34 @@ void Field::drawCase(QPainter &painter, const Coord &c, bool pressed)
         if ( hasMine(c) ) type = MinePixmap;
         else {
             nbMines = nbMinesAround(c);
-            if (nbMines) text.setNum(nbMines);
+            if (nbMines) {
+              switch (nbMines) {
+                case 1:
+                  type = Num1Pixmap;
+                  break;
+                case 2:
+                  type = Num2Pixmap;
+                  break;
+                case 3:
+                  type = Num3Pixmap;
+                  break;
+                case 4:
+                  type = Num4Pixmap;
+                  break;
+                case 5:
+                  type = Num5Pixmap;
+                  break;
+                case 6:
+                  type = Num6Pixmap;
+                  break;
+                case 7:
+                  type = Num7Pixmap;
+                  break;
+                case 8:
+                  type = Num8Pixmap;
+                  break;
+              }
+            }
         }
     }
 
@@ -563,6 +590,54 @@ void Field::drawPixmap(QPixmap &pix, PixmapType type, bool mask)
         return;
     }
 
+    if ( type==Num1Pixmap ) {
+        svg.render(&p, "arabicOne");
+        pix = QPixmap::fromImage(qiRend);
+        return;
+    }
+
+    if ( type==Num2Pixmap ) {
+        svg.render(&p, "arabicTwo");
+        pix = QPixmap::fromImage(qiRend);
+        return;
+    }
+
+    if ( type==Num3Pixmap ) {
+        svg.render(&p, "arabicThree");
+        pix = QPixmap::fromImage(qiRend);
+        return;
+    }
+
+    if ( type==Num4Pixmap ) {
+        svg.render(&p, "arabicFour");
+        pix = QPixmap::fromImage(qiRend);
+        return;
+    }
+
+    if ( type==Num5Pixmap ) {
+        svg.render(&p, "arabicFive");
+        pix = QPixmap::fromImage(qiRend);
+        return;
+    }
+
+    if ( type==Num6Pixmap ) {
+        svg.render(&p, "arabicSix");
+        pix = QPixmap::fromImage(qiRend);
+        return;
+    }
+
+    if ( type==Num7Pixmap ) {
+        svg.render(&p, "arabicSeven");
+        pix = QPixmap::fromImage(qiRend);
+        return;
+    }
+
+    if ( type==Num8Pixmap ) {
+        svg.render(&p, "arabicEight");
+        pix = QPixmap::fromImage(qiRend);
+        return;
+    }
+
     //If exploding...;
     if ( type==ExplodedPixmap ) {
         svg.render(&p, "explosion");;
@@ -621,10 +696,10 @@ void Field::drawBox(QPainter &painter, const QPoint &p,
         svg.render(&painter, "cell_up", r);
     }
     const QPixmap *pixmap = (type==NoPixmap ? 0 : &_pixmaps[type]);
-    QColor color = (nbMines==0 ? Qt::black : Settings::mineColor(nbMines-1));
+    /*QColor color = (nbMines==0 ? Qt::black : Settings::mineColor(nbMines-1));
     QPalette pal;
     pal.setColor( QPalette::WindowText, color );
-    style()->drawItemText(&painter, r, Qt::AlignCenter, pal, true, text, QPalette::WindowText);
+    style()->drawItemText(&painter, r, Qt::AlignCenter, pal, true, text, QPalette::WindowText);*/
     if (pixmap)
       style()->drawItemPixmap(&painter, r, Qt::AlignCenter, *pixmap);
     if ( advised!=-1 )
