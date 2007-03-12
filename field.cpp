@@ -488,7 +488,7 @@ void Field::drawCase(QPainter &painter, const Coord &c, bool pressed)
         pressed = true;
         break;
     case Uncertain:
-        text = '?';
+        type = QuestionPixmap;
         pressed = false;
         break;
     case Exploded:
@@ -553,6 +553,12 @@ void Field::drawPixmap(QPixmap &pix, PixmapType type, bool mask)
 
     if ( type==FlagPixmap ) {
         svg.render(&p, "flag");
+        pix = QPixmap::fromImage(qiRend);
+        return;
+    }
+
+    if ( type==QuestionPixmap ) {
+        svg.render(&p, "question");
         pix = QPixmap::fromImage(qiRend);
         return;
     }
