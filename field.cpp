@@ -52,7 +52,7 @@ Field::Field(QWidget *parent)
 {
     borderSize = 0; //Settings::caseSize();
 
-    QString themePath = KStandardDirs::locate("appdata", QString("themes/kmines_classic.svgz"));
+    QString themePath = KStandardDirs::locate("appdata", QString("themes/kmines_oxygen.svgz"));
     if (themePath.isNull()) {
         qDebug () << "theme svg not found!!!";
     };
