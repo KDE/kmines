@@ -89,7 +89,7 @@ class Field : public QWidget, public BaseField
 
 //was Frame
     enum PixmapType { FlagPixmap = 0, MinePixmap, ExplodedPixmap,
-                      ErrorPixmap, Nb_Pixmap_Types,
+                      ErrorPixmap, QuestionPixmap, Nb_Pixmap_Types,
                       NoPixmap = Nb_Pixmap_Types };
     enum { Nb_Advised = 5 };
 
