@@ -88,9 +88,10 @@ class Field : public QWidget, public BaseField
     void mouseMoveEvent(QMouseEvent *);
 
 //was Frame
-    enum PixmapType { FlagPixmap = 0, MinePixmap, ExplodedPixmap,
-                      ErrorPixmap, QuestionPixmap, Nb_Pixmap_Types,
-                      NoPixmap = Nb_Pixmap_Types };
+    enum PixmapType { FlagPixmap = 0, Num1Pixmap, Num2Pixmap, Num3Pixmap,
+         Num4Pixmap, Num5Pixmap, Num6Pixmap, Num7Pixmap, Num8Pixmap,
+         MinePixmap, ExplodedPixmap, ErrorPixmap, QuestionPixmap, 
+         Nb_Pixmap_Types, NoPixmap = Nb_Pixmap_Types };
     enum { Nb_Advised = 5 };
 
     void drawBox(QPainter &, const QPoint &, bool pressed,
