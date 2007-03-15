@@ -39,7 +39,7 @@
 #include <QPainter>
 
 Smiley::Smiley(QWidget *parent)
-        : QPushButton(QString::null, parent) {
+        : QPushButton(QString(), parent) {
     moodNames.append("smile");
     moodNames.append("smile_stress");
     moodNames.append("smile_happy");
@@ -270,7 +270,7 @@ GameConfig::GameConfig()
 void GameConfig::magicModified(bool on)
 {
     if ( !_magicDialogEnabled || !on ) return;
-    KMessageBox::information(this, i18n("When the \"magic\" reveal is on, you lose the ability to enter the highscores."), QString::null, "magic_reveal_warning");
+    KMessageBox::information(this, i18n("When the \"magic\" reveal is on, you lose the ability to enter the highscores."), QString(), "magic_reveal_warning");
 }
 
 //-----------------------------------------------------------------------------
