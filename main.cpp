@@ -208,8 +208,8 @@ void MainWidget::settingsChanged()
 void MainWidget::configureKeys()
 {
     KKeyDialog d(KKeyChooser::AllActions, KKeyChooser::LetterShortcutsAllowed, this);
-    d.insert(_keybCollection, i18n("Keyboard game"));
-    d.insert(actionCollection(), i18n("General"));
+    d.addCollection(_keybCollection, i18n("Keyboard game"));
+    d.addCollection(actionCollection(), i18n("General"));
     d.configure();
 }
 
