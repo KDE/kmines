@@ -2,15 +2,21 @@ project(kmines)
 
 add_subdirectory( data ) 
 add_subdirectory( themes ) 
-message(STATUS "TODO: someone knowing cmake has to fix the solver tests")
-#add_subdirectory( solver ) 
+
+set(libsolver_SRCS 
+	${CMAKE_CURRENT_SOURCE_DIR}/solver/bfield.cpp 
+	${CMAKE_CURRENT_SOURCE_DIR}/solver/solver.cpp 
+	${CMAKE_CURRENT_SOURCE_DIR}/solver/advFastRules.cpp 
+	${CMAKE_CURRENT_SOURCE_DIR}/solver/adviseFast.cpp 
+	${CMAKE_CURRENT_SOURCE_DIR}/solver/adviseFull.cpp
+	)
+
+add_subdirectory( solver ) 
 
 include_directories( ${CMAKE_SOURCE_DIR}/libkdegames ${CMAKE_SOURCE_DIR}/libkdegames/highscore  )
 
 
 ########### next target ###############
-
-set(libsolver_SRCS solver/bfield.cpp solver/solver.cpp solver/advFastRules.cpp solver/adviseFast.cpp solver/adviseFull.cpp)
 
 set(kmines_SRCS ${libsolver_SRCS}
    defines.cpp 
