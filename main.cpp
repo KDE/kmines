@@ -27,7 +27,7 @@
 #include <kcmdlineargs.h>
 #include <kaboutdata.h>
 #include <kstandardaction.h>
-#include <kkeydialog.h>
+#include <kshortcutsdialog.h>
 #include <kstandardgameaction.h>
 #include <kaction.h>
 #include <kactioncollection.h>
@@ -207,7 +207,7 @@ void MainWidget::settingsChanged()
 
 void MainWidget::configureKeys()
 {
-    KKeyDialog d(KKeyChooser::AllActions, KKeyChooser::LetterShortcutsAllowed, this);
+    KShortcutsDialog d(KShortcutsEditor::AllActions, KShortcutsEditor::LetterShortcutsAllowed, this);
     d.addCollection(_keybCollection, i18n("Keyboard game"));
     d.addCollection(actionCollection(), i18n("General"));
     d.configure();
