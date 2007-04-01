@@ -334,7 +334,7 @@ void Status::advise()
     int res = KMessageBox::warningContinueCancel(this,
                i18n("When the solver gives "
                "you advice, your score will not be added to the highscores."),
-                QString(), KStandardGuiItem::cont(), "advice_warning");
+                QString(), KStandardGuiItem::cont(), KStandardGuiItem::cancel(), "advice_warning");
     if ( res==KMessageBox::Cancel ) return;
     dg->setCheating();
     float probability;
