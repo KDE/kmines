@@ -67,7 +67,6 @@ class Status : public QWidget, public KMines
 
     void advise();
     void solve();
-    void solveRate();
     void addAction(const KGrid2D::Coord &, Field::ActionType type);
 
     void viewLog();

@@ -113,9 +113,6 @@ MainWidget::MainWidget( QWidget* parent)
     _advise =
         KStandardGameAction::hint(_status, SLOT(advise()), actionCollection());
     _solve = KStandardGameAction::solve(_status, SLOT(solve()), actionCollection());
-    action = actionCollection()->addAction("solve_rate");
-    action->setText(i18n("Solving Rate..."));
-    connect(action, SIGNAL(triggered(bool) ), _status, SLOT(solveRate()));
 
     // Log
     QAction* logAct = actionCollection()->addAction( "log_view" );

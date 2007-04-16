@@ -61,26 +61,4 @@ class Solver : public QObject
     bool initSolve(bool oneStep, bool noGuess);
 };
 
-class SolvingRateDialog : public KDialog
-{
- Q_OBJECT
- public:
-    SolvingRateDialog(const BaseField &field, QWidget *parent);
-
- private slots:
-    void step();
-    void slotOk();
-    void solvingDone(bool success);
-
- private:
-    const BaseField &_refField;
-    BaseField        _field;
-    Solver           _solver;
-    uint             _i, _success;
-    QLabel          *_label;
-    QProgressBar    *_progress;
-
-    static const uint NB_STEPS = 200;
-};
-
 #endif
