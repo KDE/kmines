@@ -39,7 +39,7 @@ class MainWidget : public KMainWindow, public KMines
     void configureSettings();
     void configureNotifications();
     void configureHighscores();
-	void gameStateChanged(KMines::GameState);
+    void gameStateChanged(KMines::GameState);
     void showHighscores();
     void settingsChanged();
     void pause();
@@ -64,10 +64,6 @@ class MainWidget : public KMainWindow, public KMines
     static const KeyData KEY_DATA[NB_KEYS];
 
     void readSettings();
-    /*virtual void writeZoomSetting(uint zoom);
-    virtual uint readZoomSetting() const;
-    virtual void writeMenubarVisibleSetting(bool visible);
-    virtual bool menubarVisibleSetting() const;*/
 };
 
 #endif
