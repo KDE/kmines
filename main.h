@@ -24,6 +24,7 @@
 #include "defines.h"
 
 class QAction;
+class QLabel;
 class KToggleAction;
 class KSelectAction;
 class Status;
@@ -43,10 +44,12 @@ class MainWidget : public KXmlGuiWindow, public KMines
     void showHighscores();
     void settingsChanged();
     void pause();
+    void displayMinesLeft(QString &);
 
  protected:
     virtual void focusOutEvent(QFocusEvent *);
     virtual bool queryExit();
+    void setupStatusBar();
 
  private:
     Status            *_status;
@@ -64,6 +67,8 @@ class MainWidget : public KXmlGuiWindow, public KMines
     static const KeyData KEY_DATA[NB_KEYS];
 
     void readSettings();
+    QLabel *minesLeftLabel;
+    QLabel *gameTimerLabel;
 };
 
 #endif

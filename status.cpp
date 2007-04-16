@@ -67,19 +67,6 @@ Status::Status(QWidget *parent)
     top->setSpacing( 6 );
 
 // status bar
-    // mines left LCD
-    left = new KGameLCD(5, this);
-    left->setFrameStyle(QFrame::Panel | QFrame::Sunken);
-    //TODO KGameLCD background color is broken, but it will be replaced anyway by nice SVG-based LCD digits soon...
-    //left->setDefaultBackgroundColor(Qt::black);
-    left->setDefaultColor(Qt::white);
-    left->setWhatsThis( i18n("<qt>Mines left.<br/>"
-                               "It turns <font color=\"red\">red</font> "
-                               "when you have flagged more cases than "
-                               "present mines.</qt>"));
-    left->setMaximumSize(QSize(16777215, 64));
-    top->addWidget(left);
-
     QSpacerItem *spacerItem = new QSpacerItem(21, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
     top->addItem(spacerItem);
 
@@ -213,12 +200,14 @@ void Status::settingsChanged()
 
 void Status::updateStatus(bool mine)
 {
-	int r = _field->nbMines() - _field->nbMarked();
-    QColor color = (r<0 && !_field->isSolved() ? Qt::red : Qt::white);
-    left->setColor(color);
-	left->display(r);
+    //int r = _field->nbMines() - _field->nbMarked();
+    //QColor color = (r<0 && !_field->isSolved() ? Qt::red : Qt::white);
+    QString minesStatus = i18n("Marked: %1/%2 ",
+		 QString().sprintf("%d", _field->nbMarked()),
+		 QString().sprintf("%d", _field->nbMines() ));
+    emit displayMinesLeft(minesStatus);
 
-	if ( _field->isSolved() && !mine )
+    if ( _field->isSolved() && !mine )
         gameStateChanged(GameOver, true); // ends only for wins
 }
 
