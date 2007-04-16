@@ -354,12 +354,6 @@ void Status::solvingDone(bool success)
     if ( !success ) gameStateChanged(GameOver, false);
 }
 
-void Status::solveRate()
-{
-    SolvingRateDialog sd(*_field, this);
-    sd.exec();
-}
-
 void Status::viewLog()
 {
     KDialog d(this);
