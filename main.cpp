@@ -133,11 +133,9 @@ MainWidget::MainWidget( QWidget* parent)
     setupGUI( KMainWindow::Save | Create );
     readSettings();
     setCentralWidget(_status);
-    //TODO: previously required by KZoomMainWindow, do we keep it? 
-    //init("popup");
+
     // we want to receive RMB event's on field rather than context menu
     _status->field()->setContextMenuPolicy(Qt::PreventContextMenu);
-    //addZoomable(_status->field());
 }
 
 bool MainWidget::queryExit()
@@ -220,28 +218,6 @@ void MainWidget::pause()
 {
     _pause->trigger();
 }
-
-/*void MainWidget::writeZoomSetting(uint zoom)
-{
-  Settings::setCaseSize(zoom);
-  Settings::writeConfig();
-}
-
-uint MainWidget::readZoomSetting() const
-{
-  return Settings::caseSize();
-}
-
-void MainWidget::writeMenubarVisibleSetting(bool visible)
-{
-  Settings::setMenubarVisible(visible);
-  Settings::writeConfig();
-}
-
-bool MainWidget::menubarVisibleSetting() const
-{
-  return Settings::menubarVisible();
-}*/
 
 //----------------------------------------------------------------------------
 static const char *DESCRIPTION
