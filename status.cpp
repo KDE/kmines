@@ -354,21 +354,6 @@ void Status::solvingDone(bool success)
     if ( !success ) gameStateChanged(GameOver, false);
 }
 
-void Status::viewLog()
-{
-    KDialog d(this);
-    d.setButtons(KDialog::Close);
-    d.setDefaultButton(KDialog::Close);
-    d.setCaption(i18n("View Game Log"));
-    d.setModal(true);
-    QTextEdit *view = new QTextEdit(&d);
-    view->setReadOnly(true);
-    view->append(_log.toString());
-    d.setMainWidget(view);
-    d.resize(500, 400);
-    d.exec();
-}
-
 void Status::saveLog()
 {
     KUrl url = KFileDialog::getSaveUrl( KUrl(), QString(), this);

@@ -115,11 +115,6 @@ MainWidget::MainWidget( QWidget* parent)
     _solve = KStandardGameAction::solve(_status, SLOT(solve()), actionCollection());
 
     // Log
-    QAction* logAct = actionCollection()->addAction( "log_view" );
-    logAct->setIcon( KIcon("zoom-original") );
-    logAct->setText( i18n("View Log") );
-    connect(logAct, SIGNAL(triggered(bool)), _status, SLOT(viewLog()));
-
     QAction* replayAct = actionCollection()->addAction( "log_replay" );
     replayAct->setIcon( KIcon("media-playback-start") );
     replayAct->setText( i18n("Replay Log") );

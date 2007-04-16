@@ -4,8 +4,7 @@
 
 <MenuBar>
   <Menu name="move"><text>&amp;Move</text>
-    <Action name="log_view" />
-	<Action name="log_replay" />
+    <Action name="log_replay" />
     <Action name="log_save" />
     <Action name="log_load" />
   </Menu>
@@ -27,7 +26,6 @@
   <enable>
     <Action name="move_hint" />
     <Action name="move_solve" />
-    <Action name="log_view" />
     <Action name="log_replay" />
     <Action name="log_load" />
     <Action name="log_save" />
@@ -38,7 +36,6 @@
 </State>
 <State name="gameover">
   <enable>
-    <Action name="log_view" />
     <Action name="log_replay" />
     <Action name="log_load" />
     <Action name="log_save" />
@@ -56,7 +53,6 @@
     <Action name="game_pause" />
   </enable>
   <disable>
-    <Action name="log_view" />
     <Action name="log_replay" />
     <Action name="log_load" />
     <Action name="log_save" />
@@ -73,7 +69,6 @@
     <Action name="move_hint" />
     <Action name="move_solve" />
     <Action name="game_pause" />
-    <Action name="log_view" />
     <Action name="log_replay" />
     <Action name="log_load" />
     <Action name="log_save" />
@@ -87,7 +82,6 @@
   </enable>
   <disable>
     <Action name="game_pause" />
-    <Action name="log_view" />
     <Action name="log_replay" />
     <Action name="log_save" />
   </disable>
