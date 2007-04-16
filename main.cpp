@@ -20,7 +20,7 @@
 #include "main.moc"
 
 #include <QFocusEvent>
-
+#include <QLabel>
 
 #include <kapplication.h>
 #include <klocale.h>
@@ -37,6 +37,7 @@
 #include <khighscore.h>
 #include <kconfigdialog.h>
 #include <kicon.h>
+#include <kstatusbar.h>
 
 #include "settings.h"
 #include "status.h"
@@ -67,7 +68,9 @@ MainWidget::MainWidget( QWidget* parent)
     connect(_status, SIGNAL(gameStateChangedSignal(KMines::GameState)),
             SLOT(gameStateChanged(KMines::GameState)));
     connect(_status, SIGNAL(pause()), SLOT(pause()));
+    connect(_status, SIGNAL(displayMinesLeft(QString &)), SLOT(displayMinesLeft(QString &)));
 
+    setupStatusBar();
     QAction *action;
 
 	// Game & Popup
@@ -217,6 +220,22 @@ void MainWidget::gameStateChanged(KMines::GameState state)
 void MainWidget::pause()
 {
     _pause->trigger();
+}
+
+void MainWidget::setupStatusBar()
+{
+    minesLeftLabel= new QLabel(i18n("Marked: 0/?"), statusBar());
+    minesLeftLabel->setFrameStyle( QFrame::Panel | QFrame::Sunken );
+    statusBar()->addWidget(minesLeftLabel, 1);
+
+    gameTimerLabel = new QLabel(i18n("Time: 0:00:00"), statusBar());
+    gameTimerLabel->setFrameStyle( QFrame::Panel | QFrame::Sunken );
+    statusBar()->addWidget(gameTimerLabel);
+}
+
+void MainWidget::displayMinesLeft(QString & minesLeft)
+{
+    minesLeftLabel->setText(minesLeft);
 }
 
 //----------------------------------------------------------------------------

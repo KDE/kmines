@@ -46,6 +46,7 @@ class Status : public QWidget, public KMines
  signals:
     void pause();
     void gameStateChangedSignal(KMines::GameState);
+    void displayMinesLeft(QString &);
 
  public slots:
     void newGame(int type);
@@ -89,7 +90,6 @@ class Status : public QWidget, public KMines
     QStackedWidget *_stack;
 
     Smiley       *smiley;
-    KGameLCD     *left;
     DigitalClock *dg;
     Solver       *_solver;
 
