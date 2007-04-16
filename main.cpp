@@ -60,7 +60,7 @@ const MainWidget::KeyData MainWidget::KEY_DATA[NB_KEYS] = {
 
 
 MainWidget::MainWidget( QWidget* parent)
-    : KMainWindow(parent)
+    : KXmlGuiWindow(parent)
 {
 
     _status = new Status(this);
@@ -130,7 +130,7 @@ MainWidget::MainWidget( QWidget* parent)
     loadAct->setText( i18n("Load Log...") );
     connect(loadAct, SIGNAL(triggered(bool)), _status, SLOT(loadLog()));
 
-    setupGUI( KMainWindow::Save | Create );
+    setupGUI( KXmlGuiWindow::Save | Create );
     readSettings();
     setCentralWidget(_status);
 
@@ -141,7 +141,7 @@ MainWidget::MainWidget( QWidget* parent)
 bool MainWidget::queryExit()
 {
     _status->checkBlackMark();
-    return KMainWindow::queryExit();
+    return KXmlGuiWindow::queryExit();
 }
 
 void MainWidget::readSettings()
@@ -161,7 +161,7 @@ void MainWidget::focusOutEvent(QFocusEvent *e)
 {
     if ( Settings::pauseFocus() && e->reason()==Qt::ActiveWindowFocusReason
           && _status->isPlaying() ) pause();
-    KMainWindow::focusOutEvent(e);
+    KXmlGuiWindow::focusOutEvent(e);
 }
 
 void MainWidget::configureSettings()
