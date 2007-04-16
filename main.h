@@ -19,7 +19,7 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include <kmainwindow.h>
+#include <kxmlguiwindow.h>
 
 #include "defines.h"
 
@@ -28,7 +28,7 @@ class KToggleAction;
 class KSelectAction;
 class Status;
 
-class MainWidget : public KMainWindow, public KMines
+class MainWidget : public KXmlGuiWindow, public KMines
 {
  Q_OBJECT
  public:
