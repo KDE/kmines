@@ -22,7 +22,6 @@
 #include <QPushButton>
 
 #include <kgameclock.h>
-#include <kexthighscore.h>
 
 #include "defines.h"
 #include "settings.h"
@@ -58,7 +57,7 @@ class DigitalClock : public KGameClock
 
     bool cheating() const { return _cheating; }
     uint nbActions() const { return _nbActions; }
-    KExtHighscore::Score score() const;
+  //    KExtHighscore::Score score() const;
 
  public slots:
     void start();
@@ -69,7 +68,7 @@ class DigitalClock : public KGameClock
     void timeoutClock();
 
  private:
-    KExtHighscore::Score _first, _last;
+    //KExtHighscore::Score _first, _last;
     uint _nbActions;
     bool _cheating, _customGame;
 };

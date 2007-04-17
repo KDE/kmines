@@ -37,7 +37,7 @@
 #include <kfiledialog.h>
 #include <ktemporaryfile.h>
 #include <kio/netaccess.h>
-#include <kexthighscore.h>
+#include <KScoreDialog>
 #include <knotification.h>
 
 #include "settings.h"
@@ -162,8 +162,8 @@ void Status::newGame(int t)
 void Status::newGame(const Level &level)
 {
 	_timer->stop();
-    if ( level.type()!=Level::Custom )
-        KExtHighscore::setGameType(level.type());
+    /*if ( level.type()!=Level::Custom )
+        KExtHighscore::setGameType(level.type());*/
     _field->setLevel(level);
     //Recalculate metrics for new game
     _field->adjustCaseSize(size());
@@ -172,7 +172,7 @@ void Status::newGame(const Level &level)
 bool Status::checkBlackMark()
 {
     bool bm = ( _field->gameState()==Playing );
-    if (bm) KExtHighscore::submitScore(KExtHighscore::Lost, this);
+    //if (bm) KExtHighscore::submitScore(KExtHighscore::Lost, this);
     return bm;
 }
 
@@ -220,11 +220,31 @@ void Status::setGameOver(bool won)
 
     _field->setGameOver();
     dg->pause();
-    if ( _field->level().type()!=Level::Custom && !dg->cheating() ) {
+    /*FIXME if ( _field->level().type()!=Level::Custom && !dg->cheating() ) {
         if (won) KExtHighscore::submitScore(dg->score(), this);
         else KExtHighscore::submitScore(KExtHighscore::Lost, this);
+    }*/
+    KScoreDialog ksdialog(KScoreDialog::Name | KScoreDialog::Score, this);
+    switch(Settings::level())
+    {
+        case Level::Easy :
+            ksdialog.setConfigGroup("Easy");
+            break;
+        case Level::Normal :
+            ksdialog.setConfigGroup("Normal");
+            break;
+        case Level::Expert :
+            ksdialog.setConfigGroup("Expert");
+            break;
+        case Level::Custom :
+            ksdialog.setConfigGroup("Custom");
+            break;
     }
-
+    //dg->_nbActions submitted as well?
+    if (won) {
+        if(ksdialog.addScore(3600 - dg->seconds(), KScoreDialog::FieldInfo(), KScoreDialog::AskName))
+              ksdialog.exec();
+    }
     KNotification::event(won ? "won" : "lost",
                          won ? i18n("Game won!") : i18n("Game lost!"),QPixmap() , this);
 

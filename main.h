@@ -39,7 +39,6 @@ class MainWidget : public KXmlGuiWindow, public KMines
     void configureKeys();
     void configureSettings();
     void configureNotifications();
-    void configureHighscores();
     void gameStateChanged(KMines::GameState);
     void showHighscores();
     void settingsChanged();
