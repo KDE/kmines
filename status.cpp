@@ -242,7 +242,7 @@ void Status::setGameOver(bool won)
     }
     //dg->_nbActions submitted as well?
     if (won) {
-        if(ksdialog.addScore(3600 - dg->seconds(), KScoreDialog::FieldInfo(), KScoreDialog::AskName))
+        if(ksdialog.addScore(3600 - dg->seconds(), KScoreDialog::AskName))
               ksdialog.exec();
     }
     KNotification::event(won ? "won" : "lost",
