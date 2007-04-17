@@ -46,7 +46,8 @@ class Status : public QWidget, public KMines
  signals:
     void pause();
     void gameStateChangedSignal(KMines::GameState);
-    void displayMinesLeft(QString &);
+    void displayMinesLeft(const QString &);
+    void displayTime(const QString &);
 
  public slots:
     void newGame(int type);
@@ -78,6 +79,7 @@ class Status : public QWidget, public KMines
     void gameStateChangedSlot(GameState state)
         { gameStateChanged(state, false); }
     void smileyClicked();
+    void timeChanged(const QString &);
     void solvingDone(bool success);
     void replayStep();
 

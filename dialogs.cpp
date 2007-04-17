@@ -69,13 +69,13 @@ void Smiley::setMood(Mood mood)
 
 //-----------------------------------------------------------------------------
 DigitalClock::DigitalClock(QWidget *parent)
-: KGameLCDClock(parent)
+: KGameClock(parent, KGameClock::MinSecOnly)
 {
-    setFrameStyle(Panel | Sunken);
+    //setFrameStyle(Panel | Sunken);
     //TODO DefaultBackground is broken, appears to be a QLCDNumber issue
     // It will be replaced anyway by nice SVG-based LCD digits soon...
     //setDefaultBackgroundColor(Qt::black);
-    setDefaultColor(Qt::white);
+    //setDefaultColor(Qt::white);
 }
 
 KExtHighscore::Score DigitalClock::score() const
@@ -88,18 +88,17 @@ KExtHighscore::Score DigitalClock::score() const
 
 void DigitalClock::timeoutClock()
 {
-    KGameLCDClock::timeoutClock();
-
-    if ( _cheating || _customGame ) setColor(Qt::white);
+    KGameClock::timeoutClock();
+    /*if ( _cheating || _customGame ) setColor(Qt::white);
     else if ( _first<score() ) setColor(Qt::red);
     else if ( _last<score() ) setColor(Qt::blue);
-    else setColor(Qt::white);
+    else setColor(Qt::white);*/
 }
 
 void DigitalClock::start()
 {
-    KGameLCDClock::start();
-    if ( !_cheating && !_customGame ) setColor(Qt::red);
+    KGameClock::resume();
+    //if ( !_cheating && !_customGame ) setColor(Qt::red);
 }
 
 void DigitalClock::reset(bool customGame)
@@ -111,14 +110,14 @@ void DigitalClock::reset(bool customGame)
         _last = KExtHighscore::lastScore();
     }
     _cheating = false;
-    KGameLCDClock::reset();
-    resetColor();
+    KGameClock::restart();
+    //resetColor();
 }
 
 void DigitalClock::setCheating()
 {
     _cheating = true;
-    setColor(Qt::white);
+    //setColor(Qt::white);
 }
 
 //-----------------------------------------------------------------------------

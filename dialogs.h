@@ -21,7 +21,7 @@
 
 #include <QPushButton>
 
-#include <kgamelcd.h>
+#include <kgameclock.h>
 #include <kexthighscore.h>
 
 #include "defines.h"
@@ -48,7 +48,7 @@ class Smiley : public QPushButton, public KMines
 };
 
 //-----------------------------------------------------------------------------
-class DigitalClock : public KGameLCDClock
+class DigitalClock : public KGameClock
 {
  Q_OBJECT
  public:

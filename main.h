@@ -44,7 +44,8 @@ class MainWidget : public KXmlGuiWindow, public KMines
     void showHighscores();
     void settingsChanged();
     void pause();
-    void displayMinesLeft(QString &);
+    void displayMinesLeft(const QString &);
+    void displayTime(const QString &);
 
  protected:
     virtual void focusOutEvent(QFocusEvent *);

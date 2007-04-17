@@ -68,7 +68,8 @@ MainWidget::MainWidget( QWidget* parent)
     connect(_status, SIGNAL(gameStateChangedSignal(KMines::GameState)),
             SLOT(gameStateChanged(KMines::GameState)));
     connect(_status, SIGNAL(pause()), SLOT(pause()));
-    connect(_status, SIGNAL(displayMinesLeft(QString &)), SLOT(displayMinesLeft(QString &)));
+    connect(_status, SIGNAL(displayMinesLeft(const QString &)), SLOT(displayMinesLeft(const QString &)));
+    connect(_status, SIGNAL(displayTime(const QString &)), SLOT(displayTime(const QString &)));
 
     setupStatusBar();
     QAction *action;
@@ -224,18 +225,23 @@ void MainWidget::pause()
 
 void MainWidget::setupStatusBar()
 {
-    minesLeftLabel= new QLabel(i18n("Marked: 0/?"), statusBar());
+    minesLeftLabel= new QLabel(i18n("Marked: ")+"0/?", statusBar());
     minesLeftLabel->setFrameStyle( QFrame::Panel | QFrame::Sunken );
     statusBar()->addWidget(minesLeftLabel, 1);
 
-    gameTimerLabel = new QLabel(i18n("Time: 0:00:00"), statusBar());
+    gameTimerLabel = new QLabel(i18n("Time: ")+"00:00", statusBar());
     gameTimerLabel->setFrameStyle( QFrame::Panel | QFrame::Sunken );
     statusBar()->addWidget(gameTimerLabel);
 }
 
-void MainWidget::displayMinesLeft(QString & minesLeft)
+void MainWidget::displayMinesLeft(const QString & minesLeft)
 {
-    minesLeftLabel->setText(minesLeft);
+    minesLeftLabel->setText(i18n("Marked: ")+minesLeft);
+}
+
+void MainWidget::displayTime(const QString & timeString)
+{
+    gameTimerLabel->setText(i18n("Time: ")+timeString);
 }
 
 //----------------------------------------------------------------------------
