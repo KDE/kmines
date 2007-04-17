@@ -34,14 +34,13 @@
 #include <knotifyconfigwidget.h>
 #include <ktoggleaction.h>
 #include <kdebug.h>
-#include <khighscore.h>
+#include <KScoreDialog>
 #include <kconfigdialog.h>
 #include <kicon.h>
 #include <kstatusbar.h>
 
 #include "settings.h"
 #include "status.h"
-#include "highscores.h"
 #include "version.h"
 #include "dialogs.h"
 
@@ -102,8 +101,6 @@ MainWidget::MainWidget( QWidget* parent)
     actionCollection()->addAction(action->objectName(), action);
     action = KStandardAction::configureNotifications(this, SLOT(configureNotifications()), this);
     actionCollection()->addAction(action->objectName(), action);
-    action = KStandardGameAction::configureHighscores(this, SLOT(configureHighscores()), this);
-    actionCollection()->addAction(action->objectName(), action);
 
 	// Levels
     _levels = KStandardGameAction::chooseGameType(_status, SLOT(newGame(int)), actionCollection());
@@ -158,7 +155,23 @@ void MainWidget::readSettings()
 
 void MainWidget::showHighscores()
 {
-    KExtHighscore::show(this);
+    KScoreDialog ksdialog(KScoreDialog::Name | KScoreDialog::Score, this);
+    switch(Settings::level())
+    {
+        case Level::Easy :
+            ksdialog.setConfigGroup("Easy");
+            break;
+        case Level::Normal :
+            ksdialog.setConfigGroup("Normal");
+            break;
+        case Level::Expert :
+            ksdialog.setConfigGroup("Expert");
+            break;
+        case Level::Custom :
+            ksdialog.setConfigGroup("Custom");
+            break;
+    }
+    ksdialog.exec();
 }
 
 void MainWidget::focusOutEvent(QFocusEvent *e)
@@ -182,11 +195,6 @@ void MainWidget::configureSettings()
     dialog->show();
     cc->init();
     gc->init();
-}
-
-void MainWidget::configureHighscores()
-{
-    KExtHighscore::configure(this);
 }
 
 void MainWidget::settingsChanged()
@@ -250,8 +258,6 @@ static const char *DESCRIPTION
 
 int main(int argc, char **argv)
 {
-    KHighscore::init("kmines");
-
     KAboutData aboutData("kmines", I18N_NOOP("KMines"), LONG_VERSION,
 						 DESCRIPTION, KAboutData::License_GPL,
 						 COPYLEFT, 0, HOMEPAGE);
@@ -263,7 +269,6 @@ int main(int argc, char **argv)
 
     KApplication a;
     KGlobal::locale()->insertCatalog("libkdegames");
-    KExtHighscore::ExtManager manager;
 
     if ( a.isSessionRestored() ) RESTORE(MainWidget)
     else {

@@ -78,13 +78,13 @@ DigitalClock::DigitalClock(QWidget *parent)
     //setDefaultColor(Qt::white);
 }
 
-KExtHighscore::Score DigitalClock::score() const
+/*uint DigitalClock::score() const
 {
     KExtHighscore::Score score(KExtHighscore::Won);
     score.setScore(3600 - seconds());
     score.setData("nb_actions", _nbActions);
     return score;
-}
+}*/
 
 void DigitalClock::timeoutClock()
 {
@@ -105,10 +105,10 @@ void DigitalClock::reset(bool customGame)
 {
     _nbActions = 0;
     _customGame = customGame;
-    if ( !customGame ) {
+    /*if ( !customGame ) {
         _first = KExtHighscore::firstScore();
         _last = KExtHighscore::lastScore();
-    }
+    }*/
     _cheating = false;
     KGameClock::restart();
     //resetColor();
