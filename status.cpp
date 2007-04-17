@@ -91,13 +91,14 @@ Status::Status(QWidget *parent)
 
 	// digital clock LCD
 	dg = new DigitalClock(this);
-	dg->setWhatsThis( i18n("<qt>Time elapsed.<br/>"
+        connect(dg, SIGNAL(timeChanged(const QString &)), SLOT(timeChanged(const QString &)));
+	/*dg->setWhatsThis( i18n("<qt>Time elapsed.<br/>"
                              "It turns <font color=\"blue\">blue</font> "
                              "if it is a highscore "
                              "and <font color=\"red\">red</font> "
                              "if it is the best time.</qt>"));
         dg->setMaximumSize(QSize(16777215, 64));
-        top->addWidget(dg);
+        top->addWidget(dg);*/
 
     // mines field
     _fieldContainer = new QWidget;
@@ -202,9 +203,7 @@ void Status::updateStatus(bool mine)
 {
     //int r = _field->nbMines() - _field->nbMarked();
     //QColor color = (r<0 && !_field->isSolved() ? Qt::red : Qt::white);
-    QString minesStatus = i18n("Marked: %1/%2 ",
-		 QString().sprintf("%d", _field->nbMarked()),
-		 QString().sprintf("%d", _field->nbMines() ));
+    QString minesStatus = QString("%1/%2").arg(_field->nbMarked()).arg(_field->nbMines());
     emit displayMinesLeft(minesStatus);
 
     if ( _field->isSolved() && !mine )
@@ -220,7 +219,7 @@ void Status::setGameOver(bool won)
     if ( _field->gameState()==Replaying ) return;
 
     _field->setGameOver();
-    dg->stop();
+    dg->pause();
     if ( _field->level().type()!=Level::Custom && !dg->cheating() ) {
         if (won) KExtHighscore::submitScore(dg->score(), this);
         else KExtHighscore::submitScore(KExtHighscore::Lost, this);
@@ -275,6 +274,11 @@ void Status::setPlaying()
     _logRoot.appendChild(_logList);
 }
 
+void Status::timeChanged(const QString & timestring)
+{
+    emit displayTime(timestring);
+}
+
 void Status::gameStateChanged(GameState state, bool won)
 {
     QWidget *w = _fieldContainer;
@@ -288,7 +292,7 @@ void Status::gameStateChanged(GameState state, bool won)
         break;
     case Paused:
         smiley->setMood(Sleeping);
-        dg->stop();
+        dg->pause();
         w = _resumeContainer;
         break;
     case Stopped:
@@ -310,7 +314,7 @@ void Status::gameStateChanged(GameState state, bool won)
 void Status::addAction(const KGrid2D::Coord &c, Field::ActionType type)
 {
     QDomElement action = _log.createElement("Action");
-    action.setAttribute("time", dg->pretty());
+    action.setAttribute("time", dg->minSecString());
     action.setAttribute("column", c.first);
     action.setAttribute("line", c.second);
     action.setAttribute("type", Field::ACTION_DATA[type].name);
