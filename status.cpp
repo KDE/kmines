@@ -220,31 +220,27 @@ void Status::setGameOver(bool won)
 
     _field->setGameOver();
     dg->pause();
-    /*FIXME if ( _field->level().type()!=Level::Custom && !dg->cheating() ) {
-        if (won) KExtHighscore::submitScore(dg->score(), this);
-        else KExtHighscore::submitScore(KExtHighscore::Lost, this);
-    }*/
-    KScoreDialog ksdialog(KScoreDialog::Name | KScoreDialog::Score, this);
-    switch(Settings::level())
-    {
-        case Level::Easy :
-            ksdialog.setConfigGroup("Easy");
-            break;
-        case Level::Normal :
-            ksdialog.setConfigGroup("Normal");
-            break;
-        case Level::Expert :
-            ksdialog.setConfigGroup("Expert");
-            break;
-        case Level::Custom :
-            ksdialog.setConfigGroup("Custom");
-            break;
-    }
-    //dg->_nbActions submitted as well?
-    if (won) {
-        if(ksdialog.addScore(3600 - dg->seconds(), KScoreDialog::AskName))
+
+    if ( _field->level().type()!=Level::Custom && !dg->cheating() && won) {
+        KScoreDialog ksdialog(KScoreDialog::Name | KScoreDialog::Time, this);
+        switch(Settings::level())
+        {
+            case Level::Easy :
+                ksdialog.setConfigGroup("Easy");
+                break;
+            case Level::Normal :
+                ksdialog.setConfigGroup("Normal");
+                break;
+            case Level::Expert :
+                ksdialog.setConfigGroup("Expert");
+                break;
+        }
+        KScoreDialog::FieldInfo scoreInfo;
+        scoreInfo[KScoreDialog::Time] = dg->minSecString();
+        if(ksdialog.addScore( scoreInfo, KScoreDialog::AskName | KScoreDialog::LessIsMore))
               ksdialog.exec();
     }
+   
     KNotification::event(won ? "won" : "lost",
                          won ? i18n("Game won!") : i18n("Game lost!"),QPixmap() , this);
 

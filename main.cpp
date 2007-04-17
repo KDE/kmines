@@ -155,7 +155,7 @@ void MainWidget::readSettings()
 
 void MainWidget::showHighscores()
 {
-    KScoreDialog ksdialog(KScoreDialog::Name | KScoreDialog::Score, this);
+    KScoreDialog ksdialog(KScoreDialog::Name | KScoreDialog::Time, this);
     switch(Settings::level())
     {
         case Level::Easy :
@@ -166,9 +166,6 @@ void MainWidget::showHighscores()
             break;
         case Level::Expert :
             ksdialog.setConfigGroup("Expert");
-            break;
-        case Level::Custom :
-            ksdialog.setConfigGroup("Custom");
             break;
     }
     ksdialog.exec();
