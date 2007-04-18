@@ -236,7 +236,7 @@ void Status::setGameOver(bool won)
                 break;
         }
         KScoreDialog::FieldInfo scoreInfo;
-        scoreInfo[KScoreDialog::Time] = dg->minSecString();
+        scoreInfo[KScoreDialog::Time] = dg->timeString();
         if(ksdialog.addScore( scoreInfo, KScoreDialog::AskName | KScoreDialog::LessIsMore))
               ksdialog.exec();
     }
@@ -330,7 +330,7 @@ void Status::gameStateChanged(GameState state, bool won)
 void Status::addAction(const KGrid2D::Coord &c, Field::ActionType type)
 {
     QDomElement action = _log.createElement("Action");
-    action.setAttribute("time", dg->minSecString());
+    action.setAttribute("time", dg->timeString());
     action.setAttribute("column", c.first);
     action.setAttribute("line", c.second);
     action.setAttribute("type", Field::ACTION_DATA[type].name);
