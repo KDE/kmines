@@ -4,7 +4,7 @@ Comment=KMines
 Comment[x-test]=xxKMinesxx
 
 [Event/reveal]
-Name=Reveal case
+Name=Reveal Case
 Name[fr]=Révéler la case
 Name[x-test]=xxReveal casexx
 Comment=Reveal case
@@ -13,7 +13,7 @@ Comment[x-test]=xxReveal casexx
 Action=None
 
 [Event/autoreveal]
-Name=Autoreveal case
+Name=Autoreveal Case
 Name[fr]=Révéler automatiquement la case
 Name[x-test]=xxAutoreveal casexx
 Comment=Autoreveal case
@@ -22,7 +22,7 @@ Comment[x-test]=xxAutoreveal casexx
 Action=None
 
 [Event/mark]
-Name=Mark case
+Name=Mark Case
 Name[fr]=Marquer la case
 Name[x-test]=xxMark casexx
 Comment=Mark case
@@ -31,7 +31,7 @@ Comment[x-test]=xxMark casexx
 Action=None
 
 [Event/unmark]
-Name=Unmark case
+Name=Unmark Case
 Name[fr]=Ne plus marquer la case
 Name[x-test]=xxUnmark casexx
 Comment=Unmark case
@@ -47,7 +47,7 @@ Comment[x-test]=xxExplosionxx
 Action=None
 
 [Event/won]
-Name=Game won
+Name=Game Won
 Name[fr]=Partie gagnée
 Name[x-test]=xxGame wonxx
 Comment=Game won
@@ -56,7 +56,7 @@ Comment[x-test]=xxGame wonxx
 Action=None
 
 [Event/lost]
-Name=Game lost
+Name=Game Lost
 Name[fr]=Partie perdue
 Name[x-test]=xxGame lostxx
 Comment=Game lost
@@ -65,7 +65,7 @@ Comment[x-test]=xxGame lostxx
 Action=None
 
 [Event/set_uncertain]
-Name=Set question mark
+Name=Set Question Mark
 Name[fr]=Ajout d'un point d'interrogation
 Name[x-test]=xxSet question markxx
 Comment=Set question mark
@@ -74,7 +74,7 @@ Comment[x-test]=xxSet question markxx
 Action=None
 
 [Event/unset_uncertain]
-Name=Unset question mark
+Name=Unset Question Mark
 Name[fr]=Retrait d'un point d'interrogation
 Name[x-test]=xxUnset question markxx
 Comment=Unset question mark
