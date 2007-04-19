@@ -168,6 +168,7 @@ void MainWidget::showHighscores()
             ksdialog.setConfigGroup("Expert");
             break;
     }
+    ksdialog.hideField(KScoreDialog::Score);
     ksdialog.exec();
 }
 

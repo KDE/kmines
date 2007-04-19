@@ -236,6 +236,8 @@ void Status::setGameOver(bool won)
                 break;
         }
         KScoreDialog::FieldInfo scoreInfo;
+        scoreInfo[KScoreDialog::Score].setNum(42);
+        ksdialog.hideField(KScoreDialog::Score);
         scoreInfo[KScoreDialog::Time] = dg->timeString();
         if(ksdialog.addScore( scoreInfo, KScoreDialog::AskName | KScoreDialog::LessIsMore))
               ksdialog.exec();
