@@ -64,7 +64,7 @@ void Field::readSettings()
     if ( inside(_cursor) ) {
         update( toRect(_cursor) );
     }
-    if ( Settings::magicReveal() ) emit setCheating();
+    if ( Settings::magicReveal() ) setCheating(true);
 }
 
 QSize Field::minimumSize() const
@@ -137,7 +137,7 @@ void Field::reset(bool init)
     BaseField::reset(_level.width(), _level.height(), _level.nbMines());
     if ( init || _state==Init ) setState(Init);
     else setState(Stopped);
-    if (Settings::magicReveal()) emit setCheating();
+    if (Settings::magicReveal()) setCheating(true);
     _currentAction = Settings::EnumMouseAction::None;
     _reveal = false;
     _cursor.first = _level.width()/2;
