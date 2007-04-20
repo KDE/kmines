@@ -38,6 +38,7 @@
 #include <ktemporaryfile.h>
 #include <kio/netaccess.h>
 #include <KScoreDialog>
+#include <kgameclock.h>
 #include <knotification.h>
 
 #include "settings.h"
@@ -89,16 +90,9 @@ Status::Status(QWidget *parent)
     QSpacerItem *spacerItem1 = new QSpacerItem(21, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
     top->addItem(spacerItem1);
 
-	// digital clock LCD
-	dg = new DigitalClock(this);
-        connect(dg, SIGNAL(timeChanged(const QString &)), SLOT(timeChanged(const QString &)));
-	/*dg->setWhatsThis( i18n("<qt>Time elapsed.<br/>"
-                             "It turns <font color=\"blue\">blue</font> "
-                             "if it is a highscore "
-                             "and <font color=\"red\">red</font> "
-                             "if it is the best time.</qt>"));
-        dg->setMaximumSize(QSize(16777215, 64));
-        top->addWidget(dg);*/
+    // Game clock
+    dg = new KGameClock(this, KGameClock::MinSecOnly);
+    connect(dg, SIGNAL(timeChanged(const QString &)), SLOT(timeChanged(const QString &)));
 
     // mines field
     _fieldContainer = new QWidget;
@@ -112,7 +106,6 @@ Status::Status(QWidget *parent)
 	connect(_field, SIGNAL(gameStateChanged(GameState)),
 			SLOT(gameStateChangedSlot(GameState)) );
     connect(_field, SIGNAL(setMood(Mood)), smiley, SLOT(setMood(Mood)));
-    connect(_field, SIGNAL(setCheating()), dg, SLOT(setCheating()));
     connect(_field,SIGNAL(addAction(const KGrid2D::Coord &, Field::ActionType)),
             SLOT(addAction(const KGrid2D::Coord &, Field::ActionType)));
 	_field->setWhatsThis( i18n("Mines field."));
@@ -221,7 +214,7 @@ void Status::setGameOver(bool won)
     _field->setGameOver();
     dg->pause();
 
-    if ( _field->level().type()!=Level::Custom && !dg->cheating() && won) {
+    if ( _field->level().type()!=Level::Custom && !_field->cheating() && won) {
         KScoreDialog ksdialog(KScoreDialog::Name | KScoreDialog::Time, this);
         switch(Settings::level())
         {
@@ -247,7 +240,7 @@ void Status::setGameOver(bool won)
                          won ? i18n("Game won!") : i18n("Game lost!"),QPixmap() , this);
 
     // game log
-    _logRoot.setAttribute("count", dg->nbActions());
+    _logRoot.setAttribute("count", _field->nbActions());
 
     if ( Settings::magicReveal() )
         _logRoot.setAttribute("complete_reveal", "true");
@@ -266,15 +259,18 @@ void Status::setStopped()
 {
     smiley->setMood(Normal);
     updateStatus(false);
-    bool custom = ( _field->level().type()==Level::Custom );
-    dg->reset(custom);
-	_field->setSolvingState(Regular);
+    //bool custom = ( _field->level().type()==Level::Custom );
+    //dg->reset(custom);
+    _field->setCheating(false);
+    _field->resetNbAction();
+    _field->setSolvingState(Regular);
+    dg->restart();
 }
 
 void Status::setPlaying()
 {
     smiley->setMood(Normal);
-    dg->start();
+    dg->resume();
     if ( _field->gameState()==Paused ) return; // do not restart game log...
 
     // game log
@@ -337,7 +333,7 @@ void Status::addAction(const KGrid2D::Coord &c, Field::ActionType type)
     action.setAttribute("line", c.second);
     action.setAttribute("type", Field::ACTION_DATA[type].name);
     _logList.appendChild(action);
-    dg->addAction();
+    _field->addNbAction();
 }
 
 void Status::advise()
@@ -347,7 +343,7 @@ void Status::advise()
                "you advice, your score will not be added to the highscores."),
                 QString(), KStandardGuiItem::cont(), KStandardGuiItem::cancel(), "advice_warning");
     if ( res==KMessageBox::Cancel ) return;
-    dg->setCheating();
+    _field->setCheating(true);
     float probability;
     KGrid2D::Coord c = _solver->advise(*_field, probability);
     _field->setAdvised(c, probability);
@@ -355,7 +351,7 @@ void Status::advise()
 
 void Status::solve()
 {
-    dg->setCheating();
+    _field->setCheating(true);
     _solver->solve(*_field, false);
 	_field->setSolvingState(Solved);
 }

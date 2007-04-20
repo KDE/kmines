@@ -24,8 +24,7 @@
 #include "field.h"
 
 class Smiley;
-class KGameLCD;
-class DigitalClock;
+class KGameClock;
 class Solver;
 class QStackedWidget;
 class QTimer;
@@ -92,7 +91,7 @@ class Status : public QWidget, public KMines
     QStackedWidget *_stack;
 
     Smiley       *smiley;
-    DigitalClock *dg;
+    KGameClock   *dg;
     Solver       *_solver;
 
     QDomDocument  _log;

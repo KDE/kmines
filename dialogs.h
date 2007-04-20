@@ -47,33 +47,6 @@ class Smiley : public QPushButton, public KMines
 };
 
 //-----------------------------------------------------------------------------
-class DigitalClock : public KGameClock
-{
- Q_OBJECT
- public:
-    DigitalClock(QWidget *parent);
-
-    void reset(bool customGame);
-
-    bool cheating() const { return _cheating; }
-    uint nbActions() const { return _nbActions; }
-  //    KExtHighscore::Score score() const;
-
- public slots:
-    void start();
-    void setCheating();
-    void addAction() { _nbActions++; }
-
- private slots:
-    void timeoutClock();
-
- private:
-    //KExtHighscore::Score _first, _last;
-    uint _nbActions;
-    bool _cheating, _customGame;
-};
-
-//-----------------------------------------------------------------------------
 class CustomConfig : public QWidget, public KMines
 {
  Q_OBJECT

@@ -73,12 +73,18 @@ class Field : public QWidget, public BaseField
     SolvingState solvingState() const { return _solvingState; }
 
     void adjustCaseSize(const QSize & boardsize);
+    
+    //Moved from old digital clock class
+    bool cheating() const { return _cheating; }
+    uint nbActions() const { return _nbActions; }
+    void setCheating(bool cheatState) { _cheating = cheatState; }
+    void resetNbAction() { _nbActions=0; }
+    void addNbAction() { _nbActions++; }
 	
  signals:
     void updateStatus(bool);
     void gameStateChanged(GameState);
     void setMood(Mood);
-    void setCheating();
     void addAction(const KGrid2D::Coord &, Field::ActionType);
 
  protected:
@@ -108,6 +114,10 @@ class Field : public QWidget, public BaseField
     QPixmap        _pixmaps[Nb_Pixmap_Types];
     QPixmap        _advised[Nb_Advised];
     KSvgRenderer svg;
+
+    //previously in digital clock
+    uint _nbActions;
+    bool _cheating;
 
     void drawPixmap(QPixmap &, PixmapType, bool mask);
     void drawAdvised(QPixmap &, uint i, bool mask) ;
