@@ -38,6 +38,7 @@
 #include <kconfigdialog.h>
 #include <kicon.h>
 #include <kstatusbar.h>
+#include <kselectaction.h>
 
 #include "settings.h"
 #include "status.h"
