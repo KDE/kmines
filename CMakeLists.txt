@@ -20,12 +20,16 @@ include_directories( ${CMAKE_SOURCE_DIR}/libkdegames ${CMAKE_SOURCE_DIR}/libkdeg
 
 set(kmines_SRCS ${libsolver_SRCS}
    defines.cpp 
-   dialogs.cpp  
+   dialogs.cpp 
+   kminestheme.cpp
+   kminesthemeselector.cpp
    field.cpp 
    status.cpp 
    main.cpp )
 
 kde4_automoc(${kmines_SRCS})
+
+kde4_add_ui_files(kmines_SRCS kminesthemeselector.ui )
 
 kde4_add_kcfg_files(kmines_SRCS settings.kcfgc )
 

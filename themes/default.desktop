@@ -1,0 +1,9 @@
+[KMinesTheme]
+Name=Default
+Description=KMines Oxygen theme for KDE 4
+VersionFormat=1
+Author=Mark Taff
+AuthorEmail=mark@marktaff.com
+Type=SVG
+FileName=kmines_oxygen.svgz
+Preview=default_preview.png

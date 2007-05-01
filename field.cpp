@@ -51,16 +51,15 @@ Field::Field(QWidget *parent)
     : QWidget(parent), _state(Init), _solvingState(Regular), _level(Level::Easy)
 {
     borderSize = 0; //Settings::caseSize();
-
-    QString themePath = KStandardDirs::locate("appdata", QString("themes/kmines_oxygen.svgz"));
-    if (themePath.isNull()) {
-        qDebug () << "theme svg not found!!!";
-    };
-    svg.load(themePath);
+    theme.loadDefault();
 }
 
 void Field::readSettings()
 {
+    if (theme.load(Settings::theme())) {
+        svg.load(theme.graphics());
+        adjustSize();
+    }
     if ( inside(_cursor) ) {
         update( toRect(_cursor) );
     }

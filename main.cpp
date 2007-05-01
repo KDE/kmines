@@ -44,6 +44,7 @@
 #include "status.h"
 #include "version.h"
 #include "dialogs.h"
+#include "kminesthemeselector.h"
 
 const MainWidget::KeyData MainWidget::KEY_DATA[NB_KEYS] = {
 {I18N_NOOP("Move Up"),     "keyboard_moveup",    Qt::Key_Up,    SLOT(moveUp())},
@@ -187,9 +188,11 @@ void MainWidget::configureSettings()
     KConfigDialog *dialog = new KConfigDialog(this, "settings", Settings::self());
     GameConfig *gc = new GameConfig;
     dialog->addPage(gc, i18n("Game"), "package_system");
-    dialog->addPage(new AppearanceConfig, i18n("Appearance"), "style");
+    //TODO: remove old appearance classes
+    //dialog->addPage(new AppearanceConfig, i18n("Appearance"), "style");
     CustomConfig *cc = new CustomConfig;
     dialog->addPage(cc, i18n("Custom Game"), "package_settings");
+    dialog->addPage(new KMinesThemeSelector(dialog, Settings::self()), i18n("Theme"), "game_theme");
     connect(dialog, SIGNAL(settingsChanged(const QString &)), SLOT(settingsChanged()));
     dialog->show();
     cc->init();
