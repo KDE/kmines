@@ -4,6 +4,11 @@
       xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
   <kcfgfile name="kminesrc"/>
+  <group name="General">
+    <entry name="Theme" type="String" key="Theme">
+      <label>The graphical theme to be used.</label>
+    </entry>
+  </group>
   <group name="Options">
     <entry name="CaseSize" type="Int" key="case size">
       <label>The size of a square.</label>

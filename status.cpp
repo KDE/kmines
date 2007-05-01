@@ -184,6 +184,7 @@ void Status::restartGame()
 void Status::settingsChanged()
 {
     _field->readSettings();
+    smiley->readSettings();
 
     if ( Settings::level()!=Level::Custom ) return;
     Level l = Settings::customLevel();

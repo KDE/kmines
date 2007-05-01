@@ -1,0 +1,9 @@
+[KMinesTheme]
+Name=Classic
+Description=Classic theme for KMines
+VersionFormat=1
+Author=Mauricio Piacentini
+AuthorEmail=mauricio@tabuleiro.com
+Type=SVG
+FileName=kmines_classic.svgz
+Preview=classic_preview.png
