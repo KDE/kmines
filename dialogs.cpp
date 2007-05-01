@@ -51,9 +51,10 @@ Smiley::Smiley(QWidget *parent)
 
 void Smiley::readSettings()
 {
-  if (theme.load(Settings::theme())) {
-    svg.load(theme.graphics());
+  if (!theme.load(Settings::theme())) {
+    theme.loadDefault();
   }
+  svg.load(theme.graphics());
 }
 
 void Smiley::setMood(Mood mood)
