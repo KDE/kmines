@@ -56,10 +56,11 @@ Field::Field(QWidget *parent)
 
 void Field::readSettings()
 {
-    if (theme.load(Settings::theme())) {
-        svg.load(theme.graphics());
-        adjustSize();
+    if (!theme.load(Settings::theme())) {
+        theme.loadDefault();
     }
+    svg.load(theme.graphics());
+    adjustSize();
     if ( inside(_cursor) ) {
         update( toRect(_cursor) );
     }
