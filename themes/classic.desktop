@@ -1,5 +1,10 @@
 [KMinesTheme]
 Name=Classic
+Name[be]=Класічны
+Name[el]=Κλασσικό
+Name[sv]=Klassisk
+Name[uk]=Класичні
+Name[x-test]=xxClassicxx
 Description=Classic theme for KMines
 VersionFormat=1
 Author=Mauricio Piacentini

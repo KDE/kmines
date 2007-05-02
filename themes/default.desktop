@@ -1,5 +1,11 @@
 [KMinesTheme]
 Name=Default
+Name[be]=Прадвызначаны
+Name[el]=Προκαθορισμένο
+Name[ga]=Réamhshocrú
+Name[sv]=Förval
+Name[uk]=Типові
+Name[x-test]=xxDefaultxx
 Description=KMines Oxygen theme for KDE 4
 VersionFormat=1
 Author=Mark Taff
