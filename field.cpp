@@ -60,17 +60,17 @@ void Field::readSettings()
         theme.loadDefault();
     }
     svg.load(theme.graphics());
-    adjustSize();
+    updatePixmaps();
     if ( inside(_cursor) ) {
         update( toRect(_cursor) );
     }
     if ( Settings::magicReveal() ) setCheating(true);
 }
 
-QSize Field::minimumSize() const
+QSize Field::minimumSizeHint() const
 {
-  return QSize( (_level.width()+2)*16,
-               (_level.height()+2)*16);
+  return QSize( (_level.width()+2)*20,
+               (_level.height()+2)*20);
 }
 
 QSize Field::sizeHint() const
@@ -79,6 +79,11 @@ QSize Field::sizeHint() const
                (_level.height()+0)*Settings::caseSize());
 }
 
+void Field::resizeEvent(QResizeEvent*)
+{
+    adjustCaseSize(QWidget::size());
+    qDebug() << "field resize event";
+}
 void Field::adjustCaseSize(const QSize & boardsize) 
 {
     //calculate our best case size to fit the boardsize passed to us
@@ -90,7 +95,7 @@ void Field::adjustCaseSize(const QSize & boardsize)
     //take this into account for now, this will change when these elements are migrated a proper status bar 
     //or to in-game elements, according to the theme
     qreal bw = boardsize.width();
-    qreal bh = boardsize.height() - 64.0;
+    qreal bh = boardsize.height();
 
     //use fixed size for calculation, adding borders. 
     qreal fullh = (16.0 * (_level.height()+0.0));
@@ -108,7 +113,7 @@ qDebug() << "Preferred case size is"<< newcase;
     
     Settings::setCaseSize((int) newcase);
     borderSize = 0;
-    adjustSize();
+    updatePixmaps();
     update();
 }
 
@@ -116,7 +121,7 @@ void Field::setLevel(const Level &level)
 {
     _level = level;
     reset(false);
-    adjustSize();
+    updatePixmaps();
 }
 
 void Field::setReplayField(const QString &field)
@@ -172,15 +177,23 @@ void Field::changeCase(const Coord &p, CaseState newState)
 
 QPoint Field::toPoint(const Coord &p) const
 {
+    // allow for the gap between the left side of the widget
+    // and the left-most case  
+    int gap = (rect().width() - sizeHint().width()) / 2;
+
     QPoint qp;
-    qp.setX( p.first*Settings::caseSize() + borderSize );
+    qp.setX( p.first*Settings::caseSize() + borderSize + gap );
     qp.setY( p.second*Settings::caseSize() + borderSize );
     return qp;
 }
 
 Coord Field::fromPoint(const QPoint &qp) const
 {
-    double i = (double)(qp.x() - borderSize ) / Settings::caseSize();
+    // allow for the gap between the left side of the widget
+    // and the left-most case
+    int gap = (rect().width() - sizeHint().width()) / 2;
+    
+    double i = (double)(qp.x() - borderSize - gap) / Settings::caseSize();
     double j = (double)(qp.y() - borderSize) / Settings::caseSize();
     return Coord((int)floor(i), (int)floor(j));
 }
@@ -544,12 +557,8 @@ void Field::drawCase(QPainter &painter, const Coord &c, bool pressed)
     drawBox(painter, toPoint(c), pressed, type, text, nbMines, i, hasFocus);
 }
 
-void Field::adjustSize()
+void Field::updatePixmaps()
 {
-    QWidget::resize(  QSize( (_level.width()+2)*Settings::caseSize(),
-               (_level.height()+2)*Settings::caseSize()) );
-    _button.resize(Settings::caseSize(), Settings::caseSize());
-
     QPixmap mask;
     for (uint i=0; i<Nb_Pixmap_Types; i++) {
         drawPixmap(_pixmaps[i], (PixmapType)i, true);
@@ -689,7 +698,7 @@ void Field::drawBox(QPainter &painter, const QPoint &p,
         painter.resetMatrix();
     }*/
 
-    QRect r(p, _button.size());
+    QRect r(p, QSize(Settings::caseSize(),Settings::caseSize()));
     if (pressed) {
         svg.render(&painter, "cell_down", r);
     } else {

@@ -44,7 +44,7 @@ class Field : public QWidget, public BaseField
     explicit Field(QWidget *parent);
 
     virtual QSize sizeHint() const;
-    virtual QSize minimumSize() const;
+    virtual QSize minimumSizeHint() const;
     //virtual void  zoomChanged() { adjustSize(); }
 
     void setLevel(const Level &level);
@@ -90,6 +90,7 @@ class Field : public QWidget, public BaseField
 
  protected:
     void paintEvent(QPaintEvent *);
+    void resizeEvent(QResizeEvent*);
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
@@ -104,14 +105,14 @@ class Field : public QWidget, public BaseField
     void drawBox(QPainter &, const QPoint &, bool pressed,
                  PixmapType, const QString &text,
                  uint nbMines, int advised, bool hasFocus) ;
-    virtual void adjustSize();//end frame
 
  private slots:
      void keyboardAutoRevealSlot();
 
  private:
+    void updatePixmaps();
+
 //was Frame
-    QPushButton    _button;
     QPixmap        _pixmaps[Nb_Pixmap_Types];
     QPixmap        _advised[Nb_Advised];
     KSvgRenderer svg;
