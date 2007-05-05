@@ -28,6 +28,7 @@
 #include <QTimer>
 #include <QGridLayout>
 #include <QTextStream>
+#include <QHBoxLayout>
 
 #include <klocale.h>
 #include <kconfig.h>
@@ -76,14 +77,15 @@ Status::Status(QWidget *parent)
 	connect(smiley, SIGNAL(clicked()), SLOT(smileyClicked()));
 	smiley->setFocusPolicy(Qt::NoFocus);
 	smiley->setWhatsThis( i18n("Press to start a new game"));
+    smiley->setIconSize( QSize(128,128) );
 
-        QSizePolicy sizePolicy(static_cast<QSizePolicy::Policy>(5), static_cast<QSizePolicy::Policy>(5));
+    /*    QSizePolicy sizePolicy(static_cast<QSizePolicy::Policy>(5), static_cast<QSizePolicy::Policy>(5));
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(smiley->sizePolicy().hasHeightForWidth());
         smiley->setSizePolicy(sizePolicy);
         smiley->setMinimumSize(QSize(32, 32));
-        smiley->setMaximumSize(QSize(64, 64));
+        smiley->setMaximumSize(QSize(64, 64)) */;
 
         top->addWidget(smiley);
 
@@ -96,12 +98,12 @@ Status::Status(QWidget *parent)
 
     // mines field
     _fieldContainer = new QWidget;
-    QGridLayout *g = new QGridLayout(_fieldContainer );
-    g->setSpacing(0);
-    g->setMargin(0);
+    
+    QHBoxLayout* fieldLayout = new QHBoxLayout(_fieldContainer);
     _field = new Field(_fieldContainer);
     _field->readSettings();
-    g->addWidget(_field, 0, 0, Qt::AlignCenter);
+    fieldLayout->addWidget(_field);
+
 	connect( _field, SIGNAL(updateStatus(bool)), SLOT(updateStatus(bool)) );
 	connect(_field, SIGNAL(gameStateChanged(GameState)),
 			SLOT(gameStateChangedSlot(GameState)) );
@@ -128,13 +130,14 @@ Status::Status(QWidget *parent)
     _stack->addWidget(_resumeContainer);
     _stack->setCurrentWidget(_fieldContainer);
 
+    //_stack->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding));
+
     gridLayout->addWidget(_stack, 1, 0, 1, 1);
     gridLayout->addLayout(top, 0, 0, 1, 1);
 }
 
 void Status::resizeEvent ( QResizeEvent * event )
 {
-   _field->adjustCaseSize(event->size());
 }
 
 void Status::smileyClicked()
@@ -158,8 +161,6 @@ void Status::newGame(const Level &level)
     /*if ( level.type()!=Level::Custom )
         KExtHighscore::setGameType(level.type());*/
     _field->setLevel(level);
-    //Recalculate metrics for new game
-    _field->adjustCaseSize(size());
 }
 
 bool Status::checkBlackMark()

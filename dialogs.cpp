@@ -60,7 +60,7 @@ void Smiley::readSettings()
 void Smiley::setMood(Mood mood)
 {
     //Prob need to trigger a resize here? Use older size (fixed) for now
-    QImage qiRend(QSize(48, 48),QImage::Format_ARGB32_Premultiplied);
+    QImage qiRend(iconSize(),QImage::Format_ARGB32_Premultiplied);
     qiRend.fill(0);
 
     if (svg.isValid()) {
