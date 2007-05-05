@@ -47,6 +47,8 @@ Smiley::Smiley(QWidget *parent)
     moodNames.append("smile_sleep");
 
     theme.loadDefault();
+
+    setFlat(true);
 }
 
 void Smiley::readSettings()
