@@ -236,11 +236,9 @@ void MainWidget::pause()
 void MainWidget::setupStatusBar()
 {
     minesLeftLabel= new QLabel(i18n("Marked: ")+"0/?", statusBar());
-    minesLeftLabel->setFrameStyle( QFrame::Panel | QFrame::Sunken );
     statusBar()->addWidget(minesLeftLabel, 1);
 
     gameTimerLabel = new QLabel(i18n("Time: ")+"00:00", statusBar());
-    gameTimerLabel->setFrameStyle( QFrame::Panel | QFrame::Sunken );
     statusBar()->addWidget(gameTimerLabel);
 }
 
