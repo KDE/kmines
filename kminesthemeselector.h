@@ -35,7 +35,7 @@ public:
 
     QMap<QString, KMinesTheme *> themeMap;
 public slots:
-    void themeChanged();
+    void updatePreview();
     void openKNewStuffDialog();
 };
 
