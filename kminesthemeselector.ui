@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>497</width>
-    <height>446</height>
+    <width>521</width>
+    <height>422</height>
    </rect>
   </property>
   <property name="maximumSize" >
@@ -18,48 +18,29 @@
   <property name="windowTitle" >
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" >
-   <property name="spacing" >
-    <number>6</number>
-   </property>
-   <property name="leftMargin" >
-    <number>9</number>
-   </property>
-   <property name="topMargin" >
-    <number>9</number>
-   </property>
-   <property name="rightMargin" >
-    <number>9</number>
-   </property>
-   <property name="bottomMargin" >
-    <number>9</number>
-   </property>
-   <item>
+  <layout class="QGridLayout" >
+   <item row="0" column="0" >
     <layout class="QHBoxLayout" >
-     <property name="spacing" >
-      <number>6</number>
-     </property>
-     <property name="leftMargin" >
-      <number>0</number>
-     </property>
-     <property name="topMargin" >
-      <number>0</number>
-     </property>
-     <property name="rightMargin" >
-      <number>0</number>
-     </property>
-     <property name="bottomMargin" >
-      <number>0</number>
-     </property>
      <item>
-      <widget class="QListWidget" name="themeList" >
-       <property name="minimumSize" >
-        <size>
-         <width>120</width>
-         <height>0</height>
-        </size>
-       </property>
-      </widget>
+      <layout class="QVBoxLayout" >
+       <item>
+        <widget class="QListWidget" name="themeList" >
+         <property name="minimumSize" >
+          <size>
+           <width>120</width>
+           <height>0</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="getNewButton" >
+         <property name="text" >
+          <string>&amp;Get New Themes</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <widget class="QGroupBox" name="groupBox_2" >
@@ -103,7 +84,7 @@
      </item>
     </layout>
    </item>
-   <item>
+   <item row="1" column="0" >
     <widget class="QGroupBox" name="groupBox" >
      <property name="title" >
       <string>Properties</string>
@@ -229,7 +210,7 @@
      </layout>
     </widget>
    </item>
-   <item>
+   <item row="2" column="0" >
     <widget class="QLineEdit" name="kcfg_Theme" >
      <property name="enabled" >
       <bool>false</bool>
@@ -242,7 +223,7 @@
      </property>
     </widget>
    </item>
-   <item>
+   <item row="3" column="0" >
     <spacer>
      <property name="orientation" >
       <enum>Qt::Vertical</enum>
