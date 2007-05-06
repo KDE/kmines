@@ -22,6 +22,7 @@
 #include <kstandarddirs.h>
 #include <QPainter>
 #include <KConfigSkeleton>
+#include <knewstuff2/engine.h>
 
 #include "kminestheme.h"
 
@@ -68,6 +69,7 @@ void KMinesThemeSelector::setupData(KConfigSkeleton * aconfig)
     }
     
     connect(themeList, SIGNAL(currentItemChanged ( QListWidgetItem * , QListWidgetItem * )), this, SLOT(themeChanged()));
+    connect(getNewButton, SIGNAL(clicked()), this, SLOT(openKNewStuffDialog()));
 }
 
 void KMinesThemeSelector::themeChanged()
@@ -90,6 +92,11 @@ void KMinesThemeSelector::themeChanged()
     //TODO here: add code to maintain aspect ration?
     themePreview->setPixmap(seltheme->preview());
 
+}
+
+void KMinesThemeSelector::openKNewStuffDialog()
+{
+    KNS::Entry::List entries = KNS::Engine::download();
 }
 
 #include "kminesthemeselector.moc"
