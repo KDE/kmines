@@ -21,6 +21,7 @@
 #include <klocale.h>
 #include <kstandarddirs.h>
 #include <QPainter>
+#include <KConfigSkeleton>
 
 #include "kminestheme.h"
 
