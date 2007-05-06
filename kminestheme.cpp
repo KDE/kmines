@@ -22,6 +22,7 @@
 #include <klocale.h>
 #include <kconfig.h>
 #include <ksvgrenderer.h>
+#include <KComponentData>
 #include <QFile>
 #include <QMap>
 #include <QDebug>
@@ -47,7 +48,7 @@ KMinesTheme::KMinesTheme()
     static bool _inited = false;
     if (_inited)
         return;
-    KGlobal::dirs()->addResourceType("kminestheme", KStandardDirs::kde_default("data") + QString::fromLatin1("kmines/themes/"));
+    KGlobal::dirs()->addResourceType("gametheme", KStandardDirs::kde_default("data") + KGlobal::mainComponent().componentName() + "/themes/");
 
     KGlobal::locale()->insertCatalog("kmines");
     _inited = true;
@@ -61,8 +62,8 @@ bool KMinesTheme::loadDefault()
 {
     QString idx = "default.desktop";
 
-    QString themePath = KStandardDirs::locate("kminestheme", idx);
-qDebug() << "Inside LoadDefault(), located theme at " << themePath;
+    QString themePath = KStandardDirs::locate("gametheme", idx);
+    qDebug() << "Inside LoadDefault(), located theme at " << themePath;
     if (themePath.isEmpty()) {
         return false;
     }
@@ -99,7 +100,7 @@ bool KMinesTheme::load(const QString &file) {
     }
 
     QString graphName = group.readEntry("FileName");
-    graphicsPath = KStandardDirs::locate("kminestheme", graphName);
+    graphicsPath = KStandardDirs::locate("gametheme", graphName);
     d->graphics = graphicsPath;
     if (graphicsPath.isEmpty()) return (false);
 
@@ -110,7 +111,7 @@ bool KMinesTheme::load(const QString &file) {
     }
     
     QString previewName = group.readEntry("Preview");
-    graphicsPath = KStandardDirs::locate("kminestheme", previewName);
+    graphicsPath = KStandardDirs::locate("gametheme", previewName);
     d->preview = QPixmap(graphicsPath);
 
     d->filename = file;

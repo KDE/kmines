@@ -46,7 +46,7 @@ void KMinesThemeSelector::setupData(KConfigSkeleton * aconfig)
     KMinesTheme bg;
 
     //Now get our tilesets into a list
-    QStringList themesAvailable = KGlobal::dirs()->findAllResources("kminestheme", QString("*.desktop"), KStandardDirs::Recursive);
+    QStringList themesAvailable = KGlobal::dirs()->findAllResources("gametheme", QString("*.desktop"), KStandardDirs::Recursive);
     QString namestr("Name");
     int numvalidentries = 0;
     for (int i = 0; i < themesAvailable.size(); ++i)
@@ -60,7 +60,7 @@ void KMinesThemeSelector::setupData(KConfigSkeleton * aconfig)
             if (themepath==initialGroup) {
                 //Select current entry
                 themeList->setCurrentRow(numvalidentries);
-                themeChanged();
+                updatePreview();
             }
             ++numvalidentries;
         } else {
@@ -68,11 +68,11 @@ void KMinesThemeSelector::setupData(KConfigSkeleton * aconfig)
         }
     }
     
-    connect(themeList, SIGNAL(currentItemChanged ( QListWidgetItem * , QListWidgetItem * )), this, SLOT(themeChanged()));
+    connect(themeList, SIGNAL(currentItemChanged ( QListWidgetItem * , QListWidgetItem * )), this, SLOT(updatePreview()));
     connect(getNewButton, SIGNAL(clicked()), this, SLOT(openKNewStuffDialog()));
 }
 
-void KMinesThemeSelector::themeChanged()
+void KMinesThemeSelector::updatePreview()
 {
     KMinesTheme * seltheme = themeMap.value(themeList->currentItem()->text());
         //Sanity checkings. Should not happen.
