@@ -20,10 +20,10 @@
 #define __KMINESTHEMESELECTOR_H_
 
 #include <QMap>
-#include <KConfigSkeleton>
 #include "ui_kminesthemeselector.h"
 
 class KMinesTheme;
+class KConfigSkeleton;
 
 class KMinesThemeSelector : public QWidget, public Ui::KMinesThemeSelector
 {
