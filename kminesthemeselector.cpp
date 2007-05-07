@@ -46,11 +46,12 @@ void KMinesThemeSelector::setupData(KConfigSkeleton * aconfig)
     KMinesTheme bg;
 
     //Now get our tilesets into a list
-    QStringList themesAvailable = KGlobal::dirs()->findAllResources("gametheme", QString("*.desktop"), KStandardDirs::Recursive);
+    QStringList themesAvailable;
+    KGlobal::dirs()->findAllResources("gametheme", QString("*.desktop"), KStandardDirs::Recursive, themesAvailable);
     QString namestr("Name");
     int numvalidentries = 0;
     for (int i = 0; i < themesAvailable.size(); ++i)
-    {   
+    {
         KMinesTheme * atheme = new KMinesTheme();
         QString themepath = themesAvailable.at(i);
         if (atheme->load(themepath)) {
