@@ -29,7 +29,15 @@ class KMinesTheme
     KMinesTheme();
     ~KMinesTheme();
 
+    /**
+     * Load the default theme file. Called "default.desktop"
+     * @return true if the theme files and properties could be loaded
+     */
     bool loadDefault();
+    /**
+     * Load a specific theme file. e.g. "classic.desktop"
+     * @return true if the theme files and properties could be loaded
+     */
     bool load(const QString &file);
     QString path() const;
     QString graphics() const;

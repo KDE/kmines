@@ -60,31 +60,30 @@ KMinesTheme::~KMinesTheme() {
 
 bool KMinesTheme::loadDefault()
 {
-    QString idx = "default.desktop";
-
-    QString themePath = KStandardDirs::locate("gametheme", idx);
-    qDebug() << "Inside LoadDefault(), located theme at " << themePath;
-    if (themePath.isEmpty()) {
-        return false;
-    }
-    return load(themePath);
+    return load("default.desktop");
 }
 
 #define kThemeVersionFormat 1
 
-bool KMinesTheme::load(const QString &file) {
+bool KMinesTheme::load(const QString &fileName) {
 
+    QString filePath = KStandardDirs::locate("gametheme", fileName);
+    qDebug() << "Inside load(), located theme at " << filePath;
+    if (filePath.isEmpty()) {
+        return false;
+    }
+    
     QString graphicsPath;
-    qDebug() << "Attempting to load .desktop at " << file;
+    qDebug() << "Attempting to load .desktop at " << filePath;
 
     // verify if it is a valid file first and if we can open it
-    QFile themefile(file);
+    QFile themefile(filePath);
     if (!themefile.open(QIODevice::ReadOnly)) {
       return (false);
     }
     themefile.close();
 
-    KConfig themeconfig(file, KConfig::OnlyLocal);
+    KConfig themeconfig(filePath, KConfig::OnlyLocal);
     KConfigGroup group = themeconfig.group("KMinesTheme");
 
     d->authorproperties.insert("Name", group.readEntry("Name"));// Returns translated data
@@ -114,7 +113,7 @@ bool KMinesTheme::load(const QString &file) {
     graphicsPath = KStandardDirs::locate("gametheme", previewName);
     d->preview = QPixmap(graphicsPath);
 
-    d->filename = file;
+    d->filename = filePath;
     return true;
 }
 
