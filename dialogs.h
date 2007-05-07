@@ -26,7 +26,7 @@
 #include "defines.h"
 #include "settings.h"
 #include "ksvgrenderer.h"
-#include "kminestheme.h"
+#include "kgametheme.h"
 
 class KComboBox;
 class KIntNumInput;
@@ -46,7 +46,7 @@ class Smiley : public QPushButton, public KMines
     //static const char **XPM_NAMES[NbMoods];
     QVector<QString> moodNames;
     KSvgRenderer svg;
-    KMinesTheme theme;
+    KGameTheme theme;
 };
 
 //-----------------------------------------------------------------------------
