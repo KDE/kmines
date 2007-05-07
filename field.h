@@ -26,7 +26,7 @@
 
 #include "solver/bfield.h"
 #include "defines.h"
-#include "kminestheme.h"
+#include "kgametheme.h"
 
 //-----------------------------------------------------------------------------
 class Field : public QWidget, public BaseField
@@ -116,7 +116,7 @@ class Field : public QWidget, public BaseField
     QPixmap        _pixmaps[Nb_Pixmap_Types];
     QPixmap        _advised[Nb_Advised];
     KSvgRenderer svg;
-    KMinesTheme theme;
+    KGameTheme theme;
 
     //previously in digital clock
     uint _nbActions;
