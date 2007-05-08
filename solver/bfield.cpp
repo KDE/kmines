@@ -60,10 +60,10 @@ void BaseField::reset(uint width, uint height, uint nbMines)
 
 bool BaseField::checkField(uint w, uint h, uint nb, const QString &s)
 {
-    if ( s.length()!=w*h ) return false;
+    if ( s.length()!=static_cast<int>(w*h) ) return false;
     uint n = 0;
-	unsigned int strLength(s.length());
-    for (uint i=0; i<strLength; i++)
+	int strLength = s.length();
+    for (int i=0; i<strLength; ++i)
         if ( s.at(i)=='1' ) n++;
         else if ( s.at(i)!='0' ) return false;
     return ( n==nb );
