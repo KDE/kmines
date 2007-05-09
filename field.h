@@ -42,6 +42,7 @@ class Field : public QWidget, public BaseField
 
  public:
     explicit Field(QWidget *parent);
+    ~Field();
 
     virtual QSize sizeHint() const;
     virtual QSize minimumSizeHint() const;
@@ -116,7 +117,7 @@ class Field : public QWidget, public BaseField
     QPixmap        _pixmaps[Nb_Pixmap_Types];
     QPixmap        _advised[Nb_Advised];
     KSvgRenderer svg;
-    KGameTheme theme;
+    KGameTheme *theme;
 
     //previously in digital clock
     uint _nbActions;

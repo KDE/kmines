@@ -37,6 +37,7 @@ class Smiley : public QPushButton, public KMines
  Q_OBJECT
  public:
     explicit Smiley(QWidget *parent);
+    ~Smiley();
 
  public slots:
     void setMood(Mood);
@@ -46,7 +47,7 @@ class Smiley : public QPushButton, public KMines
     //static const char **XPM_NAMES[NbMoods];
     QVector<QString> moodNames;
     KSvgRenderer svg;
-    KGameTheme theme;
+    KGameTheme *theme;
 };
 
 //-----------------------------------------------------------------------------
