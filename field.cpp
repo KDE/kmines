@@ -50,16 +50,22 @@ const Field::ActionData Field::ACTION_DATA[Nb_Actions] = {
 Field::Field(QWidget *parent)
     : QWidget(parent), _state(Init), _solvingState(Regular), _level(Level::Easy)
 {
+    theme = new KGameTheme("KGameTheme");
     borderSize = 0; //Settings::caseSize();
-    theme.loadDefault();
+    theme->loadDefault();
+}
+
+Field::~Field()
+{
+    delete theme;
 }
 
 void Field::readSettings()
 {
-    if (!theme.load(Settings::theme())) {
-        theme.loadDefault();
+    if (!theme->load(Settings::theme())) {
+        theme->loadDefault();
     }
-    svg.load(theme.graphics());
+    svg.load(theme->graphics());
     updatePixmaps();
     if ( inside(_cursor) ) {
         update( toRect(_cursor) );

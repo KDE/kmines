@@ -40,23 +40,29 @@
 
 Smiley::Smiley(QWidget *parent)
         : QPushButton(QString(), parent) {
+    theme = new KGameTheme("KGameTheme");
     moodNames.append("smile");
     moodNames.append("smile_stress");
     moodNames.append("smile_happy");
     moodNames.append("smile_ohno");
     moodNames.append("smile_sleep");
 
-    theme.loadDefault();
+    theme->loadDefault();
 
     setFlat(true);
 }
 
+Smiley::~Smiley()
+{
+    delete theme;
+}
+
 void Smiley::readSettings()
 {
-  if (!theme.load(Settings::theme())) {
-    theme.loadDefault();
+  if (!theme->load(Settings::theme())) {
+    theme->loadDefault();
   }
-  svg.load(theme.graphics());
+  svg.load(theme->graphics());
 }
 
 void Smiley::setMood(Mood mood)
