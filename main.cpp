@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996-2004 Nicolas HADACEK (hadacek@kde.org)
+ * Copyright (c) 1996-2004 Nicolas HADACEK <hadacek@kde.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -75,17 +75,13 @@ MainWidget::MainWidget( QWidget* parent)
     setupStatusBar();
     QAction *action;
 
-	// Game & Popup
-    action = KStandardGameAction::gameNew(_status, SLOT(restartGame()), this);
-    actionCollection()->addAction(action->objectName(), action);
-    _pause = KStandardGameAction::pause(_status, SLOT(pauseGame()), this);
-    actionCollection()->addAction(_pause->objectName(), _pause);
-    action = KStandardGameAction::highscores(this, SLOT(showHighscores()), this);
-    actionCollection()->addAction(action->objectName(), action);
-    action = KStandardGameAction::quit(qApp, SLOT(quit()), this);
-    actionCollection()->addAction(action->objectName(), action);
+    // Game & Popup
+    KStandardGameAction::gameNew(_status, SLOT(restartGame()), actionCollection());
+    _pause = KStandardGameAction::pause(_status, SLOT(pauseGame()), actionCollection());
+    KStandardGameAction::highscores(this, SLOT(showHighscores()), actionCollection());
+    KStandardGameAction::quit(this, SLOT(close()), actionCollection());
 
-	// keyboard
+    // keyboard
     _keybCollection = new KActionCollection(static_cast<QWidget*>(this));
     for (uint i=0; i<NB_KEYS; i++) {
         const KeyData &d = KEY_DATA[i];
@@ -96,15 +92,12 @@ MainWidget::MainWidget( QWidget* parent)
         addAction(action);
     }
 
-	// Settings
-    action = KStandardAction::preferences(this, SLOT(configureSettings()), this);
-    actionCollection()->addAction(action->objectName(), action);
-    action = KStandardAction::keyBindings(this, SLOT(configureKeys()), this);
-    actionCollection()->addAction(action->objectName(), action);
-    action = KStandardAction::configureNotifications(this, SLOT(configureNotifications()), this);
-    actionCollection()->addAction(action->objectName(), action);
+    // Settings
+    KStandardAction::preferences(this, SLOT(configureSettings()), actionCollection());
+    KStandardAction::keyBindings(this, SLOT(configureKeys()), actionCollection());
+    KStandardAction::configureNotifications(this, SLOT(configureNotifications()), actionCollection());
 
-	// Levels
+    // Levels
     _levels = KStandardGameAction::chooseGameType(_status, SLOT(newGame(int)), actionCollection());
     actionCollection()->addAction(_levels->objectName(), _levels);
     QStringList list;
