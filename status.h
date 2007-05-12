@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996-2002 Nicolas HADACEK (hadacek@kde.org)
+ * Copyright (c) 1996-2002 Nicolas HADACEK <hadacek@kde.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,8 +50,8 @@ class Status : public QWidget, public KMines
 
  public slots:
     void newGame(int type);
-	void restartGame();
-	void updateStatus(bool);
+    void restartGame();
+    void updateStatus(bool);
     void pauseGame()     { _field->pause(); }
 
     void moveUp()        { _field->moveCursor(KGrid2D::SquareBase::Up); }
