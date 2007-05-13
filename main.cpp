@@ -73,7 +73,6 @@ MainWidget::MainWidget( QWidget* parent)
     connect(_status, SIGNAL(displayTime(const QString &)), SLOT(displayTime(const QString &)));
 
     setupStatusBar();
-    QAction *action;
 
     // Game & Popup
     KStandardGameAction::gameNew(_status, SLOT(restartGame()), actionCollection());
