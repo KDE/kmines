@@ -105,8 +105,7 @@ MainWidget::MainWidget( QWidget* parent)
     _levels->setItems(list);
 
     // Adviser
-    _advise =
-        KStandardGameAction::hint(_status, SLOT(advise()), actionCollection());
+    _advise = KStandardGameAction::hint(_status, SLOT(advise()), actionCollection());
     _solve = KStandardGameAction::solve(_status, SLOT(solve()), actionCollection());
 
     // Log
