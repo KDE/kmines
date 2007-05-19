@@ -49,6 +49,7 @@ class MainWidget : public KXmlGuiWindow, public KMines
  protected:
     virtual void focusOutEvent(QFocusEvent *);
     virtual bool queryExit();
+    void setupActions();
     void setupStatusBar();
 
  private:
