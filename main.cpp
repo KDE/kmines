@@ -74,31 +74,25 @@ MainWidget::MainWidget( QWidget* parent)
 
     setupStatusBar();
 
-    // Game & Popup
+    setupActions();
+
+    readSettings();
+    setCentralWidget(_status);
+
+    // we want to receive RMB event's on field rather than context menu
+    _status->field()->setContextMenuPolicy(Qt::PreventContextMenu);
+}
+
+void MainWidget::setupActions()
+{
+    // Game
     KStandardGameAction::gameNew(_status, SLOT(restartGame()), actionCollection());
     _pause = KStandardGameAction::pause(_status, SLOT(pauseGame()), actionCollection());
     KStandardGameAction::highscores(this, SLOT(showHighscores()), actionCollection());
     KStandardGameAction::quit(this, SLOT(close()), actionCollection());
 
-    // keyboard
-    _keybCollection = new KActionCollection(static_cast<QWidget*>(this));
-    for (uint i=0; i<NB_KEYS; i++) {
-        const KeyData &d = KEY_DATA[i];
-        QAction *action = _keybCollection->addAction(d.name);
-        action->setText(i18n(d.label));
-        connect(action, SIGNAL(triggered(bool) ), _status, d.slot);
-        action->setShortcut(d.keycode);
-        addAction(action);
-    }
-
-    // Settings
-    KStandardAction::preferences(this, SLOT(configureSettings()), actionCollection());
-    KStandardAction::keyBindings(this, SLOT(configureKeys()), actionCollection());
-    KStandardAction::configureNotifications(this, SLOT(configureNotifications()), actionCollection());
-
     // Levels
     _levels = KStandardGameAction::chooseGameType(_status, SLOT(newGame(int)), actionCollection());
-    actionCollection()->addAction(_levels->objectName(), _levels);
     QStringList list;
     for (uint i=0; i<=Level::NB_TYPES; i++)
         list += i18n(Level::LABELS[i]);
@@ -124,12 +118,23 @@ MainWidget::MainWidget( QWidget* parent)
     loadAct->setText( i18n("Load Log...") );
     connect(loadAct, SIGNAL(triggered(bool)), _status, SLOT(loadLog()));
 
-    setupGUI( KXmlGuiWindow::Save | Create );
-    readSettings();
-    setCentralWidget(_status);
+    // Keyboard
+    _keybCollection = new KActionCollection(static_cast<QWidget*>(this));
+    for (uint i=0; i<NB_KEYS; i++) {
+        const KeyData &d = KEY_DATA[i];
+        QAction *action = _keybCollection->addAction(d.name);
+        action->setText(i18n(d.label));
+        connect(action, SIGNAL(triggered(bool) ), _status, d.slot);
+        action->setShortcut(d.keycode);
+        addAction(action);
+    }
 
-    // we want to receive RMB event's on field rather than context menu
-    _status->field()->setContextMenuPolicy(Qt::PreventContextMenu);
+    // Settings
+    KStandardAction::preferences(this, SLOT(configureSettings()), actionCollection());
+    KStandardAction::keyBindings(this, SLOT(configureKeys()), actionCollection());
+    KStandardAction::configureNotifications(this, SLOT(configureNotifications()), actionCollection());
+
+    setupGUI( KXmlGuiWindow::Save | Create );
 }
 
 bool MainWidget::queryExit()
