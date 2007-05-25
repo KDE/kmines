@@ -77,15 +77,15 @@ Status::Status(QWidget *parent)
 	connect(smiley, SIGNAL(clicked()), SLOT(smileyClicked()));
 	smiley->setFocusPolicy(Qt::NoFocus);
 	smiley->setWhatsThis( i18n("Press to start a new game"));
-    smiley->setIconSize( QSize(128,128) );
+    smiley->setIconSize( QSize(64,64) );
 
-    /*    QSizePolicy sizePolicy(static_cast<QSizePolicy::Policy>(5), static_cast<QSizePolicy::Policy>(5));
+    /*QSizePolicy sizePolicy(static_cast<QSizePolicy::Policy>(5), static_cast<QSizePolicy::Policy>(5));
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(smiley->sizePolicy().hasHeightForWidth());
         smiley->setSizePolicy(sizePolicy);
         smiley->setMinimumSize(QSize(32, 32));
-        smiley->setMaximumSize(QSize(64, 64)) */;
+        smiley->setMaximumSize(QSize(64, 64));*/
 
         top->addWidget(smiley);
 
