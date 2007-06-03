@@ -28,7 +28,6 @@
 
 
 class QLabel;
-class QProgressBar;
 class SolverPrivate;
 
 class Solver : public QObject
