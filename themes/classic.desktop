@@ -9,6 +9,7 @@ Name[x-test]=xxClassicxx
 Description=Classic theme for KMines
 Description[el]=Κλασικό θέμα για το KMines
 Description[ja]=KMines のクラシックテーマ
+Description[uk]=Класична тема для KMines
 VersionFormat=1
 Author=Mauricio Piacentini
 AuthorEmail=mauricio@tabuleiro.com
