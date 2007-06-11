@@ -2,12 +2,14 @@
 Name=Classic
 Name[be]=Класічны
 Name[el]=Κλασσικό
+Name[es]=Clásico
 Name[ja]=クラシック
 Name[sv]=Klassisk
 Name[uk]=Класичні
 Name[x-test]=xxClassicxx
 Description=Classic theme for KMines
 Description[el]=Κλασικό θέμα για το KMines
+Description[es]=Tema clásico para KMines
 Description[ja]=KMines のクラシックテーマ
 Description[uk]=Класична тема для KMines
 VersionFormat=1
