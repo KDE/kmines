@@ -46,7 +46,6 @@ class Field : public QWidget, public BaseField
 
     virtual QSize sizeHint() const;
     virtual QSize minimumSizeHint() const;
-    //virtual void  zoomChanged() { adjustSize(); }
 
     void setLevel(const Level &level);
     void setReplayField(const QString &field);
