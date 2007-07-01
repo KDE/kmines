@@ -267,6 +267,7 @@ void Status::setStopped()
     _field->resetNbAction();
     _field->setSolvingState(Regular);
     dg->restart();
+    dg->pause();
 }
 
 void Status::setPlaying()
