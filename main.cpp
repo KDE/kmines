@@ -254,13 +254,13 @@ static const char *DESCRIPTION
 
 int main(int argc, char **argv)
 {
-    KAboutData aboutData("kmines", I18N_NOOP("KMines"), LONG_VERSION,
-						 DESCRIPTION, KAboutData::License_GPL,
-						 COPYLEFT, 0, HOMEPAGE);
-    aboutData.addAuthor("Nicolas Hadacek", 0, EMAIL);
-	aboutData.addCredit("Andreas Zehender", I18N_NOOP("Smiley pixmaps"));
-    aboutData.addCredit("Mikhail Kourinny", I18N_NOOP("Solver/Adviser"));
-    aboutData.addCredit("Thomas Capricelli", I18N_NOOP("Magic reveal mode"));
+    KAboutData aboutData("kmines", 0, ki18n("KMines"), LONG_VERSION,
+						 ki18n(DESCRIPTION), KAboutData::License_GPL,
+						 ki18n(COPYLEFT), KLocalizedString(), HOMEPAGE);
+    aboutData.addAuthor(ki18n("Nicolas Hadacek"), KLocalizedString(), EMAIL);
+	aboutData.addCredit(ki18n("Andreas Zehender"), ki18n("Smiley pixmaps"));
+    aboutData.addCredit(ki18n("Mikhail Kourinny"), ki18n("Solver/Adviser"));
+    aboutData.addCredit(ki18n("Thomas Capricelli"), ki18n("Magic reveal mode"));
     KCmdLineArgs::init(argc, argv, &aboutData);
 
     KApplication a;
