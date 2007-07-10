@@ -31,7 +31,7 @@ kde4_add_kcfg_files(kmines_SRCS settings.kcfgc )
 
 kde4_add_executable(kmines ${kmines_SRCS})
 
-target_link_libraries(kmines  ${KDE4_KDEUI_LIBS} kdegames ${KDE4_KNEWSTUFF2_LIBS} ${KDE4_KNOTIFYCONFIG_LIBS} )
+target_link_libraries(kmines  kdegames ${KDE4_KNEWSTUFF2_LIBS} ${KDE4_KNOTIFYCONFIG_LIBS} )
 
 install(TARGETS kmines  DESTINATION ${BIN_INSTALL_DIR} )
 
