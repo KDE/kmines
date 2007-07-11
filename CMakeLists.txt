@@ -20,6 +20,10 @@ include_directories( ${CMAKE_SOURCE_DIR}/libkdegames ${CMAKE_SOURCE_DIR}/libkdeg
 
 set(kmines_SRCS ${libsolver_SRCS}
    defines.cpp 
+   mainwindow.cpp
+   cellitem.cpp
+   minefielditem.cpp
+   scene.cpp
    dialogs.cpp 
    field.cpp 
    status.cpp 
