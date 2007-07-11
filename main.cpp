@@ -39,12 +39,13 @@
 #include <kicon.h>
 #include <kstatusbar.h>
 #include <kselectaction.h>
+#include <kgamethemeselector.h>
 
 #include "settings.h"
 #include "status.h"
 #include "version.h"
 #include "dialogs.h"
-#include <kgamethemeselector.h>
+#include "mainwindow.h"
 
 const MainWidget::KeyData MainWidget::KEY_DATA[NB_KEYS] = {
 {I18N_NOOP("Move Up"),     "keyboard_moveup",    Qt::Key_Up,    SLOT(moveUp())},
@@ -258,7 +259,7 @@ int main(int argc, char **argv)
 						 ki18n(DESCRIPTION), KAboutData::License_GPL,
 						 ki18n(COPYLEFT), KLocalizedString(), HOMEPAGE);
     aboutData.addAuthor(ki18n("Nicolas Hadacek"), KLocalizedString(), EMAIL);
-	aboutData.addCredit(ki18n("Andreas Zehender"), ki18n("Smiley pixmaps"));
+    aboutData.addCredit(ki18n("Andreas Zehender"), ki18n("Smiley pixmaps"));
     aboutData.addCredit(ki18n("Mikhail Kourinny"), ki18n("Solver/Adviser"));
     aboutData.addCredit(ki18n("Thomas Capricelli"), ki18n("Magic reveal mode"));
     KCmdLineArgs::init(argc, argv, &aboutData);
@@ -268,6 +269,8 @@ int main(int argc, char **argv)
 
     if ( a.isSessionRestored() ) RESTORE(MainWidget)
     else {
+        // uncomment this and comment that to see how rewrite to QGV goes ;)
+//        KMinesMainWindow *mw = new KMinesMainWindow;
         MainWidget *mw = new MainWidget;
         mw->show();
     }
