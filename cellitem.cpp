@@ -18,17 +18,73 @@
 
 #include "cellitem.h"
 #include <QPainter>
+#include <QGraphicsSceneMouseEvent>
 
 #include "renderer.h"
 
 CellItem::CellItem(QGraphicsItem* parent)
-    : QGraphicsPixmapItem(parent)/*, m_size(10)*/, m_hasMine(false)
+    : QGraphicsPixmapItem(parent), m_state(Released), m_hasMine(false)
 {
+    setShapeMode(BoundingRectShape);
     updatePixmap();
 }
 
 void CellItem::updatePixmap()
 {
-    // todo take state into account
-    setPixmap( KMinesRenderer::self()->pixmapForElement( KMinesRenderer::CellUp ) );
+    switch(m_state)
+    {
+        case Released:
+            setPixmap( KMinesRenderer::self()->pixmapForElement( KMinesRenderer::CellUp ) );
+            break;
+        case Pressed:
+            setPixmap( KMinesRenderer::self()->pixmapForElement( KMinesRenderer::CellDown ) );
+            break;
+        case Questioned:
+            setPixmap( KMinesRenderer::self()->pixmapForElement( KMinesRenderer::Question ) );
+            break;
+        case Flagged:
+            setPixmap( KMinesRenderer::self()->pixmapForElement( KMinesRenderer::Flag ) );
+            break;
+    }
+}
+
+void CellItem::mousePressEvent( QGraphicsSceneMouseEvent * ev )
+{
+    if(ev->button() == Qt::LeftButton
+       && m_state != Questioned && m_state != Flagged)
+    {
+        m_state = Pressed;
+        updatePixmap();
+    }
+}
+
+void CellItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *ev )
+{
+    if(m_state == Pressed )
+    {
+        m_state = Released;
+        updatePixmap();
+    }
+    else if(ev->button() == Qt::RightButton )
+    {
+        // this will provide cycling through
+        // Released -> "?"-mark -> "RedFlag"-mark -> Released
+
+        switch(m_state)
+        {
+            case Released:
+                m_state = Questioned;
+                break;
+            case Questioned:
+                m_state = Flagged;
+                break;
+            case Flagged:
+                m_state = Released;
+                break;
+            default:
+                // shouldn't be here
+                break;
+        } // end switch
+        updatePixmap();
+    }
 }

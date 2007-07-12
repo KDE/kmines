@@ -33,6 +33,10 @@ static QString elementToSvgId( KMinesRenderer::SvgElement e )
             return "cell_up";
         case KMinesRenderer::CellDown:
             return "cell_down";
+        case KMinesRenderer::Flag:
+            return "flag";
+        case KMinesRenderer::Question:
+            return "question";
         case KMinesRenderer::NumElements:
             return QString();
     }
@@ -81,15 +85,35 @@ void KMinesRenderer::rerenderPixmaps()
         return;
 
     QPainter p;
-    for(int element=0; element < static_cast<int>(NumElements); ++element)
-    {
-        QPixmap pix( m_cellSize, m_cellSize );
-        pix.fill( Qt::transparent );
-        p.begin( &pix );
-        m_renderer->render( &p, elementToSvgId(static_cast<SvgElement>(element)) );
-        p.end();
-        m_pixHash[static_cast<SvgElement>(element)] = pix;
-    }
+    // cell up
+    QPixmap pix( m_cellSize, m_cellSize );
+    pix.fill( Qt::transparent );
+    p.begin( &pix );
+    m_renderer->render( &p, elementToSvgId(CellUp) );
+    p.end();
+    m_pixHash[CellUp] = pix;
+
+    // cell down
+    pix = QPixmap( m_cellSize, m_cellSize );
+    pix.fill( Qt::transparent );
+    p.begin( &pix );
+    m_renderer->render( &p, elementToSvgId(CellDown) );
+    p.end();
+    m_pixHash[CellDown] = pix;
+
+    // question (on top of cellup)
+    pix = m_pixHash[CellUp];
+    p.begin( &pix );
+    m_renderer->render( &p, elementToSvgId(Question) );
+    p.end();
+    m_pixHash[Question] = pix;
+
+    // flag (on top of cellup)
+    pix = m_pixHash[CellUp];
+    p.begin( &pix );
+    m_renderer->render( &p, elementToSvgId(Flag) );
+    p.end();
+    m_pixHash[Flag] = pix;
 }
 
 QPixmap KMinesRenderer::backgroundPixmap( const QSize& size ) const

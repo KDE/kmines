@@ -20,13 +20,14 @@
 
 #include <QGraphicsPixmapItem>
 
+class QGraphicsSceneMouseEvent;
+
 // TODO docs-docs-docs
 class CellItem : public QGraphicsPixmapItem
 {
 public:
     CellItem(QGraphicsItem* parent);
 
-//    void setState(); // todo - hovered,pressed,etc
     void updatePixmap();// according to state
 
     void setHasMine(bool hasMine) { m_hasMine = hasMine; }
@@ -36,6 +37,12 @@ public:
     enum { Type = UserType + 1 };
     virtual int type() const { return Type; }
 private:
+    virtual void mousePressEvent( QGraphicsSceneMouseEvent * );
+    virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * );
+
+    enum ItemState { Released, Pressed, Exploded, Revealed, Questioned, Flagged };
+    ItemState m_state;
+
     bool m_hasMine;
 };
 
