@@ -42,6 +42,15 @@ void MineFieldItem::changeField( int numRows, int numCols, int numMines )
         m_cells[i] = new CellItem(this);
     }
 
+    // TEMP CODE
+    for(int i=1;i<=8;++i)
+    {
+        m_cells[i]->setDigit(i);
+        m_cells[i]->reveal();
+    }
+    m_cells[9]->setHasMine(true);
+    m_cells[9]->reveal();
+
     adjustItemPositions();
 }
 

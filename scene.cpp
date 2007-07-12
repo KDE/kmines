@@ -27,7 +27,7 @@ KMinesScene::KMinesScene( QObject* parent )
     : QGraphicsScene(parent)
 {
     setItemIndexMethod( NoIndex );
-    m_fieldItem = new MineFieldItem(30,65, 3);
+    m_fieldItem = new MineFieldItem(35,60, 3);
     addItem(m_fieldItem);
 }
 

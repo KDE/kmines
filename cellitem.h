@@ -20,6 +20,8 @@
 
 #include <QGraphicsPixmapItem>
 
+#include "commondefs.h"
+
 class QGraphicsSceneMouseEvent;
 
 // TODO docs-docs-docs
@@ -33,6 +35,15 @@ public:
     void setHasMine(bool hasMine) { m_hasMine = hasMine; }
     bool hasMine() const { return m_hasMine; }
 
+    void setDigit(int digit) { m_digit = digit; }
+    int digit() const { return m_digit; }
+
+    /**
+     * Shows what this item hides :)
+     * Can be a bomb, a digit, an empty square
+     */
+    void reveal();
+
     // enable use of qgraphicsitem_cast
     enum { Type = UserType + 1 };
     virtual int type() const { return Type; }
@@ -40,10 +51,10 @@ private:
     virtual void mousePressEvent( QGraphicsSceneMouseEvent * );
     virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * );
 
-    enum ItemState { Released, Pressed, Exploded, Revealed, Questioned, Flagged };
-    ItemState m_state;
+    KMinesState::CellState m_state;
 
     bool m_hasMine;
+    int m_digit;
 };
 
 #endif
