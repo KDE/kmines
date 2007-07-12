@@ -25,7 +25,7 @@
 
 #include "settings.h"
 
-static QString elementToSvgId( KMinesRenderer::SvgElement e )
+QString KMinesRenderer::elementToSvgId( SvgElement e ) const
 {
     switch(e)
     {
@@ -37,6 +37,26 @@ static QString elementToSvgId( KMinesRenderer::SvgElement e )
             return "flag";
         case KMinesRenderer::Question:
             return "question";
+        case KMinesRenderer::Digit1:
+            return "arabicOne";
+        case KMinesRenderer::Digit2:
+            return "arabicTwo";
+        case KMinesRenderer::Digit3:
+            return "arabicThree";
+        case KMinesRenderer::Digit4:
+            return "arabicFour";
+        case KMinesRenderer::Digit5:
+            return "arabicFive";
+        case KMinesRenderer::Digit6:
+            return "arabicSix";
+        case KMinesRenderer::Digit7:
+            return "arabicSeven";
+        case KMinesRenderer::Digit8:
+            return "arabicEight";
+        case KMinesRenderer::Mine:
+            return "mine";
+        case KMinesRenderer::Explosion:
+            return "explosion";
         case KMinesRenderer::NumElements:
             return QString();
     }
@@ -79,6 +99,12 @@ bool KMinesRenderer::loadTheme( const QString& themeName )
     return true;
 }
 
+#define RENDER_SVG_ELEMENT(SVG_ID)                      \
+    p.begin( &pix );                                    \
+    m_renderer->render( &p, elementToSvgId(SVG_ID) );   \
+    p.end();                                            \
+    m_pixHash[SVG_ID] = pix;
+
 void KMinesRenderer::rerenderPixmaps()
 {
     if(m_cellSize == 0)
@@ -86,34 +112,44 @@ void KMinesRenderer::rerenderPixmaps()
 
     QPainter p;
     // cell up
-    QPixmap pix( m_cellSize, m_cellSize );
-    pix.fill( Qt::transparent );
-    p.begin( &pix );
-    m_renderer->render( &p, elementToSvgId(CellUp) );
-    p.end();
-    m_pixHash[CellUp] = pix;
+    QPixmap pix(m_cellSize, m_cellSize);
+    pix.fill( Qt::transparent);
+    RENDER_SVG_ELEMENT(CellDown);
 
-    // cell down
-    pix = QPixmap( m_cellSize, m_cellSize );
-    pix.fill( Qt::transparent );
-    p.begin( &pix );
-    m_renderer->render( &p, elementToSvgId(CellDown) );
-    p.end();
-    m_pixHash[CellDown] = pix;
+    pix = QPixmap(m_cellSize, m_cellSize);
+    pix.fill( Qt::transparent);
+    RENDER_SVG_ELEMENT(CellUp);
+
+    // all digits are rendered on top of CellDown
+    pix = m_pixHash[CellDown];
+    RENDER_SVG_ELEMENT(Digit1);
+    pix = m_pixHash[CellDown];
+    RENDER_SVG_ELEMENT(Digit2);
+    pix = m_pixHash[CellDown];
+    RENDER_SVG_ELEMENT(Digit3);
+    pix = m_pixHash[CellDown];
+    RENDER_SVG_ELEMENT(Digit4);
+    pix = m_pixHash[CellDown];
+    RENDER_SVG_ELEMENT(Digit5);
+    pix = m_pixHash[CellDown];
+    RENDER_SVG_ELEMENT(Digit6);
+    pix = m_pixHash[CellDown];
+    RENDER_SVG_ELEMENT(Digit7);
+    pix = m_pixHash[CellDown];
+    RENDER_SVG_ELEMENT(Digit8);
 
     // question (on top of cellup)
     pix = m_pixHash[CellUp];
-    p.begin( &pix );
-    m_renderer->render( &p, elementToSvgId(Question) );
-    p.end();
-    m_pixHash[Question] = pix;
+    RENDER_SVG_ELEMENT(Question);
 
     // flag (on top of cellup)
     pix = m_pixHash[CellUp];
-    p.begin( &pix );
-    m_renderer->render( &p, elementToSvgId(Flag) );
-    p.end();
-    m_pixHash[Flag] = pix;
+    RENDER_SVG_ELEMENT(Flag);
+
+    // mine is a mix of celldown & explosion & mine
+    pix = m_pixHash[CellDown];
+    RENDER_SVG_ELEMENT(Explosion);
+    RENDER_SVG_ELEMENT(Mine);
 }
 
 QPixmap KMinesRenderer::backgroundPixmap( const QSize& size ) const
@@ -135,7 +171,49 @@ KMinesRenderer::~KMinesRenderer()
     delete m_renderer;
 }
 
-QPixmap KMinesRenderer::pixmapForElement( SvgElement element ) const
+QPixmap KMinesRenderer::pixmapForCellState( KMinesState::CellState state ) const
 {
-    return m_pixHash[element];
+    switch(state)
+    {
+        case KMinesState::Released:
+            return m_pixHash[CellUp];
+        case KMinesState::Pressed:
+            return m_pixHash[CellDown];
+        case KMinesState::Exploded:
+            // pixmap is already mixed with celldown & explosion ones
+            return m_pixHash[Mine];
+        case KMinesState::Revealed:
+            // i.e. revealed & digit=0 case
+            return m_pixHash[CellUp];
+        case KMinesState::Questioned:
+            return m_pixHash[Question];
+        case KMinesState::Flagged:
+            return m_pixHash[Flag];
+        // no default! this way we'll get compiler warnings if
+        // something is forgotten
+    }
+    return QPixmap();
+}
+
+QPixmap KMinesRenderer::pixmapForDigitElement( int digit ) const
+{
+    KMinesRenderer::SvgElement e;
+    if(digit == 1)
+        e = KMinesRenderer::Digit1;
+    else if(digit == 2)
+        e = KMinesRenderer::Digit2;
+    else if(digit == 3)
+        e = KMinesRenderer::Digit3;
+    else if(digit == 4)
+        e = KMinesRenderer::Digit4;
+    else if(digit == 5)
+        e = KMinesRenderer::Digit5;
+    else if(digit == 6)
+        e = KMinesRenderer::Digit6;
+    else if(digit == 7)
+        e = KMinesRenderer::Digit7;
+    else if(digit == 8)
+        e = KMinesRenderer::Digit8;
+
+    return m_pixHash[e];
 }

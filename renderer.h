@@ -20,6 +20,7 @@
 
 #include <QPixmap>
 #include <QHash>
+#include "commondefs.h"
 
 class KSvgRenderer;
 /**
@@ -31,14 +32,6 @@ class KSvgRenderer;
 class KMinesRenderer
 {
 public:
-    enum SvgElement
-    {
-        CellUp=0,
-        CellDown,
-        Flag,
-        Question,
-        NumElements
-    };
     /**
      * Returns one and the only instance of KLinesRenderer
      */
@@ -60,7 +53,8 @@ public:
     /**
      * @return pixmap for corresponding element
      */
-    QPixmap pixmapForElement( SvgElement element ) const;
+    QPixmap pixmapForCellState( KMinesState::CellState state ) const;
+    QPixmap pixmapForDigitElement( int digit ) const;
 private:
     // disable copy - it's singleton
     KMinesRenderer();
@@ -79,7 +73,26 @@ private:
     mutable QPixmap m_cachedBkgnd;
     KSvgRenderer *m_renderer;
     int m_cellSize;
+    enum SvgElement
+    {
+        CellUp=0,
+        CellDown,
+        Flag,
+        Question,
+        Digit1,
+        Digit2,
+        Digit3,
+        Digit4,
+        Digit5,
+        Digit6,
+        Digit7,
+        Digit8,
+        Mine,
+        Explosion,
+        NumElements
+    };
     QHash<SvgElement, QPixmap> m_pixHash;
+    QString elementToSvgId( SvgElement e ) const;
 };
 
 #endif

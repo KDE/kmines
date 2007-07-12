@@ -20,10 +20,12 @@
 #include <QPainter>
 #include <QGraphicsSceneMouseEvent>
 
+#include <kdebug.h>
+
 #include "renderer.h"
 
 CellItem::CellItem(QGraphicsItem* parent)
-    : QGraphicsPixmapItem(parent), m_state(Released), m_hasMine(false)
+    : QGraphicsPixmapItem(parent), m_state(KMinesState::Released), m_hasMine(false), m_digit(0)
 {
     setShapeMode(BoundingRectShape);
     updatePixmap();
@@ -31,38 +33,29 @@ CellItem::CellItem(QGraphicsItem* parent)
 
 void CellItem::updatePixmap()
 {
-    switch(m_state)
+    if( m_state == KMinesState::Revealed )
     {
-        case Released:
-            setPixmap( KMinesRenderer::self()->pixmapForElement( KMinesRenderer::CellUp ) );
-            break;
-        case Pressed:
-            setPixmap( KMinesRenderer::self()->pixmapForElement( KMinesRenderer::CellDown ) );
-            break;
-        case Questioned:
-            setPixmap( KMinesRenderer::self()->pixmapForElement( KMinesRenderer::Question ) );
-            break;
-        case Flagged:
-            setPixmap( KMinesRenderer::self()->pixmapForElement( KMinesRenderer::Flag ) );
-            break;
+        if(m_digit != 0)
+            setPixmap( KMinesRenderer::self()->pixmapForDigitElement(m_digit) );
     }
+    else
+        setPixmap( KMinesRenderer::self()->pixmapForCellState( m_state ) );
 }
 
 void CellItem::mousePressEvent( QGraphicsSceneMouseEvent * ev )
 {
-    if(ev->button() == Qt::LeftButton
-       && m_state != Questioned && m_state != Flagged)
+    if(ev->button() == Qt::LeftButton && m_state == KMinesState::Released)
     {
-        m_state = Pressed;
+        m_state = KMinesState::Pressed;
         updatePixmap();
     }
 }
 
 void CellItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *ev )
 {
-    if(m_state == Pressed )
+    if(m_state == KMinesState::Pressed )
     {
-        m_state = Released;
+        m_state = KMinesState::Released;
         updatePixmap();
     }
     else if(ev->button() == Qt::RightButton )
@@ -72,14 +65,14 @@ void CellItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *ev )
 
         switch(m_state)
         {
-            case Released:
-                m_state = Questioned;
+            case KMinesState::Released:
+                m_state = KMinesState::Questioned;
                 break;
-            case Questioned:
-                m_state = Flagged;
+            case KMinesState::Questioned:
+                m_state = KMinesState::Flagged;
                 break;
-            case Flagged:
-                m_state = Released;
+            case KMinesState::Flagged:
+                m_state = KMinesState::Released;
                 break;
             default:
                 // shouldn't be here
@@ -87,4 +80,10 @@ void CellItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *ev )
         } // end switch
         updatePixmap();
     }
+}
+
+void CellItem::reveal()
+{
+    m_state = m_hasMine ? KMinesState::Exploded : KMinesState::Revealed;
+    updatePixmap();
 }
