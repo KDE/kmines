@@ -21,20 +21,25 @@
 #include <QResizeEvent>
 
 #include "minefielditem.h"
+#include "renderer.h"
 
 KMinesScene::KMinesScene( QObject* parent )
     : QGraphicsScene(parent)
 {
-    m_fieldItem = new MineFieldItem(10,10, 3);
+    setItemIndexMethod( NoIndex );
+    m_fieldItem = new MineFieldItem(30,65, 3);
     addItem(m_fieldItem);
-    m_fieldItem->setCellSize(30);
-    m_fieldItem->setPos(20,20);
 }
 
 void KMinesScene::resizeScene(int width, int height)
 {
     setSceneRect(0, 0, width, height);
+    m_fieldItem->resizeToFitInRect( sceneRect() );
+    m_fieldItem->setPos( sceneRect().width()/2 - m_fieldItem->boundingRect().width()/2,
+                         sceneRect().height()/2 - m_fieldItem->boundingRect().height()/2 );
 }
+
+// --------------- KMinesView ---------------
 
 KMinesView::KMinesView( KMinesScene* scene, QWidget *parent )
     : QGraphicsView(scene, parent), m_scene(scene)
@@ -44,4 +49,9 @@ KMinesView::KMinesView( KMinesScene* scene, QWidget *parent )
 void KMinesView::resizeEvent( QResizeEvent *ev )
 {
     m_scene->resizeScene( ev->size().width(), ev->size().height() );
+}
+
+void KMinesScene::drawBackground( QPainter* p, const QRectF& )
+{
+//    p->drawPixmap( 0, 0, KMinesRenderer::self()->backgroundPixmap(sceneRect().size().toSize()) );
 }

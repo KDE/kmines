@@ -24,6 +24,7 @@ set(kmines_SRCS ${libsolver_SRCS}
    cellitem.cpp
    minefielditem.cpp
    scene.cpp
+   renderer.cpp
    dialogs.cpp 
    field.cpp 
    status.cpp 

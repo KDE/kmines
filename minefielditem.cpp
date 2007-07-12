@@ -17,7 +17,10 @@
 */
 #include "minefielditem.h"
 
+#include <kdebug.h>
+
 #include "cellitem.h"
+#include "renderer.h"
 
 MineFieldItem::MineFieldItem( int numRows, int numCols, int numMines )
 {
@@ -44,22 +47,42 @@ void MineFieldItem::changeField( int numRows, int numCols, int numMines )
 
 QRectF MineFieldItem::boundingRect() const
 {
-    return childrenBoundingRect();
+    // we assume that all items have the same size
+    // so let's take the first item's size
+    qreal cellSize = KMinesRenderer::self()->cellSize();
+    return QRectF(0, 0, cellSize*m_numCols, cellSize*m_numRows);
 }
 
 void MineFieldItem::paint( QPainter * painter, const QStyleOptionGraphicsItem* opt, QWidget* w)
 {
-
+    Q_UNUSED(painter);
+    Q_UNUSED(opt);
+    Q_UNUSED(w);
 }
 
-void MineFieldItem::setCellSize(int size)
+void MineFieldItem::resizeToFitInRect(const QRectF& rect)
 {
     prepareGeometryChange();
 
+    // here follows "cooomplex" algorithm to choose which side to
+    // take when calculating cell size by dividing this side by
+    // numRows or numCols correspondingly
+    // it's cooomplex, because I have to paint some figures on paper
+    // to understand that criteria for choosing one side or another (for
+    // determining cell size from it) is comparing
+    // cols/r.width() and rows/r.height():
+    bool chooseHorizontalSide = m_numCols / rect.width() > m_numRows / rect.height();
+
+    qreal size = 0;
+    if( chooseHorizontalSide )
+        size = rect.width() / m_numCols;
+    else
+        size = rect.height() / m_numRows;
+
+    KMinesRenderer::self()->setCellSize( static_cast<int>(size) );
+
     foreach( CellItem* item, m_cells )
-    {
-        item->setSize(size);
-    }
+        item->updatePixmap();
 
     adjustItemPositions();
 }
@@ -68,7 +91,7 @@ void MineFieldItem::adjustItemPositions()
 {
     Q_ASSERT( m_cells.size() == m_numRows*m_numCols );
 
-    int itemSize = m_cells.at(0)->size();
+    qreal itemSize = KMinesRenderer::self()->cellSize();
 
     for(int row=0; row<m_numRows; ++row)
         for(int col=0; col<m_numCols; ++col)
