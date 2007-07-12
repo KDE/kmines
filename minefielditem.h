@@ -28,7 +28,7 @@ class MineFieldItem : public QGraphicsItem
 {
 public:
     MineFieldItem( int numRows, int numCols, int numMines );
-    void setCellSize(int size);
+    void resizeToFitInRect(const QRectF& rect);
     void changeField( int numRows, int numCols, int numMines );
     QRectF boundingRect() const;// reimp
 private:

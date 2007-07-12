@@ -31,6 +31,8 @@ public:
     explicit KMinesScene( QObject* parent );
     void resizeScene(int width, int height);
 private:
+    virtual void drawBackground( QPainter*, const QRectF& );
+
     MineFieldItem* m_fieldItem;
 };
 

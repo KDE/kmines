@@ -18,29 +18,24 @@
 #ifndef CELLITEM_H
 #define CELLITEM_H
 
-#include <QGraphicsItem>
+#include <QGraphicsPixmapItem>
 
 // TODO docs-docs-docs
-class CellItem : public QGraphicsItem
+class CellItem : public QGraphicsPixmapItem
 {
 public:
     CellItem(QGraphicsItem* parent);
 
-    void setSize( int size ) { prepareGeometryChange(); m_size = size; }
-    int  size() const { return m_size; }
+//    void setState(); // todo - hovered,pressed,etc
+    void updatePixmap();// according to state
 
     void setHasMine(bool hasMine) { m_hasMine = hasMine; }
     bool hasMine() const { return m_hasMine; }
-
-    inline QRectF boundingRect() const { return QRectF(0,0, m_size, m_size); } // reimp
 
     // enable use of qgraphicsitem_cast
     enum { Type = UserType + 1 };
     virtual int type() const { return Type; }
 private:
-    void paint( QPainter * painter, const QStyleOptionGraphicsItem*, QWidget * widget = 0 );
-    // item is square, so one dimension here :)
-    int m_size;
     bool m_hasMine;
 };
 

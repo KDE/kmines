@@ -19,12 +19,16 @@
 #include "cellitem.h"
 #include <QPainter>
 
+#include "renderer.h"
+
 CellItem::CellItem(QGraphicsItem* parent)
-    : QGraphicsItem(parent), m_size(10), m_hasMine(false)
+    : QGraphicsPixmapItem(parent)/*, m_size(10)*/, m_hasMine(false)
 {
+    updatePixmap();
 }
 
-void CellItem::paint( QPainter * painter, const QStyleOptionGraphicsItem*, QWidget * )
+void CellItem::updatePixmap()
 {
-    painter->drawRect(0, 0, m_size, m_size);
+    // todo take state into account
+    setPixmap( KMinesRenderer::self()->pixmapForElement( KMinesRenderer::CellUp ) );
 }
