@@ -35,6 +35,8 @@ public:
     {
         CellUp=0,
         CellDown,
+        Flag,
+        Question,
         NumElements
     };
     /**
