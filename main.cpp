@@ -270,8 +270,8 @@ int main(int argc, char **argv)
     if ( a.isSessionRestored() ) RESTORE(MainWidget)
     else {
         // uncomment this and comment that to see how rewrite to QGV goes ;)
-        KMinesMainWindow *mw = new KMinesMainWindow;
-//        MainWidget *mw = new MainWidget;
+//        KMinesMainWindow *mw = new KMinesMainWindow;
+        MainWidget *mw = new MainWidget;
         mw->show();
     }
     return a.exec();
