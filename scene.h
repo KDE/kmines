@@ -23,16 +23,30 @@
 
 class MineFieldItem;
 
-// TODO docs-docs-docs
+/**
+ * Graphics scene for KMines game
+ */
 class KMinesScene : public QGraphicsScene
 {
     Q_OBJECT
 public:
+    /**
+     * Constructs scene
+     */
     explicit KMinesScene( QObject* parent );
+    /**
+     * Resizes scene to given dimensions
+     */
     void resizeScene(int width, int height);
 private:
+    /**
+     * Draws scene background
+     * Reimplemented from QGraphicsScene
+     */
     virtual void drawBackground( QPainter*, const QRectF& );
-
+    /**
+     * Game field graphics item
+     */
     MineFieldItem* m_fieldItem;
 };
 

@@ -44,7 +44,14 @@ public:
      * it might be "themes/default.desktop"
      */
     bool loadTheme( const QString& themeName );
+    /**
+     * Sets cell render size
+     * Call to this function will reset the cache and put fresh pixmaps to it
+     */
     void setCellSize( int size ) { m_cellSize = size; rerenderPixmaps(); }
+    /**
+     * @return current cell render size
+     */
     int cellSize() const { return m_cellSize; }
     /**
      * @return pixmap for background painting.
@@ -54,6 +61,9 @@ public:
      * @return pixmap for corresponding element
      */
     QPixmap pixmapForCellState( KMinesState::CellState state ) const;
+    /**
+     * @return pixmap for item that holds a digit
+     */
     QPixmap pixmapForDigitElement( int digit ) const;
 private:
     // disable copy - it's singleton
@@ -71,8 +81,17 @@ private:
      * Cached background pixmap.
      */
     mutable QPixmap m_cachedBkgnd;
+    /**
+     * Renderer used to render all graphics from svg file
+     */
     KSvgRenderer *m_renderer;
+    /**
+     * Current cell render size
+     */
     int m_cellSize;
+    /**
+     * Elements from svg file
+     */
     enum SvgElement
     {
         CellUp=0,
@@ -91,7 +110,14 @@ private:
         Explosion,
         NumElements
     };
+    /**
+     * This is our cache :)
+     */
     QHash<SvgElement, QPixmap> m_pixHash;
+    /**
+     * Translates enum value to QString name used in svg file.
+     * Names (in .cpp) should be in sync with those defined in svg files
+     */
     QString elementToSvgId( SvgElement e ) const;
 };
 

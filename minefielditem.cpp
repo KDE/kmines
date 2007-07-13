@@ -29,6 +29,8 @@ MineFieldItem::MineFieldItem( int numRows, int numCols, int numMines )
 
 void MineFieldItem::regenerateField( int numRows, int numCols, int numMines )
 {
+    Q_ASSERT( numMines < numRows*numRows );
+
     int oldSize = m_cells.size();
 
     m_numRows = numRows;
@@ -37,9 +39,13 @@ void MineFieldItem::regenerateField( int numRows, int numCols, int numMines )
 
     m_cells.resize(m_numRows*m_numCols);
 
-    for(int i=oldSize; i<m_numRows*m_numCols; ++i)
+    for(int i=0; i<m_numRows*m_numCols; ++i)
     {
-        m_cells[i] = new CellItem(this);
+        // reset old, create new
+        if(i<oldSize)
+            m_cells[i]->reset();
+        else
+            m_cells[i] = new CellItem(this);
     }
 
     // generating mines
