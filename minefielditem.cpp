@@ -24,10 +24,10 @@
 
 MineFieldItem::MineFieldItem( int numRows, int numCols, int numMines )
 {
-    changeField(numRows, numCols, numMines);
+    regenerateField(numRows, numCols, numMines);
 }
 
-void MineFieldItem::changeField( int numRows, int numCols, int numMines )
+void MineFieldItem::regenerateField( int numRows, int numCols, int numMines )
 {
     int oldSize = m_cells.size();
 
@@ -42,14 +42,77 @@ void MineFieldItem::changeField( int numRows, int numCols, int numMines )
         m_cells[i] = new CellItem(this);
     }
 
-    // TEMP CODE
-    for(int i=1;i<=8;++i)
+    // generating mines
+    int minesToPlace = m_minesCount;
+    int randomIdx = 0;
+    while(minesToPlace != 0)
     {
-        m_cells[i]->setDigit(i);
-        m_cells[i]->reveal();
+        randomIdx = m_randomSeq.getLong( m_numRows*m_numCols );
+        if(!m_cells.at(randomIdx)->hasMine())
+        {
+            m_cells.at(randomIdx)->setHasMine(true);
+            minesToPlace--;
+        }
+        else
+            continue;
     }
-    m_cells[9]->setHasMine(true);
-    m_cells[9]->reveal();
+
+    // calculating digits for cells around mines
+    for(int row=0; row < m_numRows; ++row)
+        for(int col=0; col < m_numCols; ++col)
+        {
+            if(itemAt(row,col)->hasMine())
+                continue;
+            // simply looking at all 8 neighbour cells and adding +1 for each
+            // mine we found
+            int resultingDigit = 0;
+            if(row != 0 && col != 0) // upper-left diagonal
+            {
+                if(itemAt(row-1,col-1)->hasMine())
+                    resultingDigit++;
+            }
+            if(row != 0) // upper
+            {
+                if(itemAt(row-1, col)->hasMine())
+                    resultingDigit++;
+            }
+            if(row != 0 && col != m_numCols-1) // upper-right diagonal
+            {
+                if(itemAt(row-1, col+1)->hasMine())
+                    resultingDigit++;
+            }
+            if(col != 0) // on the left
+            {
+                if(itemAt(row,col-1)->hasMine())
+                    resultingDigit++;
+            }
+            if(col != m_numCols-1) // on the right
+            {
+                if(itemAt(row, col+1)->hasMine())
+                    resultingDigit++;
+            }
+            if(row != m_numRows-1 && col != 0) // bottom-left diagonal
+            {
+                if(itemAt(row+1, col-1)->hasMine())
+                    resultingDigit++;
+            }
+            if(row != m_numRows-1) // bottom
+            {
+                if(itemAt(row+1, col)->hasMine())
+                    resultingDigit++;
+            }
+            if(row != m_numRows-1 && col != m_numCols-1) // bottom-right diagonal
+            {
+                if(itemAt(row+1, col+1)->hasMine())
+                    resultingDigit++;
+            }
+            // having 0 is ok here - it'll be empty
+            itemAt(row,col)->setDigit(resultingDigit);
+        }
+
+    // TEMP
+    foreach( CellItem* item, m_cells )
+        item->reveal();
 
     adjustItemPositions();
 }
