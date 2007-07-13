@@ -55,8 +55,14 @@ QString KMinesRenderer::elementToSvgId( SvgElement e ) const
             return "arabicEight";
         case KMinesRenderer::Mine:
             return "mine";
+        case KMinesRenderer::ExplodedMine:
+            return QString(); // dummy. shouldn't be called
         case KMinesRenderer::Explosion:
             return "explosion";
+        case KMinesRenderer::Error:
+            return "error";
+        case KMinesRenderer::Hint:
+            return "hint";
         case KMinesRenderer::NumElements:
             return QString();
     }
@@ -146,10 +152,28 @@ void KMinesRenderer::rerenderPixmaps()
     pix = m_pixHash[CellUp];
     RENDER_SVG_ELEMENT(Flag);
 
-    // mine is a mix of celldown & explosion & mine
+    // mine is a mix of celldown & mine
+    pix = m_pixHash[CellDown];
+    RENDER_SVG_ELEMENT(Mine);
+
+    // error (on top of celldown)
+    pix = m_pixHash[CellDown];
+    RENDER_SVG_ELEMENT(Error);
+
+    // hint (on top of cellup)
+    pix = m_pixHash[CellUp];
+    RENDER_SVG_ELEMENT(Hint);
+
+    // exploded mine is a mix of celldown & exploded &mine
     pix = m_pixHash[CellDown];
     RENDER_SVG_ELEMENT(Explosion);
-    RENDER_SVG_ELEMENT(Mine);
+    // and render mine on top.
+    // No macro usage or it would overwrite Mine in cache
+    // but we need to put ExplodedMine there
+    p.begin( &pix );
+    m_renderer->render( &p, elementToSvgId(Mine) );
+    p.end();
+    m_pixHash[ExplodedMine] = pix;
 }
 
 QPixmap KMinesRenderer::backgroundPixmap( const QSize& size ) const
@@ -179,9 +203,6 @@ QPixmap KMinesRenderer::pixmapForCellState( KMinesState::CellState state ) const
             return m_pixHash[CellUp];
         case KMinesState::Pressed:
             return m_pixHash[CellDown];
-        case KMinesState::Exploded:
-            // pixmap is already mixed with celldown & explosion ones
-            return m_pixHash[Mine];
         case KMinesState::Revealed:
             // i.e. revealed & digit=0 case
             return m_pixHash[CellDown];
@@ -189,6 +210,10 @@ QPixmap KMinesRenderer::pixmapForCellState( KMinesState::CellState state ) const
             return m_pixHash[Question];
         case KMinesState::Flagged:
             return m_pixHash[Flag];
+        case KMinesState::Error:
+            return m_pixHash[Error];
+        case KMinesState::Hint:
+            return m_pixHash[Hint];
         // no default! this way we'll get compiler warnings if
         // something is forgotten
     }
@@ -216,4 +241,14 @@ QPixmap KMinesRenderer::pixmapForDigitElement( int digit ) const
         e = KMinesRenderer::Digit8;
 
     return m_pixHash[e];
+}
+
+QPixmap KMinesRenderer::pixmapMine() const
+{
+    return m_pixHash[Mine];
+}
+
+QPixmap KMinesRenderer::pixmapExplodedMine() const
+{
+    return m_pixHash[ExplodedMine];
 }

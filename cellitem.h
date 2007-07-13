@@ -26,10 +26,12 @@ class QGraphicsSceneMouseEvent;
 
 /**
  * Graphics item representing single cell on
- * the game field
+ * the game field.
+ * Handles clicks, emits signals when something important happens :)
  */
-class CellItem : public QGraphicsPixmapItem
+class CellItem : public QObject, public QGraphicsPixmapItem
 {
+    Q_OBJECT
 public:
     CellItem(QGraphicsItem* parent);
     /**
@@ -59,16 +61,29 @@ public:
     /**
      * Shows what this item hides :)
      * Can be a bomb, a digit, an empty square
+     * Note that this method doesn't emit revealed() signal.
+     * That signal is only emited as a result of mouse click
      */
     void reveal();
     /**
      * Resets all properties & state of an item to default ones
      */
-    void reset() { m_state = KMinesState::Released; m_hasMine = false; m_digit = 0; }
+    void reset();
 
     // enable use of qgraphicsitem_cast
     enum { Type = UserType + 1 };
     virtual int type() const { return Type; }
+signals:
+    /**
+     * Emitted when this item is revealed with mouse click
+     */
+    void revealed();
+    /**
+     * Emitted when flag (not question mark) is set or unset on this item
+     *
+     * @param isFlagged is true if the flag was set on this item, otherwise - false
+     */
+    void flaggedStateChanged(bool isFlagged);
 private:
     // reimplemented
     virtual void mousePressEvent( QGraphicsSceneMouseEvent * );
@@ -82,6 +97,10 @@ private:
      * True if this item holds mine
      */
     bool m_hasMine;
+    /**
+     * True if mine is exploded
+     */
+    bool m_exploded;
     /**
      * Specifies a digit this item holds. 0 if none
      */

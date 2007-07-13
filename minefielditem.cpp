@@ -18,12 +18,17 @@
 #include "minefielditem.h"
 
 #include <kdebug.h>
+#include <QSignalMapper>
 
 #include "cellitem.h"
 #include "renderer.h"
 
 MineFieldItem::MineFieldItem( int numRows, int numCols, int numMines )
 {
+    // should be created before regenerateField()
+    m_signalMapper = new QSignalMapper(this);
+    connect(m_signalMapper, SIGNAL(mapped(int)), SLOT(onItemRevealed(int)));
+
     regenerateField(numRows, numCols, numMines);
 }
 
@@ -45,7 +50,11 @@ void MineFieldItem::regenerateField( int numRows, int numCols, int numMines )
         if(i<oldSize)
             m_cells[i]->reset();
         else
+        {
             m_cells[i] = new CellItem(this);
+            connect(m_cells[i], SIGNAL(revealed()), m_signalMapper, SLOT(map()));
+            m_signalMapper->setMapping(m_cells[i], i);
+        }
     }
 
     // generating mines
@@ -116,10 +125,6 @@ void MineFieldItem::regenerateField( int numRows, int numCols, int numMines )
             itemAt(row,col)->setDigit(resultingDigit);
         }
 
-    // TEMP
-    foreach( CellItem* item, m_cells )
-        item->reveal();
-
     adjustItemPositions();
 }
 
@@ -177,4 +182,20 @@ void MineFieldItem::adjustItemPositions()
             itemAt(row,col)->setPos(col*itemSize, row*itemSize);
         }
 
+}
+
+void MineFieldItem::onItemRevealed(int idx)
+{
+    // NOTE: if this happens to be needed more than once, create function.
+    // calculate row,col from idx
+    int row = idx / m_numCols;
+    int col = idx - row*m_numCols;
+
+    if(itemAt(row,col)->hasMine())
+    {
+        // reveal all field
+        foreach( CellItem* item, m_cells )
+            item->reveal();
+    }
+//    kDebug() << "item at (" << row << "," << col << ") clicked" << endl;
 }

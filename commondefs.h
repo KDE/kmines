@@ -20,7 +20,7 @@
 
 namespace KMinesState
 {
-    enum CellState { Released, Pressed, Exploded, Revealed, Questioned, Flagged };
+    enum CellState { Released, Pressed, Revealed, Questioned, Flagged, Error, Hint };
 }
 
 #endif

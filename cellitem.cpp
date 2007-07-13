@@ -24,19 +24,55 @@
 
 #include "renderer.h"
 
+// HIDDEN NOTE: current design is that every CellItem is a QObject
+// and analyzes all mouse clicks by itself and emits corresponding
+// signals when needed. The thoughts are coming to my head that
+// this might be a bit heavy for every item be a QObject
+// (although I doubt this, but I decided to write this note anyway)
+// Alternative approach would be to handle mouse events in MineFieldItem
+// and forward them to corresponding items, but that wouldn't be so nice
+// looking IMO :). From design side.
+// I don't know if this "heaviness" applies to this case - I doubt we'll
+// have huge-huge boards. Anyway I'll leave this note. If someone finds
+// it's a nonsense or that it doesn't apply or it's stupid, please remove
+// it immediately :-)
+
 CellItem::CellItem(QGraphicsItem* parent)
-    : QGraphicsPixmapItem(parent), m_state(KMinesState::Released), m_hasMine(false), m_digit(0)
+    : QGraphicsPixmapItem(parent)
 {
+    reset();
     setShapeMode(BoundingRectShape);
     updatePixmap();
 }
 
+void CellItem::reset()
+{
+    m_state = KMinesState::Released;
+    m_hasMine = false;
+    m_exploded = false;
+    m_digit = 0;
+}
+
 void CellItem::updatePixmap()
 {
+    // several special cases at the beginning
+
     if( m_state == KMinesState::Revealed && m_digit != 0)
+    {
         setPixmap( KMinesRenderer::self()->pixmapForDigitElement(m_digit) );
-    else
-        setPixmap( KMinesRenderer::self()->pixmapForCellState( m_state ) );
+        return;
+    }
+
+    if( m_state == KMinesState::Revealed && m_hasMine )
+    {
+        if( m_exploded )
+            setPixmap( KMinesRenderer::self()->pixmapExplodedMine() );
+        else
+            setPixmap( KMinesRenderer::self()->pixmapMine() );
+        return;
+    }
+
+    setPixmap( KMinesRenderer::self()->pixmapForCellState( m_state ) );
 }
 
 void CellItem::mousePressEvent( QGraphicsSceneMouseEvent * ev )
@@ -52,8 +88,10 @@ void CellItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *ev )
 {
     if(m_state == KMinesState::Pressed )
     {
-        m_state = KMinesState::Released;
-        updatePixmap();
+        // if we hold mine, let's explode on mouse click
+        m_exploded = m_hasMine;
+        reveal();
+        emit revealed();
     }
     else if(ev->button() == Qt::RightButton )
     {
@@ -76,11 +114,12 @@ void CellItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *ev )
                 break;
         } // end switch
         updatePixmap();
+        emit flaggedStateChanged( m_state == KMinesState::Flagged );
     }
 }
 
 void CellItem::reveal()
 {
-    m_state = m_hasMine ? KMinesState::Exploded : KMinesState::Revealed;
+    m_state = KMinesState::Revealed;
     updatePixmap();
 }

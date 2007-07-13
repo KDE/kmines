@@ -65,6 +65,14 @@ public:
      * @return pixmap for item that holds a digit
      */
     QPixmap pixmapForDigitElement( int digit ) const;
+    /**
+     * @return pixmap for item with mine
+     */
+    QPixmap pixmapMine() const;
+    /**
+     * @return pixmap for item with exploded mine
+     */
+    QPixmap pixmapExplodedMine() const;
 private:
     // disable copy - it's singleton
     KMinesRenderer();
@@ -108,6 +116,9 @@ private:
         Digit8,
         Mine,
         Explosion,
+        ExplodedMine, // for convinience - doesn't exist in svg.
+        Error,
+        Hint,
         NumElements
     };
     /**
