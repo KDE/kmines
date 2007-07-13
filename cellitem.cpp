@@ -33,11 +33,8 @@ CellItem::CellItem(QGraphicsItem* parent)
 
 void CellItem::updatePixmap()
 {
-    if( m_state == KMinesState::Revealed )
-    {
-        if(m_digit != 0)
-            setPixmap( KMinesRenderer::self()->pixmapForDigitElement(m_digit) );
-    }
+    if( m_state == KMinesState::Revealed && m_digit != 0)
+        setPixmap( KMinesRenderer::self()->pixmapForDigitElement(m_digit) );
     else
         setPixmap( KMinesRenderer::self()->pixmapForCellState( m_state ) );
 }

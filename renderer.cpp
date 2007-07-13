@@ -184,7 +184,7 @@ QPixmap KMinesRenderer::pixmapForCellState( KMinesState::CellState state ) const
             return m_pixHash[Mine];
         case KMinesState::Revealed:
             // i.e. revealed & digit=0 case
-            return m_pixHash[CellUp];
+            return m_pixHash[CellDown];
         case KMinesState::Questioned:
             return m_pixHash[Question];
         case KMinesState::Flagged:
