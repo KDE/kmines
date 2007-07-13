@@ -24,36 +24,67 @@
 
 class QGraphicsSceneMouseEvent;
 
-// TODO docs-docs-docs
+/**
+ * Graphics item representing single cell on
+ * the game field
+ */
 class CellItem : public QGraphicsPixmapItem
 {
 public:
     CellItem(QGraphicsItem* parent);
-
-    void updatePixmap();// according to state
-
+    /**
+     * Updates item pixmap according to its current
+     * state and properties
+     */
+    void updatePixmap();
+    // FIXME: will it EVER be needed to setHasMine(false)???
+    /**
+     * Sets whether this item holds mine or not
+     */
     void setHasMine(bool hasMine) { m_hasMine = hasMine; }
+    /**
+     * @return whether this item holds mine
+     */
     bool hasMine() const { return m_hasMine; }
-
+    /**
+     * Sets this item so it holds a digit
+     *
+     * @param digit digit number (1 to 8)
+     */
     void setDigit(int digit) { m_digit = digit; }
+    /**
+     * @return digit this item holds or 0 if none
+     */
     int digit() const { return m_digit; }
-
     /**
      * Shows what this item hides :)
      * Can be a bomb, a digit, an empty square
      */
     void reveal();
+    /**
+     * Resets all properties & state of an item to default ones
+     */
+    void reset() { m_state = KMinesState::Released; m_hasMine = false; m_digit = 0; }
 
     // enable use of qgraphicsitem_cast
     enum { Type = UserType + 1 };
     virtual int type() const { return Type; }
 private:
+    // reimplemented
     virtual void mousePressEvent( QGraphicsSceneMouseEvent * );
+    // reimplemented
     virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * );
-
+    /**
+     * Current state of this item
+     */
     KMinesState::CellState m_state;
-
+    /**
+     * True if this item holds mine
+     */
     bool m_hasMine;
+    /**
+     * Specifies a digit this item holds. 0 if none
+     */
     int m_digit;
 };
 
