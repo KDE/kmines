@@ -23,6 +23,7 @@
 #include <KRandomSequence>
 
 class CellItem;
+class QSignalMapper;
 
 /**
  * Graphics item that represents MineField.
@@ -31,8 +32,9 @@ class CellItem;
  * with given properties (num rows, num cols, num mines) and
  * handling resizes
  */
-class MineFieldItem : public QGraphicsItem
+class MineFieldItem : public QObject, public QGraphicsItem
 {
+    Q_OBJECT
 public:
     /**
      * Constructor.
@@ -60,6 +62,8 @@ public:
      * Reimplemented from QGraphicsItem
      */
     QRectF boundingRect() const;// reimp
+private slots:
+    void onItemRevealed(int idx);
 private:
     /**
      * Returns cell item at (row,col).
@@ -98,6 +102,10 @@ private:
      * Random sequence used to generate mine positions
      */
     KRandomSequence m_randomSeq;
+    /**
+     * Used to map signals from all items to single slot
+     */
+    QSignalMapper *m_signalMapper;
 };
 
 #endif
