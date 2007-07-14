@@ -112,3 +112,9 @@ void CellItem::reveal()
         m_state = KMinesState::Revealed;
     updatePixmap();
 }
+
+void CellItem::undoPress()
+{
+    m_state = KMinesState::Released;
+    updatePixmap();
+}

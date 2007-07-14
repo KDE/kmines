@@ -94,6 +94,10 @@ private:
             int row = idx/m_numCols;
             return qMakePair(row, idx - row*m_numCols);
         }
+    /**
+     * Returns all adjasent items for item at row, col
+     */
+    QList<CellItem*> adjasentItemsFor(int row, int col);
 
     /**
      * Reimplemented from QGraphicsItem
