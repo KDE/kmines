@@ -84,6 +84,7 @@ public:
     // TODO docs
     void press();
     void release();
+    void undoPress();
     void mark();
     // enable use of qgraphicsitem_cast
     enum { Type = UserType + 1 };

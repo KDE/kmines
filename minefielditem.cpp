@@ -86,46 +86,13 @@ void MineFieldItem::regenerateField( int numRows, int numCols, int numMines )
             // simply looking at all 8 neighbour cells and adding +1 for each
             // mine we found
             int resultingDigit = 0;
-            if(row != 0 && col != 0) // upper-left diagonal
+            QList<CellItem*> neighbours = adjasentItemsFor(row,col);
+            foreach(CellItem* item, neighbours)
             {
-                if(itemAt(row-1,col-1)->hasMine())
+                if(item->hasMine())
                     resultingDigit++;
             }
-            if(row != 0) // upper
-            {
-                if(itemAt(row-1, col)->hasMine())
-                    resultingDigit++;
-            }
-            if(row != 0 && col != m_numCols-1) // upper-right diagonal
-            {
-                if(itemAt(row-1, col+1)->hasMine())
-                    resultingDigit++;
-            }
-            if(col != 0) // on the left
-            {
-                if(itemAt(row,col-1)->hasMine())
-                    resultingDigit++;
-            }
-            if(col != m_numCols-1) // on the right
-            {
-                if(itemAt(row, col+1)->hasMine())
-                    resultingDigit++;
-            }
-            if(row != m_numRows-1 && col != 0) // bottom-left diagonal
-            {
-                if(itemAt(row+1, col-1)->hasMine())
-                    resultingDigit++;
-            }
-            if(row != m_numRows-1) // bottom
-            {
-                if(itemAt(row+1, col)->hasMine())
-                    resultingDigit++;
-            }
-            if(row != m_numRows-1 && col != m_numCols-1) // bottom-right diagonal
-            {
-                if(itemAt(row+1, col+1)->hasMine())
-                    resultingDigit++;
-            }
+
             // having 0 is ok here - it'll be empty
             itemAt(row,col)->setDigit(resultingDigit);
         }
@@ -221,6 +188,10 @@ void MineFieldItem::revealEmptySpace(int row, int col)
 
     CellItem *item = 0;
     // recursively reveal neighbour cells until we find cells with digit
+    // NOTE if I manage to make revealEmptySpace accept CellItem* argument
+    // rather then (row,col) then replace all of the below if's with
+    // a call to adjasentItemsFor() and foreach
+
     if(row != 0 && col != 0) // upper-left diagonal
     {
         item = itemAt(row-1,col-1);
@@ -289,14 +260,23 @@ void MineFieldItem::revealEmptySpace(int row, int col)
 
 void MineFieldItem::mousePressEvent( QGraphicsSceneMouseEvent *ev )
 {
+    int itemSize = KMinesRenderer::self()->cellSize();
+
+    int row = static_cast<int>(ev->pos().y()/itemSize);
+    int col = static_cast<int>(ev->pos().x()/itemSize);
     if(ev->button() == Qt::LeftButton)
     {
-        int itemSize = KMinesRenderer::self()->cellSize();
-
-        int row = static_cast<int>(ev->pos().y()/itemSize);
-        int col = static_cast<int>(ev->pos().x()/itemSize);
         itemAt(row,col)->press();
         m_rowcolMousePress = qMakePair(row,col);
+    }
+    else if(ev->button() == Qt::MidButton || ev->buttons() == (Qt::LeftButton | Qt::RightButton))
+    {
+        QList<CellItem*> neighbours = adjasentItemsFor(row,col);
+        foreach(CellItem* item, neighbours)
+        {
+            if(!item->isFlagged() && !item->isRevealed())
+                item->press();
+        }
     }
 }
 
@@ -329,4 +309,26 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
             emit flaggedMinesCountChanged(m_flaggedMinesCount);
         }
     }
+}
+
+QList<CellItem*> MineFieldItem::adjasentItemsFor(int row, int col)
+{
+    QList<CellItem*> resultingList;
+    if(row != 0 && col != 0) // upper-left diagonal
+        resultingList.append( itemAt(row-1,col-1) );
+    if(row != 0) // upper
+        resultingList.append(itemAt(row-1, col));
+    if(row != 0 && col != m_numCols-1) // upper-right diagonal
+        resultingList.append(itemAt(row-1, col+1));
+    if(col != 0) // on the left
+        resultingList.append(itemAt(row,col-1));
+    if(col != m_numCols-1) // on the right
+        resultingList.append(itemAt(row, col+1));
+    if(row != m_numRows-1 && col != 0) // bottom-left diagonal
+        resultingList.append(itemAt(row+1, col-1));
+    if(row != m_numRows-1) // bottom
+        resultingList.append(itemAt(row+1, col));
+    if(row != m_numRows-1 && col != m_numCols-1) // bottom-right diagonal
+        resultingList.append(itemAt(row+1, col+1));
+    return resultingList;
 }
