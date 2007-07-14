@@ -20,10 +20,13 @@
 
 #include <KStandardGameAction>
 #include <KActionCollection>
+#include <KStatusBar>
+#include <KLocale>
 
 KMinesMainWindow::KMinesMainWindow()
 {
     m_scene = new KMinesScene(this);
+    connect(m_scene, SIGNAL(minesCountChanged(int)), SLOT(onMinesCountChanged(int)));
 
     KMinesView* view = new KMinesView( m_scene, this );
     view->setCacheMode( QGraphicsView::CacheBackground );
@@ -35,6 +38,7 @@ KMinesMainWindow::KMinesMainWindow()
                                   QGraphicsView::DontSavePainterState |
                                   QGraphicsView::DontAdjustForAntialiasing );
 
+    statusBar()->insertItem( i18n("Mines: 0/0"), 0 );
     setCentralWidget(view);
     setupActions();
 }
@@ -44,4 +48,9 @@ void KMinesMainWindow::setupActions()
     KStandardGameAction::quit(this, SLOT(close()), actionCollection());
     KStandardGameAction::gameNew(m_scene, SLOT(startNewGame()), actionCollection());
     setupGUI();
+}
+
+void KMinesMainWindow::onMinesCountChanged(int count)
+{
+    statusBar()->changeItem( i18n("Mines %1/%2", count, m_scene->totalMines()), 0 );
 }

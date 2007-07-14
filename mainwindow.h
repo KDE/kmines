@@ -24,8 +24,11 @@ class KMinesScene;
 
 class KMinesMainWindow : public KXmlGuiWindow
 {
+    Q_OBJECT
 public:
     KMinesMainWindow();
+private slots:
+    void onMinesCountChanged(int count);
 private:
     void setupActions();
     KMinesScene* m_scene;

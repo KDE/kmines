@@ -98,15 +98,16 @@ void CellItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *ev )
         // this will provide cycling through
         // Released -> "?"-mark -> "RedFlag"-mark -> Released
 
+        bool wasFlagged = (m_state == KMinesState::Flagged);
         switch(m_state)
         {
             case KMinesState::Released:
-                m_state = KMinesState::Questioned;
-                break;
-            case KMinesState::Questioned:
                 m_state = KMinesState::Flagged;
                 break;
             case KMinesState::Flagged:
+                m_state = KMinesState::Questioned;
+                break;
+            case KMinesState::Questioned:
                 m_state = KMinesState::Released;
                 break;
             default:
@@ -114,12 +115,17 @@ void CellItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *ev )
                 break;
         } // end switch
         updatePixmap();
-        emit flaggedStateChanged( m_state == KMinesState::Flagged );
+        bool isFlagged = (m_state == KMinesState::Flagged);
+        if(wasFlagged != isFlagged)
+            emit flaggedStateChanged();
     }
 }
 
 void CellItem::reveal()
 {
-    m_state = KMinesState::Revealed;
+    if(m_state == KMinesState::Flagged && m_hasMine == false)
+        m_state = KMinesState::Error;
+    else
+        m_state = KMinesState::Revealed;
     updatePixmap();
 }

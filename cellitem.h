@@ -75,6 +75,10 @@ public:
      */
     bool isRevealed() const { return m_state == KMinesState::Revealed; }
     /**
+     * @return whether this cell is marked with flag
+     */
+    bool isFlagged() const { return m_state == KMinesState::Flagged; }
+    /**
      * Resets all properties & state of an item to default ones
      */
     void reset();
@@ -89,10 +93,9 @@ signals:
     void revealed();
     /**
      * Emitted when flag (not question mark) is set or unset on this item
-     *
-     * @param isFlagged is true if the flag was set on this item, otherwise - false
+     * New flagged state can be retrieved via isFlagged()
      */
-    void flaggedStateChanged(bool isFlagged);
+    void flaggedStateChanged();
 private:
     // reimplemented
     virtual void mousePressEvent( QGraphicsSceneMouseEvent * );
