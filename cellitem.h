@@ -53,7 +53,7 @@ public:
      *
      * @param digit digit number (1 to 8)
      */
-    void setDigit(int digit) { m_digit = digit; }
+    void setDigit(int digit) { m_digit = digit; updatePixmap(); }
     /**
      * @return digit this item holds or 0 if none
      */
@@ -65,6 +65,15 @@ public:
      * That signal is only emited as a result of mouse click
      */
     void reveal();
+    /**
+     * Hides what this item shows ;).
+     * I.e. resets revealed state
+     */
+    void unreveal() { m_state = KMinesState::Released; updatePixmap(); }
+    /**
+     * @return whether this cell is revealed
+     */
+    bool isRevealed() const { return m_state == KMinesState::Revealed; }
     /**
      * Resets all properties & state of an item to default ones
      */

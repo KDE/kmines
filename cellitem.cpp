@@ -40,9 +40,8 @@
 CellItem::CellItem(QGraphicsItem* parent)
     : QGraphicsPixmapItem(parent)
 {
-    reset();
     setShapeMode(BoundingRectShape);
-    updatePixmap();
+    reset();
 }
 
 void CellItem::reset()
@@ -51,6 +50,7 @@ void CellItem::reset()
     m_hasMine = false;
     m_exploded = false;
     m_digit = 0;
+    updatePixmap();
 }
 
 void CellItem::updatePixmap()

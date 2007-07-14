@@ -22,6 +22,19 @@
 
 #include "minefielditem.h"
 #include "renderer.h"
+// --------------- KMinesView ---------------
+
+KMinesView::KMinesView( KMinesScene* scene, QWidget *parent )
+    : QGraphicsView(scene, parent), m_scene(scene)
+{
+}
+
+void KMinesView::resizeEvent( QResizeEvent *ev )
+{
+    m_scene->resizeScene( ev->size().width(), ev->size().height() );
+}
+
+// -------------- KMinesScene --------------------
 
 KMinesScene::KMinesScene( QObject* parent )
     : QGraphicsScene(parent)
@@ -39,19 +52,14 @@ void KMinesScene::resizeScene(int width, int height)
                          sceneRect().height()/2 - m_fieldItem->boundingRect().height()/2 );
 }
 
-// --------------- KMinesView ---------------
-
-KMinesView::KMinesView( KMinesScene* scene, QWidget *parent )
-    : QGraphicsView(scene, parent), m_scene(scene)
-{
-}
-
-void KMinesView::resizeEvent( QResizeEvent *ev )
-{
-    m_scene->resizeScene( ev->size().width(), ev->size().height() );
-}
-
 void KMinesScene::drawBackground( QPainter* p, const QRectF& )
 {
 //    p->drawPixmap( 0, 0, KMinesRenderer::self()->backgroundPixmap(sceneRect().size().toSize()) );
+}
+
+void KMinesScene::startNewGame()
+{
+    m_fieldItem->regenerateField(10,15, 20);
+    // reposition items
+    resizeScene((int)sceneRect().width(), (int)sceneRect().height());
 }

@@ -19,6 +19,7 @@
 
 #include <kdebug.h>
 #include <QSignalMapper>
+#include <QGraphicsScene>
 
 #include "cellitem.h"
 #include "renderer.h"
@@ -37,14 +38,26 @@ void MineFieldItem::regenerateField( int numRows, int numCols, int numMines )
     Q_ASSERT( numMines < numRows*numRows );
 
     int oldSize = m_cells.size();
+    int newSize = numRows*numCols;
+
+    // if field is being shrinked, delete elements at the end before resizing vector
+    if(oldSize > newSize)
+    {
+        for( int i=newSize; i<oldSize; ++i )
+        {
+            // is this the best way to remove an item?
+            scene()->removeItem(m_cells[i]);
+            delete m_cells[i];
+        }
+    }
+
+    m_cells.resize(newSize);
 
     m_numRows = numRows;
     m_numCols = numCols;
     m_minesCount = numMines;
 
-    m_cells.resize(m_numRows*m_numCols);
-
-    for(int i=0; i<m_numRows*m_numCols; ++i)
+    for(int i=0; i<newSize; ++i)
     {
         // reset old, create new
         if(i<oldSize)
@@ -197,5 +210,79 @@ void MineFieldItem::onItemRevealed(int idx)
         foreach( CellItem* item, m_cells )
             item->reveal();
     }
-//    kDebug() << "item at (" << row << "," << col << ") clicked" << endl;
+    else if(itemAt(row,col)->digit() == 0) // empty cell
+    {
+        // this item is already revealed, but let's unreveal it
+        // just to keep the revealEmptySpace() look more clean
+        // (without checks for isRevealed() in every if there, but
+        // with one check at the beginning
+        itemAt(row,col)->unreveal();
+        revealEmptySpace(row,col);
+    }
+}
+
+void MineFieldItem::revealEmptySpace(int row, int col)
+{
+    if(itemAt(row,col)->isRevealed())
+        return;
+
+    itemAt(row,col)->reveal();
+
+    // recursively reveal neighbour cells until we find cells with digit
+    if(row != 0 && col != 0) // upper-left diagonal
+    {
+        if(itemAt(row-1,col-1)->digit() == 0)
+            revealEmptySpace(row-1,col-1);
+        else
+            itemAt(row-1,col-1)->reveal();
+    }
+    if(row != 0) // upper
+    {
+        if(itemAt(row-1, col)->digit() == 0)
+            revealEmptySpace(row-1,col);
+        else
+            itemAt(row-1,col)->reveal();
+    }
+    if(row != 0 && col != m_numCols-1) // upper-right diagonal
+    {
+        if(itemAt(row-1, col+1)->digit() == 0)
+            revealEmptySpace(row-1,col+1);
+        else
+            itemAt(row-1,col+1)->reveal();
+    }
+    if(col != 0) // on the left
+    {
+        if(itemAt(row,col-1)->digit() == 0)
+            revealEmptySpace(row,col-1);
+        else
+            itemAt(row,col-1)->reveal();
+    }
+    if(col != m_numCols-1) // on the right
+    {
+        if(itemAt(row,col+1)->digit() == 0)
+            revealEmptySpace(row,col+1);
+        else
+            itemAt(row,col+1)->reveal();
+    }
+    if(row != m_numRows-1 && col != 0) // bottom-left diagonal
+    {
+        if(itemAt(row+1,col-1)->digit() == 0)
+            revealEmptySpace(row+1,col-1);
+        else
+            itemAt(row+1,col-1)->reveal();
+    }
+    if(row != m_numRows-1) // bottom
+    {
+        if(itemAt(row+1,col)->digit() == 0)
+            revealEmptySpace(row+1,col);
+        else
+            itemAt(row+1,col)->reveal();
+    }
+    if(row != m_numRows-1 && col != m_numCols-1) // bottom-right diagonal
+    {
+        if(itemAt(row+1,col+1)->digit() == 0)
+            revealEmptySpace(row+1,col+1);
+        else
+            itemAt(row+1,col+1)->reveal();
+    }
 }
