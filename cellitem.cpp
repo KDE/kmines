@@ -18,24 +18,10 @@
 
 #include "cellitem.h"
 #include <QPainter>
-#include <QGraphicsSceneMouseEvent>
 
 #include <kdebug.h>
 
 #include "renderer.h"
-
-// HIDDEN NOTE: current design is that every CellItem is a QObject
-// and analyzes all mouse clicks by itself and emits corresponding
-// signals when needed. The thoughts are coming to my head that
-// this might be a bit heavy for every item be a QObject
-// (although I doubt this, but I decided to write this note anyway)
-// Alternative approach would be to handle mouse events in MineFieldItem
-// and forward them to corresponding items, but that wouldn't be so nice
-// looking IMO :). From design side.
-// I don't know if this "heaviness" applies to this case - I doubt we'll
-// have huge-huge boards. Anyway I'll leave this note. If someone finds
-// it's a nonsense or that it doesn't apply or it's stupid, please remove
-// it immediately :-)
 
 CellItem::CellItem(QGraphicsItem* parent)
     : QGraphicsPixmapItem(parent)
@@ -75,54 +61,51 @@ void CellItem::updatePixmap()
     setPixmap( KMinesRenderer::self()->pixmapForCellState( m_state ) );
 }
 
-void CellItem::mousePressEvent( QGraphicsSceneMouseEvent * ev )
+void CellItem::press()
 {
-    if(ev->button() == Qt::LeftButton && m_state == KMinesState::Released)
+    if(m_state == KMinesState::Released)
     {
         m_state = KMinesState::Pressed;
         updatePixmap();
     }
 }
 
-void CellItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *ev )
+void CellItem::release()
 {
     if(m_state == KMinesState::Pressed )
     {
         // if we hold mine, let's explode on mouse click
         m_exploded = m_hasMine;
         reveal();
-        emit revealed();
     }
-    else if(ev->button() == Qt::RightButton )
-    {
-        // this will provide cycling through
-        // Released -> "?"-mark -> "RedFlag"-mark -> Released
+}
 
-        bool wasFlagged = (m_state == KMinesState::Flagged);
-        switch(m_state)
-        {
-            case KMinesState::Released:
-                m_state = KMinesState::Flagged;
-                break;
-            case KMinesState::Flagged:
-                m_state = KMinesState::Questioned;
-                break;
-            case KMinesState::Questioned:
-                m_state = KMinesState::Released;
-                break;
-            default:
-                // shouldn't be here
-                break;
-        } // end switch
-        updatePixmap();
-        bool isFlagged = (m_state == KMinesState::Flagged);
-        if(wasFlagged != isFlagged)
-            emit flaggedStateChanged();
-    }
+void CellItem::mark()
+{
+    // this will provide cycling through
+    // Released -> "?"-mark -> "RedFlag"-mark -> Released
+
+    switch(m_state)
+    {
+        case KMinesState::Released:
+            m_state = KMinesState::Flagged;
+            break;
+        case KMinesState::Flagged:
+            m_state = KMinesState::Questioned;
+            break;
+        case KMinesState::Questioned:
+            m_state = KMinesState::Released;
+            break;
+        default:
+            // shouldn't be here
+            break;
+    } // end switch
+    updatePixmap();
 }
 
 void CellItem::reveal()
 {
+
     if(m_state == KMinesState::Flagged && m_hasMine == false)
         m_state = KMinesState::Error;
     else

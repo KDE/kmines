@@ -24,8 +24,6 @@
 #include <KRandomSequence>
 
 class CellItem;
-class QSignalMapper;
-
 /**
  * Graphics item that represents MineField.
  * It is composed of many (or little) of CellItems.
@@ -77,10 +75,12 @@ public:
     int minesCount() const { return m_minesCount; }
 signals:
     void flaggedMinesCountChanged(int);
-private slots:
-    void onItemRevealed(int idx);
-    void onItemFlagStateChanged(int idx);
 private:
+    // reimplemented
+    virtual void mousePressEvent( QGraphicsSceneMouseEvent * );
+    // reimplemented
+    virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * );
+
     /**
      * Returns cell item at (row,col).
      * Always use this function instead hand-computing index in m_cells
@@ -108,6 +108,8 @@ private:
      * until it found cells with digits (which are also revealed)
      */
     void revealEmptySpace(int row, int col);
+
+    void onItemRevealed(int row, int col);
 
     // note: in member functions use itemAt (see above )
     // instead of hand-computing index from row & col!
@@ -137,10 +139,10 @@ private:
      */
     KRandomSequence m_randomSeq;
     /**
-     * Used to map signals from all items to single slot
+     * row and column where mouse was pressed.
+     * (-1,-1) if it is already released
      */
-    QSignalMapper *m_revealSignalMapper;
-    QSignalMapper *m_flagSignalMapper;
+    QPair<int,int> m_rowcolMousePress;
 };
 
 #endif

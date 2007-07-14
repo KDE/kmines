@@ -29,9 +29,8 @@ class QGraphicsSceneMouseEvent;
  * the game field.
  * Handles clicks, emits signals when something important happens :)
  */
-class CellItem : public QObject, public QGraphicsPixmapItem
+class CellItem : public QGraphicsPixmapItem
 {
-    Q_OBJECT
 public:
     CellItem(QGraphicsItem* parent);
     /**
@@ -82,7 +81,10 @@ public:
      * Resets all properties & state of an item to default ones
      */
     void reset();
-
+    // TODO docs
+    void press();
+    void release();
+    void mark();
     // enable use of qgraphicsitem_cast
     enum { Type = UserType + 1 };
     virtual int type() const { return Type; }
@@ -97,10 +99,6 @@ signals:
      */
     void flaggedStateChanged();
 private:
-    // reimplemented
-    virtual void mousePressEvent( QGraphicsSceneMouseEvent * );
-    // reimplemented
-    virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * );
     /**
      * Current state of this item
      */
