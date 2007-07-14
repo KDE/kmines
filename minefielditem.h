@@ -80,6 +80,8 @@ private:
     virtual void mousePressEvent( QGraphicsSceneMouseEvent * );
     // reimplemented
     virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * );
+    // reimplemented
+    virtual void mouseMoveEvent( QGraphicsSceneMouseEvent * );
 
     /**
      * Returns cell item at (row,col).
@@ -100,6 +102,10 @@ private:
     QList<CellItem*> adjasentItemsFor(int row, int col);
 
     /**
+     * Reveals all unmarked items containing mines
+     */
+    void revealAllMines();
+    /**
      * Reimplemented from QGraphicsItem
      */
     void paint( QPainter * painter, const QStyleOptionGraphicsItem*, QWidget * widget = 0 );
@@ -114,6 +120,8 @@ private:
     void revealEmptySpace(int row, int col);
 
     void onItemRevealed(int row, int col);
+    // overload
+    void onItemRevealed(CellItem* item);
 
     // note: in member functions use itemAt (see above )
     // instead of hand-computing index from row & col!
@@ -147,6 +155,7 @@ private:
      * (-1,-1) if it is already released
      */
     QPair<int,int> m_rowcolMousePress;
+    QPair<int,int> m_rowcolMidButton;
 };
 
 #endif

@@ -72,7 +72,7 @@ public:
     /**
      * @return whether this cell is revealed
      */
-    bool isRevealed() const { return m_state == KMinesState::Revealed; }
+    bool isRevealed() const { return ( m_state == KMinesState::Revealed || m_state == KMinesState::Error); }
     /**
      * @return whether this cell is marked with flag
      */
@@ -83,7 +83,7 @@ public:
     void reset();
     // TODO docs
     void press();
-    void release();
+    void release(bool force=false);
     void undoPress();
     void mark();
     // enable use of qgraphicsitem_cast
