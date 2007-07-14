@@ -317,11 +317,16 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
     }
     else if(ev->button() == Qt::RightButton)
     {
+        bool wasFlagged = itemUnderMouse->isFlagged();
         itemUnderMouse->mark();
-        if(itemUnderMouse->isFlagged())
-            m_flaggedMinesCount++;
-        else
-            m_flaggedMinesCount--;
+        bool flagStateChanged = (itemUnderMouse->isFlagged() != wasFlagged);
+        if(flagStateChanged)
+        {
+            if(itemUnderMouse->isFlagged())
+                m_flaggedMinesCount++;
+            else
+                m_flaggedMinesCount--;
+        }
         emit flaggedMinesCountChanged(m_flaggedMinesCount);
     }
 }
