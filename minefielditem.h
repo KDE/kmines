@@ -78,6 +78,11 @@ private:
      * Repositions all child cell items upon resizes
      */
     void adjustItemPositions();
+    /**
+     * Reveals all empty cells around cell at (row,col),
+     * until it found cells with digits (which are also revealed)
+     */
+    void revealEmptySpace(int row, int col);
 
     // note: in member functions use itemAt (see above )
     // instead of hand-computing index from row & col!

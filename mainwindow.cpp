@@ -23,7 +23,7 @@
 
 KMinesMainWindow::KMinesMainWindow()
 {
-    KMinesScene* m_scene = new KMinesScene(this);
+    m_scene = new KMinesScene(this);
 
     KMinesView* view = new KMinesView( m_scene, this );
     view->setCacheMode( QGraphicsView::CacheBackground );
@@ -42,5 +42,6 @@ KMinesMainWindow::KMinesMainWindow()
 void KMinesMainWindow::setupActions()
 {
     KStandardGameAction::quit(this, SLOT(close()), actionCollection());
+    KStandardGameAction::gameNew(m_scene, SLOT(startNewGame()), actionCollection());
     setupGUI();
 }

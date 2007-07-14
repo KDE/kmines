@@ -20,11 +20,14 @@
 
 #include <KXmlGuiWindow>
 
+class KMinesScene;
+
 class KMinesMainWindow : public KXmlGuiWindow
 {
 public:
     KMinesMainWindow();
 private:
     void setupActions();
+    KMinesScene* m_scene;
 };
 #endif

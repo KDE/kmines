@@ -38,6 +38,11 @@ public:
      * Resizes scene to given dimensions
      */
     void resizeScene(int width, int height);
+public slots:
+    /**
+     * Starts new game
+     */
+    void startNewGame();
 private:
     /**
      * Draws scene background
