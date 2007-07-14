@@ -18,20 +18,14 @@
 #include "minefielditem.h"
 
 #include <kdebug.h>
-#include <QSignalMapper>
 #include <QGraphicsScene>
+#include <QGraphicsSceneMouseEvent>
 
 #include "cellitem.h"
 #include "renderer.h"
 
 MineFieldItem::MineFieldItem( int numRows, int numCols, int numMines )
 {
-    // should be created before regenerateField()
-    m_revealSignalMapper = new QSignalMapper(this);
-    connect(m_revealSignalMapper, SIGNAL(mapped(int)), SLOT(onItemRevealed(int)));
-    m_flagSignalMapper = new QSignalMapper(this);
-    connect(m_flagSignalMapper, SIGNAL(mapped(int)), SLOT(onItemFlagStateChanged(int)));
-
     regenerateField(numRows, numCols, numMines);
 }
 
@@ -65,13 +59,7 @@ void MineFieldItem::regenerateField( int numRows, int numCols, int numMines )
         if(i<oldSize)
             m_cells[i]->reset();
         else
-        {
             m_cells[i] = new CellItem(this);
-            connect(m_cells[i], SIGNAL(revealed()), m_revealSignalMapper, SLOT(map()));
-            m_revealSignalMapper->setMapping(m_cells[i], i);
-            connect(m_cells[i], SIGNAL(flaggedStateChanged()), m_flagSignalMapper, SLOT(map()));
-            m_flagSignalMapper->setMapping(m_cells[i], i);
-        }
     }
 
     // generating mines
@@ -193,22 +181,17 @@ void MineFieldItem::adjustItemPositions()
 {
     Q_ASSERT( m_cells.size() == m_numRows*m_numCols );
 
-    qreal itemSize = KMinesRenderer::self()->cellSize();
+    int itemSize = KMinesRenderer::self()->cellSize();
 
     for(int row=0; row<m_numRows; ++row)
         for(int col=0; col<m_numCols; ++col)
         {
             itemAt(row,col)->setPos(col*itemSize, row*itemSize);
         }
-
 }
 
-void MineFieldItem::onItemRevealed(int idx)
+void MineFieldItem::onItemRevealed(int row, int col)
 {
-    QPair<int,int> rowcol = rowColFromIndex(idx);
-    int row = rowcol.first;
-    int col = rowcol.second;
-
     if(itemAt(row,col)->hasMine())
     {
         // reveal all field
@@ -236,74 +219,109 @@ void MineFieldItem::revealEmptySpace(int row, int col)
 
     itemAt(row,col)->reveal();
 
+    CellItem *item = 0;
     // recursively reveal neighbour cells until we find cells with digit
     if(row != 0 && col != 0) // upper-left diagonal
     {
-        if(itemAt(row-1,col-1)->digit() == 0)
+        item = itemAt(row-1,col-1);
+        if(item->digit() == 0)
             revealEmptySpace(row-1,col-1);
-        else
-            itemAt(row-1,col-1)->reveal();
+        else if(!item->isFlagged())
+            item->reveal();
     }
     if(row != 0) // upper
     {
-        if(itemAt(row-1, col)->digit() == 0)
+        item = itemAt(row-1,col);
+        if(item->digit() == 0)
             revealEmptySpace(row-1,col);
-        else
-            itemAt(row-1,col)->reveal();
+        else if(!item->isFlagged())
+            item->reveal();
     }
     if(row != 0 && col != m_numCols-1) // upper-right diagonal
     {
-        if(itemAt(row-1, col+1)->digit() == 0)
+        item = itemAt(row-1,col+1);
+        if(item->digit() == 0)
             revealEmptySpace(row-1,col+1);
-        else
-            itemAt(row-1,col+1)->reveal();
+        else if(!item->isFlagged())
+            item->reveal();
     }
     if(col != 0) // on the left
     {
-        if(itemAt(row,col-1)->digit() == 0)
+        item = itemAt(row,col-1);
+        if(item->digit() == 0)
             revealEmptySpace(row,col-1);
-        else
-            itemAt(row,col-1)->reveal();
+        else if(!item->isFlagged())
+            item->reveal();
     }
     if(col != m_numCols-1) // on the right
     {
-        if(itemAt(row,col+1)->digit() == 0)
+        item = itemAt(row,col+1);
+        if(item->digit() == 0)
             revealEmptySpace(row,col+1);
-        else
-            itemAt(row,col+1)->reveal();
+        else if(!item->isFlagged())
+            item->reveal();
     }
     if(row != m_numRows-1 && col != 0) // bottom-left diagonal
     {
-        if(itemAt(row+1,col-1)->digit() == 0)
+        item = itemAt(row+1,col-1);
+        if(item->digit() == 0)
             revealEmptySpace(row+1,col-1);
-        else
-            itemAt(row+1,col-1)->reveal();
+        else if(!item->isFlagged())
+            item->reveal();
     }
     if(row != m_numRows-1) // bottom
     {
-        if(itemAt(row+1,col)->digit() == 0)
+        item = itemAt(row+1,col);
+        if(item->digit() == 0)
             revealEmptySpace(row+1,col);
-        else
-            itemAt(row+1,col)->reveal();
+        else if(!item->isFlagged())
+            item->reveal();
     }
     if(row != m_numRows-1 && col != m_numCols-1) // bottom-right diagonal
     {
-        if(itemAt(row+1,col+1)->digit() == 0)
+        item = itemAt(row+1, col+1);
+        if(item->digit() == 0)
             revealEmptySpace(row+1,col+1);
-        else
-            itemAt(row+1,col+1)->reveal();
+        else if(!item->isFlagged())
+            item->reveal();
     }
 }
 
-void MineFieldItem::onItemFlagStateChanged(int idx)
+void MineFieldItem::mousePressEvent( QGraphicsSceneMouseEvent *ev )
 {
-    QPair<int,int> rowcol = rowColFromIndex(idx);
-    int row = rowcol.first;
-    int col = rowcol.second;
+    if(ev->button() == Qt::LeftButton)
+    {
+        int itemSize = KMinesRenderer::self()->cellSize();
 
-    if(itemAt(row,col)->isFlagged())
-        m_flaggedMinesCount++;
-    else
-        m_flaggedMinesCount--;
-    emit flaggedMinesCountChanged(m_flaggedMinesCount);
+        int row = static_cast<int>(ev->pos().y()/itemSize);
+        int col = static_cast<int>(ev->pos().x()/itemSize);
+        itemAt(row,col)->press();
+        m_rowcolMousePress = qMakePair(row,col);
+    }
+}
+
+void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
+{
+    int itemSize = KMinesRenderer::self()->cellSize();
+
+    int row = static_cast<int>(ev->pos().y()/itemSize);
+    int col = static_cast<int>(ev->pos().x()/itemSize);
+    CellItem* itemUnderMouse = itemAt(row,col);
+
+    if(ev->button() == Qt::LeftButton)
+    {
+        CellItem *item = itemAt(m_rowcolMousePress.first, m_rowcolMousePress.second);
+        item->release();
+        if(item->isRevealed())
+            onItemRevealed(m_rowcolMousePress.first,m_rowcolMousePress.second);
+    }
+    else if(ev->button() == Qt::RightButton)
+    {
+        itemUnderMouse->mark();
+        if(itemUnderMouse->isFlagged())
+            m_flaggedMinesCount++;
+        else
+            m_flaggedMinesCount--;
+        emit flaggedMinesCountChanged(m_flaggedMinesCount);
+    }
 }
