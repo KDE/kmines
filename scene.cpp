@@ -41,6 +41,8 @@ KMinesScene::KMinesScene( QObject* parent )
 {
     setItemIndexMethod( NoIndex );
     m_fieldItem = new MineFieldItem(35,60, 30*20);
+    connect(m_fieldItem, SIGNAL(flaggedMinesCountChanged(int)), SIGNAL(minesCountChanged(int)));
+
     addItem(m_fieldItem);
 }
 
@@ -62,4 +64,9 @@ void KMinesScene::startNewGame()
     m_fieldItem->regenerateField(10,15, 20);
     // reposition items
     resizeScene((int)sceneRect().width(), (int)sceneRect().height());
+}
+
+int KMinesScene::totalMines() const
+{
+    return m_fieldItem->minesCount();
 }

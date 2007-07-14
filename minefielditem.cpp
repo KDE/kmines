@@ -27,8 +27,10 @@
 MineFieldItem::MineFieldItem( int numRows, int numCols, int numMines )
 {
     // should be created before regenerateField()
-    m_signalMapper = new QSignalMapper(this);
-    connect(m_signalMapper, SIGNAL(mapped(int)), SLOT(onItemRevealed(int)));
+    m_revealSignalMapper = new QSignalMapper(this);
+    connect(m_revealSignalMapper, SIGNAL(mapped(int)), SLOT(onItemRevealed(int)));
+    m_flagSignalMapper = new QSignalMapper(this);
+    connect(m_flagSignalMapper, SIGNAL(mapped(int)), SLOT(onItemFlagStateChanged(int)));
 
     regenerateField(numRows, numCols, numMines);
 }
@@ -65,8 +67,10 @@ void MineFieldItem::regenerateField( int numRows, int numCols, int numMines )
         else
         {
             m_cells[i] = new CellItem(this);
-            connect(m_cells[i], SIGNAL(revealed()), m_signalMapper, SLOT(map()));
-            m_signalMapper->setMapping(m_cells[i], i);
+            connect(m_cells[i], SIGNAL(revealed()), m_revealSignalMapper, SLOT(map()));
+            m_revealSignalMapper->setMapping(m_cells[i], i);
+            connect(m_cells[i], SIGNAL(flaggedStateChanged()), m_flagSignalMapper, SLOT(map()));
+            m_flagSignalMapper->setMapping(m_cells[i], i);
         }
     }
 
@@ -139,6 +143,8 @@ void MineFieldItem::regenerateField( int numRows, int numCols, int numMines )
         }
 
     adjustItemPositions();
+    m_flaggedMinesCount = 0;
+    emit flaggedMinesCountChanged(m_flaggedMinesCount);
 }
 
 QRectF MineFieldItem::boundingRect() const
@@ -199,16 +205,18 @@ void MineFieldItem::adjustItemPositions()
 
 void MineFieldItem::onItemRevealed(int idx)
 {
-    // NOTE: if this happens to be needed more than once, create function.
-    // calculate row,col from idx
-    int row = idx / m_numCols;
-    int col = idx - row*m_numCols;
+    QPair<int,int> rowcol = rowColFromIndex(idx);
+    int row = rowcol.first;
+    int col = rowcol.second;
 
     if(itemAt(row,col)->hasMine())
     {
         // reveal all field
         foreach( CellItem* item, m_cells )
-            item->reveal();
+        {
+            if( (item->isFlagged() && !item->hasMine()) || (!item->isFlagged() && item->hasMine()) )
+                item->reveal();
+        }
     }
     else if(itemAt(row,col)->digit() == 0) // empty cell
     {
@@ -223,7 +231,7 @@ void MineFieldItem::onItemRevealed(int idx)
 
 void MineFieldItem::revealEmptySpace(int row, int col)
 {
-    if(itemAt(row,col)->isRevealed())
+    if(itemAt(row,col)->isRevealed() || itemAt(row,col)->isFlagged())
         return;
 
     itemAt(row,col)->reveal();
@@ -285,4 +293,17 @@ void MineFieldItem::revealEmptySpace(int row, int col)
         else
             itemAt(row+1,col+1)->reveal();
     }
+}
+
+void MineFieldItem::onItemFlagStateChanged(int idx)
+{
+    QPair<int,int> rowcol = rowColFromIndex(idx);
+    int row = rowcol.first;
+    int col = rowcol.second;
+
+    if(itemAt(row,col)->isFlagged())
+        m_flaggedMinesCount++;
+    else
+        m_flaggedMinesCount--;
+    emit flaggedMinesCountChanged(m_flaggedMinesCount);
 }

@@ -156,8 +156,8 @@ void KMinesRenderer::rerenderPixmaps()
     pix = m_pixHash[CellDown];
     RENDER_SVG_ELEMENT(Mine);
 
-    // error (on top of celldown)
-    pix = m_pixHash[CellDown];
+    // error (on top of mine)
+    pix = m_pixHash[Mine];
     RENDER_SVG_ELEMENT(Error);
 
     // hint (on top of cellup)

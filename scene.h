@@ -38,11 +38,17 @@ public:
      * Resizes scene to given dimensions
      */
     void resizeScene(int width, int height);
+    /**
+     * @return total number of mines in field
+     */
+    int totalMines() const;
 public slots:
     /**
      * Starts new game
      */
     void startNewGame();
+signals:
+    void minesCountChanged(int);
 private:
     /**
      * Draws scene background

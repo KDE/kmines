@@ -20,6 +20,7 @@
 
 #include <QVector>
 #include <QGraphicsItem>
+#include <QPair>
 #include <KRandomSequence>
 
 class CellItem;
@@ -62,14 +63,38 @@ public:
      * Reimplemented from QGraphicsItem
      */
     QRectF boundingRect() const;// reimp
+    /**
+     * @return num rows in field
+     */
+    int rowCount() const { return m_numRows; }
+    /**
+     * @return num columns in field
+     */
+    int columnCount() const { return m_numCols; }
+    /**
+     * @return num mines in field
+     */
+    int minesCount() const { return m_minesCount; }
+signals:
+    void flaggedMinesCountChanged(int);
 private slots:
     void onItemRevealed(int idx);
+    void onItemFlagStateChanged(int idx);
 private:
     /**
      * Returns cell item at (row,col).
      * Always use this function instead hand-computing index in m_cells
      */
     inline CellItem* itemAt(int row, int col) { return m_cells.at( row*m_numCols + col ); }
+    /**
+     * Calculates (row,col) from given index in m_cells and returns them in QPair
+     */
+    inline QPair<int,int> rowColFromIndex(int idx)
+        {
+            int row = idx/m_numCols;
+            return qMakePair(row, idx - row*m_numCols);
+        }
+
     /**
      * Reimplemented from QGraphicsItem
      */
@@ -104,13 +129,18 @@ private:
      */
     int m_minesCount;
     /**
+     * Number of flagged mines
+     */
+    int m_flaggedMinesCount;
+    /**
      * Random sequence used to generate mine positions
      */
     KRandomSequence m_randomSeq;
     /**
      * Used to map signals from all items to single slot
      */
-    QSignalMapper *m_signalMapper;
+    QSignalMapper *m_revealSignalMapper;
+    QSignalMapper *m_flagSignalMapper;
 };
 
 #endif
