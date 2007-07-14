@@ -70,11 +70,15 @@ void CellItem::press()
     }
 }
 
-void CellItem::release()
+void CellItem::release(bool force)
 {
-    if(m_state == KMinesState::Pressed )
+    // special case for mid-button magic
+    if(force && m_state == KMinesState::Flagged)
+        return;
+
+    if(m_state == KMinesState::Pressed || force)
     {
-        // if we hold mine, let's explode on mouse click
+        // if we hold mine, let's explode
         m_exploded = m_hasMine;
         reveal();
     }
@@ -105,6 +109,8 @@ void CellItem::mark()
 
 void CellItem::reveal()
 {
+    if(isRevealed())
+        return; // already revealed
 
     if(m_state == KMinesState::Flagged && m_hasMine == false)
         m_state = KMinesState::Error;
@@ -115,6 +121,9 @@ void CellItem::reveal()
 
 void CellItem::undoPress()
 {
-    m_state = KMinesState::Released;
-    updatePixmap();
+    if(m_state == KMinesState::Pressed)
+    {
+        m_state = KMinesState::Released;
+        updatePixmap();
+    }
 }
