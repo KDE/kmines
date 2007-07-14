@@ -326,7 +326,7 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
                 m_flaggedMinesCount++;
             else
                 m_flaggedMinesCount--;
+            emit flaggedMinesCountChanged(m_flaggedMinesCount);
         }
-        emit flaggedMinesCountChanged(m_flaggedMinesCount);
     }
 }
