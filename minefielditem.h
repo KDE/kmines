@@ -75,6 +75,7 @@ public:
     int minesCount() const { return m_minesCount; }
 signals:
     void flaggedMinesCountChanged(int);
+    void gameOver(bool won);
 private:
     // reimplemented
     virtual void mousePressEvent( QGraphicsSceneMouseEvent * );

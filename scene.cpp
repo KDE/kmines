@@ -19,6 +19,8 @@
 #include "scene.h"
 
 #include <QResizeEvent>
+#include <KGamePopupItem>
+#include <KLocale>
 
 #include "minefielditem.h"
 #include "renderer.h"
@@ -42,8 +44,12 @@ KMinesScene::KMinesScene( QObject* parent )
     setItemIndexMethod( NoIndex );
     m_fieldItem = new MineFieldItem(9, 9, 10);
     connect(m_fieldItem, SIGNAL(flaggedMinesCountChanged(int)), SIGNAL(minesCountChanged(int)));
-
+    connect(m_fieldItem, SIGNAL(gameOver(bool)), SLOT(onGameOver(bool)));
     addItem(m_fieldItem);
+
+    m_messageItem = new KGamePopupItem;
+    m_messageItem->setMessageTimeout(4000);
+    addItem(m_messageItem);
 }
 
 void KMinesScene::resizeScene(int width, int height)
@@ -69,4 +75,12 @@ void KMinesScene::startNewGame(int rows, int cols, int numMines)
 int KMinesScene::totalMines() const
 {
     return m_fieldItem->minesCount();
+}
+
+void KMinesScene::onGameOver(bool won)
+{
+    if(won)
+        m_messageItem->showMessage(i18n("Congratulatons! You have won!"), KGamePopupItem::Center);
+    else
+        m_messageItem->showMessage(i18n("You have lost."), KGamePopupItem::Center);
 }
