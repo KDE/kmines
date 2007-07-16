@@ -18,6 +18,7 @@
 #include "mainwindow.h"
 #include "scene.h"
 
+#include <kgameclock.h>
 #include <KStandardGameAction>
 #include <KActionCollection>
 #include <KStatusBar>
@@ -27,6 +28,8 @@ KMinesMainWindow::KMinesMainWindow()
 {
     m_scene = new KMinesScene(this);
     connect(m_scene, SIGNAL(minesCountChanged(int)), SLOT(onMinesCountChanged(int)));
+    connect(m_scene, SIGNAL(gameOver(bool)), SLOT(onGameOver(bool)));
+    connect(m_scene, SIGNAL(firstClickDone()), SLOT(onFirstClick()));
 
     KMinesView* view = new KMinesView( m_scene, this );
     view->setCacheMode( QGraphicsView::CacheBackground );
@@ -38,7 +41,12 @@ KMinesMainWindow::KMinesMainWindow()
                                   QGraphicsView::DontSavePainterState |
                                   QGraphicsView::DontAdjustForAntialiasing );
 
+
+    m_gameClock = new KGameClock(this, KGameClock::MinSecOnly);
+    connect(m_gameClock, SIGNAL(timeChanged(const QString&)), SLOT(advanceTime(const QString&)));
+
     statusBar()->insertItem( i18n("Mines: 0/0"), 0 );
+    statusBar()->insertItem( i18n("Time: 00:00"), 1);
     setCentralWidget(view);
     setupActions();
 
@@ -95,4 +103,20 @@ void KMinesMainWindow::customLevelChanged(int)
 void KMinesMainWindow::newGame()
 {
     levelChanged(KGameDifficulty::level());
+    statusBar()->changeItem( i18n("Time: 00:00"), 1);
+}
+
+void KMinesMainWindow::onGameOver(bool)
+{
+    m_gameClock->pause();
+}
+
+void KMinesMainWindow::advanceTime(const QString& timeStr)
+{
+    statusBar()->changeItem( i18n("Time: %1", timeStr), 1 );
+}
+
+void KMinesMainWindow::onFirstClick()
+{
+    m_gameClock->restart();
 }

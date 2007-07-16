@@ -44,7 +44,10 @@ KMinesScene::KMinesScene( QObject* parent )
     setItemIndexMethod( NoIndex );
     m_fieldItem = new MineFieldItem(9, 9, 10);
     connect(m_fieldItem, SIGNAL(flaggedMinesCountChanged(int)), SIGNAL(minesCountChanged(int)));
+    connect(m_fieldItem, SIGNAL(firstClickDone()), SIGNAL(firstClickDone()));
     connect(m_fieldItem, SIGNAL(gameOver(bool)), SLOT(onGameOver(bool)));
+    // and re-emit it for others
+    connect(m_fieldItem, SIGNAL(gameOver(bool)), SIGNAL(gameOver(bool)));
     addItem(m_fieldItem);
 
     m_messageItem = new KGamePopupItem;
@@ -62,7 +65,7 @@ void KMinesScene::resizeScene(int width, int height)
 
 void KMinesScene::drawBackground( QPainter* p, const QRectF& )
 {
-//    p->drawPixmap( 0, 0, KMinesRenderer::self()->backgroundPixmap(sceneRect().size().toSize()) );
+    p->drawPixmap( 0, 0, KMinesRenderer::self()->backgroundPixmap(sceneRect().size().toSize()) );
 }
 
 void KMinesScene::startNewGame(int rows, int cols, int numMines)

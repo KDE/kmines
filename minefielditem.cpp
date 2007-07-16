@@ -34,6 +34,7 @@ void MineFieldItem::regenerateField( int numRows, int numCols, int numMines )
 {
     Q_ASSERT( numMines < numRows*numRows );
 
+    m_firstClick = true;
     m_gameOver = false;
 
     int oldSize = m_cells.size();
@@ -213,8 +214,13 @@ void MineFieldItem::mousePressEvent( QGraphicsSceneMouseEvent *ev )
     if(m_gameOver)
         return;
 
-    int itemSize = KMinesRenderer::self()->cellSize();
+    if(m_firstClick)
+    {
+        m_firstClick = false;
+        emit firstClickDone();
+    }
 
+    int itemSize = KMinesRenderer::self()->cellSize();
     int row = static_cast<int>(ev->pos().y()/itemSize);
     int col = static_cast<int>(ev->pos().x()/itemSize);
     if(ev->button() == Qt::LeftButton)
