@@ -25,7 +25,7 @@
 #include "renderer.h"
 
 MineFieldItem::MineFieldItem( int numRows, int numCols, int numMines )
-    : m_rowcolMousePress(-1,-1), m_rowcolMidButton(-1,-1)
+    : m_rowcolMousePress(-1,-1), m_rowcolMidButton(-1,-1), m_gameOver(false)
 {
     regenerateField(numRows, numCols, numMines);
 }
@@ -33,6 +33,8 @@ MineFieldItem::MineFieldItem( int numRows, int numCols, int numMines )
 void MineFieldItem::regenerateField( int numRows, int numCols, int numMines )
 {
     Q_ASSERT( numMines < numRows*numRows );
+
+    m_gameOver = false;
 
     int oldSize = m_cells.size();
     int newSize = numRows*numCols;
@@ -53,6 +55,7 @@ void MineFieldItem::regenerateField( int numRows, int numCols, int numMines )
     m_numRows = numRows;
     m_numCols = numCols;
     m_minesCount = numMines;
+    m_numUnrevealed = m_numRows*m_numCols;
 
     for(int i=0; i<newSize; ++i)
     {
@@ -160,97 +163,48 @@ void MineFieldItem::adjustItemPositions()
 
 void MineFieldItem::onItemRevealed(int row, int col)
 {
+    m_numUnrevealed--;
     if(itemAt(row,col)->hasMine())
     {
         revealAllMines();
     }
     else if(itemAt(row,col)->digit() == 0) // empty cell
     {
-        // this item is already revealed, but let's unreveal it
-        // just to keep the revealEmptySpace() look more clean
-        // (without checks for isRevealed() in every if there, but
-        // with one check at the beginning
-        itemAt(row,col)->unreveal();
         revealEmptySpace(row,col);
     }
+    kDebug() << "Num unrevealed: " << m_numUnrevealed << endl;
+    // now let's check for possible win/loss
+    checkLost();
+    if(!m_gameOver) // checkLost might set it
+        checkWon();
 }
 
 void MineFieldItem::revealEmptySpace(int row, int col)
 {
-    if(itemAt(row,col)->isRevealed() || itemAt(row,col)->isFlagged())
-        return;
+    kDebug() << "revealEmptySpace" << row << "," << col << endl;
 
-    itemAt(row,col)->reveal();
-
-    CellItem *item = 0;
     // recursively reveal neighbour cells until we find cells with digit
-    // NOTE if I manage to make revealEmptySpace accept CellItem* argument
-    // rather then (row,col) then replace all of the below if's with
-    // a call to adjasentItemsFor() and foreach
+    typedef QPair<int,int> RowColPair;
+    QList<RowColPair> list = adjasentRowColsFor(row,col);
+    CellItem *item = 0;
 
-    if(row != 0 && col != 0) // upper-left diagonal
+    foreach( const RowColPair& pair, list )
     {
-        item = itemAt(row-1,col-1);
+        // first is row, second is col
+        item = itemAt(pair.first,pair.second);
+        if(item->isRevealed() || item->isFlagged())
+            continue;
         if(item->digit() == 0)
-            revealEmptySpace(row-1,col-1);
-        else if(!item->isFlagged())
+        {
             item->reveal();
-    }
-    if(row != 0) // upper
-    {
-        item = itemAt(row-1,col);
-        if(item->digit() == 0)
-            revealEmptySpace(row-1,col);
+            m_numUnrevealed--;
+            revealEmptySpace(pair.first,pair.second);
+        }
         else if(!item->isFlagged())
+        {
             item->reveal();
-    }
-    if(row != 0 && col != m_numCols-1) // upper-right diagonal
-    {
-        item = itemAt(row-1,col+1);
-        if(item->digit() == 0)
-            revealEmptySpace(row-1,col+1);
-        else if(!item->isFlagged())
-            item->reveal();
-    }
-    if(col != 0) // on the left
-    {
-        item = itemAt(row,col-1);
-        if(item->digit() == 0)
-            revealEmptySpace(row,col-1);
-        else if(!item->isFlagged())
-            item->reveal();
-    }
-    if(col != m_numCols-1) // on the right
-    {
-        item = itemAt(row,col+1);
-        if(item->digit() == 0)
-            revealEmptySpace(row,col+1);
-        else if(!item->isFlagged())
-            item->reveal();
-    }
-    if(row != m_numRows-1 && col != 0) // bottom-left diagonal
-    {
-        item = itemAt(row+1,col-1);
-        if(item->digit() == 0)
-            revealEmptySpace(row+1,col-1);
-        else if(!item->isFlagged())
-            item->reveal();
-    }
-    if(row != m_numRows-1) // bottom
-    {
-        item = itemAt(row+1,col);
-        if(item->digit() == 0)
-            revealEmptySpace(row+1,col);
-        else if(!item->isFlagged())
-            item->reveal();
-    }
-    if(row != m_numRows-1 && col != m_numCols-1) // bottom-right diagonal
-    {
-        item = itemAt(row+1, col+1);
-        if(item->digit() == 0)
-            revealEmptySpace(row+1,col+1);
-        else if(!item->isFlagged())
-            item->reveal();
+            m_numUnrevealed--;
+        }
     }
 }
 
@@ -297,10 +251,12 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
 
         CellItem *item = itemAt(m_rowcolMousePress.first, m_rowcolMousePress.second);
 
-        item->release();
-
-        if(item->isRevealed())
-            onItemRevealed(m_rowcolMousePress.first,m_rowcolMousePress.second);
+        if(!item->isRevealed()) // revealing only unrevealed ones
+        {
+            item->release();
+            if(item->isRevealed())
+                onItemRevealed(m_rowcolMousePress.first,m_rowcolMousePress.second);
+        }
         m_rowcolMousePress = qMakePair(-1,-1);//reset
     }
     else if(ev->button() == Qt::RightButton)
@@ -348,10 +304,13 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
         {
             foreach(CellItem *item, neighbours)
             {
-                // force=true to omit Pressed check
-                item->release(true);
-                if(item->isRevealed())
-                    onItemRevealed(item);
+                if(!item->isRevealed()) // revealing only unrevealed ones
+                {
+                    // force=true to omit Pressed check
+                    item->release(true);
+                    if(item->isRevealed())
+                        onItemRevealed(item);
+                }
             }
         }
         else
@@ -389,34 +348,15 @@ void MineFieldItem::mouseMoveEvent( QGraphicsSceneMouseEvent *ev )
     }
 }
 
-QList<CellItem*> MineFieldItem::adjasentItemsFor(int row, int col)
-{
-    QList<CellItem*> resultingList;
-    if(row != 0 && col != 0) // upper-left diagonal
-        resultingList.append( itemAt(row-1,col-1) );
-    if(row != 0) // upper
-        resultingList.append(itemAt(row-1, col));
-    if(row != 0 && col != m_numCols-1) // upper-right diagonal
-        resultingList.append(itemAt(row-1, col+1));
-    if(col != 0) // on the left
-        resultingList.append(itemAt(row,col-1));
-    if(col != m_numCols-1) // on the right
-        resultingList.append(itemAt(row, col+1));
-    if(row != m_numRows-1 && col != 0) // bottom-left diagonal
-        resultingList.append(itemAt(row+1, col-1));
-    if(row != m_numRows-1) // bottom
-        resultingList.append(itemAt(row+1, col));
-    if(row != m_numRows-1 && col != m_numCols-1) // bottom-right diagonal
-        resultingList.append(itemAt(row+1, col+1));
-    return resultingList;
-}
-
 void MineFieldItem::revealAllMines()
 {
     foreach( CellItem* item, m_cells )
     {
         if( (item->isFlagged() && !item->hasMine()) || (!item->isFlagged() && item->hasMine()) )
+        {
             item->reveal();
+            m_numUnrevealed--;
+        }
     }
 }
 
@@ -432,5 +372,64 @@ void MineFieldItem::onItemRevealed(CellItem* item)
     int row = idx / m_numCols;
     int col = idx - row*m_numCols;
     onItemRevealed(row,col);
+}
+
+void MineFieldItem::checkLost()
+{
+    // for loss...
+    foreach( CellItem* item, m_cells )
+    {
+        if(item->isExploded())
+        {
+            kDebug() << "YOU LOST" << endl;
+            m_gameOver =true;
+            break;
+        }
+    }
+}
+
+void MineFieldItem::checkWon()
+{
+    // let's check the trivial case when
+    // only some cells left unflagged and they
+    // all contain bombs. this counts as win
+    if(m_numUnrevealed == m_minesCount)
+    {
+        kDebug() << "YOU WON!" << endl;
+    }
+    else
+        kDebug() << "won check didn't pass" << endl;
+}
+
+QList<QPair<int,int> > MineFieldItem::adjasentRowColsFor(int row, int col)
+{
+    QList<QPair<int,int> > resultingList;
+    if(row != 0 && col != 0) // upper-left diagonal
+        resultingList.append( qMakePair(row-1,col-1) );
+    if(row != 0) // upper
+        resultingList.append(qMakePair(row-1, col));
+    if(row != 0 && col != m_numCols-1) // upper-right diagonal
+        resultingList.append(qMakePair(row-1, col+1));
+    if(col != 0) // on the left
+        resultingList.append(qMakePair(row,col-1));
+    if(col != m_numCols-1) // on the right
+        resultingList.append(qMakePair(row, col+1));
+    if(row != m_numRows-1 && col != 0) // bottom-left diagonal
+        resultingList.append(qMakePair(row+1, col-1));
+    if(row != m_numRows-1) // bottom
+        resultingList.append(qMakePair(row+1, col));
+    if(row != m_numRows-1 && col != m_numCols-1) // bottom-right diagonal
+        resultingList.append(qMakePair(row+1, col+1));
+    return resultingList;
+}
+
+QList<CellItem*> MineFieldItem::adjasentItemsFor(int row, int col)
+{
+    QList<QPair<int,int> > rowcolList = adjasentRowColsFor(row,col);
+    QList<CellItem*> resultingList;
+    typedef QPair<int,int> RowColPair;
+    foreach( const RowColPair& pair, rowcolList )
+        resultingList.append( itemAt(pair.first, pair.second) );
+    return resultingList;
 }
 
