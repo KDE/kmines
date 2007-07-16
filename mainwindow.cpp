@@ -41,16 +41,58 @@ KMinesMainWindow::KMinesMainWindow()
     statusBar()->insertItem( i18n("Mines: 0/0"), 0 );
     setCentralWidget(view);
     setupActions();
+
+    // TODO: load this from config
+    KGameDifficulty::setLevel( KGameDifficulty::easy );
+    newGame();
 }
 
 void KMinesMainWindow::setupActions()
 {
+    KStandardGameAction::gameNew(this, SLOT(newGame()), actionCollection());
     KStandardGameAction::quit(this, SLOT(close()), actionCollection());
-    KStandardGameAction::gameNew(m_scene, SLOT(startNewGame()), actionCollection());
+
+    KGameDifficulty::init(this, this, SLOT(levelChanged(KGameDifficulty::standardLevel)),
+                         SLOT(customLevelChanged(int)));
+    KGameDifficulty::addStandardLevel(KGameDifficulty::easy);
+    KGameDifficulty::addStandardLevel(KGameDifficulty::medium);
+    KGameDifficulty::addStandardLevel(KGameDifficulty::hard);
+    KGameDifficulty::addCustomLevel(0, i18n("Custom"));
+
     setupGUI();
 }
 
 void KMinesMainWindow::onMinesCountChanged(int count)
 {
     statusBar()->changeItem( i18n("Mines %1/%2", count, m_scene->totalMines()), 0 );
+}
+
+void KMinesMainWindow::levelChanged(KGameDifficulty::standardLevel level)
+{
+    switch(level)
+    {
+        case KGameDifficulty::easy:
+            m_scene->startNewGame(9, 9, 10);
+            break;
+        case KGameDifficulty::medium:
+            m_scene->startNewGame(16,16,40);
+            break;
+        case KGameDifficulty::hard:
+            m_scene->startNewGame(16,30,99);
+            break;
+        default:
+            //unsupported
+            break;
+    }
+}
+
+void KMinesMainWindow::customLevelChanged(int)
+{
+    // TESTING
+    m_scene->startNewGame(35,60,30*20);
+}
+
+void KMinesMainWindow::newGame()
+{
+    levelChanged(KGameDifficulty::level());
 }
