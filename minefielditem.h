@@ -75,6 +75,7 @@ public:
     int minesCount() const { return m_minesCount; }
 signals:
     void flaggedMinesCountChanged(int);
+    void firstClickDone();
     void gameOver(bool won);
 private:
     // reimplemented
@@ -168,6 +169,7 @@ private:
      */
     QPair<int,int> m_rowcolMousePress;
     QPair<int,int> m_rowcolMidButton;
+    bool m_firstClick;
     bool m_gameOver;
     int m_numUnrevealed;
 };

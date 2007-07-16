@@ -47,10 +47,12 @@ public:
      * Starts new game
      */
     void startNewGame(int rows, int cols, int numMines);
-private slots:
-    void onGameOver(bool);
 signals:
     void minesCountChanged(int);
+    void gameOver(bool);
+    void firstClickDone();
+private slots:
+    void onGameOver(bool);
 private:
     /**
      * Draws scene background

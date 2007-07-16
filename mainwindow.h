@@ -22,6 +22,7 @@
 #include <KGameDifficulty>
 
 class KMinesScene;
+class KGameClock;
 
 class KMinesMainWindow : public KXmlGuiWindow
 {
@@ -33,8 +34,12 @@ private slots:
     void levelChanged(KGameDifficulty::standardLevel);
     void customLevelChanged(int);
     void newGame();
+    void onGameOver(bool);
+    void advanceTime(const QString&);
+    void onFirstClick();
 private:
     void setupActions();
     KMinesScene* m_scene;
+    KGameClock* m_gameClock;
 };
 #endif
