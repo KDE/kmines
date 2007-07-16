@@ -381,8 +381,8 @@ void MineFieldItem::checkLost()
     {
         if(item->isExploded())
         {
-            kDebug() << "YOU LOST" << endl;
-            m_gameOver =true;
+            m_gameOver = true;
+            emit gameOver(false);
             break;
         }
     }
@@ -394,11 +394,7 @@ void MineFieldItem::checkWon()
     // only some cells left unflagged and they
     // all contain bombs. this counts as win
     if(m_numUnrevealed == m_minesCount)
-    {
-        kDebug() << "YOU WON!" << endl;
-    }
-    else
-        kDebug() << "won check didn't pass" << endl;
+            emit gameOver(true);
 }
 
 QList<QPair<int,int> > MineFieldItem::adjasentRowColsFor(int row, int col)

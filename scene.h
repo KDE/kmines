@@ -22,6 +22,7 @@
 #include <QGraphicsScene>
 
 class MineFieldItem;
+class KGamePopupItem;
 
 /**
  * Graphics scene for KMines game
@@ -46,6 +47,8 @@ public:
      * Starts new game
      */
     void startNewGame(int rows, int cols, int numMines);
+private slots:
+    void onGameOver(bool);
 signals:
     void minesCountChanged(int);
 private:
@@ -58,6 +61,7 @@ private:
      * Game field graphics item
      */
     MineFieldItem* m_fieldItem;
+    KGamePopupItem* m_messageItem;
 };
 
 class QResizeEvent;
