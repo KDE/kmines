@@ -17,7 +17,6 @@
   <Action name="options_show_menubar"/>
   <Separator/>
   <Action name="game_new"/>
-  <Action name="options_choose_game_type"/>
   <Separator/>
   <Action name="game_pause"/>
   <Action name="game_highscores"/>
