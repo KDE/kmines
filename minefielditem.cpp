@@ -210,6 +210,9 @@ void MineFieldItem::revealEmptySpace(int row, int col)
 
 void MineFieldItem::mousePressEvent( QGraphicsSceneMouseEvent *ev )
 {
+    if(m_gameOver)
+        return;
+
     int itemSize = KMinesRenderer::self()->cellSize();
 
     int row = static_cast<int>(ev->pos().y()/itemSize);
@@ -237,6 +240,9 @@ void MineFieldItem::mousePressEvent( QGraphicsSceneMouseEvent *ev )
 
 void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
 {
+    if(m_gameOver)
+        return;
+
     int itemSize = KMinesRenderer::self()->cellSize();
 
     int row = static_cast<int>(ev->pos().y()/itemSize);
@@ -323,6 +329,9 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
 
 void MineFieldItem::mouseMoveEvent( QGraphicsSceneMouseEvent *ev )
 {
+    if(m_gameOver)
+        return;
+
     int itemSize = KMinesRenderer::self()->cellSize();
 
     int row = static_cast<int>(ev->pos().y()/itemSize);
