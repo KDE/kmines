@@ -19,6 +19,7 @@
 #define MAINWINDOW_H
 
 #include <KXmlGuiWindow>
+#include <KGameDifficulty>
 
 class KMinesScene;
 
@@ -29,6 +30,9 @@ public:
     KMinesMainWindow();
 private slots:
     void onMinesCountChanged(int count);
+    void levelChanged(KGameDifficulty::standardLevel);
+    void customLevelChanged(int);
+    void newGame();
 private:
     void setupActions();
     KMinesScene* m_scene;

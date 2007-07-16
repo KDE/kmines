@@ -40,7 +40,7 @@ KMinesScene::KMinesScene( QObject* parent )
     : QGraphicsScene(parent)
 {
     setItemIndexMethod( NoIndex );
-    m_fieldItem = new MineFieldItem(35,60, 30*20);
+    m_fieldItem = new MineFieldItem(9, 9, 10);
     connect(m_fieldItem, SIGNAL(flaggedMinesCountChanged(int)), SIGNAL(minesCountChanged(int)));
 
     addItem(m_fieldItem);
@@ -59,9 +59,9 @@ void KMinesScene::drawBackground( QPainter* p, const QRectF& )
 //    p->drawPixmap( 0, 0, KMinesRenderer::self()->backgroundPixmap(sceneRect().size().toSize()) );
 }
 
-void KMinesScene::startNewGame()
+void KMinesScene::startNewGame(int rows, int cols, int numMines)
 {
-    m_fieldItem->regenerateField(10,15, 20);
+    m_fieldItem->regenerateField(rows, cols, numMines);
     // reposition items
     resizeScene((int)sceneRect().width(), (int)sceneRect().height());
 }

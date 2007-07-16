@@ -42,11 +42,10 @@ public:
      * @return total number of mines in field
      */
     int totalMines() const;
-public slots:
     /**
      * Starts new game
      */
-    void startNewGame();
+    void startNewGame(int rows, int cols, int numMines);
 signals:
     void minesCountChanged(int);
 private:
