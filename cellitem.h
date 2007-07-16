@@ -60,8 +60,6 @@ public:
     /**
      * Shows what this item hides :)
      * Can be a bomb, a digit, an empty square
-     * Note that this method doesn't emit revealed() signal.
-     * That signal is only emited as a result of mouse click
      */
     void reveal();
     /**
@@ -77,6 +75,10 @@ public:
      * @return whether this cell is marked with flag
      */
     bool isFlagged() const { return m_state == KMinesState::Flagged; }
+    /**
+     * @return whether this cell is exploded
+     */
+    bool isExploded() const { return m_exploded; }
     /**
      * Resets all properties & state of an item to default ones
      */

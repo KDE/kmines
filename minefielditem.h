@@ -100,7 +100,18 @@ private:
      * Returns all adjasent items for item at row, col
      */
     QList<CellItem*> adjasentItemsFor(int row, int col);
-
+    /**
+     * Returns all valid adjasent row,col pairs for row, col
+     */
+    QList<QPair<int,int> > adjasentRowColsFor(int row, int col);
+    /**
+     * Checks if player lost the game
+     */
+    void checkLost();
+    /**
+     * Checks if player won the game
+     */
+    void checkWon();
     /**
      * Reveals all unmarked items containing mines
      */
@@ -156,6 +167,8 @@ private:
      */
     QPair<int,int> m_rowcolMousePress;
     QPair<int,int> m_rowcolMidButton;
+    bool m_gameOver;
+    int m_numUnrevealed;
 };
 
 #endif
