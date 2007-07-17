@@ -103,9 +103,17 @@ void KMinesMainWindow::onMinesCountChanged(int count)
     statusBar()->changeItem( i18n("Mines %1/%2", count, m_scene->totalMines()), 0 );
 }
 
-void KMinesMainWindow::levelChanged(KGameDifficulty::standardLevel level)
+void KMinesMainWindow::levelChanged(KGameDifficulty::standardLevel)
 {
-    switch(level)
+}
+
+void KMinesMainWindow::customLevelChanged(int)
+{
+}
+
+void KMinesMainWindow::newGame()
+{
+    switch(KGameDifficulty::level())
     {
         case KGameDifficulty::easy:
             m_scene->startNewGame(9, 9, 10);
@@ -116,21 +124,14 @@ void KMinesMainWindow::levelChanged(KGameDifficulty::standardLevel level)
         case KGameDifficulty::hard:
             m_scene->startNewGame(16,30,99);
             break;
+        case KGameDifficulty::custom:
+            m_scene->startNewGame(Settings::self()->customHeight(),
+                                  Settings::self()->customWidth(),
+                                  Settings::self()->customMines());
         default:
             //unsupported
             break;
     }
-}
-
-void KMinesMainWindow::customLevelChanged(int)
-{
-    // TESTING
-    m_scene->startNewGame(35,60,30*20);
-}
-
-void KMinesMainWindow::newGame()
-{
-    levelChanged(KGameDifficulty::level());
     statusBar()->changeItem( i18n("Time: 00:00"), 1);
 }
 
@@ -139,7 +140,10 @@ void KMinesMainWindow::onGameOver(bool won)
     m_gameClock->pause();
     if(won)
     {
-        m_scoreDialog->setConfigGroup( KGameDifficulty::levelString() );
+        QString group = KGameDifficulty::levelString();
+        if(group.isEmpty())
+            group = "Custom";
+        m_scoreDialog->setConfigGroup( group );
 
         KScoreDialog::FieldInfo scoreInfo;
         // score-in-seconds will be hidden
