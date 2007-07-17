@@ -10,12 +10,6 @@
     </entry>
   </group>
   <group name="Options">
-    <entry name="CaseSize" type="Int" key="case size">
-      <label>The size of a square.</label>
-      <min>4</min>
-      <max>100</max>
-      <default>20</default>
-    </entry>
     <entry name="CustomWidth" type="Int" key="custom width">
       <label>The width of the playing field.</label>
       <min>5</min>
@@ -36,18 +30,6 @@
       <label>Whether the "uncertain" marker may be used.</label>
       <default>true</default>
     </entry>
-    <entry name="KeyboardGame" type="Bool" key="keyboard game">
-      <label>Whether the game can be played using the keyboard.</label>
-      <default>false</default>
-    </entry>
-    <entry name="PauseFocus" type="Bool" key="pause focus">
-      <label>Whether the game is paused when the window loses focus.</label>
-      <default>true</default>
-    </entry>
-    <entry name="MagicReveal" type="Bool" key="magic reveal">
-      <label>Whether to set flags and reveal squares in trivial situations.</label>
-      <default>false</default>
-    </entry>
     <entry name="level" type="Enum">
       <label>The difficulty level.</label>
       <default>Easy</default>
@@ -57,54 +39,6 @@
         <choice name="Expert"/>
         <choice name="Custom"/>
       </choices>
-    </entry>
-
-    <entry name="$(Button)MouseAction" type="Enum" key="mouse $(Button)">
-      <choices>
-        <choice name="Reveal"/>
-        <choice name="AutoReveal"/>
-        <choice name="ToggleFlag"/>
-        <choice name="ToggleUncertainFlag"/>
-        <choice name="None"/>
-      </choices>
-      <parameter name="Button" type="Enum">
-        <values>
-          <value>left</value>
-          <value>mid</value>
-          <value>right</value>
-        </values>
-      </parameter>
-      <label>Mouse button actions</label>
-      <default param="left">Reveal</default>
-      <default param="mid">AutoReveal</default>
-      <default param="right">ToggleFlag</default>
-    </entry>
-    <entry name="$(Type)Color" type="Color" key="$(Type) color">
-      <parameter name="Type" type="Enum">
-        <values>
-          <value>flag</value>
-          <value>explosion</value>
-          <value>error</value>
-        </values>
-      </parameter>
-      <label>Color</label>
-      <default>#ff0000</default>
-    </entry>
-    <entry name="MineColor$(number)" type="Color" key="color #$(number)">
-      <parameter name="number" type="Int" max="7"/>
-      <label>Mine Color</label>
-      <default param="0">#0000ff</default>
-      <default param="1">#008800</default>
-      <default param="2">#888800</default>
-      <default param="3">#880088</default>
-      <default param="4">#ff0000</default>
-      <default param="5">#880000</default>
-      <default param="6">#000000</default>
-      <default param="7">#000000</default>
-    </entry>
-    <entry name="MenubarVisible" type="Bool" key="menubar visible">
-      <label>Whether the menubar is visible.</label>
-      <default>true</default>
     </entry>
   </group>
 </kcfg>

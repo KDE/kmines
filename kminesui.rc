@@ -1,92 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
-<gui name="kmines" version="22">
+<gui name="kmines" version="23">
 
 <MenuBar>
-  <Menu name="move"><text>&amp;Move</text>
-    <Action name="log_replay" />
-    <Action name="log_save" />
-    <Action name="log_load" />
-  </Menu>
   <Menu name="settings"><text>Settings</text>
     <Action name="game_difficulty" />
   </Menu>
 </MenuBar>
-
-<Menu name="popup">
-  <Action name="options_show_menubar"/>
-  <Separator/>
-  <Action name="game_new"/>
-  <Separator/>
-  <Action name="game_pause"/>
-  <Action name="game_highscores"/>
-  <Separator/>
-  <Action name="game_quit"/>
-</Menu>
-
-<State name="stopped">
-  <enable>
-    <Action name="move_hint" />
-    <Action name="move_solve" />
-    <Action name="log_replay" />
-    <Action name="log_load" />
-    <Action name="log_save" />
-  </enable>
-  <disable>
-    <Action name="game_pause" />
-  </disable>
-</State>
-<State name="gameover">
-  <enable>
-    <Action name="log_replay" />
-    <Action name="log_load" />
-    <Action name="log_save" />
-  </enable>
-  <disable>
-    <Action name="move_hint" />
-    <Action name="move_solve" />
-    <Action name="game_pause" />
-  </disable>
-</State>
-<State name="playing">
-  <enable>
-    <Action name="move_hint" />
-    <Action name="move_solve" />
-    <Action name="game_pause" />
-  </enable>
-  <disable>
-    <Action name="log_replay" />
-    <Action name="log_load" />
-    <Action name="log_save" />
-  </disable>
-</State>
-<State name="paused">
-  <disable>
-    <Action name="move_hint" />
-    <Action name="move_solve" />
-  </disable>
-</State>
-<State name="replaying">
-  <disable>
-    <Action name="move_hint" />
-    <Action name="move_solve" />
-    <Action name="game_pause" />
-    <Action name="log_replay" />
-    <Action name="log_load" />
-    <Action name="log_save" />
-  </disable>
-</State>
-<State name="init">
-  <enable>
-    <Action name="move_hint" />
-    <Action name="move_solve" />
-    <Action name="log_load" />
-  </enable>
-  <disable>
-    <Action name="game_pause" />
-    <Action name="log_replay" />
-    <Action name="log_save" />
-  </disable>
-</State>
 
 </gui>

@@ -3,31 +3,17 @@ project(kmines)
 add_subdirectory( data ) 
 add_subdirectory( themes ) 
 
-set(libsolver_SRCS 
-	${CMAKE_CURRENT_SOURCE_DIR}/solver/bfield.cpp 
-	${CMAKE_CURRENT_SOURCE_DIR}/solver/solver.cpp 
-	${CMAKE_CURRENT_SOURCE_DIR}/solver/advFastRules.cpp 
-	${CMAKE_CURRENT_SOURCE_DIR}/solver/adviseFast.cpp 
-	${CMAKE_CURRENT_SOURCE_DIR}/solver/adviseFull.cpp
-	)
-
-add_subdirectory( solver ) 
-
 include_directories( ${CMAKE_SOURCE_DIR}/libkdegames ${CMAKE_SOURCE_DIR}/libkdegames/highscore  )
 
 
 ########### next target ###############
 
-set(kmines_SRCS ${libsolver_SRCS}
-   defines.cpp 
+set(kmines_SRCS
    mainwindow.cpp
    cellitem.cpp
    minefielditem.cpp
    scene.cpp
    renderer.cpp
-   dialogs.cpp 
-   field.cpp 
-   status.cpp 
    main.cpp )
 
 kde4_add_ui_files(kmines_SRCS customgame.ui)
