@@ -251,7 +251,7 @@ void MainWidget::displayTime(const QString & timeString)
 
 //----------------------------------------------------------------------------
 static const char *DESCRIPTION
-    = I18N_NOOP("KMines is a classic mine sweeper game");
+    = I18N_NOOP("KMines is a classic minesweeper game");
 
 int main(int argc, char **argv)
 {
@@ -259,6 +259,12 @@ int main(int argc, char **argv)
 						 ki18n(DESCRIPTION), KAboutData::License_GPL,
 						 ki18n(COPYLEFT), KLocalizedString(), HOMEPAGE);
     aboutData.addAuthor(ki18n("Nicolas Hadacek"), KLocalizedString(), EMAIL);
+    aboutData.addAuthor(ki18n("Mauricio Piacentini"),
+                        ki18n("Code refactoring and SVG support"),
+                        "mauricio@tabuleiro.com");
+    aboutData.addAuthor(ki18n("Dmitry Suzdalev"),
+                        ki18n("Rewrite to use QGraphicsView framework"),
+                        "dimsuz@gmail.com");
     aboutData.addCredit(ki18n("Andreas Zehender"), ki18n("Smiley pixmaps"));
     aboutData.addCredit(ki18n("Mikhail Kourinny"), ki18n("Solver/Adviser"));
     aboutData.addCredit(ki18n("Thomas Capricelli"), ki18n("Magic reveal mode"));
@@ -267,11 +273,10 @@ int main(int argc, char **argv)
     KApplication a;
     KGlobal::locale()->insertCatalog("libkdegames");
 
-    if ( a.isSessionRestored() ) RESTORE(MainWidget)
+    if ( a.isSessionRestored() )
+        RESTORE(KMinesMainWindow)
     else {
-        // uncomment this and comment that to see how rewrite to QGV goes ;)
         KMinesMainWindow *mw = new KMinesMainWindow;
-//        MainWidget *mw = new MainWidget;
         mw->show();
     }
     return a.exec();
