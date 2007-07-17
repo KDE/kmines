@@ -22,6 +22,7 @@
 #include <KGameDifficulty>
 
 class KMinesScene;
+class KMinesView;
 class KGameClock;
 class KScoreDialog;
 
@@ -39,9 +40,12 @@ private slots:
     void advanceTime(const QString&);
     void onFirstClick();
     void showHighscores();
+    void configureSettings();
+    void loadSettings();
 private:
     void setupActions();
     KMinesScene* m_scene;
+    KMinesView* m_view;
     KGameClock* m_gameClock;
     KScoreDialog* m_scoreDialog;
 };

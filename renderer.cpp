@@ -86,6 +86,11 @@ KMinesRenderer::KMinesRenderer()
 
 bool KMinesRenderer::loadTheme( const QString& themeName )
 {
+    if( !m_currentTheme.isEmpty() && m_currentTheme == themeName )
+    {
+        kDebug() << "Notice: not loading the same theme" << endl;
+        return true; // this is not an error
+    }
     KGameTheme theme;
     if ( !theme.load( themeName ) )
     {
@@ -95,12 +100,16 @@ bool KMinesRenderer::loadTheme( const QString& themeName )
             return false;
     }
 
+    m_currentTheme = themeName;
+
     bool res = m_renderer->load( theme.graphics() );
     kDebug() << "loading " << theme.graphics() << endl;
     if ( !res )
         return false;
 
     rerenderPixmaps();
+    // invalidate background in cache
+    m_cachedBkgnd = QPixmap();
 
     return true;
 }

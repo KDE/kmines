@@ -17,13 +17,32 @@
 */
 #include "mainwindow.h"
 #include "scene.h"
+#include "settings.h"
+#include "renderer.h"
 
 #include <kgameclock.h>
 #include <KStandardGameAction>
 #include <KActionCollection>
 #include <KStatusBar>
 #include <KScoreDialog>
+#include <KConfigDialog>
+#include <KGameThemeSelector>
+#include <KMessageBox>
 #include <KLocale>
+
+#include "ui_customgame.h"
+
+class CustomGameConfig : public QWidget
+{
+public:
+    CustomGameConfig(QWidget *parent)
+        : QWidget(parent)
+        {
+            ui.setupUi(this);
+        }
+private:
+    Ui::CustomGameConfig ui;
+};
 
 KMinesMainWindow::KMinesMainWindow()
     : m_scoreDialog(0)
@@ -33,13 +52,13 @@ KMinesMainWindow::KMinesMainWindow()
     connect(m_scene, SIGNAL(gameOver(bool)), SLOT(onGameOver(bool)));
     connect(m_scene, SIGNAL(firstClickDone()), SLOT(onFirstClick()));
 
-    KMinesView* view = new KMinesView( m_scene, this );
-    view->setCacheMode( QGraphicsView::CacheBackground );
-    view->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-    view->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-    view->setFrameStyle(QFrame::NoFrame);
+    m_view = new KMinesView( m_scene, this );
+    m_view->setCacheMode( QGraphicsView::CacheBackground );
+    m_view->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+    m_view->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+    m_view->setFrameStyle(QFrame::NoFrame);
 
-    view->setOptimizationFlags( QGraphicsView::DontClipPainter |
+    m_view->setOptimizationFlags( QGraphicsView::DontClipPainter |
                                 QGraphicsView::DontSavePainterState |
                                 QGraphicsView::DontAdjustForAntialiasing );
 
@@ -49,7 +68,7 @@ KMinesMainWindow::KMinesMainWindow()
 
     statusBar()->insertItem( i18n("Mines: 0/0"), 0 );
     statusBar()->insertItem( i18n("Time: 00:00"), 1);
-    setCentralWidget(view);
+    setCentralWidget(m_view);
     setupActions();
 
     m_scoreDialog = new KScoreDialog(KScoreDialog::Name | KScoreDialog::Custom1, this);
@@ -67,6 +86,7 @@ void KMinesMainWindow::setupActions()
     KStandardGameAction::highscores(this, SLOT(showHighscores()), actionCollection());
 
     KStandardGameAction::quit(this, SLOT(close()), actionCollection());
+    KStandardAction::preferences( this, SLOT( configureSettings() ), actionCollection() );
 
     KGameDifficulty::init(this, this, SLOT(levelChanged(KGameDifficulty::standardLevel)),
                          SLOT(customLevelChanged(int)));
@@ -147,4 +167,29 @@ void KMinesMainWindow::showHighscores()
 {
     m_scoreDialog->setConfigGroup( KGameDifficulty::levelString() );
     m_scoreDialog->exec();
+}
+
+void KMinesMainWindow::configureSettings()
+{
+    if ( KConfigDialog::showDialog( "settings" ) )
+        return;
+    KConfigDialog *dialog = new KConfigDialog( this, "settings", Settings::self() );
+    dialog->addPage( new KGameThemeSelector( dialog, Settings::self() ), i18n( "Theme" ), "game_theme" );
+    dialog->addPage( new CustomGameConfig( dialog ), i18n("Custom Game"), "configure" );
+    connect( dialog, SIGNAL( settingsChanged(const QString&) ), this, SLOT( loadSettings() ) );
+    dialog->show();
+}
+
+void KMinesMainWindow::loadSettings()
+{
+    if ( !KMinesRenderer::self()->loadTheme(Settings::theme()) )
+    {
+        KMessageBox::error( this,  i18n( "Failed to load \"%1\" theme. Please check your installation.", Settings::theme() ) );
+        return;
+    }
+
+    m_view->resetCachedContent();
+    // trigger complete redraw
+    m_scene->resizeScene( (int)m_scene->sceneRect().width(),
+                          (int)m_scene->sceneRect().height() );
 }
