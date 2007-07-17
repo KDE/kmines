@@ -1,3 +1,8 @@
+[25 Jul 2007] KMines got rewritten to QGraphicsView framework and 
+old code was removed. If you still wish to look at it, you can find it in
+SVN revision before 689063 (i.e. r689063 is the revision on which deletion happened)
+
+------------------------------------
 2.1.10 (25 Aug 2005) [KDE 3.5 devel]
 
 2.1.9a (25 Aug 2005) [KDE 3.4.3 stable]
