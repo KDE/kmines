@@ -130,6 +130,10 @@ private:
      * Names (in .cpp) should be in sync with those defined in svg files
      */
     QString elementToSvgId( SvgElement e ) const;
+    /**
+     * Name of currently loaded theme
+     */
+    QString m_currentTheme;
 };
 
 #endif

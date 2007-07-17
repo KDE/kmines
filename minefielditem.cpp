@@ -173,7 +173,6 @@ void MineFieldItem::onItemRevealed(int row, int col)
     {
         revealEmptySpace(row,col);
     }
-    kDebug() << "Num unrevealed: " << m_numUnrevealed << endl;
     // now let's check for possible win/loss
     checkLost();
     if(!m_gameOver) // checkLost might set it
@@ -182,8 +181,6 @@ void MineFieldItem::onItemRevealed(int row, int col)
 
 void MineFieldItem::revealEmptySpace(int row, int col)
 {
-    kDebug() << "revealEmptySpace" << row << "," << col << endl;
-
     // recursively reveal neighbour cells until we find cells with digit
     typedef QPair<int,int> RowColPair;
     QList<RowColPair> list = adjasentRowColsFor(row,col);
