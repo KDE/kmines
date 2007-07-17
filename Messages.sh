@@ -1,2 +1,2 @@
 #! /bin/sh
-$XGETTEXT rc.cpp *.cpp solver/*.cpp -o $podir/kmines.pot
+$XGETTEXT rc.cpp *.cpp -o $podir/kmines.pot
