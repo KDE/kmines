@@ -22,9 +22,11 @@
 #include <KStandardGameAction>
 #include <KActionCollection>
 #include <KStatusBar>
+#include <KScoreDialog>
 #include <KLocale>
 
 KMinesMainWindow::KMinesMainWindow()
+    : m_scoreDialog(0)
 {
     m_scene = new KMinesScene(this);
     connect(m_scene, SIGNAL(minesCountChanged(int)), SLOT(onMinesCountChanged(int)));
@@ -38,8 +40,8 @@ KMinesMainWindow::KMinesMainWindow()
     view->setFrameStyle(QFrame::NoFrame);
 
     view->setOptimizationFlags( QGraphicsView::DontClipPainter |
-                                  QGraphicsView::DontSavePainterState |
-                                  QGraphicsView::DontAdjustForAntialiasing );
+                                QGraphicsView::DontSavePainterState |
+                                QGraphicsView::DontAdjustForAntialiasing );
 
 
     m_gameClock = new KGameClock(this, KGameClock::MinSecOnly);
@@ -50,6 +52,10 @@ KMinesMainWindow::KMinesMainWindow()
     setCentralWidget(view);
     setupActions();
 
+    m_scoreDialog = new KScoreDialog(KScoreDialog::Name | KScoreDialog::Custom1, this);
+    m_scoreDialog->addField(KScoreDialog::Custom1, "Time", "time");
+    m_scoreDialog->hideField(KScoreDialog::Score);
+
     // TODO: load this from config
     KGameDifficulty::setLevel( KGameDifficulty::easy );
     newGame();
@@ -58,6 +64,8 @@ KMinesMainWindow::KMinesMainWindow()
 void KMinesMainWindow::setupActions()
 {
     KStandardGameAction::gameNew(this, SLOT(newGame()), actionCollection());
+    KStandardGameAction::highscores(this, SLOT(showHighscores()), actionCollection());
+
     KStandardGameAction::quit(this, SLOT(close()), actionCollection());
 
     KGameDifficulty::init(this, this, SLOT(levelChanged(KGameDifficulty::standardLevel)),
@@ -106,9 +114,23 @@ void KMinesMainWindow::newGame()
     statusBar()->changeItem( i18n("Time: 00:00"), 1);
 }
 
-void KMinesMainWindow::onGameOver(bool)
+void KMinesMainWindow::onGameOver(bool won)
 {
     m_gameClock->pause();
+    if(won)
+    {
+        m_scoreDialog->setConfigGroup( KGameDifficulty::levelString() );
+
+        KScoreDialog::FieldInfo scoreInfo;
+        // score-in-seconds will be hidden
+        scoreInfo[KScoreDialog::Score].setNum(m_gameClock->seconds());
+        //score-as-time will be shown
+        scoreInfo[KScoreDialog::Custom1] = m_gameClock->timeString();
+
+        // we keep highscores as number of seconds
+        if( m_scoreDialog->addScore(scoreInfo, KScoreDialog::LessIsMore) != 0 )
+            m_scoreDialog->exec();
+    }
 }
 
 void KMinesMainWindow::advanceTime(const QString& timeStr)
@@ -119,4 +141,10 @@ void KMinesMainWindow::advanceTime(const QString& timeStr)
 void KMinesMainWindow::onFirstClick()
 {
     m_gameClock->restart();
+}
+
+void KMinesMainWindow::showHighscores()
+{
+    m_scoreDialog->setConfigGroup( KGameDifficulty::levelString() );
+    m_scoreDialog->exec();
 }

@@ -23,6 +23,7 @@
 
 class KMinesScene;
 class KGameClock;
+class KScoreDialog;
 
 class KMinesMainWindow : public KXmlGuiWindow
 {
@@ -37,9 +38,11 @@ private slots:
     void onGameOver(bool);
     void advanceTime(const QString&);
     void onFirstClick();
+    void showHighscores();
 private:
     void setupActions();
     KMinesScene* m_scene;
     KGameClock* m_gameClock;
+    KScoreDialog* m_scoreDialog;
 };
 #endif
