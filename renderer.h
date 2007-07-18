@@ -73,6 +73,10 @@ public:
      * @return pixmap for item with exploded mine
      */
     QPixmap pixmapExplodedMine() const;
+    /**
+     * @return pixmap for border part
+     */
+    QPixmap pixmapForBorderElement(KMinesState::BorderElement e) const;
 private:
     // disable copy - it's singleton
     KMinesRenderer();
@@ -119,6 +123,14 @@ private:
         ExplodedMine, // for convinience - doesn't exist in svg.
         Error,
         Hint,
+        BorderEdgeNorth,
+        BorderEdgeSouth,
+        BorderEdgeEast,
+        BorderEdgeWest,
+        BorderOutsideCornerNE,
+        BorderOutsideCornerNW,
+        BorderOutsideCornerSW,
+        BorderOutsideCornerSE,
         NumElements
     };
     /**

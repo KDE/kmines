@@ -15,14 +15,18 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
-#ifndef COMMONDEFS_H
-#define COMMONDEFS_H
 
-namespace KMinesState
+#include "borderitem.h"
+#include "renderer.h"
+
+BorderItem::BorderItem( QGraphicsItem* parent )
+    : QGraphicsPixmapItem(parent), m_element(KMinesState::BorderEast),
+      m_row(-1), m_col(-1)
 {
-    enum CellState { Released, Pressed, Revealed, Questioned, Flagged, Error, Hint };
-    enum BorderElement { BorderNorth, BorderSouth, BorderEast, BorderWest,
-                         BorderCornerNW, BorderCornerSW, BorderCornerNE, BorderCornerSE };
+    setShapeMode(BoundingRectShape);
 }
 
-#endif
+void BorderItem::updatePixmap()
+{
+    setPixmap(KMinesRenderer::self()->pixmapForBorderElement(m_element));
+}

@@ -15,14 +15,32 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
-#ifndef COMMONDEFS_H
-#define COMMONDEFS_H
+#ifndef BORDERITEM_H
+#define BORDERITEM_H
+#include <QGraphicsPixmapItem>
 
-namespace KMinesState
+#include "commondefs.h"
+
+/**
+ * Graphics item representing border cell
+ */
+class BorderItem : public QGraphicsPixmapItem
 {
-    enum CellState { Released, Pressed, Revealed, Questioned, Flagged, Error, Hint };
-    enum BorderElement { BorderNorth, BorderSouth, BorderEast, BorderWest,
-                         BorderCornerNW, BorderCornerSW, BorderCornerNE, BorderCornerSE };
-}
+public:
+    BorderItem( QGraphicsItem* parent );
+    void setBorderType( KMinesState::BorderElement e ) { m_element = e; updatePixmap(); }
+    void setRowCol( int row, int col ) { m_row = row; m_col = col; }
+    int row() const { return m_row; }
+    int col() const { return m_col; }
+    void updatePixmap();
+
+    // enable use of qgraphicsitem_cast
+    enum { Type = UserType + 1 };
+    virtual int type() const { return Type; }
+private:
+    KMinesState::BorderElement m_element;
+    int m_row;
+    int m_col;
+};
 
 #endif

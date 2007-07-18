@@ -22,6 +22,7 @@
 #include <QGraphicsSceneMouseEvent>
 
 #include "cellitem.h"
+#include "borderitem.h"
 #include "renderer.h"
 
 MineFieldItem::MineFieldItem( int numRows, int numCols, int numMines )
@@ -39,6 +40,8 @@ void MineFieldItem::regenerateField( int numRows, int numCols, int numMines )
 
     int oldSize = m_cells.size();
     int newSize = numRows*numCols;
+    int oldBorderSize = m_borders.size();
+    int newBorderSize = (numCols+2)*2 + (numRows+2)*2-4;
 
     // if field is being shrinked, delete elements at the end before resizing vector
     if(oldSize > newSize)
@@ -49,9 +52,17 @@ void MineFieldItem::regenerateField( int numRows, int numCols, int numMines )
             scene()->removeItem(m_cells[i]);
             delete m_cells[i];
         }
+
+        // adjust border item array too
+        for( int i=newBorderSize; i<oldBorderSize; ++i)
+        {
+            scene()->removeItem(m_borders[i]);
+            delete m_borders[i];
+        }
     }
 
     m_cells.resize(newSize);
+    m_borders.resize(newBorderSize);
 
     m_numRows = numRows;
     m_numCols = numCols;
@@ -66,6 +77,11 @@ void MineFieldItem::regenerateField( int numRows, int numCols, int numMines )
         else
             m_cells[i] = new CellItem(this);
     }
+
+    for(int i=oldBorderSize; i<newBorderSize; ++i)
+            m_borders[i] = new BorderItem(this);
+
+    setupBorderItems();
 
     // generating mines
     int minesToPlace = m_minesCount;
@@ -107,12 +123,67 @@ void MineFieldItem::regenerateField( int numRows, int numCols, int numMines )
     emit flaggedMinesCountChanged(m_flaggedMinesCount);
 }
 
+void MineFieldItem::setupBorderItems()
+{
+    int i = 0;
+    for(int row=0; row<m_numRows+2; ++row)
+        for(int col=0; col<m_numCols+2; ++col)
+        {
+            if( row == 0 && col == 0)
+            {
+                m_borders.at(i)->setRowCol(0,0);
+                m_borders.at(i)->setBorderType(KMinesState::BorderCornerNW);
+                i++;
+            }
+            else if( row == 0 && col == m_numCols+1)
+            {
+                m_borders.at(i)->setRowCol(row,col);
+                m_borders.at(i)->setBorderType(KMinesState::BorderCornerNE);
+                i++;
+            }
+            else if( row == m_numRows+1 && col == 0 )
+            {
+                m_borders.at(i)->setRowCol(row,col);
+                m_borders.at(i)->setBorderType(KMinesState::BorderCornerSW);
+                i++;
+            }
+            else if( row == m_numRows+1 && col == m_numCols+1 )
+            {
+                m_borders.at(i)->setRowCol(row,col);
+                m_borders.at(i)->setBorderType(KMinesState::BorderCornerSE);
+                i++;
+            }
+            else if( row == 0 )
+            {
+                m_borders.at(i)->setRowCol(row,col);
+                m_borders.at(i)->setBorderType(KMinesState::BorderNorth);
+                i++;
+            }
+            else if( row == m_numRows+1 )
+            {
+                m_borders.at(i)->setRowCol(row,col);
+                m_borders.at(i)->setBorderType(KMinesState::BorderSouth);
+                i++;
+            }
+            else if( col == 0 )
+            {
+                m_borders.at(i)->setRowCol(row,col);
+                m_borders.at(i)->setBorderType(KMinesState::BorderWest);
+                i++;
+            }
+            else if( col == m_numCols+1 )
+            {
+                m_borders.at(i)->setRowCol(row,col);
+                m_borders.at(i)->setBorderType(KMinesState::BorderEast);
+                i++;
+            }
+        }
+}
 QRectF MineFieldItem::boundingRect() const
 {
-    // we assume that all items have the same size
-    // so let's take the first item's size
     qreal cellSize = KMinesRenderer::self()->cellSize();
-    return QRectF(0, 0, cellSize*m_numCols, cellSize*m_numRows);
+    // +2 - because of border on each side
+    return QRectF(0, 0, cellSize*(m_numCols+2), cellSize*(m_numRows+2));
 }
 
 void MineFieldItem::paint( QPainter * painter, const QStyleOptionGraphicsItem* opt, QWidget* w)
@@ -126,6 +197,8 @@ void MineFieldItem::resizeToFitInRect(const QRectF& rect)
 {
     prepareGeometryChange();
 
+    // +2 in some places - because of border on each side
+
     // here follows "cooomplex" algorithm to choose which side to
     // take when calculating cell size by dividing this side by
     // numRows or numCols correspondingly
@@ -133,17 +206,20 @@ void MineFieldItem::resizeToFitInRect(const QRectF& rect)
     // to understand that criteria for choosing one side or another (for
     // determining cell size from it) is comparing
     // cols/r.width() and rows/r.height():
-    bool chooseHorizontalSide = m_numCols / rect.width() > m_numRows / rect.height();
+    bool chooseHorizontalSide = (m_numCols+2) / rect.width() > (m_numRows+2) / rect.height();
 
     qreal size = 0;
     if( chooseHorizontalSide )
-        size = rect.width() / m_numCols;
+        size = rect.width() / (m_numCols+2);
     else
-        size = rect.height() / m_numRows;
+        size = rect.height() / (m_numRows+2);
 
     KMinesRenderer::self()->setCellSize( static_cast<int>(size) );
 
     foreach( CellItem* item, m_cells )
+        item->updatePixmap();
+
+    foreach( BorderItem *item, m_borders)
         item->updatePixmap();
 
     adjustItemPositions();
@@ -158,8 +234,13 @@ void MineFieldItem::adjustItemPositions()
     for(int row=0; row<m_numRows; ++row)
         for(int col=0; col<m_numCols; ++col)
         {
-            itemAt(row,col)->setPos(col*itemSize, row*itemSize);
+            itemAt(row,col)->setPos((col+1)*itemSize, (row+1)*itemSize);
         }
+
+    foreach( BorderItem* item, m_borders )
+    {
+        item->setPos( item->col()*itemSize, item->row()*itemSize );
+    }
 }
 
 void MineFieldItem::onItemRevealed(int row, int col)
@@ -208,6 +289,12 @@ void MineFieldItem::revealEmptySpace(int row, int col)
 
 void MineFieldItem::mousePressEvent( QGraphicsSceneMouseEvent *ev )
 {
+    int itemSize = KMinesRenderer::self()->cellSize();
+    int row = static_cast<int>(ev->pos().y()/itemSize)-1;
+    int col = static_cast<int>(ev->pos().x()/itemSize)-1;
+    if( row <0 || row >= m_numRows || col < 0 || col >= m_numCols )
+       return;
+
     if(m_gameOver)
         return;
 
@@ -217,9 +304,6 @@ void MineFieldItem::mousePressEvent( QGraphicsSceneMouseEvent *ev )
         emit firstClickDone();
     }
 
-    int itemSize = KMinesRenderer::self()->cellSize();
-    int row = static_cast<int>(ev->pos().y()/itemSize);
-    int col = static_cast<int>(ev->pos().x()/itemSize);
     if(ev->button() == Qt::LeftButton)
     {
         if(m_rowcolMidButton.first != -1) // mid-button is already pressed
@@ -243,13 +327,16 @@ void MineFieldItem::mousePressEvent( QGraphicsSceneMouseEvent *ev )
 
 void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
 {
-    if(m_gameOver)
-        return;
-
     int itemSize = KMinesRenderer::self()->cellSize();
 
-    int row = static_cast<int>(ev->pos().y()/itemSize);
-    int col = static_cast<int>(ev->pos().x()/itemSize);
+    int row = static_cast<int>(ev->pos().y()/itemSize)-1;
+    int col = static_cast<int>(ev->pos().x()/itemSize)-1;
+
+    if( row <0 || row >= m_numRows || col < 0 || col >= m_numCols )
+        return;
+
+   if(m_gameOver)
+        return;
 
     CellItem* itemUnderMouse = itemAt(row,col);
 
@@ -332,13 +419,16 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
 
 void MineFieldItem::mouseMoveEvent( QGraphicsSceneMouseEvent *ev )
 {
-    if(m_gameOver)
-        return;
-
     int itemSize = KMinesRenderer::self()->cellSize();
 
-    int row = static_cast<int>(ev->pos().y()/itemSize);
-    int col = static_cast<int>(ev->pos().x()/itemSize);
+    int row = static_cast<int>(ev->pos().y()/itemSize)-1;
+    int col = static_cast<int>(ev->pos().x()/itemSize)-1;
+
+    if( row < 0 || row >= m_numRows || col < 0 || col >= m_numCols )
+        return;
+
+    if(m_gameOver)
+        return;
 
     if(ev->buttons() & Qt::MidButton)
     {

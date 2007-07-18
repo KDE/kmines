@@ -24,6 +24,7 @@
 #include <KRandomSequence>
 
 class CellItem;
+class BorderItem;
 /**
  * Graphics item that represents MineField.
  * It is composed of many (or little) of CellItems.
@@ -131,6 +132,10 @@ private:
      * until it found cells with digits (which are also revealed)
      */
     void revealEmptySpace(int row, int col);
+    /**
+     * Sets up border items (positions and properties)
+     */
+    void setupBorderItems();
 
     void onItemRevealed(int row, int col);
     // overload
@@ -143,6 +148,10 @@ private:
      * Array which holds all child cell items
      */
     QVector<CellItem*> m_cells;
+    /**
+     * Array which holds border items
+     */
+    QVector<BorderItem*> m_borders;
     /**
      * Number of field rows
      */

@@ -11,6 +11,7 @@ include_directories( ${CMAKE_SOURCE_DIR}/libkdegames ${CMAKE_SOURCE_DIR}/libkdeg
 set(kmines_SRCS
    mainwindow.cpp
    cellitem.cpp
+   borderitem.cpp
    minefielditem.cpp
    scene.cpp
    renderer.cpp
