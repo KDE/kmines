@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
-<gui name="kmines" version="23">
+<gui name="kmines" version="24">
 
 <MenuBar>
   <Menu name="settings"><text>Settings</text>
     <Action name="game_difficulty" />
   </Menu>
 </MenuBar>
+
+<ToolBar name="mainToolBar"><text>Main Toolbar</text>
+  <Action name="gameNew" />
+</ToolBar>
 
 </gui>
