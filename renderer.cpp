@@ -63,6 +63,22 @@ QString KMinesRenderer::elementToSvgId( SvgElement e ) const
             return "error";
         case KMinesRenderer::Hint:
             return "hint";
+        case KMinesRenderer::BorderEdgeNorth:
+            return "border.edge.north";
+        case KMinesRenderer::BorderEdgeSouth:
+            return "border.edge.south";
+        case KMinesRenderer::BorderEdgeEast:
+            return "border.edge.east";
+        case KMinesRenderer::BorderEdgeWest:
+            return "border.edge.west";
+        case KMinesRenderer::BorderOutsideCornerNE:
+            return "border.outsideCorner.ne";
+        case KMinesRenderer::BorderOutsideCornerNW:
+            return "border.outsideCorner.nw";
+        case KMinesRenderer::BorderOutsideCornerSW:
+            return "border.outsideCorner.sw";
+        case KMinesRenderer::BorderOutsideCornerSE:
+            return "border.outsideCorner.se";
         case KMinesRenderer::NumElements:
             return QString();
     }
@@ -126,14 +142,15 @@ void KMinesRenderer::rerenderPixmaps()
         return;
 
     QPainter p;
-    // cell up
     QPixmap pix(m_cellSize, m_cellSize);
     pix.fill( Qt::transparent);
     RENDER_SVG_ELEMENT(CellDown);
 
+    // cell up
     pix = QPixmap(m_cellSize, m_cellSize);
     pix.fill( Qt::transparent);
     RENDER_SVG_ELEMENT(CellUp);
+
 
     // all digits are rendered on top of CellDown
     pix = m_pixHash[CellDown];
@@ -183,6 +200,39 @@ void KMinesRenderer::rerenderPixmaps()
     m_renderer->render( &p, elementToSvgId(Mine) );
     p.end();
     m_pixHash[ExplodedMine] = pix;
+
+    // border elements
+    pix = QPixmap(m_cellSize, m_cellSize);
+    pix.fill( Qt::transparent );
+    RENDER_SVG_ELEMENT(BorderEdgeEast);
+
+    pix = QPixmap(m_cellSize, m_cellSize);
+    pix.fill( Qt::transparent );
+    RENDER_SVG_ELEMENT(BorderEdgeWest);
+
+    pix = QPixmap(m_cellSize, m_cellSize);
+    pix.fill( Qt::transparent );
+    RENDER_SVG_ELEMENT(BorderEdgeNorth);
+
+    pix = QPixmap(m_cellSize, m_cellSize);
+    pix.fill( Qt::transparent );
+    RENDER_SVG_ELEMENT(BorderEdgeSouth);
+
+    pix = QPixmap(m_cellSize, m_cellSize);
+    pix.fill( Qt::transparent );
+    RENDER_SVG_ELEMENT(BorderOutsideCornerSE);
+
+    pix = QPixmap(m_cellSize, m_cellSize);
+    pix.fill( Qt::transparent );
+    RENDER_SVG_ELEMENT(BorderOutsideCornerSW);
+
+    pix = QPixmap(m_cellSize, m_cellSize);
+    pix.fill( Qt::transparent );
+    RENDER_SVG_ELEMENT(BorderOutsideCornerNE);
+
+    pix = QPixmap(m_cellSize, m_cellSize);
+    pix.fill( Qt::transparent );
+    RENDER_SVG_ELEMENT(BorderOutsideCornerNW);
 }
 
 QPixmap KMinesRenderer::backgroundPixmap( const QSize& size ) const
@@ -209,20 +259,20 @@ QPixmap KMinesRenderer::pixmapForCellState( KMinesState::CellState state ) const
     switch(state)
     {
         case KMinesState::Released:
-            return m_pixHash[CellUp];
+            return m_pixHash.value(CellUp);
         case KMinesState::Pressed:
-            return m_pixHash[CellDown];
+            return m_pixHash.value(CellDown);
         case KMinesState::Revealed:
             // i.e. revealed & digit=0 case
-            return m_pixHash[CellDown];
+            return m_pixHash.value(CellDown);
         case KMinesState::Questioned:
-            return m_pixHash[Question];
+            return m_pixHash.value(Question);
         case KMinesState::Flagged:
-            return m_pixHash[Flag];
+            return m_pixHash.value(Flag);
         case KMinesState::Error:
-            return m_pixHash[Error];
+            return m_pixHash.value(Error);
         case KMinesState::Hint:
-            return m_pixHash[Hint];
+            return m_pixHash.value(Hint);
         // no default! this way we'll get compiler warnings if
         // something is forgotten
     }
@@ -249,15 +299,48 @@ QPixmap KMinesRenderer::pixmapForDigitElement( int digit ) const
     else if(digit == 8)
         e = KMinesRenderer::Digit8;
 
-    return m_pixHash[e];
+    return m_pixHash.value(e);
 }
 
 QPixmap KMinesRenderer::pixmapMine() const
 {
-    return m_pixHash[Mine];
+    return m_pixHash.value(Mine);
 }
 
 QPixmap KMinesRenderer::pixmapExplodedMine() const
 {
-    return m_pixHash[ExplodedMine];
+    return m_pixHash.value(ExplodedMine);
+}
+
+QPixmap KMinesRenderer::pixmapForBorderElement(KMinesState::BorderElement e) const
+{
+    SvgElement svgel = NumElements; // invalid
+    switch(e)
+    {
+        case KMinesState::BorderNorth:
+            svgel = BorderEdgeNorth;
+            break;
+        case KMinesState::BorderSouth:
+            svgel = BorderEdgeSouth;
+            break;
+        case KMinesState::BorderEast:
+            svgel = BorderEdgeEast;
+            break;
+        case KMinesState::BorderWest:
+            svgel = BorderEdgeWest;
+            break;
+        case KMinesState::BorderCornerNW:
+            svgel = BorderOutsideCornerNW;
+            break;
+        case KMinesState::BorderCornerSW:
+            svgel = BorderOutsideCornerSW;
+            break;
+        case KMinesState::BorderCornerNE:
+            svgel = BorderOutsideCornerNE;
+            break;
+        case KMinesState::BorderCornerSE:
+            svgel = BorderOutsideCornerSE;
+            break;
+    }
+    return m_pixHash.value(svgel);
 }
