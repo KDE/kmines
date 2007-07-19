@@ -90,6 +90,7 @@ void KMinesMainWindow::setupActions()
 
     KGameDifficulty::init(this, this, SLOT(levelChanged(KGameDifficulty::standardLevel)),
                          SLOT(customLevelChanged(int)));
+    KGameDifficulty::setRestartOnChange(KGameDifficulty::restartOnChange);
     KGameDifficulty::addStandardLevel(KGameDifficulty::easy);
     KGameDifficulty::addStandardLevel(KGameDifficulty::medium);
     KGameDifficulty::addStandardLevel(KGameDifficulty::hard);
@@ -105,14 +106,17 @@ void KMinesMainWindow::onMinesCountChanged(int count)
 
 void KMinesMainWindow::levelChanged(KGameDifficulty::standardLevel)
 {
+    newGame();
 }
 
 void KMinesMainWindow::customLevelChanged(int)
 {
+    newGame();
 }
 
 void KMinesMainWindow::newGame()
 {
+    KGameDifficulty::setRunning(true);
     switch(KGameDifficulty::level())
     {
         case KGameDifficulty::easy:
@@ -138,6 +142,7 @@ void KMinesMainWindow::newGame()
 void KMinesMainWindow::onGameOver(bool won)
 {
     m_gameClock->pause();
+    KGameDifficulty::setRunning(false);
     if(won)
     {
         QString group = KGameDifficulty::levelString();
