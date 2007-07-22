@@ -41,6 +41,9 @@ void CellItem::reset()
 
 void CellItem::updatePixmap()
 {
+    if(KMinesRenderer::self()->cellSize() == 0)
+        return;
+
     // several special cases at the beginning
 
     if( m_state == KMinesState::Revealed && m_digit != 0)

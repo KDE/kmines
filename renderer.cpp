@@ -22,8 +22,12 @@
 
 #include <KSvgRenderer>
 #include <KGameTheme>
+#include <kpixmapcache.h>
 
 #include "settings.h"
+
+// if cache get's bigger then this (in bytes), discard it
+static const int CACHE_LIMIT=3000000;
 
 QString KMinesRenderer::elementToSvgId( SvgElement e ) const
 {
@@ -95,6 +99,7 @@ KMinesRenderer::KMinesRenderer()
     : m_cellSize(0)
 {
     m_renderer = new KSvgRenderer();
+    m_cache = new KPixmapCache("kmines-cache");
 
     if(!loadTheme( Settings::theme() ))
         kDebug() << "Failed to load any game theme!" << endl;
@@ -102,6 +107,12 @@ KMinesRenderer::KMinesRenderer()
 
 bool KMinesRenderer::loadTheme( const QString& themeName )
 {
+    // variable saying whether to discard old cache upon successful new theme loading
+    // we won't discard it if m_currentTheme is empty meaning that
+    // this is the first time loadTheme() is called
+    // (i.e. during startup) as we want to pick the cache from disc
+    bool discardCache = !m_currentTheme.isEmpty();
+
     if( !m_currentTheme.isEmpty() && m_currentTheme == themeName )
     {
         kDebug() << "Notice: not loading the same theme" << endl;
@@ -123,156 +134,137 @@ bool KMinesRenderer::loadTheme( const QString& themeName )
     if ( !res )
         return false;
 
-    rerenderPixmaps();
-    // invalidate background in cache
-    m_cachedBkgnd = QPixmap();
-
+    if(discardCache)
+    {
+        kDebug() << "discarding cache" << endl;
+        m_cache->discard();
+    }
     return true;
-}
-
-#define RENDER_SVG_ELEMENT(SVG_ID)                      \
-    p.begin( &pix );                                    \
-    m_renderer->render( &p, elementToSvgId(SVG_ID) );   \
-    p.end();                                            \
-    m_pixHash[SVG_ID] = pix;
-
-void KMinesRenderer::rerenderPixmaps()
-{
-    if(m_cellSize == 0)
-        return;
-
-    QPainter p;
-    QPixmap pix(m_cellSize, m_cellSize);
-    pix.fill( Qt::transparent);
-    RENDER_SVG_ELEMENT(CellDown);
-
-    // cell up
-    pix = QPixmap(m_cellSize, m_cellSize);
-    pix.fill( Qt::transparent);
-    RENDER_SVG_ELEMENT(CellUp);
-
-
-    // all digits are rendered on top of CellDown
-    pix = m_pixHash[CellDown];
-    RENDER_SVG_ELEMENT(Digit1);
-    pix = m_pixHash[CellDown];
-    RENDER_SVG_ELEMENT(Digit2);
-    pix = m_pixHash[CellDown];
-    RENDER_SVG_ELEMENT(Digit3);
-    pix = m_pixHash[CellDown];
-    RENDER_SVG_ELEMENT(Digit4);
-    pix = m_pixHash[CellDown];
-    RENDER_SVG_ELEMENT(Digit5);
-    pix = m_pixHash[CellDown];
-    RENDER_SVG_ELEMENT(Digit6);
-    pix = m_pixHash[CellDown];
-    RENDER_SVG_ELEMENT(Digit7);
-    pix = m_pixHash[CellDown];
-    RENDER_SVG_ELEMENT(Digit8);
-
-    // question (on top of cellup)
-    pix = m_pixHash[CellUp];
-    RENDER_SVG_ELEMENT(Question);
-
-    // flag (on top of cellup)
-    pix = m_pixHash[CellUp];
-    RENDER_SVG_ELEMENT(Flag);
-
-    // mine is a mix of celldown & mine
-    pix = m_pixHash[CellDown];
-    RENDER_SVG_ELEMENT(Mine);
-
-    // error (on top of mine)
-    pix = m_pixHash[Mine];
-    RENDER_SVG_ELEMENT(Error);
-
-    // hint (on top of cellup)
-    pix = m_pixHash[CellUp];
-    RENDER_SVG_ELEMENT(Hint);
-
-    // exploded mine is a mix of celldown & exploded &mine
-    pix = m_pixHash[CellDown];
-    RENDER_SVG_ELEMENT(Explosion);
-    // and render mine on top.
-    // No macro usage or it would overwrite Mine in cache
-    // but we need to put ExplodedMine there
-    p.begin( &pix );
-    m_renderer->render( &p, elementToSvgId(Mine) );
-    p.end();
-    m_pixHash[ExplodedMine] = pix;
-
-    // border elements
-    pix = QPixmap(m_cellSize, m_cellSize);
-    pix.fill( Qt::transparent );
-    RENDER_SVG_ELEMENT(BorderEdgeEast);
-
-    pix = QPixmap(m_cellSize, m_cellSize);
-    pix.fill( Qt::transparent );
-    RENDER_SVG_ELEMENT(BorderEdgeWest);
-
-    pix = QPixmap(m_cellSize, m_cellSize);
-    pix.fill( Qt::transparent );
-    RENDER_SVG_ELEMENT(BorderEdgeNorth);
-
-    pix = QPixmap(m_cellSize, m_cellSize);
-    pix.fill( Qt::transparent );
-    RENDER_SVG_ELEMENT(BorderEdgeSouth);
-
-    pix = QPixmap(m_cellSize, m_cellSize);
-    pix.fill( Qt::transparent );
-    RENDER_SVG_ELEMENT(BorderOutsideCornerSE);
-
-    pix = QPixmap(m_cellSize, m_cellSize);
-    pix.fill( Qt::transparent );
-    RENDER_SVG_ELEMENT(BorderOutsideCornerSW);
-
-    pix = QPixmap(m_cellSize, m_cellSize);
-    pix.fill( Qt::transparent );
-    RENDER_SVG_ELEMENT(BorderOutsideCornerNE);
-
-    pix = QPixmap(m_cellSize, m_cellSize);
-    pix.fill( Qt::transparent );
-    RENDER_SVG_ELEMENT(BorderOutsideCornerNW);
 }
 
 QPixmap KMinesRenderer::backgroundPixmap( const QSize& size ) const
 {
-    if( m_cachedBkgnd.isNull() || m_cachedBkgnd.size() != size )
+    QPixmap bkgnd;
+    QString cacheName = QString("mainWidget%1x%2").arg(size.width()).arg(size.height());
+    if(!m_cache->find( cacheName, bkgnd ))
     {
         kDebug() << "re-rendering bkgnd" << endl;
-        m_cachedBkgnd = QPixmap(size);
-        m_cachedBkgnd.fill(Qt::transparent);
-        QPainter p(&m_cachedBkgnd);
+        bkgnd = QPixmap(size);
+        bkgnd.fill(Qt::transparent);
+        QPainter p(&bkgnd);
         m_renderer->render(&p, "mainWidget");
+        m_cache->insert(cacheName, bkgnd);
+        kDebug() << "cache size: " << m_cache->size() << endl;
+        if(m_cache->size() > CACHE_LIMIT)
+        {
+            kDebug() << "discarding cache - it got too big" << endl;
+            m_cache->discard();
+        }
     }
-
-    return m_cachedBkgnd;
+    return bkgnd;
 }
 
 KMinesRenderer::~KMinesRenderer()
 {
     delete m_renderer;
+    delete m_cache;
 }
+
+#define RENDER_SVG_ELEMENT(SVG_ID)                      \
+    p.begin( &pix );                                    \
+    m_renderer->render( &p, elementToSvgId(SVG_ID) );   \
+    p.end();
 
 QPixmap KMinesRenderer::pixmapForCellState( KMinesState::CellState state ) const
 {
+    QPainter p;
     switch(state)
     {
         case KMinesState::Released:
-            return m_pixHash.value(CellUp);
+        {
+            QPixmap pix;
+            QString cacheName = elementToSvgId(CellUp)+QString::number(m_cellSize);
+            if(!m_cache->find(cacheName, pix))
+            {
+                kDebug() << "putting " << cacheName << " to cache" << endl;
+                pix = QPixmap(m_cellSize, m_cellSize);
+                pix.fill( Qt::transparent);
+                RENDER_SVG_ELEMENT(CellUp);
+                m_cache->insert(cacheName, pix);
+            }
+            return pix;
+        }
         case KMinesState::Pressed:
-            return m_pixHash.value(CellDown);
-        case KMinesState::Revealed:
-            // i.e. revealed & digit=0 case
-            return m_pixHash.value(CellDown);
+        case KMinesState::Revealed:// i.e. revealed & digit=0 case
+        {
+            QPixmap pix;
+            QString cacheName = elementToSvgId(CellDown)+QString::number(m_cellSize);
+            if(!m_cache->find(cacheName, pix))
+            {
+                kDebug() << "putting " << cacheName << " to cache" << endl;
+                pix = QPixmap(m_cellSize, m_cellSize);
+                pix.fill( Qt::transparent);
+                RENDER_SVG_ELEMENT(CellDown);
+                m_cache->insert(cacheName, pix);
+            }
+            return pix;
+        }
         case KMinesState::Questioned:
-            return m_pixHash.value(Question);
+        {
+            QPixmap pix;
+            QString cacheName = elementToSvgId(Question)+QString::number(m_cellSize);
+            if(!m_cache->find(cacheName, pix))
+            {
+                kDebug() << "putting " << cacheName << " to cache" << endl;
+                // question (on top of cellup)
+                pix = pixmapForCellState( KMinesState::Released );
+                RENDER_SVG_ELEMENT(Question);
+                m_cache->insert(cacheName, pix);
+            }
+            return pix;
+        }
         case KMinesState::Flagged:
-            return m_pixHash.value(Flag);
+        {
+            QPixmap pix;
+            QString cacheName = elementToSvgId(Flag)+QString::number(m_cellSize);
+            if(!m_cache->find(cacheName, pix))
+            {
+                // flag (on top of cellup)
+                kDebug() << "putting " << cacheName << " to cache" << endl;
+                pix = pixmapForCellState( KMinesState::Released );
+                RENDER_SVG_ELEMENT(Flag);
+                m_cache->insert(cacheName, pix);
+            }
+            return pix;
+        }
         case KMinesState::Error:
-            return m_pixHash.value(Error);
+        {
+            QPixmap pix;
+            QString cacheName = elementToSvgId(Error)+QString::number(m_cellSize);
+            if(!m_cache->find(cacheName, pix))
+            {
+                kDebug() << "putting " << cacheName << " to cache" << endl;
+                // flag (on top of mine)
+                pix = pixmapMine();
+                RENDER_SVG_ELEMENT(Error);
+                m_cache->insert(cacheName, pix);
+            }
+            return pix;
+        }
         case KMinesState::Hint:
-            return m_pixHash.value(Hint);
+        {
+            QPixmap pix;
+            QString cacheName = elementToSvgId(Hint)+QString::number(m_cellSize);
+            if(!m_cache->find(cacheName, pix))
+            {
+                kDebug() << "putting " << cacheName << " to cache" << endl;
+                // hint (on top of cellup)
+                pix = pixmapForCellState( KMinesState::Released );
+                RENDER_SVG_ELEMENT(Hint);
+                m_cache->insert(cacheName, pix);
+            }
+            return pix;
+        }
         // no default! this way we'll get compiler warnings if
         // something is forgotten
     }
@@ -299,17 +291,51 @@ QPixmap KMinesRenderer::pixmapForDigitElement( int digit ) const
     else if(digit == 8)
         e = KMinesRenderer::Digit8;
 
-    return m_pixHash.value(e);
+    QPainter p;
+    QPixmap pix;
+    QString cacheName = elementToSvgId(e)+QString::number(m_cellSize);
+    if(!m_cache->find(cacheName, pix))
+    {
+        kDebug() << "putting " << cacheName << " to cache" << endl;
+        // digit (on top of celldown)
+        pix = pixmapForCellState( KMinesState::Pressed );
+        RENDER_SVG_ELEMENT(e);
+        m_cache->insert(cacheName, pix);
+    }
+    return pix;
 }
 
 QPixmap KMinesRenderer::pixmapMine() const
 {
-    return m_pixHash.value(Mine);
+    QPainter p;
+    QPixmap pix;
+    QString cacheName = elementToSvgId(Mine)+QString::number(m_cellSize);
+    if(!m_cache->find(cacheName, pix))
+    {
+        kDebug() << "putting " << cacheName << " to cache" << endl;
+        // mine (on top of celldown)
+        pix = pixmapForCellState( KMinesState::Pressed );
+        RENDER_SVG_ELEMENT(Mine);
+        m_cache->insert(cacheName, pix);
+    }
+    return pix;
 }
 
 QPixmap KMinesRenderer::pixmapExplodedMine() const
 {
-    return m_pixHash.value(ExplodedMine);
+    QPainter p;
+    QPixmap pix;
+    QString cacheName = elementToSvgId(Explosion)+QString::number(m_cellSize);
+    if(!m_cache->find(cacheName, pix))
+    {
+        kDebug() << "putting " << cacheName << " to cache" << endl;
+        // mine (on top of celldown)
+        pix = pixmapForCellState( KMinesState::Pressed );
+        RENDER_SVG_ELEMENT(Explosion);
+        RENDER_SVG_ELEMENT(Mine);
+        m_cache->insert(cacheName, pix);
+    }
+    return pix;
 }
 
 QPixmap KMinesRenderer::pixmapForBorderElement(KMinesState::BorderElement e) const
@@ -342,5 +368,22 @@ QPixmap KMinesRenderer::pixmapForBorderElement(KMinesState::BorderElement e) con
             svgel = BorderOutsideCornerSE;
             break;
     }
-    return m_pixHash.value(svgel);
+
+    QPainter p;
+    QPixmap pix;
+    QString cacheName = elementToSvgId(svgel)+QString::number(m_cellSize);
+    if(!m_cache->find(cacheName, pix))
+    {
+        kDebug() << "putting " << cacheName << " to cache" << endl;
+        pix = QPixmap(m_cellSize, m_cellSize);
+        pix.fill( Qt::transparent);
+        RENDER_SVG_ELEMENT(svgel);
+        m_cache->insert(cacheName, pix);
+    }
+    return pix;
+}
+
+void KMinesRenderer::setCellSize( int size )
+{
+    m_cellSize = size;
 }

@@ -19,10 +19,10 @@
 #define RENDERER_H
 
 #include <QPixmap>
-#include <QHash>
 #include "commondefs.h"
 
 class KSvgRenderer;
+class KPixmapCache;
 /**
  * This class is responsible for rendering all the game graphics.
  * Graphics is rendered from svg file specified by current theme.
@@ -48,7 +48,7 @@ public:
      * Sets cell render size
      * Call to this function will reset the cache and put fresh pixmaps to it
      */
-    void setCellSize( int size ) { m_cellSize = size; rerenderPixmaps(); }
+    void setCellSize( int size );
     /**
      * @return current cell render size
      */
@@ -85,18 +85,13 @@ private:
     ~KMinesRenderer();
 
     /**
-     * Rerenders all pixmaps according to m_cellSize and puts them
-     * to m_pixHash
-     */
-    void rerenderPixmaps();
-    /**
-     * Cached background pixmap.
-     */
-    mutable QPixmap m_cachedBkgnd;
-    /**
      * Renderer used to render all graphics from svg file
      */
     KSvgRenderer *m_renderer;
+    /**
+     * Pixmap cache
+     */
+    KPixmapCache *m_cache;
     /**
      * Current cell render size
      */
@@ -133,10 +128,6 @@ private:
         BorderOutsideCornerSE,
         NumElements
     };
-    /**
-     * This is our cache :)
-     */
-    QHash<SvgElement, QPixmap> m_pixHash;
     /**
      * Translates enum value to QString name used in svg file.
      * Names (in .cpp) should be in sync with those defined in svg files

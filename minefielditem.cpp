@@ -25,16 +25,17 @@
 #include "borderitem.h"
 #include "renderer.h"
 
-MineFieldItem::MineFieldItem( int numRows, int numCols, int numMines )
+MineFieldItem::MineFieldItem()
     : m_rowcolMousePress(-1,-1), m_rowcolMidButton(-1,-1), m_gameOver(false)
 {
-    regenerateField(numRows, numCols, numMines);
+//    regenerateField(numRows, numCols, numMines);
 }
 
 void MineFieldItem::regenerateField( int numRows, int numCols, int numMines )
 {
     Q_ASSERT( numMines < numRows*numCols );
 
+    kDebug() << "regenerate field" << endl;
     m_firstClick = true;
     m_gameOver = false;
 
@@ -496,7 +497,10 @@ void MineFieldItem::checkWon()
     // only some cells left unflagged and they
     // all contain bombs. this counts as win
     if(m_numUnrevealed == m_minesCount)
-            emit gameOver(true);
+    {
+        m_gameOver = true;
+        emit gameOver(true);
+    }
 }
 
 QList<QPair<int,int> > MineFieldItem::adjasentRowColsFor(int row, int col)
