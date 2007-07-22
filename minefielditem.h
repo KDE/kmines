@@ -38,13 +38,8 @@ class MineFieldItem : public QObject, public QGraphicsItem
 public:
     /**
      * Constructor.
-     * Generates field with given properties
-     *
-     * @param numRows number of rows
-     * @param numCols number of columns
-     * @param numMines number of mines
      */
-    MineFieldItem( int numRows, int numCols, int numMines );
+    MineFieldItem();
     /**
      * (re)Generates field with given properties.
      * Old properties & item states (if any) are reset

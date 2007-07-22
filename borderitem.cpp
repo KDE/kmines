@@ -28,5 +28,7 @@ BorderItem::BorderItem( QGraphicsItem* parent )
 
 void BorderItem::updatePixmap()
 {
+    if(KMinesRenderer::self()->cellSize() == 0)
+        return;
     setPixmap(KMinesRenderer::self()->pixmapForBorderElement(m_element));
 }

@@ -42,7 +42,7 @@ KMinesScene::KMinesScene( QObject* parent )
     : QGraphicsScene(parent)
 {
     setItemIndexMethod( NoIndex );
-    m_fieldItem = new MineFieldItem(9, 9, 10);
+    m_fieldItem = new MineFieldItem();
     connect(m_fieldItem, SIGNAL(flaggedMinesCountChanged(int)), SIGNAL(minesCountChanged(int)));
     connect(m_fieldItem, SIGNAL(firstClickDone()), SIGNAL(firstClickDone()));
     connect(m_fieldItem, SIGNAL(gameOver(bool)), SLOT(onGameOver(bool)));
