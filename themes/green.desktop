@@ -1,0 +1,9 @@
+[KGameTheme]
+Name=Green
+Description=KMines green theme for KDE 4
+VersionFormat=1
+Author=Eugene Trounev
+AuthorEmail=eugene.trounev@gmail.com
+Type=SVG
+FileName=kmines_green.svgz
+Preview=default_preview.png
