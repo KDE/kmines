@@ -26,8 +26,8 @@
 
 #include "settings.h"
 
-// if cache get's bigger then this (in bytes), discard it
-static const int CACHE_LIMIT=3000000;
+// if cache get's bigger then this (in kilobytes), discard it
+static const int CACHE_LIMIT=3000;
 
 QString KMinesRenderer::elementToSvgId( SvgElement e ) const
 {
@@ -154,7 +154,7 @@ QPixmap KMinesRenderer::backgroundPixmap( const QSize& size ) const
         QPainter p(&bkgnd);
         m_renderer->render(&p, "mainWidget");
         m_cache->insert(cacheName, bkgnd);
-        kDebug() << "cache size: " << m_cache->size() << endl;
+        kDebug() << "cache size: " << m_cache->size() << "kb" << endl;
         if(m_cache->size() > CACHE_LIMIT)
         {
             kDebug() << "discarding cache - it got too big" << endl;
