@@ -26,9 +26,6 @@
 
 #include "settings.h"
 
-// if cache get's bigger then this (in kilobytes), discard it
-static const int CACHE_LIMIT=3000;
-
 QString KMinesRenderer::elementToSvgId( SvgElement e ) const
 {
     switch(e)
@@ -100,6 +97,7 @@ KMinesRenderer::KMinesRenderer()
 {
     m_renderer = new KSvgRenderer();
     m_cache = new KPixmapCache("kmines-cache");
+    m_cache->setCacheLimit(3*1024);
 
     if(!loadTheme( Settings::theme() ))
         kDebug() << "Failed to load any game theme!" << endl;
@@ -155,11 +153,6 @@ QPixmap KMinesRenderer::backgroundPixmap( const QSize& size ) const
         m_renderer->render(&p, "mainWidget");
         m_cache->insert(cacheName, bkgnd);
         kDebug() << "cache size: " << m_cache->size() << "kb" << endl;
-        if(m_cache->size() > CACHE_LIMIT)
-        {
-            kDebug() << "discarding cache - it got too big" << endl;
-            m_cache->discard();
-        }
     }
     return bkgnd;
 }
