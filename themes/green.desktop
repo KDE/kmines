@@ -1,6 +1,11 @@
 [KGameTheme]
 Name=Green
+Name[pt]=Verde
+Name[pt_BR]=Verde
 Description=KMines green theme for KDE 4
+Description[fa]=چهره سبز KMines برای KDE 4
+Description[pt]=Tema verde do KMines para o KDE 4
+Description[pt_BR]=Tema verde do KMines para o KDE 4
 VersionFormat=1
 Author=Eugene Trounev
 AuthorEmail=eugene.trounev@gmail.com
