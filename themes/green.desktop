@@ -2,10 +2,13 @@
 Name=Green
 Name[pt]=Verde
 Name[pt_BR]=Verde
+Name[sv]=Grönt
 Description=KMines green theme for KDE 4
 Description[fa]=چهره سبز KMines برای KDE 4
 Description[pt]=Tema verde do KMines para o KDE 4
 Description[pt_BR]=Tema verde do KMines para o KDE 4
+Description[sv]=Grönt tema för Röja minor i KDE4
+Description[zh_TW]=KMines KDE4 green 外觀主題
 VersionFormat=1
 Author=Eugene Trounev
 AuthorEmail=eugene.trounev@gmail.com
