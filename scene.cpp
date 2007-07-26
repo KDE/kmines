@@ -51,6 +51,7 @@ KMinesScene::KMinesScene( QObject* parent )
     addItem(m_fieldItem);
 
     m_messageItem = new KGamePopupItem;
+    m_messageItem->setMessageOpacity(0.9);
     m_messageItem->setMessageTimeout(4000);
     addItem(m_messageItem);
 }
