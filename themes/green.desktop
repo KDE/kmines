@@ -1,17 +1,9 @@
 [KGameTheme]
-Name=Green
-Name[pt]=Verde
-Name[pt_BR]=Verde
-Name[sv]=Grönt
-Description=KMines green theme for KDE 4
-Description[fa]=چهره سبز KMines برای KDE 4
-Description[pt]=Tema verde do KMines para o KDE 4
-Description[pt_BR]=Tema verde do KMines para o KDE 4
-Description[sv]=Grönt tema för Röja minor i KDE4
-Description[zh_TW]=KMines KDE4 green 外觀主題
+Name=Gardens of Danger
+Description=A funny theme for KDE4 mines game
 VersionFormat=1
 Author=Eugene Trounev
 AuthorEmail=eugene.trounev@gmail.com
 Type=SVG
 FileName=kmines_green.svgz
-Preview=default_preview.png
+Preview=green.png
