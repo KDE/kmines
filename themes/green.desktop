@@ -1,6 +1,8 @@
 [KGameTheme]
 Name=Gardens of Danger
+Name[sv]=Farliga trädgårdar
 Description=A funny theme for KDE4 mines game
+Description[sv]=Ett roligt tema för minröjarspelet i KDE 4
 VersionFormat=1
 Author=Eugene Trounev
 AuthorEmail=eugene.trounev@gmail.com
