@@ -116,7 +116,9 @@ void KMinesMainWindow::customLevelChanged(int)
 
 void KMinesMainWindow::newGame()
 {
-    KGameDifficulty::setRunning(true);
+    m_gameClock->restart();
+    m_gameClock->pause(); // start only with the 1st click
+    KGameDifficulty::setRunning(false);
     switch(KGameDifficulty::level())
     {
         case KGameDifficulty::easy:
@@ -173,7 +175,8 @@ void KMinesMainWindow::advanceTime(const QString& timeStr)
 
 void KMinesMainWindow::onFirstClick()
 {
-    m_gameClock->restart();
+    m_gameClock->resume();
+    KGameDifficulty::setRunning(true);
 }
 
 void KMinesMainWindow::showHighscores()
