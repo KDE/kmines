@@ -35,7 +35,7 @@ void MineFieldItem::regenerateField( int numRows, int numCols, int numMines )
 {
     Q_ASSERT( numMines < numRows*numCols );
 
-    kDebug() << "regenerate field" << endl;
+    kDebug() << "regenerate field";
     m_firstClick = true;
     m_gameOver = false;
 
@@ -468,7 +468,7 @@ void MineFieldItem::onItemRevealed(CellItem* item)
     int idx = m_cells.indexOf(item);
     if(idx == -1)
     {
-        kDebug() << "really strange - item not found" << endl;
+        kDebug() << "really strange - item not found";
         return;
     }
 
