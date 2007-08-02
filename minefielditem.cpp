@@ -284,7 +284,7 @@ void MineFieldItem::revealEmptySpace(int row, int col)
     {
         // first is row, second is col
         item = itemAt(pos);
-        if(item->isRevealed() || item->isFlagged())
+        if(item->isRevealed() || item->isFlagged() || item->isQuestioned())
             continue;
         if(item->digit() == 0)
         {
@@ -292,7 +292,7 @@ void MineFieldItem::revealEmptySpace(int row, int col)
             m_numUnrevealed--;
             revealEmptySpace(pos.first,pos.second);
         }
-        else if(!item->isFlagged())
+        else
         {
             item->reveal();
             m_numUnrevealed--;
@@ -348,7 +348,7 @@ void MineFieldItem::mousePressEvent( QGraphicsSceneMouseEvent *ev )
         QList<CellItem*> neighbours = adjasentItemsFor(row,col);
         foreach(CellItem* item, neighbours)
         {
-            if(!item->isFlagged() && !item->isRevealed())
+            if(!item->isFlagged() && !item->isQuestioned() && !item->isRevealed())
                 item->press();
             m_midButtonPos = qMakePair(row,col);
         }

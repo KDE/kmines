@@ -122,19 +122,15 @@ void KMinesMainWindow::newGame()
     switch(KGameDifficulty::level())
     {
         case KGameDifficulty::easy:
-            kDebug() << "level changed to easy";
             m_scene->startNewGame(9, 9, 10);
             break;
         case KGameDifficulty::medium:
-            kDebug() << "level changed to medium";
             m_scene->startNewGame(16,16,40);
             break;
         case KGameDifficulty::hard:
-            kDebug() << "level changed to hard";
             m_scene->startNewGame(16,30,99);
             break;
         case KGameDifficulty::custom:
-            kDebug() << "level changed to easy";
             m_scene->startNewGame(Settings::self()->customHeight(),
                                   Settings::self()->customWidth(),
                                   Settings::self()->customMines());
