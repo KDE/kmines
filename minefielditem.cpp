@@ -536,11 +536,17 @@ void MineFieldItem::checkLost()
 
 void MineFieldItem::checkWon()
 {
-    // let's check the trivial case when
+    // this also takes into account the trivial case when
     // only some cells left unflagged and they
     // all contain bombs. this counts as win
     if(m_numUnrevealed == m_minesCount)
     {
+        // mark not flagged cells (if any) with flags
+        foreach( CellItem* item, m_cells )
+        {
+            if( !item->isRevealed() && !item->isFlagged() )
+                item->mark();
+        }
         m_gameOver = true;
         emit gameOver(true);
     }
