@@ -87,6 +87,10 @@ private:
      */
     inline CellItem* itemAt(int row, int col) { return m_cells.at( row*m_numCols + col ); }
     /**
+     * Overloaded one, which takes QPair
+     */
+    inline CellItem* itemAt( const QPair<int,int>& pos ) { return itemAt(pos.first,pos.second); }
+    /**
      * Calculates (row,col) from given index in m_cells and returns them in QPair
      */
     inline QPair<int,int> rowColFromIndex(int idx)
@@ -171,8 +175,8 @@ private:
      * row and column where mouse was pressed.
      * (-1,-1) if it is already released
      */
-    QPair<int,int> m_rowcolMousePress;
-    QPair<int,int> m_rowcolMidButton;
+    QPair<int,int> m_leftButtonPos;
+    QPair<int,int> m_midButtonPos;
     bool m_firstClick;
     bool m_gameOver;
     int m_numUnrevealed;

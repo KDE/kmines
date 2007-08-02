@@ -26,7 +26,7 @@
 #include "renderer.h"
 
 MineFieldItem::MineFieldItem()
-    : m_rowcolMousePress(-1,-1), m_rowcolMidButton(-1,-1), m_gameOver(false)
+    : m_leftButtonPos(-1,-1), m_midButtonPos(-1,-1), m_gameOver(false)
 {
 //    regenerateField(numRows, numCols, numMines);
 }
@@ -271,7 +271,7 @@ void MineFieldItem::revealEmptySpace(int row, int col)
     foreach( const RowColPair& pair, list )
     {
         // first is row, second is col
-        item = itemAt(pair.first,pair.second);
+        item = itemAt(pair);
         if(item->isRevealed() || item->isFlagged())
             continue;
         if(item->digit() == 0)
@@ -290,13 +290,13 @@ void MineFieldItem::revealEmptySpace(int row, int col)
 
 void MineFieldItem::mousePressEvent( QGraphicsSceneMouseEvent *ev )
 {
+    if(m_gameOver)
+        return;
+
     int itemSize = KMinesRenderer::self()->cellSize();
     int row = static_cast<int>(ev->pos().y()/itemSize)-1;
     int col = static_cast<int>(ev->pos().x()/itemSize)-1;
     if( row <0 || row >= m_numRows || col < 0 || col >= m_numCols )
-       return;
-
-    if(m_gameOver)
         return;
 
     if(m_firstClick)
@@ -307,60 +307,15 @@ void MineFieldItem::mousePressEvent( QGraphicsSceneMouseEvent *ev )
 
     if(ev->button() == Qt::LeftButton)
     {
-        if(m_rowcolMidButton.first != -1) // mid-button is already pressed
+        if(m_midButtonPos.first != -1) // mid-button is already pressed
             return;
 
         itemAt(row,col)->press();
-        // TODO: rename rowcolLeftButton
-        m_rowcolMousePress = qMakePair(row,col);
-    }
-    else if(ev->button() == Qt::MidButton)
-    {
-        QList<CellItem*> neighbours = adjasentItemsFor(row,col);
-        foreach(CellItem* item, neighbours)
-        {
-            if(!item->isFlagged() && !item->isRevealed())
-                item->press();
-            m_rowcolMidButton = qMakePair(row,col);
-        }
-    }
-}
-
-void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
-{
-    int itemSize = KMinesRenderer::self()->cellSize();
-
-    int row = static_cast<int>(ev->pos().y()/itemSize)-1;
-    int col = static_cast<int>(ev->pos().x()/itemSize)-1;
-
-    if( row <0 || row >= m_numRows || col < 0 || col >= m_numCols )
-        return;
-
-   if(m_gameOver)
-        return;
-
-    CellItem* itemUnderMouse = itemAt(row,col);
-
-    if(ev->button() == Qt::LeftButton)
-    {
-        if(m_rowcolMidButton.first != -1) // mid-button is already pressed
-            return;
-
-        CellItem *item = itemAt(m_rowcolMousePress.first, m_rowcolMousePress.second);
-
-        if(!item->isRevealed()) // revealing only unrevealed ones
-        {
-            item->release();
-            if(item->isRevealed())
-                onItemRevealed(m_rowcolMousePress.first,m_rowcolMousePress.second);
-        }
-        m_rowcolMousePress = qMakePair(-1,-1);//reset
+        m_leftButtonPos = qMakePair(row,col);
     }
     else if(ev->button() == Qt::RightButton)
     {
-        if(m_rowcolMidButton.first != -1) // mid-button is already pressed
-            return;
-
+        CellItem* itemUnderMouse = itemAt(row,col);
         bool wasFlagged = itemUnderMouse->isFlagged();
 
         itemUnderMouse->mark();
@@ -374,11 +329,75 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
                 m_flaggedMinesCount--;
             emit flaggedMinesCountChanged(m_flaggedMinesCount);
         }
-        m_rowcolMousePress = qMakePair(-1,-1);//reset
+    }
+    else if(ev->button() == Qt::MidButton)
+    {
+        QList<CellItem*> neighbours = adjasentItemsFor(row,col);
+        foreach(CellItem* item, neighbours)
+        {
+            if(!item->isFlagged() && !item->isRevealed())
+                item->press();
+            m_midButtonPos = qMakePair(row,col);
+        }
+    }
+}
+
+void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
+{
+    if(m_gameOver)
+        return;
+
+    int itemSize = KMinesRenderer::self()->cellSize();
+
+    int row = static_cast<int>(ev->pos().y()/itemSize)-1;
+    int col = static_cast<int>(ev->pos().x()/itemSize)-1;
+
+    if( row <0 || row >= m_numRows || col < 0 || col >= m_numCols )
+    {
+        // there might be the case when player moved mouse outside game field
+        // while holding mid button and released it outside the field
+        // in this case we must unpress pressed buttons, let's do it here
+        // and return
+        if(m_midButtonPos.first != -1)
+        {
+            QList<CellItem*> neighbours = adjasentItemsFor(m_midButtonPos.first,m_midButtonPos.second);
+            foreach(CellItem *item, neighbours)
+                item->undoPress();
+            m_midButtonPos = qMakePair(-1,-1);
+        }
+        // same with left button
+        if(m_leftButtonPos.first != -1)
+        {
+            itemAt(m_leftButtonPos)->undoPress();
+            m_leftButtonPos = qMakePair(-1,-1);
+        }
+        return;
+    }
+
+    CellItem* itemUnderMouse = itemAt(row,col);
+
+    if(ev->button() == Qt::LeftButton)
+    {
+        if(m_midButtonPos.first != -1) // mid-button is already pressed
+            return;
+
+        // this can happen like this:
+        // mid-button pressed, left-button pressed, mid-button released, left-button released
+        // m_leftButtonPos never gets set in this scenario, so we must protect ourselves :)
+        if(m_leftButtonPos.first == -1)
+            return;
+
+        if(!itemUnderMouse->isRevealed()) // revealing only unrevealed ones
+        {
+            itemUnderMouse->release();
+            if(itemUnderMouse->isRevealed())
+                onItemRevealed(row,col);
+        }
+        m_leftButtonPos = qMakePair(-1,-1);//reset
     }
     else if( ev->button() == Qt::MidButton )
     {
-        m_rowcolMidButton = qMakePair(-1,-1);
+        m_midButtonPos = qMakePair(-1,-1);
 
         QList<CellItem*> neighbours = adjasentItemsFor(row,col);
         if(!itemUnderMouse->isRevealed())
@@ -420,6 +439,9 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
 
 void MineFieldItem::mouseMoveEvent( QGraphicsSceneMouseEvent *ev )
 {
+    if(m_gameOver)
+        return;
+
     int itemSize = KMinesRenderer::self()->cellSize();
 
     int row = static_cast<int>(ev->pos().y()/itemSize)-1;
@@ -428,16 +450,24 @@ void MineFieldItem::mouseMoveEvent( QGraphicsSceneMouseEvent *ev )
     if( row < 0 || row >= m_numRows || col < 0 || col >= m_numCols )
         return;
 
-    if(m_gameOver)
-        return;
-
+    if(ev->buttons() & Qt::LeftButton)
+    {
+        if((m_leftButtonPos.first != -1 && m_leftButtonPos.second != -1) &&
+           (m_leftButtonPos.first != row || m_leftButtonPos.second != col))
+        {
+            itemAt(m_leftButtonPos)->undoPress();
+            itemAt(row,col)->press();
+            m_leftButtonPos = qMakePair(row,col);
+        }
+    }
     if(ev->buttons() & Qt::MidButton)
     {
-        if(m_rowcolMidButton.first != row || m_rowcolMidButton.second != col)
+        if((m_midButtonPos.first != -1 && m_midButtonPos.second != -1) &&
+           (m_midButtonPos.first != row || m_midButtonPos.second != col))
         {
             // un-press previously pressed cells
-            QList<CellItem*> prevNeighbours = adjasentItemsFor(m_rowcolMidButton.first,
-                                                              m_rowcolMidButton.second);
+            QList<CellItem*> prevNeighbours = adjasentItemsFor(m_midButtonPos.first,
+                                                              m_midButtonPos.second);
             foreach(CellItem *item, prevNeighbours)
                    item->undoPress();
 
@@ -446,7 +476,7 @@ void MineFieldItem::mouseMoveEvent( QGraphicsSceneMouseEvent *ev )
             foreach(CellItem *item, neighbours)
                 item->press();
 
-            m_rowcolMidButton = qMakePair(row,col);
+            m_midButtonPos = qMakePair(row,col);
         }
     }
 }
@@ -531,7 +561,7 @@ QList<CellItem*> MineFieldItem::adjasentItemsFor(int row, int col)
     QList<CellItem*> resultingList;
     typedef QPair<int,int> RowColPair;
     foreach( const RowColPair& pair, rowcolList )
-        resultingList.append( itemAt(pair.first, pair.second) );
+        resultingList.append( itemAt(pair) );
     return resultingList;
 }
 
