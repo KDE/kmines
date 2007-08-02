@@ -44,7 +44,9 @@ public:
      */
     MineFieldItem();
     /**
-     * TODO add docstring
+     * Initializes game field: creates items, places them on positions,
+     * (re)sets some variables
+     *
      * @param numRows number of rows
      * @param numCols number of columns
      * @param numMines number of mines
@@ -100,8 +102,10 @@ private:
             return qMakePair(row, idx - row*m_numCols);
         }
     /**
-     * TODO add docstring
-     * @param clickedIdx specifies index which should NOT have mine
+     * Generates game field ensuring that cell at clickedIdx
+     * will be empty to allow the player quickly jump into the game.
+     *
+     * @param clickedIdx specifies index which should NOT have mine and be empty
      */
     void generateField(int clickedIdx);
     /**
