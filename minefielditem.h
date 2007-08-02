@@ -25,6 +25,9 @@
 
 class CellItem;
 class BorderItem;
+
+typedef QPair<int,int> FieldPos;
+
 /**
  * Graphics item that represents MineField.
  * It is composed of many (or little) of CellItems.
@@ -41,14 +44,12 @@ public:
      */
     MineFieldItem();
     /**
-     * (re)Generates field with given properties.
-     * Old properties & item states (if any) are reset
-     *
+     * TODO add docstring
      * @param numRows number of rows
      * @param numCols number of columns
      * @param numMines number of mines
      */
-    void regenerateField( int numRows, int numCols, int numMines );
+    void initField( int numRows, int numCols, int numMines );
     /**
      * Resizes this graphics item so it fits in given rect
      */
@@ -89,15 +90,20 @@ private:
     /**
      * Overloaded one, which takes QPair
      */
-    inline CellItem* itemAt( const QPair<int,int>& pos ) { return itemAt(pos.first,pos.second); }
+    inline CellItem* itemAt( const FieldPos& pos ) { return itemAt(pos.first,pos.second); }
     /**
      * Calculates (row,col) from given index in m_cells and returns them in QPair
      */
-    inline QPair<int,int> rowColFromIndex(int idx)
+    inline FieldPos rowColFromIndex(int idx)
         {
             int row = idx/m_numCols;
             return qMakePair(row, idx - row*m_numCols);
         }
+    /**
+     * TODO add docstring
+     * @param clickedIdx specifies index which should NOT have mine
+     */
+    void generateField(int clickedIdx);
     /**
      * Returns all adjasent items for item at row, col
      */
@@ -105,7 +111,7 @@ private:
     /**
      * Returns all valid adjasent row,col pairs for row, col
      */
-    QList<QPair<int,int> > adjasentRowColsFor(int row, int col);
+    QList<FieldPos> adjasentRowColsFor(int row, int col);
     /**
      * Checks if player lost the game
      */
@@ -175,8 +181,8 @@ private:
      * row and column where mouse was pressed.
      * (-1,-1) if it is already released
      */
-    QPair<int,int> m_leftButtonPos;
-    QPair<int,int> m_midButtonPos;
+    FieldPos m_leftButtonPos;
+    FieldPos m_midButtonPos;
     bool m_firstClick;
     bool m_gameOver;
     int m_numUnrevealed;

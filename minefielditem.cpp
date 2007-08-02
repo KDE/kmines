@@ -28,14 +28,12 @@
 MineFieldItem::MineFieldItem()
     : m_leftButtonPos(-1,-1), m_midButtonPos(-1,-1), m_gameOver(false)
 {
-//    regenerateField(numRows, numCols, numMines);
 }
 
-void MineFieldItem::regenerateField( int numRows, int numCols, int numMines )
+void MineFieldItem::initField( int numRows, int numCols, int numMines )
 {
     Q_ASSERT( numMines < numRows*numCols );
 
-    kDebug() << "regenerate field";
     m_firstClick = true;
     m_gameOver = false;
 
@@ -77,6 +75,10 @@ void MineFieldItem::regenerateField( int numRows, int numCols, int numMines )
             m_cells[i]->reset();
         else
             m_cells[i] = new CellItem(this);
+        // let it be empty by default
+        // generateField() will adjust needed cells
+        // to hold digits or mines
+        m_cells[i]->setDigit(0);
     }
 
     for(int i=oldBorderSize; i<newBorderSize; ++i)
@@ -84,44 +86,40 @@ void MineFieldItem::regenerateField( int numRows, int numCols, int numMines )
 
     setupBorderItems();
 
-    // generating mines
+    adjustItemPositions();
+    m_flaggedMinesCount = 0;
+    emit flaggedMinesCountChanged(m_flaggedMinesCount);
+}
+
+void MineFieldItem::generateField(int clickedIdx)
+{
+    QList<int> cellsWithMines;
+    // generating mines ensuring that clickedIdx won't hold mine
     int minesToPlace = m_minesCount;
     int randomIdx = 0;
     while(minesToPlace != 0)
     {
         randomIdx = m_randomSeq.getLong( m_numRows*m_numCols );
-        if(!m_cells.at(randomIdx)->hasMine())
+        if(!m_cells.at(randomIdx)->hasMine() && randomIdx != clickedIdx)
         {
             m_cells.at(randomIdx)->setHasMine(true);
+            cellsWithMines.append(randomIdx);
             minesToPlace--;
         }
         else
             continue;
     }
 
-    // calculating digits for cells around mines
-    for(int row=0; row < m_numRows; ++row)
-        for(int col=0; col < m_numCols; ++col)
+    foreach(int idx, cellsWithMines)
+    {
+        FieldPos rc = rowColFromIndex(idx);
+        QList<CellItem*> neighbours = adjasentItemsFor(rc.first, rc.second);
+        foreach( CellItem *item, neighbours )
         {
-            if(itemAt(row,col)->hasMine())
-                continue;
-            // simply looking at all 8 neighbour cells and adding +1 for each
-            // mine we found
-            int resultingDigit = 0;
-            QList<CellItem*> neighbours = adjasentItemsFor(row,col);
-            foreach(CellItem* item, neighbours)
-            {
-                if(item->hasMine())
-                    resultingDigit++;
-            }
-
-            // having 0 is ok here - it'll be empty
-            itemAt(row,col)->setDigit(resultingDigit);
+            if(!item->hasMine())
+                item->setDigit( item->digit()+1 );
         }
-
-    adjustItemPositions();
-    m_flaggedMinesCount = 0;
-    emit flaggedMinesCountChanged(m_flaggedMinesCount);
+    }
 }
 
 void MineFieldItem::setupBorderItems()
@@ -180,6 +178,7 @@ void MineFieldItem::setupBorderItems()
             }
         }
 }
+
 QRectF MineFieldItem::boundingRect() const
 {
     qreal cellSize = KMinesRenderer::self()->cellSize();
@@ -264,21 +263,20 @@ void MineFieldItem::onItemRevealed(int row, int col)
 void MineFieldItem::revealEmptySpace(int row, int col)
 {
     // recursively reveal neighbour cells until we find cells with digit
-    typedef QPair<int,int> RowColPair;
-    QList<RowColPair> list = adjasentRowColsFor(row,col);
+    QList<FieldPos> list = adjasentRowColsFor(row,col);
     CellItem *item = 0;
 
-    foreach( const RowColPair& pair, list )
+    foreach( const FieldPos& pos, list )
     {
         // first is row, second is col
-        item = itemAt(pair);
+        item = itemAt(pos);
         if(item->isRevealed() || item->isFlagged())
             continue;
         if(item->digit() == 0)
         {
             item->reveal();
             m_numUnrevealed--;
-            revealEmptySpace(pair.first,pair.second);
+            revealEmptySpace(pos.first,pos.second);
         }
         else if(!item->isFlagged())
         {
@@ -302,6 +300,7 @@ void MineFieldItem::mousePressEvent( QGraphicsSceneMouseEvent *ev )
     if(m_firstClick)
     {
         m_firstClick = false;
+        generateField( row*m_numCols + col );
         emit firstClickDone();
     }
 
@@ -533,9 +532,9 @@ void MineFieldItem::checkWon()
     }
 }
 
-QList<QPair<int,int> > MineFieldItem::adjasentRowColsFor(int row, int col)
+QList<FieldPos> MineFieldItem::adjasentRowColsFor(int row, int col)
 {
-    QList<QPair<int,int> > resultingList;
+    QList<FieldPos> resultingList;
     if(row != 0 && col != 0) // upper-left diagonal
         resultingList.append( qMakePair(row-1,col-1) );
     if(row != 0) // upper
@@ -557,11 +556,11 @@ QList<QPair<int,int> > MineFieldItem::adjasentRowColsFor(int row, int col)
 
 QList<CellItem*> MineFieldItem::adjasentItemsFor(int row, int col)
 {
-    QList<QPair<int,int> > rowcolList = adjasentRowColsFor(row,col);
+    QList<FieldPos > rowcolList = adjasentRowColsFor(row,col);
     QList<CellItem*> resultingList;
-    typedef QPair<int,int> RowColPair;
-    foreach( const RowColPair& pair, rowcolList )
-        resultingList.append( itemAt(pair) );
+    foreach( const FieldPos& pos, rowcolList )
+        resultingList.append( itemAt(pos) );
     return resultingList;
 }
+
 
