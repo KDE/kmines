@@ -35,10 +35,10 @@ int main(int argc, char **argv)
 						 ki18n(COPYLEFT), KLocalizedString(), HOMEPAGE);
     aboutData.addAuthor(ki18n("Nicolas Hadacek"), KLocalizedString(), EMAIL);
     aboutData.addAuthor(ki18n("Mauricio Piacentini"),
-                        ki18n("Code refactoring and SVG support"),
+                        ki18n("Code refactoring and SVG support. Current maintainer"),
                         "mauricio@tabuleiro.com");
     aboutData.addAuthor(ki18n("Dmitry Suzdalev"),
-                        ki18n("Rewrite to use QGraphicsView framework"),
+                        ki18n("Rewrite to use QGraphicsView framework. Current maintainer"),
                         "dimsuz@gmail.com");
     aboutData.addCredit(ki18n("Andreas Zehender"), ki18n("Smiley pixmaps"));
     aboutData.addCredit(ki18n("Mikhail Kourinny"), ki18n("Solver/Adviser"));
