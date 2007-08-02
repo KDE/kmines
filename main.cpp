@@ -33,7 +33,8 @@ int main(int argc, char **argv)
     KAboutData aboutData("kmines", 0, ki18n("KMines"), LONG_VERSION,
 						 ki18n(DESCRIPTION), KAboutData::License_GPL,
 						 ki18n(COPYLEFT), KLocalizedString(), HOMEPAGE);
-    aboutData.addAuthor(ki18n("Nicolas Hadacek"), KLocalizedString(), EMAIL);
+    aboutData.addAuthor(ki18n("Nicolas Hadacek"),
+                        ki18n("Original author"), "hadacek@kde.org");
     aboutData.addAuthor(ki18n("Mauricio Piacentini"),
                         ki18n("Code refactoring and SVG support. Current maintainer"),
                         "mauricio@tabuleiro.com");

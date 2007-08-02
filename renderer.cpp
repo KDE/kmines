@@ -208,7 +208,7 @@ QPixmap KMinesRenderer::pixmapForCellState( KMinesState::CellState state ) const
             QString cacheName = elementToSvgId(Question)+QString::number(m_cellSize);
             if(!m_cache->find(cacheName, pix))
             {
-                kDebug() << "putting" << cacheName << "to cache";
+//                kDebug() << "putting" << cacheName << "to cache";
                 // question (on top of cellup)
                 pix = pixmapForCellState( KMinesState::Released );
                 RENDER_SVG_ELEMENT(Question);
@@ -223,7 +223,7 @@ QPixmap KMinesRenderer::pixmapForCellState( KMinesState::CellState state ) const
             if(!m_cache->find(cacheName, pix))
             {
                 // flag (on top of cellup)
-                kDebug() << "putting" << cacheName << "to cache";
+//                kDebug() << "putting" << cacheName << "to cache";
                 pix = pixmapForCellState( KMinesState::Released );
                 RENDER_SVG_ELEMENT(Flag);
                 m_cache->insert(cacheName, pix);
@@ -236,7 +236,7 @@ QPixmap KMinesRenderer::pixmapForCellState( KMinesState::CellState state ) const
             QString cacheName = elementToSvgId(Error)+QString::number(m_cellSize);
             if(!m_cache->find(cacheName, pix))
             {
-                kDebug() << "putting" << cacheName << "to cache";
+//                kDebug() << "putting" << cacheName << "to cache";
                 // flag (on top of mine)
                 pix = pixmapMine();
                 RENDER_SVG_ELEMENT(Error);
@@ -250,7 +250,7 @@ QPixmap KMinesRenderer::pixmapForCellState( KMinesState::CellState state ) const
             QString cacheName = elementToSvgId(Hint)+QString::number(m_cellSize);
             if(!m_cache->find(cacheName, pix))
             {
-                kDebug() << "putting" << cacheName << "to cache";
+//                kDebug() << "putting" << cacheName << "to cache";
                 // hint (on top of cellup)
                 pix = pixmapForCellState( KMinesState::Released );
                 RENDER_SVG_ELEMENT(Hint);
@@ -289,7 +289,7 @@ QPixmap KMinesRenderer::pixmapForDigitElement( int digit ) const
     QString cacheName = elementToSvgId(e)+QString::number(m_cellSize);
     if(!m_cache->find(cacheName, pix))
     {
-        kDebug() << "putting" << cacheName << "to cache";
+//        kDebug() << "putting" << cacheName << "to cache";
         // digit (on top of celldown)
         pix = pixmapForCellState( KMinesState::Pressed );
         RENDER_SVG_ELEMENT(e);
@@ -305,7 +305,7 @@ QPixmap KMinesRenderer::pixmapMine() const
     QString cacheName = elementToSvgId(Mine)+QString::number(m_cellSize);
     if(!m_cache->find(cacheName, pix))
     {
-        kDebug() << "putting" << cacheName << "to cache";
+//        kDebug() << "putting" << cacheName << "to cache";
         // mine (on top of celldown)
         pix = pixmapForCellState( KMinesState::Pressed );
         RENDER_SVG_ELEMENT(Mine);
@@ -321,7 +321,7 @@ QPixmap KMinesRenderer::pixmapExplodedMine() const
     QString cacheName = elementToSvgId(Explosion)+QString::number(m_cellSize);
     if(!m_cache->find(cacheName, pix))
     {
-        kDebug() << "putting" << cacheName << "to cache";
+//        kDebug() << "putting" << cacheName << "to cache";
         // mine (on top of celldown)
         pix = pixmapForCellState( KMinesState::Pressed );
         RENDER_SVG_ELEMENT(Explosion);
@@ -367,7 +367,7 @@ QPixmap KMinesRenderer::pixmapForBorderElement(KMinesState::BorderElement e) con
     QString cacheName = elementToSvgId(svgel)+QString::number(m_cellSize);
     if(!m_cache->find(cacheName, pix))
     {
-        kDebug() << "putting" << cacheName << "to cache";
+//        kDebug() << "putting" << cacheName << "to cache";
         pix = QPixmap(m_cellSize, m_cellSize);
         pix.fill( Qt::transparent);
         RENDER_SVG_ELEMENT(svgel);
