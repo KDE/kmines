@@ -179,7 +179,7 @@ QPixmap KMinesRenderer::pixmapForCellState( KMinesState::CellState state ) const
             QString cacheName = elementToSvgId(CellUp)+QString::number(m_cellSize);
             if(!m_cache->find(cacheName, pix))
             {
-                kDebug() << "putting" << cacheName << "to cache";
+//                kDebug() << "putting" << cacheName << "to cache";
                 pix = QPixmap(m_cellSize, m_cellSize);
                 pix.fill( Qt::transparent);
                 RENDER_SVG_ELEMENT(CellUp);
