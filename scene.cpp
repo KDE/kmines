@@ -78,7 +78,7 @@ void KMinesScene::startNewGame(int rows, int cols, int numMines)
     }
     if(m_messageItem->isVisible())
         m_messageItem->forceHide(KGamePopupItem::AnimatedHide);
-    m_fieldItem->regenerateField(rows, cols, numMines);
+    m_fieldItem->initField(rows, cols, numMines);
     // reposition items
     resizeScene((int)sceneRect().width(), (int)sceneRect().height());
 }
