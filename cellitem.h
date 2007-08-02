@@ -76,6 +76,10 @@ public:
      */
     bool isFlagged() const { return m_state == KMinesState::Flagged; }
     /**
+     * @return whether this cell is marked with question
+     */
+    bool isQuestioned() const { return m_state == KMinesState::Questioned; }
+    /**
      * @return whether this cell is exploded
      */
     bool isExploded() const { return m_exploded; }

@@ -76,7 +76,7 @@ void CellItem::press()
 void CellItem::release(bool force)
 {
     // special case for mid-button magic
-    if(force && m_state == KMinesState::Flagged)
+    if(force && (m_state == KMinesState::Flagged || m_state == KMinesState::Questioned))
         return;
 
     if(m_state == KMinesState::Pressed || force)
