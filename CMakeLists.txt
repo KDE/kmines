@@ -3,7 +3,7 @@ project(kmines)
 add_subdirectory( data ) 
 add_subdirectory( themes ) 
 
-include_directories( ${CMAKE_SOURCE_DIR}/libkdegames ${CMAKE_SOURCE_DIR}/libkdegames/highscore  )
+include_directories( ${CMAKE_SOURCE_DIR}/libkdegames/highscore  )
 
 
 ########### next target ###############
