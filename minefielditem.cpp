@@ -93,16 +93,30 @@ void MineFieldItem::initField( int numRows, int numCols, int numMines )
 
 void MineFieldItem::generateField(int clickedIdx)
 {
-    QList<int> cellsWithMines;
     // generating mines ensuring that clickedIdx won't hold mine
+    // and that it will be an empty cell so the user don't have
+    // to make random guesses at the start of the game
+    QList<int> cellsWithMines;
     int minesToPlace = m_minesCount;
     int randomIdx = 0;
+    CellItem* item = 0;
+    FieldPos fp = rowColFromIndex(clickedIdx);
+
+    // this is the list of items we don't want to put the mine in
+    // to ensure that clickedIdx will stay an empty cell
+    // (it will be empty if none of surrounding items holds mine)
+    QList<CellItem*> neighbForClicked = adjasentItemsFor(fp.first, fp.second);
+
     while(minesToPlace != 0)
     {
         randomIdx = m_randomSeq.getLong( m_numRows*m_numCols );
-        if(!m_cells.at(randomIdx)->hasMine() && randomIdx != clickedIdx)
+        item = m_cells.at(randomIdx);
+        if(!item->hasMine()
+           && neighbForClicked.indexOf(item) == -1
+           && randomIdx != clickedIdx)
         {
-            m_cells.at(randomIdx)->setHasMine(true);
+            // ok, let's mine this place! :-)
+            item->setHasMine(true);
             cellsWithMines.append(randomIdx);
             minesToPlace--;
         }
