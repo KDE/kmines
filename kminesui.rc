@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
-<gui name="kmines" version="25">
+<gui name="kmines" version="26">
 
 <ToolBar name="mainToolBar"><text>Main Toolbar</text>
-  <Action name="gameNew" />
+  <Action name="game_new" />
 </ToolBar>
 
 </gui>
