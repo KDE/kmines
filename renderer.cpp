@@ -283,6 +283,8 @@ QPixmap KMinesRenderer::pixmapForDigitElement( int digit ) const
         e = KMinesRenderer::Digit7;
     else if(digit == 8)
         e = KMinesRenderer::Digit8;
+    else
+        return QPixmap();
 
     QPainter p;
     QPixmap pix;
