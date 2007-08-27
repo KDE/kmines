@@ -17,7 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#ifndef KMINES_VERSION_H
+#define KMINES_VERSION_H
+
 #define VERSION	     "3.0"
 #define LONG_VERSION "3.0 (02 Aug 2007)"
 #define COPYLEFT     "(c) 1996-2005, Nicolas Hadacek\n(c) 2001, Mikhail Kourinny\n(c) 2006-2007, Mauricio Piacentini\n(c) 2007, Dmitry Suzdalev"
 #define HOMEPAGE     "http://kmines.sourceforge.net/"
+
+#endif // KMINES_VERSION_H
