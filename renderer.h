@@ -115,7 +115,7 @@ private:
         Digit8,
         Mine,
         Explosion,
-        ExplodedMine, // for convinience - doesn't exist in svg.
+        ExplodedMine, // for convenience - doesn't exist in svg.
         Error,
         Hint,
         BorderEdgeNorth,
