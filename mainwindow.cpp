@@ -76,7 +76,7 @@ KMinesMainWindow::KMinesMainWindow()
     m_scoreDialog->hideField(KScoreDialog::Score);
 
     // TODO: load this from config
-    KGameDifficulty::setLevel( KGameDifficulty::easy );
+    KGameDifficulty::setLevel( KGameDifficulty::Easy );
     newGame();
 }
 
@@ -90,10 +90,10 @@ void KMinesMainWindow::setupActions()
 
     KGameDifficulty::init(this, this, SLOT(levelChanged(KGameDifficulty::standardLevel)),
                          SLOT(customLevelChanged(int)));
-    KGameDifficulty::setRestartOnChange(KGameDifficulty::restartOnChange);
-    KGameDifficulty::addStandardLevel(KGameDifficulty::easy);
-    KGameDifficulty::addStandardLevel(KGameDifficulty::medium);
-    KGameDifficulty::addStandardLevel(KGameDifficulty::hard);
+    KGameDifficulty::setRestartOnChange(KGameDifficulty::RestartOnChange);
+    KGameDifficulty::addStandardLevel(KGameDifficulty::Easy);
+    KGameDifficulty::addStandardLevel(KGameDifficulty::Medium);
+    KGameDifficulty::addStandardLevel(KGameDifficulty::Hard);
     KGameDifficulty::addCustomLevel(0, i18n("Custom"));
 
     setupGUI();
@@ -121,16 +121,16 @@ void KMinesMainWindow::newGame()
     KGameDifficulty::setRunning(false);
     switch(KGameDifficulty::level())
     {
-        case KGameDifficulty::easy:
+        case KGameDifficulty::Easy:
             m_scene->startNewGame(9, 9, 10);
             break;
-        case KGameDifficulty::medium:
+        case KGameDifficulty::Medium:
             m_scene->startNewGame(16,16,40);
             break;
-        case KGameDifficulty::hard:
+        case KGameDifficulty::Hard:
             m_scene->startNewGame(16,30,99);
             break;
-        case KGameDifficulty::custom:
+        case KGameDifficulty::Custom:
             m_scene->startNewGame(Settings::self()->customHeight(),
                                   Settings::self()->customWidth(),
                                   Settings::self()->customMines());
