@@ -29,6 +29,7 @@
 #include <KGameThemeSelector>
 #include <KMessageBox>
 #include <KLocale>
+#include <QDesktopWidget>
 
 #include "ui_customgame.h"
 
@@ -96,7 +97,7 @@ void KMinesMainWindow::setupActions()
     KGameDifficulty::addStandardLevel(KGameDifficulty::Hard);
     KGameDifficulty::addCustomLevel(0, i18n("Custom"));
 
-    setupGUI();
+    setupGUI(qApp->desktop()->availableGeometry().size()*0.4);
 }
 
 void KMinesMainWindow::onMinesCountChanged(int count)
