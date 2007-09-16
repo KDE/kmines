@@ -22,7 +22,6 @@
 
 #include "commondefs.h"
 
-class QGraphicsSceneMouseEvent;
 
 /**
  * Graphics item representing single cell on
