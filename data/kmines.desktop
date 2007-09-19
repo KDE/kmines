@@ -63,6 +63,7 @@ GenericName[ta]=சுரங்கம்வெட்டும் விளைய
 GenericName[uk]=Гра в сапера
 GenericName[wa]=On djeu di tchamp d' menes
 GenericName[x-test]=xxMinesweeper-like Gamexx
+GenericName[zh_CN]=扫雷游戏
 GenericName[zh_TW]=類似踩地雷的遊戲
 X-KDE-StartupNotify=true
 X-DBUS-StartupType=Multi
