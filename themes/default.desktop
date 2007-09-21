@@ -1,6 +1,7 @@
 [KGameTheme]
 Name=Default
 Name[be]=Прадвызначаны
+Name[de]=Standard
 Name[el]=Προκαθορισμένο
 Name[es]=Predeterminado
 Name[fa]=پیش‌فرض
@@ -17,6 +18,7 @@ Name[x-test]=xxDefaultxx
 Name[zh_CN]=默认
 Name[zh_TW]=預設
 Description=KMines Oxygen theme for KDE 4
+Description[de]=KMines "Oxygen" Design für KDE 4
 Description[el]=Θέμα Oxygen του KMines για το KDE4
 Description[es]=Tema oxígeno para KDE 4
 Description[fa]=چهره اکسیژن KMines برای KDE 4

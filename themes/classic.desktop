@@ -1,6 +1,7 @@
 [KGameTheme]
 Name=Classic
 Name[be]=Класічны
+Name[de]=Klassisch
 Name[el]=Κλασσικό
 Name[es]=Clásico
 Name[fa]=کلاسیک
@@ -16,6 +17,7 @@ Name[x-test]=xxClassicxx
 Name[zh_CN]=经典
 Name[zh_TW]=古典
 Description=Classic theme for KMines
+Description[de]=Klassisches Design für KMines
 Description[el]=Κλασικό θέμα για το KMines
 Description[es]=Tema clásico para KMines
 Description[fa]=چهره کلاسیک برای KMines
