@@ -11,6 +11,7 @@ Comment[ta]=கேகன்னிவெடிகள்
 Comment[tg]=KСапёр
 Comment[tr]=Mayın tarlası
 Comment[x-test]=xxKMinesxx
+Comment[zh_TW]=KMines 踩地雷
 
 [Event/reveal]
 Name=Reveal Case
@@ -19,6 +20,7 @@ Name[pt]=Revelar a Caixa
 Name[pt_BR]=Revelar a Caixa
 Name[sv]=Avslöja ruta
 Name[x-test]=xxReveal Casexx
+Name[zh_TW]=翻開地磚
 Comment=Reveal case
 Comment[be]=Адкрыццё поля
 Comment[ca]=Descobreix casella
@@ -48,6 +50,7 @@ Comment[ta]=நிகழ்ச்சியை வெளிப்படுத்�
 Comment[tg]=Кушодани ҳолат
 Comment[tr]=Kutuyu aç
 Comment[x-test]=xxReveal casexx
+Comment[zh_TW]=翻開地磚
 Action=None
 
 [Event/autoreveal]
@@ -57,6 +60,7 @@ Name[pt]=Revelar Automaticamente a Caixa
 Name[pt_BR]=Revelar Automaticamente a Caixa
 Name[sv]=Avslöja ruta automatiskt
 Name[x-test]=xxAutoreveal Casexx
+Name[zh_TW]=自動翻開地磚
 Comment=Autoreveal case
 Comment[be]=Адкрыццё пустых палёў
 Comment[ca]=Descobreix automàticament casella
@@ -86,6 +90,7 @@ Comment[ta]=நிகழ்ச்சியை தானே வெளிப்ப
 Comment[tg]=Худкушодани ҳолат
 Comment[tr]=Kutuyu otomatik aç
 Comment[x-test]=xxAutoreveal casexx
+Comment[zh_TW]=自動翻開地磚
 Action=None
 
 [Event/mark]
@@ -95,6 +100,7 @@ Name[pt]=Marcar a Caixa
 Name[pt_BR]=Marcar a Caixa
 Name[sv]=Markera ruta
 Name[x-test]=xxMark Casexx
+Name[zh_TW]=標記地磚
 Comment=Mark case
 Comment[be]=Пазнака міны
 Comment[ca]=Marca casella
@@ -124,6 +130,7 @@ Comment[ta]=நிகழ்ச்சியை குறி
 Comment[tg]=Нишонакунии ҳолат
 Comment[tr]=Kutuyu işaretle
 Comment[x-test]=xxMark casexx
+Comment[zh_TW]=標記地磚
 Action=None
 
 [Event/unmark]
@@ -133,6 +140,7 @@ Name[pt]=Desmarcar a Caixa
 Name[pt_BR]=Desmarcar a Caixa
 Name[sv]=Avmarkera ruta
 Name[x-test]=xxUnmark Casexx
+Name[zh_TW]=取消標記
 Comment=Unmark case
 Comment[be]=Здыманне пазнакі
 Comment[ca]=Desmarca casella
@@ -162,6 +170,7 @@ Comment[ta]=நிகழ்ச்சியை குறிக்காதே
 Comment[tg]=Гирифтани нишонаи ҳолат
 Comment[tr]=Kutudaki işareti kaldır
 Comment[x-test]=xxUnmark casexx
+Comment[zh_TW]=取消標記
 Action=None
 
 [Event/explosion]
@@ -196,6 +205,7 @@ Name[tg]=Таркиш
 Name[tr]=Patlama
 Name[uz]=Портлаш
 Name[x-test]=xxExplosionxx
+Name[zh_TW]=爆炸
 Comment=Explosion
 Comment[be]=Выбух
 Comment[br]=Tarzhad
@@ -227,6 +237,7 @@ Comment[tg]=Таркиш
 Comment[tr]=Patlama
 Comment[uz]=Портлаш
 Comment[x-test]=xxExplosionxx
+Comment[zh_TW]=爆炸
 Action=None
 
 [Event/won]
@@ -236,6 +247,7 @@ Name[pt]=Jogo Vencido
 Name[pt_BR]=Jogo Vencido
 Name[sv]=Du vann spelet
 Name[x-test]=xxGame Wonxx
+Name[zh_TW]=您贏了
 Comment=Game won
 Comment[be]=Перамога
 Comment[br]=Gounezet eo ar c'hoari
@@ -268,6 +280,7 @@ Comment[ta]=ஆட்டம் ஜெயிக்கப்பட்டது
 Comment[tg]=Дар бозӣ ғолиб омадед
 Comment[tr]=Oyun kazanıldı
 Comment[x-test]=xxGame wonxx
+Comment[zh_TW]=您贏了
 Action=None
 
 [Event/lost]
@@ -277,6 +290,7 @@ Name[pt]=Jogo Perdido
 Name[pt_BR]=Jogo Perdido
 Name[sv]=Du förlorade spelet
 Name[x-test]=xxGame Lostxx
+Name[zh_TW]=您輸了
 Comment=Game lost
 Comment[be]=Параза
 Comment[br]=Koll eo ar c'hoari
@@ -309,6 +323,7 @@ Comment[ta]=ஆட்டம் இழக்கப்பட்டது
 Comment[tg]=Дар бозӣ мағлуб шудед
 Comment[tr]=Oyun kaybedildi
 Comment[x-test]=xxGame lostxx
+Comment[zh_TW]=您輸了
 Action=None
 
 [Event/set_uncertain]
@@ -318,6 +333,7 @@ Name[pt]=Marcar a Interrogação
 Name[pt_BR]=Marcar a Interrogação
 Name[sv]=Placerade frågetecken
 Name[x-test]=xxSet Question Markxx
+Name[zh_TW]=設定問號標記
 Comment=Set question mark
 Comment[be]=Пазначыць пытальнікам
 Comment[ca]=Marca amb interrogant
@@ -346,6 +362,7 @@ Comment[sr@latin]=Postavi znak pitanja
 Comment[sv]=Placerade frågetecken
 Comment[ta]=கேள்விக்குறியை அமை
 Comment[x-test]=xxSet question markxx
+Comment[zh_TW]=設定問號標記
 Action=None
 
 [Event/unset_uncertain]
@@ -355,6 +372,7 @@ Name[pt]=Desmarcar a Interrogação
 Name[pt_BR]=Desmarcar a Interrogação
 Name[sv]=Ta bort frågetecken
 Name[x-test]=xxUnset Question Markxx
+Name[zh_TW]=取消問號標記
 Comment=Unset question mark
 Comment[be]=Зняць пытальнік
 Comment[ca]=Desmarca l'interrogant
@@ -383,4 +401,5 @@ Comment[sv]=Ta bort frågetecken
 Comment[ta]=கேள்விக்குறி நீக்கு
 Comment[tr]=Soru işaretini kaldır
 Comment[x-test]=xxUnset question markxx
+Comment[zh_TW]=取消問號標記
 Action=None
