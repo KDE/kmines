@@ -237,7 +237,7 @@ void Status::setPlaying()
     const Level &level = _field->level();
     _log = QDomDocument("kmineslog");
     _logRoot = _log.createElement("kmineslog");
-    _logRoot.setAttribute("version", VERSION);
+    _logRoot.setAttribute("version", SHORT_VERSION);
     QDateTime date = QDateTime::currentDateTime();
     _logRoot.setAttribute("date", date.toString(Qt::ISODate));
     _logRoot.setAttribute("width", level.width());
