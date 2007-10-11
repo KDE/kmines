@@ -187,7 +187,7 @@ void KMinesMainWindow::configureSettings()
     if ( KConfigDialog::showDialog( "settings" ) )
         return;
     KConfigDialog *dialog = new KConfigDialog( this, "settings", Settings::self() );
-    dialog->addPage( new KGameThemeSelector( dialog, Settings::self() ), i18n( "Theme" ), "game_theme" );
+    dialog->addPage( new KGameThemeSelector( dialog, Settings::self(), KGameThemeSelector::NewStuffDisableDownload ), i18n( "Theme" ), "game_theme" );
     dialog->addPage( new CustomGameConfig( dialog ), i18n("Custom Game"), "configure" );
     connect( dialog, SIGNAL( settingsChanged(const QString&) ), this, SLOT( loadSettings() ) );
     dialog->show();
