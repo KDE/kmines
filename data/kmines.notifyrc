@@ -15,6 +15,7 @@ Comment[zh_TW]=KMines 踩地雷
 
 [Event/reveal]
 Name=Reveal Case
+Name[el]=Αποκάλυψη
 Name[ja]=開いたとき
 Name[nl]=Vak openen
 Name[pt]=Revelar a Caixa
@@ -28,6 +29,7 @@ Comment[ca]=Descobreix casella
 Comment[cs]=Odkrýt pole
 Comment[cy]=Dangos cas
 Comment[da]=Vis felt
+Comment[el]=Αποκάλυψη περίπτωσης
 Comment[et]=Avab välja
 Comment[eu]=Erakutsi kasua
 Comment[fr]=Révéler la case
@@ -58,6 +60,7 @@ Action=None
 
 [Event/autoreveal]
 Name=Autoreveal Case
+Name[el]=Αυτόματη αποκάλυψη
 Name[ja]=自動で開いたとき
 Name[nl]=Vak automatisch openen
 Name[pt]=Revelar Automaticamente a Caixa
@@ -71,6 +74,7 @@ Comment[ca]=Descobreix automàticament casella
 Comment[cs]=Automaticky odkrýt pole
 Comment[cy]=Dangos cas yn ymysgogol
 Comment[da]=Vis felt automatisk
+Comment[el]=Αυτόματη αποκάλυψη περίπτωσης
 Comment[et]=Välja automaatne avamine
 Comment[eu]=Auto-erakutsi kasua
 Comment[fr]=Révéler automatiquement la case
@@ -101,6 +105,7 @@ Action=None
 
 [Event/mark]
 Name=Mark Case
+Name[el]=Σημείωση περίπτωσης
 Name[ja]=マークしたとき
 Name[nl]=Vak markeren
 Name[pt]=Marcar a Caixa
@@ -114,6 +119,7 @@ Comment[ca]=Marca casella
 Comment[cs]=Označit pole
 Comment[cy]=Marcio cas
 Comment[da]=Markér felt
+Comment[el]=Σημείωση περίπτωσης
 Comment[et]=Märgib välja
 Comment[eu]=Markatu kasua
 Comment[fr]=Marquer la case
@@ -144,6 +150,7 @@ Action=None
 
 [Event/unmark]
 Name=Unmark Case
+Name[el]=Αναίρεση σημείωσης περίπτωσης
 Name[ja]=マークを外したとき
 Name[nl]=Vakmarkering verwijderen
 Name[pt]=Desmarcar a Caixa
@@ -157,6 +164,7 @@ Comment[ca]=Desmarca casella
 Comment[cs]=Zrušit označení pole
 Comment[cy]=Dadmarcio cas
 Comment[da]=Afmarkér felt
+Comment[el]=Αναίρεση σημείωσης περίπτωσης
 Comment[et]=Eemaldab väljalt märgi
 Comment[eu]=Desmarkatu kasua
 Comment[fr]=Ne plus marquer la case
@@ -193,6 +201,7 @@ Name[ca]=Explosió
 Name[cs]=Exploze
 Name[cy]=Ffrwydriad
 Name[da]=Eksplosion
+Name[el]=Έκρηξη
 Name[et]=Plahvatus
 Name[eu]=Eztanda
 Name[he]=פיצוץ
@@ -227,6 +236,7 @@ Comment[ca]=Explosió
 Comment[cs]=Exploze
 Comment[cy]=Ffrwydriad
 Comment[da]=Eksplosion
+Comment[el]=Έκρηξη
 Comment[et]=Plahvatus
 Comment[eu]=Eztanda
 Comment[he]=פיצוץ
@@ -258,6 +268,7 @@ Action=None
 
 [Event/won]
 Name=Game Won
+Name[el]=Νίκη στο παιχνίδι
 Name[ja]=ゲームに勝ち
 Name[nl]=Spel gewonnen
 Name[pt]=Jogo Vencido
@@ -272,6 +283,7 @@ Comment[ca]=Partida guanyada
 Comment[cs]=Vyhraná hra
 Comment[cy]=Gêm wedi ei ennill
 Comment[da]=Spil vundet
+Comment[el]=Νίκη στο παιχνίδι
 Comment[et]=Mäng läbi, sina võitsid
 Comment[eu]=Jokoa irabazi da
 Comment[fr]=Partie gagnée
@@ -304,6 +316,7 @@ Action=None
 
 [Event/lost]
 Name=Game Lost
+Name[el]=Ήττα στο παιχνίδι
 Name[ja]=ゲームに負け
 Name[nl]=Spel verloren
 Name[pt]=Jogo Perdido
@@ -318,6 +331,7 @@ Comment[ca]=Partida perduda
 Comment[cs]=Prohraná hra
 Comment[cy]=Gêm wedi ei golli
 Comment[da]=Spil tabt
+Comment[el]=Ήττα στο παιχνίδι
 Comment[et]=Mäng läbi, sina kaotasid
 Comment[eu]=Jokoa galdu da
 Comment[fr]=Partie perdue
@@ -350,6 +364,7 @@ Action=None
 
 [Event/set_uncertain]
 Name=Set Question Mark
+Name[el]=Ορισμός ερωτηματικού
 Name[ja]=クエスチョンマークをセットする
 Name[nl]=Vraagteken plaatsen
 Name[pt]=Marcar a Interrogação
@@ -363,6 +378,7 @@ Comment[ca]=Marca amb interrogant
 Comment[cs]=Nastavit otazník
 Comment[cy]=Gosod gofynnod
 Comment[da]=Sæt spørgsmålstegn
+Comment[el]=Ορισμός ερωτηματικού
 Comment[et]=Pane küsimärk
 Comment[eu]=Ezarri galdera-marka
 Comment[fr]=Ajout d'un point d'interrogation
@@ -392,6 +408,7 @@ Action=None
 
 [Event/unset_uncertain]
 Name=Unset Question Mark
+Name[el]=Αναίρεση ερωτηματικού
 Name[ja]=クエスチョンマークを外す
 Name[nl]=Vraagteken verwijderen
 Name[pt]=Desmarcar a Interrogação
@@ -405,6 +422,7 @@ Comment[ca]=Desmarca l'interrogant
 Comment[cs]=Zrušit nastavení otazníku
 Comment[cy]=Dadosod gofynnod
 Comment[da]=Fjern spørgsmålstegn
+Comment[el]=Αναίρεση ερωτηματικού
 Comment[et]=Eemalda küsimärk
 Comment[eu]=Kendu galdera-marka
 Comment[fr]=Retrait d'un point d'interrogation
