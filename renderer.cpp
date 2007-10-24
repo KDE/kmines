@@ -116,16 +116,24 @@ bool KMinesRenderer::loadTheme( const QString& themeName )
         kDebug() << "Notice: not loading the same theme";
         return true; // this is not an error
     }
+
+    m_currentTheme = themeName;
+
     KGameTheme theme;
-    if ( !theme.load( themeName ) )
+    if ( themeName.isEmpty() || !theme.load( themeName ) )
     {
         kDebug()<< "Failed to load theme" << Settings::theme();
         kDebug() << "Trying to load default";
         if(!theme.loadDefault())
             return false;
+        // in this case we need to discard any previously cached theme:
+        // we loading default
+        discardCache = true;
+        // set it to something - not be empty - so we
+        // do discard cache on next loadTheme
+        // (see discardCache above)
+        m_currentTheme = "default";
     }
-
-    m_currentTheme = themeName;
 
     bool res = m_renderer->load( theme.graphics() );
     kDebug() << "loading" << theme.graphics();
@@ -137,6 +145,7 @@ bool KMinesRenderer::loadTheme( const QString& themeName )
         kDebug() << "discarding cache";
         m_cache->discard();
     }
+
     return true;
 }
 
