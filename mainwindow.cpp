@@ -72,8 +72,7 @@ KMinesMainWindow::KMinesMainWindow()
     setCentralWidget(m_view);
     setupActions();
 
-    m_scoreDialog = new KScoreDialog(KScoreDialog::Name | KScoreDialog::Custom1, this);
-    m_scoreDialog->addField(KScoreDialog::Custom1, "Time", "time");
+    m_scoreDialog = new KScoreDialog(KScoreDialog::Name | KScoreDialog::Time, this);
     m_scoreDialog->hideField(KScoreDialog::Score);
 
     // TODO: load this from config
@@ -157,7 +156,7 @@ void KMinesMainWindow::onGameOver(bool won)
         // score-in-seconds will be hidden
         scoreInfo[KScoreDialog::Score].setNum(m_gameClock->seconds());
         //score-as-time will be shown
-        scoreInfo[KScoreDialog::Custom1] = m_gameClock->timeString();
+        scoreInfo[KScoreDialog::Time] = m_gameClock->timeString();
 
         // we keep highscores as number of seconds
         if( m_scoreDialog->addScore(scoreInfo, KScoreDialog::LessIsMore) != 0 )
