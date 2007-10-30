@@ -20,7 +20,7 @@
 #include "settings.h"
 #include "renderer.h"
 
-#include <kgameclock.h>
+#include <KGameClock>
 #include <KStandardGameAction>
 #include <KActionCollection>
 #include <KStatusBar>
