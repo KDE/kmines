@@ -24,6 +24,13 @@
 <surname>McBride</surname>
 <affiliation><address><email>mmcbride@ematic.org</email></address></affiliation>
 </author>
+<author>
+<firstname>Anton</firstname>
+<surname>Brondz</surname>
+<affiliation>
+<address><email>dinolinux@gmail.com</email></address>
+</affiliation>
+</author>
 <othercredit role="developer">
 <firstname>Nicolas</firstname>
 <surname>Hadacek</surname>
@@ -64,230 +71,82 @@ game.</para></abstract>
 
 <chapter id="introduction">
 <title>Introduction</title>
+<para>
+Game type: Strategy, Board
+Number of players: One
+</para>
 
-<para>&kmines; is the classic Minesweeper game. You must uncover all the empty
-squares without blowing up a mine.</para>
-
-<para>When you uncover a square, a number appears: it indicates how many mines
-surround this square. If there is no number the neighboring squares are automatically
-uncovered. When you find a square that you are sure contains a mine, it is
-<emphasis>very</emphasis> useful to put a flag on it (by right-clicking).</para>
+<para>&kmines; is the classic Minesweeper game. The idea is to uncover all the
+squares without blowing up any mines. When a mine is blown up, the game is over.
+Numbers indicate how many mines there are nearby.
+</para>
 
 </chapter>
 
 <chapter id="how-to-play">
 <title>How to Play</title>
-
-<para>You have to use the mouse and its three buttons to uncover or to flag the
-squares (with two-buttoned mice, clicking the
+<para>
+To play &kmines;, you need to use the mouse and its three buttons to 
+uncover or to flag the squares (with two-buttoned mice, clicking the
 <mousebutton>middle</mousebutton> button is generally achieved by
 simultaneously pressing the <mousebutton>left</mousebutton> and the
-<mousebutton>right</mousebutton> buttons). Here are the details:</para>
+<mousebutton>right</mousebutton> buttons).
+</para>
 
-<itemizedlist>
-<listitem><para>The <mousebutton>left</mousebutton> button will
-uncover a square. If there is a bomb below that square, the bomb will
-explode, and the game will be over.</para>
-<para>If there is not a bomb under the square, a number will appear.
-That is the number of neighboring squares that contain bombs.
-<quote>Which ones?</quote> you ask: That's the point of the game.</para>
-<para>For each square (excluding edge and corner squares), there are 8
-neighboring squares.</para>
-<para>If none of the neighboring squares has a bomb, then a blank will
-be shown under the square, and all neighboring squares will be
-automatically uncovered.</para>
-<note><para><mousebutton>Left</mousebutton> clicking a flagged square is
-safe and does nothing.</para></note></listitem>
-<listitem><para>The <mousebutton>right</mousebutton> button will mark
-a square as containing a mine (by drawing a red flag on it) or, if the option is
-set, as being uncertain (by drawing a question mark on it). The uncertain tag can
+<para>Clicking the <mousebutton>left</mousebutton> button on your mouse will
+uncover a square. If there is a mine there, it will detonate, and the game will be over.
+If there is not a mine under the square, the square is cleared and if there aren't other
+mines nearby, the square will disappear including any nearby squares without mines. 
+If there are mines nearby, a number will appear showing how many neighboring squares contain mines.
+For each square (excluding edge and corner squares), there are eight
+neighboring squares.
+</para>
+
+<note>
+<para>
+<mousebutton>Left</mousebutton> clicking a flagged square is
+safe and does nothing.
+</para>
+</note>
+
+<para>
+The <mousebutton>right</mousebutton> button will mark
+a square as containing a mine (by placing a red flag on it). Clicking the button twice
+will set it as being uncertain (by placing a question mark on it). The uncertain tag can
 be useful when you are puzzled about the positions of
-mines.</para></listitem>
-<listitem><para>The <mousebutton>middle</mousebutton> button will
+mines.
+The <mousebutton>middle</mousebutton> button will
 clear the surrounding squares if the right number of squares is
 already flagged. It is very useful since it is much quicker than
-uncovering all individual squares.</para>
-<warning><para>If your flags are not properly positioned, you will
-explode a bomb.</para></warning></listitem>
-<listitem><para>Pressing the <guiicon>yellow smiley</guiicon> will start a new
-game.</para></listitem>
-</itemizedlist>
-
-<note><para>These are the default settings.  The mouse buttons can be
-reprogrammed. For more information, see the section entitled <link
-linkend="prefs">Game Options</link>.</para></note>
-
-<sect1 id="screen"><title>The &kmines; Screen</title>
-
-<screenshot>
-<screeninfo>The &kmines; Screen</screeninfo>
-<mediaobject>
-<imageobject><imagedata fileref="kmines1.png"
-	     format="PNG"/></imageobject>
-<textobject><phrase>The &kmines; Screen</phrase></textobject>
-</mediaobject>
-</screenshot>
-
-<para>The &kmines; screen consists of:</para>
-
-<itemizedlist>
-<listitem><para>A Box showing you the number of mines still left to be marked.
-Every time you flag a bomb site, this number will decrease by one.</para>
-<note><para>This box does not determine if you are right or wrong, but only how
-many mines you need to theoretically mark before you are done with this
-game.</para></note>
-<para>In this example, there are 40 mines to be marked.</para></listitem>
-<listitem><para>A Yellow Smiley Face.  Clicking this will start a new game.  If
-you lose the game, it will become a frown.</para></listitem>
-<listitem><para>The box on the right shows how much time this round has taken.
-The shortest time for each level is listed as the high
-score.</para></listitem>
-<listitem><para>The playing area. This will vary in size depending on the
-difficulty level of the game.  In this example, it consists of 256 squares. This is where you play the game.</para></listitem>
-<!-- This doesn't seem to be there any more.
-<listitem><para>A status line at the bottom of the window.  In this example, it
-simply says <guilabel>Game stopped</guilabel>.</para></listitem>
--->
-</itemizedlist>
-</sect1>
+uncovering all individual squares.
+Make sure yout flags are correctly placed, if not, you might
+detonate a mine
+</para>
 </chapter>
 
-<chapter id="prefs"><title>Game Options</title>
-<para>The options to &kmines; are set by selecting <menuchoice>
-<guimenu>Settings</guimenu> <guimenuitem>Configure &kmines;</guimenuitem>
-</menuchoice> from the menubar.  This will bring up a dialog box.</para>
+<chapter id="rulestips">
+<title>Game Rules, Strategies and Tips</title>
+<sect1 id="rules">
+<title>Rules</title>
+<itemizedlist>
+<listitem><para>All the mines have to be cleared before a player can win a game.</para></listitem>
+<listitem><para>The player cannot know the exact location of the mines before the game is over.</para></listitem>
+<listitem><para>If a mine is detonated, the game is over.</para></listitem>
+<listitem><para>Numbers will indicate nearby mines.</para></listitem>
+</itemizedlist>
+</sect1>
 
-<screenshot>
-<screeninfo>&kmines; Preferences</screeninfo>
-<mediaobject>
-<imageobject><imagedata fileref="kmines2.png" format="PNG"/></imageobject>
-<textobject><phrase>&kmines; Preferences</phrase></textobject>
-</mediaobject>
-</screenshot>
-
-<para>This dialog box is divided into three sections.</para>
-
-<variablelist>
-<varlistentry>
-<term><guilabel>Game</guilabel></term>
-<listitem>
-<para>The first option, labeled <guilabel>Enable ? mark</guilabel>,
-determines whether you can mark squares as
-<quote>questionable</quote>.  If this option is checked, then right clicking the mouse will first cause a square to be
-flagged. If you right click again on the same square, the flag will change to
-a <guiicon>?</guiicon>, to indicate you don't know if there is a bomb
-there or not.  If you click again, the square will change back to
-blank.</para>
-
-<para>If there is not a mark in front of this option, the first
-<mousebutton>right</mousebutton> mouse click will change the square to a
-red flag.  The second will make it blank again, thus skipping the <guiicon>?</guiicon>
-symbol.</para>
-
-<para>The next option down, labeled <guilabel>Enable
-keyboard</guilabel>, determines if the keyboard shortcuts will work
-while playing the game. The default keyboard shortcuts are given in <xref
-linkend="keys"/>, and can be changed by selecting
-<menuchoice><guimenu>Settings</guimenu><guimenuitem>Configure Shortcuts...</guimenuitem></menuchoice>.</para>
-
-<note><para>The only keyboard shortcuts affected are those
-responsible for playing the game.  Keyboard commands such as
-<guimenuitem>New Game</guimenuitem> and
-<guimenuitem>Quit</guimenuitem>, still work, regardless of this
-option.</para></note>
-
-<para>The <guilabel>Pause if windows loses focus</guilabel> option will
-automatically pause the game if the &kmines; window loses focus. When the game
-is paused, the gameboard disappears, so you cannot use pausing the game as a way
-to cheat!</para>
-
-<para>The <guilabel>"Magic" reveal</guilabel> option switches on <quote>Magic
-reveal</quote> mode. In this mode, &kmines; does most of the gameplay for you:
-If you have uncovered enough squares to be able to tell with certainty that a
-square contains a mine, &kmines; will automatically mark it as a mine, and
-perform an autoreveal on squares for which it has marked the correct number of
-mines. Note that when you have this mode switched on, your scores do not count
-as highs cores.</para>
-
-
-<para>The last section of this tab allows you to change the action of each of
-the three mouse buttons.  Your options are:</para>
-
-<variablelist>
-<varlistentry>
-<term>Reveal</term>
-<listitem><para>This will reveal the contents of the square.  If there is no bomb,
-then a number will appear.  If there is a bomb under that square, then the bomb
-will explode, and the game will be over.</para></listitem>
-</varlistentry>
-<!-- <varlistentry>
-<term>Toggle Mark</term>
-<listitem><para>Clicking with this button on a square will mark/unmark with a red flag.</para></listitem>
-</varlistentry> -->
-<varlistentry>
-<term>Autoreveal</term>
-<listitem><para>Clicking on a square with this button will automatically reveal
-all neighboring squares that are not marked with red flags.  If one of those
-neighboring squares has a bomb under it, the bomb will explode, and the game will
-be over.</para></listitem>
-</varlistentry>
-
-<varlistentry>
-<term>Toggle Flag</term>
-<listitem><para>Clicking with this button on a square will cycle through blank,
-red flag, and question mark.</para></listitem>
-</varlistentry>
-
-<varlistentry>
-<term>Toggle ? Flag</term>
-<listitem><para>Clicking with this button on a square will mark/unmark with a
-question mark.</para></listitem>
-</varlistentry>
-</variablelist>
-</listitem>
-</varlistentry>
-
-<varlistentry>
-<term><guilabel>Appearance</guilabel></term>
-<listitem>
-<para>The top three color buttons determine the 
-<guilabel>Flag Color</guilabel>, <guilabel>Explosion Color</guilabel> 
-and <guilabel>Error Color</guilabel>.</para>
-
-<para>The rest of this page is concerned with mines colors. To adjust,
-simply click the color button beside each description, and select the
-new color.</para>
-</listitem>
-</varlistentry>
-
-<varlistentry>
-<term><guilabel>Custom Game</guilabel></term>
-<listitem>
-<para>Finally, if you are not finding the existing configurations
-challenging enough, you can set up a custom game here.  Use the
-sliders to change the <guilabel>Width</guilabel>,
-<guilabel>Height</guilabel>, and the percentage of the board covered
-with <guilabel>Mines</guilabel>.  The default game has 15 percent of
-the board covered, so there is plenty of room to make the game
-harder.</para>
-</listitem>
-</varlistentry>
-
-<varlistentry>
-<term>Saving your changes</term>
-<listitem><para>Once your changes are complete, click
-<guibutton>OK</guibutton> to make them permanent.</para>
-
-<para>If you want to abandon your changes, click
-<guibutton>Cancel</guibutton> to abort the changes.</para>
-
-<para>If you click on <guilabel>Defaults</guilabel>, the default
-settings will be restored.  Click <guilabel>OK</guilabel> to make
-these default changes permanent, or edit the settings some
-more.</para>
-</listitem>
-</varlistentry>
-</variablelist>
+<sect1 id="strattips">
+<title>Strategies and tips</title>
+<itemizedlist>
+<listitem><para>Use the numbers to find out where nearby mines are.</para></listitem>
+<listitem><para>Place flags where you suspect there are mines. Note that even though the indicated 
+number of mines goes down when you place a flag, there might not be a mine under the flag.</para></listitem>
+<listitem><para>Think before you click, a wrong click could detonate a mine.</para></listitem>
+<listitem><para>When you suspect that a square contains a mine, work around the square to uncover any numbers which might help.</para></listitem>
+<listitem><para>Try to clear the board as quickly as possible, the less time you spend, the higher your score will be.</para></listitem>
+</itemizedlist>
+</sect1>
 
 </chapter>
 
@@ -512,7 +371,7 @@ list.</para></listitem>
 <guimenu>Settings</guimenu>
 <guimenuitem>Configure &kmines;...</guimenuitem> </menuchoice></term>
 <listitem><para>Allows you to adjust game options.  For more detailed
-information, see the section entitled <link linkend="prefs">Game
+information, see the section entitled <link linkend="settings">Game
 Options</link>.</para></listitem>
 </varlistentry>
 
@@ -565,6 +424,101 @@ surrounding squares not marked by a flag.</entry></row>
 Shortcuts...</guimenuitem> </menuchoice> from the menubar.</para>
 
 </sect1>
+
+</chapter>
+
+<chapter id="faq">
+<title>Frequently Asked Questions</title>
+<qandaset>
+
+<qandaentry>
+<question>
+<para>
+How do I start a new game?
+</para>
+</question>
+<answer>
+<para>
+Press the New button, select New from the Game menu or press 
+<keycombo action="simul">&Ctrl;<keycap>N</keycap></keycombo>
+</para>
+</answer>
+</qandaentry>
+
+<qandaentry>
+<question>
+<para>
+How can I pause the game?
+</para>
+</question>
+<answer>
+<para>
+There is currently no way to pause &kmines;.
+</para>
+</answer>
+</qandaentry>
+
+<qandaentry>
+<question>
+<para>
+Can I change the way the game looks?
+</para>
+</question>
+<answer>
+<para>
+Yes, click on the <guimenu>Settings</guimenu> menu and
+select <guimenuitem>Configure</guimenuitem>.
+</para>
+</answer>
+</qandaentry>
+
+<qandaentry>
+<question>
+<para>
+Is there a way to add more mines and squares?
+</para>
+</question>
+<answer>
+<para>
+Yes, the easiest way is to use the list in the lower right corner.
+</para>
+</answer>
+</qandaentry>
+
+<qandaentry>
+<question>
+<para>
+I'm stuck, can I get a hint?
+</para>
+</question>
+<answer>
+<para>
+No, there is no hint system for &kmines;.
+</para>
+</answer>
+</qandaentry>
+
+</qandaset>
+</chapter>
+
+<chapter id="settings">
+<title>Game settings</title>
+<para>
+The game settings can be configured by selecting the <guimenu>Settings</guimenu>
+and selecting <guimenuitem>Configure &kmines;</guimenuitem>. A dialog will appear.
+</para>
+
+<para>
+On the first tab, you can set the theme. Select a theme from the list to see a preview
+of it on the right. You can set it by clicking <guibutton>Apply</guibutton> and <guibutton>OK</guibutton>.
+To download more themes, click the <guibutton>Get New Themes</guibutton> button. This will open
+a new dialog where you can install more themes.
+</para>
+
+<para>
+On the second tab, you can set how a custom game will be. You can set the height, width and
+number of mines in your custom level.
+</para>
 
 </chapter>
 
