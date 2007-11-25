@@ -1,5 +1,6 @@
 [KGameTheme]
 Name=Gardens of Danger
+Name[ca]=Jardí del perill
 Name[de]=Gärten der Gefahr
 Name[el]=Οι κήποι του κίνδυνου
 Name[es]=Jardines de peligro
@@ -14,6 +15,7 @@ Name[x-test]=xxGardens of Dangerxx
 Name[zh_CN]=危机庭园
 Name[zh_TW]=危險花園
 Description=A funny theme for KDE4 mines game
+Description[ca]=Un tema divertit pel joc de mines del KDE4
 Description[de]=Ein lustiges Design für das KDE4 Minen Spiel
 Description[el]=Ένα διασκεδαστικό θέμα για το παιχνίδι ναρκών του KDE4
 Description[es]=Un tema divertido para el juego de minas de KDE4

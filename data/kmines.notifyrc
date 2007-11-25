@@ -15,6 +15,7 @@ Comment[zh_TW]=KMines 踩地雷
 
 [Event/reveal]
 Name=Reveal Case
+Name[ca]=Descobreix Casella
 Name[de]=Feld aufdecken
 Name[el]=Αποκάλυψη
 Name[es]=Mostrar casilla
@@ -67,6 +68,7 @@ Action=None
 
 [Event/autoreveal]
 Name=Autoreveal Case
+Name[ca]=Descobreix automàticament casella
 Name[de]=Feld automatisch aufdecken
 Name[el]=Αυτόματη αποκάλυψη
 Name[es]=Mostrar casilla automáticamente
@@ -119,6 +121,7 @@ Action=None
 
 [Event/mark]
 Name=Mark Case
+Name[ca]=Marca casella
 Name[de]=Feld markieren
 Name[el]=Σημείωση περίπτωσης
 Name[es]=Marcar casilla
@@ -171,6 +174,7 @@ Action=None
 
 [Event/unmark]
 Name=Unmark Case
+Name[ca]=Desmarca casella
 Name[de]=Feldmarkierung entfernen
 Name[el]=Αναίρεση σημείωσης περίπτωσης
 Name[es]=Quitar marca de la casilla
@@ -304,6 +308,7 @@ Action=None
 
 [Event/won]
 Name=Game Won
+Name[ca]=Partida guanyada
 Name[de]=Spiel gewonnen
 Name[el]=Νίκη στο παιχνίδι
 Name[es]=Partida ganada
@@ -361,6 +366,7 @@ Action=None
 
 [Event/lost]
 Name=Game Lost
+Name[ca]=Partida perduda
 Name[de]=Spiel verloren
 Name[el]=Ήττα στο παιχνίδι
 Name[es]=Partida perdida
@@ -418,6 +424,7 @@ Action=None
 
 [Event/set_uncertain]
 Name=Set Question Mark
+Name[ca]=Marca amb interrogant
 Name[de]=Fragezeichen setzen
 Name[el]=Ορισμός ερωτηματικού
 Name[es]=Establecer marca de interrogación
@@ -469,6 +476,7 @@ Action=None
 
 [Event/unset_uncertain]
 Name=Unset Question Mark
+Name[ca]=Desmarca l'interrogant
 Name[de]=Fragezeichen entfernen
 Name[el]=Αναίρεση ερωτηματικού
 Name[es]=Quitar marca de interrogación
