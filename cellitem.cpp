@@ -17,7 +17,6 @@
 */
 
 #include "cellitem.h"
-#include <QPainter>
 
 #include <kdebug.h>
 
