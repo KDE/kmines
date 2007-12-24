@@ -160,6 +160,7 @@ QPixmap KMinesRenderer::backgroundPixmap( const QSize& size ) const
         bkgnd.fill(Qt::transparent);
         QPainter p(&bkgnd);
         m_renderer->render(&p, "mainWidget");
+        p.end();
         m_cache->insert(cacheName, bkgnd);
         kDebug() << "cache size:" << m_cache->size() << "kb";
     }
