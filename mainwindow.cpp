@@ -101,7 +101,7 @@ void KMinesMainWindow::setupActions()
 
 void KMinesMainWindow::onMinesCountChanged(int count)
 {
-    statusBar()->changeItem( i18n("Mines %1/%2", count, m_scene->totalMines()), 0 );
+    statusBar()->changeItem( i18n("Mines: %1/%2", count, m_scene->totalMines()), 0 );
 }
 
 void KMinesMainWindow::levelChanged(KGameDifficulty::standardLevel)
