@@ -189,6 +189,7 @@ void KMinesMainWindow::configureSettings()
     dialog->addPage( new KGameThemeSelector( dialog, Settings::self(), KGameThemeSelector::NewStuffDisableDownload ), i18n( "Theme" ), "games-config-theme" );
     dialog->addPage( new CustomGameConfig( dialog ), i18n("Custom Game"), "games-config-custom" );
     connect( dialog, SIGNAL( settingsChanged(const QString&) ), this, SLOT( loadSettings() ) );
+    dialog->setHelp(QString(),"kmines");
     dialog->show();
 }
 
