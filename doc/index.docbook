@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" ?>
+<?xml version="1.0" ?>
 <!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.2-Based Variant V1.1//EN" "dtd/kdex.dtd" [
   <!ENTITY kappname "&kmines;">
   <!ENTITY package "kdegames">
@@ -115,7 +115,7 @@ mines.
 The &MMB; will clear the surrounding squares if the right number of squares is
 already flagged. It is very useful since it is much quicker than
 uncovering all individual squares.
-Make sure yout flags are correctly placed, if not, you might
+Make sure your flags are correctly placed, if not, you might
 detonate a mine.
 </para>
 </chapter>
