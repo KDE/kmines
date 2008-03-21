@@ -19,6 +19,7 @@ Comment[zh_TW]=KMines 踩地雷
 [Event/reveal]
 Name=Reveal Case
 Name[ca]=Descobreix Casella
+Name[da]=Afslør sagen
 Name[de]=Feld aufdecken
 Name[el]=Αποκάλυψη
 Name[eo]=Malkaŝi fakon
@@ -93,6 +94,7 @@ Action=None
 [Event/autoreveal]
 Name=Autoreveal Case
 Name[ca]=Descobreix automàticament casella
+Name[da]=Afslør sagen automatisk
 Name[de]=Feld automatisch aufdecken
 Name[el]=Αυτόματη αποκάλυψη
 Name[eo]=Aŭtomate malkaŝi fakon
@@ -167,6 +169,7 @@ Action=None
 [Event/mark]
 Name=Mark Case
 Name[ca]=Marca casella
+Name[da]=Markér sagen
 Name[de]=Feld markieren
 Name[el]=Σημείωση περίπτωσης
 Name[eo]=Marki fakon
@@ -241,6 +244,7 @@ Action=None
 [Event/unmark]
 Name=Unmark Case
 Name[ca]=Desmarca casella
+Name[da]=Afmarkér sagen
 Name[de]=Feldmarkierung entfernen
 Name[el]=Αναίρεση σημείωσης περίπτωσης
 Name[eo]=Malmarki fakon
@@ -413,6 +417,7 @@ Action=None
 Name=Game Won
 Name[be]=Перамога
 Name[ca]=Partida guanyada
+Name[da]=Spil vundet
 Name[de]=Spiel gewonnen
 Name[el]=Νίκη στο παιχνίδι
 Name[eo]=Vi gajnis
@@ -492,6 +497,7 @@ Action=None
 [Event/lost]
 Name=Game Lost
 Name[ca]=Partida perduda
+Name[da]=Spil tabt
 Name[de]=Spiel verloren
 Name[el]=Ήττα στο παιχνίδι
 Name[eo]=Vi perdis
@@ -571,6 +577,7 @@ Action=None
 [Event/set_uncertain]
 Name=Set Question Mark
 Name[ca]=Marca amb interrogant
+Name[da]=Sæt spørgsmålstegn
 Name[de]=Fragezeichen setzen
 Name[el]=Ορισμός ερωτηματικού
 Name[eo]=Meti demandosignon
@@ -646,6 +653,7 @@ Action=None
 [Event/unset_uncertain]
 Name=Unset Question Mark
 Name[ca]=Desmarca l'interrogant
+Name[da]=Fjern spørgsmålstegn
 Name[de]=Fragezeichen entfernen
 Name[el]=Αναίρεση ερωτηματικού
 Name[eo]=Malmeti demandosignon
