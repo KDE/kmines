@@ -94,7 +94,7 @@ void KMinesMainWindow::setupActions()
     KGameDifficulty::addStandardLevel(KGameDifficulty::Easy);
     KGameDifficulty::addStandardLevel(KGameDifficulty::Medium);
     KGameDifficulty::addStandardLevel(KGameDifficulty::Hard);
-    KGameDifficulty::addCustomLevel(0, i18n("Custom"));
+    KGameDifficulty::addStandardLevel(KGameDifficulty::Configurable);
 
     setupGUI(qApp->desktop()->availableGeometry().size()*0.4);
 }
@@ -130,7 +130,7 @@ void KMinesMainWindow::newGame()
         case KGameDifficulty::Hard:
             m_scene->startNewGame(16,30,99);
             break;
-        case KGameDifficulty::Custom:
+        case KGameDifficulty::Configurable:
             m_scene->startNewGame(Settings::self()->customHeight(),
                                   Settings::self()->customWidth(),
                                   Settings::self()->customMines());
