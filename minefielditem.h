@@ -72,6 +72,12 @@ public:
      * @return num mines in field
      */
     int minesCount() const { return m_minesCount; }
+
+    /**
+     * Minimal number of free positions on a field
+     */
+    static const int MINIMAL_FREE = 10;
+
 signals:
     void flaggedMinesCountChanged(int);
     void firstClickDone();

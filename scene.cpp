@@ -71,7 +71,7 @@ void KMinesScene::drawBackground( QPainter* p, const QRectF& )
 
 void KMinesScene::startNewGame(int rows, int cols, int numMines)
 {
-    if(numMines >= rows*cols)
+    if(numMines + MineFieldItem::MINIMAL_FREE > rows*cols)
     {
         m_messageItem->showMessage(i18n("Custom game can not be started.<br />Number of mines is too big for current field."), KGamePopupItem::BottomLeft);
         return;
