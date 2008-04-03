@@ -32,7 +32,7 @@ MineFieldItem::MineFieldItem()
 
 void MineFieldItem::initField( int numRows, int numCols, int numMines )
 {
-    Q_ASSERT( numMines + MINIMAL_FREE <= numRows*numCols );
+    numMines = qMin(numMines, numRows*numCols - MINIMAL_FREE );
 
     m_firstClick = true;
     m_gameOver = false;
