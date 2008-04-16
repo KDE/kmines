@@ -25,6 +25,7 @@ class KMinesScene;
 class KMinesView;
 class KGameClock;
 class KScoreDialog;
+class KToggleAction;
 
 class KMinesMainWindow : public KXmlGuiWindow
 {
@@ -41,6 +42,7 @@ private slots:
     void onFirstClick();
     void showHighscores();
     void configureSettings();
+    void pauseGame(bool paused);
     void loadSettings();
 private:
     void setupActions();
@@ -48,5 +50,6 @@ private:
     KMinesView* m_view;
     KGameClock* m_gameClock;
     KScoreDialog* m_scoreDialog;
+    KToggleAction* m_actionPause;
 };
 #endif

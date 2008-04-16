@@ -23,6 +23,7 @@
 #include <KGameClock>
 #include <KStandardGameAction>
 #include <KActionCollection>
+#include <KToggleAction>
 #include <KStatusBar>
 #include <KScoreDialog>
 #include <KConfigDialog>
@@ -87,6 +88,7 @@ void KMinesMainWindow::setupActions()
 
     KStandardGameAction::quit(this, SLOT(close()), actionCollection());
     KStandardAction::preferences( this, SLOT( configureSettings() ), actionCollection() );
+    m_actionPause = KStandardGameAction::pause( this, SLOT(pauseGame(bool)), actionCollection() );
 
     KGameDifficulty::init(this, this, SLOT(levelChanged(KGameDifficulty::standardLevel)),
                          SLOT(customLevelChanged(int)));
@@ -118,6 +120,15 @@ void KMinesMainWindow::newGame()
 {
     m_gameClock->restart();
     m_gameClock->pause(); // start only with the 1st click
+    
+    // some things to manage pause
+    if( m_actionPause->isChecked() )
+    {
+            m_scene->setGamePaused(false);
+            m_actionPause->setChecked(false);
+    }
+    m_actionPause->setEnabled(false);
+    
     KGameDifficulty::setRunning(false);
     switch(KGameDifficulty::level())
     {
@@ -144,6 +155,7 @@ void KMinesMainWindow::newGame()
 void KMinesMainWindow::onGameOver(bool won)
 {
     m_gameClock->pause();
+    m_actionPause->setEnabled(false);
     KGameDifficulty::setRunning(false);
     if(won)
     {
@@ -171,6 +183,9 @@ void KMinesMainWindow::advanceTime(const QString& timeStr)
 
 void KMinesMainWindow::onFirstClick()
 {
+    // enable pause action
+    m_actionPause->setEnabled(true);
+    // start clock
     m_gameClock->resume();
     KGameDifficulty::setRunning(true);
 }
@@ -191,6 +206,15 @@ void KMinesMainWindow::configureSettings()
     connect( dialog, SIGNAL( settingsChanged(const QString&) ), this, SLOT( loadSettings() ) );
     dialog->setHelp(QString(),"kmines");
     dialog->show();
+}
+
+void KMinesMainWindow::pauseGame(bool paused)
+{
+    m_scene->setGamePaused( paused );
+    if( paused )
+        m_gameClock->pause();
+    else
+        m_gameClock->resume();
 }
 
 void KMinesMainWindow::loadSettings()
