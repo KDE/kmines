@@ -47,6 +47,10 @@ public:
      * Starts new game
      */
     void startNewGame(int rows, int cols, int numMines);
+    /**
+     * Toggles paused state for all cells in the field item
+     */
+    void setGamePaused(bool paused);
 signals:
     void minesCountChanged(int);
     void gameOver(bool);
@@ -64,6 +68,7 @@ private:
      */
     MineFieldItem* m_fieldItem;
     KGamePopupItem* m_messageItem;
+    KGamePopupItem* m_gamePausedMessageItem;
 };
 
 class QResizeEvent;

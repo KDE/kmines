@@ -54,6 +54,12 @@ KMinesScene::KMinesScene( QObject* parent )
     m_messageItem->setMessageOpacity(0.9);
     m_messageItem->setMessageTimeout(4000);
     addItem(m_messageItem);
+
+    m_gamePausedMessageItem = new KGamePopupItem;
+    m_gamePausedMessageItem->setMessageOpacity(0.9);
+    m_gamePausedMessageItem->setMessageTimeout(0);
+    m_gamePausedMessageItem->setHideOnMouseClick(false);
+    addItem(m_gamePausedMessageItem);
 }
 
 void KMinesScene::resizeScene(int width, int height)
@@ -79,6 +85,15 @@ void KMinesScene::startNewGame(int rows, int cols, int numMines)
 int KMinesScene::totalMines() const
 {
     return m_fieldItem->minesCount();
+}
+
+void KMinesScene::setGamePaused(bool paused)
+{
+    m_fieldItem->setVisible(!paused);
+    if(paused)
+        m_gamePausedMessageItem->showMessage(i18n("Game is paused."), KGamePopupItem::Center);
+    else
+        m_gamePausedMessageItem->forceHide();
 }
 
 void KMinesScene::onGameOver(bool won)
