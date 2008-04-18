@@ -23,6 +23,6 @@
 #define VERSION	     "3.0"
 #define LONG_VERSION "3.0 (02 Aug 2007)"
 #define COPYLEFT     "(c) 1996-2005, Nicolas Hadacek\n(c) 2001, Mikhail Kourinny\n(c) 2006-2007, Mauricio Piacentini\n(c) 2007, Dmitry Suzdalev"
-#define HOMEPAGE     "http://kmines.sourceforge.net/"
+#define HOMEPAGE     "http://games.kde.org/kmines"
 
 #endif // KMINES_VERSION_H
