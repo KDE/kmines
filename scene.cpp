@@ -68,6 +68,10 @@ void KMinesScene::resizeScene(int width, int height)
     m_fieldItem->resizeToFitInRect( sceneRect() );
     m_fieldItem->setPos( sceneRect().width()/2 - m_fieldItem->boundingRect().width()/2,
                          sceneRect().height()/2 - m_fieldItem->boundingRect().height()/2 );
+    m_gamePausedMessageItem->setPos( sceneRect().width()/2 - m_gamePausedMessageItem->boundingRect().width()/2,
+                          sceneRect().height()/2 - m_gamePausedMessageItem->boundingRect().height()/2 );
+    m_messageItem->setPos( sceneRect().width()/2 - m_messageItem->boundingRect().width()/2,
+                          sceneRect().height()/2 - m_messageItem->boundingRect().height()/2 );
 }
 
 void KMinesScene::drawBackground( QPainter* p, const QRectF& )
