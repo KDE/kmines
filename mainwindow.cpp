@@ -74,6 +74,7 @@ KMinesMainWindow::KMinesMainWindow()
     setupActions();
 
     m_scoreDialog = new KScoreDialog(KScoreDialog::Name | KScoreDialog::Time, this);
+    m_scoreDialog->addLocalizedConfigGroupNames(KGameDifficulty::localizedLevelStrings()); //Add all the translations of the group names
     m_scoreDialog->hideField(KScoreDialog::Score);
 
     // TODO: load this from config
@@ -159,9 +160,9 @@ void KMinesMainWindow::onGameOver(bool won)
     KGameDifficulty::setRunning(false);
     if(won)
     {
-        QString group = KGameDifficulty::levelString();
-        if(group.isEmpty())
-            group = "Custom";
+        QPair<QByteArray, QString> group = KGameDifficulty::localizedLevelString();
+        if(group.first.isEmpty())
+            group = qMakePair(QByteArray("Custom"), i18n("Custom"));
         m_scoreDialog->setConfigGroup( group );
 
         KScoreDialog::FieldInfo scoreInfo;
@@ -192,7 +193,7 @@ void KMinesMainWindow::onFirstClick()
 
 void KMinesMainWindow::showHighscores()
 {
-    m_scoreDialog->setConfigGroup( KGameDifficulty::levelString() );
+    m_scoreDialog->setConfigGroup( KGameDifficulty::localizedLevelString() );
     m_scoreDialog->exec();
 }
 
