@@ -24,7 +24,6 @@
 class KMinesScene;
 class KMinesView;
 class KGameClock;
-class KScoreDialog;
 class KToggleAction;
 
 class KMinesMainWindow : public KXmlGuiWindow
@@ -49,7 +48,6 @@ private:
     KMinesScene* m_scene;
     KMinesView* m_view;
     KGameClock* m_gameClock;
-    KScoreDialog* m_scoreDialog;
     KToggleAction* m_actionPause;
 };
 #endif
