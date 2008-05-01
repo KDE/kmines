@@ -47,7 +47,6 @@ private:
 };
 
 KMinesMainWindow::KMinesMainWindow()
-    : m_scoreDialog(0)
 {
     m_scene = new KMinesScene(this);
     connect(m_scene, SIGNAL(minesCountChanged(int)), SLOT(onMinesCountChanged(int)));
@@ -72,10 +71,6 @@ KMinesMainWindow::KMinesMainWindow()
     statusBar()->insertItem( i18n("Time: 00:00"), 1);
     setCentralWidget(m_view);
     setupActions();
-
-    m_scoreDialog = new KScoreDialog(KScoreDialog::Name | KScoreDialog::Time, this);
-    m_scoreDialog->addLocalizedConfigGroupNames(KGameDifficulty::localizedLevelStrings()); //Add all the translations of the group names
-    m_scoreDialog->hideField(KScoreDialog::Score);
 
     // TODO: load this from config
     KGameDifficulty::setLevel( KGameDifficulty::Easy );
@@ -160,10 +155,14 @@ void KMinesMainWindow::onGameOver(bool won)
     KGameDifficulty::setRunning(false);
     if(won)
     {
+        KScoreDialog scoreDialog(KScoreDialog::Name | KScoreDialog::Time, this);
+        scoreDialog.addLocalizedConfigGroupNames(KGameDifficulty::localizedLevelStrings()); //Add all the translations of the group names
+        scoreDialog.hideField(KScoreDialog::Score);
+        
         QPair<QByteArray, QString> group = KGameDifficulty::localizedLevelString();
         if(group.first.isEmpty())
             group = qMakePair(QByteArray("Custom"), i18n("Custom"));
-        m_scoreDialog->setConfigGroup( group );
+        scoreDialog.setConfigGroup( group );
 
         KScoreDialog::FieldInfo scoreInfo;
         // score-in-seconds will be hidden
@@ -172,8 +171,8 @@ void KMinesMainWindow::onGameOver(bool won)
         scoreInfo[KScoreDialog::Time] = m_gameClock->timeString();
 
         // we keep highscores as number of seconds
-        if( m_scoreDialog->addScore(scoreInfo, KScoreDialog::LessIsMore) != 0 )
-            m_scoreDialog->exec();
+        if( scoreDialog.addScore(scoreInfo, KScoreDialog::LessIsMore) != 0 )
+            scoreDialog.exec();
     }
 }
 
@@ -193,8 +192,11 @@ void KMinesMainWindow::onFirstClick()
 
 void KMinesMainWindow::showHighscores()
 {
-    m_scoreDialog->setConfigGroup( KGameDifficulty::localizedLevelString() );
-    m_scoreDialog->exec();
+    KScoreDialog scoreDialog(KScoreDialog::Name | KScoreDialog::Time, this);
+    scoreDialog.addLocalizedConfigGroupNames(KGameDifficulty::localizedLevelStrings()); //Add all the translations of the group names
+    scoreDialog.hideField(KScoreDialog::Score);
+    scoreDialog.setConfigGroup( KGameDifficulty::localizedLevelString() );
+    scoreDialog.exec();
 }
 
 void KMinesMainWindow::configureSettings()
