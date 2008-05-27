@@ -26,7 +26,7 @@ kde4_add_executable(kmines ${kmines_SRCS})
 
 target_link_libraries(kmines  kdegames ${KDE4_KNEWSTUFF2_LIBS} )
 
-install(TARGETS kmines  DESTINATION ${BIN_INSTALL_DIR} )
+install(TARGETS kmines  ${INSTALL_TARGETS_DEFAULT_ARGS} )
 
 ########### install files ###############
 
