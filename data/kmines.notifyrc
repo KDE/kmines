@@ -19,6 +19,7 @@ Comment[zh_TW]=KMines 踩地雷
 [Event/reveal]
 Name=Reveal Case
 Name[ca]=Descobreix Casella
+Name[cs]=Odkrýt pole
 Name[da]=Afslør sagen
 Name[de]=Feld aufdecken
 Name[el]=Αποκάλυψη
@@ -96,6 +97,7 @@ Action=None
 [Event/autoreveal]
 Name=Autoreveal Case
 Name[ca]=Descobreix automàticament casella
+Name[cs]=Automaticky odkrýt pole
 Name[da]=Afslør sagen automatisk
 Name[de]=Feld automatisch aufdecken
 Name[el]=Αυτόματη αποκάλυψη
@@ -174,6 +176,7 @@ Action=None
 [Event/mark]
 Name=Mark Case
 Name[ca]=Marca casella
+Name[cs]=Označit pole
 Name[da]=Markér sagen
 Name[de]=Feld markieren
 Name[el]=Σημείωση περίπτωσης
@@ -252,6 +255,7 @@ Action=None
 [Event/unmark]
 Name=Unmark Case
 Name[ca]=Desmarca casella
+Name[cs]=Zrušit označení pole
 Name[da]=Afmarkér sagen
 Name[de]=Feldmarkierung entfernen
 Name[el]=Αναίρεση σημείωσης περίπτωσης
@@ -430,6 +434,7 @@ Action=None
 Name=Game Won
 Name[be]=Перамога
 Name[ca]=Partida guanyada
+Name[cs]=Vyhraná hra
 Name[da]=Spil vundet
 Name[de]=Spiel gewonnen
 Name[el]=Νίκη στο παιχνίδι
@@ -516,6 +521,7 @@ Action=None
 [Event/lost]
 Name=Game Lost
 Name[ca]=Partida perduda
+Name[cs]=Prohraná hra
 Name[da]=Spil tabt
 Name[de]=Spiel verloren
 Name[el]=Ήττα στο παιχνίδι
@@ -602,6 +608,7 @@ Action=None
 [Event/set_uncertain]
 Name=Set Question Mark
 Name[ca]=Marca amb interrogant
+Name[cs]=Nastavit otazník
 Name[da]=Sæt spørgsmålstegn
 Name[de]=Fragezeichen setzen
 Name[el]=Ορισμός ερωτηματικού
@@ -683,6 +690,7 @@ Action=None
 [Event/unset_uncertain]
 Name=Unset Question Mark
 Name[ca]=Desmarca l'interrogant
+Name[cs]=Zrušit nastavení otazníku
 Name[da]=Fjern spørgsmålstegn
 Name[de]=Fragezeichen entfernen
 Name[el]=Αναίρεση ερωτηματικού
