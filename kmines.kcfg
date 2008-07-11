@@ -5,6 +5,10 @@
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
   <kcfgfile name="kminesrc"/>
   <group name="General">
+    <entry name="UseQuestionMarks" type="Bool" key="question mark">
+      <label>Whether the "unsure" marker may be used.</label>
+      <default>true</default>
+    </entry>
     <entry name="Theme" type="String" key="Theme">
       <label>The graphical theme to be used.</label>
     </entry>
@@ -25,10 +29,6 @@
     <entry name="CustomMines" type="Int" key="custom mines">
       <label>The number of mines in the playing field.</label>
       <default>20</default>
-    </entry>
-    <entry name="UncertainMark" type="Bool" key="uncertain mark">
-      <label>Whether the "uncertain" marker may be used.</label>
-      <default>true</default>
     </entry>
     <entry name="level" type="Enum">
       <label>The difficulty level.</label>
