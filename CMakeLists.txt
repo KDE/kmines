@@ -17,7 +17,7 @@ set(kmines_SRCS
    renderer.cpp
    main.cpp )
 
-kde4_add_ui_files(kmines_SRCS customgame.ui generalopts.ui)
+kde4_add_ui_files(kmines_SRCS customgame.ui)
 
 kde4_add_kcfg_files(kmines_SRCS settings.kcfgc )
 

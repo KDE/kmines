@@ -18,8 +18,6 @@
 
 #include "cellitem.h"
 
-#include "settings.h"
-
 #include <kdebug.h>
 
 #include "renderer.h"
@@ -93,15 +91,13 @@ void CellItem::mark()
     // this will provide cycling through
     // Released -> "?"-mark -> "RedFlag"-mark -> Released
 
-    bool useQuestion = Settings::self()->useQuestionMarks();
-
     switch(m_state)
     {
         case KMinesState::Released:
             m_state = KMinesState::Flagged;
             break;
         case KMinesState::Flagged:
-            m_state = useQuestion ? KMinesState::Questioned : KMinesState::Released;
+            m_state = KMinesState::Questioned;
             break;
         case KMinesState::Questioned:
             m_state = KMinesState::Released;
