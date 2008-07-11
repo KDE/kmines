@@ -33,7 +33,11 @@
 #include <QDesktopWidget>
 
 #include "ui_customgame.h"
+#include "ui_generalopts.h"
 
+/*
+ * Classes for config dlg pages
+ */
 class CustomGameConfig : public QWidget
 {
 public:
@@ -45,6 +49,22 @@ public:
 private:
     Ui::CustomGameConfig ui;
 };
+
+class GeneralOptsConfig : public QWidget
+{
+public:
+    GeneralOptsConfig(QWidget *parent)
+        : QWidget(parent)
+    {
+        ui.setupUi(this);
+    }
+private:
+    Ui::GeneralOptsConfig ui;
+};
+
+/*
+ * Main window
+ */
 
 KMinesMainWindow::KMinesMainWindow()
 {
@@ -204,6 +224,7 @@ void KMinesMainWindow::configureSettings()
     if ( KConfigDialog::showDialog( "settings" ) )
         return;
     KConfigDialog *dialog = new KConfigDialog( this, "settings", Settings::self() );
+    dialog->addPage( new GeneralOptsConfig( dialog ), i18n("General"), "games-config-options" );
     dialog->addPage( new KGameThemeSelector( dialog, Settings::self(), KGameThemeSelector::NewStuffDisableDownload ), i18n( "Theme" ), "games-config-theme" );
     dialog->addPage( new CustomGameConfig( dialog ), i18n("Custom Game"), "games-config-custom" );
     connect( dialog, SIGNAL( settingsChanged(const QString&) ), this, SLOT( loadSettings() ) );
