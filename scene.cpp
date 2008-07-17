@@ -107,3 +107,5 @@ void KMinesScene::onGameOver(bool won)
     else
         m_messageItem->showMessage(i18n("You have lost."), KGamePopupItem::Center);
 }
+
+#include "scene.moc"

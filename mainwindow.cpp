@@ -254,3 +254,5 @@ void KMinesMainWindow::loadSettings()
     m_scene->resizeScene( (int)m_scene->sceneRect().width(),
                           (int)m_scene->sceneRect().height() );
 }
+
+#include "mainwindow.moc"
