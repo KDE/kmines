@@ -343,7 +343,7 @@ void MineFieldItem::mousePressEvent( QGraphicsSceneMouseEvent *ev )
             emit flaggedMinesCountChanged(m_flaggedMinesCount);
         }
     }
-    else if(ev->button() == Qt::MidButton)
+    else if(ev->button() == Qt::MidButton || ( ev->buttons() & ( Qt::LeftButton | Qt::RightButton) ) )
     {
         QList<CellItem*> neighbours = adjasentItemsFor(row,col);
         foreach(CellItem* item, neighbours)
