@@ -81,6 +81,9 @@ void KMinesScene::drawBackground( QPainter* p, const QRectF& )
 
 void KMinesScene::startNewGame(int rows, int cols, int numMines)
 {
+    // hide message if any
+    m_messageItem->forceHide();
+
     m_fieldItem->initField(rows, cols, numMines);
     // reposition items
     resizeScene((int)sceneRect().width(), (int)sceneRect().height());
