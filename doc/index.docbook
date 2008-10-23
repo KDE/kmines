@@ -173,7 +173,7 @@ number of mines goes down when you place a flag, there might not be a mine under
 <keycombo action="simul">&Ctrl;<keycap>H</keycap></keycombo>
 </shortcut>
 <guimenu>Game</guimenu>
-<guimenuitem>Show High Scores...</guimenuitem> </menuchoice></term>
+<guimenuitem>Show High Scores</guimenuitem> </menuchoice></term>
 <listitem><para>This shows you the high score (the shortest time) for each
 difficulty level.</para></listitem>
 </varlistentry>
