@@ -133,6 +133,7 @@ bool KMinesRenderer::loadTheme( const QString& themeName )
         // do discard cache on next loadTheme
         // (see discardCache above)
         m_currentTheme = "default";
+        Settings::setTheme("themes/default.desktop");
     }
 
     bool res = m_renderer->load( theme.graphics() );
