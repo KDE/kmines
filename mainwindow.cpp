@@ -161,9 +161,9 @@ void KMinesMainWindow::newGame()
             m_scene->startNewGame(16,30,99);
             break;
         case KGameDifficulty::Configurable:
-            m_scene->startNewGame(Settings::self()->customHeight(),
-                                  Settings::self()->customWidth(),
-                                  Settings::self()->customMines());
+            m_scene->startNewGame(Settings::customHeight(),
+                                  Settings::customWidth(),
+                                  Settings::customMines());
         default:
             //unsupported
             break;

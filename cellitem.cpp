@@ -93,7 +93,7 @@ void CellItem::mark()
     // this will provide cycling through
     // Released -> "?"-mark -> "RedFlag"-mark -> Released
 
-    bool useQuestion = Settings::self()->useQuestionMarks();
+    bool useQuestion = Settings::useQuestionMarks();
 
     switch(m_state)
     {
