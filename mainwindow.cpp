@@ -92,8 +92,8 @@ KMinesMainWindow::KMinesMainWindow()
     setCentralWidget(m_view);
     setupActions();
 
-    // TODO: load this from config
-    KGameDifficulty::setLevel( KGameDifficulty::Easy );
+    KGameDifficulty::setLevel( KGameDifficulty::standardLevel(Settings::level()) );
+
     newGame();
 }
 
@@ -124,6 +124,9 @@ void KMinesMainWindow::onMinesCountChanged(int count)
 
 void KMinesMainWindow::levelChanged(KGameDifficulty::standardLevel)
 {
+    Settings::setLevel(KGameDifficulty::level());
+    Settings::self()->writeConfig();
+
     newGame();
 }
 

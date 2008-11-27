@@ -4,6 +4,7 @@
       xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
   <kcfgfile name="kminesrc"/>
+  <include>KGameDifficulty</include>
   <group name="General">
     <entry name="UseQuestionMarks" type="Bool" key="question mark">
       <label>Whether the "unsure" marker may be used.</label>
@@ -30,15 +31,9 @@
       <label>The number of mines in the playing field.</label>
       <default>20</default>
     </entry>
-    <entry name="level" type="Enum">
+    <entry name="level" type="Int">
       <label>The difficulty level.</label>
-      <default>Easy</default>
-      <choices>
-        <choice name="Easy"/>
-        <choice name="Normal"/>
-        <choice name="Expert"/>
-        <choice name="Custom"/>
-      </choices>
+      <default code="true">KGameDifficulty::Easy</default>
     </entry>
   </group>
 </kcfg>
