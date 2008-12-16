@@ -180,6 +180,7 @@ void KMinesMainWindow::onGameOver(bool won)
     {
         KScoreDialog scoreDialog(KScoreDialog::Name | KScoreDialog::Time, this);
         scoreDialog.addLocalizedConfigGroupNames(KGameDifficulty::localizedLevelStrings()); //Add all the translations of the group names
+        scoreDialog.setConfigGroupWeights(KGameDifficulty::levelWeights());
         scoreDialog.hideField(KScoreDialog::Score);
         
         QPair<QByteArray, QString> group = KGameDifficulty::localizedLevelString();
@@ -217,6 +218,7 @@ void KMinesMainWindow::showHighscores()
 {
     KScoreDialog scoreDialog(KScoreDialog::Name | KScoreDialog::Time, this);
     scoreDialog.addLocalizedConfigGroupNames(KGameDifficulty::localizedLevelStrings()); //Add all the translations of the group names
+    scoreDialog.setConfigGroupWeights(KGameDifficulty::levelWeights());
     scoreDialog.hideField(KScoreDialog::Score);
     scoreDialog.setConfigGroup( KGameDifficulty::localizedLevelString() );
     scoreDialog.exec();
