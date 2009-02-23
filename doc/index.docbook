@@ -71,7 +71,7 @@ game.</para></abstract>
 
 <chapter id="introduction">
 <title>Introduction</title>
-<note><title>Gametype:</title><para>Strategy, Board</para></note><!-- Game genre. use as many as necessary.Available game types are: Arcade, Board, Card, Dice, Toys, Logic, Strategy.-->
+<note><title>Gametype:</title><para>Strategy, Board</para></note><!-- Game genre. Use as many as necessary. Available game types are: Arcade, Board, Card, Dice, Toys, Logic, Strategy.-->
 <note><title>Number of possible players:</title><para>One</para></note><!--Number of possible players. It can be: One, Two,..., Multiplayer-->
 
 <para>&kmines; is the classic Minesweeper game. The idea is to uncover all the
