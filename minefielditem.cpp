@@ -548,6 +548,8 @@ void MineFieldItem::checkWon()
                 item->mark();
         }
         m_gameOver = true;
+        // now all mines should be flagged, notify about this
+        emit flaggedMinesCountChanged(m_minesCount);
         emit gameOver(true);
     }
 }
