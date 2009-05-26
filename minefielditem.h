@@ -195,6 +195,7 @@ private:
     FieldPos m_midButtonPos;
     bool m_firstClick;
     bool m_gameOver;
+    bool m_emulatingMidButton;
     int m_numUnrevealed;
 };
 
