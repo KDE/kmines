@@ -311,18 +311,8 @@ void MineFieldItem::mousePressEvent( QGraphicsSceneMouseEvent *ev )
     if( row <0 || row >= m_numRows || col < 0 || col >= m_numCols )
         return;
 
-    if(m_firstClick)
-    {
-        m_firstClick = false;
-        generateField( row*m_numCols + col );
-        emit firstClickDone();
-    }
-
     if(ev->button() == Qt::LeftButton)
     {
-        if(m_midButtonPos.first != -1) // mid-button is already pressed
-            return;
-
         itemAt(row,col)->press();
         m_leftButtonPos = qMakePair(row,col);
     }
@@ -392,7 +382,10 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
     if(ev->button() == Qt::LeftButton)
     {
         if(m_midButtonPos.first != -1) // mid-button is already pressed
+        {
+            itemUnderMouse->undoPress();
             return;
+        }
 
         // this can happen like this:
         // mid-button pressed, left-button pressed, mid-button released, left-button released
@@ -402,6 +395,13 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
 
         if(!itemUnderMouse->isRevealed()) // revealing only unrevealed ones
         {
+            if(m_firstClick)
+            {
+                m_firstClick = false;
+                generateField( row*m_numCols + col );
+                emit firstClickDone();
+            }
+
             itemUnderMouse->release();
             if(itemUnderMouse->isRevealed())
                 onItemRevealed(row,col);
