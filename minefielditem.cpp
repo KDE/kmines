@@ -26,7 +26,8 @@
 #include "renderer.h"
 
 MineFieldItem::MineFieldItem()
-    : m_leftButtonPos(-1,-1), m_midButtonPos(-1,-1), m_gameOver(false)
+    : m_leftButtonPos(-1,-1), m_midButtonPos(-1,-1), m_gameOver(false),
+      m_emulatingMidButton(false)
 {
 }
 
@@ -311,29 +312,17 @@ void MineFieldItem::mousePressEvent( QGraphicsSceneMouseEvent *ev )
     if( row <0 || row >= m_numRows || col < 0 || col >= m_numCols )
         return;
 
-    if(ev->button() == Qt::LeftButton)
+    CellItem* itemUnderMouse = itemAt(row,col);
+    if(!itemUnderMouse)
     {
-        itemAt(row,col)->press();
-        m_leftButtonPos = qMakePair(row,col);
+        kDebug() << "unexpected - no item under mouse";
+        return;
     }
-    else if(ev->button() == Qt::RightButton)
-    {
-        CellItem* itemUnderMouse = itemAt(row,col);
-        bool wasFlagged = itemUnderMouse->isFlagged();
 
-        itemUnderMouse->mark();
+    m_emulatingMidButton = ( (ev->buttons() & Qt::LeftButton) && (ev->buttons() & Qt::RightButton) );
+    bool midButtonPressed = (ev->button() == Qt::MidButton || m_emulatingMidButton );
 
-        bool flagStateChanged = (itemUnderMouse->isFlagged() != wasFlagged);
-        if(flagStateChanged)
-        {
-            if(itemUnderMouse->isFlagged())
-                m_flaggedMinesCount++;
-            else
-                m_flaggedMinesCount--;
-            emit flaggedMinesCountChanged(m_flaggedMinesCount);
-        }
-    }
-    else if(ev->button() == Qt::MidButton || ( ev->buttons() & ( Qt::LeftButton | Qt::RightButton) ) )
+    if(midButtonPressed)
     {
         QList<CellItem*> neighbours = adjasentItemsFor(row,col);
         foreach(CellItem* item, neighbours)
@@ -341,7 +330,14 @@ void MineFieldItem::mousePressEvent( QGraphicsSceneMouseEvent *ev )
             if(!item->isFlagged() && !item->isQuestioned() && !item->isRevealed())
                 item->press();
             m_midButtonPos = qMakePair(row,col);
+
+            m_leftButtonPos = qMakePair(-1,-1); // reset it
         }
+    }
+    else if(ev->button() == Qt::LeftButton)
+    {
+        itemUnderMouse->press();
+        m_leftButtonPos = qMakePair(row,col);
     }
 }
 
@@ -367,6 +363,7 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
             foreach(CellItem *item, neighbours)
                 item->undoPress();
             m_midButtonPos = qMakePair(-1,-1);
+            m_emulatingMidButton = false;
         }
         // same with left button
         if(m_leftButtonPos.first != -1)
@@ -379,38 +376,17 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
 
     CellItem* itemUnderMouse = itemAt(row,col);
 
-    if(ev->button() == Qt::LeftButton)
+    // NOTE: as left+right buttons can emulate midbutton, releasing any of them means dropping midbutton pressed state.
+    // Though in this case midbutton we need to be careful to not count separate releases of left or right buttons,
+    // while other is still being pressed - we reset m_midButtonPos only when last of them has been released.
+    // When no emulation takes place, we reset it immediately.
+    
+    bool midButtonReleased = (ev->button() == Qt::MidButton || m_emulatingMidButton);
+
+    if( midButtonReleased )
     {
-        if(m_midButtonPos.first != -1) // mid-button is already pressed
-        {
-            itemUnderMouse->undoPress();
-            return;
-        }
-
-        // this can happen like this:
-        // mid-button pressed, left-button pressed, mid-button released, left-button released
-        // m_leftButtonPos never gets set in this scenario, so we must protect ourselves :)
-        if(m_leftButtonPos.first == -1)
-            return;
-
-        if(!itemUnderMouse->isRevealed()) // revealing only unrevealed ones
-        {
-            if(m_firstClick)
-            {
-                m_firstClick = false;
-                generateField( row*m_numCols + col );
-                emit firstClickDone();
-            }
-
-            itemUnderMouse->release();
-            if(itemUnderMouse->isRevealed())
-                onItemRevealed(row,col);
-        }
-        m_leftButtonPos = qMakePair(-1,-1);//reset
-    }
-    else if( ev->button() == Qt::MidButton )
-    {
-        m_midButtonPos = qMakePair(-1,-1);
+        if(!m_emulatingMidButton)
+            m_midButtonPos = qMakePair(-1,-1); // see note above
 
         QList<CellItem*> neighbours = adjasentItemsFor(row,col);
         if(!itemUnderMouse->isRevealed())
@@ -448,6 +424,65 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
                 item->undoPress();
         }
     }
+    else if(ev->button() == Qt::LeftButton && (ev->buttons() & Qt::RightButton) == false)
+    {
+        if(m_midButtonPos.first != -1) // mid-button is already pressed
+        {
+            itemUnderMouse->undoPress();
+            return;
+        }
+
+        if(m_emulatingMidButton)
+        {
+            m_midButtonPos = qMakePair(-1,-1); // see note above
+            m_emulatingMidButton = false;
+            return;
+        }
+
+        // this can happen like this:
+        // mid-button pressed, left-button pressed, mid-button released, left-button released
+        // m_leftButtonPos never gets set in this scenario, so we must protect ourselves :)
+        if(m_leftButtonPos.first == -1)
+            return;
+
+        if(!itemUnderMouse->isRevealed()) // revealing only unrevealed ones
+        {
+            if(m_firstClick)
+            {
+                m_firstClick = false;
+                generateField( row*m_numCols + col );
+                emit firstClickDone();
+            }
+
+            itemUnderMouse->release();
+            if(itemUnderMouse->isRevealed())
+                onItemRevealed(row,col);
+        }
+        m_leftButtonPos = qMakePair(-1,-1);//reset
+    }
+    else if(ev->button() == Qt::RightButton && (ev->buttons() & Qt::RightButton) == false)
+    {
+        if(m_emulatingMidButton)
+        {
+            m_midButtonPos = qMakePair(-1,-1); // see note above
+            m_emulatingMidButton = false;
+            return;
+        }
+
+        bool wasFlagged = itemUnderMouse->isFlagged();
+
+        itemUnderMouse->mark();
+
+        bool flagStateChanged = (itemUnderMouse->isFlagged() != wasFlagged);
+        if(flagStateChanged)
+        {
+            if(itemUnderMouse->isFlagged())
+                m_flaggedMinesCount++;
+            else
+                m_flaggedMinesCount--;
+            emit flaggedMinesCountChanged(m_flaggedMinesCount);
+        }
+    }
 }
 
 void MineFieldItem::mouseMoveEvent( QGraphicsSceneMouseEvent *ev )
@@ -463,17 +498,10 @@ void MineFieldItem::mouseMoveEvent( QGraphicsSceneMouseEvent *ev )
     if( row < 0 || row >= m_numRows || col < 0 || col >= m_numCols )
         return;
 
-    if(ev->buttons() & Qt::LeftButton)
-    {
-        if((m_leftButtonPos.first != -1 && m_leftButtonPos.second != -1) &&
-           (m_leftButtonPos.first != row || m_leftButtonPos.second != col))
-        {
-            itemAt(m_leftButtonPos)->undoPress();
-            itemAt(row,col)->press();
-            m_leftButtonPos = qMakePair(row,col);
-        }
-    }
-    if(ev->buttons() & Qt::MidButton)
+    bool midButtonPressed = ((ev->buttons() & Qt::MidButton) ||
+                            ( (ev->buttons() & Qt::LeftButton) && (ev->buttons() & Qt::RightButton) ) );
+
+    if(midButtonPressed)
     {
         if((m_midButtonPos.first != -1 && m_midButtonPos.second != -1) &&
            (m_midButtonPos.first != row || m_midButtonPos.second != col))
@@ -490,6 +518,16 @@ void MineFieldItem::mouseMoveEvent( QGraphicsSceneMouseEvent *ev )
                 item->press();
 
             m_midButtonPos = qMakePair(row,col);
+        }
+    }
+    else if(ev->buttons() & Qt::LeftButton)
+    {
+        if((m_leftButtonPos.first != -1 && m_leftButtonPos.second != -1) &&
+           (m_leftButtonPos.first != row || m_leftButtonPos.second != col))
+        {
+            itemAt(m_leftButtonPos)->undoPress();
+            itemAt(row,col)->press();
+            m_leftButtonPos = qMakePair(row,col);
         }
     }
 }
