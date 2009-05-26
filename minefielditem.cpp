@@ -377,7 +377,7 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
     CellItem* itemUnderMouse = itemAt(row,col);
 
     // NOTE: as left+right buttons can emulate midbutton, releasing any of them means dropping midbutton pressed state.
-    // Though in this case we need to be careful to not count separate releases of left or right buttons,
+    // Though in this case we need to be careful to not react on separate releases of left or right buttons,
     // while other is still being pressed - we reset m_midButtonPos only when last of them has been released.
     // When no emulation takes place (i.e. real MidButton is pressed), we reset it immediately.
     
