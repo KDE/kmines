@@ -68,6 +68,8 @@ void MineFieldItem::initField( int numRows, int numCols, int numMines )
     m_numCols = numCols;
     m_minesCount = numMines;
     m_numUnrevealed = m_numRows*m_numCols;
+    m_midButtonPos = qMakePair(-1, -1);
+    m_leftButtonPos = qMakePair(-1, -1);
 
     for(int i=0; i<newSize; ++i)
     {
@@ -376,17 +378,11 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
 
     CellItem* itemUnderMouse = itemAt(row,col);
 
-    // NOTE: as left+right buttons can emulate midbutton, releasing any of them means dropping midbutton pressed state.
-    // Though in this case we need to be careful to not react on separate releases of left or right buttons,
-    // while other is still being pressed - we reset m_midButtonPos only when last of them has been released.
-    // When no emulation takes place (i.e. real MidButton is pressed), we reset it immediately.
-    
     bool midButtonReleased = (ev->button() == Qt::MidButton || m_emulatingMidButton);
 
     if( midButtonReleased )
     {
-        if(!m_emulatingMidButton)
-            m_midButtonPos = qMakePair(-1,-1); // see note above
+        m_midButtonPos = qMakePair(-1,-1);
 
         QList<CellItem*> neighbours = adjasentItemsFor(row,col);
         if(!itemUnderMouse->isRevealed())
@@ -432,13 +428,6 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
             return;
         }
 
-        if(m_emulatingMidButton)
-        {
-            m_midButtonPos = qMakePair(-1,-1); // see note above
-            m_emulatingMidButton = false;
-            return;
-        }
-
         // this can happen like this:
         // mid-button pressed, left-button pressed, mid-button released, left-button released
         // m_leftButtonPos never gets set in this scenario, so we must protect ourselves :)
@@ -460,15 +449,8 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
         }
         m_leftButtonPos = qMakePair(-1,-1);//reset
     }
-    else if(ev->button() == Qt::RightButton && (ev->buttons() & Qt::RightButton) == false)
+    else if(ev->button() == Qt::RightButton && (ev->buttons() & Qt::LeftButton) == false)
     {
-        if(m_emulatingMidButton)
-        {
-            m_midButtonPos = qMakePair(-1,-1); // see note above
-            m_emulatingMidButton = false;
-            return;
-        }
-
         bool wasFlagged = itemUnderMouse->isFlagged();
 
         itemUnderMouse->mark();
