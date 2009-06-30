@@ -18,7 +18,7 @@
     </widget>
    </item>
    <item row="0" column="1" >
-    <widget class="QSpinBox" name="kcfg_CustomWidth" />
+    <widget class="KIntSpinBox" name="kcfg_CustomWidth" />
    </item>
    <item row="1" column="0" >
     <widget class="QLabel" name="label_2" >
@@ -28,7 +28,7 @@
     </widget>
    </item>
    <item row="1" column="1" >
-    <widget class="QSpinBox" name="kcfg_CustomHeight" />
+    <widget class="KIntSpinBox" name="kcfg_CustomHeight" />
    </item>
    <item row="2" column="0" >
     <widget class="QLabel" name="label_3" >
@@ -38,7 +38,7 @@
     </widget>
    </item>
    <item row="2" column="1" >
-    <widget class="QSpinBox" name="kcfg_CustomMines" />
+    <widget class="KIntSpinBox" name="kcfg_CustomMines" />
    </item>
    <item row="0" column="2" >
     <spacer>
@@ -68,6 +68,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KIntSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>knuminput.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
