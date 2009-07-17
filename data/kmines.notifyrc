@@ -15,6 +15,7 @@ Comment[sv]=Kmines
 Comment[ta]=கேகன்னிவெடிகள்
 Comment[tg]=KСапёр
 Comment[uk]=Сапер
+Comment[wa]=KMenes
 Comment[x-test]=xxKMinesxx
 Comment[zh_TW]=KMines 踩地雷
 
@@ -418,6 +419,7 @@ Name[tr]=Patlama
 Name[uk]=Вибух
 Name[uz]=Portlash
 Name[uz@cyrillic]=Портлаш
+Name[wa]=Esplôzaedje
 Name[x-test]=xxExplosionxx
 Name[zh_CN]=雷炸了
 Name[zh_TW]=爆炸
