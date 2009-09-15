@@ -38,6 +38,7 @@ typedef QPair<int,int> FieldPos;
 class MineFieldItem : public QObject, public QGraphicsItem
 {
     Q_OBJECT
+    Q_INTERFACES(QGraphicsItem)
 public:
     /**
      * Constructor.
