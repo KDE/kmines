@@ -1,0 +1,9 @@
+[KGameTheme]
+Name=Graveyard Mayhem
+Description=A spooky theme for KMines. Don't get caught by the zombies in the graveyard!
+VersionFormat=0.5
+Author=Sean Wilson
+AuthorEmail=suseux@gmail.com
+Type=SVG
+FileName=graveyard-mayhem.svgz
+Preview=graveyard-mayhem-preview.png
