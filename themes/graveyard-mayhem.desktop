@@ -1,6 +1,14 @@
 [KGameTheme]
 Name=Graveyard Mayhem
+Name[pt]=Pânico no Cemitério
+Name[sv]=Lemlästning på gravplats
+Name[uk]=Хаос на цвинтарі
+Name[x-test]=xxGraveyard Mayhemxx
 Description=A spooky theme for KMines. Don't get caught by the zombies in the graveyard!
+Description[pt]=Um tema assustador para o KMines. Não se deixe apanhar pelos zombies no cemitério!
+Description[sv]=Ett kusligt tema för Röja minor. Bli inte fångad av zombierna på gravplatsen!
+Description[uk]=Тема з привидами для KMines. Не дайте впіймати вас зомбі на цвинтарі!
+Description[x-test]=xxA spooky theme for KMines. Don't get caught by the zombies in the graveyard!xx
 VersionFormat=0.5
 Author=Sean Wilson
 AuthorEmail=suseux@gmail.com
