@@ -326,6 +326,10 @@ void MineFieldItem::mousePressEvent( QGraphicsSceneMouseEvent *ev )
 
     if(midButtonPressed)
     {
+        // in case we just started mid-button emulation (first LeftClick then added a RightClick)
+        // undo press that was made by LeftClick. in other cases it won't hurt :)
+        itemUnderMouse->undoPress();
+
         QList<CellItem*> neighbours = adjasentItemsFor(row,col);
         foreach(CellItem* item, neighbours)
         {
