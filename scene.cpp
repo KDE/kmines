@@ -106,7 +106,7 @@ void KMinesScene::setGamePaused(bool paused)
 void KMinesScene::onGameOver(bool won)
 {
     if(won)
-        m_messageItem->showMessage(i18n("Congratulatons! You have won!"), KGamePopupItem::Center);
+        m_messageItem->showMessage(i18n("Congratulations! You have won!"), KGamePopupItem::Center);
     else
         m_messageItem->showMessage(i18n("You have lost."), KGamePopupItem::Center);
 }
