@@ -1,6 +1,7 @@
 [KGameTheme]
 Name=Gardens of Danger
 Name[ca]=Jardí del perill
+Name[ca@valencia]=Jardí del perill
 Name[cs]=Zahrada nebezpečí
 Name[da]=Farlige haver
 Name[de]=Gärten der Gefahr
@@ -44,6 +45,7 @@ Name[zh_CN]=危机庭园
 Name[zh_TW]=危險花園
 Description=A funny theme for KDE4 mines game
 Description[ca]=Un tema divertit pel joc de mines del KDE4
+Description[ca@valencia]=Un tema divertit pel joc de mines del KDE4
 Description[cs]=Legrační motiv pro KDE 4 KMines
 Description[da]=Et sjovt tema til KMines til KDE 4
 Description[de]=Ein lustiges Design für KMines in KDE4.
