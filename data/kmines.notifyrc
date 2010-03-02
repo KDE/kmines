@@ -1,6 +1,8 @@
 [Global]
 IconName=kmines
 Comment=KMines Minesweeper-like Game
+Comment[ca]=Joc a l'estil del buscamines KMines
+Comment[nds]=KMines - En Minesweeper-liek Speel
 Comment[pt]=Jogo de Campo Minado KMines
 Comment[pt_BR]=Jogo KMines, parecido com Campo Minado
 Comment[uk]=Гра в сапера KMines
