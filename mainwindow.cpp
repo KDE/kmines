@@ -16,6 +16,7 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 #include "mainwindow.h"
+#include "minefielditem.h"
 #include "scene.h"
 #include "settings.h"
 #include "renderer.h"
@@ -40,12 +41,26 @@
  */
 class CustomGameConfig : public QWidget
 {
+    Q_OBJECT
+
 public:
     CustomGameConfig(QWidget *parent)
         : QWidget(parent)
-        {
-            ui.setupUi(this);
-        }
+    {
+        ui.setupUi(this);
+        connect(ui.kcfg_CustomWidth, SIGNAL(valueChanged(int)), this, SLOT(updateMaxMines()));
+        connect(ui.kcfg_CustomHeight, SIGNAL(valueChanged(int)), this, SLOT(updateMaxMines()));
+    }
+
+private slots:
+    void updateMaxMines()
+    {
+        int width = ui.kcfg_CustomWidth->value();
+        int height = ui.kcfg_CustomHeight->value();
+        int max = qMax(1, width * height - MineFieldItem::MINIMAL_FREE);
+        ui.kcfg_CustomMines->setMaximum(max);
+    }
+
 private:
     Ui::CustomGameConfig ui;
 };
@@ -58,6 +73,7 @@ public:
     {
         ui.setupUi(this);
     }
+
 private:
     Ui::GeneralOptsConfig ui;
 };
@@ -261,3 +277,4 @@ void KMinesMainWindow::loadSettings()
 }
 
 #include "mainwindow.moc"
+#include "moc_mainwindow.cpp"
