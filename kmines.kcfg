@@ -29,8 +29,8 @@
     </entry>
     <entry name="CustomMines" type="Int" key="custom mines">
       <label>The number of mines in the playing field.</label>
+      <min>1</min>
       <default>20</default>
-      <max>200</max>
     </entry>
     <entry name="level" type="Int">
       <label>The difficulty level.</label>
