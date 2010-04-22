@@ -3,6 +3,7 @@ IconName=kmines
 Comment=KMines Minesweeper-like Game
 Comment[ca]=Joc a l'estil del buscamines KMines
 Comment[ca@valencia]=Joc a l'estil del buscamines KMines
+Comment[da]=KMines minestryger-lignende spil
 Comment[de]=KMines-„Minesweeper“-Spiel
 Comment[en_GB]=KMines Minesweeper-like Game
 Comment[es]=KMines, juego similar al Buscaminas
@@ -14,6 +15,7 @@ Comment[pt_BR]=Jogo KMines, parecido com Campo Minado
 Comment[sv]=Minröjarliknande spel Kmines
 Comment[uk]=Гра в сапера KMines
 Comment[x-test]=xxKMines Minesweeper-like Gamexx
+Comment[zh_TW]=KMines，類似踩地雷的遊戲
 
 [Event/reveal]
 Name=Reveal Case
