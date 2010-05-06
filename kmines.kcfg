@@ -29,6 +29,7 @@
     </entry>
     <entry name="CustomMines" type="Int" key="custom mines">
       <label>The number of mines in the playing field.</label>
+      <min>1</min>
       <default>20</default>
     </entry>
     <entry name="level" type="Int">
