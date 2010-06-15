@@ -19,7 +19,7 @@
 #define MINEFIELDITEM_H
 
 #include <QVector>
-#include <QGraphicsItem>
+#include <QGraphicsObject>
 #include <QPair>
 #include <KRandomSequence>
 
@@ -35,12 +35,9 @@ typedef QPair<int,int> FieldPos;
  * with given properties (num rows, num cols, num mines) and
  * handling resizes
  */
-class MineFieldItem : public QObject, public QGraphicsItem
+class MineFieldItem : public QGraphicsObject
 {
     Q_OBJECT
-#if QT_VERSION >= 0x040600	    
-    Q_INTERFACES(QGraphicsItem)
-#endif    
 public:
     /**
      * Constructor.
