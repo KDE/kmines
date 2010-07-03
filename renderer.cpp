@@ -20,7 +20,7 @@
 
 #include <QPainter>
 
-#include <KSvgRenderer>
+#include <QSvgRenderer>
 #include <KGameTheme>
 #include <kpixmapcache.h>
 
@@ -95,7 +95,7 @@ KMinesRenderer* KMinesRenderer::self()
 KMinesRenderer::KMinesRenderer()
     : m_cellSize(0)
 {
-    m_renderer = new KSvgRenderer();
+    m_renderer = new QSvgRenderer();
     m_cache = new KPixmapCache("kmines-cache");
     m_cache->setCacheLimit(3*1024);
 
