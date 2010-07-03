@@ -21,7 +21,7 @@
 #include <QPixmap>
 #include "commondefs.h"
 
-class KSvgRenderer;
+class QSvgRenderer;
 class KPixmapCache;
 /**
  * This class is responsible for rendering all the game graphics.
@@ -87,7 +87,7 @@ private:
     /**
      * Renderer used to render all graphics from svg file
      */
-    KSvgRenderer *m_renderer;
+    QSvgRenderer *m_renderer;
     /**
      * Pixmap cache
      */
