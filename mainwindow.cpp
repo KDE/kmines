@@ -1,5 +1,6 @@
 /*
     Copyright 2007 Dmitry Suzdalev <dimsuz@gmail.com>
+    Copyright 2010 Brian Croom <brian.s.croom@gmail.com>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,7 +20,6 @@
 #include "minefielditem.h"
 #include "scene.h"
 #include "settings.h"
-#include "renderer.h"
 
 #include <KGameClock>
 #include <KStandardGameAction>
@@ -264,11 +264,7 @@ void KMinesMainWindow::pauseGame(bool paused)
 
 void KMinesMainWindow::loadSettings()
 {
-    if ( !KMinesRenderer::self()->loadTheme(Settings::theme()) )
-    {
-        KMessageBox::error( this,  i18n( "Failed to load \"%1\" theme. Please check your installation.", Settings::theme() ) );
-        return;
-    }
+    m_scene->renderer().setTheme(Settings::theme());
 
     m_view->resetCachedContent();
     // trigger complete redraw

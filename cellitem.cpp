@@ -1,5 +1,6 @@
 /*
     Copyright 2007 Dmitry Suzdalev <dimsuz@gmail.com>
+    Copyright 2010 Brian Croom <brian.s.croom@gmail.com>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,11 +23,14 @@
 
 #include <kdebug.h>
 
-#include "renderer.h"
+QHash<int, QString> CellItem::s_digitNames;
+QHash<KMinesState::CellState, QList<QString> > CellItem::s_stateNames;
 
-CellItem::CellItem(QGraphicsItem* parent)
-    : QGraphicsPixmapItem(parent)
+CellItem::CellItem(KGameRenderer* renderer, QGraphicsItem* parent)
+    : KGameRenderedItem(renderer, "", parent)
 {
+    if(s_digitNames.isEmpty())
+        fillNameHashes();
     setShapeMode(BoundingRectShape);
     reset();
 }
@@ -42,27 +46,34 @@ void CellItem::reset()
 
 void CellItem::updatePixmap()
 {
-    if(KMinesRenderer::self()->cellSize() == 0)
-        return;
+    QList<QGraphicsItem*> children = childItems();
+    qDeleteAll(children);
 
-    // several special cases at the beginning
-
-    if( m_state == KMinesState::Revealed && m_digit != 0)
+    QList<QString> spriteKeys = s_stateNames[m_state];
+    setSpriteKey(spriteKeys[0]);
+    for(int i=1; i<spriteKeys.count(); i++)
+        addOverlay(spriteKeys[i]);
+    if(m_state == KMinesState::Revealed)
     {
-        setPixmap( KMinesRenderer::self()->pixmapForDigitElement(m_digit) );
-        return;
+        if(m_digit != 0)
+            addOverlay(s_digitNames[m_digit]);
+        else if(m_hasMine)
+        {
+            if(m_exploded)
+                addOverlay("explosion");
+            addOverlay("mine");
+        }
     }
+}
 
-    if( m_state == KMinesState::Revealed && m_hasMine )
+void CellItem::setRenderSize(const QSize &renderSize)
+{
+    KGameRenderedItem::setRenderSize(renderSize);
+    QList<QGraphicsItem*> children = childItems();
+    foreach( QGraphicsItem* item, children)
     {
-        if( m_exploded )
-            setPixmap( KMinesRenderer::self()->pixmapExplodedMine() );
-        else
-            setPixmap( KMinesRenderer::self()->pixmapMine() );
-        return;
+        ((KGameRenderedItem*)item)->setRenderSize(renderSize);
     }
-
-    setPixmap( KMinesRenderer::self()->pixmapForCellState( m_state ) );
 }
 
 void CellItem::press()
@@ -132,4 +143,35 @@ void CellItem::undoPress()
         m_state = KMinesState::Released;
         updatePixmap();
     }
+}
+
+void CellItem::fillNameHashes()
+{
+    s_digitNames[1] = "arabicOne";
+    s_digitNames[2] = "arabicTwo";
+    s_digitNames[3] = "arabicThree";
+    s_digitNames[4] = "arabicFour";
+    s_digitNames[5] = "arabicFive";
+    s_digitNames[6] = "arabicSix";
+    s_digitNames[7] = "arabicSeven";
+    s_digitNames[8] = "arabicEight";
+
+    s_stateNames[KMinesState::Released].append("cell_up");
+    s_stateNames[KMinesState::Pressed].append("cell_down");
+    s_stateNames[KMinesState::Revealed].append("cell_down");
+    s_stateNames[KMinesState::Questioned].append("cell_up");
+    s_stateNames[KMinesState::Questioned].append("question");
+    s_stateNames[KMinesState::Flagged].append("cell_up");
+    s_stateNames[KMinesState::Flagged].append("flag");
+    s_stateNames[KMinesState::Error].append("cell_down");
+    s_stateNames[KMinesState::Error].append("mine");
+    s_stateNames[KMinesState::Error].append("error");
+    s_stateNames[KMinesState::Hint].append("cell_up");
+    s_stateNames[KMinesState::Hint].append("hint");
+}
+
+void CellItem::addOverlay(const QString& spriteKey)
+{
+    KGameRenderedItem* overlay = new KGameRenderedItem(renderer(), spriteKey, this);
+    overlay->setRenderSize(renderSize());
 }

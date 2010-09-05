@@ -1,5 +1,6 @@
 /*
     Copyright 2007 Dmitry Suzdalev <dimsuz@gmail.com>
+    Copyright 2010 Brian Croom <brian.s.croom@gmail.com>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,13 +18,13 @@
 */
 
 #include "scene.h"
+#include "settings.h"
 
 #include <QResizeEvent>
 #include <KGamePopupItem>
 #include <KLocale>
 
 #include "minefielditem.h"
-#include "renderer.h"
 // --------------- KMinesView ---------------
 
 KMinesView::KMinesView( KMinesScene* scene, QWidget *parent )
@@ -39,10 +40,10 @@ void KMinesView::resizeEvent( QResizeEvent *ev )
 // -------------- KMinesScene --------------------
 
 KMinesScene::KMinesScene( QObject* parent )
-    : QGraphicsScene(parent)
+    : QGraphicsScene(parent), m_renderer(Settings::theme())
 {
     setItemIndexMethod( NoIndex );
-    m_fieldItem = new MineFieldItem();
+    m_fieldItem = new MineFieldItem(&m_renderer);
     connect(m_fieldItem, SIGNAL(flaggedMinesCountChanged(int)), SIGNAL(minesCountChanged(int)));
     connect(m_fieldItem, SIGNAL(firstClickDone()), SIGNAL(firstClickDone()));
     connect(m_fieldItem, SIGNAL(gameOver(bool)), SLOT(onGameOver(bool)));
@@ -60,11 +61,14 @@ KMinesScene::KMinesScene( QObject* parent )
     m_gamePausedMessageItem->setMessageTimeout(0);
     m_gamePausedMessageItem->setHideOnMouseClick(false);
     addItem(m_gamePausedMessageItem);
+
+    setBackgroundBrush(m_renderer.spritePixmap("mainWidget", sceneRect().size().toSize()));
 }
 
 void KMinesScene::resizeScene(int width, int height)
 {
     setSceneRect(0, 0, width, height);
+    setBackgroundBrush(m_renderer.spritePixmap("mainWidget", sceneRect().size().toSize()));
     m_fieldItem->resizeToFitInRect( sceneRect() );
     m_fieldItem->setPos( sceneRect().width()/2 - m_fieldItem->boundingRect().width()/2,
                          sceneRect().height()/2 - m_fieldItem->boundingRect().height()/2 );
@@ -72,11 +76,6 @@ void KMinesScene::resizeScene(int width, int height)
                           sceneRect().height()/2 - m_gamePausedMessageItem->boundingRect().height()/2 );
     m_messageItem->setPos( sceneRect().width()/2 - m_messageItem->boundingRect().width()/2,
                           sceneRect().height()/2 - m_messageItem->boundingRect().height()/2 );
-}
-
-void KMinesScene::drawBackground( QPainter* p, const QRectF& )
-{
-    p->drawPixmap( 0, 0, KMinesRenderer::self()->backgroundPixmap(sceneRect().size().toSize()) );
 }
 
 void KMinesScene::startNewGame(int rows, int cols, int numMines)

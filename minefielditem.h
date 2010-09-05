@@ -1,5 +1,6 @@
 /*
     Copyright 2007 Dmitry Suzdalev <dimsuz@gmail.com>
+    Copyright 2010 Brian Croom <brian.s.croom@gmail.com>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,6 +24,7 @@
 #include <QPair>
 #include <KRandomSequence>
 
+class KGameRenderer;
 class CellItem;
 class BorderItem;
 
@@ -42,7 +44,7 @@ public:
     /**
      * Constructor.
      */
-    MineFieldItem();
+    MineFieldItem(KGameRenderer* renderer);
     /**
      * Initializes game field: creates items, places them on positions,
      * (re)sets some variables
@@ -168,6 +170,10 @@ private:
      */
     QVector<BorderItem*> m_borders;
     /**
+     * The width and height of minefield cells in scene coordinates
+     */
+    int m_cellSize;
+    /**
      * Number of field rows
      */
     int m_numRows;
@@ -197,6 +203,8 @@ private:
     bool m_gameOver;
     bool m_emulatingMidButton;
     int m_numUnrevealed;
+
+    KGameRenderer* m_renderer;
 };
 
 #endif

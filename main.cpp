@@ -44,6 +44,7 @@ int main(int argc, char **argv)
     aboutData.addCredit(ki18n("Andreas Zehender"), ki18n("Smiley pixmaps"));
     aboutData.addCredit(ki18n("Mikhail Kourinny"), ki18n("Solver/Adviser"));
     aboutData.addCredit(ki18n("Thomas Capricelli"), ki18n("Magic reveal mode"));
+    aboutData.addCredit(ki18n("Brian Croom"), ki18n("Port to use KGameRenderer"));
     KCmdLineArgs::init(argc, argv, &aboutData);
 
     KApplication a;

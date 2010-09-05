@@ -1,5 +1,6 @@
 /*
     Copyright 2007 Dmitry Suzdalev <dimsuz@gmail.com>
+    Copyright 2010 Brian Croom <brian.s.croom@gmail.com>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,11 +24,10 @@
 
 #include "cellitem.h"
 #include "borderitem.h"
-#include "renderer.h"
 
-MineFieldItem::MineFieldItem()
+MineFieldItem::MineFieldItem(KGameRenderer* renderer)
     : m_leftButtonPos(-1,-1), m_midButtonPos(-1,-1), m_gameOver(false),
-      m_emulatingMidButton(false)
+      m_emulatingMidButton(false), m_renderer(renderer)
 {
 }
 
@@ -77,7 +77,7 @@ void MineFieldItem::initField( int numRows, int numCols, int numMines )
         if(i<oldSize)
             m_cells[i]->reset();
         else
-            m_cells[i] = new CellItem(this);
+            m_cells[i] = new CellItem(m_renderer, this);
         // let it be empty by default
         // generateField() will adjust needed cells
         // to hold digits or mines
@@ -85,7 +85,7 @@ void MineFieldItem::initField( int numRows, int numCols, int numMines )
     }
 
     for(int i=oldBorderSize; i<newBorderSize; ++i)
-            m_borders[i] = new BorderItem(this);
+            m_borders[i] = new BorderItem(m_renderer, this);
 
     setupBorderItems();
 
@@ -198,9 +198,8 @@ void MineFieldItem::setupBorderItems()
 
 QRectF MineFieldItem::boundingRect() const
 {
-    qreal cellSize = KMinesRenderer::self()->cellSize();
     // +2 - because of border on each side
-    return QRectF(0, 0, cellSize*(m_numCols+2), cellSize*(m_numRows+2));
+    return QRectF(0, 0, m_cellSize*(m_numCols+2), m_cellSize*(m_numRows+2));
 }
 
 void MineFieldItem::paint( QPainter * painter, const QStyleOptionGraphicsItem* opt, QWidget* w)
@@ -231,13 +230,13 @@ void MineFieldItem::resizeToFitInRect(const QRectF& rect)
     else
         size = rect.height() / (m_numRows+2);
 
-    KMinesRenderer::self()->setCellSize( static_cast<int>(size) );
+    m_cellSize = static_cast<int>(size);
 
     foreach( CellItem* item, m_cells )
-        item->updatePixmap();
+        item->setRenderSize(QSize(m_cellSize, m_cellSize));
 
     foreach( BorderItem *item, m_borders)
-        item->updatePixmap();
+        item->setRenderSize(QSize(m_cellSize, m_cellSize));
 
     adjustItemPositions();
 }
@@ -246,17 +245,15 @@ void MineFieldItem::adjustItemPositions()
 {
     Q_ASSERT( m_cells.size() == m_numRows*m_numCols );
 
-    int itemSize = KMinesRenderer::self()->cellSize();
-
     for(int row=0; row<m_numRows; ++row)
         for(int col=0; col<m_numCols; ++col)
         {
-            itemAt(row,col)->setPos((col+1)*itemSize, (row+1)*itemSize);
+            itemAt(row,col)->setPos((col+1)*m_cellSize, (row+1)*m_cellSize);
         }
 
     foreach( BorderItem* item, m_borders )
     {
-        item->setPos( item->col()*itemSize, item->row()*itemSize );
+        item->setPos( item->col()*m_cellSize, item->row()*m_cellSize );
     }
 }
 
@@ -308,9 +305,8 @@ void MineFieldItem::mousePressEvent( QGraphicsSceneMouseEvent *ev )
     if(m_gameOver)
         return;
 
-    int itemSize = KMinesRenderer::self()->cellSize();
-    int row = static_cast<int>(ev->pos().y()/itemSize)-1;
-    int col = static_cast<int>(ev->pos().x()/itemSize)-1;
+    int row = static_cast<int>(ev->pos().y()/m_cellSize)-1;
+    int col = static_cast<int>(ev->pos().x()/m_cellSize)-1;
     if( row <0 || row >= m_numRows || col < 0 || col >= m_numCols )
         return;
 
@@ -352,10 +348,8 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
     if(m_gameOver)
         return;
 
-    int itemSize = KMinesRenderer::self()->cellSize();
-
-    int row = static_cast<int>(ev->pos().y()/itemSize)-1;
-    int col = static_cast<int>(ev->pos().x()/itemSize)-1;
+    int row = static_cast<int>(ev->pos().y()/m_cellSize)-1;
+    int col = static_cast<int>(ev->pos().x()/m_cellSize)-1;
 
     if( row <0 || row >= m_numRows || col < 0 || col >= m_numCols )
     {
@@ -476,10 +470,8 @@ void MineFieldItem::mouseMoveEvent( QGraphicsSceneMouseEvent *ev )
     if(m_gameOver)
         return;
 
-    int itemSize = KMinesRenderer::self()->cellSize();
-
-    int row = static_cast<int>(ev->pos().y()/itemSize)-1;
-    int col = static_cast<int>(ev->pos().x()/itemSize)-1;
+    int row = static_cast<int>(ev->pos().y()/m_cellSize)-1;
+    int col = static_cast<int>(ev->pos().x()/m_cellSize)-1;
 
     if( row < 0 || row >= m_numRows || col < 0 || col >= m_numCols )
         return;

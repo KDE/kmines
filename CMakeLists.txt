@@ -14,7 +14,6 @@ set(kmines_SRCS
    borderitem.cpp
    minefielditem.cpp
    scene.cpp
-   renderer.cpp
    main.cpp )
 
 kde4_add_ui_files(kmines_SRCS customgame.ui generalopts.ui)

@@ -1,5 +1,6 @@
 /*
     Copyright 2007 Dmitry Suzdalev <dimsuz@gmail.com>
+    Copyright 2010 Brian Croom <brian.s.croom@gmail.com>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,18 +18,31 @@
 */
 
 #include "borderitem.h"
-#include "renderer.h"
 
-BorderItem::BorderItem( QGraphicsItem* parent )
-    : QGraphicsPixmapItem(parent), m_element(KMinesState::BorderEast),
+QHash<KMinesState::BorderElement, QString> BorderItem::s_elementNames;
+
+BorderItem::BorderItem( KGameRenderer* renderer, QGraphicsItem* parent )
+    : KGameRenderedItem(renderer, "", parent), m_element(KMinesState::BorderEast),
       m_row(-1), m_col(-1)
 {
+    if(s_elementNames.isEmpty())
+        fillNameHash();
     setShapeMode(BoundingRectShape);
 }
 
 void BorderItem::updatePixmap()
 {
-    if(KMinesRenderer::self()->cellSize() == 0)
-        return;
-    setPixmap(KMinesRenderer::self()->pixmapForBorderElement(m_element));
+    setSpriteKey(s_elementNames[m_element]);
+}
+
+void BorderItem::fillNameHash()
+{
+    s_elementNames[KMinesState::BorderNorth] = "border.edge.north";
+    s_elementNames[KMinesState::BorderSouth] = "border.edge.south";
+    s_elementNames[KMinesState::BorderEast] = "border.edge.east";
+    s_elementNames[KMinesState::BorderWest] = "border.edge.west";
+    s_elementNames[KMinesState::BorderCornerNE] = "border.outsideCorner.ne";
+    s_elementNames[KMinesState::BorderCornerNW] = "border.outsideCorner.nw";
+    s_elementNames[KMinesState::BorderCornerSW] = "border.outsideCorner.sw";
+    s_elementNames[KMinesState::BorderCornerSE] = "border.outsideCorner.se";
 }
