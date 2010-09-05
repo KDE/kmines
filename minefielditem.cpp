@@ -29,6 +29,7 @@ MineFieldItem::MineFieldItem(KGameRenderer* renderer)
     : m_leftButtonPos(-1,-1), m_midButtonPos(-1,-1), m_gameOver(false),
       m_emulatingMidButton(false), m_renderer(renderer)
 {
+	setFlag(QGraphicsItem::ItemHasNoContents);
 }
 
 void MineFieldItem::initField( int numRows, int numCols, int numMines )
