@@ -1,5 +1,6 @@
 /*
     Copyright 2007 Dmitry Suzdalev <dimsuz@gmail.com>
+    Copyright 2010 Brian Croom <brian.s.croom@gmail.com>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,6 +21,7 @@
 
 #include <QGraphicsView>
 #include <QGraphicsScene>
+#include <KGameRenderer>
 
 class MineFieldItem;
 class KGamePopupItem;
@@ -51,6 +53,8 @@ public:
      * Toggles paused state for all cells in the field item
      */
     void setGamePaused(bool paused);
+
+    KGameRenderer& renderer() {return m_renderer;}
 signals:
     void minesCountChanged(int);
     void gameOver(bool);
@@ -58,11 +62,7 @@ signals:
 private slots:
     void onGameOver(bool);
 private:
-    /**
-     * Draws scene background
-     * Reimplemented from QGraphicsScene
-     */
-    virtual void drawBackground( QPainter*, const QRectF& );
+    KGameRenderer m_renderer;
     /**
      * Game field graphics item
      */

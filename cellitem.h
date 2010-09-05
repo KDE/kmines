@@ -1,5 +1,6 @@
 /*
     Copyright 2007 Dmitry Suzdalev <dimsuz@gmail.com>
+    Copyright 2010 Brian Croom <brian.s.croom@gmail.com>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,25 +19,30 @@
 #ifndef CELLITEM_H
 #define CELLITEM_H
 
-#include <QGraphicsPixmapItem>
+#include <KGameRenderedItem>
 
 #include "commondefs.h"
 
+class KGameRenderer;
 
 /**
  * Graphics item representing single cell on
  * the game field.
  * Handles clicks, emits signals when something important happens :)
  */
-class CellItem : public QGraphicsPixmapItem
+class CellItem : public KGameRenderedItem
 {
 public:
-    CellItem(QGraphicsItem* parent);
+    CellItem(KGameRenderer* renderer, QGraphicsItem* parent);
     /**
      * Updates item pixmap according to its current
      * state and properties
      */
     void updatePixmap();
+    /**
+     * Reimplemented to pass the call on to any child items as well
+     */
+    void setRenderSize(const QSize &renderSize);
     // FIXME: will it EVER be needed to setHasMine(false)???
     /**
      * Sets whether this item holds mine or not
@@ -105,6 +111,9 @@ signals:
      */
     void flaggedStateChanged();
 private:
+    static QHash<int, QString> s_digitNames;
+    static QHash<KMinesState::CellState, QList<QString> > s_stateNames;
+    static void fillNameHashes();
     /**
      * Current state of this item
      */
@@ -121,6 +130,10 @@ private:
      * Specifies a digit this item holds. 0 if none
      */
     int m_digit;
+    /**
+     * Add a child object to display an overlayed pixmap
+     */
+    void addOverlay(const QString& spriteKey);
 };
 
 #endif
