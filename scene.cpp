@@ -40,8 +40,9 @@ void KMinesView::resizeEvent( QResizeEvent *ev )
 // -------------- KMinesScene --------------------
 
 KMinesScene::KMinesScene( QObject* parent )
-    : QGraphicsScene(parent), m_renderer(Settings::theme())
+    : QGraphicsScene(parent), m_renderer(Settings::defaultThemeValue())
 {
+    m_renderer.setTheme(Settings::theme());
     setItemIndexMethod( NoIndex );
     m_fieldItem = new MineFieldItem(&m_renderer);
     connect(m_fieldItem, SIGNAL(flaggedMinesCountChanged(int)), SIGNAL(minesCountChanged(int)));

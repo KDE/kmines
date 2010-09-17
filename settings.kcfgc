@@ -3,3 +3,4 @@ File=kmines.kcfg
 ClassName=Settings
 Singleton=true
 Mutators=true
+DefaultValueGetters=Theme
