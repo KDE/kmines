@@ -22,7 +22,7 @@
 QHash<KMinesState::BorderElement, QString> BorderItem::s_elementNames;
 
 BorderItem::BorderItem( KGameRenderer* renderer, QGraphicsItem* parent )
-    : KGameRenderedItem(renderer, "", parent), m_element(KMinesState::BorderEast),
+    : KGameRenderedItem(renderer, QLatin1String( "" ), parent), m_element(KMinesState::BorderEast),
       m_row(-1), m_col(-1)
 {
     if(s_elementNames.isEmpty())
@@ -37,12 +37,12 @@ void BorderItem::updatePixmap()
 
 void BorderItem::fillNameHash()
 {
-    s_elementNames[KMinesState::BorderNorth] = "border.edge.north";
-    s_elementNames[KMinesState::BorderSouth] = "border.edge.south";
-    s_elementNames[KMinesState::BorderEast] = "border.edge.east";
-    s_elementNames[KMinesState::BorderWest] = "border.edge.west";
-    s_elementNames[KMinesState::BorderCornerNE] = "border.outsideCorner.ne";
-    s_elementNames[KMinesState::BorderCornerNW] = "border.outsideCorner.nw";
-    s_elementNames[KMinesState::BorderCornerSW] = "border.outsideCorner.sw";
-    s_elementNames[KMinesState::BorderCornerSE] = "border.outsideCorner.se";
+    s_elementNames[KMinesState::BorderNorth] = QLatin1String( "border.edge.north" );
+    s_elementNames[KMinesState::BorderSouth] = QLatin1String( "border.edge.south" );
+    s_elementNames[KMinesState::BorderEast] = QLatin1String( "border.edge.east" );
+    s_elementNames[KMinesState::BorderWest] = QLatin1String( "border.edge.west" );
+    s_elementNames[KMinesState::BorderCornerNE] = QLatin1String( "border.outsideCorner.ne" );
+    s_elementNames[KMinesState::BorderCornerNW] = QLatin1String( "border.outsideCorner.nw" );
+    s_elementNames[KMinesState::BorderCornerSW] = QLatin1String( "border.outsideCorner.sw" );
+    s_elementNames[KMinesState::BorderCornerSE] = QLatin1String( "border.outsideCorner.se" );
 }

@@ -155,7 +155,7 @@ void KMinesMainWindow::newGame()
 {
     m_gameClock->restart();
     m_gameClock->pause(); // start only with the 1st click
-    
+
     // some things to manage pause
     if( m_actionPause->isChecked() )
     {
@@ -163,7 +163,7 @@ void KMinesMainWindow::newGame()
             m_actionPause->setChecked(false);
     }
     m_actionPause->setEnabled(false);
-    
+
     KGameDifficulty::setRunning(false);
     switch(KGameDifficulty::level())
     {
@@ -198,7 +198,7 @@ void KMinesMainWindow::onGameOver(bool won)
         scoreDialog.addLocalizedConfigGroupNames(KGameDifficulty::localizedLevelStrings()); //Add all the translations of the group names
         scoreDialog.setConfigGroupWeights(KGameDifficulty::levelWeights());
         scoreDialog.hideField(KScoreDialog::Score);
-        
+
         QPair<QByteArray, QString> group = KGameDifficulty::localizedLevelString();
         if(group.first.isEmpty())
             group = qMakePair(QByteArray("Custom"), i18n("Custom"));
@@ -242,14 +242,14 @@ void KMinesMainWindow::showHighscores()
 
 void KMinesMainWindow::configureSettings()
 {
-    if ( KConfigDialog::showDialog( "settings" ) )
+    if ( KConfigDialog::showDialog( QLatin1String(  "settings" ) ) )
         return;
-    KConfigDialog *dialog = new KConfigDialog( this, "settings", Settings::self() );
-    dialog->addPage( new GeneralOptsConfig( dialog ), i18n("General"), "games-config-options" );
-    dialog->addPage( new KGameThemeSelector( dialog, Settings::self(), KGameThemeSelector::NewStuffDisableDownload ), i18n( "Theme" ), "games-config-theme" );
-    dialog->addPage( new CustomGameConfig( dialog ), i18n("Custom Game"), "games-config-custom" );
+    KConfigDialog *dialog = new KConfigDialog( this, QLatin1String( "settings" ), Settings::self() );
+    dialog->addPage( new GeneralOptsConfig( dialog ), i18n("General"), QLatin1String( "games-config-options" ));
+    dialog->addPage( new KGameThemeSelector( dialog, Settings::self(), KGameThemeSelector::NewStuffDisableDownload ), i18n( "Theme" ), QLatin1String( "games-config-theme" ));
+    dialog->addPage( new CustomGameConfig( dialog ), i18n("Custom Game"), QLatin1String( "games-config-custom" ));
     connect( dialog, SIGNAL( settingsChanged(const QString&) ), this, SLOT( loadSettings() ) );
-    dialog->setHelp(QString(),"kmines");
+    dialog->setHelp(QString(),QLatin1String( "kmines" ));
     dialog->show();
 }
 
