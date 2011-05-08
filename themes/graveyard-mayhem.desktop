@@ -1,5 +1,6 @@
 [KGameTheme]
 Name=Graveyard Mayhem
+Name[bs]=Groblje Maythem
 Name[ca]=L'esquarterament del cementiri 
 Name[ca@valencia]=L'esquarterament del cementiri 
 Name[da]=Kaos på kirkegården
@@ -32,6 +33,7 @@ Name[x-test]=xxGraveyard Mayhemxx
 Name[zh_CN]=墓地骚灵
 Name[zh_TW]=墓地的騷動
 Description=A spooky theme for KMines. Don't get caught by the zombies in the graveyard!
+Description[bs]=Sablasna tema za KMines. Ne dopusti da budeš uhvaćen od strane zombija na groblju!
 Description[ca]=Un tema terrorífic pel KMines. No us deixeu atrapar pels zombies en el cementiri!
 Description[ca@valencia]=Un tema terrorífic pel KMines. No vos deixeu atrapar pels zombies en el cementiri!
 Description[da]=Et uhyggeligt tema til KMines. Pas på du ikke bliver fanget af zombierne på kirkegården!
