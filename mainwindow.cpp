@@ -101,7 +101,7 @@ KMinesMainWindow::KMinesMainWindow()
 
 
     m_gameClock = new KGameClock(this, KGameClock::MinSecOnly);
-    connect(m_gameClock, SIGNAL(timeChanged(const QString&)), SLOT(advanceTime(const QString&)));
+    connect(m_gameClock, SIGNAL(timeChanged(QString)), SLOT(advanceTime(QString)));
 
     statusBar()->insertItem( i18n("Mines: 0/0"), 0 );
     statusBar()->insertItem( i18n("Time: 00:00"), 1);
@@ -119,7 +119,7 @@ void KMinesMainWindow::setupActions()
     KStandardGameAction::highscores(this, SLOT(showHighscores()), actionCollection());
 
     KStandardGameAction::quit(this, SLOT(close()), actionCollection());
-    KStandardAction::preferences( this, SLOT( configureSettings() ), actionCollection() );
+    KStandardAction::preferences( this, SLOT(configureSettings()), actionCollection() );
     m_actionPause = KStandardGameAction::pause( this, SLOT(pauseGame(bool)), actionCollection() );
 
     KGameDifficulty::init(this, this, SLOT(levelChanged(KGameDifficulty::standardLevel)),
@@ -248,7 +248,7 @@ void KMinesMainWindow::configureSettings()
     dialog->addPage( new GeneralOptsConfig( dialog ), i18n("General"), QLatin1String( "games-config-options" ));
     dialog->addPage( new KGameThemeSelector( dialog, Settings::self(), KGameThemeSelector::NewStuffDisableDownload ), i18n( "Theme" ), QLatin1String( "games-config-theme" ));
     dialog->addPage( new CustomGameConfig( dialog ), i18n("Custom Game"), QLatin1String( "games-config-custom" ));
-    connect( dialog, SIGNAL( settingsChanged(const QString&) ), this, SLOT( loadSettings() ) );
+    connect( dialog, SIGNAL(settingsChanged(QString)), this, SLOT(loadSettings()) );
     dialog->setHelp(QString(),QLatin1String( "kmines" ));
     dialog->show();
 }
