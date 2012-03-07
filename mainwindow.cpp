@@ -22,6 +22,7 @@
 #include "settings.h"
 
 #include <KGameClock>
+#include <KgDifficulty>
 #include <KStandardGameAction>
 #include <KActionCollection>
 #include <KToggleAction>
@@ -108,8 +109,6 @@ KMinesMainWindow::KMinesMainWindow()
     setCentralWidget(m_view);
     setupActions();
 
-    KGameDifficulty::setLevel( KGameDifficulty::standardLevel(Settings::level()) );
-
     newGame();
 }
 
@@ -122,13 +121,14 @@ void KMinesMainWindow::setupActions()
     KStandardAction::preferences( this, SLOT(configureSettings()), actionCollection() );
     m_actionPause = KStandardGameAction::pause( this, SLOT(pauseGame(bool)), actionCollection() );
 
-    KGameDifficulty::init(this, this, SLOT(levelChanged(KGameDifficulty::standardLevel)),
-                         SLOT(customLevelChanged(int)));
-    KGameDifficulty::setRestartOnChange(KGameDifficulty::RestartOnChange);
-    KGameDifficulty::addStandardLevel(KGameDifficulty::Easy);
-    KGameDifficulty::addStandardLevel(KGameDifficulty::Medium);
-    KGameDifficulty::addStandardLevel(KGameDifficulty::Hard);
-    KGameDifficulty::addStandardLevel(KGameDifficulty::Configurable);
+    Kg::difficulty()->addStandardLevelRange(
+        KgDifficultyLevel::Easy, KgDifficultyLevel::Hard
+    );
+    Kg::difficulty()->addLevel(new KgDifficultyLevel(1000,
+        QByteArray( "Custom" ), i18n( "Custom" )
+    ));
+    KgDifficultyGUI::init(this);
+    connect(Kg::difficulty(), SIGNAL(currentLevelChanged(const KgDifficultyLevel*)), SLOT(newGame()));
 
     setupGUI(qApp->desktop()->availableGeometry().size()*0.4);
 }
@@ -136,19 +136,6 @@ void KMinesMainWindow::setupActions()
 void KMinesMainWindow::onMinesCountChanged(int count)
 {
     statusBar()->changeItem( i18n("Mines: %1/%2", count, m_scene->totalMines()), 0 );
-}
-
-void KMinesMainWindow::levelChanged(KGameDifficulty::standardLevel)
-{
-    Settings::setLevel(KGameDifficulty::level());
-    Settings::self()->writeConfig();
-
-    newGame();
-}
-
-void KMinesMainWindow::customLevelChanged(int)
-{
-    newGame();
 }
 
 void KMinesMainWindow::newGame()
@@ -164,19 +151,19 @@ void KMinesMainWindow::newGame()
     }
     m_actionPause->setEnabled(false);
 
-    KGameDifficulty::setRunning(false);
-    switch(KGameDifficulty::level())
+    Kg::difficulty()->setGameRunning(false);
+    switch(Kg::difficultyLevel())
     {
-        case KGameDifficulty::Easy:
+        case KgDifficultyLevel::Easy:
             m_scene->startNewGame(9, 9, 10);
             break;
-        case KGameDifficulty::Medium:
+        case KgDifficultyLevel::Medium:
             m_scene->startNewGame(16,16,40);
             break;
-        case KGameDifficulty::Hard:
+        case KgDifficultyLevel::Hard:
             m_scene->startNewGame(16,30,99);
             break;
-        case KGameDifficulty::Configurable:
+        case KgDifficultyLevel::Custom:
             m_scene->startNewGame(Settings::customHeight(),
                                   Settings::customWidth(),
                                   Settings::customMines());
@@ -191,18 +178,12 @@ void KMinesMainWindow::onGameOver(bool won)
 {
     m_gameClock->pause();
     m_actionPause->setEnabled(false);
-    KGameDifficulty::setRunning(false);
+    Kg::difficulty()->setGameRunning(false);
     if(won)
     {
         KScoreDialog scoreDialog(KScoreDialog::Name | KScoreDialog::Time, this);
-        scoreDialog.addLocalizedConfigGroupNames(KGameDifficulty::localizedLevelStrings()); //Add all the translations of the group names
-        scoreDialog.setConfigGroupWeights(KGameDifficulty::levelWeights());
+        scoreDialog.initFromDifficulty(Kg::difficulty());
         scoreDialog.hideField(KScoreDialog::Score);
-
-        QPair<QByteArray, QString> group = KGameDifficulty::localizedLevelString();
-        if(group.first.isEmpty())
-            group = qMakePair(QByteArray("Custom"), i18n("Custom"));
-        scoreDialog.setConfigGroup( group );
 
         KScoreDialog::FieldInfo scoreInfo;
         // score-in-seconds will be hidden
@@ -227,16 +208,14 @@ void KMinesMainWindow::onFirstClick()
     m_actionPause->setEnabled(true);
     // start clock
     m_gameClock->resume();
-    KGameDifficulty::setRunning(true);
+    Kg::difficulty()->setGameRunning(true);
 }
 
 void KMinesMainWindow::showHighscores()
 {
     KScoreDialog scoreDialog(KScoreDialog::Name | KScoreDialog::Time, this);
-    scoreDialog.addLocalizedConfigGroupNames(KGameDifficulty::localizedLevelStrings()); //Add all the translations of the group names
-    scoreDialog.setConfigGroupWeights(KGameDifficulty::levelWeights());
+    scoreDialog.initFromDifficulty(Kg::difficulty());
     scoreDialog.hideField(KScoreDialog::Score);
-    scoreDialog.setConfigGroup( KGameDifficulty::localizedLevelString() );
     scoreDialog.exec();
 }
 
