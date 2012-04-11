@@ -23,6 +23,7 @@
 #include <QResizeEvent>
 #include <KGamePopupItem>
 #include <KLocale>
+#include <KgThemeProvider>
 
 #include "minefielditem.h"
 // --------------- KMinesView ---------------
@@ -39,10 +40,16 @@ void KMinesView::resizeEvent( QResizeEvent *ev )
 
 // -------------- KMinesScene --------------------
 
-KMinesScene::KMinesScene( QObject* parent )
-    : QGraphicsScene(parent), m_renderer(Settings::defaultThemeValue())
+static KgThemeProvider* provider()
 {
-    m_renderer.setTheme(Settings::theme());
+    KgThemeProvider* prov = new KgThemeProvider;
+    prov->discoverThemes("appdata", QLatin1String("themes"));
+    return prov;
+}
+
+KMinesScene::KMinesScene( QObject* parent )
+    : QGraphicsScene(parent), m_renderer(provider())
+{
     setItemIndexMethod( NoIndex );
     m_fieldItem = new MineFieldItem(&m_renderer);
     connect(m_fieldItem, SIGNAL(flaggedMinesCountChanged(int)), SIGNAL(minesCountChanged(int)));

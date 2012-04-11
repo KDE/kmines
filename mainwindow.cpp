@@ -29,7 +29,7 @@
 #include <KStatusBar>
 #include <KScoreDialog>
 #include <KConfigDialog>
-#include <KGameThemeSelector>
+#include <KgThemeSelector>
 #include <KMessageBox>
 #include <KLocale>
 #include <QDesktopWidget>
@@ -225,8 +225,9 @@ void KMinesMainWindow::configureSettings()
         return;
     KConfigDialog *dialog = new KConfigDialog( this, QLatin1String( "settings" ), Settings::self() );
     dialog->addPage( new GeneralOptsConfig( dialog ), i18n("General"), QLatin1String( "games-config-options" ));
-    dialog->addPage( new KGameThemeSelector( dialog, Settings::self(), KGameThemeSelector::NewStuffDisableDownload ), i18n( "Theme" ), QLatin1String( "games-config-theme" ));
+    dialog->addPage( new KgThemeSelector( m_scene->renderer().themeProvider() ), i18n( "Theme" ), QLatin1String( "games-config-theme" ));
     dialog->addPage( new CustomGameConfig( dialog ), i18n("Custom Game"), QLatin1String( "games-config-custom" ));
+    connect( m_scene->renderer().themeProvider(), SIGNAL(currentThemeChanged(const KgTheme*)), SLOT(loadSettings()) );
     connect( dialog, SIGNAL(settingsChanged(QString)), this, SLOT(loadSettings()) );
     dialog->setHelp(QString(),QLatin1String( "kmines" ));
     dialog->show();
@@ -243,8 +244,6 @@ void KMinesMainWindow::pauseGame(bool paused)
 
 void KMinesMainWindow::loadSettings()
 {
-    m_scene->renderer().setTheme(Settings::theme());
-
     m_view->resetCachedContent();
     // trigger complete redraw
     m_scene->resizeScene( (int)m_scene->sceneRect().width(),
