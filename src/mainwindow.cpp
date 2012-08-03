@@ -29,13 +29,22 @@
 #include <KStatusBar>
 #include <KScoreDialog>
 #include <KConfigDialog>
+#include <KgThemeProvider>
 #include <KgThemeSelector>
 #include <KMessageBox>
 #include <KLocale>
 #include <QDesktopWidget>
 
+#include "canvaswidget.h"
 #include "ui_customgame.h"
 #include "ui_generalopts.h"
+
+static KgThemeProvider* provider()
+{
+    KgThemeProvider* prov = new KgThemeProvider;
+    prov->discoverThemes("appdata", QLatin1String("themes"));
+    return prov;
+}
 
 /*
  * Classes for config dlg pages
@@ -83,30 +92,32 @@ private:
  * Main window
  */
 
-KMinesMainWindow::KMinesMainWindow()
+KMinesMainWindow::KMinesMainWindow() :
+    m_renderer(provider()),
+    m_canvas(new CanvasWidget(&m_renderer, this))
 {
     m_scene = new KMinesScene(this);
     connect(m_scene, SIGNAL(minesCountChanged(int)), SLOT(onMinesCountChanged(int)));
     connect(m_scene, SIGNAL(gameOver(bool)), SLOT(onGameOver(bool)));
     connect(m_scene, SIGNAL(firstClickDone()), SLOT(onFirstClick()));
 
-    m_view = new KMinesView( m_scene, this );
-    m_view->setCacheMode( QGraphicsView::CacheBackground );
-    m_view->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-    m_view->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-    m_view->setFrameStyle(QFrame::NoFrame);
+    //m_view = new KMinesView( m_scene, this );
+    m_canvas->setCacheMode( QGraphicsView::CacheBackground );
+    m_canvas->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+    m_canvas->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+    m_canvas->setFrameStyle(QFrame::NoFrame);
 
-    m_view->setOptimizationFlags( QGraphicsView::DontClipPainter |
+    m_canvas->setOptimizationFlags( QGraphicsView::DontClipPainter |
                                 QGraphicsView::DontSavePainterState |
                                 QGraphicsView::DontAdjustForAntialiasing );
-
 
     m_gameClock = new KGameClock(this, KGameClock::MinSecOnly);
     connect(m_gameClock, SIGNAL(timeChanged(QString)), SLOT(advanceTime(QString)));
 
     statusBar()->insertItem( i18n("Mines: 0/0"), 0 );
     statusBar()->insertItem( i18n("Time: 00:00"), 1);
-    setCentralWidget(m_view);
+    setCentralWidget(m_canvas);
+
     setupActions();
 
     newGame();
@@ -225,9 +236,9 @@ void KMinesMainWindow::configureSettings()
         return;
     KConfigDialog *dialog = new KConfigDialog( this, QLatin1String( "settings" ), Settings::self() );
     dialog->addPage( new GeneralOptsConfig( dialog ), i18n("General"), QLatin1String( "games-config-options" ));
-    dialog->addPage( new KgThemeSelector( m_scene->renderer().themeProvider() ), i18n( "Theme" ), QLatin1String( "games-config-theme" ));
+    dialog->addPage( new KgThemeSelector( m_renderer.themeProvider() ), i18n( "Theme" ), QLatin1String( "games-config-theme" ));
     dialog->addPage( new CustomGameConfig( dialog ), i18n("Custom Game"), QLatin1String( "games-config-custom" ));
-    connect( m_scene->renderer().themeProvider(), SIGNAL(currentThemeChanged(const KgTheme*)), SLOT(loadSettings()) );
+    connect( m_renderer.themeProvider(), SIGNAL(currentThemeChanged(const KgTheme*)), SLOT(loadSettings()) );
     connect( dialog, SIGNAL(settingsChanged(QString)), this, SLOT(loadSettings()) );
     dialog->setHelp(QString(),QLatin1String( "kmines" ));
     dialog->show();
@@ -244,7 +255,7 @@ void KMinesMainWindow::pauseGame(bool paused)
 
 void KMinesMainWindow::loadSettings()
 {
-    m_view->resetCachedContent();
+    //m_view->resetCachedContent();
     // trigger complete redraw
     m_scene->resizeScene( (int)m_scene->sceneRect().width(),
                           (int)m_scene->sceneRect().height() );
