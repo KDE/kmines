@@ -14,3 +14,5 @@ endif(NOT COMPILING_KDEGAMES)
 add_subdirectory( data ) 
 add_subdirectory( themes ) 
 add_subdirectory( src )
+
+install( PROGRAMS kmines.desktop  DESTINATION  ${XDG_APPS_INSTALL_DIR} )
