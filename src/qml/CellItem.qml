@@ -18,21 +18,22 @@
 import QtQuick 1.1
 import org.kde.games.core 0.1 as KgCore
 
-Item {
-    id: canvas
+KgCore.CanvasItem {
+    id: cell
 
-    KgCore.CanvasItem {
-        id: background
-        spriteKey: "mainWidget"
+    MouseArea {
         anchors.fill: parent
-    }
-
-    MineField {
-        id: field
-        width: height
-        height: Math.floor(parent.height/(rows+2))*(rows+2)
-        rows: 10
-        columns: 10
-        anchors.centerIn: parent
+        enabled: spriteKey=="cell_up" || spriteKey=="cell_down"
+        onPressed: {
+            if (spriteKey == "cell_up") {
+                spriteKey = "cell_down";
+            }
+        }
+        onReleased: {
+            if (spriteKey == "cell_down") {
+                // handle click
+                spriteKey = "cell_up";
+            }
+        }
     }
 }

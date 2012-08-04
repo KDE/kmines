@@ -21,21 +21,65 @@ import org.kde.games.core 0.1 as KgCore
 Item {
     id: container
 
-    property alias rows: field.rows
-    property alias columns: field.columns
+    property int rows
+    property int columns
 
     Grid {
         id: field
         anchors.fill: parent
+        rows: parent.rows+2
+        columns: parent.columns+2
 
         Repeater {
-            model: rows*columns
+            model: (rows+2)*(columns+2)
 
-            KgCore.CanvasItem {
-                spriteKey: "cell_up"
+            CellItem {
                 width: field.width/field.rows
                 height: field.height/field.columns
+
+                property int row: Math.floor(index/field.rows)
+                property int column: index%field.columns
+
+                spriteKey: getKeyFromPos(row, column)
             }
+        }
+    }
+
+    function getKeyFromPos(row, col) {
+        if( row == 0 && col == 0)
+        {
+            return "border.outsideCorner.nw";
+        }
+        else if( row == 0 && col == columns+1)
+        {
+            return "border.outsideCorner.ne";
+        }
+        else if( row == rows+1 && col == 0 )
+        {
+            return "border.outsideCorner.sw";
+        }
+        else if( row == rows+1 && col == columns+1 )
+        {
+            return "border.outsideCorner.se";
+        }
+        else if( row == 0 )
+        {
+            return "border.edge.north";
+        }
+        else if( row == rows+1 )
+        {
+            return "border.edge.south";
+        }
+        else if( col == 0 )
+        {
+            return "border.edge.west";
+        }
+        else if( col == columns+1 )
+        {
+            return "border.edge.east";
+        }
+        else {
+            return "cell_up";
         }
     }
 }
