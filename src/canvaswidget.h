@@ -27,6 +27,7 @@ class CanvasWidget : public KgDeclarativeView
     Q_OBJECT
 public:
     CanvasWidget(KGameRenderer *renderer, QWidget *parent=0);
+    void setGamePaused(bool paused);
 
 /*
 protected:

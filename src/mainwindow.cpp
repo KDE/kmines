@@ -247,7 +247,7 @@ void KMinesMainWindow::configureSettings()
 
 void KMinesMainWindow::pauseGame(bool paused)
 {
-    //m_scene->setGamePaused( paused );
+    m_canvas->setGamePaused( paused );
     if( paused )
         m_gameClock->pause();
     else

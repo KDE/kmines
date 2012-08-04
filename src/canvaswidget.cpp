@@ -17,6 +17,7 @@
 
 #include "canvaswidget.h"
 
+#include <QGraphicsObject>
 #include <KGameRenderer>
 #include <KStandardDirs>
 
@@ -25,4 +26,9 @@ CanvasWidget::CanvasWidget(KGameRenderer *renderer, QWidget *parent) :
 {
     QString path = KStandardDirs::locate("appdata", "qml/main.qml");
     setSource(QUrl::fromLocalFile(path));
+}
+
+void CanvasWidget::setGamePaused(bool paused)
+{
+    QMetaObject::invokeMethod(rootObject(), "setGamePaused", Q_ARG(QVariant, paused));
 }

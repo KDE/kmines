@@ -27,6 +27,10 @@ Item {
         anchors.fill: parent
     }
 
+    function setGamePaused(paused) {
+        field.visible = !paused;
+    }
+
     MineField {
         id: field
         width: height
