@@ -96,10 +96,11 @@ KMinesMainWindow::KMinesMainWindow() :
     m_renderer(provider()),
     m_canvas(new CanvasWidget(&m_renderer, this))
 {
-    m_scene = new KMinesScene(this);
+    /*m_scene = new KMinesScene(this);
     connect(m_scene, SIGNAL(minesCountChanged(int)), SLOT(onMinesCountChanged(int)));
     connect(m_scene, SIGNAL(gameOver(bool)), SLOT(onGameOver(bool)));
     connect(m_scene, SIGNAL(firstClickDone()), SLOT(onFirstClick()));
+    */
 
     //m_view = new KMinesView( m_scene, this );
     m_canvas->setCacheMode( QGraphicsView::CacheBackground );
@@ -146,7 +147,7 @@ void KMinesMainWindow::setupActions()
 
 void KMinesMainWindow::onMinesCountChanged(int count)
 {
-    statusBar()->changeItem( i18n("Mines: %1/%2", count, m_scene->totalMines()), 0 );
+    //statusBar()->changeItem( i18n("Mines: %1/%2", count, m_scene->totalMines()), 0 );
 }
 
 void KMinesMainWindow::newGame()
@@ -157,7 +158,7 @@ void KMinesMainWindow::newGame()
     // some things to manage pause
     if( m_actionPause->isChecked() )
     {
-            m_scene->setGamePaused(false);
+            //m_scene->setGamePaused(false);
             m_actionPause->setChecked(false);
     }
     m_actionPause->setEnabled(false);
@@ -166,18 +167,18 @@ void KMinesMainWindow::newGame()
     switch(Kg::difficultyLevel())
     {
         case KgDifficultyLevel::Easy:
-            m_scene->startNewGame(9, 9, 10);
+            //m_scene->startNewGame(9, 9, 10);
             break;
         case KgDifficultyLevel::Medium:
-            m_scene->startNewGame(16,16,40);
+            //m_scene->startNewGame(16,16,40);
             break;
         case KgDifficultyLevel::Hard:
             m_scene->startNewGame(16,30,99);
             break;
         case KgDifficultyLevel::Custom:
-            m_scene->startNewGame(Settings::customHeight(),
+            /*m_scene->startNewGame(Settings::customHeight(),
                                   Settings::customWidth(),
-                                  Settings::customMines());
+                                  Settings::customMines());*/
         default:
             //unsupported
             break;
@@ -246,7 +247,7 @@ void KMinesMainWindow::configureSettings()
 
 void KMinesMainWindow::pauseGame(bool paused)
 {
-    m_scene->setGamePaused( paused );
+    //m_scene->setGamePaused( paused );
     if( paused )
         m_gameClock->pause();
     else
@@ -257,8 +258,8 @@ void KMinesMainWindow::loadSettings()
 {
     //m_view->resetCachedContent();
     // trigger complete redraw
-    m_scene->resizeScene( (int)m_scene->sceneRect().width(),
-                          (int)m_scene->sceneRect().height() );
+    /*m_scene->resizeScene( (int)m_scene->sceneRect().width(),
+                          (int)m_scene->sceneRect().height() );*/
 }
 
 #include "mainwindow.moc"
