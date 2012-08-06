@@ -1,9 +1,33 @@
 var firstClick = true;
 
-function revealCell(index) {
+function revealCell(index, row, column) {
     if (firstClick) {
         firstClick = false;
         generateField(index);
+    }
+    var cell = field.cells.itemAt(index);
+    if (cell.hasMine) {
+    } else if (cell.digit == 0) {
+        revealEmptyCells(row, column);
+    }
+}
+
+function revealEmptyCells(row, column) {
+    // recursively reveal neighbour cells until we find cells with digit
+    var list = adjacentRowColsFor(row, column, -1);
+    var item;
+
+    for (var i=0; i<list.length; i++) {
+        // first is row, second is col
+        item = field.cells.itemAt(list[i]);
+        if (item.revealed /*|| item.flagged || item.questioned*/)
+            continue;
+        if (item.digit == 0) {
+            item.revealed = true;
+            revealEmptyCells(item.row, item.column);
+        } else {
+            item.revealed = true;
+        }
     }
 }
 
@@ -47,6 +71,12 @@ function generateField(clickedIndex) {
 function adjacentCells(index) {
     var row = Math.floor(index/field.columns);
     var col = index%field.columns;
+    return adjacentRowColsFor(row, col, index);
+}
+
+function adjacentRowColsFor(row, col, index) {
+    if (index==-1)
+        index = row*field.columns + col;
     var adjacent = [];
 
     if(row != 0 && col != 0) // upper-left diagonal

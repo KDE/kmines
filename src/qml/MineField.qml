@@ -24,7 +24,7 @@ Item {
     width: height*(columns+2)/(rows+2)
     height: Math.floor(parent.height/(rows+2))*(rows+2)
 
-    signal cellClicked(int index)
+    signal cellClicked(int index, int row, int column)
 
     property int rows
     property int columns
@@ -143,8 +143,13 @@ Item {
                 property int row: Math.floor(index/field.columns)
                 property int column: index%field.columns
 
-                onClicked: container.cellClicked(index);
+                onClicked: container.cellClicked(index, row, column);
             }
         }
+    }
+
+    function itemAt(row, column) {
+        var index = row*field.columns + column;
+        return cells.itemAt(index);
     }
 }
