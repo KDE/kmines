@@ -21,6 +21,11 @@ import org.kde.games.core 0.1 as KgCore
 KgCore.CanvasItem {
     id: cell
 
+    property bool hasMine: false
+    property int digit: 0
+
+    signal clicked
+
     MouseArea {
         anchors.fill: parent
         enabled: spriteKey=="cell_up" || spriteKey=="cell_down"
@@ -31,8 +36,8 @@ KgCore.CanvasItem {
         }
         onReleased: {
             if (spriteKey == "cell_down") {
-                // handle click
                 spriteKey = "cell_up";
+                cell.clicked();
             }
         }
     }

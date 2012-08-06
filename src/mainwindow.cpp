@@ -173,7 +173,7 @@ void KMinesMainWindow::newGame()
             //m_scene->startNewGame(16,16,40);
             break;
         case KgDifficultyLevel::Hard:
-            m_scene->startNewGame(16,30,99);
+            //m_scene->startNewGame(16,30,99);
             break;
         case KgDifficultyLevel::Custom:
             /*m_scene->startNewGame(Settings::customHeight(),

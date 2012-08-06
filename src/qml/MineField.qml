@@ -21,8 +21,13 @@ import org.kde.games.core 0.1 as KgCore
 Item {
     id: container
 
+    signal cellClicked(int index)
+
     property int rows
     property int columns
+    property int mines
+
+    property alias cells: cellRepeater
 
     Grid {
         id: field
@@ -31,6 +36,7 @@ Item {
         columns: parent.columns+2
 
         Repeater {
+            id: cellRepeater
             model: (rows+2)*(columns+2)
 
             CellItem {
@@ -41,6 +47,8 @@ Item {
                 property int column: index%field.columns
 
                 spriteKey: getKeyFromPos(row, column)
+
+                onClicked: container.cellClicked(index);
             }
         }
     }

@@ -26,7 +26,6 @@ void CoreBindingsPlugin::initializeEngine(QDeclarativeEngine *engine, const char
 {
     QObject *property = engine->rootContext()->contextProperty("renderer").value<QObject*>();
     KGameRenderer *renderer = (KGameRenderer*) property;
-    //CanvasItem::setRenderer(new KGameRenderer(prov));
     CanvasItem::setRenderer(renderer);
 }
 

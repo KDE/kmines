@@ -17,6 +17,7 @@
 
 import QtQuick 1.1
 import org.kde.games.core 0.1 as KgCore
+import "logic.js" as Logic
 
 Item {
     id: canvas
@@ -37,6 +38,8 @@ Item {
         height: Math.floor(parent.height/(rows+2))*(rows+2)
         rows: 10
         columns: 10
+        mines: 10
         anchors.centerIn: parent
+        onCellClicked: Logic.revealCell(index);
     }
 }
