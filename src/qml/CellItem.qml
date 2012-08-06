@@ -20,24 +20,45 @@ import org.kde.games.core 0.1 as KgCore
 
 KgCore.CanvasItem {
     id: cell
-    spriteKey: revealed ? "cell_down" : "cell_up"
+    spriteKey: pressed || revealed ? "cell_down" : "cell_up"
 
     property bool hasMine: false
     property int digit: 0
 
+    property bool pressed: false
     property bool revealed: false
+    property bool flagged: cellState == 1
+    property bool questioned: cellState == 2
+    property int cellState: 0
 
     signal clicked
 
     MouseArea {
         anchors.fill: parent
-        enabled: spriteKey=="cell_up" || spriteKey=="cell_down"
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
+        enabled: !revealed
         onPressed: {
-            revealed = true;
+            if (mouse.button == Qt.LeftButton) {
+                cell.pressed = true;
+            }
         }
         onReleased: {
-            cell.clicked();
+            cell.pressed = false;
+            if (mouse.button == Qt.LeftButton) {
+                if (cellState>0) return;
+                revealed = true;
+                cell.clicked();
+            } else {
+                if (revealed) return;
+                cellState = (cellState+1)%3;
+            }
         }
+    }
+
+    KgCore.CanvasItem {
+        anchors.fill: parent
+        spriteKey: ["", "flag", "question"][cellState]
+        visible: cellState>0
     }
 
     KgCore.CanvasItem {

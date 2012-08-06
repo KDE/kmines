@@ -20,7 +20,7 @@ function revealEmptyCells(row, column) {
     for (var i=0; i<list.length; i++) {
         // first is row, second is col
         item = field.cells.itemAt(list[i]);
-        if (item.revealed /*|| item.flagged || item.questioned*/)
+        if (item.revealed || item.flagged || item.questioned)
             continue;
         if (item.digit == 0) {
             item.revealed = true;
