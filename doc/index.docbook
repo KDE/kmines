@@ -55,8 +55,8 @@
 
 <legalnotice>&FDLNotice;</legalnotice>
 
-<date>2007-11-13</date>
-<releaseinfo>3.0</releaseinfo>
+<date>2012-08-06</date>
+<releaseinfo>3.0 (&kde; 4.9)</releaseinfo>
 
 <abstract><para>&kmines; is the &kde; version of the classic minesweeper
 game.</para></abstract>
@@ -345,14 +345,16 @@ Yes, the easiest way is to use the drop down box in the lower right corner.
 The game settings can be configured by selecting <menuchoice><guimenu>Settings</guimenu>
 <guimenuitem>Configure &kmines;...</guimenuitem></menuchoice> from the menubar. A dialog will appear.
 </para>
-
+<!--missing
+  General page -> Use '?' marks
+  -->
 <para>
-On the first tab, you can set the theme. Select a theme from the list to see a preview
-of it on the right. You can set it by clicking <guibutton>Apply</guibutton> and <guibutton>OK</guibutton>.
+On the second page, you can set the theme. Select a theme from the list.
+Each item in the list shows a small preview left to the theme name. A selection is immediately applied.
 </para>
 
 <para>
-On the second tab, you can set the height and width of the board and
+On the third page, you can set the height and width of the board and
 the number of mines in your custom level.
 </para>
 
