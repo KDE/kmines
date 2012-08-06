@@ -140,10 +140,8 @@ Item {
                 width: field.width/field.columns
                 height: field.height/field.rows
 
-                property int row: Math.floor(index/field.rows)
+                property int row: Math.floor(index/field.columns)
                 property int column: index%field.columns
-
-                spriteKey: "cell_up"
 
                 onClicked: container.cellClicked(index);
             }

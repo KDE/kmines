@@ -20,13 +20,12 @@ function generateField(clickedIndex) {
     // to ensure that clickedIdx will stay an empty cell
     // (it will be empty if none of surrounding items holds mine)
     var adjacentIndex = adjacentCells(clickedIndex);
-    print(adjacentIndex);
     
     while (minesToPlace != 0) {
         randomIndex = Math.floor(Math.random()*field.rows*field.columns);
         cell = field.cells.itemAt(randomIndex);
         if (!cell.hasMine
-            && adjacentIndex.indexOf(randomIndex) != -1
+            && adjacentIndex.indexOf(randomIndex) == -1
             && randomIndex != clickedIndex) {
             // ok, let's mine this place! :-)
             cell.hasMine = true;
@@ -38,7 +37,7 @@ function generateField(clickedIndex) {
     for (var i=0; i<cellsWithMines.length; i++) {
         var neighbours = adjacentCells(cellsWithMines[i]);
         for (var j=0; j<neighbours.length; j++) {
-            var cell = field.cells.itemAt(neighbours[j]);
+            cell = field.cells.itemAt(neighbours[j]);
             if (!cell.hasMine)
                 cell.digit++;
         }
@@ -46,8 +45,8 @@ function generateField(clickedIndex) {
 }
 
 function adjacentCells(index) {
-    var row = index/field.columns;
-    var col = index - (row*field.columns);
+    var row = Math.floor(index/field.columns);
+    var col = index%field.columns;
     var adjacent = [];
 
     if(row != 0 && col != 0) // upper-left diagonal
