@@ -34,8 +34,6 @@ Item {
 
     MineField {
         id: field
-        width: height
-        height: Math.floor(parent.height/(rows+2))*(rows+2)
         rows: 10
         columns: 10
         mines: 10

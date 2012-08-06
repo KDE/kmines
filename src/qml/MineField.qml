@@ -21,6 +21,9 @@ import org.kde.games.core 0.1 as KgCore
 Item {
     id: container
 
+    width: height*(columns+2)/(rows+2)
+    height: Math.floor(parent.height/(rows+2))*(rows+2)
+
     signal cellClicked(int index)
 
     property int rows
@@ -29,65 +32,121 @@ Item {
 
     property alias cells: cellRepeater
 
-    Grid {
-        id: field
-        anchors.fill: parent
-        rows: parent.rows+2
-        columns: parent.columns+2
+    property real cellSize: width/(columns+2)
 
+    /* === BORDERS === */
+
+    KgCore.CanvasItem {
+        spriteKey: "border.outsideCorner.nw"
+        anchors { top: parent.top; left: parent.left; bottom: field.top; right: field.left }
+    }
+    KgCore.CanvasItem {
+        spriteKey: "border.outsideCorner.ne"
+        anchors { top: parent.top; left: field.right; bottom: field.top; right: parent.right }
+    }
+    KgCore.CanvasItem {
+        spriteKey: "border.outsideCorner.sw"
+        anchors { top: field.bottom; left: parent.left; bottom: parent.bottom; right: field.left }
+    }
+    KgCore.CanvasItem {
+        spriteKey: "border.outsideCorner.se"
+        anchors { top: field.bottom; left: field.right; bottom: parent.bottom; right: parent.right }
+    }
+
+    Row {
+        anchors {
+            top: parent.top
+            left: field.left
+            right: field.right
+            bottom: field.top
+        }
         Repeater {
-            id: cellRepeater
-            model: (rows+2)*(columns+2)
-
-            CellItem {
-                width: field.width/field.rows
-                height: field.height/field.columns
-
-                property int row: Math.floor(index/field.rows)
-                property int column: index%field.columns
-
-                spriteKey: getKeyFromPos(row, column)
-
-                onClicked: container.cellClicked(index);
+            model: columns
+            KgCore.CanvasItem {
+                spriteKey: "border.edge.north"
+                width: cellSize
+                height: cellSize
             }
         }
     }
 
-    function getKeyFromPos(row, col) {
-        if( row == 0 && col == 0)
-        {
-            return "border.outsideCorner.nw";
+    Column {
+        anchors {
+            top: field.top
+            left: parent.left
+            right: field.left
+            bottom: field.bottom
         }
-        else if( row == 0 && col == columns+1)
-        {
-            return "border.outsideCorner.ne";
+        Repeater {
+            model: rows
+            KgCore.CanvasItem {
+                spriteKey: "border.edge.west"
+                width: cellSize
+                height: cellSize
+            }
         }
-        else if( row == rows+1 && col == 0 )
-        {
-            return "border.outsideCorner.sw";
+    }
+
+    Column {
+        anchors {
+            top: field.top
+            left: field.right
+            right: parent.right
+            bottom: field.bottom
         }
-        else if( row == rows+1 && col == columns+1 )
-        {
-            return "border.outsideCorner.se";
+        Repeater {
+            model: rows
+            KgCore.CanvasItem {
+                spriteKey: "border.edge.east"
+                width: cellSize
+                height: cellSize
+            }
         }
-        else if( row == 0 )
-        {
-            return "border.edge.north";
+    }
+
+    Row {
+        anchors {
+            top: field.bottom
+            left: field.left
+            right: field.right
+            bottom: parent.bottom
         }
-        else if( row == rows+1 )
-        {
-            return "border.edge.south";
+        Repeater {
+            model: columns
+            KgCore.CanvasItem {
+                spriteKey: "border.edge.south"
+                width: cellSize
+                height: cellSize
+            }
         }
-        else if( col == 0 )
-        {
-            return "border.edge.west";
+    }
+
+    /* === END BORDERS === */
+
+    Grid {
+        id: field
+        anchors {
+            fill: parent
+            margins: cellSize
         }
-        else if( col == columns+1 )
-        {
-            return "border.edge.east";
-        }
-        else {
-            return "cell_up";
+        rows: parent.rows
+        columns: parent.columns
+
+        Repeater {
+            id: cellRepeater
+            model: (rows+0)*(columns+0)
+
+            CellItem {
+                width: field.width/field.columns
+                height: field.height/field.rows
+
+                property int row: Math.floor(index/field.rows)
+                property int column: index%field.columns
+
+                spriteKey: "cell_up"
+
+                onClicked: container.cellClicked(index);
+            }
         }
     }
 }
