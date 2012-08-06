@@ -20,9 +20,12 @@ import org.kde.games.core 0.1 as KgCore
 
 KgCore.CanvasItem {
     id: cell
+    spriteKey: revealed ? "cell_down" : "cell_up"
 
     property bool hasMine: false
     property int digit: 0
+
+    property bool revealed: false
 
     signal clicked
 
@@ -30,15 +33,22 @@ KgCore.CanvasItem {
         anchors.fill: parent
         enabled: spriteKey=="cell_up" || spriteKey=="cell_down"
         onPressed: {
-            if (spriteKey == "cell_up") {
-                spriteKey = "cell_down";
-            }
+            revealed = true;
         }
         onReleased: {
-            if (spriteKey == "cell_down") {
-                spriteKey = "cell_up";
-                cell.clicked();
-            }
+            cell.clicked();
         }
+    }
+
+    KgCore.CanvasItem {
+        anchors.fill: parent
+        visible: parent.hasMine && revealed
+        spriteKey: "mine"
+    }
+
+    KgCore.CanvasItem {
+        anchors.fill: parent
+        visible: digit>0 && revealed
+        spriteKey: "arabic" + ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight"][digit-1]
     }
 }
