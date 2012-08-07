@@ -17,8 +17,6 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 #include "mainwindow.h"
-#include "minefielditem.h"
-#include "scene.h"
 #include "settings.h"
 
 #include <KGameClock>
@@ -38,6 +36,8 @@
 #include "canvaswidget.h"
 #include "ui_customgame.h"
 #include "ui_generalopts.h"
+
+#define MINIMAL_FREE 10
 
 static KgThemeProvider* provider()
 {
@@ -67,7 +67,7 @@ private slots:
     {
         int width = ui.kcfg_CustomWidth->value();
         int height = ui.kcfg_CustomHeight->value();
-        int max = qMax(1, width * height - MineFieldItem::MINIMAL_FREE);
+        int max = qMax(1, width * height - MINIMAL_FREE);
         ui.kcfg_CustomMines->setMaximum(max);
     }
 
