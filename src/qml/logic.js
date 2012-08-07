@@ -3,6 +3,7 @@ var firstClick = true;
 function reset() {
     field.rows = 0;
     field.columns = 0;
+    field.flaggedMines = 0;
     firstClick = true;
 }
 
