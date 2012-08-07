@@ -31,6 +31,7 @@ public:
 
 signals:
     void minesCountChanged(int count, int total);
+    void firstClickDone();
 
 /*
 protected:

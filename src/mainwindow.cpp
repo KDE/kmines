@@ -98,9 +98,8 @@ KMinesMainWindow::KMinesMainWindow() :
 {
     //m_scene = new KMinesScene(this);
     connect(m_canvas, SIGNAL(minesCountChanged(int,int)), SLOT(onMinesCountChanged(int,int)));
-    /*connect(m_scene, SIGNAL(gameOver(bool)), SLOT(onGameOver(bool)));
-    connect(m_scene, SIGNAL(firstClickDone()), SLOT(onFirstClick()));
-    */
+    //connect(m_scene, SIGNAL(gameOver(bool)), SLOT(onGameOver(bool)));
+    connect(m_canvas, SIGNAL(firstClickDone()), SLOT(onFirstClick()));
 
     //m_view = new KMinesView( m_scene, this );
     m_canvas->setCacheMode( QGraphicsView::CacheBackground );

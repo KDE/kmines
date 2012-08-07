@@ -29,6 +29,7 @@ CanvasWidget::CanvasWidget(KGameRenderer *renderer, QWidget *parent) :
 
     // forward signals from QML
     connect(rootObject(), SIGNAL(minesCountChanged(int,int)), this, SIGNAL(minesCountChanged(int,int)));
+    connect(rootObject(), SIGNAL(firstClickDone()), this, SIGNAL(firstClickDone()));
 }
 
 void CanvasWidget::setGamePaused(bool paused)

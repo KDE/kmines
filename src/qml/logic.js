@@ -4,6 +4,7 @@ function revealCell(index) {
     if (firstClick) {
         firstClick = false;
         generateField(index);
+        canvas.firstClickDone();
     }
     var cell = field.itemAtIndex(index);
     if (cell.hasMine) {

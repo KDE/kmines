@@ -23,6 +23,7 @@ Item {
     id: canvas
 
     signal minesCountChanged(int count, int total)
+    signal firstClickDone
 
     KgCore.CanvasItem {
         id: background
