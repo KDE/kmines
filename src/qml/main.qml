@@ -42,7 +42,7 @@ Item {
     }
 
     function setGamePaused(paused) {
-        field.visible = !paused;
+        field.opacity = 1 - paused;
     }
 
     MineField {
@@ -51,5 +51,6 @@ Item {
         onCellClicked: Logic.revealCell(index);
         onMinesChanged: canvas.minesCountChanged(flaggedMines, mines);
         onFlaggedMinesChanged: canvas.minesCountChanged(flaggedMines, mines);
+        Behavior on opacity { NumberAnimation { duration: 50 } }
     }
 }
