@@ -20,7 +20,7 @@ import org.kde.games.core 0.1 as KgCore
 
 KgCore.CanvasItem {
     id: cell
-    spriteKey: border!="" ? border : (pressed || revealed ? "cell_down" : "cell_up")
+    spriteKey: border!="" ? border : exploded ? "explosion" : (pressed || revealed ? "cell_down" : "cell_up")
 
     property string border
 
@@ -29,9 +29,11 @@ KgCore.CanvasItem {
 
     property bool pressed: false
     property bool revealed: false
+    property bool exploded: false
     property bool flagged: cellState == 1
     property bool questioned: cellState == 2
     property int cellState: 0
+    property bool error: !hasMine && flagged
 
     signal clicked
 
@@ -59,19 +61,19 @@ KgCore.CanvasItem {
 
     KgCore.CanvasItem {
         anchors.fill: parent
-        spriteKey: ["", "flag", "question"][cellState]
-        visible: cellState>0
-    }
-
-    KgCore.CanvasItem {
-        anchors.fill: parent
-        visible: parent.hasMine && revealed
+        visible: (parent.hasMine||flagged) && revealed
         spriteKey: "mine"
     }
 
     KgCore.CanvasItem {
         anchors.fill: parent
-        visible: digit>0 && revealed
+        spriteKey: revealed && error ? "error" : ["", "flag", "question"][cellState]
+        visible: cellState>0
+    }
+
+    KgCore.CanvasItem {
+        anchors.fill: parent
+        visible: digit>0 && revealed && !error
         spriteKey: "arabic" + ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight"][digit-1]
     }
 }

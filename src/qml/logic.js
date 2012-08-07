@@ -14,11 +14,21 @@ function revealCell(index) {
     }
     var cell = field.itemAtIndex(index);
     if (cell.hasMine) {
-        //cell.exploded = true;
+        cell.exploded = true;
+        revealAllMines();
         canvas.gameOver(false);
     } else if (cell.digit == 0) {
         revealEmptyCells(index);
         // checkWon();
+    }
+}
+
+function revealAllMines() {
+    for (var i=0; i<field.rows*field.columns; i++) {
+        var item = field.itemAtIndex(i);
+        if ( (item.flagged && !item.hasMine) || (!item.flagged && item.hasMine) ) {
+            item.revealed = true;
+        }
     }
 }
 
