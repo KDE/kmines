@@ -21,8 +21,8 @@ import org.kde.games.core 0.1 as KgCore
 Item {
     id: container
 
-    width: height*(columns+2)/(rows+2)
-    height: Math.floor(parent.height/(rows+2))*(rows+2)
+    width: Math.min(parent.height*grid.columns/grid.rows, Math.floor(parent.width/grid.columns)*grid.columns)
+    height: Math.min(parent.width*grid.rows/grid.columns, Math.floor(parent.height/grid.rows)*grid.rows)
 
     signal cellClicked(int index)
 
