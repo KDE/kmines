@@ -41,7 +41,6 @@ private slots:
     void showHighscores();
     void configureSettings();
     void pauseGame(bool paused);
-    void loadSettings();
 private:
     void setupActions();
     KMinesScene* m_scene;

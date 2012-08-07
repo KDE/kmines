@@ -96,12 +96,10 @@ KMinesMainWindow::KMinesMainWindow() :
     m_renderer(provider()),
     m_canvas(new CanvasWidget(&m_renderer, this))
 {
-    //m_scene = new KMinesScene(this);
     connect(m_canvas, SIGNAL(minesCountChanged(int,int)), SLOT(onMinesCountChanged(int,int)));
     //connect(m_scene, SIGNAL(gameOver(bool)), SLOT(onGameOver(bool)));
     connect(m_canvas, SIGNAL(firstClickDone()), SLOT(onFirstClick()));
 
-    //m_view = new KMinesView( m_scene, this );
     m_canvas->setCacheMode( QGraphicsView::CacheBackground );
     m_canvas->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     m_canvas->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
@@ -157,7 +155,7 @@ void KMinesMainWindow::newGame()
     // some things to manage pause
     if( m_actionPause->isChecked() )
     {
-            //m_scene->setGamePaused(false);
+            m_canvas->setGamePaused(false);
             m_actionPause->setChecked(false);
     }
     m_actionPause->setEnabled(false);
@@ -238,8 +236,6 @@ void KMinesMainWindow::configureSettings()
     dialog->addPage( new GeneralOptsConfig( dialog ), i18n("General"), QLatin1String( "games-config-options" ));
     dialog->addPage( new KgThemeSelector( m_renderer.themeProvider() ), i18n( "Theme" ), QLatin1String( "games-config-theme" ));
     dialog->addPage( new CustomGameConfig( dialog ), i18n("Custom Game"), QLatin1String( "games-config-custom" ));
-    connect( m_renderer.themeProvider(), SIGNAL(currentThemeChanged(const KgTheme*)), SLOT(loadSettings()) );
-    connect( dialog, SIGNAL(settingsChanged(QString)), this, SLOT(loadSettings()) );
     dialog->setHelp(QString(),QLatin1String( "kmines" ));
     dialog->show();
 }
@@ -251,14 +247,6 @@ void KMinesMainWindow::pauseGame(bool paused)
         m_gameClock->pause();
     else
         m_gameClock->resume();
-}
-
-void KMinesMainWindow::loadSettings()
-{
-    //m_view->resetCachedContent();
-    // trigger complete redraw
-    /*m_scene->resizeScene( (int)m_scene->sceneRect().width(),
-                          (int)m_scene->sceneRect().height() );*/
 }
 
 #include "mainwindow.moc"
