@@ -18,9 +18,10 @@ function revealCell(index) {
         cell.exploded = true;
         revealAllMines();
         canvas.gameOver(false);
-    } else if (cell.digit == 0) {
-        revealEmptyCells(index);
-        // checkWon();
+    } else {
+        if (cell.digit == 0)
+            revealEmptyCells(index);
+        checkWon();
     }
 }
 
@@ -113,4 +114,22 @@ function adjacentCells(index) {
         adjacent.push(index + field.columns + 1);
 
     return adjacent;
+}
+
+function checkWon() {
+    // this also takes into account the trivial case when
+    // only some cells left unflagged and they
+    // all contain bombs. this counts as win
+    if(field.unrevealedMines == field.mines)
+    {
+        // mark not flagged cells (if any) with flags
+        for (var i=0; i<field.rows*field.columns; i++) {
+            var item = field.itemAtIndex(i);
+            if( !item.revealed && !item.flagged )
+                item.flagged = true;
+        }
+        // now all mines should be flagged, notify about this
+        canvas.minesCountChanged(field.unrevealedMines, field.mines);
+        canvas.gameOver(true);
+    }
 }

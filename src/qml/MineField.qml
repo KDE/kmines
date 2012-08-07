@@ -30,6 +30,10 @@ Item {
     property int columns
     property int mines
     property int flaggedMines: 0
+    property int unrevealedMines
+
+    onRowsChanged: unrevealedMines = rows*columns
+    onColumnsChanged: unrevealedMines = rows*columns
 
     property alias cells: cellRepeater
 
@@ -59,6 +63,10 @@ Item {
                 onFlaggedChanged: {
                     if (flagged) flaggedMines++;
                     else flaggedMines--;
+                }
+                onRevealedChanged: {
+                    if (revealed)
+                        container.unrevealedMines--;
                 }
             }
         }

@@ -52,8 +52,7 @@ KgCore.CanvasItem {
                 if (cellState>0) return;
                 revealed = true;
                 cell.clicked();
-            } else {
-                if (revealed) return;
+            } else if (!revealed) {
                 if (flagged && !canvas.useQuestionMarks)
                     cellState = (cellState+2)%3;
                 else
