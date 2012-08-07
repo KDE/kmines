@@ -33,6 +33,7 @@ public:
 signals:
     void minesCountChanged(int count, int total);
     void firstClickDone();
+    void gameOver(bool won);
 
 /*
 protected:

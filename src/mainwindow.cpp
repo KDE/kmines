@@ -97,7 +97,7 @@ KMinesMainWindow::KMinesMainWindow() :
     m_canvas(new CanvasWidget(&m_renderer, this))
 {
     connect(m_canvas, SIGNAL(minesCountChanged(int,int)), SLOT(onMinesCountChanged(int,int)));
-    //connect(m_scene, SIGNAL(gameOver(bool)), SLOT(onGameOver(bool)));
+    connect(m_canvas, SIGNAL(gameOver(bool)), SLOT(onGameOver(bool)));
     connect(m_canvas, SIGNAL(firstClickDone()), SLOT(onFirstClick()));
 
     m_canvas->setCacheMode( QGraphicsView::CacheBackground );

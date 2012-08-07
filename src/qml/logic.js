@@ -14,8 +14,11 @@ function revealCell(index) {
     }
     var cell = field.itemAtIndex(index);
     if (cell.hasMine) {
+        //cell.exploded = true;
+        canvas.gameOver(false);
     } else if (cell.digit == 0) {
         revealEmptyCells(index);
+        // checkWon();
     }
 }
 
