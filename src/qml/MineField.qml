@@ -24,7 +24,7 @@ Item {
     width: height*(columns+2)/(rows+2)
     height: Math.floor(parent.height/(rows+2))*(rows+2)
 
-    signal cellClicked(int index, int row, int column)
+    signal cellClicked(int index)
 
     property int rows
     property int columns
@@ -34,122 +34,83 @@ Item {
 
     property real cellSize: width/(columns+2)
 
-    /* === BORDERS === */
-
-    KgCore.CanvasItem {
-        spriteKey: "border.outsideCorner.nw"
-        anchors { top: parent.top; left: parent.left; bottom: field.top; right: field.left }
-    }
-    KgCore.CanvasItem {
-        spriteKey: "border.outsideCorner.ne"
-        anchors { top: parent.top; left: field.right; bottom: field.top; right: parent.right }
-    }
-    KgCore.CanvasItem {
-        spriteKey: "border.outsideCorner.sw"
-        anchors { top: field.bottom; left: parent.left; bottom: parent.bottom; right: field.left }
-    }
-    KgCore.CanvasItem {
-        spriteKey: "border.outsideCorner.se"
-        anchors { top: field.bottom; left: field.right; bottom: parent.bottom; right: parent.right }
-    }
-
-    Row {
-        anchors {
-            top: parent.top
-            left: field.left
-            right: field.right
-            bottom: field.top
-        }
-        Repeater {
-            model: columns
-            KgCore.CanvasItem {
-                spriteKey: "border.edge.north"
-                width: cellSize
-                height: cellSize
-            }
-        }
-    }
-
-    Column {
-        anchors {
-            top: field.top
-            left: parent.left
-            right: field.left
-            bottom: field.bottom
-        }
-        Repeater {
-            model: rows
-            KgCore.CanvasItem {
-                spriteKey: "border.edge.west"
-                width: cellSize
-                height: cellSize
-            }
-        }
-    }
-
-    Column {
-        anchors {
-            top: field.top
-            left: field.right
-            right: parent.right
-            bottom: field.bottom
-        }
-        Repeater {
-            model: rows
-            KgCore.CanvasItem {
-                spriteKey: "border.edge.east"
-                width: cellSize
-                height: cellSize
-            }
-        }
-    }
-
-    Row {
-        anchors {
-            top: field.bottom
-            left: field.left
-            right: field.right
-            bottom: parent.bottom
-        }
-        Repeater {
-            model: columns
-            KgCore.CanvasItem {
-                spriteKey: "border.edge.south"
-                width: cellSize
-                height: cellSize
-            }
-        }
-    }
-
-    /* === END BORDERS === */
-
     Grid {
-        id: field
-        anchors {
-            fill: parent
-            margins: cellSize
-        }
-        rows: parent.rows
-        columns: parent.columns
+        id: grid
+        anchors.fill: parent
+        rows: parent.rows+2
+        columns: parent.columns+2
 
         Repeater {
             id: cellRepeater
-            model: (rows+0)*(columns+0)
+            model: grid.rows*grid.columns
 
             CellItem {
-                width: field.width/field.columns
-                height: field.height/field.rows
+                width: grid.width/grid.columns
+                height: grid.height/grid.rows
 
-                property int row: Math.floor(index/field.columns)
-                property int column: index%field.columns
+                border: getBorderSprite(index)
 
-                onClicked: container.cellClicked(index, row, column);
+                onClicked: {
+                    var row = Math.floor(index/grid.columns);
+                    var column = index%grid.columns;
+                    container.cellClicked((row-1)*container.columns + (column-1));
+                }
             }
         }
     }
 
-    function itemAt(row, column) {
-        var index = row*field.columns + column;
+    // index is wrt the inner grid
+    function itemAtIndex(index) {
+        var row = Math.floor(index/columns);
+        var column = index%columns;
+        return itemAtRowCol(row, column);
+    }
+
+    // row/col are wrt inner grid
+    function itemAtRowCol(row, column) {
+        // the +1's in row+1 & column+1 are for border cells
+        var index = (row+1)*grid.columns + (column+1);
         return cells.itemAt(index);
+    }
+
+    function getBorderSprite(index) {
+        var row = Math.floor(index/grid.columns);
+        var col = index%grid.columns;
+
+        if( row == 0 && col == 0)
+        {
+            return "border.outsideCorner.nw";
+        }
+        else if( row == 0 && col == columns+1)
+        {
+            return "border.outsideCorner.ne";
+        }
+        else if( row == rows+1 && col == 0 )
+        {
+            return "border.outsideCorner.sw";
+        }
+        else if( row == rows+1 && col == columns+1 )
+        {
+            return "border.outsideCorner.se";
+        }
+        else if( row == 0 )
+        {
+            return "border.edge.north";
+        }
+        else if( row == rows+1 )
+        {
+            return "border.edge.south";
+        }
+        else if( col == 0 )
+        {
+            return "border.edge.west";
+        }
+        else if( col == columns+1 )
+        {
+            return "border.edge.east";
+        }
+        else {
+            return "";
+        }
     }
 }

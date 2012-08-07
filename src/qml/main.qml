@@ -38,6 +38,6 @@ Item {
         columns: 10
         mines: 10
         anchors.centerIn: parent
-        onCellClicked: Logic.revealCell(index, row, column);
+        onCellClicked: Logic.revealCell(index);
     }
 }

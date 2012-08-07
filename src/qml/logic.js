@@ -1,30 +1,30 @@
 var firstClick = true;
 
-function revealCell(index, row, column) {
+function revealCell(index) {
     if (firstClick) {
         firstClick = false;
         generateField(index);
     }
-    var cell = field.cells.itemAt(index);
+    var cell = field.itemAtIndex(index);
     if (cell.hasMine) {
     } else if (cell.digit == 0) {
-        revealEmptyCells(row, column);
+        revealEmptyCells(index);
     }
 }
 
-function revealEmptyCells(row, column) {
+function revealEmptyCells(index) {
     // recursively reveal neighbour cells until we find cells with digit
-    var list = adjacentRowColsFor(row, column, -1);
+    var list = adjacentCells(index);
     var item;
 
     for (var i=0; i<list.length; i++) {
         // first is row, second is col
-        item = field.cells.itemAt(list[i]);
+        item = field.itemAtIndex(list[i]);
         if (item.revealed || item.flagged || item.questioned)
             continue;
         if (item.digit == 0) {
             item.revealed = true;
-            revealEmptyCells(item.row, item.column);
+            revealEmptyCells(list[i]);
         } else {
             item.revealed = true;
         }
@@ -47,7 +47,7 @@ function generateField(clickedIndex) {
     
     while (minesToPlace != 0) {
         randomIndex = Math.floor(Math.random()*field.rows*field.columns);
-        cell = field.cells.itemAt(randomIndex);
+        cell = field.itemAtIndex(randomIndex);
         if (!cell.hasMine
             && adjacentIndex.indexOf(randomIndex) == -1
             && randomIndex != clickedIndex) {
@@ -61,7 +61,7 @@ function generateField(clickedIndex) {
     for (var i=0; i<cellsWithMines.length; i++) {
         var neighbours = adjacentCells(cellsWithMines[i]);
         for (var j=0; j<neighbours.length; j++) {
-            cell = field.cells.itemAt(neighbours[j]);
+            cell = field.itemAtIndex(neighbours[j]);
             if (!cell.hasMine)
                 cell.digit++;
         }
@@ -71,12 +71,7 @@ function generateField(clickedIndex) {
 function adjacentCells(index) {
     var row = Math.floor(index/field.columns);
     var col = index%field.columns;
-    return adjacentRowColsFor(row, col, index);
-}
 
-function adjacentRowColsFor(row, col, index) {
-    if (index==-1)
-        index = row*field.columns + col;
     var adjacent = [];
 
     if(row != 0 && col != 0) // upper-left diagonal

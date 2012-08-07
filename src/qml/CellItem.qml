@@ -20,7 +20,9 @@ import org.kde.games.core 0.1 as KgCore
 
 KgCore.CanvasItem {
     id: cell
-    spriteKey: pressed || revealed ? "cell_down" : "cell_up"
+    spriteKey: border!="" ? border : (pressed || revealed ? "cell_down" : "cell_up")
+
+    property string border
 
     property bool hasMine: false
     property int digit: 0
@@ -36,7 +38,7 @@ KgCore.CanvasItem {
     MouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.LeftButton | Qt.RightButton
-        enabled: !revealed
+        enabled: !revealed && border==""
         onPressed: {
             if (mouse.button == Qt.LeftButton) {
                 cell.pressed = true;
