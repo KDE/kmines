@@ -166,18 +166,18 @@ void KMinesMainWindow::newGame()
     switch(Kg::difficultyLevel())
     {
         case KgDifficultyLevel::Easy:
-            //m_scene->startNewGame(9, 9, 10);
+            m_canvas->startNewGame(9, 9, 10);
             break;
         case KgDifficultyLevel::Medium:
-            //m_scene->startNewGame(16,16,40);
+            m_canvas->startNewGame(16,16,40);
             break;
         case KgDifficultyLevel::Hard:
-            //m_scene->startNewGame(16,30,99);
+            m_canvas->startNewGame(16,30,99);
             break;
         case KgDifficultyLevel::Custom:
-            /*m_scene->startNewGame(Settings::customHeight(),
+            m_canvas->startNewGame(Settings::customHeight(),
                                   Settings::customWidth(),
-                                  Settings::customMines());*/
+                                  Settings::customMines());
         default:
             //unsupported
             break;

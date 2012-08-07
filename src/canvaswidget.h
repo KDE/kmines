@@ -28,6 +28,7 @@ class CanvasWidget : public KgDeclarativeView
 public:
     CanvasWidget(KGameRenderer *renderer, QWidget *parent=0);
     void setGamePaused(bool paused);
+    void startNewGame(int rows, int cols, int numMines);
 
 signals:
     void minesCountChanged(int count, int total);

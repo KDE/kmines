@@ -25,6 +25,13 @@ Item {
     signal minesCountChanged(int count, int total)
     signal firstClickDone
 
+    function startNewGame(rows, cols, mines) {
+        Logic.reset();
+        field.rows = rows;
+        field.columns = cols;
+        field.mines = mines;
+    }
+
     KgCore.CanvasItem {
         id: background
         spriteKey: "mainWidget"
@@ -37,9 +44,6 @@ Item {
 
     MineField {
         id: field
-        rows: 10
-        columns: 10
-        mines: 10
         anchors.centerIn: parent
         onCellClicked: Logic.revealCell(index);
         onMinesChanged: canvas.minesCountChanged(flaggedMines, mines);

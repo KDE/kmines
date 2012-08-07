@@ -36,3 +36,11 @@ void CanvasWidget::setGamePaused(bool paused)
 {
     QMetaObject::invokeMethod(rootObject(), "setGamePaused", Q_ARG(QVariant, paused));
 }
+
+void CanvasWidget::startNewGame(int rows, int cols, int numMines)
+{
+    QMetaObject::invokeMethod(rootObject(), "startNewGame",
+                              Q_ARG(QVariant, rows),
+                              Q_ARG(QVariant, cols),
+                              Q_ARG(QVariant, numMines));
+}

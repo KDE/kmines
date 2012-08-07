@@ -1,5 +1,11 @@
 var firstClick = true;
 
+function reset() {
+    field.rows = 0;
+    field.columns = 0;
+    firstClick = true;
+}
+
 function revealCell(index) {
     if (firstClick) {
         firstClick = false;
