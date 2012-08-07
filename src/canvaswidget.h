@@ -35,6 +35,9 @@ signals:
     void firstClickDone();
     void gameOver(bool won);
 
+public slots:
+    void updateUseQuestionMarks();
+
 /*
 protected:
     void keyPressEvent(QKeyEvent *event);

@@ -54,7 +54,10 @@ KgCore.CanvasItem {
                 cell.clicked();
             } else {
                 if (revealed) return;
-                cellState = (cellState+1)%3;
+                if (flagged && !canvas.useQuestionMarks)
+                    cellState = (cellState+2)%3;
+                else
+                    cellState = (cellState+1)%3;
             }
         }
     }

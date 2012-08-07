@@ -26,6 +26,8 @@ Item {
     signal firstClickDone
     signal gameOver(bool won)
 
+    property bool useQuestionMarks: true
+
     function startNewGame(rows, cols, mines) {
         Logic.reset();
         field.rows = rows;

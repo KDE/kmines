@@ -16,6 +16,7 @@
 */
 
 #include "canvaswidget.h"
+#include "settings.h"
 
 #include <QGraphicsObject>
 #include <KGameRenderer>
@@ -31,6 +32,8 @@ CanvasWidget::CanvasWidget(KGameRenderer *renderer, QWidget *parent) :
     connect(rootObject(), SIGNAL(minesCountChanged(int,int)), this, SIGNAL(minesCountChanged(int,int)));
     connect(rootObject(), SIGNAL(firstClickDone()), this, SIGNAL(firstClickDone()));
     connect(rootObject(), SIGNAL(gameOver(bool)), this, SIGNAL(gameOver(bool)));
+
+    updateUseQuestionMarks();
 }
 
 void CanvasWidget::setGamePaused(bool paused)
@@ -44,4 +47,9 @@ void CanvasWidget::startNewGame(int rows, int cols, int numMines)
                               Q_ARG(QVariant, rows),
                               Q_ARG(QVariant, cols),
                               Q_ARG(QVariant, numMines));
+}
+
+void CanvasWidget::updateUseQuestionMarks()
+{
+    rootObject()->setProperty("useQuestionMarks", Settings::useQuestionMarks());
 }

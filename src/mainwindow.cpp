@@ -236,6 +236,7 @@ void KMinesMainWindow::configureSettings()
     dialog->addPage( new GeneralOptsConfig( dialog ), i18n("General"), QLatin1String( "games-config-options" ));
     dialog->addPage( new KgThemeSelector( m_renderer.themeProvider() ), i18n( "Theme" ), QLatin1String( "games-config-theme" ));
     dialog->addPage( new CustomGameConfig( dialog ), i18n("Custom Game"), QLatin1String( "games-config-custom" ));
+    connect( dialog, SIGNAL(settingsChanged(QString)), m_canvas, SLOT(updateUseQuestionMarks()) );
     dialog->setHelp(QString(),QLatin1String( "kmines" ));
     dialog->show();
 }
