@@ -22,6 +22,8 @@ import "logic.js" as Logic
 Item {
     id: canvas
 
+    signal minesCountChanged(int count, int total)
+
     KgCore.CanvasItem {
         id: background
         spriteKey: "mainWidget"
@@ -39,5 +41,7 @@ Item {
         mines: 10
         anchors.centerIn: parent
         onCellClicked: Logic.revealCell(index);
+        onMinesChanged: canvas.minesCountChanged(flaggedMines, mines);
+        onFlaggedMinesChanged: canvas.minesCountChanged(flaggedMines, mines);
     }
 }

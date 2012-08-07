@@ -29,6 +29,9 @@ public:
     CanvasWidget(KGameRenderer *renderer, QWidget *parent=0);
     void setGamePaused(bool paused);
 
+signals:
+    void minesCountChanged(int count, int total);
+
 /*
 protected:
     void keyPressEvent(QKeyEvent *event);

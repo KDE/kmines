@@ -29,6 +29,7 @@ Item {
     property int rows
     property int columns
     property int mines
+    property int flaggedMines: 0
 
     property alias cells: cellRepeater
 
@@ -54,6 +55,10 @@ Item {
                     var row = Math.floor(index/grid.columns);
                     var column = index%grid.columns;
                     container.cellClicked((row-1)*container.columns + (column-1));
+                }
+                onFlaggedChanged: {
+                    if (flagged) flaggedMines++;
+                    else flaggedMines--;
                 }
             }
         }

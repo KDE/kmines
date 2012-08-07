@@ -26,6 +26,9 @@ CanvasWidget::CanvasWidget(KGameRenderer *renderer, QWidget *parent) :
 {
     QString path = KStandardDirs::locate("appdata", "qml/main.qml");
     setSource(QUrl::fromLocalFile(path));
+
+    // forward signals from QML
+    connect(rootObject(), SIGNAL(minesCountChanged(int,int)), this, SIGNAL(minesCountChanged(int,int)));
 }
 
 void CanvasWidget::setGamePaused(bool paused)

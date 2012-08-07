@@ -33,7 +33,7 @@ class KMinesMainWindow : public KXmlGuiWindow
 public:
     KMinesMainWindow();
 private slots:
-    void onMinesCountChanged(int count);
+    void onMinesCountChanged(int count, int total);
     void newGame();
     void onGameOver(bool);
     void advanceTime(const QString&);

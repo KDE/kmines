@@ -96,9 +96,9 @@ KMinesMainWindow::KMinesMainWindow() :
     m_renderer(provider()),
     m_canvas(new CanvasWidget(&m_renderer, this))
 {
-    /*m_scene = new KMinesScene(this);
-    connect(m_scene, SIGNAL(minesCountChanged(int)), SLOT(onMinesCountChanged(int)));
-    connect(m_scene, SIGNAL(gameOver(bool)), SLOT(onGameOver(bool)));
+    //m_scene = new KMinesScene(this);
+    connect(m_canvas, SIGNAL(minesCountChanged(int,int)), SLOT(onMinesCountChanged(int,int)));
+    /*connect(m_scene, SIGNAL(gameOver(bool)), SLOT(onGameOver(bool)));
     connect(m_scene, SIGNAL(firstClickDone()), SLOT(onFirstClick()));
     */
 
@@ -145,9 +145,9 @@ void KMinesMainWindow::setupActions()
     setupGUI(qApp->desktop()->availableGeometry().size()*0.4);
 }
 
-void KMinesMainWindow::onMinesCountChanged(int count)
+void KMinesMainWindow::onMinesCountChanged(int count, int total)
 {
-    //statusBar()->changeItem( i18n("Mines: %1/%2", count, m_scene->totalMines()), 0 );
+    statusBar()->changeItem( i18n("Mines: %1/%2", count, total), 0 );
 }
 
 void KMinesMainWindow::newGame()
