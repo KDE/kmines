@@ -25,6 +25,9 @@ Item {
     signal minesCountChanged(int count, int total)
     signal firstClickDone
     signal gameOver(bool won)
+    property bool game_over: false
+
+    onGameOver: game_over = true;
 
     property bool useQuestionMarks: true
 

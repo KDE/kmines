@@ -42,11 +42,13 @@ KgCore.CanvasItem {
         acceptedButtons: Qt.LeftButton | Qt.RightButton
         enabled: !revealed && border==""
         onPressed: {
+            if (canvas.game_over) return;
             if (mouse.button == Qt.LeftButton && cellState==0) {
                 cell.pressed = true;
             }
         }
         onReleased: {
+            if (canvas.game_over) return;
             cell.pressed = false;
             if (mouse.button == Qt.LeftButton) {
                 if (cellState>0) return;

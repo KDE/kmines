@@ -5,6 +5,7 @@ function reset() {
     field.columns = 0;
     field.flaggedMines = 0;
     firstClick = true;
+    canvas.game_over = false;
 }
 
 function revealCell(index) {
