@@ -8,6 +8,22 @@ function reset() {
     canvas.game_over = false;
 }
 
+function revealNeighbours(index) {
+    var item = field.itemAtIndex(index);
+    var list = adjacentCells(index);
+    var flaggedNeighbours = 0;
+    for (var i=0; i<list.length; i++) {
+        if (field.itemAtIndex(list[i]).flagged) flaggedNeighbours++;
+    }
+    if (flaggedNeighbours < item.digit) return;
+
+    for (var i=0; i<list.length; i++) {
+        var cell = field.itemAtIndex(list[i]);
+        if (cell.flagged || cell.questioned) continue;
+        revealCell(list[i]);
+    }
+}
+
 function revealCell(index) {
     if (firstClick) {
         firstClick = false;
@@ -15,6 +31,7 @@ function revealCell(index) {
         canvas.firstClickDone();
     }
     var cell = field.itemAtIndex(index);
+    cell.revealed = true;
     if (cell.hasMine) {
         cell.exploded = true;
         revealAllMines();

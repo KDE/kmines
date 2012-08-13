@@ -25,6 +25,7 @@ Item {
     height: Math.min(parent.width*grid.rows/grid.columns, Math.floor(parent.height/grid.rows)*grid.rows)
 
     signal cellClicked(int index)
+    signal cellDoubleClicked(int index)
 
     property int rows
     property int columns
@@ -59,6 +60,11 @@ Item {
                     var row = Math.floor(index/grid.columns);
                     var column = index%grid.columns;
                     container.cellClicked((row-1)*container.columns + (column-1));
+                }
+                onDoubleClicked: {
+                    var row = Math.floor(index/grid.columns);
+                    var column = index%grid.columns;
+                    container.cellDoubleClicked((row-1)*container.columns + (column-1));
                 }
                 onFlaggedChanged: {
                     if (flagged) flaggedMines++;

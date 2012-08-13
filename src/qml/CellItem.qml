@@ -36,14 +36,15 @@ KgCore.CanvasItem {
     property bool error: !hasMine && flagged
 
     signal clicked
+    signal doubleClicked
 
     MouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.LeftButton | Qt.RightButton
-        enabled: !revealed && border==""
+        enabled: (!revealed || digit>0) && border==""
         onPressed: {
             if (canvas.game_over) return;
-            if (mouse.button == Qt.LeftButton && cellState==0) {
+            if (mouse.button == Qt.LeftButton && !flagged && !questioned) {
                 cell.pressed = true;
             }
         }
@@ -51,8 +52,7 @@ KgCore.CanvasItem {
             if (canvas.game_over) return;
             cell.pressed = false;
             if (mouse.button == Qt.LeftButton) {
-                if (cellState>0) return;
-                revealed = true;
+                if (flagged || questioned) return;
                 cell.clicked();
             } else if (!revealed) {
                 if (flagged && !canvas.useQuestionMarks)
@@ -60,6 +60,10 @@ KgCore.CanvasItem {
                 else
                     cellState = (cellState+1)%3;
             }
+        }
+        onDoubleClicked: {
+            if (digit==0 || flagged || questioned) return;
+            cell.doubleClicked();
         }
     }
 

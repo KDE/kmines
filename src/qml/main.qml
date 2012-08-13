@@ -52,6 +52,7 @@ Item {
         id: field
         anchors.centerIn: parent
         onCellClicked: Logic.revealCell(index);
+        onCellDoubleClicked: Logic.revealNeighbours(index);
         onMinesChanged: canvas.minesCountChanged(flaggedMines, mines);
         onFlaggedMinesChanged: canvas.minesCountChanged(flaggedMines, mines);
         Behavior on opacity { NumberAnimation { duration: 50 } }
