@@ -144,7 +144,7 @@ function checkWon() {
         for (var i=0; i<field.rows*field.columns; i++) {
             var item = field.itemAtIndex(i);
             if( !item.revealed && !item.flagged )
-                item.flagged = true;
+                item.cellState = (item.cellState+1)%3;
         }
         // now all mines should be flagged, notify about this
         canvas.minesCountChanged(field.unrevealedMines, field.mines);
