@@ -1,6 +1,10 @@
 [KGameTheme]
 Name=Gardens of Danger
+Name[uk]=Сади небезпеки
+Name[x-test]=xxGardens of Dangerxx
 Description=A funny theme for KDE4 mines game
+Description[uk]=Мила тема для гри у сапера під KDE4
+Description[x-test]=xxA funny theme for KDE4 mines gamexx
 VersionFormat=1
 Author=Eugene Trounev
 AuthorEmail=eugene.trounev@gmail.com

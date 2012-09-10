@@ -1,6 +1,10 @@
 [KGameTheme]
 Name=Classic
+Name[uk]=Класична
+Name[x-test]=xxClassicxx
 Description=Classic theme for KMines
+Description[uk]=Класична тема для KMines
+Description[x-test]=xxClassic theme for KMinesxx
 VersionFormat=1
 Author=Mauricio Piacentini
 AuthorEmail=mauricio@tabuleiro.com

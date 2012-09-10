@@ -1,48 +1,86 @@
 [Global]
 IconName=kmines
 Comment=KMines Minesweeper-like Game
+Comment[uk]=Гра в сапера KMines
+Comment[x-test]=xxKMines Minesweeper-like Gamexx
 
 [Event/reveal]
 Name=Reveal Case
+Name[uk]=Відкрити поле
+Name[x-test]=xxReveal Casexx
 Comment=Reveal case
+Comment[uk]=Відкрити поле
+Comment[x-test]=xxReveal casexx
 Action=None
 
 [Event/autoreveal]
 Name=Autoreveal Case
+Name[uk]=Автоматично відкривати поле
+Name[x-test]=xxAutoreveal Casexx
 Comment=Autoreveal case
+Comment[uk]=Автоматично відкривати поле
+Comment[x-test]=xxAutoreveal casexx
 Action=None
 
 [Event/mark]
 Name=Mark Case
+Name[uk]=Позначити поле
+Name[x-test]=xxMark Casexx
 Comment=Mark case
+Comment[uk]=Позначити поле
+Comment[x-test]=xxMark casexx
 Action=None
 
 [Event/unmark]
 Name=Unmark Case
+Name[uk]=Зняти позначку з поля
+Name[x-test]=xxUnmark Casexx
 Comment=Unmark case
+Comment[uk]=Зняти позначку з поля
+Comment[x-test]=xxUnmark casexx
 Action=None
 
 [Event/explosion]
 Name=Explosion
+Name[uk]=Вибух
+Name[x-test]=xxExplosionxx
 Comment=Explosion
+Comment[uk]=Вибух
+Comment[x-test]=xxExplosionxx
 Action=None
 
 [Event/won]
 Name=Game Won
+Name[uk]=Гру виграно
+Name[x-test]=xxGame Wonxx
 Comment=Game won
+Comment[uk]=Гру виграно
+Comment[x-test]=xxGame wonxx
 Action=None
 
 [Event/lost]
 Name=Game Lost
+Name[uk]=Гру програно
+Name[x-test]=xxGame Lostxx
 Comment=Game lost
+Comment[uk]=Гру програно
+Comment[x-test]=xxGame lostxx
 Action=None
 
 [Event/set_uncertain]
 Name=Set Question Mark
+Name[uk]=Встановити знак питання
+Name[x-test]=xxSet Question Markxx
 Comment=Set question mark
+Comment[uk]=Встановити знак питання
+Comment[x-test]=xxSet question markxx
 Action=None
 
 [Event/unset_uncertain]
 Name=Unset Question Mark
+Name[uk]=Зняти знак питання
+Name[x-test]=xxUnset Question Markxx
 Comment=Unset question mark
+Comment[uk]=Зняти знак питання
+Comment[x-test]=xxUnset question markxx
 Action=None

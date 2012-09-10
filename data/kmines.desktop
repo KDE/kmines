@@ -1,10 +1,14 @@
 [Desktop Entry]
 Name=KMines
+Name[uk]=Сапер
+Name[x-test]=xxKMinesxx
 Icon=kmines
 Exec=kmines -caption "%c"
 Type=Application
 X-DocPath=kmines/index.html
 GenericName=Minesweeper-like Game
+GenericName[uk]=Гра в сапера
+GenericName[x-test]=xxMinesweeper-like Gamexx
 X-KDE-StartupNotify=true
 X-DBUS-StartupType=Multi
 Categories=Qt;KDE;Game;StrategyGame;

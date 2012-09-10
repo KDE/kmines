@@ -1,6 +1,10 @@
 [KGameTheme]
 Name=Default
+Name[uk]=Типова
+Name[x-test]=xxDefaultxx
 Description=KMines Oxygen theme for KDE 4
+Description[uk]=Тема Сапер Oxygen для KDE 4
+Description[x-test]=xxKMines Oxygen theme for KDE 4xx
 VersionFormat=1
 Author=Mark Taff
 AuthorEmail=marktaff@comcast.net
