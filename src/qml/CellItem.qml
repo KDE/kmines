@@ -18,7 +18,7 @@
 import QtQuick 1.1
 import org.kde.games.core 0.1 as KgCore
 
-KgCore.CanvasItem {
+CanvasItem {
     id: cell
     spriteKey: border!="" ? border : exploded ? "explosion" : (pressed || revealed ? "cell_down" : "cell_up")
 
@@ -67,19 +67,19 @@ KgCore.CanvasItem {
         }
     }
 
-    KgCore.CanvasItem {
+    CanvasItem {
         anchors.fill: parent
         visible: (parent.hasMine||flagged) && revealed
         spriteKey: "mine"
     }
 
-    KgCore.CanvasItem {
+    CanvasItem {
         anchors.fill: parent
         spriteKey: revealed && error ? "error" : ["", "flag", "question"][cellState]
         visible: cellState>0
     }
 
-    KgCore.CanvasItem {
+    CanvasItem {
         anchors.fill: parent
         visible: digit>0 && revealed && !error
         spriteKey: "arabic" + ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight"][digit-1]

@@ -18,15 +18,13 @@
 #ifndef CANVASWIDGET_H
 #define CANVASWIDGET_H
 
-#include "kgdeclarativeview.h"
-
-class KGameRenderer;
+#include <KgDeclarativeView>
 
 class CanvasWidget : public KgDeclarativeView
 {
     Q_OBJECT
 public:
-    CanvasWidget(KGameRenderer *renderer, QWidget *parent=0);
+    CanvasWidget(QWidget *parent=0);
     void setGamePaused(bool paused);
     void startNewGame(int rows, int cols, int numMines);
 

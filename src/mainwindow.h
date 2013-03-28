@@ -19,12 +19,12 @@
 #define MAINWINDOW_H
 
 #include <KXmlGuiWindow>
-#include <KGameRenderer>
 
 class KMinesScene;
 class KMinesView;
 class KGameClock;
 class KToggleAction;
+class KgThemeProvider;
 class CanvasWidget;
 
 class KMinesMainWindow : public KXmlGuiWindow
@@ -47,7 +47,7 @@ private:
     KMinesView* m_view;
     KGameClock* m_gameClock;
     KToggleAction* m_actionPause;
-    KGameRenderer m_renderer;
+    KgThemeProvider* m_provider;
     CanvasWidget* m_canvas;
 };
 #endif

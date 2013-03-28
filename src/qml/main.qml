@@ -16,7 +16,6 @@
 */
 
 import QtQuick 1.1
-import org.kde.games.core 0.1 as KgCore
 import "logic.js" as Logic
 
 Item {
@@ -38,7 +37,7 @@ Item {
         field.mines = mines;
     }
 
-    KgCore.CanvasItem {
+    CanvasItem {
         id: background
         spriteKey: "mainWidget"
         anchors.fill: parent

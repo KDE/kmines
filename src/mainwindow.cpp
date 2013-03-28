@@ -93,9 +93,10 @@ private:
  */
 
 KMinesMainWindow::KMinesMainWindow() :
-    m_renderer(provider()),
-    m_canvas(new CanvasWidget(&m_renderer, this))
+    m_provider(provider()),
+    m_canvas(new CanvasWidget(this))
 {
+    m_provider->setDeclarativeEngine("themeProvider", m_canvas->engine());
     connect(m_canvas, SIGNAL(minesCountChanged(int,int)), SLOT(onMinesCountChanged(int,int)));
     connect(m_canvas, SIGNAL(gameOver(bool)), SLOT(onGameOver(bool)));
     connect(m_canvas, SIGNAL(firstClickDone()), SLOT(onFirstClick()));
@@ -234,7 +235,7 @@ void KMinesMainWindow::configureSettings()
         return;
     KConfigDialog *dialog = new KConfigDialog( this, QLatin1String( "settings" ), Settings::self() );
     dialog->addPage( new GeneralOptsConfig( dialog ), i18n("General"), QLatin1String( "games-config-options" ));
-    dialog->addPage( new KgThemeSelector( m_renderer.themeProvider() ), i18n( "Theme" ), QLatin1String( "games-config-theme" ));
+    dialog->addPage( new KgThemeSelector( m_provider ), i18n( "Theme" ), QLatin1String( "games-config-theme" ));
     dialog->addPage( new CustomGameConfig( dialog ), i18n("Custom Game"), QLatin1String( "games-config-custom" ));
     connect( dialog, SIGNAL(settingsChanged(QString)), m_canvas, SLOT(updateUseQuestionMarks()) );
     dialog->setHelp(QString(),QLatin1String( "kmines" ));

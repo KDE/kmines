@@ -2,7 +2,6 @@ include_directories( ${CMAKE_SOURCE_DIR}/libkdegames/highscore  )
 
 set(kmines_SRCS
    mainwindow.cpp
-   kgdeclarativeview.cpp
    canvaswidget.cpp
    main.cpp )
 

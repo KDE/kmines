@@ -15,20 +15,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KGDECLARATIVEVIEW_H
-#define KGDECLARATIVEVIEW_H
+import QtQuick 1.1
+import org.kde.games.core 0.1 as KgCore
 
-#include <QDeclarativeView>
-
-class KGameRenderer;
-
-class KgDeclarativeView : public QDeclarativeView
-{
-    Q_OBJECT
-public:
-    KgDeclarativeView(KGameRenderer *renderer=0, QWidget *parent=0);
-    void setupRenderer(KGameRenderer *renderer);
-
-};
-
-#endif //KGDECLARATIVEVIEW_H
+KgCore.KgItem {
+    provider: themeProvider
+}
