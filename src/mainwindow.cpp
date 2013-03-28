@@ -97,24 +97,17 @@ KMinesMainWindow::KMinesMainWindow() :
     m_canvas(new CanvasWidget(this))
 {
     m_provider->setDeclarativeEngine("themeProvider", m_canvas->engine());
+
     connect(m_canvas, SIGNAL(minesCountChanged(int,int)), SLOT(onMinesCountChanged(int,int)));
     connect(m_canvas, SIGNAL(gameOver(bool)), SLOT(onGameOver(bool)));
     connect(m_canvas, SIGNAL(firstClickDone()), SLOT(onFirstClick()));
-
-    m_canvas->setCacheMode( QGraphicsView::CacheBackground );
-    m_canvas->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-    m_canvas->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-    m_canvas->setFrameStyle(QFrame::NoFrame);
-
-    m_canvas->setOptimizationFlags( QGraphicsView::DontClipPainter |
-                                QGraphicsView::DontSavePainterState |
-                                QGraphicsView::DontAdjustForAntialiasing );
 
     m_gameClock = new KGameClock(this, KGameClock::MinSecOnly);
     connect(m_gameClock, SIGNAL(timeChanged(QString)), SLOT(advanceTime(QString)));
 
     statusBar()->insertItem( i18n("Mines: 0/0"), 0 );
     statusBar()->insertItem( i18n("Time: 00:00"), 1);
+
     setCentralWidget(m_canvas);
 
     setupActions();
