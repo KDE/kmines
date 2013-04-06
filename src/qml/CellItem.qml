@@ -82,6 +82,6 @@ CanvasItem {
     CanvasItem {
         anchors.fill: parent
         visible: digit>0 && revealed && !error
-        spriteKey: "arabic" + ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight"][digit-1]
+        spriteKey: visible ? "arabic" + ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight"][digit-1] : ""
     }
 }
