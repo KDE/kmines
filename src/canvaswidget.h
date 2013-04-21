@@ -25,6 +25,7 @@ class CanvasWidget : public KgDeclarativeView
     Q_OBJECT
 public:
     CanvasWidget(QWidget *parent=0);
+    void init();
     void setGamePaused(bool paused);
     void startNewGame(int rows, int cols, int numMines);
 

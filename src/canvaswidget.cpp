@@ -24,6 +24,10 @@
 CanvasWidget::CanvasWidget(QWidget *parent) :
     KgDeclarativeView(parent)
 {
+}
+
+void CanvasWidget::init()
+{
     QString path = KStandardDirs::locate("appdata", "qml/main.qml");
     setSource(QUrl::fromLocalFile(path));
 

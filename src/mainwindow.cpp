@@ -97,6 +97,7 @@ KMinesMainWindow::KMinesMainWindow() :
     m_canvas(new CanvasWidget(this))
 {
     m_provider->setDeclarativeEngine("themeProvider", m_canvas->engine());
+    m_canvas->init();
 
     connect(m_canvas, SIGNAL(minesCountChanged(int,int)), SLOT(onMinesCountChanged(int,int)));
     connect(m_canvas, SIGNAL(gameOver(bool)), SLOT(onGameOver(bool)));
