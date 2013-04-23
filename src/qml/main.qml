@@ -16,6 +16,7 @@
 */
 
 import QtQuick 1.1
+import org.kde.games.core 0.1 as KgCore
 import "logic.js" as Logic
 
 Item {
@@ -43,10 +44,6 @@ Item {
         anchors.fill: parent
     }
 
-    function setGamePaused(paused) {
-        field.opacity = 1 - paused;
-    }
-
     MineField {
         id: field
         anchors.centerIn: parent
@@ -55,5 +52,25 @@ Item {
         onMinesChanged: canvas.minesCountChanged(flaggedMines, mines);
         onFlaggedMinesChanged: canvas.minesCountChanged(flaggedMines, mines);
         Behavior on opacity { NumberAnimation { duration: 50 } }
+    }
+
+    KgCore.PopupItem {
+        id: pausePopup
+        text: i18n("Game is paused.")
+        messageOpacity: 0.9
+        messageTimeout: 0
+        sharpness: 5
+        hideOnMouseClick: false
+        anchors.centerIn: parent
+    }
+
+    function setGamePaused(paused) {
+        if (paused) {
+            field.hide();
+            pausePopup.show();
+        } else {
+            pausePopup.hide();
+            field.show();
+        }
     }
 }

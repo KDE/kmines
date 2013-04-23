@@ -131,4 +131,8 @@ Item {
             return "";
         }
     }
+
+    function show() { opacity = 1; }
+
+    function hide() { opacity = 0; }
 }
