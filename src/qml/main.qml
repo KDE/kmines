@@ -27,7 +27,15 @@ Item {
     signal gameOver(bool won)
     property bool game_over: false
 
-    onGameOver: game_over = true;
+    onGameOver: {
+        game_over = true;
+        if (won) {
+            messagePopup.text = i18n("Congratulations! You have won!");
+        } else {
+            messagePopup.text = i18n("You have lost.");
+        }
+        messagePopup.show();
+    }
 
     property bool useQuestionMarks: true
 
@@ -61,6 +69,14 @@ Item {
         messageTimeout: 0
         sharpness: 5
         hideOnMouseClick: false
+        anchors.centerIn: parent
+    }
+
+    KgCore.PopupItem {
+        id: messagePopup
+        messageOpacity: 0.9
+        messageTimeout: 4000
+        sharpness: 5
         anchors.centerIn: parent
     }
 

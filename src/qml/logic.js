@@ -1,6 +1,7 @@
 var firstClick = true;
 
 function reset() {
+    messagePopup.hide();
     field.rows = 0;
     field.columns = 0;
     field.flaggedMines = 0;
