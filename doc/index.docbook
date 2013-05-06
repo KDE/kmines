@@ -55,8 +55,8 @@
 
 <legalnotice>&FDLNotice;</legalnotice>
 
-<date>2012-08-06</date>
-<releaseinfo>3.0 (&kde; 4.9)</releaseinfo>
+<date>2013-05-06</date>
+<releaseinfo>3.0 (&kde; 4.11)</releaseinfo>
 
 <abstract><para>&kmines; is the &kde; version of the classic minesweeper
 game.</para></abstract>
@@ -149,12 +149,10 @@ number of mines goes down when you place a flag, there might not be a mine under
 <chapter id="command">
 <title>Commands/Keyboard Shortcuts</title>
 
-<para>The following sections briefly describes each menubar option.</para>
+<para>The following sections briefly describes some menubar options.</para>
 
-<sect1 id="game-menu">
-<title><guimenu>Game</guimenu> Menu</title>
-
-<para>The <guimenu>Game</guimenu> menu consists of 4 options.</para>
+<sect1 id="menu">
+<title>Menu Items</title>
 
 <variablelist>
 <varlistentry>
@@ -165,6 +163,18 @@ number of mines goes down when you place a flag, there might not be a mine under
 <guimenu>Game</guimenu>
 <guimenuitem>New</guimenuitem> </menuchoice></term>
 <listitem><para>Starts a new game.</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut><keycap>P</keycap></shortcut>
+<guimenu>Game</guimenu>
+<guimenuitem>Pause</guimenuitem></menuchoice></term>
+<listitem>
+<para>
+Pauses the game time. Click on the menu item again to make the game resume. Note that the board disappears when the game is paused as it would be unfair if you could search for good moves without the time pressure.
+</para>
+</listitem>
 </varlistentry>
 
 <varlistentry>
@@ -187,40 +197,6 @@ difficulty level.</para></listitem>
 <guimenuitem>Quit</guimenuitem> </menuchoice></term>
 <listitem><para><action>Quits</action> &kmines;</para></listitem>
 </varlistentry>
-</variablelist>
-</sect1>
-
-<sect1 id="settings-menu"><title><guimenu>Settings</guimenu> Menu</title>
-<variablelist>
-<varlistentry>
-<term>
-<menuchoice>
-<guimenu>Settings</guimenu>
-<guimenuitem>Show Toolbar</guimenuitem>
-</menuchoice>
-</term>
-<listitem>
-<para>
-<action>Toggle on or off the display of the toolbar.</action> The
-default is on.
-</para>
-</listitem>
-</varlistentry>
-
-<varlistentry>
-<term>
-<menuchoice>
-<guimenu>Settings</guimenu>
-<guimenuitem>Show Statusbar</guimenuitem>
-</menuchoice>
-</term>
-<listitem>
-<para>
-<action>Toggle on or off the display of the statusbar.</action> The
-default is on.
-</para>
-</listitem>
-</varlistentry>
 
 <varlistentry>
 <term><menuchoice>
@@ -239,48 +215,19 @@ settings you have configured in the <guimenuitem>Configure
 &kmines;</guimenuitem> dialog will be used.</para></listitem>
 </varlistentry>
 
-<varlistentry>
-<term><menuchoice><guimenu>Settings</guimenu><guimenuitem>Configure
-Shortcuts...</guimenuitem></menuchoice></term>
-<listitem><para>This item lets you change the keyboard shortcuts used by &kmines;.</para></listitem>
-</varlistentry>
-
-<varlistentry>
-<term>
-<menuchoice>
-<guimenu>Settings</guimenu>
-<guimenuitem>Configure Toolbars...</guimenuitem>
-</menuchoice>
-</term>
-<listitem>
-<para>
-<action>Configure</action> the toolbars provided by &kmines;.
-</para>
-</listitem>
-</varlistentry>
-
-<varlistentry>
-<term><menuchoice>
-<guimenu>Settings</guimenu>
-<guimenuitem>Configure &kmines;...</guimenuitem> </menuchoice></term>
-<listitem><para>Allows you to adjust game options.  For more detailed
-information, see the section entitled <link linkend="settings">Game
-Options</link>.</para></listitem>
-</varlistentry>
-
 </variablelist>
-</sect1>
 
-<sect1 id="help-menu">
-<title><guimenu>Help</guimenu> Menu</title>
-
-&help.menu.documentation;
+<para>
+Additionally &kmines; has the common &kde; <guimenu>Settings</guimenu> and <guimenu>Help</guimenu>
+menu items, for more information read the sections about the <ulink url="help:/fundamentals/ui.html#menus-settings"
+>Settings Menu</ulink> and <ulink url="help:/fundamentals/ui.html#menus-help">Help Menu</ulink>
+of the &kde; Fundamentals.
+</para>
 
 </sect1>
 
 <sect1 id="keys"><title>Default Keyboard Shortcuts</title>
 <para>The following table shows you the default keyboard shortcuts.</para>
-
 
 <table>
 <title>Keyboard Shortcuts</title>
@@ -288,6 +235,7 @@ Options</link>.</para></listitem>
 <thead><row><entry>Key Combo</entry><entry>Action</entry></row></thead>
 <tbody>
 <row><entry><keycombo action="simul">&Ctrl;<keycap>N</keycap></keycombo></entry><entry>New Game</entry></row>
+<row><entry><keycap>P</keycap></entry><entry>Pause</entry></row>
 <row><entry><keycombo action="simul">&Ctrl;<keycap>Q</keycap></keycombo></entry><entry>Quit &kmines;</entry></row>
 <row><entry><keycap>F1</keycap></entry><entry>&kmines; Handbook</entry></row>
 <row><entry><keycombo action="simul">&Shift;<keycap>F1</keycap></keycombo></entry><entry>What's This Help</entry></row>
