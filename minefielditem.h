@@ -44,7 +44,7 @@ public:
     /**
      * Constructor.
      */
-    MineFieldItem(KGameRenderer* renderer);
+    explicit MineFieldItem(KGameRenderer* renderer);
     /**
      * Initializes game field: creates items, places them on positions,
      * (re)sets some variables
