@@ -33,6 +33,7 @@
 #include <KMessageBox>
 #include <KLocale>
 #include <QDesktopWidget>
+#include <QPointer>
 
 #include "ui_customgame.h"
 #include "ui_generalopts.h"
@@ -181,9 +182,9 @@ void KMinesMainWindow::onGameOver(bool won)
     Kg::difficulty()->setGameRunning(false);
     if(won)
     {
-        KScoreDialog scoreDialog(KScoreDialog::Name | KScoreDialog::Time, this);
-        scoreDialog.initFromDifficulty(Kg::difficulty());
-        scoreDialog.hideField(KScoreDialog::Score);
+        QPointer<KScoreDialog> scoreDialog = new KScoreDialog(KScoreDialog::Name | KScoreDialog::Time, this);
+        scoreDialog->initFromDifficulty(Kg::difficulty());
+        scoreDialog->hideField(KScoreDialog::Score);
 
         KScoreDialog::FieldInfo scoreInfo;
         // score-in-seconds will be hidden
@@ -192,8 +193,10 @@ void KMinesMainWindow::onGameOver(bool won)
         scoreInfo[KScoreDialog::Time] = m_gameClock->timeString();
 
         // we keep highscores as number of seconds
-        if( scoreDialog.addScore(scoreInfo, KScoreDialog::LessIsMore) != 0 )
-            scoreDialog.exec();
+        if( scoreDialog->addScore(scoreInfo, KScoreDialog::LessIsMore) != 0 )
+            scoreDialog->exec();
+
+        delete scoreDialog;
     }
 }
 
@@ -213,10 +216,11 @@ void KMinesMainWindow::onFirstClick()
 
 void KMinesMainWindow::showHighscores()
 {
-    KScoreDialog scoreDialog(KScoreDialog::Name | KScoreDialog::Time, this);
-    scoreDialog.initFromDifficulty(Kg::difficulty());
-    scoreDialog.hideField(KScoreDialog::Score);
-    scoreDialog.exec();
+    QPointer<KScoreDialog> scoreDialog = new KScoreDialog(KScoreDialog::Name | KScoreDialog::Time, this);
+    scoreDialog->initFromDifficulty(Kg::difficulty());
+    scoreDialog->hideField(KScoreDialog::Score);
+    scoreDialog->exec();
+    delete scoreDialog;
 }
 
 void KMinesMainWindow::configureSettings()
