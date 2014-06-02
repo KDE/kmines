@@ -18,7 +18,7 @@
 */
 #include "minefielditem.h"
 
-#include <kdebug.h>
+#include <QDebug>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 
@@ -314,7 +314,7 @@ void MineFieldItem::mousePressEvent( QGraphicsSceneMouseEvent *ev )
     CellItem* itemUnderMouse = itemAt(row,col);
     if(!itemUnderMouse)
     {
-        kDebug() << "unexpected - no item under mouse";
+        qDebug() << "unexpected - no item under mouse";
         return;
     }
 
@@ -528,7 +528,7 @@ void MineFieldItem::onItemRevealed(CellItem* item)
     int idx = m_cells.indexOf(item);
     if(idx == -1)
     {
-        kDebug() << "really strange - item not found";
+        qDebug() << "really strange - item not found";
         return;
     }
 
