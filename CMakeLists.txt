@@ -1,9 +1,12 @@
 project(kmines)
 
+cmake_minimum_required (VERSION 2.8.12 FATAL_ERROR)
+set (QT_MIN_VERSION "5.2.0")
+
 find_package(ECM 0.0.9 REQUIRED CONFIG)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 
-find_package(Qt5 5.2 REQUIRED NO_MODULE COMPONENTS Widgets Qml Quick Svg Test)
+find_package(Qt5 ${QT_MIN_VERSION} REQUIRED NO_MODULE COMPONENTS Widgets Qml Quick Svg Test)
 find_package(KF5 REQUIRED COMPONENTS CoreAddons Config ItemModels WidgetsAddons WindowSystem Codecs Archive
     Config DBusAddons DNSSD Declarative
     I18n GuiAddons Service ConfigWidgets ItemViews IconThemes Completion JobWidgets TextWidgets GlobalAccel XmlGui Crash
@@ -12,6 +15,7 @@ find_package(KF5 REQUIRED COMPONENTS CoreAddons Config ItemModels WidgetsAddons 
 find_package(KDEGames 4.9.0 REQUIRED)
 
 include(FeatureSummary)
+include(ECMInstallIcons)
 include(KDEInstallDirs)
 include(KDECompilerSettings)
 include(KDECMakeSettings)
@@ -42,7 +46,7 @@ kconfig_add_kcfg_files(kmines_SRCS settings.kcfgc )
 #kde4_add_app_icon(kmines_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/data/hi*-app-kmines.png") TODO Port!
 add_executable(kmines ${kmines_SRCS})
 
-target_link_libraries(kmines  kdegames)
+target_link_libraries(kmines Qt5::Qml kdegames)
 
 install(TARGETS kmines  ${INSTALL_TARGETS_DEFAULT_ARGS} )
 
