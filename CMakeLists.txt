@@ -46,7 +46,7 @@ kconfig_add_kcfg_files(kmines_SRCS settings.kcfgc )
 #kde4_add_app_icon(kmines_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/data/hi*-app-kmines.png") TODO Port!
 add_executable(kmines ${kmines_SRCS})
 
-target_link_libraries(kmines Qt5::Qml kdegames)
+target_link_libraries(kmines KF5::TextWidgets KF5::WidgetsAddons Qt5::Qml kdegames)
 
 install(TARGETS kmines  ${INSTALL_TARGETS_DEFAULT_ARGS} )
 

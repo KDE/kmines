@@ -33,7 +33,6 @@
 #include <KMessageBox>
 #include <KLocale>
 #include <QDesktopWidget>
-#include <QPointer>
 
 #include "ui_customgame.h"
 #include "ui_generalopts.h"
@@ -105,8 +104,11 @@ KMinesMainWindow::KMinesMainWindow()
     m_gameClock = new KGameClock(this, KGameClock::MinSecOnly);
     connect(m_gameClock, SIGNAL(timeChanged(QString)), SLOT(advanceTime(QString)));
 
-    statusBar()->insertItem( i18n("Mines: 0/0"), 0 );
-    statusBar()->insertItem( i18n("Time: 00:00"), 1);
+    mineLabel->setText(i18n("Mines: 0/0"));
+    timeLabel->setText(i18n("Time: 00:00"));
+    
+    statusBar()->insertPermanentWidget( 0, mineLabel );
+    statusBar()->insertPermanentWidget( 1, timeLabel );
     setCentralWidget(m_view);
     setupActions();
 
@@ -136,7 +138,7 @@ void KMinesMainWindow::setupActions()
 
 void KMinesMainWindow::onMinesCountChanged(int count)
 {
-    statusBar()->changeItem( i18n("Mines: %1/%2", count, m_scene->totalMines()), 0 );
+    mineLabel->setText(i18n("Mines: %1/%2", count, m_scene->totalMines()));
 }
 
 void KMinesMainWindow::newGame()
@@ -172,7 +174,8 @@ void KMinesMainWindow::newGame()
             //unsupported
             break;
     }
-    statusBar()->changeItem( i18n("Time: 00:00"), 1);
+    
+    timeLabel->setText(i18n("Time: 00:00"));
 }
 
 void KMinesMainWindow::onGameOver(bool won)
@@ -202,7 +205,7 @@ void KMinesMainWindow::onGameOver(bool won)
 
 void KMinesMainWindow::advanceTime(const QString& timeStr)
 {
-    statusBar()->changeItem( i18n("Time: %1", timeStr), 1 );
+    timeLabel->setText(i18n("Time: %1", timeStr));
 }
 
 void KMinesMainWindow::onFirstClick()
@@ -233,7 +236,7 @@ void KMinesMainWindow::configureSettings()
     dialog->addPage( new CustomGameConfig( dialog ), i18n("Custom Game"), QLatin1String( "games-config-custom" ));
     connect( m_scene->renderer().themeProvider(), SIGNAL(currentThemeChanged(const KgTheme*)), SLOT(loadSettings()) );
     connect( dialog, SIGNAL(settingsChanged(QString)), this, SLOT(loadSettings()) );
-    dialog->setHelp(QString(),QLatin1String( "kmines" ));
+    //dialog->setHelp(QString(),QLatin1String( "kmines" ));	TODO Port setHelp
     dialog->show();
 }
 
