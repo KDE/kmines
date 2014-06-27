@@ -46,11 +46,11 @@ int main(int argc, char **argv)
     aboutData.addCredit(i18n("Thomas Capricelli"), i18n("Magic reveal mode"));
     aboutData.addCredit(i18n("Brian Croom"), i18n("Port to use KGameRenderer"));
     
-    QApplication::setApplicationName(i18n("KMines"));
+    QApplication::setApplicationName(i18n("kmines"));	//Lowercase to make QStandardPaths::locate work
     QApplication a(argc, argv);
     
     KLocalizedString::setApplicationDomain("libkdegames" );
-
+    
     if ( a.isSessionRestored() )
         RESTORE(KMinesMainWindow)
     else {

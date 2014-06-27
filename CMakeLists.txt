@@ -5,6 +5,7 @@ set (QT_MIN_VERSION "5.2.0")
 
 find_package(ECM 0.0.9 REQUIRED CONFIG)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
+set(DATA_INSTALL_DIR "/usr/local/share")
 
 find_package(Qt5 ${QT_MIN_VERSION} REQUIRED NO_MODULE COMPONENTS Widgets Qml Quick Svg Test)
 find_package(KF5 REQUIRED COMPONENTS CoreAddons Config ItemModels WidgetsAddons WindowSystem Codecs Archive
