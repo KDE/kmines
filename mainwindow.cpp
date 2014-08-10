@@ -31,7 +31,7 @@
 #include <KConfigDialog>
 #include <KgThemeSelector>
 #include <KMessageBox>
-#include <KLocale>
+
 #include <QDesktopWidget>
 
 #include "ui_customgame.h"
@@ -236,7 +236,7 @@ void KMinesMainWindow::configureSettings()
     dialog->addPage( new CustomGameConfig( dialog ), i18n("Custom Game"), QLatin1String( "games-config-custom" ));
     connect( m_scene->renderer().themeProvider(), SIGNAL(currentThemeChanged(const KgTheme*)), SLOT(loadSettings()) );
     connect( dialog, SIGNAL(settingsChanged(QString)), this, SLOT(loadSettings()) );
-    //dialog->setHelp(QString(),QLatin1String( "kmines" ));	TODO Port setHelp
+    
     dialog->show();
 }
 

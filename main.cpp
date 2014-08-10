@@ -30,6 +30,8 @@ static const char *DESCRIPTION
 
 int main(int argc, char **argv)
 {
+    QApplication app(argc, argv);
+    
     KAboutData aboutData(QStringLiteral("kmines"), i18n("KMines"), QStringLiteral(LONG_VERSION),
 						 i18n(DESCRIPTION), KAboutLicense::GPL,
 						 i18n(COPYLEFT), QString(), QStringLiteral(HOMEPAGE));
@@ -46,17 +48,25 @@ int main(int argc, char **argv)
     aboutData.addCredit(i18n("Thomas Capricelli"), i18n("Magic reveal mode"));
     aboutData.addCredit(i18n("Brian Croom"), i18n("Port to use KGameRenderer"));
     
-    QApplication::setApplicationName(i18n("kmines"));	//Lowercase to make QStandardPaths::locate work
-    QApplication a(argc, argv);
+    aboutData.setOrganizationDomain(QByteArray("kde.org"));
+    aboutData.setProgramIconName(QStringLiteral("kmines"));
+    aboutData.setProductName(QByteArray("kmines"));
     
-    KLocalizedString::setApplicationDomain("libkdegames" );
+    KAboutData::setApplicationData(aboutData);
+  
+    app.setApplicationName(aboutData.componentName());
+    app.setApplicationDisplayName(aboutData.displayName());
+    app.setOrganizationDomain(aboutData.organizationDomain());
+    app.setApplicationVersion(aboutData.version());
+  
+    KLocalizedString::setApplicationDomain("libkdegames");
     
-    if ( a.isSessionRestored() )
+    if ( app.isSessionRestored() )
         RESTORE(KMinesMainWindow)
     else {
         KMinesMainWindow *mw = new KMinesMainWindow;
         mw->show();
     }
     
-    return a.exec();
+    return app.exec();
 }

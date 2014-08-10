@@ -5,13 +5,37 @@ set (QT_MIN_VERSION "5.2.0")
 
 find_package(ECM 0.0.9 REQUIRED CONFIG)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
-set(DATA_INSTALL_DIR "/usr/local/share")
 
-find_package(Qt5 ${QT_MIN_VERSION} REQUIRED NO_MODULE COMPONENTS Widgets Qml Quick Svg Test)
-find_package(KF5 REQUIRED COMPONENTS CoreAddons Config ItemModels WidgetsAddons WindowSystem Codecs Archive
-    Config DBusAddons DNSSD Declarative
-    I18n GuiAddons Service ConfigWidgets ItemViews IconThemes Completion JobWidgets TextWidgets GlobalAccel XmlGui Crash
-    Bookmarks KIO NotifyConfig NewStuff KDELibs4Support)
+find_package(Qt5 ${QT_MIN_VERSION} REQUIRED NO_MODULE COMPONENTS Widgets Qml Quick QuickWidgets Svg Test)
+find_package(KF5 REQUIRED COMPONENTS 
+  CoreAddons 
+  Config 
+  ItemModels 
+  WidgetsAddons 
+  WindowSystem 
+  Codecs 
+  Archive
+  Config 
+  DBusAddons 
+  DNSSD 
+  Declarative
+  I18n 
+  GuiAddons 
+  Service 
+  ConfigWidgets 
+  ItemViews 
+  IconThemes 
+  Completion 
+  JobWidgets 
+  TextWidgets 
+  GlobalAccel 
+  XmlGui 
+  Crash
+  Bookmarks 
+  KIO 
+  NotifyConfig 
+  NewStuff 
+  KDELibs4Support)
     
 find_package(KDEGames 4.9.0 REQUIRED)
 
@@ -42,18 +66,22 @@ set(kmines_SRCS
    scene.cpp
    main.cpp )
 
-qt5_wrap_ui(kmines_SRCS customgame.ui generalopts.ui)
+ki18n_wrap_ui(kmines_SRCS customgame.ui generalopts.ui)
 kconfig_add_kcfg_files(kmines_SRCS settings.kcfgc )
-#kde4_add_app_icon(kmines_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/data/hi*-app-kmines.png") TODO Port!
+kde4_add_app_icon(kmines_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/data/hi*-app-kmines.png")
 add_executable(kmines ${kmines_SRCS})
 
-target_link_libraries(kmines KF5::TextWidgets KF5::WidgetsAddons Qt5::Qml kdegames)
+target_link_libraries(kmines 
+  KF5::TextWidgets 
+  KF5::WidgetsAddons 
+  Qt5::Qml 
+  kdegames)
 
 install(TARGETS kmines  ${INSTALL_TARGETS_DEFAULT_ARGS} )
 
 ########### install files ###############
 
-install( FILES kminesui.rc  DESTINATION  ${DATA_INSTALL_DIR}/kmines )
+install( FILES kminesui.rc  DESTINATION  ${KXMLGUI_INSTALL_DIR}/kmines )
 install( FILES kmines.knsrc  DESTINATION  ${CONFIG_INSTALL_DIR} )
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
