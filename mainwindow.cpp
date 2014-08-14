@@ -86,6 +86,7 @@ private:
 KMinesMainWindow::KMinesMainWindow()
 {
     m_scene = new KMinesScene(this);
+    
     connect(m_scene, SIGNAL(minesCountChanged(int)), SLOT(onMinesCountChanged(int)));
     connect(m_scene, SIGNAL(gameOver(bool)), SLOT(onGameOver(bool)));
     connect(m_scene, SIGNAL(firstClickDone()), SLOT(onFirstClick()));
@@ -143,6 +144,7 @@ void KMinesMainWindow::onMinesCountChanged(int count)
 
 void KMinesMainWindow::newGame()
 {
+    qDebug() << "Inside game";
     m_gameClock->restart();
     m_gameClock->pause(); // start only with the 1st click
 
