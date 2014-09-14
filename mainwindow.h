@@ -20,6 +20,9 @@
 
 #include <KXmlGuiWindow>
 
+#include <QPointer>
+#include <QLabel>
+
 class KMinesScene;
 class KMinesView;
 class KGameClock;
@@ -46,5 +49,8 @@ private:
     KMinesView* m_view;
     KGameClock* m_gameClock;
     KToggleAction* m_actionPause;
+    
+    QPointer<QLabel> mineLabel = new QLabel;
+    QPointer<QLabel> timeLabel = new QLabel;
 };
 #endif

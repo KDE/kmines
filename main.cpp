@@ -16,10 +16,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <kapplication.h>
-#include <klocale.h>
-#include <kcmdlineargs.h>
 #include <kaboutdata.h>
+#include <klocalizedstring.h>
+
+#include <QApplication>
 
 #include "version.h"
 #include "mainwindow.h"
@@ -30,31 +30,42 @@ static const char *DESCRIPTION
 
 int main(int argc, char **argv)
 {
-    KAboutData aboutData("kmines", 0, ki18n("KMines"), LONG_VERSION,
-						 ki18n(DESCRIPTION), KAboutData::License_GPL,
-						 ki18n(COPYLEFT), KLocalizedString(), HOMEPAGE);
-    aboutData.addAuthor(ki18n("Nicolas Hadacek"),
-                        ki18n("Original author"), "hadacek@kde.org");
-    aboutData.addAuthor(ki18n("Mauricio Piacentini"),
-                        ki18n("Code refactoring and SVG support. Current maintainer"),
-                        "mauricio@tabuleiro.com");
-    aboutData.addAuthor(ki18n("Dmitry Suzdalev"),
-                        ki18n("Rewrite to use QGraphicsView framework. Current maintainer"),
-                        "dimsuz@gmail.com");
-    aboutData.addCredit(ki18n("Andreas Zehender"), ki18n("Smiley pixmaps"));
-    aboutData.addCredit(ki18n("Mikhail Kourinny"), ki18n("Solver/Adviser"));
-    aboutData.addCredit(ki18n("Thomas Capricelli"), ki18n("Magic reveal mode"));
-    aboutData.addCredit(ki18n("Brian Croom"), ki18n("Port to use KGameRenderer"));
-    KCmdLineArgs::init(argc, argv, &aboutData);
-
-    KApplication a;
-    KGlobal::locale()->insertCatalog( QLatin1String( "libkdegames" ));
-
-    if ( a.isSessionRestored() )
+    QApplication app(argc, argv);
+    
+    KAboutData aboutData(QStringLiteral("kmines"), i18n("KMines"), QStringLiteral(LONG_VERSION),
+						 i18n(DESCRIPTION), KAboutLicense::GPL,
+						 i18n(COPYLEFT), QString(), QStringLiteral(HOMEPAGE));
+    aboutData.addAuthor(i18n("Nicolas Hadacek"),
+                        i18n("Original author"), QStringLiteral("hadacek@kde.org"));
+    aboutData.addAuthor(i18n("Mauricio Piacentini"),
+                        i18n("Code refactoring and SVG support. Current maintainer"),
+                        QStringLiteral("mauricio@tabuleiro.com"));
+    aboutData.addAuthor(i18n("Dmitry Suzdalev"),
+                        i18n("Rewrite to use QGraphicsView framework. Current maintainer"),
+                        QStringLiteral("dimsuz@gmail.com"));
+    aboutData.addCredit(i18n("Andreas Zehender"), i18n("Smiley pixmaps"));
+    aboutData.addCredit(i18n("Mikhail Kourinny"), i18n("Solver/Adviser"));
+    aboutData.addCredit(i18n("Thomas Capricelli"), i18n("Magic reveal mode"));
+    aboutData.addCredit(i18n("Brian Croom"), i18n("Port to use KGameRenderer"));
+    
+    aboutData.setOrganizationDomain(QByteArray("kde.org"));
+    aboutData.setProgramIconName(QStringLiteral("kmines"));
+    aboutData.setProductName(QByteArray("kmines"));
+    
+    KAboutData::setApplicationData(aboutData);
+  
+    app.setApplicationDisplayName(aboutData.displayName());
+    app.setOrganizationDomain(aboutData.organizationDomain());
+    app.setApplicationVersion(aboutData.version());
+  
+    KLocalizedString::setApplicationDomain("kmines");
+    
+    if ( app.isSessionRestored() )
         RESTORE(KMinesMainWindow)
     else {
         KMinesMainWindow *mw = new KMinesMainWindow;
         mw->show();
     }
-    return a.exec();
+    
+    return app.exec();
 }

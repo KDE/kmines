@@ -21,8 +21,9 @@
 #include "settings.h"
 
 #include <QResizeEvent>
+
 #include <KGamePopupItem>
-#include <KLocale>
+#include <KLocalizedString>
 #include <KgThemeProvider>
 
 #include "minefielditem.h"
@@ -44,6 +45,7 @@ static KgThemeProvider* provider()
 {
     KgThemeProvider* prov = new KgThemeProvider;
     prov->discoverThemes("appdata", QLatin1String("themes"));
+    
     return prov;
 }
 
@@ -63,13 +65,13 @@ KMinesScene::KMinesScene( QObject* parent )
     m_messageItem->setMessageOpacity(0.9);
     m_messageItem->setMessageTimeout(4000);
     addItem(m_messageItem);
-
+    
     m_gamePausedMessageItem = new KGamePopupItem;
     m_gamePausedMessageItem->setMessageOpacity(0.9);
     m_gamePausedMessageItem->setMessageTimeout(0);
     m_gamePausedMessageItem->setHideOnMouseClick(false);
     addItem(m_gamePausedMessageItem);
-
+    
     setBackgroundBrush(m_renderer.spritePixmap(QLatin1String( "mainWidget" ), sceneRect().size().toSize()));
 }
 

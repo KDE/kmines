@@ -21,8 +21,6 @@
 
 #include "settings.h"
 
-#include <kdebug.h>
-
 QHash<int, QString> CellItem::s_digitNames;
 QHash<KMinesState::CellState, QList<QString> > CellItem::s_stateNames;
 
