@@ -54,12 +54,11 @@ int main(int argc, char **argv)
     
     KAboutData::setApplicationData(aboutData);
   
-    app.setApplicationName(aboutData.componentName());
     app.setApplicationDisplayName(aboutData.displayName());
     app.setOrganizationDomain(aboutData.organizationDomain());
     app.setApplicationVersion(aboutData.version());
   
-    KLocalizedString::setApplicationDomain("libkdegames");
+    KLocalizedString::setApplicationDomain("kmines");
     
     if ( app.isSessionRestored() )
         RESTORE(KMinesMainWindow)
