@@ -10,9 +10,7 @@ find_package(Qt5 ${QT_MIN_VERSION} REQUIRED NO_MODULE COMPONENTS Widgets Qml Qui
 find_package(KF5 REQUIRED COMPONENTS 
   CoreAddons 
   Config 
-  ItemModels 
   WidgetsAddons 
-  WindowSystem 
   Codecs 
   Archive
   Config 
@@ -38,6 +36,7 @@ find_package(KF5 REQUIRED COMPONENTS
   KDELibs4Support)
     
 find_package(KDEGames 4.9.0 REQUIRED)
+find_package(Phonon4Qt5)
 
 include(FeatureSummary)
 include(ECMInstallIcons)
