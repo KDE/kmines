@@ -35,7 +35,7 @@ find_package(KF5 REQUIRED COMPONENTS
   NewStuff 
   KDELibs4Support)
     
-find_package(KDEGames 4.9.0 REQUIRED)
+find_package(KF5KDEGames 4.9.0 REQUIRED)
 find_package(Phonon4Qt5)
 
 include(FeatureSummary)
@@ -52,7 +52,7 @@ add_subdirectory( data )
 add_subdirectory( themes ) 
 add_subdirectory( doc )
 
-include_directories( ${CMAKE_SOURCE_DIR}/KDEGames/highscore  )
+include_directories( ${CMAKE_SOURCE_DIR}/KF5KDEGames/highscore  )
 
 
 ########### next target ###############
@@ -74,7 +74,7 @@ target_link_libraries(kmines
   KF5::TextWidgets 
   KF5::WidgetsAddons 
   Qt5::Qml 
-  KDGames)
+  KF5KDEGames)
 
 install(TARGETS kmines  ${INSTALL_TARGETS_DEFAULT_ARGS} )
 
