@@ -49,9 +49,8 @@ int main(int argc, char **argv)
     aboutData.addCredit(i18n("Brian Croom"), i18n("Port to use KGameRenderer"));
     
     aboutData.setOrganizationDomain(QByteArray("kde.org"));
-    aboutData.setProgramIconName(QStringLiteral("kmines"));
     aboutData.setProductName(QByteArray("kmines"));
-    
+    app.setWindowIcon(QIcon::fromTheme(QStringLiteral("kmines")));
     KAboutData::setApplicationData(aboutData);
   
     app.setApplicationDisplayName(aboutData.displayName());

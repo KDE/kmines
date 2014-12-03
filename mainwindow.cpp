@@ -26,12 +26,12 @@
 #include <KStandardGameAction>
 #include <KActionCollection>
 #include <KToggleAction>
-#include <KStatusBar>
 #include <KScoreDialog>
 #include <KConfigDialog>
 #include <KgThemeSelector>
 #include <KMessageBox>
 
+#include <QStatusBar>
 #include <QDesktopWidget>
 
 #include "ui_customgame.h"
@@ -87,9 +87,9 @@ KMinesMainWindow::KMinesMainWindow()
 {
     m_scene = new KMinesScene(this);
     
-    connect(m_scene, SIGNAL(minesCountChanged(int)), SLOT(onMinesCountChanged(int)));
-    connect(m_scene, SIGNAL(gameOver(bool)), SLOT(onGameOver(bool)));
-    connect(m_scene, SIGNAL(firstClickDone()), SLOT(onFirstClick()));
+    connect(m_scene, &KMinesScene::minesCountChanged, this, &KMinesMainWindow::onMinesCountChanged);
+    connect(m_scene, &KMinesScene::gameOver, this, &KMinesMainWindow::onGameOver);
+    connect(m_scene, &KMinesScene::firstClickDone, this, &KMinesMainWindow::onFirstClick);
 
     m_view = new KMinesView( m_scene, this );
     m_view->setCacheMode( QGraphicsView::CacheBackground );
@@ -103,7 +103,7 @@ KMinesMainWindow::KMinesMainWindow()
 
 
     m_gameClock = new KGameClock(this, KGameClock::MinSecOnly);
-    connect(m_gameClock, SIGNAL(timeChanged(QString)), SLOT(advanceTime(QString)));
+    connect(m_gameClock, &KGameClock::timeChanged, this, &KMinesMainWindow::advanceTime);
 
     mineLabel->setText(i18n("Mines: 0/0"));
     timeLabel->setText(i18n("Time: 00:00"));
@@ -237,7 +237,7 @@ void KMinesMainWindow::configureSettings()
     dialog->addPage( new KgThemeSelector( m_scene->renderer().themeProvider() ), i18n( "Theme" ), QLatin1String( "games-config-theme" ));
     dialog->addPage( new CustomGameConfig( dialog ), i18n("Custom Game"), QLatin1String( "games-config-custom" ));
     connect( m_scene->renderer().themeProvider(), SIGNAL(currentThemeChanged(const KgTheme*)), SLOT(loadSettings()) );
-    connect( dialog, SIGNAL(settingsChanged(QString)), this, SLOT(loadSettings()) );
+    connect(dialog, &KConfigDialog::settingsChanged, this, &KMinesMainWindow::loadSettings);
     
     dialog->show();
 }

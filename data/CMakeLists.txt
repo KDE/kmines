@@ -1,5 +1,5 @@
 
-install( PROGRAMS kmines.desktop  DESTINATION  ${XDG_APPS_INSTALL_DIR} )
+install( PROGRAMS org.kde.kmines.desktop  DESTINATION  ${XDG_APPS_INSTALL_DIR} )
 install( FILES kmines.notifyrc  DESTINATION  ${KNOTIFYRC_INSTALL_DIR} )
 
 ecm_install_icons(ICONS

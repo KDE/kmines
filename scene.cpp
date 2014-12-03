@@ -54,11 +54,11 @@ KMinesScene::KMinesScene( QObject* parent )
 {
     setItemIndexMethod( NoIndex );
     m_fieldItem = new MineFieldItem(&m_renderer);
-    connect(m_fieldItem, SIGNAL(flaggedMinesCountChanged(int)), SIGNAL(minesCountChanged(int)));
-    connect(m_fieldItem, SIGNAL(firstClickDone()), SIGNAL(firstClickDone()));
-    connect(m_fieldItem, SIGNAL(gameOver(bool)), SLOT(onGameOver(bool)));
+    connect(m_fieldItem, &MineFieldItem::flaggedMinesCountChanged, this, &KMinesScene::minesCountChanged);
+    connect(m_fieldItem, &MineFieldItem::firstClickDone, this, &KMinesScene::firstClickDone);
+    connect(m_fieldItem, &MineFieldItem::gameOver, this, &KMinesScene::onGameOver);
     // and re-emit it for others
-    connect(m_fieldItem, SIGNAL(gameOver(bool)), SIGNAL(gameOver(bool)));
+    connect(m_fieldItem, &MineFieldItem::gameOver, this, &KMinesScene::gameOver);
     addItem(m_fieldItem);
 
     m_messageItem = new KGamePopupItem;
