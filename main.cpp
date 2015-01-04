@@ -21,7 +21,7 @@
 #include <klocalizedstring.h>
 
 #include <QApplication>
-
+#include <QCommandLineParser>
 #include "version.h"
 #include "mainwindow.h"
 
@@ -57,12 +57,14 @@ int main(int argc, char **argv)
     aboutData.setProductName(QByteArray("kmines"));
     app.setWindowIcon(QIcon::fromTheme(QStringLiteral("kmines")));
     KAboutData::setApplicationData(aboutData);
-  
-    app.setApplicationDisplayName(aboutData.displayName());
-    app.setOrganizationDomain(aboutData.organizationDomain());
-    app.setApplicationVersion(aboutData.version());
-  
-    KLocalizedString::setApplicationDomain("kmines");
+ 
+    QCommandLineParser parser;
+    parser.addVersionOption();
+    parser.addHelpOption();
+    aboutData.setupCommandLine(&parser);
+    parser.process(app);
+    aboutData.processCommandLine(&parser);
+ 
     
     if ( app.isSessionRestored() )
         RESTORE(KMinesMainWindow)
