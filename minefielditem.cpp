@@ -604,4 +604,4 @@ QList<CellItem*> MineFieldItem::adjasentItemsFor(int row, int col)
 
 
 
-#include "minefielditem.moc"
+
