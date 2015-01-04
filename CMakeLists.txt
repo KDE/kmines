@@ -11,8 +11,6 @@ find_package(KF5 REQUIRED COMPONENTS
   CoreAddons 
   Config 
   WidgetsAddons 
-  Codecs 
-  Archive
   Config 
   DBusAddons 
   I18n 
@@ -20,8 +18,7 @@ find_package(KF5 REQUIRED COMPONENTS
   TextWidgets 
   XmlGui 
   KIO 
-  NotifyConfig 
-  KDELibs4Support)
+  NotifyConfig)
     
 find_package(KF5KDEGames 4.9.0 REQUIRED)
 find_package(Phonon4Qt5)
@@ -55,7 +52,7 @@ set(kmines_SRCS
 
 ki18n_wrap_ui(kmines_SRCS customgame.ui generalopts.ui)
 kconfig_add_kcfg_files(kmines_SRCS settings.kcfgc )
-kde4_add_app_icon(kmines_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/data/*-apps-kmines.png")
+#kde4_add_app_icon(kmines_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/data/*-apps-kmines.png")
 add_executable(kmines ${kmines_SRCS})
 
 target_link_libraries(kmines 
