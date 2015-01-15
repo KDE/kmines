@@ -22,6 +22,7 @@
 
 #include <QApplication>
 #include <QCommandLineParser>
+#include <KDBusService>
 #include "version.h"
 #include "mainwindow.h"
 
@@ -64,7 +65,7 @@ int main(int argc, char **argv)
     aboutData.setupCommandLine(&parser);
     parser.process(app);
     aboutData.processCommandLine(&parser);
- 
+    KDBusService service; 
     
     if ( app.isSessionRestored() )
         RESTORE(KMinesMainWindow)

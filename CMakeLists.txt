@@ -57,7 +57,8 @@ add_executable(kmines ${kmines_SRCS})
 
 target_link_libraries(kmines 
   KF5::TextWidgets 
-  KF5::WidgetsAddons 
+  KF5::WidgetsAddons
+  KF5::DBusAddons 
   Qt5::Qml 
   KF5::XmlGui
   KF5KDEGames)
