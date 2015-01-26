@@ -36,6 +36,7 @@ add_subdirectory( themes )
 add_subdirectory( doc )
 
 include_directories( ${CMAKE_SOURCE_DIR}/KF5KDEGames/highscore  )
+add_definitions("-DQT_NO_CAST_FROM_ASCII -DQT_NO_CAST_TO_ASCII")
 
 
 ########### next target ###############
