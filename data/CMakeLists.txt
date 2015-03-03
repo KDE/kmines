@@ -1,6 +1,6 @@
 
-install( PROGRAMS org.kde.kmines.desktop  DESTINATION  ${XDG_APPS_INSTALL_DIR} )
-install( FILES kmines.notifyrc  DESTINATION  ${KNOTIFYRC_INSTALL_DIR} )
+install( PROGRAMS org.kde.kmines.desktop  DESTINATION  ${KDE_INSTALL_APPDIR} )
+install( FILES kmines.notifyrc  DESTINATION  ${KDE_INSTALL_KNOTIFY5RCDIR} )
 
 ecm_install_icons(ICONS
     16-apps-kmines.png
@@ -8,7 +8,7 @@ ecm_install_icons(ICONS
     32-apps-kmines.png
     48-apps-kmines.png
     64-apps-kmines.png
-    DESTINATION ${ICON_INSTALL_DIR}
+    DESTINATION ${KDE_INSTALL_ICONDIR}
     THEME hicolor
 )
 

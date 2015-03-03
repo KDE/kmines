@@ -3,7 +3,7 @@ project(kmines)
 cmake_minimum_required (VERSION 2.8.12 FATAL_ERROR)
 set (QT_MIN_VERSION "5.2.0")
 
-find_package(ECM 1.3.0 REQUIRED CONFIG)
+find_package(ECM 1.7.0 REQUIRED CONFIG)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 
 find_package(Qt5 ${QT_MIN_VERSION} REQUIRED NO_MODULE COMPONENTS Widgets Test Qml)
@@ -24,6 +24,7 @@ find_package(KF5KDEGames 4.9.0 REQUIRED)
 find_package(Phonon4Qt5)
 
 include(FeatureSummary)
+include(ECMAddAppIcon)
 include(ECMInstallIcons)
 include(KDEInstallDirs)
 include(KDECompilerSettings)
@@ -51,7 +52,8 @@ set(kmines_SRCS
 
 ki18n_wrap_ui(kmines_SRCS customgame.ui generalopts.ui)
 kconfig_add_kcfg_files(kmines_SRCS settings.kcfgc )
-#kde4_add_app_icon(kmines_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/data/*-apps-kmines.png")
+file(GLOB ICONS_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/data/*-apps-kmines.png")
+ecm_add_app_icon(kmines_SRCS ICONS ${ICONS_SRCS})
 add_executable(kmines ${kmines_SRCS})
 
 target_link_libraries(kmines 
@@ -62,11 +64,11 @@ target_link_libraries(kmines
   KF5::XmlGui
   KF5KDEGames)
 
-install(TARGETS kmines  ${INSTALL_TARGETS_DEFAULT_ARGS} )
+install(TARGETS kmines  ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} )
 
 ########### install files ###############
 
-install( FILES kminesui.rc  DESTINATION  ${KXMLGUI_INSTALL_DIR}/kmines )
-install( FILES kmines.knsrc  DESTINATION  ${CONFIG_INSTALL_DIR} )
+install( FILES kminesui.rc  DESTINATION  ${KDE_INSTALL_KXMLGUI5DIR}/kmines )
+install( FILES kmines.knsrc  DESTINATION  ${KDE_INSTALL_CONFDIR} )
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
