@@ -23,6 +23,7 @@
 #include <QApplication>
 #include <QCommandLineParser>
 #include <KDBusService>
+#include <KSharedConfig>
 #include "version.h"
 #include "mainwindow.h"
 
@@ -32,12 +33,16 @@ static const char *DESCRIPTION
 
 int main(int argc, char **argv)
 {
+    QApplication app(argc, argv);
+
     Kdelibs4ConfigMigrator migrate(QLatin1String("kmines"));
     migrate.setConfigFiles(QStringList() << QLatin1String("kminesrc"));
     migrate.setUiFiles(QStringList() << QLatin1String("kminesui.rc"));
-    migrate.migrate();
-
-    QApplication app(argc, argv);
+    if(migrate.migrate())
+    {
+        // update the configuration cache
+        KSharedConfig::openConfig()->reparseConfiguration();
+    }
 
     KAboutData aboutData(QStringLiteral("kmines"), i18n("KMines"), QStringLiteral(LONG_VERSION),
 						 i18n(DESCRIPTION), KAboutLicense::GPL,
