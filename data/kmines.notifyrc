@@ -44,7 +44,6 @@ Comment[zh_TW]=KMines，類似踩地雷的遊戲
 
 [Event/reveal]
 Name=Reveal Case
-Name[ast]=Amosar caxella
 Name[bs]=Otkrij predemet
 Name[ca]=Descobreix Casella
 Name[ca@valencia]=Descobreix Casella
@@ -94,7 +93,6 @@ Name[x-test]=xxReveal Casexx
 Name[zh_CN]=翻开格子
 Name[zh_TW]=翻開地磚
 Comment=Reveal case
-Comment[ast]=Amosar caxella
 Comment[be]=Адкрыццё поля
 Comment[bn]=মাইন প্রদর্শন করো
 Comment[bs]=Otkrij predmet
@@ -155,7 +153,6 @@ Action=None
 
 [Event/autoreveal]
 Name=Autoreveal Case
-Name[ast]=Amosar caxella automáticamente
 Name[bs]=Auto otkrivanje predmeta
 Name[ca]=Descobreix automàticament casella
 Name[ca@valencia]=Descobreix automàticament casella
@@ -204,7 +201,6 @@ Name[x-test]=xxAutoreveal Casexx
 Name[zh_CN]=自动翻开格子
 Name[zh_TW]=自動翻開地磚
 Comment=Autoreveal case
-Comment[ast]=Amosar caxella automáticamente
 Comment[be]=Адкрыццё пустых палёў
 Comment[bn]=স্বয়ংক্রিয়ভাবে মাইন প্রদর্শন করো
 Comment[bs]=Auto otkrivanje predmeta
@@ -265,7 +261,6 @@ Action=None
 
 [Event/mark]
 Name=Mark Case
-Name[ast]=Marcar caxella
 Name[bs]=Označi predmet
 Name[ca]=Marca casella
 Name[ca@valencia]=Marca casella
@@ -314,7 +309,6 @@ Name[x-test]=xxMark Casexx
 Name[zh_CN]=标记了格子
 Name[zh_TW]=標記地磚
 Comment=Mark case
-Comment[ast]=Marcar caxella
 Comment[be]=Пазнака міны
 Comment[bn]=সম্ভাব্য মাইন-এ চিহ্ন দাও
 Comment[bs]=Označi predmet
@@ -375,7 +369,6 @@ Action=None
 
 [Event/unmark]
 Name=Unmark Case
-Name[ast]=Quitar marca de la caxella
 Name[bs]=Demarkiraj predmet
 Name[ca]=Desmarca casella
 Name[ca@valencia]=Desmarca casella
@@ -424,7 +417,6 @@ Name[x-test]=xxUnmark Casexx
 Name[zh_CN]=取消了标记格子
 Name[zh_TW]=取消標記
 Comment=Unmark case
-Comment[ast]=Quitar marca de la caxella
 Comment[be]=Здыманне пазнакі
 Comment[bn]=মাইন-এ দেওয়া চিহ্ন মুছে ফেল
 Comment[bs]=Demarkiraj predmet
@@ -485,7 +477,6 @@ Action=None
 
 [Event/explosion]
 Name=Explosion
-Name[ast]=Españíu
 Name[be]=Выбух
 Name[bn]=বিস্ফোরণ
 Name[br]=Tarzhad
@@ -552,7 +543,6 @@ Name[x-test]=xxExplosionxx
 Name[zh_CN]=雷炸了
 Name[zh_TW]=爆炸
 Comment=Explosion
-Comment[ast]=Españíu
 Comment[be]=Выбух
 Comment[bn]=বিস্ফোরণ
 Comment[br]=Tarzhad
@@ -621,7 +611,6 @@ Action=None
 
 [Event/won]
 Name=Game Won
-Name[ast]=Partida ganada
 Name[be]=Перамога
 Name[bs]=Pobjeda
 Name[ca]=Partida guanyada
@@ -675,7 +664,6 @@ Name[x-test]=xxGame Wonxx
 Name[zh_CN]=赢了游戏
 Name[zh_TW]=您贏了
 Comment=Game won
-Comment[ast]=Partida ganada
 Comment[be]=Перамога
 Comment[bn]=খেল খতম
 Comment[br]=Gounezet eo ar c'hoari
@@ -742,7 +730,6 @@ Action=None
 
 [Event/lost]
 Name=Game Lost
-Name[ast]=Partida perdida
 Name[bs]=Poraz
 Name[ca]=Partida perduda
 Name[ca@valencia]=Partida perduda
@@ -796,7 +783,6 @@ Name[x-test]=xxGame Lostxx
 Name[zh_CN]=输了游戏
 Name[zh_TW]=您輸了
 Comment=Game lost
-Comment[ast]=Partida perdida
 Comment[be]=Параза
 Comment[bn]=খেলায় হেরে গিয়েছেন
 Comment[br]=Koll eo ar c'hoari
@@ -862,7 +848,6 @@ Action=None
 
 [Event/set_uncertain]
 Name=Set Question Mark
-Name[ast]=Afitar marca d'entruga
 Name[bs]=Postavi upitnik
 Name[ca]=Marca amb interrogant
 Name[ca@valencia]=Marca amb interrogant
@@ -912,7 +897,6 @@ Name[x-test]=xxSet Question Markxx
 Name[zh_CN]=设置了问号标记
 Name[zh_TW]=設定問號標記
 Comment=Set question mark
-Comment[ast]=Afitar marca d'entruga
 Comment[be]=Пазначыць пытальнікам
 Comment[bn]=প্রশ্নবোধক চিহ্ন দিন
 Comment[bs]=Postavi upitnik
@@ -974,7 +958,6 @@ Action=None
 
 [Event/unset_uncertain]
 Name=Unset Question Mark
-Name[ast]=Quitar marca d'entruga
 Name[bs]=Ukloni upitnik
 Name[ca]=Desmarca l'interrogant
 Name[ca@valencia]=Desmarca l'interrogant
@@ -1024,7 +1007,6 @@ Name[x-test]=xxUnset Question Markxx
 Name[zh_CN]=取消了问号标记
 Name[zh_TW]=取消問號標記
 Comment=Unset question mark
-Comment[ast]=Quitar marca d'entruga
 Comment[be]=Зняць пытальнік
 Comment[bn]=প্রশ্নবোধক চিহ্ন সরিয়ে ফেলুন
 Comment[bs]=Ukloni upitnik
