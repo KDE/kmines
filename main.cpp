@@ -43,6 +43,7 @@ int main(int argc, char **argv)
         // update the configuration cache
         KSharedConfig::openConfig()->reparseConfiguration();
     }
+    KLocalizedString::setApplicationDomain("kmines");
 
     KAboutData aboutData(QStringLiteral("kmines"), i18n("KMines"), QStringLiteral(LONG_VERSION),
 						 i18n(DESCRIPTION), KAboutLicense::GPL,
