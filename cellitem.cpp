@@ -58,8 +58,8 @@ void CellItem::updatePixmap()
         else if(m_hasMine)
         {
             if(m_exploded)
-                addOverlay(QLatin1String( "explosion" ));
-            addOverlay(QLatin1String( "mine" ));
+                addOverlay(QStringLiteral( "explosion" ));
+            addOverlay(QStringLiteral( "mine" ));
         }
     }
 }
@@ -145,27 +145,27 @@ void CellItem::undoPress()
 
 void CellItem::fillNameHashes()
 {
-    s_digitNames[1] = QLatin1String( "arabicOne" );
-    s_digitNames[2] = QLatin1String( "arabicTwo" );
-    s_digitNames[3] = QLatin1String( "arabicThree" );
-    s_digitNames[4] = QLatin1String( "arabicFour" );
-    s_digitNames[5] = QLatin1String( "arabicFive" );
-    s_digitNames[6] = QLatin1String( "arabicSix" );
-    s_digitNames[7] = QLatin1String( "arabicSeven" );
-    s_digitNames[8] = QLatin1String( "arabicEight" );
+    s_digitNames[1] = QStringLiteral( "arabicOne" );
+    s_digitNames[2] = QStringLiteral( "arabicTwo" );
+    s_digitNames[3] = QStringLiteral( "arabicThree" );
+    s_digitNames[4] = QStringLiteral( "arabicFour" );
+    s_digitNames[5] = QStringLiteral( "arabicFive" );
+    s_digitNames[6] = QStringLiteral( "arabicSix" );
+    s_digitNames[7] = QStringLiteral( "arabicSeven" );
+    s_digitNames[8] = QStringLiteral( "arabicEight" );
 
-    s_stateNames[KMinesState::Released].append(QLatin1String( "cell_up" ));
-    s_stateNames[KMinesState::Pressed].append(QLatin1String( "cell_down" ));
-    s_stateNames[KMinesState::Revealed].append(QLatin1String( "cell_down" ));
-    s_stateNames[KMinesState::Questioned].append(QLatin1String( "cell_up" ));
-    s_stateNames[KMinesState::Questioned].append(QLatin1String( "question" ));
-    s_stateNames[KMinesState::Flagged].append(QLatin1String( "cell_up" ));
-    s_stateNames[KMinesState::Flagged].append(QLatin1String( "flag" ));
-    s_stateNames[KMinesState::Error].append(QLatin1String( "cell_down" ));
-    s_stateNames[KMinesState::Error].append(QLatin1String( "mine" ));
-    s_stateNames[KMinesState::Error].append(QLatin1String( "error" ));
-    s_stateNames[KMinesState::Hint].append(QLatin1String( "cell_up" ));
-    s_stateNames[KMinesState::Hint].append(QLatin1String( "hint" ));
+    s_stateNames[KMinesState::Released].append(QStringLiteral( "cell_up" ));
+    s_stateNames[KMinesState::Pressed].append(QStringLiteral( "cell_down" ));
+    s_stateNames[KMinesState::Revealed].append(QStringLiteral( "cell_down" ));
+    s_stateNames[KMinesState::Questioned].append(QStringLiteral( "cell_up" ));
+    s_stateNames[KMinesState::Questioned].append(QStringLiteral( "question" ));
+    s_stateNames[KMinesState::Flagged].append(QStringLiteral( "cell_up" ));
+    s_stateNames[KMinesState::Flagged].append(QStringLiteral( "flag" ));
+    s_stateNames[KMinesState::Error].append(QStringLiteral( "cell_down" ));
+    s_stateNames[KMinesState::Error].append(QStringLiteral( "mine" ));
+    s_stateNames[KMinesState::Error].append(QStringLiteral( "error" ));
+    s_stateNames[KMinesState::Hint].append(QStringLiteral( "cell_up" ));
+    s_stateNames[KMinesState::Hint].append(QStringLiteral( "hint" ));
 }
 
 void CellItem::addOverlay(const QString& spriteKey)

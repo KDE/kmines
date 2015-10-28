@@ -44,7 +44,7 @@ void KMinesView::resizeEvent( QResizeEvent *ev )
 static KgThemeProvider* provider()
 {
     KgThemeProvider* prov = new KgThemeProvider;
-    prov->discoverThemes("appdata", QLatin1String("themes"));
+    prov->discoverThemes("appdata", QStringLiteral("themes"));
     
     return prov;
 }
@@ -72,13 +72,13 @@ KMinesScene::KMinesScene( QObject* parent )
     m_gamePausedMessageItem->setHideOnMouseClick(false);
     addItem(m_gamePausedMessageItem);
     
-    setBackgroundBrush(m_renderer.spritePixmap(QLatin1String( "mainWidget" ), sceneRect().size().toSize()));
+    setBackgroundBrush(m_renderer.spritePixmap(QStringLiteral( "mainWidget" ), sceneRect().size().toSize()));
 }
 
 void KMinesScene::resizeScene(int width, int height)
 {
     setSceneRect(0, 0, width, height);
-    setBackgroundBrush(m_renderer.spritePixmap(QLatin1String( "mainWidget" ), sceneRect().size().toSize()));
+    setBackgroundBrush(m_renderer.spritePixmap(QStringLiteral( "mainWidget" ), sceneRect().size().toSize()));
     m_fieldItem->resizeToFitInRect( sceneRect() );
     m_fieldItem->setPos( sceneRect().width()/2 - m_fieldItem->boundingRect().width()/2,
                          sceneRect().height()/2 - m_fieldItem->boundingRect().height()/2 );

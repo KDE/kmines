@@ -37,12 +37,12 @@ void BorderItem::updatePixmap()
 
 void BorderItem::fillNameHash()
 {
-    s_elementNames[KMinesState::BorderNorth] = QLatin1String( "border.edge.north" );
-    s_elementNames[KMinesState::BorderSouth] = QLatin1String( "border.edge.south" );
-    s_elementNames[KMinesState::BorderEast] = QLatin1String( "border.edge.east" );
-    s_elementNames[KMinesState::BorderWest] = QLatin1String( "border.edge.west" );
-    s_elementNames[KMinesState::BorderCornerNE] = QLatin1String( "border.outsideCorner.ne" );
-    s_elementNames[KMinesState::BorderCornerNW] = QLatin1String( "border.outsideCorner.nw" );
-    s_elementNames[KMinesState::BorderCornerSW] = QLatin1String( "border.outsideCorner.sw" );
-    s_elementNames[KMinesState::BorderCornerSE] = QLatin1String( "border.outsideCorner.se" );
+    s_elementNames[KMinesState::BorderNorth] = QStringLiteral( "border.edge.north" );
+    s_elementNames[KMinesState::BorderSouth] = QStringLiteral( "border.edge.south" );
+    s_elementNames[KMinesState::BorderEast] = QStringLiteral( "border.edge.east" );
+    s_elementNames[KMinesState::BorderWest] = QStringLiteral( "border.edge.west" );
+    s_elementNames[KMinesState::BorderCornerNE] = QStringLiteral( "border.outsideCorner.ne" );
+    s_elementNames[KMinesState::BorderCornerNW] = QStringLiteral( "border.outsideCorner.nw" );
+    s_elementNames[KMinesState::BorderCornerSW] = QStringLiteral( "border.outsideCorner.sw" );
+    s_elementNames[KMinesState::BorderCornerSE] = QStringLiteral( "border.outsideCorner.se" );
 }

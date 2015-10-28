@@ -35,9 +35,9 @@ int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
 
-    Kdelibs4ConfigMigrator migrate(QLatin1String("kmines"));
-    migrate.setConfigFiles(QStringList() << QLatin1String("kminesrc"));
-    migrate.setUiFiles(QStringList() << QLatin1String("kminesui.rc"));
+    Kdelibs4ConfigMigrator migrate(QStringLiteral("kmines"));
+    migrate.setConfigFiles(QStringList() << QStringLiteral("kminesrc"));
+    migrate.setUiFiles(QStringList() << QStringLiteral("kminesui.rc"));
     if(migrate.migrate())
     {
         // update the configuration cache

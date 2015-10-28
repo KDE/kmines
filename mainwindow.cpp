@@ -132,7 +132,7 @@ void KMinesMainWindow::setupActions()
         QByteArray( "Custom" ), i18n( "Custom" )
     ));
     KgDifficultyGUI::init(this);
-    connect(Kg::difficulty(), SIGNAL(currentLevelChanged(const KgDifficultyLevel*)), SLOT(newGame()));
+    connect(Kg::difficulty(), &KgDifficulty::currentLevelChanged, this, &KMinesMainWindow::newGame);
 
     setupGUI(qApp->desktop()->availableGeometry().size()*0.4);
 }
@@ -230,13 +230,13 @@ void KMinesMainWindow::showHighscores()
 
 void KMinesMainWindow::configureSettings()
 {
-    if ( KConfigDialog::showDialog( QLatin1String(  "settings" ) ) )
+    if ( KConfigDialog::showDialog( QStringLiteral(  "settings" ) ) )
         return;
-    KConfigDialog *dialog = new KConfigDialog( this, QLatin1String( "settings" ), Settings::self() );
-    dialog->addPage( new GeneralOptsConfig( dialog ), i18n("General"), QLatin1String( "games-config-options" ));
-    dialog->addPage( new KgThemeSelector( m_scene->renderer().themeProvider() ), i18n( "Theme" ), QLatin1String( "games-config-theme" ));
-    dialog->addPage( new CustomGameConfig( dialog ), i18n("Custom Game"), QLatin1String( "games-config-custom" ));
-    connect( m_scene->renderer().themeProvider(), SIGNAL(currentThemeChanged(const KgTheme*)), SLOT(loadSettings()) );
+    KConfigDialog *dialog = new KConfigDialog( this, QStringLiteral( "settings" ), Settings::self() );
+    dialog->addPage( new GeneralOptsConfig( dialog ), i18n("General"), QStringLiteral( "games-config-options" ));
+    dialog->addPage( new KgThemeSelector( m_scene->renderer().themeProvider() ), i18n( "Theme" ), QStringLiteral( "games-config-theme" ));
+    dialog->addPage( new CustomGameConfig( dialog ), i18n("Custom Game"), QStringLiteral( "games-config-custom" ));
+    connect( m_scene->renderer().themeProvider(), &KgThemeProvider::currentThemeChanged, this, &KMinesMainWindow::loadSettings );
     connect(dialog, &KConfigDialog::settingsChanged, this, &KMinesMainWindow::loadSettings);
     
     dialog->show();
