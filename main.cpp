@@ -17,6 +17,7 @@
  */
 
 #include <kaboutdata.h>
+#include <KCrash>
 #include <kdelibs4configmigrator.h>
 #include <klocalizedstring.h>
 
@@ -65,7 +66,7 @@ int main(int argc, char **argv)
     aboutData.setProductName(QByteArray("kmines"));
     app.setWindowIcon(QIcon::fromTheme(QStringLiteral("kmines")));
     KAboutData::setApplicationData(aboutData);
- 
+    KCrash::initialize();
     QCommandLineParser parser;
     parser.addVersionOption();
     parser.addHelpOption();
