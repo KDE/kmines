@@ -561,6 +561,8 @@ void MineFieldItem::checkWon()
         // mark not flagged cells (if any) with flags
         foreach( CellItem* item, m_cells )
         {
+            if( item->isQuestioned() )
+                item->mark();
             if( !item->isRevealed() && !item->isFlagged() )
                 item->mark();
         }
