@@ -73,7 +73,6 @@ Exec=kmines -qwindowtitle %c
 Type=Application
 X-DocPath=kmines/index.html
 GenericName=Minesweeper-like Game
-GenericName[ast]=Xuegu asemeyáu al guetamines
 GenericName[be]=Гульня ў сапёра
 GenericName[bn]=মাইনসুইপার-জাতীয় খেলা
 GenericName[br]=C'hoari doare Minesweeper

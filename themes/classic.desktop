@@ -1,6 +1,5 @@
 [KGameTheme]
 Name=Classic
-Name[ast]=Clásicu
 Name[be]=Класічны
 Name[bs]=Klasično
 Name[ca]=Clàssic
@@ -58,7 +57,6 @@ Name[x-test]=xxClassicxx
 Name[zh_CN]=经典
 Name[zh_TW]=古典
 Description=Classic theme for KMines
-Description[ast]=Tema clásicu pa KMines
 Description[bs]=Klasična tema za KMines
 Description[ca]=Tema clàssic per KMines
 Description[ca@valencia]=Tema clàssic per KMines
