@@ -77,6 +77,5 @@ install(TARGETS kmines  ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 ########### install files ###############
 
 install(FILES kminesui.rc  DESTINATION  ${KDE_INSTALL_KXMLGUI5DIR}/kmines)
-install(FILES kmines.knsrc  DESTINATION  ${KDE_INSTALL_CONFDIR})
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
