@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component type="desktop">
+  <id>org.kde.kmines.desktop</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-2+</project_license>
+  <name>KMines</name>
+  <summary>Minesweeper-like Game</summary>
+  <description>
+    <p>KMines is a classic Minesweeper game. The idea is to uncover all the squares without blowing up any mines. When a mine is blown up, the game is over.</p>
+  </description>
+  <url type="homepage">https://www.kde.org</url>
+  <url type="bugtracker">https://bugs.kde.org</url>
+  <url type="donation">https://www.kde.org/community/donations</url>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://cdn.kde.org/screenshots/kmines/kmines.png</image>
+    </screenshot>
+  </screenshots>
+  <provides>
+    <binary>kmines</binary>
+  </provides>
+  <project_group>KDE</project_group>
+</component>
