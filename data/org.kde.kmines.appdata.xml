@@ -4,19 +4,24 @@
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-2+</project_license>
   <name>KMines</name>
+  <name xml:lang="ca">KMines</name>
   <name xml:lang="nl">KMines</name>
   <name xml:lang="pt">Campo Minado</name>
+  <name xml:lang="sk">KMines</name>
   <name xml:lang="sv">Minröjaren</name>
   <name xml:lang="uk">KMines</name>
   <name xml:lang="x-test">xxKMinesxx</name>
   <summary>Minesweeper-like Game</summary>
+  <summary xml:lang="ca">Joc a l'estil del buscamines</summary>
   <summary xml:lang="nl">Mijnenvegerachtig spel</summary>
   <summary xml:lang="pt">Jogo semelhante ao Minesweeper</summary>
+  <summary xml:lang="sk">Hra typu hľadanie mín</summary>
   <summary xml:lang="sv">Minröjarliknande spel</summary>
   <summary xml:lang="uk">Гра у сапера</summary>
   <summary xml:lang="x-test">xxMinesweeper-like Gamexx</summary>
   <description>
     <p>KMines is a classic Minesweeper game. The idea is to uncover all the squares without blowing up any mines. When a mine is blown up, the game is over.</p>
+    <p xml:lang="ca">El KMines és un joc clàssic de buscamines. La idea és descobrir tots els quadrats sense que exploti cap mina. Quan una mina explota, el joc acaba.</p>
     <p xml:lang="nl">KMines is het klassieke mijnenvegerspel. Het idee is alle vierkantjes open te maken zonder een mijn op te blazen. Als er een mijn ontploft is het spel afgelopen.</p>
     <p xml:lang="pt">O KMines é um jogo clássico de Campo Minado (Minesweeper). A ideia é destapar todos os quadrados sem rebentar nenhuma mina. Quando for estoirada uma mina, o jogo termina.</p>
     <p xml:lang="sv">Minröjaren är ett klassiskt minröjarspel. Idén är att frilägga alla rutor utan att detonera några minor. När en mina detonerar är spelet slut.</p>
