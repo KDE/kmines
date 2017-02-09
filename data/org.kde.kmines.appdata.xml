@@ -5,6 +5,7 @@
   <project_license>GPL-2+</project_license>
   <name>KMines</name>
   <name xml:lang="ca">KMines</name>
+  <name xml:lang="ca-valencia">KMines</name>
   <name xml:lang="en-GB">KMines</name>
   <name xml:lang="es">KMines</name>
   <name xml:lang="nl">KMines</name>
@@ -16,6 +17,7 @@
   <name xml:lang="zh-CN">KMines</name>
   <summary>Minesweeper-like Game</summary>
   <summary xml:lang="ca">Joc a l'estil del buscamines</summary>
+  <summary xml:lang="ca-valencia">Joc a l'estil del buscamines</summary>
   <summary xml:lang="en-GB">Minesweeper-like Game</summary>
   <summary xml:lang="es">Juego similar al Buscaminas</summary>
   <summary xml:lang="nl">Mijnenvegerachtig spel</summary>
@@ -28,6 +30,7 @@
   <description>
     <p>KMines is a classic Minesweeper game. The idea is to uncover all the squares without blowing up any mines. When a mine is blown up, the game is over.</p>
     <p xml:lang="ca">El KMines és un joc clàssic de buscamines. La idea és descobrir tots els quadrats sense que exploti cap mina. Quan una mina explota, el joc acaba.</p>
+    <p xml:lang="ca-valencia">El KMines és un joc clàssic de buscamines. La idea és descobrir tots els quadrats sense que exploti cap mina. Quan una mina explota, el joc acaba.</p>
     <p xml:lang="en-GB">KMines is a classic Minesweeper game. The idea is to uncover all the squares without blowing up any mines. When a mine is blown up, the game is over.</p>
     <p xml:lang="es">KMines es el clásico juego de Buscaminas. El objetivo consiste en descubrir todos los cuadrados sin hacer estallar las minas. Si una mina estalla, el juego acaba.</p>
     <p xml:lang="nl">KMines is het klassieke mijnenvegerspel. Het idee is alle vierkantjes open te maken zonder een mijn op te blazen. Als er een mijn ontploft is het spel afgelopen.</p>
