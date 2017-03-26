@@ -156,6 +156,7 @@ Comment[sr@latin]=Igra nalik na Minolovac
 Comment[sv]=Minröjarliknande spel
 Comment[uk]=Гра у сапера
 Comment[x-test]=xxMinesweeper-like Gamexx
+Comment[zh_TW]=類似踩地雷的遊戲
 StartupNotify=true
 X-DBUS-StartupType=Multi
 Categories=Qt;KDE;Game;StrategyGame;
