@@ -78,7 +78,7 @@ class KMinesView : public QGraphicsView
 public:
     KMinesView( KMinesScene* scene, QWidget *parent );
 private:
-    virtual void resizeEvent( QResizeEvent *ev );
+    void resizeEvent( QResizeEvent *ev ) Q_DECL_OVERRIDE;
 
     KMinesScene* m_scene;
 };

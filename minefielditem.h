@@ -86,11 +86,11 @@ signals:
     void gameOver(bool won);
 private:
     // reimplemented
-    virtual void mousePressEvent( QGraphicsSceneMouseEvent * );
+    void mousePressEvent( QGraphicsSceneMouseEvent * ) Q_DECL_OVERRIDE;
     // reimplemented
-    virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * );
+    void mouseReleaseEvent( QGraphicsSceneMouseEvent * ) Q_DECL_OVERRIDE;
     // reimplemented
-    virtual void mouseMoveEvent( QGraphicsSceneMouseEvent * );
+    void mouseMoveEvent( QGraphicsSceneMouseEvent * ) Q_DECL_OVERRIDE;
 
     /**
      * Returns cell item at (row,col).
@@ -139,7 +139,7 @@ private:
     /**
      * Reimplemented from QGraphicsItem
      */
-    void paint( QPainter * painter, const QStyleOptionGraphicsItem*, QWidget * widget = 0 );
+    void paint( QPainter * painter, const QStyleOptionGraphicsItem*, QWidget * widget = 0 ) Q_DECL_OVERRIDE;
     /**
      * Repositions all child cell items upon resizes
      */
