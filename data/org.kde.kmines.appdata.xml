@@ -2,7 +2,7 @@
 <component type="desktop">
   <id>org.kde.kmines.desktop</id>
   <metadata_license>CC0-1.0</metadata_license>
-  <project_license>GPL-2+</project_license>
+  <project_license>GPL-2.0+</project_license>
   <name>KMines</name>
   <name xml:lang="ca">KMines</name>
   <name xml:lang="ca-valencia">KMines</name>
