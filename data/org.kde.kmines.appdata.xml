@@ -12,6 +12,7 @@
   <name xml:lang="en-GB">KMines</name>
   <name xml:lang="es">KMines</name>
   <name xml:lang="fr">KMines</name>
+  <name xml:lang="gl">KMines</name>
   <name xml:lang="nl">KMines</name>
   <name xml:lang="pl">KMiny</name>
   <name xml:lang="pt">Campo Minado</name>
@@ -34,6 +35,7 @@
   <summary xml:lang="en-GB">Minesweeper-like Game</summary>
   <summary xml:lang="es">Juego similar al Buscaminas</summary>
   <summary xml:lang="fr">Jeu dans le style du démineur</summary>
+  <summary xml:lang="gl">Xogo como o busca minas</summary>
   <summary xml:lang="nl">Mijnenvegerachtig spel</summary>
   <summary xml:lang="pl">Gra typu saper</summary>
   <summary xml:lang="pt">Jogo semelhante ao Minesweeper</summary>
@@ -56,6 +58,7 @@
     <p xml:lang="en-GB">KMines is a classic Minesweeper game. The idea is to uncover all the squares without blowing up any mines. When a mine is blown up, the game is over.</p>
     <p xml:lang="es">KMines es el clásico juego de Buscaminas. El objetivo consiste en descubrir todos los cuadrados sin hacer estallar las minas. Si una mina estalla, el juego acaba.</p>
     <p xml:lang="fr">KMines est un jeu dans le style du démineur. L'objectif est de révéler tous les carrés sans faire exploser la moindre mine. Lorsqu'une mine explose, la partie est terminée.</p>
+    <p xml:lang="gl">KMines é un xogo clásico de buscaminas. A idea é descubrir todos os cadrados sen estourar ningunha mina. Cando unha mina estoura acaba a partida.</p>
     <p xml:lang="nl">KMines is het klassieke mijnenvegerspel. Het idee is alle vierkantjes open te maken zonder een mijn op te blazen. Als er een mijn ontploft is het spel afgelopen.</p>
     <p xml:lang="pl">KMiny jest klasyczną grą w sapera. Polega ona na odkryciu wszystkich pól bez wysadzenia żadnej z min. Po napotkaniu na minę, gra się kończy.</p>
     <p xml:lang="pt">O KMines é um jogo clássico de Campo Minado (Minesweeper). A ideia é destapar todos os quadrados sem rebentar nenhuma mina. Quando for estoirada uma mina, o jogo termina.</p>
