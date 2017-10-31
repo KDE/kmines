@@ -56,7 +56,7 @@ set(kmines_SRCS
     scene.cpp
     main.cpp
 )
-
+qt5_add_resources(kmines_SRCS kmines.qrc)
 ki18n_wrap_ui(kmines_SRCS customgame.ui generalopts.ui)
 kconfig_add_kcfg_files(kmines_SRCS settings.kcfgc )
 file(GLOB ICONS_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/data/*-apps-kmines.png")
@@ -75,7 +75,5 @@ target_link_libraries(kmines
 install(TARGETS kmines  ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 ########### install files ###############
-
-install(FILES kminesui.rc  DESTINATION  ${KDE_INSTALL_KXMLGUI5DIR}/kmines)
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
