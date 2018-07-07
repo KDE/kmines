@@ -47,6 +47,7 @@
   <summary xml:lang="nn">Minesveipar-liknande spel</summary>
   <summary xml:lang="pl">Gra typu saper</summary>
   <summary xml:lang="pt">Jogo semelhante ao Minesweeper</summary>
+  <summary xml:lang="pt-BR">Jogo semelhante ao Campo Minado</summary>
   <summary xml:lang="ru">Игра в сапёра</summary>
   <summary xml:lang="sk">Hra typu hľadanie mín</summary>
   <summary xml:lang="sl">Igra podobna Minolovcu</summary>
@@ -74,6 +75,7 @@
     <p xml:lang="nn">KMinesveipar er eit klassisk minesveiparspel. Målet er å avdekkja alle ruter som ikkje har miner på seg. Treff du derimot på ei rute med ei mine, går mina av og du tapar spelet.</p>
     <p xml:lang="pl">KMiny jest klasyczną grą w sapera. Polega ona na odkryciu wszystkich pól bez wysadzenia żadnej z min. Po napotkaniu na minę, gra się kończy.</p>
     <p xml:lang="pt">O KMines é um jogo clássico de Campo Minado (Minesweeper). A ideia é destapar todos os quadrados sem rebentar nenhuma mina. Quando for estoirada uma mina, o jogo termina.</p>
+    <p xml:lang="pt-BR">KMines é o jogo clássico chamado Campo Minado. Você precisa descobrir todos os quadrados vazios sem explodir nenhuma mina. O jogo termina quando uma mina explode.</p>
     <p xml:lang="sk">KMines je klasická hra Hľadanie mín. Cieľom je odkryť všetky štvorce bez odpálenia mín. Ak sa mína odpáli, hra končí.</p>
     <p xml:lang="sl">KMines je klasična igra Minolovca. Cilj igre je odkriti vse kvadratke, brez da bi naleteli na mino. Ko se slednje zgodi, je igre konec.</p>
     <p xml:lang="sr">К‑мине је класична игра Миноловца. Треба открити сва поља тако да се не активира ниједна мина. Ако мина експлодира, то је крај партије.</p>
