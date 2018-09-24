@@ -61,7 +61,7 @@ public:
     /**
      * Reimplemented from QGraphicsItem
      */
-    QRectF boundingRect() const;// reimp
+    QRectF boundingRect() const override;// reimp
     /**
      * @return num rows in field
      */
@@ -80,17 +80,17 @@ public:
      */
     static const int MINIMAL_FREE = 10;
 
-signals:
+Q_SIGNALS:
     void flaggedMinesCountChanged(int);
     void firstClickDone();
     void gameOver(bool won);
 private:
     // reimplemented
-    void mousePressEvent( QGraphicsSceneMouseEvent * ) Q_DECL_OVERRIDE;
+    void mousePressEvent( QGraphicsSceneMouseEvent * ) override;
     // reimplemented
-    void mouseReleaseEvent( QGraphicsSceneMouseEvent * ) Q_DECL_OVERRIDE;
+    void mouseReleaseEvent( QGraphicsSceneMouseEvent * ) override;
     // reimplemented
-    void mouseMoveEvent( QGraphicsSceneMouseEvent * ) Q_DECL_OVERRIDE;
+    void mouseMoveEvent( QGraphicsSceneMouseEvent * ) override;
 
     /**
      * Returns cell item at (row,col).
@@ -139,7 +139,7 @@ private:
     /**
      * Reimplemented from QGraphicsItem
      */
-    void paint( QPainter * painter, const QStyleOptionGraphicsItem*, QWidget * widget = 0 ) Q_DECL_OVERRIDE;
+    void paint( QPainter * painter, const QStyleOptionGraphicsItem*, QWidget * widget = nullptr ) override;
     /**
      * Repositions all child cell items upon resizes
      */

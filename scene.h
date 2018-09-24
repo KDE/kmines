@@ -55,11 +55,11 @@ public:
     void setGamePaused(bool paused);
 
     KGameRenderer& renderer() {return m_renderer;}
-signals:
+Q_SIGNALS:
     void minesCountChanged(int);
     void gameOver(bool);
     void firstClickDone();
-private slots:
+private Q_SLOTS:
     void onGameOver(bool);
 private:
     KGameRenderer m_renderer;
@@ -78,7 +78,7 @@ class KMinesView : public QGraphicsView
 public:
     KMinesView( KMinesScene* scene, QWidget *parent );
 private:
-    void resizeEvent( QResizeEvent *ev ) Q_DECL_OVERRIDE;
+    void resizeEvent( QResizeEvent *ev ) override;
 
     KMinesScene* m_scene;
 };

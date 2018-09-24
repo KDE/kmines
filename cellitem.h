@@ -99,8 +99,8 @@ public:
     void mark();
     // enable use of qgraphicsitem_cast
     enum { Type = UserType + 1 };
-    int type() const Q_DECL_OVERRIDE { return Type; }
-signals:
+    int type() const override { return Type; }
+Q_SIGNALS:
     /**
      * Emitted when this item is revealed with mouse click
      */

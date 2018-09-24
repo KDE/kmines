@@ -103,7 +103,7 @@ void MineFieldItem::generateField(int clickedIdx)
     QList<int> cellsWithMines;
     int minesToPlace = m_minesCount;
     int randomIdx = 0;
-    CellItem* item = 0;
+    CellItem* item = nullptr;
     FieldPos fp = rowColFromIndex(clickedIdx);
 
     // this is the list of items we don't want to put the mine in
@@ -279,7 +279,7 @@ void MineFieldItem::revealEmptySpace(int row, int col)
 {
     // recursively reveal neighbour cells until we find cells with digit
     QList<FieldPos> list = adjasentRowColsFor(row,col);
-    CellItem *item = 0;
+    CellItem *item = nullptr;
 
     foreach( const FieldPos& pos, list )
     {

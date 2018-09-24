@@ -33,7 +33,7 @@ class KMinesMainWindow : public KXmlGuiWindow
     Q_OBJECT
 public:
     KMinesMainWindow();
-private slots:
+private Q_SLOTS:
     void onMinesCountChanged(int count);
     void newGame();
     void onGameOver(bool);

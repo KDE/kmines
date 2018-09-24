@@ -53,7 +53,7 @@ public:
         connect(ui.kcfg_CustomHeight, SIGNAL(valueChanged(int)), this, SLOT(updateMaxMines()));
     }
 
-private slots:
+private Q_SLOTS:
     void updateMaxMines()
     {
         int width = ui.kcfg_CustomWidth->value();

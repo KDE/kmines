@@ -39,7 +39,7 @@ public:
 
     // enable use of qgraphicsitem_cast
     enum { Type = UserType + 1 };
-    int type() const Q_DECL_OVERRIDE { return Type; }
+    int type() const override { return Type; }
 private:
     static QHash<KMinesState::BorderElement, QString> s_elementNames;
     static void fillNameHash();
