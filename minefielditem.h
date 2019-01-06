@@ -55,6 +55,10 @@ public:
      */
     void initField( int numRows, int numCols, int numMines );
     /**
+     * Resets mines to the intial state.
+     */
+    void resetMines();
+    /**
      * Resizes this graphics item so it fits in given rect
      */
     void resizeToFitInRect(const QRectF& rect);

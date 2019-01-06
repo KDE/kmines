@@ -53,6 +53,14 @@ public:
      * Toggles paused state for all cells in the field item
      */
     void setGamePaused(bool paused);
+    /**
+     * Resets the scene
+     */
+    void reset();
+    /**
+     * Represents if the scores should be considered for the highscores
+     */
+    bool canScore;
 
     KGameRenderer& renderer() {return m_renderer;}
 Q_SIGNALS:

@@ -33,6 +33,17 @@ CellItem::CellItem(KGameRenderer* renderer, QGraphicsItem* parent)
     reset();
 }
 
+void CellItem::unflag()
+{
+    m_state = KMinesState::Released;
+    updatePixmap();
+}
+
+void CellItem::unexplode()
+{
+    m_exploded = false;
+}
+
 void CellItem::reset()
 {
     m_state = KMinesState::Released;

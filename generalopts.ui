@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>GeneralOptsConfig</class>
- <widget class="QWidget" name="GeneralOptsConfig" >
-  <property name="geometry" >
+ <widget class="QWidget" name="GeneralOptsConfig">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,20 +10,40 @@
     <height>135</height>
    </rect>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" >
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QCheckBox" name="kcfg_UseQuestionMarks" >
-     <property name="text" >
+    <widget class="QCheckBox" name="kcfg_UseQuestionMarks">
+     <property name="text">
       <string>Use '?' marks</string>
      </property>
     </widget>
    </item>
    <item>
-    <spacer name="verticalSpacer" >
-     <property name="orientation" >
+    <widget class="QCheckBox" name="kcfg_AllowKminesReset">
+     <property name="text">
+      <string>Allow KMines Reset</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="tristate">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="kcfg_DisableScoreOnReset">
+     <property name="text">
+      <string>Disable Score on Reset</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeHint" stdset="0" >
+     <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
        <height>40</height>

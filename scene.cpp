@@ -75,6 +75,12 @@ KMinesScene::KMinesScene( QObject* parent )
     setBackgroundBrush(m_renderer.spritePixmap(QStringLiteral( "mainWidget" ), sceneRect().size().toSize()));
 }
 
+void KMinesScene::reset()
+{
+    m_fieldItem->resetMines();
+    m_messageItem->forceHide();
+}
+
 void KMinesScene::resizeScene(int width, int height)
 {
     setSceneRect(0, 0, width, height);

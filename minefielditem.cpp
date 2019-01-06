@@ -32,6 +32,22 @@ MineFieldItem::MineFieldItem(KGameRenderer* renderer)
 	setFlag(QGraphicsItem::ItemHasNoContents);
 }
 
+void MineFieldItem::resetMines()
+{
+    m_gameOver = false;
+    m_numUnrevealed = m_numRows*m_numCols;
+
+    for(CellItem* item : m_cells) {
+        item->unreveal();
+        item->unflag();
+        item->unexplode();
+    }
+
+    m_flaggedMinesCount = 0;
+    emit flaggedMinesCountChanged(m_flaggedMinesCount);
+}
+
+
 void MineFieldItem::initField( int numRows, int numCols, int numMines )
 {
     numMines = qMin(numMines, numRows*numCols - MINIMAL_FREE );

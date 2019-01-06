@@ -9,6 +9,14 @@
       <label>Whether the "unsure" marker may be used.</label>
       <default>true</default>
     </entry>
+    <entry name="AllowKminesReset" type="Bool" key="kmines_reset">
+      <label></label>
+      <default>true</default>
+    </entry>
+    <entry name="DisableScoreOnReset" type="Bool" key="disable_score_on_reset">
+      <label></label>
+      <default>false</default>
+    </entry>
   </group>
   <group name="Options">
     <entry name="CustomWidth" type="Int" key="custom width">

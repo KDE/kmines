@@ -33,9 +33,11 @@
 
 #include <QStatusBar>
 #include <QDesktopWidget>
+#include <KLocalizedString>
 
 #include "ui_customgame.h"
 #include "ui_generalopts.h"
+#include "settings.h"
 
 /*
  * Classes for config dlg pages
@@ -185,7 +187,7 @@ void KMinesMainWindow::onGameOver(bool won)
     m_gameClock->pause();
     m_actionPause->setEnabled(false);
     Kg::difficulty()->setGameRunning(false);
-    if(won)
+    if(won && m_scene->canScore)
     {
         QPointer<KScoreDialog> scoreDialog = new KScoreDialog(KScoreDialog::Name | KScoreDialog::Time, this);
         scoreDialog->initFromDifficulty(Kg::difficulty());
@@ -202,6 +204,15 @@ void KMinesMainWindow::onGameOver(bool won)
             scoreDialog->exec();
 
         delete scoreDialog;
+    } else if (!won)
+    {
+        //ask to reset
+        if (Settings::allowKminesReset() && QMessageBox::question(this, i18n("Reset?"), i18n("Reset the Game?")) == QMessageBox::Yes){
+            m_scene->reset();
+            m_gameClock->restart();
+            m_actionPause->setEnabled(true);
+            m_scene->canScore = !Settings::disableScoreOnReset();
+        }
     }
 }
 

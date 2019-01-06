@@ -73,6 +73,14 @@ public:
      */
     void unreveal() { m_state = KMinesState::Released; updatePixmap(); }
     /**
+     * Removes the flag
+     */
+    void unflag();
+    /**
+     * Stops the mine from being exploded
+     */
+    void unexplode();
+    /**
      * @return whether this cell is revealed
      */
     bool isRevealed() const { return ( m_state == KMinesState::Revealed || m_state == KMinesState::Error); }
