@@ -53,8 +53,8 @@
 
 <legalnotice>&FDLNotice;</legalnotice>
 
-<date>2016-05-10</date>
-<releaseinfo>4.0 (Applications 16.04)</releaseinfo>
+<date>2019-01-07</date>
+<releaseinfo>4.0 (Applications 19.04)</releaseinfo>
 
 <abstract><para>&kmines; is the &kde; version of the classic minesweeper
 game.</para></abstract>
@@ -302,9 +302,30 @@ Yes, the easiest way is to use the drop down box in the lower right corner.
 The game settings can be configured by selecting <menuchoice><guimenu>Settings</guimenu>
 <guimenuitem>Configure &kmines;...</guimenuitem></menuchoice> from the menubar. A dialog will appear.
 </para>
-<!--missing
-  General page -> Use '?' marks
-  -->
+<para>
+    On the <guilabel>General</guilabel> page, you can configure the following game settings.
+</para>
+<variablelist>
+    <varlistentry>
+        <term>Use '?' marks</term>
+        <listitem>
+            <para>When checked, allows using the question mark symbol to mark the squares of uncertainty. The mark on the square can be switched by clicking with &RMB;.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term>Allow &kmines; Reset</term>
+        <listitem>
+            <para>When checked, allows you to reset &kmines; game when it is impossible to do anything but guess and your last guess is wrong.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term>Disable Score on Reset</term>
+        <listitem>
+            <para>When checked, allows you to disable scoring on reset.</para>
+        </listitem>
+    </varlistentry>
+</variablelist>
+
 <para>
 On the second page, you can set the theme. Select a theme from the list.
 Each item in the list shows a small preview left to the theme name. A selection is immediately applied.
