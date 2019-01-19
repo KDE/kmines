@@ -13,6 +13,7 @@
   <name xml:lang="fi">KMines</name>
   <name xml:lang="fr">KMines</name>
   <name xml:lang="gl">KMines</name>
+  <name xml:lang="id">KMines</name>
   <name xml:lang="it">KMines</name>
   <name xml:lang="nl">KMines</name>
   <name xml:lang="nn">KMinesveipar</name>
@@ -41,6 +42,7 @@
   <summary xml:lang="fi">Miinaharava-tyylinen peli</summary>
   <summary xml:lang="fr">Jeu dans le style du démineur</summary>
   <summary xml:lang="gl">Xogo como o busca minas</summary>
+  <summary xml:lang="id">Permainan Seperti Minesweeper</summary>
   <summary xml:lang="it">Gioco simile a Mine</summary>
   <summary xml:lang="nl">Mijnenvegerachtig spel</summary>
   <summary xml:lang="nn">Minesveipar-liknande spel</summary>
@@ -69,6 +71,7 @@
     <p xml:lang="fi">KMines on perinteinen miinaharavapeli. Tavoitteena on paljastaa kaikki ruudut räjäyttämättä miinoja. Miinan räjähdettyä peli loppuu.</p>
     <p xml:lang="fr">KMines est un jeu dans le style du démineur. L'objectif est de révéler tous les carrés sans faire exploser la moindre mine. Lorsqu'une mine explose, la partie est terminée.</p>
     <p xml:lang="gl">KMines é un xogo clásico de buscaminas. A idea é descubrir todos os cadrados sen estourar ningunha mina. Cando unha mina estoura acaba a partida.</p>
+    <p xml:lang="id">KMines adalah permainan Minesweeper klasik. Gagasannya adalah untuk mengungkap semua persegi tanpa meledakkan ranjau apa pun. Ketika sebuah ranjau diledakkan, tamatlah permainan.</p>
     <p xml:lang="it">KMines è un classico gioco del campo minato. Si devono individuare tutte le caselle libere senza saltare in aria su una mina. Quando una mina esplode, il gioco termina.</p>
     <p xml:lang="nl">KMines is het klassieke mijnenvegerspel. Het idee is alle vierkantjes open te maken zonder een mijn op te blazen. Als er een mijn ontploft is het spel afgelopen.</p>
     <p xml:lang="nn">KMinesveipar er eit klassisk minesveiparspel. Målet er å avdekkja alle ruter som ikkje har miner på seg. Treff du derimot på ei rute med ei mine, går mina av og du tapar spelet.</p>
