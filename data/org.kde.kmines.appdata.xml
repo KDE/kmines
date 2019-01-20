@@ -32,6 +32,7 @@
   <name xml:lang="uk">KMines</name>
   <name xml:lang="x-test">xxKMinesxx</name>
   <name xml:lang="zh-CN">KMines</name>
+  <name xml:lang="zh-TW">KMines</name>
   <summary>Minesweeper-like Game</summary>
   <summary xml:lang="ca">Joc a l'estil del dragamines</summary>
   <summary xml:lang="ca-valencia">Joc a l'estil del dragamines</summary>
