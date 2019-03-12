@@ -34,8 +34,6 @@ add_subdirectory(data)
 add_subdirectory(themes)
 add_subdirectory(doc)
 
-include_directories(${CMAKE_SOURCE_DIR}/KF5KDEGames/highscore)
-
 ########### next target ###############
 
 set(kmines_SRCS
