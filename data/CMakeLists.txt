@@ -1,7 +1,6 @@
 
 install( PROGRAMS org.kde.kmines.desktop  DESTINATION  ${KDE_INSTALL_APPDIR} )
 install( FILES org.kde.kmines.appdata.xml DESTINATION ${KDE_INSTALL_METAINFODIR} )
-install( FILES kmines.notifyrc  DESTINATION  ${KDE_INSTALL_KNOTIFY5RCDIR} )
 
 ecm_install_icons(ICONS
     16-apps-kmines.png
