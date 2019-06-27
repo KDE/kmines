@@ -25,14 +25,13 @@
 #include <KgDifficulty>
 #include <KStandardGameAction>
 #include <KActionCollection>
-#include <KToggleAction>
 #include <KScoreDialog>
 #include <KConfigDialog>
 #include <KgThemeSelector>
-#include <KMessageBox>
 
 #include <QStatusBar>
 #include <QDesktopWidget>
+#include <QMessageBox>
 #include <KLocalizedString>
 
 #include "ui_customgame.h"
