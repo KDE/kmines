@@ -28,6 +28,7 @@
 #include <KScoreDialog>
 #include <KConfigDialog>
 #include <KgThemeSelector>
+#include <QScreen>
 
 #include <QStatusBar>
 #include <QDesktopWidget>
@@ -135,7 +136,11 @@ void KMinesMainWindow::setupActions()
     KgDifficultyGUI::init(this);
     connect(Kg::difficulty(), &KgDifficulty::currentLevelChanged, this, &KMinesMainWindow::newGame);
 
-    setupGUI(qApp->desktop()->availableGeometry().size()*0.4);
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+    setupGUI(QApplication::screens().at(0)->availableGeometry().size() * 0.4);
+#else
+    setupGUI(screen()->availableGeometry().size() * 0.4);
+#endif
 }
 
 void KMinesMainWindow::onMinesCountChanged(int count)
