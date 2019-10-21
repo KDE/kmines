@@ -60,7 +60,7 @@ void MineFieldItem::initField( int numRows, int numCols, int numMines )
     int oldBorderSize = m_borders.size();
     int newBorderSize = (numCols+2)*2 + (numRows+2)*2-4;
 
-    // if field is being shrinked, delete elements at the end before resizing vector
+    // if field is being shrunk, delete elements at the end before resizing vector
     if(oldSize > newSize)
     {
         for( int i=newSize; i<oldSize; ++i )
@@ -125,7 +125,7 @@ void MineFieldItem::generateField(int clickedIdx)
     // this is the list of items we don't want to put the mine in
     // to ensure that clickedIdx will stay an empty cell
     // (it will be empty if none of surrounding items holds mine)
-    QList<CellItem*> neighbForClicked = adjasentItemsFor(fp.first, fp.second);
+    QList<CellItem*> neighbForClicked = adjacentItemsFor(fp.first, fp.second);
 
     while(minesToPlace != 0)
     {
@@ -147,7 +147,7 @@ void MineFieldItem::generateField(int clickedIdx)
     foreach(int idx, cellsWithMines)
     {
         FieldPos rc = rowColFromIndex(idx);
-        QList<CellItem*> neighbours = adjasentItemsFor(rc.first, rc.second);
+        QList<CellItem*> neighbours = adjacentItemsFor(rc.first, rc.second);
         foreach( CellItem *item, neighbours )
         {
             if(!item->hasMine())
@@ -294,7 +294,7 @@ void MineFieldItem::onItemRevealed(int row, int col)
 void MineFieldItem::revealEmptySpace(int row, int col)
 {
     // recursively reveal neighbour cells until we find cells with digit
-    QList<FieldPos> list = adjasentRowColsFor(row,col);
+    QList<FieldPos> list = adjacentRowColsFor(row,col);
     CellItem *item = nullptr;
 
     foreach( const FieldPos& pos, list )
@@ -343,7 +343,7 @@ void MineFieldItem::mousePressEvent( QGraphicsSceneMouseEvent *ev )
         // undo press that was made by LeftClick. in other cases it won't hurt :)
         itemUnderMouse->undoPress();
 
-        QList<CellItem*> neighbours = adjasentItemsFor(row,col);
+        QList<CellItem*> neighbours = adjacentItemsFor(row,col);
         foreach(CellItem* item, neighbours)
         {
             if(!item->isFlagged() && !item->isQuestioned() && !item->isRevealed())
@@ -376,7 +376,7 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
         // and return
         if(m_midButtonPos.first != -1)
         {
-            QList<CellItem*> neighbours = adjasentItemsFor(m_midButtonPos.first,m_midButtonPos.second);
+            QList<CellItem*> neighbours = adjacentItemsFor(m_midButtonPos.first,m_midButtonPos.second);
             foreach(CellItem *item, neighbours)
                 item->undoPress();
             m_midButtonPos = qMakePair(-1,-1);
@@ -399,7 +399,7 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
     {
         m_midButtonPos = qMakePair(-1,-1);
 
-        QList<CellItem*> neighbours = adjasentItemsFor(row,col);
+        QList<CellItem*> neighbours = adjacentItemsFor(row,col);
         if(!itemUnderMouse->isRevealed())
         {
             foreach(CellItem *item, neighbours)
@@ -502,13 +502,13 @@ void MineFieldItem::mouseMoveEvent( QGraphicsSceneMouseEvent *ev )
            (m_midButtonPos.first != row || m_midButtonPos.second != col))
         {
             // un-press previously pressed cells
-            QList<CellItem*> prevNeighbours = adjasentItemsFor(m_midButtonPos.first,
+            QList<CellItem*> prevNeighbours = adjacentItemsFor(m_midButtonPos.first,
                                                               m_midButtonPos.second);
             foreach(CellItem *item, prevNeighbours)
                    item->undoPress();
 
             // and press current neighbours
-            QList<CellItem*> neighbours = adjasentItemsFor(row,col);
+            QList<CellItem*> neighbours = adjacentItemsFor(row,col);
             foreach(CellItem *item, neighbours)
                 item->press();
 
@@ -589,7 +589,7 @@ void MineFieldItem::checkWon()
     }
 }
 
-QList<FieldPos> MineFieldItem::adjasentRowColsFor(int row, int col)
+QList<FieldPos> MineFieldItem::adjacentRowColsFor(int row, int col)
 {
     QList<FieldPos> resultingList;
     if(row != 0 && col != 0) // upper-left diagonal
@@ -611,9 +611,9 @@ QList<FieldPos> MineFieldItem::adjasentRowColsFor(int row, int col)
     return resultingList;
 }
 
-QList<CellItem*> MineFieldItem::adjasentItemsFor(int row, int col)
+QList<CellItem*> MineFieldItem::adjacentItemsFor(int row, int col)
 {
-    QList<FieldPos > rowcolList = adjasentRowColsFor(row,col);
+    QList<FieldPos > rowcolList = adjacentRowColsFor(row,col);
     QList<CellItem*> resultingList;
     foreach( const FieldPos& pos, rowcolList )
         resultingList.append( itemAt(pos) );

@@ -55,7 +55,7 @@ public:
      */
     void initField( int numRows, int numCols, int numMines );
     /**
-     * Resets mines to the intial state.
+     * Resets mines to the initial state.
      */
     void resetMines();
     /**
@@ -121,13 +121,13 @@ private:
      */
     void generateField(int clickedIdx);
     /**
-     * Returns all adjasent items for item at row, col
+     * Returns all adjacent items for item at row, col
      */
-    QList<CellItem*> adjasentItemsFor(int row, int col);
+    QList<CellItem*> adjacentItemsFor(int row, int col);
     /**
-     * Returns all valid adjasent row,col pairs for row, col
+     * Returns all valid adjacent row,col pairs for row, col
      */
-    QList<FieldPos> adjasentRowColsFor(int row, int col);
+    QList<FieldPos> adjacentRowColsFor(int row, int col);
     /**
      * Checks if player lost the game
      */

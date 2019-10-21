@@ -37,7 +37,6 @@
 
 #include "ui_customgame.h"
 #include "ui_generalopts.h"
-#include "settings.h"
 
 /*
  * Classes for config dlg pages
