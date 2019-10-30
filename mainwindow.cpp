@@ -98,7 +98,7 @@ KMinesMainWindow::KMinesMainWindow()
     m_view->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     m_view->setFrameStyle(QFrame::NoFrame);
 
-    m_view->setOptimizationFlags( QGraphicsView::DontClipPainter |
+    m_view->setOptimizationFlags( 
                                 QGraphicsView::DontSavePainterState |
                                 QGraphicsView::DontAdjustForAntialiasing );
 
