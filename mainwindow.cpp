@@ -149,7 +149,7 @@ void KMinesMainWindow::onMinesCountChanged(int count)
 
 void KMinesMainWindow::newGame()
 {
-    qDebug() << "Inside game";
+    qCDebug(KMINES_LOG) << "Inside game";
     m_gameClock->restart();
     m_gameClock->pause(); // start only with the 1st click
 

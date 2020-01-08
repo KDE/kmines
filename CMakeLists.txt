@@ -27,6 +27,7 @@ include(FeatureSummary)
 include(ECMAddAppIcon)
 include(ECMInstallIcons)
 include(KDEInstallDirs)
+include(ECMQtDeclareLoggingCategory)
 include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
 include(KDECMakeSettings)
 if (EXISTS "${CMAKE_SOURCE_DIR}/.git")
@@ -48,6 +49,8 @@ set(kmines_SRCS
     scene.cpp
     main.cpp
 )
+ecm_qt_declare_logging_category(kmines_SRCS HEADER kmines_debug.h IDENTIFIER KMINES_LOG CATEGORY_NAME org.kde.kdegames.kmines)
+
 qt5_add_resources(kmines_SRCS kmines.qrc)
 ki18n_wrap_ui(kmines_SRCS customgame.ui generalopts.ui)
 kconfig_add_kcfg_files(kmines_SRCS settings.kcfgc )
@@ -67,5 +70,6 @@ target_link_libraries(kmines
 install(TARGETS kmines  ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 ########### install files ###############
+install(FILES kmines.categories  DESTINATION  ${KDE_INSTALL_LOGGINGCATEGORIESDIR})
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
