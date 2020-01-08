@@ -57,12 +57,14 @@ public:
      * Resets the scene
      */
     void reset();
+
+    KGameRenderer& renderer() {return m_renderer;}
     /**
      * Represents if the scores should be considered for the highscores
      */
-    bool canScore;
+    bool canScore() const;
+    void setCanScore(bool value);
 
-    KGameRenderer& renderer() {return m_renderer;}
 Q_SIGNALS:
     void minesCountChanged(int);
     void gameOver(bool);
@@ -70,13 +72,14 @@ Q_SIGNALS:
 private Q_SLOTS:
     void onGameOver(bool);
 private:
+    bool m_canScore;
     KGameRenderer m_renderer;
     /**
      * Game field graphics item
      */
-    MineFieldItem* m_fieldItem;
-    KGamePopupItem* m_messageItem;
-    KGamePopupItem* m_gamePausedMessageItem;
+    MineFieldItem* m_fieldItem = nullptr;
+    KGamePopupItem* m_messageItem = nullptr;
+    KGamePopupItem* m_gamePausedMessageItem = nullptr;
 };
 
 class QResizeEvent;

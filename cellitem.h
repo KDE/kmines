@@ -47,21 +47,21 @@ public:
     /**
      * Sets whether this item holds mine or not
      */
-    void setHasMine(bool hasMine) { m_hasMine = hasMine; }
+    void setHasMine(bool hasMine);
     /**
      * @return whether this item holds mine
      */
-    bool hasMine() const { return m_hasMine; }
+    bool hasMine() const;
     /**
      * Sets this item so it holds a digit
      *
      * @param digit digit number (1 to 8)
      */
-    void setDigit(int digit) { m_digit = digit; updatePixmap(); }
+    void setDigit(int digit);
     /**
      * @return digit this item holds or 0 if none
      */
-    int digit() const { return m_digit; }
+    int digit() const;
     /**
      * Shows what this item hides :)
      * Can be a bomb, a digit, an empty square
@@ -71,7 +71,7 @@ public:
      * Hides what this item shows ;).
      * I.e. resets revealed state
      */
-    void unreveal() { m_state = KMinesState::Released; updatePixmap(); }
+    void unreveal();
     /**
      * Removes the flag
      */
@@ -83,19 +83,19 @@ public:
     /**
      * @return whether this cell is revealed
      */
-    bool isRevealed() const { return ( m_state == KMinesState::Revealed || m_state == KMinesState::Error); }
+    bool isRevealed() const;
     /**
      * @return whether this cell is marked with flag
      */
-    bool isFlagged() const { return m_state == KMinesState::Flagged; }
+    bool isFlagged() const;
     /**
      * @return whether this cell is marked with question
      */
-    bool isQuestioned() const { return m_state == KMinesState::Questioned; }
+    bool isQuestioned() const;
     /**
      * @return whether this cell is exploded
      */
-    bool isExploded() const { return m_exploded; }
+    bool isExploded() const;
     /**
      * Resets all properties & state of an item to default ones
      */
@@ -107,7 +107,7 @@ public:
     void mark();
     // enable use of qgraphicsitem_cast
     enum { Type = UserType + 1 };
-    int type() const override { return Type; }
+    int type() const override;
 Q_SIGNALS:
     /**
      * Emitted when this item is revealed with mouse click

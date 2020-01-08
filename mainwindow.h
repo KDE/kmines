@@ -45,10 +45,10 @@ private Q_SLOTS:
     void loadSettings();
 private:
     void setupActions();
-    KMinesScene* m_scene;
-    KMinesView* m_view;
-    KGameClock* m_gameClock;
-    KToggleAction* m_actionPause;
+    KMinesScene* m_scene = nullptr;
+    KMinesView* m_view = nullptr;
+    KGameClock* m_gameClock = nullptr;
+    KToggleAction* m_actionPause = nullptr;
     
     QPointer<QLabel> mineLabel = new QLabel;
     QPointer<QLabel> timeLabel = new QLabel;

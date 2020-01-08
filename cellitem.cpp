@@ -25,7 +25,7 @@ QHash<int, QString> CellItem::s_digitNames;
 QHash<KMinesState::CellState, QList<QString> > CellItem::s_stateNames;
 
 CellItem::CellItem(KGameRenderer* renderer, QGraphicsItem* parent)
-    : KGameRenderedItem(renderer, QLatin1String( "" ), parent)
+    : KGameRenderedItem(renderer, QString(), parent)
 {
     if(s_digitNames.isEmpty())
         fillNameHashes();
@@ -43,6 +43,27 @@ void CellItem::unexplode()
 {
     m_exploded = false;
 }
+
+bool CellItem::isRevealed() const
+{
+    return ( m_state == KMinesState::Revealed || m_state == KMinesState::Error);
+}
+
+bool CellItem::isFlagged() const
+{
+    return m_state == KMinesState::Flagged;
+}
+
+bool CellItem::isQuestioned() const
+{
+    return m_state == KMinesState::Questioned;
+}
+
+bool CellItem::isExploded() const
+{
+    return m_exploded;
+}
+
 
 void CellItem::reset()
 {
@@ -83,6 +104,27 @@ void CellItem::setRenderSize(const QSize &renderSize)
     {
         ((KGameRenderedItem*)item)->setRenderSize(renderSize);
     }
+}
+
+void CellItem::setHasMine(bool hasMine)
+{
+    m_hasMine = hasMine;
+}
+
+bool CellItem::hasMine() const
+{
+    return m_hasMine;
+}
+
+void CellItem::setDigit(int digit)
+{
+    m_digit = digit;
+    updatePixmap();
+}
+
+int CellItem::digit() const
+{
+    return m_digit;
 }
 
 void CellItem::press()
@@ -133,6 +175,11 @@ void CellItem::mark()
     updatePixmap();
 }
 
+int CellItem::type() const
+{
+    return Type;
+}
+
 void CellItem::reveal()
 {
     if(isRevealed())
@@ -142,6 +189,12 @@ void CellItem::reveal()
         m_state = KMinesState::Error;
     else
         m_state = KMinesState::Revealed;
+    updatePixmap();
+}
+
+void CellItem::unreveal()
+{
+    m_state = KMinesState::Released;
     updatePixmap();
 }
 

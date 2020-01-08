@@ -22,7 +22,7 @@
 QHash<KMinesState::BorderElement, QString> BorderItem::s_elementNames;
 
 BorderItem::BorderItem( KGameRenderer* renderer, QGraphicsItem* parent )
-    : KGameRenderedItem(renderer, QLatin1String( "" ), parent), m_element(KMinesState::BorderEast),
+    : KGameRenderedItem(renderer, QString(), parent), m_element(KMinesState::BorderEast),
       m_row(-1), m_col(-1)
 {
     if(s_elementNames.isEmpty())
@@ -30,9 +30,36 @@ BorderItem::BorderItem( KGameRenderer* renderer, QGraphicsItem* parent )
     setShapeMode(BoundingRectShape);
 }
 
+void BorderItem::setBorderType(KMinesState::BorderElement e)
+{
+    m_element = e;
+    updatePixmap();
+}
+
+void BorderItem::setRowCol(int row, int col)
+{
+    m_row = row;
+    m_col = col;
+}
+
+int BorderItem::row() const
+{
+    return m_row;
+}
+
+int BorderItem::col() const
+{
+    return m_col;
+}
+
 void BorderItem::updatePixmap()
 {
     setSpriteKey(s_elementNames[m_element]);
+}
+
+int BorderItem::type() const
+{
+    return Type;
 }
 
 void BorderItem::fillNameHash()

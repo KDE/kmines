@@ -219,6 +219,21 @@ QRectF MineFieldItem::boundingRect() const
     return QRectF(0, 0, m_cellSize*(m_numCols+2), m_cellSize*(m_numRows+2));
 }
 
+int MineFieldItem::rowCount() const
+{
+    return m_numRows;
+}
+
+int MineFieldItem::columnCount() const
+{
+    return m_numCols;
+}
+
+int MineFieldItem::minesCount() const
+{
+    return m_minesCount;
+}
+
 void MineFieldItem::paint( QPainter * painter, const QStyleOptionGraphicsItem* opt, QWidget* w)
 {
     Q_UNUSED(painter);

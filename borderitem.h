@@ -31,22 +31,22 @@ class BorderItem : public KGameRenderedItem
 {
 public:
     BorderItem( KGameRenderer* renderer, QGraphicsItem* parent );
-    void setBorderType( KMinesState::BorderElement e ) { m_element = e; updatePixmap(); }
-    void setRowCol( int row, int col ) { m_row = row; m_col = col; }
-    int row() const { return m_row; }
-    int col() const { return m_col; }
+    void setBorderType( KMinesState::BorderElement e );
+    void setRowCol( int row, int col );
+    Q_REQUIRED_RESULT int row() const;
+    Q_REQUIRED_RESULT int col() const;
     void updatePixmap();
 
     // enable use of qgraphicsitem_cast
     enum { Type = UserType + 1 };
-    int type() const override { return Type; }
+    Q_REQUIRED_RESULT int type() const override;
 private:
     static QHash<KMinesState::BorderElement, QString> s_elementNames;
     static void fillNameHash();
 
     KMinesState::BorderElement m_element;
-    int m_row;
-    int m_col;
+    int m_row = -1;
+    int m_col = -1;
 };
 
 #endif

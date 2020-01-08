@@ -69,15 +69,15 @@ public:
     /**
      * @return num rows in field
      */
-    int rowCount() const { return m_numRows; }
+    int rowCount() const;
     /**
      * @return num columns in field
      */
-    int columnCount() const { return m_numCols; }
+    int columnCount() const;
     /**
      * @return num mines in field
      */
-    int minesCount() const { return m_minesCount; }
+    int minesCount() const;
 
     /**
      * Minimal number of free positions on a field

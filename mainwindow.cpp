@@ -190,7 +190,7 @@ void KMinesMainWindow::onGameOver(bool won)
     m_gameClock->pause();
     m_actionPause->setEnabled(false);
     Kg::difficulty()->setGameRunning(false);
-    if(won && m_scene->canScore)
+    if(won && m_scene->canScore())
     {
         QPointer<KScoreDialog> scoreDialog = new KScoreDialog(KScoreDialog::Name | KScoreDialog::Time, this);
         scoreDialog->initFromDifficulty(Kg::difficulty());
@@ -214,7 +214,7 @@ void KMinesMainWindow::onGameOver(bool won)
             m_scene->reset();
             m_gameClock->restart();
             m_actionPause->setEnabled(true);
-            m_scene->canScore = !Settings::disableScoreOnReset();
+            m_scene->setCanScore(!Settings::disableScoreOnReset());
         }
     }
 }

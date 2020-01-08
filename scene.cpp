@@ -81,6 +81,16 @@ void KMinesScene::reset()
     m_messageItem->forceHide();
 }
 
+bool KMinesScene::canScore() const
+{
+    return m_canScore;
+}
+
+void KMinesScene::setCanScore(bool value)
+{
+    m_canScore = value;
+}
+
 void KMinesScene::resizeScene(int width, int height)
 {
     setSceneRect(0, 0, width, height);
