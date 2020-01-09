@@ -20,6 +20,7 @@
 #include "minefielditem.h"
 #include "scene.h"
 #include "settings.h"
+#include "kmines_debug.h"
 
 #include <KGameClock>
 #include <KgDifficulty>
