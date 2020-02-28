@@ -129,13 +129,14 @@ private:
      */
     QList<FieldPos> adjacentRowColsFor(int row, int col);
     /**
-     * Checks if player lost the game
+     * Checks if player lost the game. Return `true` if lost.
+     * A `true` return value and a `false` `m_gameOver` indicates that the game is restarted.
      */
-    void checkLost();
+    bool checkLost();
     /**
-     * Checks if player won the game
+     * Checks if player won the game. Return `true` if won.
      */
-    void checkWon();
+    bool checkWon();
     /**
      * Reveals all unmarked items containing mines
      */
@@ -158,9 +159,12 @@ private:
      */
     void setupBorderItems();
 
-    void onItemRevealed(int row, int col);
+    /**
+     * Return `true` if the game is finished (and possibly restarted) after the call.
+     */
+    bool onItemRevealed(int row, int col);
     // overload
-    void onItemRevealed(CellItem* item);
+    bool onItemRevealed(CellItem* item);
 
     // note: in member functions use itemAt (see above )
     // instead of hand-computing index from row & col!

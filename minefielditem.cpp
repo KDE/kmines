@@ -289,7 +289,7 @@ void MineFieldItem::adjustItemPositions()
     }
 }
 
-void MineFieldItem::onItemRevealed(int row, int col)
+bool MineFieldItem::onItemRevealed(int row, int col)
 {
     m_numUnrevealed--;
     if(itemAt(row,col)->hasMine())
@@ -301,9 +301,9 @@ void MineFieldItem::onItemRevealed(int row, int col)
         revealEmptySpace(row,col);
     }
     // now let's check for possible win/loss
-    checkLost();
-    if(!m_gameOver) // checkLost might set it
-        checkWon();
+    if(checkLost())
+        return true;
+    return checkWon();
 }
 
 void MineFieldItem::revealEmptySpace(int row, int col)
@@ -439,8 +439,12 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
                 {
                     // force=true to omit Pressed check
                     item->release(true);
-                    if(item->isRevealed())
-                        onItemRevealed(item);
+                    // If revealing the item ends the game, stop the loop,
+                    // since everything that needs to be done for the current game is finished.
+                    // Otherwise, if the user has restarted the game, we'll be revealing
+                    // items for the new game.
+                    if(item->isRevealed() && onItemRevealed(item))
+                        break;
                 }
             }
         }
@@ -554,21 +558,21 @@ void MineFieldItem::revealAllMines()
     }
 }
 
-void MineFieldItem::onItemRevealed(CellItem* item)
+bool MineFieldItem::onItemRevealed(CellItem* item)
 {
     int idx = m_cells.indexOf(item);
     if(idx == -1)
     {
         qCDebug(KMINES_LOG) << "really strange - item not found";
-        return;
+        return false;
     }
 
     int row = idx / m_numCols;
     int col = idx - row*m_numCols;
-    onItemRevealed(row,col);
+    return onItemRevealed(row,col);
 }
 
-void MineFieldItem::checkLost()
+bool MineFieldItem::checkLost()
 {
     // for loss...
     foreach( CellItem* item, m_cells )
@@ -577,12 +581,13 @@ void MineFieldItem::checkLost()
         {
             m_gameOver = true;
             emit gameOver(false);
-            break;
+            return true;
         }
     }
+    return false;
 }
 
-void MineFieldItem::checkWon()
+bool MineFieldItem::checkWon()
 {
     // this also takes into account the trivial case when
     // only some cells left unflagged and they
@@ -601,7 +606,9 @@ void MineFieldItem::checkWon()
         // now all mines should be flagged, notify about this
         emit flaggedMinesCountChanged(m_minesCount);
         emit gameOver(true);
+        return true;
     }
+    return false;
 }
 
 QList<FieldPos> MineFieldItem::adjacentRowColsFor(int row, int col)
