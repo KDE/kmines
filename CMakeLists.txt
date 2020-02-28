@@ -70,6 +70,10 @@ target_link_libraries(kmines
 install(TARGETS kmines  ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 ########### install files ###############
-install(FILES kmines.categories  DESTINATION  ${KDE_INSTALL_LOGGINGCATEGORIESDIR})
+if (ECM_VERSION VERSION_GREATER "5.58.0")
+    install(FILES kmines.categories DESTINATION ${KDE_INSTALL_LOGGINGCATEGORIESDIR})
+else()
+    install(FILES kmines.categories DESTINATION ${KDE_INSTALL_CONFDIR})
+endif()
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
