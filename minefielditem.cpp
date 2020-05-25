@@ -37,7 +37,7 @@ void MineFieldItem::resetMines()
     m_gameOver = false;
     m_numUnrevealed = m_numRows*m_numCols;
 
-    for(CellItem* item : m_cells) {
+    for(CellItem* item : qAsConst(m_cells)) {
         item->unreveal();
         item->unflag();
         item->unexplode();

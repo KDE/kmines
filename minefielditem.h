@@ -104,7 +104,7 @@ private:
     /**
      * Overloaded one, which takes QPair
      */
-    inline CellItem* itemAt( const FieldPos& pos ) { return itemAt(pos.first,pos.second); }
+    inline CellItem* itemAt( FieldPos pos ) { return itemAt(pos.first,pos.second); }
     /**
      * Calculates (row,col) from given index in m_cells and returns them in QPair
      */

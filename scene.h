@@ -86,11 +86,12 @@ class QResizeEvent;
 
 class KMinesView : public QGraphicsView
 {
+    Q_OBJECT
 public:
     KMinesView( KMinesScene* scene, QWidget *parent );
 private:
     void resizeEvent( QResizeEvent *ev ) override;
 
-    KMinesScene* m_scene;
+    KMinesScene* m_scene = nullptr;
 };
 #endif
