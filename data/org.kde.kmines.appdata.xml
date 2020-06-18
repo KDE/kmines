@@ -32,6 +32,7 @@
   <name xml:lang="sv">Minröjaren</name>
   <name xml:lang="tr">KMines</name>
   <name xml:lang="uk">KMines</name>
+  <name xml:lang="x-test">xxKMinesxx</name>
   <name xml:lang="zh-CN">KMines</name>
   <name xml:lang="zh-TW">KMines</name>
   <summary>Minesweeper-like Game</summary>
@@ -63,6 +64,7 @@
   <summary xml:lang="sv">Minröjarliknande spel</summary>
   <summary xml:lang="tr">Mayın Tarlası benzeri Oyun</summary>
   <summary xml:lang="uk">Гра у сапера</summary>
+  <summary xml:lang="x-test">xxMinesweeper-like Gamexx</summary>
   <summary xml:lang="zh-CN">扫雷游戏</summary>
   <description>
     <p>KMines is a classic Minesweeper game. The idea is to uncover all the squares without blowing up any mines. When a mine is blown up, the game is over.</p>
@@ -92,6 +94,7 @@
     <p xml:lang="sv">Minröjaren är ett klassiskt minröjarspel. Idén är att frilägga alla rutor utan att detonera några minor. När en mina detonerar är spelet slut.</p>
     <p xml:lang="tr">KMines klasik bir Mayın Tarlası oyunudur. Amacı, tüm kareleri herhangi bir mayını patlamadan ortaya çıkarmaktır. Bir mayın patladığında oyun sona erer.</p>
     <p xml:lang="uk">KMines — це класична гра у сапера. Ідея гри полягає у тому, щоб розкрити всі клітинки без підриву жодної з мін. Якщо ви натрапите на міну, гру буде програно.</p>
+    <p xml:lang="x-test">xxKMines is a classic Minesweeper game. The idea is to uncover all the squares without blowing up any mines. When a mine is blown up, the game is over.xx</p>
   </description>
   <url type="homepage">https://www.kde.org</url>
   <url type="bugtracker">https://bugs.kde.org</url>
