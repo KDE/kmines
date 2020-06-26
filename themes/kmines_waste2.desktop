@@ -1,6 +1,16 @@
 [KGameTheme]
 Name=Cig Waste No. 2
+Name[ca]=Neteja de burilles núm. 2
+Name[nl]=Cig Waste No. 2
+Name[pt]=Lixo Cig No. 2
+Name[sv]=Fimpödemark nr. 2
+Name[x-test]=xxCig Waste No. 2xx
 Description=The cleaning of the Earth begins
+Description[ca]=Ha començat la neteja de la Terra
+Description[nl]=Het schoonmaken van de Aarde begint
+Description[pt]=Começa a limpeza da Terra
+Description[sv]=Städning av jorden börjar
+Description[x-test]=xxThe cleaning of the Earth beginsxx
 VersionFormat=1
 Author=Gregor Mitsch, based on Oxygen Theme
 AuthorEmail=codestruct@posteo.org
