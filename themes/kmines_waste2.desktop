@@ -1,6 +1,8 @@
 [KGameTheme]
 Name=Cig Waste No. 2
 Name[ca]=Neteja de burilles núm. 2
+Name[en_GB]=Cig Waste No. 2
+Name[fr]=Déchet N°2
 Name[nl]=Cig Waste No. 2
 Name[pt]=Lixo Cig No. 2
 Name[sv]=Fimpödemark nr. 2
@@ -8,6 +10,8 @@ Name[uk]=Попільничка №2
 Name[x-test]=xxCig Waste No. 2xx
 Description=The cleaning of the Earth begins
 Description[ca]=Ha començat la neteja de la Terra
+Description[en_GB]=The cleaning of the Earth begins
+Description[fr]=Le nettoyage de la Terre commence
 Description[nl]=Het schoonmaken van de Aarde begint
 Description[pt]=Começa a limpeza da Terra
 Description[sv]=Städning av jorden börjar
