@@ -6,6 +6,7 @@ TODO:
  * new levels ...
  * flower / star shaped levels
  * option for only solvable games
+ * open surrounded cells when clicked to a number if all possible mines are already flagged.
 
  * do you have any idea ?
 
