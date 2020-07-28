@@ -12,6 +12,7 @@
   <name xml:lang="en-GB">KMines</name>
   <name xml:lang="es">KMines</name>
   <name xml:lang="et">KMines</name>
+  <name xml:lang="eu">KMines</name>
   <name xml:lang="fi">KMines</name>
   <name xml:lang="fr">KMines</name>
   <name xml:lang="gl">KMines</name>
@@ -44,6 +45,7 @@
   <summary xml:lang="en-GB">Minesweeper-like Game</summary>
   <summary xml:lang="es">Juego similar al Buscaminas</summary>
   <summary xml:lang="et">Minesweeperi moodi mäng</summary>
+  <summary xml:lang="eu">Mina bilatzailearen antzeko jokoa</summary>
   <summary xml:lang="fi">Miinaharava-tyylinen peli</summary>
   <summary xml:lang="fr">Jeu dans le style du démineur</summary>
   <summary xml:lang="gl">Xogo como o busca minas</summary>
@@ -75,6 +77,7 @@
     <p xml:lang="en-GB">KMines is a classic Minesweeper game. The idea is to uncover all the squares without blowing up any mines. When a mine is blown up, the game is over.</p>
     <p xml:lang="es">KMines es el clásico juego de Buscaminas. El objetivo consiste en descubrir todos los cuadrados sin hacer estallar las minas. Si una mina estalla, el juego acaba.</p>
     <p xml:lang="et">KMines on klassikaline Minesweeperi mäng. Selle siht on avada kõik ruudud, ilma ühelgi miinil õhku lendamata. Kui miin plahvatab, on mäng läbi.</p>
+    <p xml:lang="eu">KMines mina bilatzaile joko klasikoa da. Ideia nagusia, minak eztandarik egin gabe lauki guztiak estalgabetzea da. Mina batek eztanda egiten badu, jokoa amaitu da.</p>
     <p xml:lang="fi">KMines on perinteinen miinaharavapeli. Tavoitteena on paljastaa kaikki ruudut räjäyttämättä miinoja. Miinan räjähdettyä peli loppuu.</p>
     <p xml:lang="fr">KMines est un jeu dans le style du démineur. L'objectif est de révéler tous les carrés sans faire exploser la moindre mine. Lorsqu'une mine explose, la partie est terminée.</p>
     <p xml:lang="gl">KMines é un xogo clásico de buscaminas. A idea é descubrir todos os cadrados sen estourar ningunha mina. Cando unha mina estoura acaba a partida.</p>
