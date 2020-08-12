@@ -39,6 +39,13 @@
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="kcfg_ExploreWithLeftClickOnNumberCells">
+     <property name="text">
+      <string>Explore with Left Click on Number Cells</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>

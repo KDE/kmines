@@ -25,6 +25,8 @@
 #include "cellitem.h"
 #include "borderitem.h"
 
+#include "settings.h"
+
 MineFieldItem::MineFieldItem(KGameRenderer* renderer)
     : m_leftButtonPos(-1,-1), m_midButtonPos(-1,-1), m_gameOver(false),
       m_emulatingMidButton(false), m_renderer(renderer)
@@ -349,7 +351,8 @@ void MineFieldItem::mousePressEvent( QGraphicsSceneMouseEvent *ev )
         return;
     }
 
-    m_emulatingMidButton = ( (ev->buttons() & Qt::LeftButton) && (ev->buttons() & Qt::RightButton) );
+    bool useFastExplore = Settings::exploreWithLeftClickOnNumberCells();
+    m_emulatingMidButton = ( useFastExplore ? ( (ev->buttons() & Qt::LeftButton) && ( itemUnderMouse->isRevealed() ) ) : ( (ev->buttons() & Qt::LeftButton) && (ev->buttons() & Qt::RightButton) ) );
     bool midButtonPressed = (ev->button() == Qt::MidButton || m_emulatingMidButton );
 
     if(midButtonPressed)

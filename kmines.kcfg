@@ -17,6 +17,10 @@
       <label></label>
       <default>false</default>
     </entry>
+    <entry name="ExploreWithLeftClickOnNumberCells" type="Bool" key="explore_with_left_click_on_number_cells">
+      <label>Left click on a number cell will have the same effect as mid click.</label>
+      <default>false</default>
+    </entry>
   </group>
   <group name="Options">
     <entry name="CustomWidth" type="Int" key="custom width">
