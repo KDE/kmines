@@ -53,8 +53,8 @@
 
 <legalnotice>&FDLNotice;</legalnotice>
 
-<date>2019-01-07</date>
-<releaseinfo>4.0 (Applications 19.04)</releaseinfo>
+<date>2020-08-13</date>
+<releaseinfo>4.0 (Applications 20.12)</releaseinfo>
 
 <abstract><para>&kmines; is the &kde; version of the classic minesweeper
 game.</para></abstract>
@@ -322,6 +322,12 @@ The game settings can be configured by selecting <menuchoice><guimenu>Settings</
         <term>Disable Score on Reset</term>
         <listitem>
             <para>When checked, allows you to disable scoring on reset.</para>
+        </listitem>
+    </varlistentry>
+        <varlistentry>
+        <term>Explore with Left Click on Number Cells</term>
+        <listitem>
+            <para>When checked, the &LMB; click on a number cell will have the same effect as the &MMB; click.</para>
         </listitem>
     </varlistentry>
 </variablelist>
