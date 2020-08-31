@@ -353,7 +353,7 @@ void MineFieldItem::mousePressEvent( QGraphicsSceneMouseEvent *ev )
 
     bool useFastExplore = Settings::exploreWithLeftClickOnNumberCells();
     m_emulatingMidButton = ( useFastExplore ? ( (ev->buttons() & Qt::LeftButton) && ( itemUnderMouse->isRevealed() ) ) : ( (ev->buttons() & Qt::LeftButton) && (ev->buttons() & Qt::RightButton) ) );
-    bool midButtonPressed = (ev->button() == Qt::MidButton || m_emulatingMidButton );
+    bool midButtonPressed = (ev->button() == Qt::MiddleButton || m_emulatingMidButton );
 
     if(midButtonPressed)
     {
@@ -411,7 +411,7 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
 
     CellItem* itemUnderMouse = itemAt(row,col);
 
-    bool midButtonReleased = (ev->button() == Qt::MidButton || m_emulatingMidButton);
+    bool midButtonReleased = (ev->button() == Qt::MiddleButton || m_emulatingMidButton);
 
     if( midButtonReleased )
     {
@@ -515,7 +515,7 @@ void MineFieldItem::mouseMoveEvent( QGraphicsSceneMouseEvent *ev )
     if( row < 0 || row >= m_numRows || col < 0 || col >= m_numCols )
         return;
 
-    bool midButtonPressed = ((ev->buttons() & Qt::MidButton) ||
+    bool midButtonPressed = ((ev->buttons() & Qt::MiddleButton) ||
                             ( (ev->buttons() & Qt::LeftButton) && (ev->buttons() & Qt::RightButton) ) );
 
     if(midButtonPressed)
