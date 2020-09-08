@@ -24,6 +24,7 @@
   <name xml:lang="pl">KMiny</name>
   <name xml:lang="pt">Campo Minado</name>
   <name xml:lang="pt-BR">KMines</name>
+  <name xml:lang="ro">KMines</name>
   <name xml:lang="ru">KMines</name>
   <name xml:lang="sk">KMines</name>
   <name xml:lang="sl">KMines</name>
@@ -57,6 +58,7 @@
   <summary xml:lang="pl">Gra typu saper</summary>
   <summary xml:lang="pt">Jogo semelhante ao Minesweeper</summary>
   <summary xml:lang="pt-BR">Jogo semelhante ao Campo Minado</summary>
+  <summary xml:lang="ro">Un joc ca Detectorul de mine</summary>
   <summary xml:lang="ru">Игра в сапёра</summary>
   <summary xml:lang="sk">Hra typu hľadanie mín</summary>
   <summary xml:lang="sl">Igra podobna Minolovcu</summary>
