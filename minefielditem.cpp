@@ -21,6 +21,7 @@
 #include "kmines_debug.h"
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
+#include <QRandomGenerator>
 
 #include "cellitem.h"
 #include "borderitem.h"
@@ -129,9 +130,10 @@ void MineFieldItem::generateField(int clickedIdx)
     // (it will be empty if none of surrounding items holds mine)
     QList<CellItem*> neighbForClicked = adjacentItemsFor(fp.first, fp.second);
 
+    QRandomGenerator random(QRandomGenerator::global()->generate());
     while(minesToPlace != 0)
     {
-        randomIdx = m_randomSeq.getLong( m_numRows*m_numCols );
+        randomIdx = random.bounded( m_numRows*m_numCols );
         item = m_cells.at(randomIdx);
         if(!item->hasMine()
            && neighbForClicked.indexOf(item) == -1

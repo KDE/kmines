@@ -22,7 +22,6 @@
 #include <QVector>
 #include <QGraphicsObject>
 #include <QPair>
-#include <KRandomSequence>
 
 class KGameRenderer;
 class CellItem;
@@ -197,10 +196,6 @@ private:
      * Number of flagged mines
      */
     int m_flaggedMinesCount;
-    /**
-     * Random sequence used to generate mine positions
-     */
-    KRandomSequence m_randomSeq;
     /**
      * row and column where mouse was pressed.
      * (-1,-1) if it is already released
