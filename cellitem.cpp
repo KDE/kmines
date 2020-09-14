@@ -99,9 +99,8 @@ void CellItem::updatePixmap()
 void CellItem::setRenderSize(const QSize &renderSize)
 {
     KGameRenderedItem::setRenderSize(renderSize);
-    QList<QGraphicsItem*> children = childItems();
-    foreach( QGraphicsItem* item, children)
-    {
+    const QList<QGraphicsItem*> children = childItems();
+    for (QGraphicsItem* item : children) {
         ((KGameRenderedItem*)item)->setRenderSize(renderSize);
     }
 }
