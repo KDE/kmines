@@ -32,6 +32,9 @@ include(ECMQtDeclareLoggingCategory)
 include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
 include(KDECMakeSettings)
 
+add_definitions(
+    -DQT_NO_KEYWORDS
+)
 if (${KF5Config_VERSION} STRGREATER "5.56.0")
     add_definitions(-DQT_NO_FOREACH)
 endif()

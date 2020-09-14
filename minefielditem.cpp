@@ -46,7 +46,7 @@ void MineFieldItem::resetMines()
     }
 
     m_flaggedMinesCount = 0;
-    emit flaggedMinesCountChanged(m_flaggedMinesCount);
+    Q_EMIT flaggedMinesCountChanged(m_flaggedMinesCount);
 }
 
 
@@ -110,7 +110,7 @@ void MineFieldItem::initField( int numRows, int numCols, int numMines )
 
     adjustItemPositions();
     m_flaggedMinesCount = 0;
-    emit flaggedMinesCountChanged(m_flaggedMinesCount);
+    Q_EMIT flaggedMinesCountChanged(m_flaggedMinesCount);
 }
 
 void MineFieldItem::generateField(int clickedIdx)
@@ -475,7 +475,7 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
             {
                 m_firstClick = false;
                 generateField( row*m_numCols + col );
-                emit firstClickDone();
+                Q_EMIT firstClickDone();
             }
 
             itemUnderMouse->release();
@@ -497,7 +497,7 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
                 m_flaggedMinesCount++;
             else
                 m_flaggedMinesCount--;
-            emit flaggedMinesCountChanged(m_flaggedMinesCount);
+            Q_EMIT flaggedMinesCountChanged(m_flaggedMinesCount);
         }
     }
 }
@@ -581,7 +581,7 @@ bool MineFieldItem::checkLost()
         if(item->isExploded())
         {
             m_gameOver = true;
-            emit gameOver(false);
+            Q_EMIT gameOver(false);
             return true;
         }
     }
@@ -604,8 +604,8 @@ bool MineFieldItem::checkWon()
         }
         m_gameOver = true;
         // now all mines should be flagged, notify about this
-        emit flaggedMinesCountChanged(m_minesCount);
-        emit gameOver(true);
+        Q_EMIT flaggedMinesCountChanged(m_minesCount);
+        Q_EMIT gameOver(true);
         return true;
     }
     return false;
