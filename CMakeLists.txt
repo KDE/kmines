@@ -34,6 +34,8 @@ include(KDECMakeSettings)
 
 add_definitions(
     -DQT_NO_KEYWORDS
+    -DQT_DISABLE_DEPRECATED_BEFORE=0x050700
+    -DKF_DISABLE_DEPRECATED_BEFORE_AND_AT=0x051E00
 )
 if (${KF5Config_VERSION} STRGREATER "5.56.0")
     add_definitions(-DQT_NO_FOREACH)
