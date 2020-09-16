@@ -29,9 +29,6 @@
 #include "mainwindow.h"
 
 
-static const char *DESCRIPTION
-    = I18N_NOOP("KMines is a classic minesweeper game");
-
 int main(int argc, char **argv)
 {
     // Fixes blurry icons with fractional scaling
@@ -49,8 +46,11 @@ int main(int argc, char **argv)
     KLocalizedString::setApplicationDomain("kmines");
 
     KAboutData aboutData(QStringLiteral("kmines"), i18n("KMines"), QStringLiteral(LONG_VERSION),
-						 i18n(DESCRIPTION), KAboutLicense::GPL,
-						 i18n(COPYLEFT), QString(), QStringLiteral(HOMEPAGE));
+                         i18n("KMines is a classic minesweeper game"),
+                         KAboutLicense::GPL,
+                         i18n("(c) 1996-2005, Nicolas Hadacek\n(c) 2001, Mikhail Kourinny\n(c) 2006-2007, Mauricio Piacentini\n(c) 2007, Dmitry Suzdalev"),
+                         QString(),
+                         QStringLiteral("https://kde.org/applications/games/org.kde.kmines"));
     aboutData.addAuthor(i18n("Nicolas Hadacek"),
                         i18n("Original author"), QStringLiteral("hadacek@kde.org"));
     aboutData.addAuthor(i18n("Mauricio Piacentini"),
