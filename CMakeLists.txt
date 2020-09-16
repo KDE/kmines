@@ -24,13 +24,14 @@ find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
     
 find_package(KF5KDEGames 4.9.0 REQUIRED)
 
+include(KDEInstallDirs)
+include(KDECMakeSettings)
+include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
+
 include(FeatureSummary)
 include(ECMAddAppIcon)
 include(ECMInstallIcons)
-include(KDEInstallDirs)
 include(ECMQtDeclareLoggingCategory)
-include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
-include(KDECMakeSettings)
 
 add_definitions(
     -DQT_NO_KEYWORDS
