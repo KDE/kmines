@@ -25,7 +25,7 @@
 #include <QCommandLineParser>
 #include <KDBusService>
 #include <KSharedConfig>
-#include "version.h"
+#include "kmines_version.h"
 #include "mainwindow.h"
 
 
@@ -45,7 +45,8 @@ int main(int argc, char **argv)
     }
     KLocalizedString::setApplicationDomain("kmines");
 
-    KAboutData aboutData(QStringLiteral("kmines"), i18n("KMines"), QStringLiteral(LONG_VERSION),
+    KAboutData aboutData(QStringLiteral("kmines"), i18n("KMines"),
+                         QStringLiteral(KMINES_VERSION_STRING),
                          i18n("KMines is a classic minesweeper game"),
                          KAboutLicense::GPL,
                          i18n("(c) 1996-2005, Nicolas Hadacek\n(c) 2001, Mikhail Kourinny\n(c) 2006-2007, Mauricio Piacentini\n(c) 2007, Dmitry Suzdalev"),

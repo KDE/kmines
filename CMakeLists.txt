@@ -1,6 +1,16 @@
 cmake_minimum_required (VERSION 3.5 FATAL_ERROR)
 
-project(kmines)
+# Release Service version, managed by release script
+set (RELEASE_SERVICE_VERSION_MAJOR "20")
+set (RELEASE_SERVICE_VERSION_MINOR "11")
+set (RELEASE_SERVICE_VERSION_MICRO "70")
+set (RELEASE_SERVICE_COMPACT_VERSION "${RELEASE_SERVICE_VERSION_MAJOR}${RELEASE_SERVICE_VERSION_MINOR}${RELEASE_SERVICE_VERSION_MICRO}")
+
+# Bump KMINES_BASE_VERSION once new features are added
+set(KMINES_BASE_VERSION "4.0")
+set(KMINES_VERSION "${KMINES_BASE_VERSION}.${RELEASE_SERVICE_COMPACT_VERSION}")
+
+project(kmines VERSION ${KMINES_VERSION})
 
 set (QT_MIN_VERSION "5.7.0")
 set (KF5_MIN_VERSION "5.30.0")
@@ -32,6 +42,7 @@ include(FeatureSummary)
 include(ECMAddAppIcon)
 include(ECMInstallIcons)
 include(ECMQtDeclareLoggingCategory)
+include(ECMSetupVersion)
 
 add_definitions(
     -DQT_NO_KEYWORDS
@@ -57,6 +68,11 @@ set(kmines_SRCS
     main.cpp
 )
 ecm_qt_declare_logging_category(kmines_SRCS HEADER kmines_debug.h IDENTIFIER KMINES_LOG CATEGORY_NAME org.kde.kdegames.kmines)
+
+ecm_setup_version(${KMINES_VERSION}
+    VARIABLE_PREFIX KMINES
+    VERSION_HEADER kmines_version.h
+)
 
 qt5_add_resources(kmines_SRCS kmines.qrc)
 ki18n_wrap_ui(kmines_SRCS customgame.ui generalopts.ui)
