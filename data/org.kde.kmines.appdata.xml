@@ -9,6 +9,7 @@
   <name xml:lang="cs">KMines</name>
   <name xml:lang="da">KMines</name>
   <name xml:lang="de">KMines</name>
+  <name xml:lang="el">KMines</name>
   <name xml:lang="en-GB">KMines</name>
   <name xml:lang="es">KMines</name>
   <name xml:lang="et">KMines</name>
@@ -43,6 +44,7 @@
   <summary xml:lang="ca-valencia">Joc a l'estil del dragamines</summary>
   <summary xml:lang="cs">Hra s minovým polem</summary>
   <summary xml:lang="de">„Minesweeper“-Spiel</summary>
+  <summary xml:lang="el">Παιχνίδι παρόμοιο με το Ναρκαλιευτή</summary>
   <summary xml:lang="en-GB">Minesweeper-like Game</summary>
   <summary xml:lang="es">Juego similar al Buscaminas</summary>
   <summary xml:lang="et">Minesweeperi moodi mäng</summary>
@@ -76,6 +78,7 @@
     <p xml:lang="ca">El KMines és un joc clàssic de dragamines. La idea és descobrir tots els quadrats sense que exploti cap mina. Quan una mina explota, el joc acaba.</p>
     <p xml:lang="ca-valencia">El KMines és un joc clàssic de dragamines. La idea és descobrir tots els quadrats sense que exploti cap mina. Quan una mina explota, el joc acaba.</p>
     <p xml:lang="de">KMines ist ein klassische Minesweeper-Spiel. Ziel ist es, alle leeren Felder aufzudecken, ohne dass eine Mine explodiert. Das Spiel ist beendet, wenn eine Mine explodiert.</p>
+    <p xml:lang="el">Το KMines είναι ένα κλασικό παιχνίδι Ναρκαλιευτής. Η ιδέα είναι να αποκαλυφθούν όλα τα τετράγωνα χωρίς να εκραγεί καμία νάρκη. Όταν μία νάρκη εκρήγνυται, το παιχνίδι τελειώνει.</p>
     <p xml:lang="en-GB">KMines is a classic Minesweeper game. The idea is to uncover all the squares without blowing up any mines. When a mine is blown up, the game is over.</p>
     <p xml:lang="es">KMines es el clásico juego de Buscaminas. El objetivo consiste en descubrir todos los cuadrados sin hacer estallar las minas. Si una mina estalla, el juego acaba.</p>
     <p xml:lang="et">KMines on klassikaline Minesweeperi mäng. Selle siht on avada kõik ruudud, ilma ühelgi miinil õhku lendamata. Kui miin plahvatab, on mäng läbi.</p>
