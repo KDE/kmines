@@ -117,4 +117,7 @@
     <binary>kmines</binary>
   </provides>
   <project_group>KDE</project_group>
+  <releases>
+    <release version="4.0.20120" date="2020-12-10"/>
+  </releases>
 </component>
