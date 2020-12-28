@@ -42,8 +42,10 @@ public:
         : QWidget(parent)
     {
         ui.setupUi(this);
-        connect(ui.kcfg_CustomWidth, SIGNAL(valueChanged(int)), this, SLOT(updateMaxMines()));
-        connect(ui.kcfg_CustomHeight, SIGNAL(valueChanged(int)), this, SLOT(updateMaxMines()));
+        connect(ui.kcfg_CustomWidth, QOverload<int>::of(&QSpinBox::valueChanged),
+                this, &CustomGameConfig::updateMaxMines);
+        connect(ui.kcfg_CustomHeight, QOverload<int>::of(&QSpinBox::valueChanged),
+                this, &CustomGameConfig::updateMaxMines);
     }
 
 private Q_SLOTS:
