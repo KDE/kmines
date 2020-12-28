@@ -6,7 +6,13 @@ set(kmines_SRCS
     scene.cpp
     main.cpp
 )
-ecm_qt_declare_logging_category(kmines_SRCS HEADER kmines_debug.h IDENTIFIER KMINES_LOG CATEGORY_NAME org.kde.kdegames.kmines)
+ecm_qt_declare_logging_category(kmines_SRCS
+    HEADER kmines_debug.h
+    IDENTIFIER KMINES_LOG
+    CATEGORY_NAME org.kde.kdegames.kmines
+    DESCRIPTION "KMines game"
+    EXPORT KMINES
+)
 
 ecm_setup_version(${KMINES_VERSION}
     VARIABLE_PREFIX KMINES
@@ -31,8 +37,8 @@ target_link_libraries(kmines
 
 install(TARGETS kmines  ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
-if (ECM_VERSION VERSION_GREATER "5.58.0")
-    install(FILES kmines.categories DESTINATION ${KDE_INSTALL_LOGGINGCATEGORIESDIR})
-else()
-    install(FILES kmines.categories DESTINATION ${KDE_INSTALL_CONFDIR})
-endif()
+ecm_qt_install_logging_categories(
+    EXPORT KMINES
+    FILE kmines.categories
+    DESTINATION ${KDE_INSTALL_LOGGINGCATEGORIESDIR}
+)
