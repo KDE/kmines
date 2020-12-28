@@ -6,15 +6,18 @@
 */
 
 #include "scene.h"
-#include "settings.h"
 
+// own
+#include "settings.h"
+#include "minefielditem.h"
+// KDEGames
+#include <KGamePopupItem>
+#include <KgThemeProvider>
+// KF
+#include <KLocalizedString>
+// Qt
 #include <QResizeEvent>
 
-#include <KGamePopupItem>
-#include <KLocalizedString>
-#include <KgThemeProvider>
-
-#include "minefielditem.h"
 // --------------- KMinesView ---------------
 
 KMinesView::KMinesView( KMinesScene* scene, QWidget *parent )

@@ -6,27 +6,29 @@
 */
 
 #include "mainwindow.h"
+
+// own
 #include "minefielditem.h"
 #include "scene.h"
 #include "settings.h"
 #include "kmines_debug.h"
-
+#include "ui_customgame.h"
+#include "ui_generalopts.h"
+// KDEGames
 #include <KGameClock>
 #include <KgDifficulty>
 #include <KStandardGameAction>
-#include <KActionCollection>
-#include <KScoreDialog>
-#include <KConfigDialog>
 #include <KgThemeSelector>
+#include <KScoreDialog>
+// KF
+#include <KActionCollection>
+#include <KConfigDialog>
+#include <KLocalizedString>
+// Qt
 #include <QScreen>
-
 #include <QStatusBar>
 #include <QDesktopWidget>
 #include <QMessageBox>
-#include <KLocalizedString>
-
-#include "ui_customgame.h"
-#include "ui_generalopts.h"
 
 /*
  * Classes for config dlg pages

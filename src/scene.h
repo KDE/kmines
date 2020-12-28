@@ -8,9 +8,11 @@
 #ifndef SCENE_H
 #define SCENE_H
 
+// KDEGames
+#include <KGameRenderer>
+// Qt
 #include <QGraphicsView>
 #include <QGraphicsScene>
-#include <KGameRenderer>
 
 class MineFieldItem;
 class KGamePopupItem;

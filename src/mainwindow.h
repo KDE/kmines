@@ -7,8 +7,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+// KF
 #include <KXmlGuiWindow>
-
+// Qt
 #include <QPointer>
 #include <QLabel>
 

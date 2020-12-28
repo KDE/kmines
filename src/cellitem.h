@@ -8,9 +8,10 @@
 #ifndef CELLITEM_H
 #define CELLITEM_H
 
-#include <KGameRenderedItem>
-
+// own
 #include "commondefs.h"
+// KDEGames
+#include <KGameRenderedItem>
 
 class KGameRenderer;
 

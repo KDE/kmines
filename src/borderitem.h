@@ -7,9 +7,11 @@
 
 #ifndef BORDERITEM_H
 #define BORDERITEM_H
-#include <KGameRenderedItem>
 
+// own
 #include "commondefs.h"
+// KDEGames
+#include <KGameRenderedItem>
 
 class KGameRenderer;
 

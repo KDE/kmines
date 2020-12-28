@@ -7,15 +7,15 @@
 
 #include "minefielditem.h"
 
+// own
 #include "kmines_debug.h"
+#include "cellitem.h"
+#include "borderitem.h"
+#include "settings.h"
+// Qt
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QRandomGenerator>
-
-#include "cellitem.h"
-#include "borderitem.h"
-
-#include "settings.h"
 
 MineFieldItem::MineFieldItem(KGameRenderer* renderer)
     : m_leftButtonPos(-1,-1), m_midButtonPos(-1,-1), m_gameOver(false),

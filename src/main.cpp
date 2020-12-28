@@ -4,17 +4,19 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
+// own
+#include "kmines_version.h"
+#include "mainwindow.h"
+// KF
 #include <KAboutData>
 #include <KCrash>
 #include <Kdelibs4ConfigMigrator>
-#include <klocalizedstring.h>
-
-#include <QApplication>
-#include <QCommandLineParser>
+#include <KLocalizedString>
 #include <KDBusService>
 #include <KSharedConfig>
-#include "kmines_version.h"
-#include "mainwindow.h"
+// Qt
+#include <QApplication>
+#include <QCommandLineParser>
 
 
 int main(int argc, char **argv)

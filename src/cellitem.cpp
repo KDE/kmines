@@ -7,6 +7,7 @@
 
 #include "cellitem.h"
 
+// own
 #include "settings.h"
 
 QHash<int, QString> CellItem::s_digitNames;

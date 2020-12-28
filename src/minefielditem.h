@@ -8,6 +8,7 @@
 #ifndef MINEFIELDITEM_H
 #define MINEFIELDITEM_H
 
+// Qt
 #include <QVector>
 #include <QGraphicsObject>
 #include <QPair>
