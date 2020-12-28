@@ -111,12 +111,12 @@ KMinesMainWindow::KMinesMainWindow()
 
 void KMinesMainWindow::setupActions()
 {
-    KStandardGameAction::gameNew(this, SLOT(newGame()), actionCollection());
-    KStandardGameAction::highscores(this, SLOT(showHighscores()), actionCollection());
+    KStandardGameAction::gameNew(this, &KMinesMainWindow::newGame, actionCollection());
+    KStandardGameAction::highscores(this, &KMinesMainWindow::showHighscores, actionCollection());
 
-    KStandardGameAction::quit(this, SLOT(close()), actionCollection());
-    KStandardAction::preferences( this, SLOT(configureSettings()), actionCollection() );
-    m_actionPause = KStandardGameAction::pause( this, SLOT(pauseGame(bool)), actionCollection() );
+    KStandardGameAction::quit(this, &KMinesMainWindow::close, actionCollection());
+    KStandardAction::preferences(this, &KMinesMainWindow::configureSettings, actionCollection());
+    m_actionPause = KStandardGameAction::pause(this, &KMinesMainWindow::pauseGame, actionCollection());
 
     Kg::difficulty()->addStandardLevelRange(
         KgDifficultyLevel::Easy, KgDifficultyLevel::Hard
