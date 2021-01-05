@@ -103,11 +103,6 @@ Q_SIGNALS:
      * Emitted when this item is revealed with mouse click
      */
     void revealed();
-    /**
-     * Emitted when flag (not question mark) is set or unset on this item
-     * New flagged state can be retrieved via isFlagged()
-     */
-    void flaggedStateChanged();
 private:
     static QHash<int, QString> s_digitNames;
     static QHash<KMinesState::CellState, QList<QString> > s_stateNames;
