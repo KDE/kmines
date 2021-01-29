@@ -118,6 +118,7 @@
   </provides>
   <project_group>KDE</project_group>
   <releases>
+    <release version="4.0.20122" date="2021-02-04"/>
     <release version="4.0.20121" date="2021-01-07"/>
     <release version="4.0.20120" date="2020-12-10"/>
   </releases>
