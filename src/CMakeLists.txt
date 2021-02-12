@@ -5,6 +5,7 @@ set(kmines_SRCS
     minefielditem.cpp
     scene.cpp
     main.cpp
+    kmines.qrc
 )
 ecm_qt_declare_logging_category(kmines_SRCS
     HEADER kmines_debug.h
@@ -19,7 +20,6 @@ ecm_setup_version(${KMINES_VERSION}
     VERSION_HEADER kmines_version.h
 )
 
-qt5_add_resources(kmines_SRCS kmines.qrc)
 ki18n_wrap_ui(kmines_SRCS customgame.ui generalopts.ui)
 kconfig_add_kcfg_files(kmines_SRCS settings.kcfgc )
 file(GLOB ICONS_SRCS "${CMAKE_SOURCE_DIR}/data/*-apps-kmines.png")
