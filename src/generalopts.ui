@@ -21,7 +21,7 @@
    <item>
     <widget class="QCheckBox" name="kcfg_AllowKminesReset">
      <property name="text">
-      <string>Allow KMines Reset</string>
+      <string>Allow KMines reset</string>
      </property>
      <property name="checked">
       <bool>true</bool>
@@ -34,14 +34,14 @@
    <item>
     <widget class="QCheckBox" name="kcfg_DisableScoreOnReset">
      <property name="text">
-      <string>Disable Score on Reset</string>
+      <string>Disable score on reset</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QCheckBox" name="kcfg_ExploreWithLeftClickOnNumberCells">
      <property name="text">
-      <string>Explore with Left Click on Number Cells</string>
+      <string>Explore with left click on number cells</string>
      </property>
     </widget>
    </item>
