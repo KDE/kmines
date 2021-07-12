@@ -53,8 +53,8 @@
 
 <legalnotice>&FDLNotice;</legalnotice>
 
-<date>2020-08-13</date>
-<releaseinfo>4.0 (Applications 20.12)</releaseinfo>
+<date>2021-07-11</date>
+<releaseinfo>4.0 (KDE Gear 21.04)</releaseinfo>
 
 <abstract><para>&kmines; is the &kde; version of the classic minesweeper
 game.</para></abstract>
@@ -95,7 +95,7 @@ Numbers indicate how many mines there are nearby.
 </screenshot>
 
 <para>
-To play &kmines;, you need to use the mouse and its three buttons to 
+To play &kmines;, you need to use the mouse and its three buttons to
 uncover or to flag the squares (with two-buttoned mice, clicking the
 &MMB; is generally achieved by simultaneously pressing the &LMB; and the
 &RMB;).
@@ -104,7 +104,7 @@ uncover or to flag the squares (with two-buttoned mice, clicking the
 <para>Clicking the &LMB; on your mouse will
 uncover a square. If there is a mine there, it will detonate, and the game will be over.
 If there is not a mine under the square, the square is cleared and if there aren't other
-mines nearby, the square will disappear including any nearby squares without mines. 
+mines nearby, the square will disappear including any nearby squares without mines.
 If there are mines nearby, a number will appear showing how many neighboring squares contain mines.
 For each square (excluding edge and corner squares), there are eight
 neighboring squares.
@@ -145,7 +145,7 @@ detonate a mine.
 <title>Strategies and Tips</title>
 <itemizedlist>
 <listitem><para>Use the numbers to find out where nearby mines are.</para></listitem>
-<listitem><para>Place flags where you suspect there are mines. Note that even though the indicated 
+<listitem><para>Place flags where you suspect there are mines. Note that even though the indicated
 number of mines goes down when you place a flag, there might not be a mine under the flag.</para></listitem>
 <listitem><para>Think before you click, a wrong click could detonate a mine.</para></listitem>
 <listitem><para>When you suspect that a square contains a mine, work around the square to uncover any numbers which might help.</para></listitem>
@@ -204,7 +204,7 @@ difficulty level.</para></listitem>
 </shortcut>
 <guimenu>Game</guimenu>
 <guimenuitem>Quit</guimenuitem> </menuchoice></term>
-<listitem><para><action>Quits</action> &kmines;</para></listitem>
+<listitem><para><action>Quits</action> &kmines;.</para></listitem>
 </varlistentry>
 
 <varlistentry>
@@ -220,8 +220,8 @@ difficulty level.</para></listitem>
 <guimenuitem>Hard</guimenuitem> (30x16 squares, 99 mines).  There is also a
 <guimenuitem>Custom</guimenuitem> level settings.</para>
 <para>If you select <guimenuitem>Custom</guimenuitem>, then the
-settings you have configured in the <guimenuitem>Configure
-&kmines;</guimenuitem> dialog will be used.</para></listitem>
+settings you have configured in the <guilabel>Configure -
+&kmines;</guilabel> dialog will be used.</para></listitem>
 </varlistentry>
 
 </variablelist>
@@ -247,16 +247,16 @@ of the &kde; Fundamentals.
 <row><entry><keycap>P</keycap></entry><entry>Pause</entry></row>
 <row><entry><keycombo action="simul">&Ctrl;<keycap>Q</keycap></keycombo></entry><entry>Quit &kmines;</entry></row>
 <row><entry><keycap>F1</keycap></entry><entry>&kmines; Handbook</entry></row>
-<row><entry><keycombo action="simul">&Shift;<keycap>F1</keycap></keycombo></entry><entry>What's This Help</entry></row>
+<row><entry><keycombo action="simul">&Shift;<keycap>F1</keycap></keycombo></entry><entry>What's This? help</entry></row>
 <row><entry><keycombo action="simul">&Ctrl;<keycap>H</keycap></keycombo></entry><entry>Show High Scores</entry></row>
 
 </tbody>
 </tgroup>
 </table>
 
-<para>These shortcuts can be changed by selecting <menuchoice>
-<guimenu>Settings</guimenu> <guimenuitem>Configure 
-Shortcuts...</guimenuitem> </menuchoice> from the menubar.</para>
+<para>These shortcuts can be changed by selecting the
+<menuchoice><guimenu>Settings</guimenu> <guimenuitem>Configure
+Shortcuts...</guimenuitem></menuchoice> menu item.</para>
 
 </sect1>
 
@@ -274,8 +274,8 @@ Can I change the way the game looks?
 </question>
 <answer>
 <para>
-Yes, click on the <guimenu>Settings</guimenu> menu and
-select <guimenuitem>Configure &kmines;...</guimenuitem>.
+Yes, click on the <menuchoice><guimenu>Settings</guimenu> <guimenuitem>Configure
+&kmines;...</guimenuitem></menuchoice> menu item.
 </para>
 </answer>
 </qandaentry>
@@ -299,8 +299,8 @@ Yes, the easiest way is to use the drop down box in the lower right corner.
 <chapter id="settings">
 <title>Game Settings</title>
 <para>
-The game settings can be configured by selecting <menuchoice><guimenu>Settings</guimenu>
-<guimenuitem>Configure &kmines;...</guimenuitem></menuchoice> from the menubar. A dialog will appear.
+The game settings can be configured by selecting the <menuchoice><guimenu>Settings</guimenu>
+<guimenuitem>Configure &kmines;...</guimenuitem></menuchoice> menu item. A dialog will appear.
 </para>
 <para>
     On the <guilabel>General</guilabel> page, you can configure the following game settings.
@@ -313,19 +313,19 @@ The game settings can be configured by selecting <menuchoice><guimenu>Settings</
         </listitem>
     </varlistentry>
     <varlistentry>
-        <term>Allow &kmines; Reset</term>
+        <term>Allow &kmines; reset</term>
         <listitem>
             <para>When checked, allows you to reset &kmines; game when it is impossible to do anything but guess and your last guess is wrong.</para>
         </listitem>
     </varlistentry>
     <varlistentry>
-        <term>Disable Score on Reset</term>
+        <term>Disable score on reset</term>
         <listitem>
             <para>When checked, allows you to disable scoring on reset.</para>
         </listitem>
     </varlistentry>
         <varlistentry>
-        <term>Explore with Left Click on Number Cells</term>
+        <term>Explore with left click on number cells</term>
         <listitem>
             <para>When checked, the &LMB; click on a number cell will have the same effect as the &MMB; click.</para>
         </listitem>
