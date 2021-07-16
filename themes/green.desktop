@@ -1,5 +1,6 @@
 [KGameTheme]
 Name=Gardens of Danger
+Name[ar]=حدائق الخطر
 Name[bs]=Vrtovi opasnosti
 Name[ca]=Jardí del perill
 Name[ca@valencia]=Jardí del perill
@@ -50,6 +51,7 @@ Name[x-test]=xxGardens of Dangerxx
 Name[zh_CN]=危机庭园
 Name[zh_TW]=危險花園
 Description=A funny theme for KMines
+Description[ar]=سمة مرحة للألغام ك
 Description[ca]=Un tema divertit per al KMines
 Description[ca@valencia]=Un tema divertit per al KMines
 Description[cs]=Legrační motiv pro KMines

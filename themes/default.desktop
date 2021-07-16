@@ -1,5 +1,6 @@
 [KGameTheme]
 Name=Default
+Name[ar]=المبدئيّ
 Name[be]=Прадвызначаны
 Name[br]=Dre ziouer
 Name[bs]=Podrazumijevani
@@ -61,6 +62,7 @@ Name[x-test]=xxDefaultxx
 Name[zh_CN]=默认
 Name[zh_TW]=預設
 Description=KMines Oxygen theme
+Description[ar]=سمة أوكسجين للألغام ك
 Description[ca]=Tema Oxygen del KMines
 Description[ca@valencia]=Tema Oxygen del KMines
 Description[cs]=Motiv Oxygen pro KMines

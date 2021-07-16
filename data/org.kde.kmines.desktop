@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=KMines
 Name[af]=Kmyne
+Name[ar]=الألغام ك
 Name[be]=Сапёр
 Name[bn]=কে-মাইন্স
 Name[br]=KMines
@@ -74,6 +75,7 @@ Exec=kmines -qwindowtitle %c
 Type=Application
 X-DocPath=kmines/index.html
 GenericName=Minesweeper-like Game
+GenericName[ar]=لعبة مثل كاسحة الألغام
 GenericName[be]=Гульня ў сапёра
 GenericName[bn]=মাইনসুইপার-জাতীয় খেলা
 GenericName[br]=C'hoari doare Minesweeper
@@ -138,6 +140,7 @@ GenericName[x-test]=xxMinesweeper-like Gamexx
 GenericName[zh_CN]=扫雷游戏
 GenericName[zh_TW]=類似踩地雷的遊戲
 Comment=Minesweeper-like Game
+Comment[ar]=لعبة مثل كاسحة الألغام
 Comment[ca]=Joc a l'estil del dragamines
 Comment[ca@valencia]=Joc a l'estil del dragamines
 Comment[cs]=Hra s minovým polem
