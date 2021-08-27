@@ -29,7 +29,7 @@ void MineFieldItem::resetMines()
     m_gameOver = false;
     m_numUnrevealed = m_numRows*m_numCols;
 
-    for(CellItem* item : qAsConst(m_cells)) {
+    for(CellItem* item : std::as_const(m_cells)) {
         item->unreveal();
         item->unflag();
         item->unexplode();
@@ -137,7 +137,7 @@ void MineFieldItem::generateField(int clickedIdx)
             continue;
     }
 
-    for (int idx : qAsConst(cellsWithMines)) {
+    for (int idx : std::as_const(cellsWithMines)) {
         FieldPos rc = rowColFromIndex(idx);
         const QList<CellItem*> neighbours = adjacentItemsFor(rc.first, rc.second);
         for (CellItem *item : neighbours) {
@@ -255,11 +255,11 @@ void MineFieldItem::resizeToFitInRect(const QRectF& rect)
 
     m_cellSize = static_cast<int>(size);
 
-    for (CellItem* item : qAsConst(m_cells)) {
+    for (CellItem* item : std::as_const(m_cells)) {
         item->setRenderSize(QSize(m_cellSize, m_cellSize));
     }
 
-    for (BorderItem *item : qAsConst(m_borders)) {
+    for (BorderItem *item : std::as_const(m_borders)) {
         item->setRenderSize(QSize(m_cellSize, m_cellSize));
     }
 
@@ -276,7 +276,7 @@ void MineFieldItem::adjustItemPositions()
             itemAt(row,col)->setPos((col+1)*m_cellSize, (row+1)*m_cellSize);
         }
 
-    for (BorderItem* item : qAsConst(m_borders)) {
+    for (BorderItem* item : std::as_const(m_borders)) {
         item->setPos( item->col()*m_cellSize, item->row()*m_cellSize );
     }
 }
@@ -542,7 +542,7 @@ void MineFieldItem::mouseMoveEvent( QGraphicsSceneMouseEvent *ev )
 
 void MineFieldItem::revealAllMines()
 {
-    for (CellItem* item : qAsConst(m_cells)) {
+    for (CellItem* item : std::as_const(m_cells)) {
         if( (item->isFlagged() && !item->hasMine()) || (!item->isFlagged() && item->hasMine()) )
         {
             item->reveal();
@@ -568,7 +568,7 @@ bool MineFieldItem::onItemRevealed(CellItem* item)
 bool MineFieldItem::checkLost()
 {
     // for loss...
-    for (CellItem* item : qAsConst(m_cells)) {
+    for (CellItem* item : std::as_const(m_cells)) {
         if(item->isExploded())
         {
             m_gameOver = true;
@@ -587,7 +587,7 @@ bool MineFieldItem::checkWon()
     if(m_numUnrevealed == m_minesCount)
     {
         // mark not flagged cells (if any) with flags
-        for (CellItem* item : qAsConst(m_cells)) {
+        for (CellItem* item : std::as_const(m_cells)) {
             if( item->isQuestioned() )
                 item->mark();
             if( !item->isRevealed() && !item->isFlagged() )
