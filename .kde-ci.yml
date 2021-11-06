@@ -5,7 +5,7 @@ Dependencies:
 - 'on': ['@all']
   'require':
     'frameworks/extra-cmake-modules': '@stable'
-    'games/libkdegames' : '@latest'
+    'games/libkdegames': '@same'
     'frameworks/kconfig': '@stable'
     'frameworks/kconfigwidgets': '@stable'
     'frameworks/kcoreaddons': '@stable'
