@@ -6,11 +6,18 @@ ecm_setup_version(${KMINES_VERSION}
 add_executable(kmines)
 
 target_sources(kmines PRIVATE
-    mainwindow.cpp
-    cellitem.cpp
     borderitem.cpp
+    borderitem.h
+    cellitem.cpp
+    cellitem.h
+    commondefs.h
+    main.cpp
+    mainwindow.cpp
+    mainwindow.h
     minefielditem.cpp
+    minefielditem.h
     scene.cpp
+    scene.h
     main.cpp
 
     kmines.qrc
