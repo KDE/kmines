@@ -18,6 +18,7 @@
   <name xml:lang="fi">KMines</name>
   <name xml:lang="fr">KMines</name>
   <name xml:lang="gl">KMines</name>
+  <name xml:lang="hu">KMines</name>
   <name xml:lang="id">KMines</name>
   <name xml:lang="it">KMines</name>
   <name xml:lang="ko">KMines</name>
@@ -54,6 +55,7 @@
   <summary xml:lang="fi">Miinaharava-tyylinen peli</summary>
   <summary xml:lang="fr">Jeu dans le style du démineur</summary>
   <summary xml:lang="gl">Xogo como o busca minas</summary>
+  <summary xml:lang="hu">Aknakeresőszerű játék</summary>
   <summary xml:lang="id">Permainan Seperti Minesweeper</summary>
   <summary xml:lang="it">Gioco simile a Mine</summary>
   <summary xml:lang="ko">지뢰찾기 게임</summary>
@@ -90,6 +92,7 @@
     <p xml:lang="fi">KMines on perinteinen miinaharavapeli. Tavoitteena on paljastaa kaikki ruudut räjäyttämättä miinoja. Miinan räjähdettyä peli loppuu.</p>
     <p xml:lang="fr">KMines est un jeu dans le style du démineur. L'objectif est de révéler tous les carrés sans faire exploser la moindre mine. Lorsqu'une mine explose, la partie est terminée.</p>
     <p xml:lang="gl">KMines é un xogo clásico de buscaminas. A idea é descubrir todos os cadrados sen estourar ningunha mina. Cando unha mina estoura acaba a partida.</p>
+    <p xml:lang="hu">A KMines egy klasszikus aknakereső játék. A cél az összes mező felfedése anélkül, hogy egy aknát is felrobbantana. Ha egy akna felrobban, a játék véget ér.</p>
     <p xml:lang="id">KMines adalah permainan Minesweeper klasik. Gagasannya adalah untuk mengungkap semua persegi tanpa meledakkan ranjau apa pun. Ketika sebuah ranjau diledakkan, tamatlah permainan.</p>
     <p xml:lang="it">KMines è un classico gioco del campo minato. Si devono individuare tutte le caselle libere senza saltare in aria su una mina. Quando una mina esplode, il gioco termina.</p>
     <p xml:lang="ko">KMines는 고전 지뢰찾기 게임입니다. 지뢰를 터트리지 않고 모든 사각형을 드러내십시오. 지뢰가 터지면 게임이 끝납니다.</p>
