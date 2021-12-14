@@ -25,11 +25,9 @@
 #include <KConfigDialog>
 #include <KLocalizedString>
 // Qt
-#include <QScreen>
 #include <QStatusBar>
-#include <QDesktopWidget>
 #include <QMessageBox>
-
+#include <QScreen>
 /*
  * Classes for config dlg pages
  */
