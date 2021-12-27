@@ -35,11 +35,15 @@ find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
     CoreAddons
     Crash
     DBusAddons
-    DocTools
     I18n
     TextWidgets
     WidgetsAddons
     XmlGui
+)
+find_package(KF5DocTools ${KF5_MIN_VERSION})
+set_package_properties(KF5DocTools PROPERTIES DESCRIPTION
+    "Tools to generate documentation"
+    TYPE OPTIONAL
 )
 
 find_package(KF5KDEGames 7.3.0 REQUIRED)
@@ -53,10 +57,12 @@ add_definitions(
 
 add_subdirectory(data)
 add_subdirectory(themes)
-add_subdirectory(doc)
 add_subdirectory(src)
 
 ki18n_install(po)
-kdoctools_install(po)
+if(KF5DocTools_FOUND)
+    add_subdirectory(doc)
+    kdoctools_install(po)
+endif()
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
