@@ -20,6 +20,7 @@
   <name xml:lang="gl">KMines</name>
   <name xml:lang="hu">KMines</name>
   <name xml:lang="id">KMines</name>
+  <name xml:lang="is">KMines</name>
   <name xml:lang="it">KMines</name>
   <name xml:lang="ko">KMines</name>
   <name xml:lang="nl">KMines</name>
@@ -57,6 +58,7 @@
   <summary xml:lang="gl">Xogo como o busca minas</summary>
   <summary xml:lang="hu">Aknakeresőszerű játék</summary>
   <summary xml:lang="id">Permainan Seperti Minesweeper</summary>
+  <summary xml:lang="is">KMines er hefðbundinn sprengjuleitarleikur sem líkist Minesweeper</summary>
   <summary xml:lang="it">Gioco simile a Mine</summary>
   <summary xml:lang="ko">지뢰찾기 게임</summary>
   <summary xml:lang="nl">Mijnenvegerachtig spel</summary>
