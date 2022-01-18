@@ -10,7 +10,9 @@
 // KF
 #include <KAboutData>
 #include <KCrash>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <Kdelibs4ConfigMigrator>
+#endif
 #include <KLocalizedString>
 #include <KDBusService>
 #include <KSharedConfig>
@@ -21,10 +23,12 @@
 
 int main(int argc, char **argv)
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     // Fixes blurry icons with fractional scaling
     QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+#endif
     QApplication app(argc, argv);
-
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     Kdelibs4ConfigMigrator migrate(QStringLiteral("kmines"));
     migrate.setConfigFiles(QStringList() << QStringLiteral("kminesrc"));
     migrate.setUiFiles(QStringList() << QStringLiteral("kminesui.rc"));
@@ -33,6 +37,7 @@ int main(int argc, char **argv)
         // update the configuration cache
         KSharedConfig::openConfig()->reparseConfiguration();
     }
+#endif
     KLocalizedString::setApplicationDomain("kmines");
 
     KAboutData aboutData(QStringLiteral("kmines"), i18n("KMines"),
