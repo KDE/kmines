@@ -17,7 +17,7 @@ class KGameRenderer;
 class CellItem;
 class BorderItem;
 
-typedef QPair<int,int> FieldPos;
+using FieldPos = QPair<int, int>;
 
 /**
  * Graphics item that represents MineField.

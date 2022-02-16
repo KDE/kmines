@@ -222,6 +222,6 @@ void CellItem::fillNameHashes()
 
 void CellItem::addOverlay(const QString& spriteKey)
 {
-    KGameRenderedItem* overlay = new KGameRenderedItem(renderer(), spriteKey, this);
+    auto* overlay = new KGameRenderedItem(renderer(), spriteKey, this);
     overlay->setRenderSize(renderSize());
 }

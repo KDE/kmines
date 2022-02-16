@@ -34,7 +34,7 @@ void KMinesView::resizeEvent( QResizeEvent *ev )
 
 static KgThemeProvider* provider()
 {
-    KgThemeProvider* prov = new KgThemeProvider;
+    auto* prov = new KgThemeProvider;
     prov->discoverThemes("appdata", QStringLiteral("themes"));
     
     return prov;

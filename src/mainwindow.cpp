@@ -234,7 +234,7 @@ void KMinesMainWindow::configureSettings()
 {
     if ( KConfigDialog::showDialog( QStringLiteral(  "settings" ) ) )
         return;
-    KConfigDialog *dialog = new KConfigDialog( this, QStringLiteral( "settings" ), Settings::self() );
+    auto *dialog = new KConfigDialog( this, QStringLiteral( "settings" ), Settings::self() );
     dialog->addPage( new GeneralOptsConfig( dialog ), i18n("General"), QStringLiteral( "games-config-options" ));
     dialog->addPage( new KgThemeSelector( m_scene->renderer().themeProvider() ), i18n( "Theme" ), QStringLiteral( "games-config-theme" ));
     dialog->addPage( new CustomGameConfig( dialog ), i18n("Custom Game"), QStringLiteral( "games-config-custom" ));

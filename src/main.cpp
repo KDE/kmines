@@ -74,7 +74,7 @@ int main(int argc, char **argv)
     if ( app.isSessionRestored() )
         kRestoreMainWindows<KMinesMainWindow>();
     else {
-        KMinesMainWindow *mw = new KMinesMainWindow;
+        auto *mw = new KMinesMainWindow;
         mw->show();
     }
     
