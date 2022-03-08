@@ -40,6 +40,7 @@ ecm_add_app_icon(kmines ICONS ${ICONS_SRCS})
 
 target_link_libraries(kmines 
     KF5KDEGames
+    KF5::CoreAddons
     KF5::TextWidgets
     KF5::WidgetsAddons
     KF5::DBusAddons
