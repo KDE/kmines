@@ -11,6 +11,7 @@
 #include "settings.h"
 #include "minefielditem.h"
 // KDEGames
+#include <kdegames_version.h>
 #include <KGamePopupItem>
 #include <KgThemeProvider>
 // KF
@@ -35,8 +36,12 @@ void KMinesView::resizeEvent( QResizeEvent *ev )
 static KgThemeProvider* provider()
 {
     auto* prov = new KgThemeProvider;
+#if KDEGAMES_VERSION >= QT_VERSION_CHECK(7, 4, 0)
+    prov->discoverThemes(QStringLiteral("themes"));
+#else
     prov->discoverThemes("appdata", QStringLiteral("themes"));
-    
+#endif
+
     return prov;
 }
 
