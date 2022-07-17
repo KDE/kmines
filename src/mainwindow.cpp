@@ -95,7 +95,7 @@ KMinesMainWindow::KMinesMainWindow()
                                 QGraphicsView::DontAdjustForAntialiasing );
 
 
-    m_gameClock = new KGameClock(this, KGameClock::MinSecOnly);
+    m_gameClock = new KGameClock(this, KGameClock::FlexibleHourMinSec);
     connect(m_gameClock, &KGameClock::timeChanged, this, &KMinesMainWindow::advanceTime);
 
     mineLabel->setText(i18n("Mines: 0/0"));

@@ -46,7 +46,7 @@ set_package_properties(KF5DocTools PROPERTIES DESCRIPTION
     TYPE OPTIONAL
 )
 
-find_package(KF5KDEGames 7.3.0 REQUIRED)
+find_package(KF5KDEGames 7.3.1 REQUIRED)
 
 add_definitions(
     -DQT_DISABLE_DEPRECATED_BEFORE=0x050F00
