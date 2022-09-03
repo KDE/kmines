@@ -60,8 +60,6 @@ int main(int argc, char **argv)
     aboutData.addCredit(i18n("Thomas Capricelli"), i18n("Magic reveal mode"));
     aboutData.addCredit(i18n("Brian Croom"), i18n("Port to use KGameRenderer"));
     
-    aboutData.setOrganizationDomain(QByteArray("kde.org"));
-    aboutData.setProductName(QByteArray("kmines"));
     app.setWindowIcon(QIcon::fromTheme(QStringLiteral("kmines")));
     KAboutData::setApplicationData(aboutData);
     KCrash::initialize();
