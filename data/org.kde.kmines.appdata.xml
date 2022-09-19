@@ -121,6 +121,7 @@
   <url type="homepage">https://apps.kde.org/kmines</url>
   <url type="bugtracker">https://bugs.kde.org</url>
   <url type="donation">https://www.kde.org/community/donations/?app=kmines&amp;source=appdata</url>
+  <url type="help">https://docs.kde.org/?application=kmines</url>
   <screenshots>
     <screenshot type="default">
       <image>https://cdn.kde.org/screenshots/kmines/kmines.png</image>
