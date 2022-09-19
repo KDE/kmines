@@ -46,7 +46,7 @@ int main(int argc, char **argv)
                          KAboutLicense::GPL,
                          i18n("(c) 1996-2005, Nicolas Hadacek\n(c) 2001, Mikhail Kourinny\n(c) 2006-2007, Mauricio Piacentini\n(c) 2007, Dmitry Suzdalev"),
                          QString(),
-                         QStringLiteral("https://kde.org/applications/games/org.kde.kmines"));
+                         QStringLiteral("https://apps.kde.org/kmines"));
     aboutData.addAuthor(i18n("Nicolas Hadacek"),
                         i18n("Original author"), QStringLiteral("hadacek@kde.org"));
     aboutData.addAuthor(i18n("Mauricio Piacentini"),

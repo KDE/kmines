@@ -118,7 +118,7 @@
     <p xml:lang="x-test">xxKMines is a classic Minesweeper game. The idea is to uncover all the squares without blowing up any mines. When a mine is blown up, the game is over.xx</p>
     <p xml:lang="zh-CN">KMines 是一款经典扫雷游戏。目标是不引爆地雷的情况下，揭开所有方格。当地雷被引爆时，游戏结束。</p>
   </description>
-  <url type="homepage">https://www.kde.org</url>
+  <url type="homepage">https://apps.kde.org/kmines</url>
   <url type="bugtracker">https://bugs.kde.org</url>
   <url type="donation">https://www.kde.org/community/donations/?app=kmines&amp;source=appdata</url>
   <screenshots>
