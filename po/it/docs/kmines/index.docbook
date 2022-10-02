@@ -1,0 +1,623 @@
+<?xml version="1.0" ?>
+<!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.5-Based Variant V1.1//EN" "dtd/kdedbx45.dtd" [
+  <!ENTITY % addindex "IGNORE">
+  <!ENTITY % Italian "INCLUDE"
+> <!-- change language only here -->
+]>
+
+<book id="kmines" lang="&language;">
+
+<bookinfo>
+<title
+>Manuale di &kmines;</title>
+
+<authorgroup>
+<author
+><firstname
+>Nicolas</firstname
+> <surname
+>Hadacek</surname
+> <affiliation
+> <address
+>&Nicolas.Hadacek.mail;</address>
+</affiliation>
+</author>
+<author
+><firstname
+>Michael</firstname
+> <surname
+>McBride</surname
+> <affiliation
+><address
+><email
+>mmcbride@ematic.org</email
+></address
+></affiliation>
+</author>
+<author
+><firstname
+>Anton</firstname
+> <surname
+>Brondz</surname
+> <affiliation
+> <address
+><email
+>dinolinux@gmail.com</email
+></address>
+</affiliation>
+</author>
+<othercredit role="developer"
+><firstname
+>Nicolas</firstname
+> <surname
+>Hadacek</surname
+> <affiliation
+> <address
+>&Nicolas.Hadacek.mail;</address>
+</affiliation>
+<contrib
+>Sviluppatore</contrib>
+</othercredit>
+<othercredit role="reviewer"
+><firstname
+>Lauri</firstname
+> <surname
+>Watts</surname
+> <affiliation
+><address
+>&Lauri.Watts.mail;</address
+></affiliation>
+<contrib
+>Revisore</contrib>
+</othercredit>
+<othercredit role="translator"
+><firstname
+>Andrea</firstname
+><surname
+>Celli</surname
+><affiliation
+><address
+><email
+>andrea.celli@libero.it</email
+></address
+></affiliation
+><contrib
+>Traduzione della documentazione</contrib
+></othercredit
+> 
+</authorgroup>
+
+<copyright>
+<year
+>2000</year>
+<holder
+>&Nicolas.Hadacek;, Michael McBride</holder>
+</copyright>
+
+<legalnotice
+>&FDLNotice;</legalnotice>
+
+<date
+>2021-07-11</date>
+<releaseinfo
+>4.0 (KDE Gear 21.04)</releaseinfo>
+
+<abstract
+><para
+>&kmines; è la versione per KDE del classico gioco del campo minato</para
+></abstract>
+
+<keywordset>
+<keyword
+>KDE</keyword>
+<keyword
+>gioco</keyword>
+<keyword
+>campo minato</keyword>
+</keywordset>
+
+</bookinfo>
+
+<chapter id="introduction">
+<title
+>Introduzione</title>
+<note
+><title
+>Tipo di gioco:</title
+><para
+>Strategia, Da tavolo</para
+></note
+><!-- Game genre. Use as many as necessary. Available game types are: Arcade, Board, Card, Dice, Toys, Logic, Strategy.-->
+<note
+><title
+>Numero di giocatori ammessi:</title
+><para
+>Uno</para
+></note
+><!--Number of possible players. It can be: One, Two,..., Multiplayer-->
+
+<para
+>&kmines; è il classico gioco del campo minato. Si devono individuare tutte le caselle libere senza saltare in aria su una mina. Quando una mina esplode, il gioco termina. I numeri indicano quante mine ci sono nelle caselle accanto. </para>
+
+</chapter>
+
+<chapter id="how-to-play">
+<title
+>Come si gioca</title>
+<note
+><title
+>Obiettivo:</title
+><para
+>Individuare tutte le mine nascoste in un campo minato.</para
+></note
+><!--Describe the objective of the game.-->
+
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="gameboard.png" format="PNG"/>
+</imageobject>
+<textobject>
+<phrase
+>Tavolo di gioco di &kmines;</phrase>
+</textobject>
+</mediaobject>
+</screenshot>
+
+<para
+>Per giocare a &kmines; ti serviranno il mouse e i suoi tre pulsanti (con i mouse a due pulsanti, il &MMB; viene simulato premendo contemporaneamente il &LMB; e il &RMB;) per scoprire o marcare con una bandiera le caselle. </para>
+
+<para
+>Premendo il &LMB; si scopre una casella. Se sotto c'è una bomba nascosta, questa esploderà ed il gioco avrà termine.Se non ci sono bombe, la casella verrà dichiarata libera e, se non ci sono altre bombe nelle vicinanze, la sua copertura sparirà insieme a quella delle caselle vicine senza bombe. Se ci sono mine vicine, nella casella apparirà un numero che rappresenta il numero di caselle circostanti che nascondono una bomba. Per ogni casella (escluse quelle sui bordi e negli angoli) ve ne sono 8 vicine. </para>
+
+<note>
+<para
+>Premere il &LMB; su una casella con bandiera è sicuro e non produce effetti. </para>
+</note>
+
+<para
+>Il &RMB; marca una casella come minata (mettendoci una bandiera rossa). Se lo si preme due volte marcherà la casella come incerta (mettendoci un punto interrogativo). Contrassegnare come incerta qualche casella può essere utile quando non si capisce la posizione delle mine. Il &MMB; scopre le caselle circostanti se quelle minate sono già  tutte contrassegnate. È molto utile perché è molto più veloce che scoprirle una ad una. Assicurati che le bandiere siano posizionate correttamente. Altrimenti farai esplodere una mina. </para>
+</chapter>
+
+<chapter id="rulestips">
+<title
+>Regole di gioco, strategie e suggerimenti</title>
+<sect1 id="rules">
+<title
+>Regole</title>
+<itemizedlist>
+<listitem
+><para
+>Tutte le mine devono essere individuate affinché il giocatore possa vincere.</para
+></listitem>
+<listitem
+><para
+>Il giocatore non può sapere l'esatta collocazione delle mine finché il gioco non è terminato.</para
+></listitem>
+<listitem
+><para
+>Se una mina esplode, il gioco termina.</para
+></listitem>
+<listitem
+><para
+>I numeri indicano le mine circostanti.</para
+></listitem>
+</itemizedlist>
+</sect1>
+
+<sect1 id="strattips">
+<title
+>Strategie e suggerimenti</title>
+<itemizedlist>
+<listitem
+><para
+>Sfrutta i numeri per scoprire dove sono le mine circostanti.</para
+></listitem>
+<listitem
+><para
+>Metti le bandiere dove sospetti che ci siano mine. Nota che il numero delle mine residue diminuisce sempre quando metti una bandiera, anche se non c'è una mina sotto la bandiera.</para
+></listitem>
+<listitem
+><para
+>Pensaci bene prima di fare clic. Un clic sbagliato può far esplodere una mina.</para
+></listitem>
+<listitem
+><para
+>Quando sospetti che una casella contenga una mina, giraci attorno per scoprire tutti i numeri che possono servire.</para
+></listitem>
+<listitem
+><para
+>Cerca di liberare il campo più rapidamente che puoi. Meno tempo impieghi, più alto sarà il punteggio.</para
+></listitem>
+</itemizedlist>
+</sect1>
+
+</chapter>
+
+<chapter id="command">
+<title
+>Comandi e scorciatoie da tastiera</title>
+
+<para
+>Le sezioni seguenti descrivono brevemente alcune opzioni della barra dei menu.</para>
+
+<sect1 id="menu">
+<title
+>Le voci del menu</title>
+
+<variablelist>
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>N</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Partita</guimenu
+> <guimenuitem
+>Nuova</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Inizia una nuova partita.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycap
+>P</keycap
+></shortcut
+> <guimenu
+>Partita</guimenu
+> <guimenuitem
+>Pausa</guimenuitem
+></menuchoice
+></term>
+<listitem>
+<para
+>Sospende il tempo di gioco. Con un nuovo clic su questa voce del menu il gioco riprende. Nota che il piano di gioco scompare quando si è in pausa. Sarebbe scorretto se tu cercassi buone mosse senza l'assillo del tempo. </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>H</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Partita</guimenu
+> <guimenuitem
+>Mostra la classifica</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Ti mostra i migliori punteggi (minor tempo impiegato) per ogni livello di difficoltà.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>Q</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Partita</guimenu
+> <guimenuitem
+>Esci</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+><action
+>Esce</action
+> da &kmines;.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Impostazioni</guimenu
+> <guisubmenu
+>Difficoltà</guisubmenu
+> </menuchoice
+></term>
+<listitem>
+<para
+>Ti permette di impostare il livello di difficoltà tramite un sub-menu.</para>
+<para
+>Ci sono tre livelli di difficoltà preimpostati: <guimenuitem
+>Facile</guimenuitem
+> (9x9 caselle, 10 mine), <guimenuitem
+>Normale</guimenuitem
+> (16x16 caselle, 40 mine), e <guimenuitem
+>Difficile</guimenuitem
+> (30x16 caselle, 99 mine). Si può anche impostare un livello <guimenuitem
+>Personalizzato</guimenuitem
+>.</para>
+<para
+>Se scegli <guimenuitem
+>Personalizzato</guimenuitem
+> verranno usati i parametri che hai impostato nella finestra di dialogo <guilabel
+>Configura &kmines;</guilabel
+>.</para
+></listitem>
+</varlistentry>
+
+</variablelist>
+
+<para
+>Inoltre, il menu di &kmines; ha le voci <guimenu
+>Impostazioni</guimenu
+> e <guimenu
+>Aiuto</guimenu
+> comuni a tutto &kde;. Per ulteriori informazioni leggere le sezioni relative <ulink url="help:/fundamentals/menus.html#menus-settings"
+>Menu Impostazioni</ulink
+> e <ulink url="help:/fundamentals/menus.html#menus-help"
+>Menu Aiuto</ulink
+> dei Fondamentali di &kde;. </para>
+
+</sect1>
+
+<sect1 id="keys"
+><title
+>Scorciatoie da tastiera predefinite</title>
+<para
+>La seguente tabella mostra le scorciatoie da tastiera predefinite.</para>
+
+<table>
+<title
+>Scorciatoie da tastiera</title>
+<tgroup cols="2">
+<thead
+><row
+><entry
+>Combinazione tasti</entry
+><entry
+>Azione</entry
+></row
+></thead>
+<tbody>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>N</keycap
+></keycombo
+></entry
+><entry
+>Nuova partita</entry
+></row>
+<row
+><entry
+><keycap
+>P</keycap
+></entry
+><entry
+>Pausa</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>Q</keycap
+></keycombo
+></entry
+><entry
+>Esce da &kmines;</entry
+></row>
+<row
+><entry
+><keycap
+>F1</keycap
+></entry
+><entry
+>Manuale di &kmines;</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Shift;<keycap
+>F1</keycap
+></keycombo
+></entry
+><entry
+>Che cos'è?</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>H</keycap
+></keycombo
+></entry
+><entry
+>Mostra le classifiche</entry
+></row>
+
+</tbody>
+</tgroup>
+</table>
+
+<para
+>Queste scorciatoie possono essere modificate selezionando l'elemento del menu <menuchoice
+> <guimenu
+>Impostazioni</guimenu
+> <guimenuitem
+>Configura le scorciatoie</guimenuitem
+> </menuchoice
+>.</para>
+
+</sect1>
+
+</chapter>
+
+<chapter id="faq">
+<title
+>Domande frequenti</title>
+<qandaset>
+
+<qandaentry>
+<question>
+<para
+>Posso cambiare l'aspetto grafico del gioco? </para>
+</question>
+<answer>
+<para
+>Certo. Premi l'elemento del menu <menuchoice
+><guimenu
+>Impostazioni</guimenu
+> <guimenuitem
+>Configura &kmines;...</guimenuitem
+></menuchoice
+>. </para>
+</answer>
+</qandaentry>
+
+<qandaentry>
+<question>
+<para
+>Posso aggiungere altre mine e caselle? </para>
+</question>
+<answer>
+<para
+>Certo. Il modo più semplice è quello di usare il riquadro di trascinamento messo nell'angolo in basso a destra. </para>
+</answer>
+</qandaentry>
+
+</qandaset>
+</chapter>
+
+<chapter id="settings">
+<title
+>Opzioni di gioco</title>
+<para
+>Le opzioni di gioco possono essere modificate selezionando l'elemento del menu <menuchoice
+> <guimenu
+>Impostazioni</guimenu
+> <guimenuitem
+>Configura &kmines;...</guimenuitem
+> </menuchoice
+>. Apparirà una finestra di dialogo. </para>
+<para
+>Nella pagina <guilabel
+>Generale</guilabel
+>, puoi configurare le impostazioni di gioco seguenti. </para>
+<variablelist>
+    <varlistentry>
+        <term
+>Usa il segno «?»</term>
+        <listitem>
+            <para
+>Se selezionata, permette l'uso del punto interrogativo per contrassegnare le caselle dubbie. Il segno della casella può essere cambiato col &RMB;.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term
+>Permetti la reimpostazione di &kmines;</term>
+        <listitem>
+            <para
+>Se selezionata, ti permette di reimpostare la partita di &kmines; quando non è possibile far altro che indovinare e il tuo ultimo tentativo è sbagliato.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term
+>Disabilita il punteggio alla reimpostazione</term>
+        <listitem>
+            <para
+>Se selezionata, ti permette di disabilitare il punteggio alla reimpostazione della partita.</para>
+        </listitem>
+    </varlistentry>
+        <varlistentry>
+        <term
+>Esplora con clic sinistro sulle celle con numero</term>
+        <listitem>
+            <para
+>Se selezionata, il clic con &LMB; su una cella con numero avrà lo stesso effetto del clic &MMB;.</para>
+        </listitem>
+    </varlistentry>
+</variablelist>
+
+<para
+>Nella seconda scheda puoi impostare il tema. Seleziona il tema nella lista. Ciascun elemento nella lista mostra una piccola anteprima a sinistra del nome del tema. La scelta è applicata immediatamente. </para>
+
+<para
+>Nella terza scheda puoi impostare l'altezza e la larghezza del campo e il numero di mine per il tuo livello personalizzato. </para>
+
+</chapter>
+
+<chapter id="credits"
+><title
+>Riconoscimenti e licenza</title>
+
+<para
+>&kmines; Copyright 1996-2007 </para>
+
+<itemizedlist>
+<title
+>Autori</title>
+<listitem>
+<para
+>&Nicolas.Hadacek; &Nicolas.Hadacek.mail; </para>
+</listitem>
+<listitem>
+<para
+>Mikhail Kourinny </para>
+</listitem>
+<listitem>
+<para
+>Mauricio Piacentini <email
+>mauricio@tabuleiro.com</email
+> </para>
+</listitem>
+<listitem>
+<para
+>Dmitry Suzdalev <email
+>dimsuz@gmail.com</email
+> </para>
+</listitem>
+</itemizedlist>
+
+<para
+>La documentazione è copyright 2000 di &Nicolas.Hadacek; &Nicolas.Hadacek.mail;</para>
+<para
+>Documentazione aggiornata per &kde; 2.0 da &Mike.McBride; &Mike.McBride.mail;</para>
+<para
+>Alcune modifiche per &kde; 3.2 da parte di &Philip.Rodrigues; &Philip.Rodrigues.mail;</para>
+<para
+>Prima traduzione dell'interfaccia grafica: Andrea Rizzi <email
+>rizzi@kde.org</email
+></para
+> <para
+>Attuale traduzione dell'interfaccia grafica: Andrea Celli <email
+>andrea.celli@libero.it</email
+></para
+><para
+>Traduzione della documentazione: Andrea Celli</para
+> &underFDL; &underGPL; </chapter>
+
+</book>
+<!--
+Local Variables:
+mode: sgml
+sgml-omittag: nil
+sgml-shorttag: t
+End:
+-->

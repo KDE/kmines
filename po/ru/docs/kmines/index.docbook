@@ -1,0 +1,952 @@
+<?xml version="1.0" ?>
+<!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.5-Based Variant V1.1//EN" "dtd/kdedbx45.dtd" [
+  <!ENTITY kappname "&kmines;">
+  <!ENTITY package "kdegames">
+  <!ENTITY % addindex "IGNORE">
+  <!ENTITY % Russian "INCLUDE"
+> <!-- change language only here -->
+]>
+
+<book lang="&language;">
+
+<bookinfo>
+<title
+>Руководство &kmines;</title>
+
+<authorgroup>
+<author
+><firstname
+>Nicolas</firstname
+> <surname
+>Hadacek</surname
+> <affiliation
+> <address
+><email
+>hadacek@kde.org</email
+></address>
+</affiliation>
+</author>
+<author
+><firstname
+>Michael</firstname
+> <surname
+>McBride</surname
+> <affiliation
+><address
+><email
+>mmcbride@ematic.org</email
+></address
+></affiliation>
+</author>
+<othercredit role="developer"
+><firstname
+>Nicolas</firstname
+> <surname
+>Hadacek</surname
+> <affiliation
+> <address
+><email
+>hadacek@kde.org</email
+></address>
+</affiliation>
+<contrib
+>Разработчик</contrib>
+</othercredit>
+<othercredit role="reviewer"
+><firstname
+>Lauri</firstname
+> <surname
+>Watts</surname
+> <affiliation
+><address
+><email
+>lauri@kde.org</email
+></address
+></affiliation>
+<contrib
+>Редактор</contrib>
+</othercredit>
+<othercredit role="translator"
+><firstname
+>Михаил</firstname
+> <surname
+>Сибиряков</surname
+> <affiliation
+><address
+><email
+>dtldt@dt.ru</email
+></address
+> </affiliation
+><contrib
+>Перевод на русский</contrib
+></othercredit
+> 
+</authorgroup>
+
+<copyright>
+<year
+>2000</year>
+<holder
+>Nicolas Hadacek, Michael McBride</holder>
+</copyright>
+
+<legalnotice
+>&FDLNotice;</legalnotice>
+
+<date
+>2001-02-03</date>
+<releaseinfo
+>2.00.10</releaseinfo>
+
+<abstract
+><para
+>&kmines; - это версия классической игры Сапёр для &kde;.</para
+></abstract>
+
+<keywordset>
+<keyword
+>KDE</keyword>
+<keyword
+>игра</keyword>
+<keyword
+>Сапёр</keyword>
+</keywordset>
+
+</bookinfo>
+
+<chapter id="introduction">
+<title
+>Введение</title>
+
+<para
+>&kmines; - классическая игра Сапёр. Вы должны открыть все свободные ячейки, не напоровшись на мину.</para>
+
+<para
+>Когда вы открываете ячейку, цифра в ней показывает количество соседних мин. Если цифры нет, то прилегающие клетки автоматически открываются. Установка красного флага на ячейке с миной может оказаться весьма полезным указанием, что здесь зарыта мина.</para>
+
+</chapter>
+
+<chapter id="how-to-play">
+<title
+>Как играть</title>
+
+<para
+>Вы должны использовать мышь и три кнопки для открытия ячеек и установки флагов. На мышках с двумя кнопками нажатие на <mousebutton
+>среднюю</mousebutton
+> кнопку эмулируется нажатием на <mousebutton
+>левую</mousebutton
+> и <mousebutton
+>правую</mousebutton
+> кнопки. Вот подробности:</para>
+
+<itemizedlist>
+<listitem
+><para
+><mousebutton
+>Левая</mousebutton
+> кнопка мыши открывает ячейку. Если в ячейке оказывается мина, то она взрывается, и игра заканчивается. </para>
+<para
+>Если в ячейке нет мины, появляется цифра, которая означает количество ячеек с минами, соприкасающихся с этой ячейкой. В каких же из них мины? Это и есть главное в игре.</para>
+<para
+>Для каждой ячейки (исключая крайние и угловые) есть 8 соседних ячеек.</para>
+<para
+>Если ни одна из соседних ячеек не содержит мины, то текущая ячейка открывается пустой, и соседние ячейки также автоматически открываются.</para>
+<note
+><para
+>Нажатие <mousebutton
+>левой</mousebutton
+> кнопкой мыши на ячейке с флагом ни к чему не приводит - флаг защищает ячейку от нечаянного открытия.</para
+></note
+></listitem>
+<listitem
+><para
+>Нажатие <mousebutton
+>правой</mousebutton
+> кнопки мыши ставит флаг на ячейке в которой, по вашему мнению, содержится мина (красный флаг), повторное нажатие устанавливает выбор как сомнительный (знак вопроса). Сомнительный выбор может быть полезен, если вы не понимаете расположение мин в соседних ячейках.</para
+></listitem>
+<listitem
+><para
+>Нажатие на <mousebutton
+>среднюю</mousebutton
+> кнопку мыши очищает окружающие ячейки, если все флаги стоят правильно. Это очень полезно, так как намного быстрее, чем раскрытие всех ячеек по одной. </para>
+<warning
+><para
+>Если ваш флаг стоит неверно, то вы можете ошибочно принять ячейки с минами за пустые и при нажатии на них подрываетесь на мине.</para
+></warning
+></listitem>
+<listitem
+><para
+>Нажатие на <guiicon
+>жёлтую улыбающуюся рожицу</guiicon
+> начинает новую игру.</para
+></listitem>
+</itemizedlist>
+
+<note
+><para
+>Это установки по умолчанию. Привязки кнопок мыши могут быть перепрограммированы. Подробнее об этом читайте в разделе <link linkend="prefs"
+>Параметры игры</link
+>.</para
+></note>
+
+<sect1 id="screen"
+><title
+>Окно игры &kmines;</title>
+
+<screenshot>
+<screeninfo
+>Окно игры &kmines;</screeninfo>
+<mediaobject>
+<imageobject
+><imagedata fileref="kmines1.png"
+	     format="PNG"/></imageobject>
+<textobject
+><phrase
+>Окно игры &kmines;</phrase
+></textobject>
+</mediaobject>
+</screenshot>
+
+<para
+>В окне &kmines; есть следующие элементы:</para>
+
+<itemizedlist>
+<listitem
+><para
+>Счётчик показывает, сколько мин осталось открыть до окончания игры. После разминирования мины от числа на счётчике отнимается единица.</para>
+<note
+><para
+>По счётчику мин нельзя ориентироваться, правильно ли вы указали местонахождение мин. Он показывает число мин, которые вы должны теоретически обезвредить для того, чтобы закончить игру.</para
+></note>
+<para
+>В этом примере нужно найти 10 мин.</para
+></listitem>
+<listitem
+><para
+>Нажатие на жёлтую улыбающуюся рожицу начинает новую игру. При проигрыше она хмурится.</para
+></listitem>
+<listitem
+><para
+>Справа показано время, затраченное вами на разминирование. Чем меньше время, тем выше результат и, соответственно, место в таблице рекордов.</para
+></listitem>
+<listitem
+><para
+>Поле, на котором собственно и происходит игра. Его размер зависит от сложности игры. В примере показано поле из 64 ячеек. Это лёгкий уровень сложности.</para
+></listitem>
+<listitem
+><para
+>Надпись внизу окна показывает состояние игры. В данном примере она сообщает <guilabel
+>Игра остановлена</guilabel
+>.</para
+></listitem>
+</itemizedlist>
+</sect1>
+</chapter>
+
+<chapter id="prefs"
+><title
+>Параметры игры</title>
+<para
+>Параметры игры могут быть заданы через пункт меню <menuchoice
+> <guimenu
+>Настройка</guimenu
+> <guimenuitem
+>Настроить &kmines;</guimenuitem
+> </menuchoice
+>.</para>
+
+<screenshot>
+<screeninfo
+>Параметры &kmines;</screeninfo>
+<mediaobject>
+<imageobject
+><imagedata fileref="kmines2.png" format="PNG"/></imageobject>
+<textobject
+><phrase
+>Параметры &kmines;</phrase
+></textobject>
+</mediaobject>
+</screenshot>
+
+<para
+>В этом окошке есть три области.</para>
+
+<variablelist>
+<varlistentry>
+<term
+><guilabel
+>Игра</guilabel
+></term>
+<listitem>
+<para
+>Первая опция, <guilabel
+>Использовать маркеры ?</guilabel
+>, позволяет вам помечать ячейки как <quote
+>неопределённые</quote
+>. Если вы включите эту опцию, то при нажатии на правую кнопку мыши будет появляться флаг. При повторном нажатии будет ставиться знак вопроса - <guiicon
+>?</guiicon
+>, показывающий, что вы не уверены, что в данной ячейке находится мина. При третьем нажатии на эту ячейку она будет снова становиться чистой.</para>
+
+<para
+>Если данная опция не включена, то <mousebutton
+>правая</mousebutton
+> кнопка мыши отмечает ячейку красным флагом. Следующее нажатие снимает флаг, не устанавливая знак вопроса - ?.</para>
+
+<para
+>Следущая опция - <guilabel
+>Использовать клавиатуру</guilabel
+>, включает или выключает горячие клавиши во время игры.</para>
+
+<note
+><para
+>Она отвечает только за игровые клавиши. Горячие клавиши <guimenuitem
+>Новая игра</guimenuitem
+> и <guimenuitem
+>Выход</guimenuitem
+>, работают независимо от этой опции.</para
+></note>
+
+<para
+>Последний раздел позволяет вам выбрать действие, которое будет происходить при нажатии кнопки мыши. Вы можете выбрать:</para>
+
+<variablelist>
+<varlistentry>
+<term
+>Открыть</term>
+<listitem
+><para
+>Открывает ячейку. Если в ней нет мины, то вы видите цифру мин, расположенных рядом. Если в ней есть мина, то она взрывается, и игра заканчивается.</para
+></listitem>
+</varlistentry>
+<varlistentry>
+<term
+>Поставить/убрать маркер.</term>
+<listitem
+><para
+>Нажатие на ячейку этой кнопкой ставит/снимает красный флаг.</para
+></listitem>
+</varlistentry>
+<varlistentry>
+<term
+>Открывать автоматически</term>
+<listitem
+><para
+>Нажатие на ячейку кнопкой с этим действием приводит к автоматическому открытию всех соседних ячеек, не помеченных красными флагами. Если в них будут мины, то они автоматически взорвутся, и игра будет закончена.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>Поставить/убрать флаг</term>
+<listitem
+><para
+>Нажатие на ячейку кнопкой с этим действием ставит/снимает знак вопроса.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>Поставить/убрать маркер ?</term>
+<listitem
+><para
+>Нажатие на ячейку кнопкой с этим действием ставит/снимает знак вопроса.</para
+></listitem>
+</varlistentry>
+</variablelist>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><guilabel
+>Внешний вид</guilabel
+></term>
+<listitem>
+<para
+>Следующая опция, <guilabel
+>Размер поля</guilabel
+>, позволяет вам выбрать размер ячеек на игровом поле. По умолчанию этот размер установлен как маленький. Вы можете изменить этот размер, если на вашем мониторе стоит большое разрешение.</para>
+
+<para
+>Остальная часть этого раздела содержит цветовые настройки. Чтобы изменить цвет, просто нажмите на кнопку с цветом и выберите новый цвет.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><guilabel
+>Настроить свое поле игры</guilabel
+></term>
+<listitem>
+<para
+>Если вы не нашли приемлемого уровня сложности, то используйте тип игры <guilabel
+>Свое минное поле</guilabel
+>. В ней вы сможете выбрать <guilabel
+>ширину</guilabel
+>, <guilabel
+>высоту</guilabel
+>, а также количество мин в процентах по отношению к количеству ячеек.По умолчанию количество мин равно 20 процентам. Вы можете изменять это значение, чтобы сделать игру сложнее (или легче).</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>Сохранение ваших настроек</term>
+<listitem
+><para
+>Когда вы всё настроили, нажмите <guibutton
+>OK</guibutton
+> для сохранения ваших настроек.</para>
+
+<para
+>Если вы хотите отменить ваши настройки, нажмите <guibutton
+>Отмена</guibutton
+>, и настройки не будут сохранены.</para>
+
+<para
+>Если нажать кнопку <guilabel
+>По умолчанию</guilabel
+>, то будут восстановлены настройки по умолчанию. Нажатие кнопки <guilabel
+>OK</guilabel
+> сохранит эти настройки.</para>
+</listitem>
+</varlistentry>
+</variablelist>
+
+</chapter>
+
+<chapter id="command">
+<title
+>Команды/сочетания клавиш</title>
+
+<para
+>Следующие разделы кратко описывают каждую опцию из меню.</para>
+
+<sect1 id="game-menu">
+<title
+>Меню <guimenu
+>Игра</guimenu
+></title>
+
+<para
+>Меню <guimenu
+>Игра</guimenu
+> содержит 5 пунктов.</para>
+
+<variablelist>
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>N</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Игра</guimenu
+> <guimenuitem
+>Новая игра</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Начало новой игры.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycap
+>P</keycap
+> </shortcut
+> <guimenu
+>Игра</guimenu
+> <guimenuitem
+>Пауза</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Пауза в игре. Скрывает доску от вас (чтобы вы не подглядывали ;) и показывает кнопку, после нажатия на которую игра продолжается.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>H</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Игра</guimenu
+> <guimenuitem
+>Рекорды</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Показывает лучшие результаты для каждого уровня сложности.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>Q</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Игра</guimenu
+> <guimenuitem
+>Выход</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+><action
+>Выход</action
+> из &kmines;</para
+></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+
+<sect1 id="move-menu"
+><title
+>Меню <guimenu
+>Ход</guimenu
+></title>
+<variablelist>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycap
+>H</keycap
+> </shortcut
+> <guimenu
+>Ход</guimenu
+> <guimenuitem
+>Подсказка</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Подсказка для следующего хода. Если вы ей воспользуетесь, ваши очки не будут расти.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Ход</guimenu
+> <guimenuitem
+>Решить</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Попытка решить исход текущей игры.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Ход</guimenu
+> <guimenuitem
+>Скорость разминирования...</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Диалог с показом статистики скорости разминирования в текущей игре.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Ход</guimenu
+> <guimenuitem
+>Журнал</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Диалог с показом журнала предыдущей игры.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Ход</guimenu
+> <guimenuitem
+>Переиграть</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Показ игры, записанной в журнал.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Ход</guimenu
+> <guimenuitem
+>Запись журнала</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Сохранить журнал текущей игры.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Ход</guimenu
+> <guimenuitem
+>Считать журнал...</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Загрузить журнал.</para>
+</listitem>
+</varlistentry>
+
+</variablelist>
+</sect1>
+
+<sect1 id="settings-menu"
+><title
+>Меню <guimenu
+>Параметры</guimenu
+></title>
+<variablelist>
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Параметры</guimenu
+> <guimenuitem
+>Показать меню</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Если кнопка нажата, то вы будете видеть меню. Если её отжать, то меню исчезнет.</para>
+<note
+><para
+>Чтобы восстановить меню, которое было скрыто, нажмите правую кнопку вне игровой зоны. Откроется небольшое подменю, в котором вы сможете выбрать <guimenuitem
+>Показать меню</guimenuitem
+>, и после этого меню снова станет видимым.</para
+></note
+></listitem>
+</varlistentry>
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Параметры</guimenu
+> <guimenuitem
+>Настроить быстрые клавиши</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Позволяет менять горячие клавиши для &kmines;</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Настройка</guimenu
+> <guisubmenu
+>Тип игры</guisubmenu
+> </menuchoice
+></term>
+<listitem>
+<para
+>Вы можете установить уровень сложности из подменю.</para>
+<para
+>Изначально имеется три уровня сложности: <guimenuitem
+>Легкий</guimenuitem
+> (64 ячейки, 10 мин), <guimenuitem
+>Нормальный</guimenuitem
+> (256 ячеек, 40 мин), и <guimenuitem
+>Эксперт</guimenuitem
+> (480 ячеек, 99 мин). Есть также игра <guimenuitem
+>Свое минное поле...</guimenuitem
+> со своим уровнем сложности (ваши личные настройки).</para>
+<para
+>При выборе типа игры <guimenuitem
+>Свое минное поле...</guimenuitem
+> используются настройки, которые вы сохранили в диалоге <guimenuitem
+>Настроить &kmines;</guimenuitem
+>.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Настройка</guimenu
+> <guimenuitem
+>Клавиши...</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+>Позволяет менять клавиши для &kmines;</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Настройка</guimenu
+><guimenuitem
+>Извещения...</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+>Настройка извещений &kmines;.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Настройка</guimenu
+> <guimenuitem
+>Рекорды</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+>Здесь вы можете изменить ваш <guilabel
+>Псевдоним</guilabel
+> и небольшой <guilabel
+>Комментарий</guilabel
+> о вас для показа в таблице рекордов. Вы также можете включить <guilabel
+>Мировую таблицу рекордов</guilabel
+> и показать ваши очки всем на сервере рекордов игры &kmines;.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Настройка</guimenu
+> <guimenuitem
+>Настроить &kmines;</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Позволяет вам менять опции игры. Подробнее об этом смотрите в разделе <link linkend="prefs"
+>Параметры игры</link
+>.</para
+></listitem>
+</varlistentry>
+
+</variablelist>
+</sect1>
+
+<sect1 id="help-menu">
+<title
+>Меню <guimenu
+>Помощь</guimenu
+></title>
+&help.menu.documentation; </sect1>
+
+<sect1 id="keys"
+><title
+>Привязки клавиш по умолчанию</title>
+<para
+>Эта таблица покажет вам привязки клавиш по умолчанию.</para>
+
+
+<table>
+<title
+>Клавиши меню</title>
+<tgroup cols="2">
+<thead
+><row
+><entry
+>Комбинации клавиш</entry
+><entry
+>Действие</entry
+></row
+></thead>
+<tbody>
+<row
+><entry
+><keycap
+>Стрелки</keycap
+></entry
+><entry
+>Передвинуть курсор в зону игры.</entry
+></row>
+<row
+><entry
+><keycap
+>Вернуть</keycap
+></entry
+><entry
+>Автоматически показать все соседние ячейки, не помеченные флагами.</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>N</keycap
+></keycombo
+></entry
+><entry
+>Новая игра</entry
+></row>
+<row
+><entry
+><keycap
+>P</keycap
+></entry
+><entry
+>Пауза</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>Q</keycap
+></keycombo
+></entry
+><entry
+>Выход из &kmines;</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Shift;<keycap
+>F1</keycap
+></keycombo
+></entry
+><entry
+>Контекстная подсказка</entry
+></row>
+<row
+><entry
+><keycap
+>Пробел</keycap
+></entry
+><entry
+>Показать мину.</entry
+></row>
+<row
+><entry
+><keycap
+>W</keycap
+></entry
+><entry
+>Отметить мину</entry
+></row>
+</tbody>
+</tgroup>
+</table>
+
+<para
+>Привязка клавиш по умолчанию может быть изменена через пункт <menuchoice
+> <guimenu
+>Параметры</guimenu
+> <guimenuitem
+>Настроить быстрые клавиши</guimenuitem
+> </menuchoice
+>.</para>
+
+</sect1>
+
+</chapter>
+<chapter id="credits"
+><title
+>Авторские права и лицензирование</title>
+
+<para
+>&kmines; </para>
+<para
+>Авторские права на программу: 1996-2000 Nicolas Hadacek <email
+>hadacek@kde.org</email
+></para>
+<para
+>Авторские права на документацию: 2000 Nicolas Hadacek <email
+>hadacek@kde.org</email
+></para>
+<para
+>Документация обновлена для KDE 2.0 Mike McBride <email
+>mpmcbride7@yahoo.com</email
+></para>
+<para
+>Перевод на русский - Михаил Сибиряков <email
+>dtldt@dt.ru</email
+></para
+> <para
+>Редактор перевода - Григорий Мохин <email
+>mok@kde.ru</email
+></para
+> 
+&underFDL; &underGPL; </chapter>
+
+<appendix id="installation">
+<title
+>Установка</title>
+
+<sect1 id="getting-kmines">
+<title
+>Где взять &kmines;</title>
+&install.intro.documentation; </sect1>
+
+<sect1 id="compilation">
+<title
+>Сборка и установка</title>
+&install.compile.documentation; </sect1>
+</appendix>
+
+
+</book>
+<!--
+Local Variables:
+mode: sgml
+sgml-omittag: nil
+sgml-shorttag: t
+End:
+-->
+
+

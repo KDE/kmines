@@ -1,0 +1,585 @@
+<?xml version="1.0" ?>
+<!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.5-Based Variant V1.1//EN" "dtd/kdedbx45.dtd" [
+  <!ENTITY kappname "&kmines;">
+  <!ENTITY package "kdegames">
+  <!ENTITY % addindex "IGNORE">
+  <!ENTITY % Estonian  "INCLUDE"
+> <!-- change language only here -->
+]>
+
+<book id="kmines" lang="&language;">
+
+<bookinfo>
+<title
+>&kmines;i käsiraamat</title>
+
+<authorgroup>
+<author
+><firstname
+>Nicolas</firstname
+> <surname
+>Hadacek</surname
+> <affiliation
+> <address
+>&Nicolas.Hadacek.mail;</address>
+</affiliation>
+</author>
+<author
+><firstname
+>Michael</firstname
+> <surname
+>McBride</surname
+> <affiliation
+><address
+><email
+>mmcbride@ematic.org</email
+></address
+></affiliation>
+</author>
+<author
+><firstname
+>Anton</firstname
+> <surname
+>Brondz</surname
+> <affiliation
+> <address
+><email
+>dinolinux@gmail.com</email
+></address>
+</affiliation>
+</author>
+<othercredit role="developer"
+><firstname
+>Nicolas</firstname
+> <surname
+>Hadacek</surname
+> <affiliation
+> <address
+>&Nicolas.Hadacek.mail;</address>
+</affiliation>
+<contrib
+>Arendaja</contrib>
+</othercredit>
+<othercredit role="reviewer"
+><firstname
+>Lauri</firstname
+> <surname
+>Watts</surname
+> <affiliation
+><address
+>&Lauri.Watts.mail;</address
+></affiliation>
+<contrib
+>Korrigeerija</contrib>
+</othercredit>
+<othercredit role="translator"
+><firstname
+>Marek</firstname
+> <surname
+>Laane</surname
+> <affiliation
+><address
+><email
+>bald@smail.ee</email
+></address
+></affiliation
+><contrib
+>Tõlge eesti keelde</contrib
+></othercredit
+> 
+</authorgroup>
+
+<copyright>
+<year
+>2000</year>
+<holder
+>&Nicolas.Hadacek;, Michael McBride</holder>
+</copyright>
+
+<legalnotice
+>&FDLNotice;</legalnotice>
+
+<date
+>2013-05-06</date>
+<releaseinfo
+>3.0 (&kde; 4.11)</releaseinfo>
+
+<abstract
+><para
+>&kmines; on &kde; versioon klassikalisest miiniotsimise mängust.</para
+></abstract>
+
+<keywordset>
+<keyword
+>KDE</keyword>
+<keyword
+>mäng</keyword>
+<keyword
+>miinide otsimine</keyword>
+</keywordset>
+
+</bookinfo>
+
+<chapter id="introduction">
+<title
+>Sissejuhatus</title>
+<note
+><title
+>Mängu tüüp:</title
+><para
+>strateegia, lauamäng</para
+></note
+><!-- Game genre. Use as many as necessary. Available game types are: Arcade, Board, Card, Dice, Toys, Logic, Strategy.-->
+<note
+><title
+>Mängijate arv:</title
+><para
+>Üks</para
+></note
+><!--Number of possible players. It can be: One, Two,..., Multiplayer-->
+
+<para
+>&kmines; on klassikaline miiniotsimise mäng, kus tuleb avada kõik miinideta väljad ilma mõnel miinil plahvatamata. Kui miin plahvatab, on mäng läbi. Numbrid näitavad, mitu miini asub läheduses. </para>
+
+</chapter>
+
+<chapter id="how-to-play">
+<title
+>Kuidas mängida</title>
+<note
+><title
+>Eesmärk:</title
+><para
+>leida kõik miiniväljale peidetud miinid.</para
+></note
+><!--Describe the objective of the game.-->
+
+<para
+>&kmines;i mängumiseks tuleb hiire ja selle kolme nupuga (kahenupulistel hiirtel on võimalik klõpsu &HKNga; matkida, kui vajutada korraga alla &HVN; ja &HPN;), et avada ruudud või tähistada need lipukestega. </para>
+
+<para
+>Klõpsa &HVNga; ruudul selle avamiseks. Kui ruudul on miin, see plahvatab ja mäng on läbi. Kui ruudul pole miini, avatakse see ning kui ka lähedal pole miine, avatakse needki. Kui naabruses on aga miine, ilmub number, mis näitab, mitu naaberruutu sisaldab miine. Igal ruudul (välja arvatud nurga- ja servaruudud) on kaheksa naaberruutu. </para>
+
+<note>
+<para
+>Klõps &HVNga; lipukesega tähistatud ruudul on ohutu ega too kaasa mingeid tagajärgi. </para>
+</note>
+
+<para
+>Klõps &HPNga; märgib ruudu kui miini sisaldava (asetades sellele punase lipu). Teist korda klõpsates muutub ruut kahtlaseks (sellele asetatakse küsimärk). Kahtluselipp võib olla kasulik, kui sa pole miini täpses asukohas kindel. Klõps &HKNga; avab naaberruudud, kui õige arv ruute on märgitud. See on kasulik, sest nii saab avada ruute kiiremini kui neil ükshaaval klõpsates. Aga ole kindel, et lipud on õigesti asetatud, sest muidu võid õhku lennata. </para>
+</chapter>
+
+<chapter id="rulestips">
+<title
+>Mängureeglid, strateegia ja nõuanded</title>
+<sect1 id="rules">
+<title
+>Reeglid</title>
+<itemizedlist>
+<listitem
+><para
+>Mäng saab läbi alles siis, kui kõik miinid on üles leitud.</para
+></listitem>
+<listitem
+><para
+>Mängija saab miinide täpse asukoha teada alles mängu lõpus.</para
+></listitem>
+<listitem
+><para
+>Kui miin plahvatab, on mäng läbi.</para
+></listitem>
+<listitem
+><para
+>Numbrid näitavad miinide arvu naaberruutudel.</para
+></listitem>
+</itemizedlist>
+</sect1>
+
+<sect1 id="strattips">
+<title
+>Strateegia ja nõuanded</title>
+<itemizedlist>
+<listitem
+><para
+>Numbrid annavad märku, kus võivad asuda miinid.</para
+></listitem>
+<listitem
+><para
+>Kahtluse korral sea ruudule lipp. Arvesta, et isegi kui miinide arvu osutav number lipu asetamise järel väheneb, ei pruugi lipu all siiski miini olla.</para
+></listitem>
+<listitem
+><para
+>Mõtle enne klõpsamist, sest vale klõps paneb miini plahvatama.</para
+></listitem>
+<listitem
+><para
+>Kui kahtlustad, et ruut võib sisaldada miini, proovi avada selle naaberruute, et näha numbreid, mis kahtlust kinnitavad või selle ümber lükkavad.</para
+></listitem>
+<listitem
+><para
+>Püüa ruudud võimalikult kiiresti avada, sest mida vähem aega kulutad, seda parem on tulemus.</para
+></listitem>
+</itemizedlist>
+</sect1>
+
+</chapter>
+
+<chapter id="command">
+<title
+>Käsud/kiirklahvid</title>
+
+<para
+>Allpool kirjeldatakse lühidalt menüükirjeid.</para>
+
+<sect1 id="menu">
+<title
+>Menüükirjed</title>
+
+<variablelist>
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>N</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Mäng</guimenu
+> <guimenuitem
+>Uus</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Alustab uut mängu.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycap
+>P</keycap
+></shortcut
+> <guimenu
+>Mäng</guimenu
+> <guimenuitem
+>Paus</guimenuitem
+></menuchoice
+></term>
+<listitem>
+<para
+>Võimaldab mängu peatada. Sama menüükäsu uuesti valimisega saab mängu jätkata. Pane tähele, et pausi ajaks mängulaud varjatakse, sest see poleks üldse aus, kui sa kasutaksid tekkinud aega, mida ju ei arvestata, heade käikude otsimiseks. </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>H</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Mäng</guimenu
+> <guimenuitem
+>Näita rekordeid</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Näitab iga raskusastme edetabelit (kiiremaid aegu).</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>Q</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Mäng</guimenu
+> <guimenuitem
+>Välju</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+><action
+>Lõpetab</action
+> &kmines;i töö.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Seadistused</guimenu
+> <guisubmenu
+>Raskusaste</guisubmenu
+> </menuchoice
+></term>
+<listitem>
+<para
+>Võimaldab alammenüüst valida mängu raskusastme.</para>
+<para
+>Vaikimisi on olemas kolm raskusastet: <guimenuitem
+>Kerge</guimenuitem
+> (9x9 ruutu, 10 miini), <guimenuitem
+>Keskmine</guimenuitem
+> (16x16 ruutu, 40 miini) ja <guimenuitem
+>Raske</guimenuitem
+> (30x16 ruutu, 99 miini). Samuti on olemas tase <guimenuitem
+>Kohandatud</guimenuitem
+>.</para>
+<para
+>Kui valid võimaluse <guimenuitem
+>Kohandatud</guimenuitem
+>, kasutatakse väärtusi, mille oled määranud dialoogis <guimenuitem
+>&kmines;i seadistamine</guimenuitem
+>.</para
+></listitem>
+</varlistentry>
+
+</variablelist>
+
+<para
+>Lisaks on &kmines;il tavapärased &kde; <guimenu
+>seadistuste</guimenu
+> ja <guimenu
+>abi</guimenu
+>menüü elemendid, mille kohta leiab rohkem teavet &kde; põhialuste käsiraamatu osadest <ulink url="help:/fundamentals/ui.html#menus-settings"
+>Menüü Seadistused</ulink
+> ja <ulink url="help:/fundamentals/ui.html#menus-help"
+>Menüü Abi</ulink
+>. </para>
+
+</sect1>
+
+<sect1 id="keys"
+><title
+>Vaikimisi kiirklahvid</title>
+<para
+>Järgnev tabel näitab vaikimisi kiirklahve.</para>
+
+<table>
+<title
+>Kiirklahvid</title>
+<tgroup cols="2">
+<thead
+><row
+><entry
+>Klahv</entry
+><entry
+>Toiming</entry
+></row
+></thead>
+<tbody>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>N</keycap
+></keycombo
+></entry
+><entry
+>Uus mäng</entry
+></row>
+<row
+><entry
+><keycap
+>P</keycap
+></entry
+><entry
+>Paus</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>Q</keycap
+></keycombo
+></entry
+><entry
+>&kmines;i töö lõpetamine</entry
+></row>
+<row
+><entry
+><keycap
+>F1</keycap
+></entry
+><entry
+>&kmines;i käsiraamat</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Shift;<keycap
+>F1</keycap
+></keycombo
+></entry
+><entry
+>'Mis see on?' abi</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>H</keycap
+></keycombo
+></entry
+><entry
+>Rekordite näitamine</entry
+></row>
+
+</tbody>
+</tgroup>
+</table>
+
+<para
+>Neid klahviseoseid saab muuta menüükäsuga <menuchoice
+> <guimenu
+>Seadistused</guimenu
+> <guimenuitem
+>Kiirklahvide seadistamine...</guimenuitem
+> </menuchoice
+></para>
+
+</sect1>
+
+</chapter>
+
+<chapter id="faq">
+<title
+>Korduma kippuvad küsimused</title>
+<qandaset>
+
+<qandaentry>
+<question>
+<para
+>Kuidas muuta mängu välimust? </para>
+</question>
+<answer>
+<para
+>Selleks vali menüü <guimenu
+>Seadistused</guimenu
+> ja sealt <guimenuitem
+>&kmines;i seadistamine...</guimenuitem
+>. </para>
+</answer>
+</qandaentry>
+
+<qandaentry>
+<question>
+<para
+>Kas kuidagi saab lisada miine ja ruute? </para>
+</question>
+<answer>
+<para
+>Jah, kõige lihtsam on kasutada all paremal asuvat rippmenüüd. </para>
+</answer>
+</qandaentry>
+
+</qandaset>
+</chapter>
+
+<chapter id="settings">
+<title
+>Mängu seadistused</title>
+<para
+>Mängu saab seadistada menüükäsuga <menuchoice
+><guimenu
+>Seadistused</guimenu
+><guimenuitem
+>&kmines;i seadistamine...</guimenuitem
+></menuchoice
+>, mille peale ilmub dialoog. </para>
+<!--missing
+  General page -> Use '?' marks
+  -->
+<para
+>Teisel kaardil saab valida teema. Vali teema nimekirjast. Kõigi nimekirja elementide juures on teena nimest vasakul näha väike eelvaatlus. Valik rakendatakse kohe. </para>
+
+<para
+>Kolmandal kaardil saab määrata kohandatud raskusastme puhul kasutatava mängulaua kõrguse ja laiuse ning miinide arvu. </para>
+
+</chapter>
+
+<chapter id="credits"
+><title
+>Autorid ja litsents</title>
+
+<para
+>&kmines;i autoriõigus 1996-2007 </para>
+
+<itemizedlist>
+<title
+>Autorid</title>
+<listitem>
+<para
+>&Nicolas.Hadacek; &Nicolas.Hadacek.mail; </para>
+</listitem>
+<listitem>
+<para
+>Mikhail Kourinny </para>
+</listitem>
+<listitem>
+<para
+>Mauricio Piacentini <email
+>mauricio@tabuleiro.com</email
+> </para>
+</listitem>
+<listitem>
+<para
+>Dmitry Suzdalev <email
+>dimsuz@gmail.com</email
+> </para>
+</listitem>
+</itemizedlist>
+
+<para
+>Dokumentatsiooni autoriõigus 2000: &Nicolas.Hadacek; &Nicolas.Hadacek.mail;</para>
+<para
+>Dokumentatsiooni uuendas KDE 2.0 tarbeks: &Mike.McBride; &Mike.McBride.mail;</para>
+<para
+>Mõningad muudatused &kde; 3.2 tarbeks: &Philip.Rodrigues; &Philip.Rodrigues.mail;</para>
+<para
+>Tõlge eesti keelde: Marek Laane <email
+>bald@smail.ee</email
+></para
+> 
+&underFDL; &underGPL; </chapter>
+
+<appendix id="installation">
+<title
+>Paigaldamine</title>
+
+<sect1 id="getting-kmines">
+<title
+>&kmines;i hankimine</title>
+&install.intro.documentation; </sect1>
+
+<sect1 id="compilation">
+<title
+>Kompileerimine ja paigaldamine</title>
+&install.compile.documentation; </sect1>
+</appendix>
+
+</book>
+<!--
+Local Variables:
+mode: sgml
+sgml-omittag: nil
+sgml-shorttag: t
+End:
+-->

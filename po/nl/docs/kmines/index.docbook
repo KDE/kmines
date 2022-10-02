@@ -1,0 +1,599 @@
+<?xml version="1.0" ?>
+<!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.5-Based Variant V1.1//EN" "dtd/kdedbx45.dtd" [
+  <!ENTITY % addindex "IGNORE">
+  <!ENTITY % Dutch "INCLUDE"
+> <!-- change language only here -->
+]>
+
+<book id="kmines" lang="&language;">
+
+<bookinfo>
+<title
+>Het handboek van &kmines;</title>
+
+<authorgroup>
+<author
+><firstname
+>Nicolas</firstname
+> <surname
+>Hadacek</surname
+> <affiliation
+> <address
+>&Nicolas.Hadacek.mail;</address>
+</affiliation>
+</author>
+<author
+><firstname
+>Michael</firstname
+> <surname
+>McBride</surname
+> <affiliation
+><address
+><email
+>mmcbride@ematic.org</email
+></address
+></affiliation>
+</author>
+<author
+><firstname
+>Anton</firstname
+> <surname
+>Brondz</surname
+> <affiliation
+> <address
+><email
+>dinolinux@gmail.com</email
+></address>
+</affiliation>
+</author>
+<othercredit role="developer"
+><firstname
+>Nicolas</firstname
+> <surname
+>Hadacek</surname
+> <affiliation
+> <address
+>&Nicolas.Hadacek.mail;</address>
+</affiliation>
+<contrib
+>Ontwikkelaar</contrib>
+</othercredit>
+<othercredit role="reviewer"
+><firstname
+>Lauri</firstname
+> <surname
+>Watts</surname
+> <affiliation
+><address
+>&Lauri.Watts.mail;</address
+></affiliation>
+<contrib
+>Nalezer</contrib>
+</othercredit>
+&Niels.Reedijk;&Rinse.Devries;&Sander.Koning;&Freek.de.Kruijf; 
+</authorgroup>
+
+<copyright>
+<year
+>2000</year>
+<holder
+>&Nicolas.Hadacek;, Michael McBride</holder>
+</copyright>
+
+<legalnotice
+>&FDLNotice;</legalnotice>
+
+<date
+>2021-07-11</date>
+<releaseinfo
+>4.0 (KDE Gear 21.04)</releaseinfo>
+
+<abstract
+><para
+>&kmines; is de &kde;-versie van het klassieke spel Minesweeper (Mijnenveger).</para
+></abstract>
+
+<keywordset>
+<keyword
+>KDE</keyword>
+<keyword
+>spel</keyword>
+<keyword
+>mijnenveger</keyword>
+</keywordset>
+
+</bookinfo>
+
+<chapter id="introduction">
+<title
+>Inleiding</title>
+<note
+><title
+>Speltype:</title
+><para
+>Strategie, bord</para
+></note
+><!-- Game genre. Use as many as necessary. Available game types are: Arcade, Board, Card, Dice, Toys, Logic, Strategy.-->
+<note
+><title
+>Aantal mogelijke spelers:</title
+><para
+>Eén</para
+></note
+><!--Number of possible players. It can be: One, Two,..., Multiplayer-->
+
+<para
+>&kmines; is het klassieke mijnenveger-spel. Het idee is alle vierkantjes open te maken zonder een mijn op te blazen. Als er een mijn ontploft is het spel afgelopen. Nummers geven aan hoeveel mijnen er aan grenzen. </para>
+
+</chapter>
+
+<chapter id="how-to-play">
+<title
+>Hoe te spelen</title>
+<note
+><title
+>Doel:</title
+><para
+>Lokaliseer alle verborgen mijnen in het mijnenveld.</para
+></note
+><!--Describe the objective of the game.-->
+
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="gameboard.png" format="PNG"/>
+</imageobject>
+<textobject>
+<phrase
+>Het spelbord van &kmines;</phrase>
+</textobject>
+</mediaobject>
+</screenshot>
+
+<para
+>Om &kmines; te spelen gebruikt u alle drie de knoppen van uw muis om vierkantjes te openen of om een vlag te planten (met een tweeknops-muis kunt in het algemeen klikken op de &MMB; door tegelijk op de &LMB; en &RMB; te klikken). </para>
+
+<para
+>Klikken met de &LMB;-muisknop opent een vierkantje. Als er zich een mijn bevindt, dan zal deze ontploffen en is het spel over. Als er geen mijn zit onder het vierkantje, dan wordt het vierkantje gewist en als er geen andere aangrenzende mijnen zijn, dan zal deze leeg zijn inclusief elke naastgelegen vierkantjes zonder mijnen. Als er naastgelegen mijnen zijn, dan zal er een getal verschijnen dat het aantal naastgelegen vierkantjes met mijnen aangeeft. Elk vierkantje (behalve aan de rand en in de hoeken), heeft acht naastgelegen vierkantjes. </para>
+
+<note>
+<para
+>Klikken met de muisknop &LMB; op een vierkantje met vlag is veilig en doet verder niets. </para>
+</note>
+
+<para
+>De &RMB; markeert een vierkantje als bevattende een mijn (door er een rode vlag op te plaatsen). Twee keer klikken op de knop maakt het onzeker (door er een vraagteken on te zetten). De onzekerheidsaanduiding kan nuttig zijn wanneer u onzeker bent over de posities van de mijnen. De &MMB; wist de vierkantjes er omheen als het juiste aantal vierkantjes een vlag heeft. Dit is erg nuttig omdat het veel sneller is dan alle individuele vierkantjes te openen. Wees er wel zeker van dat alle vlaggen juist zijn geplaatst, zo niet, dan zou u een mijn kunne laten ontploffen. </para>
+</chapter>
+
+<chapter id="rulestips">
+<title
+>Spelregels, strategieën en tips</title>
+<sect1 id="rules">
+<title
+>Regels</title>
+<itemizedlist>
+<listitem
+><para
+>Alle mijnen moeten worden geruimd voordat een speler een spel kan winnen.</para
+></listitem>
+<listitem
+><para
+>De speler weet niet de exact locatie van de mijnen voordat het spel is afgelopen.</para
+></listitem>
+<listitem
+><para
+>Als een mijn ontploft is het spel afgelopen</para
+></listitem>
+<listitem
+><para
+>Getallen geven aan hoeveel aanliggende mijn er zijn.</para
+></listitem>
+</itemizedlist>
+</sect1>
+
+<sect1 id="strattips">
+<title
+>Strategieën en tips</title>
+<itemizedlist>
+<listitem
+><para
+>Gebruik de getallen om uit vinden waar aanliggende mijnen zijn.</para
+></listitem>
+<listitem
+><para
+>Plaats vlaggen waar u denkt dat er mijnen zijn. Wees er op bedacht dat hoewel het aangegeven aantal mijnen omlaag gaat wanneer u een vlag plaats, er zou toch geen mijn onder de vlag kunnen liggen.</para
+></listitem>
+<listitem
+><para
+>Denk na voor het klikken, een verkeerde klik kan een mijn laten ontploffen.</para
+></listitem>
+<listitem
+><para
+>Wanneer u denkt dat een vierkantje een mijn bevat, werk er omheen om getallen te onthullen die behulpzaam zijn.</para
+></listitem>
+<listitem
+><para
+>Probeer het bord zo snel mogelijk te wissen, hoe minder tijd u nodig hebt, hoe hoger de score zal zijn.</para
+></listitem>
+</itemizedlist>
+</sect1>
+
+</chapter>
+
+<chapter id="command">
+<title
+>Commando's/Sneltoetsen</title>
+
+<para
+>De volgende secties geven een korte beschrijving van sommige opties op de menubalk.</para>
+
+<sect1 id="menu">
+<title
+>Menu-items</title>
+
+<variablelist>
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>N</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Spel</guimenu
+> <guimenuitem
+>Nieuw</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Start een nieuw spel.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycap
+>P</keycap
+></shortcut
+> <guimenu
+>Spel</guimenu
+> <guimenuitem
+>Pauze</guimenuitem
+></menuchoice
+></term>
+<listitem>
+<para
+>Pauzeer de speltijd. Klik opnieuw op het menu-item om het spel te hervatten. Merk op dat het bord verdwijnt wanneer het spel wordt gepauzeerd omdat het oneerlijk zou zijn als u naar goede zetten zou kunnen zoeken zonder de tijdsdruk. </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>H</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Spel</guimenu
+> <guimenuitem
+>Topscores tonen</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Dit toont de hoogste score (de kortste tijd) voor elk spelniveau.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>Q</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Spel</guimenu
+> <guimenuitem
+>Afsluiten</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+><action
+>Beëindigt</action
+> &kmines;.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Instellingen</guimenu
+> <guisubmenu
+>Moeilijkheidsgraad</guisubmenu
+> </menuchoice
+></term>
+<listitem>
+<para
+>Hier kunt u de moeilijkheidsgraad in een submenu selecteren.</para>
+<para
+>Er zijn drie standaard niveaus beschikbaar: <guimenuitem
+>Gemakkelijk</guimenuitem
+> (9x9 vierkantjes, 10 mijnen), <guimenuitem
+>Middel</guimenuitem
+> (16x16 vierkantjes, 40 mijnen), en <guimenuitem
+>Moeilijk</guimenuitem
+> (30x16 vierkantjes, 99 mijnen). Er is ook een <guimenuitem
+>Aangepast</guimenuitem
+> niveau beschikbaar.</para>
+<para
+>Als u <guimenuitem
+>Aangepast</guimenuitem
+> selecteert, dan wordt het spel dat u hebt opgezet in de dialoog <guilabel
+>Configureren - &kmines;</guilabel
+> gebruikt.</para
+></listitem>
+</varlistentry>
+
+</variablelist>
+
+<para
+>Bovendien heeft &kmines; de gezamenlijke menu-items van &kde; <guimenu
+>Instellingen</guimenu
+> en <guimenu
+>Help</guimenu
+>, voor meer informatie lees de secties over de <ulink url="help:/fundamentals/menus.html#menus-settings"
+>Menu Instellingen</ulink
+> en <ulink url="help:/fundamentals/menus.html#menus-help"
+>Menu Help</ulink
+> van &kde;-fundamentals. </para>
+
+</sect1>
+
+<sect1 id="keys"
+><title
+>Standaard sneltoetsen</title>
+<para
+>De volgende tabel toont de standaard sneltoetsen.</para>
+
+<table>
+<title
+>Sneltoets</title>
+<tgroup cols="2">
+<thead
+><row
+><entry
+>Toetsencombinatie</entry
+><entry
+>Actie</entry
+></row
+></thead>
+<tbody>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>N</keycap
+></keycombo
+></entry
+><entry
+>Nieuw spel</entry
+></row>
+<row
+><entry
+><keycap
+>P</keycap
+></entry
+><entry
+>Pauzeren</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>Q</keycap
+></keycombo
+></entry
+><entry
+>&kmines; beëindigen</entry
+></row>
+<row
+><entry
+><keycap
+>F1</keycap
+></entry
+><entry
+>Het handboek van &kmines;</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Shift;<keycap
+>F1</keycap
+></keycombo
+></entry
+><entry
+>Wat-is-dit?-help</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>H</keycap
+></keycombo
+></entry
+><entry
+>Topscores tonen</entry
+></row>
+
+</tbody>
+</tgroup>
+</table>
+
+<para
+>Deze sneltoetsen kunt u veranderen in het menu-item <menuchoice
+><guimenu
+>Instellingen</guimenu
+> <guimenuitem
+>Sneltoetsen configureren...</guimenuitem
+></menuchoice
+>.</para>
+
+</sect1>
+
+</chapter>
+
+<chapter id="faq">
+<title
+>Veel voorkomende vragen</title>
+<qandaset>
+
+<qandaentry>
+<question>
+<para
+>Kan ik het uiterlijk van dit spel wijzigen? </para>
+</question>
+<answer>
+<para
+>Ja, klik op het menu-item <menuchoice
+><guimenu
+>Instellingen</guimenu
+> <guimenuitem
+>&kmines; configureren...</guimenuitem
+></menuchoice
+> </para>
+</answer>
+</qandaentry>
+
+<qandaentry>
+<question>
+<para
+>Is er een manier om meer mijnen en vierkantjes toe te voegen? </para>
+</question>
+<answer>
+<para
+>Ja, de gemakkelijkste manier is het afrolvak in de linksonder hoek te gebruiken. </para>
+</answer>
+</qandaentry>
+
+</qandaset>
+</chapter>
+
+<chapter id="settings">
+<title
+>Spelinstellingen</title>
+<para
+>De spelinstellingen kunt u veranderen door het menu-item <menuchoice
+><guimenu
+>Instellingen</guimenu
+> <guimenuitem
+>&kmines; configureren...</guimenuitem
+> </menuchoice
+> te selecteren. Er verschijnt een dialoog. </para>
+<para
+>Op de pagina <guilabel
+>Algemeen</guilabel
+> kunt u de volgende instellingen voor het spel configureren. </para>
+<variablelist>
+    <varlistentry>
+        <term
+>'?'-tekens gebruiken</term>
+        <listitem>
+            <para
+>Indien geactiveerd, stelt in staat het symbool vraagteken aan te brengen in de vakjes als onzekerheid. De markering in het vakje kan omgeschakeld worden door te klikken met de &RMB;.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term
+>Reset van &kmines; toestaan</term>
+        <listitem>
+            <para
+>Indien geactiveerd, stelt u in staat om het spel &kmines; te resetten wanneer het onmogelijk is om do iets te doen anders dan gissen en uw laatste poging was verkeerd.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term
+>Score uitschakelen bij reset</term>
+        <listitem>
+            <para
+>Indien geactiveerd, stelt u in staat om scoren uit te schakelen bij reset.</para>
+        </listitem>
+    </varlistentry>
+        <varlistentry>
+        <term
+>Met linker klik op aantal cellen zoeken</term>
+        <listitem>
+            <para
+>Indien geactiveerd zal de klik met de &LMB; op een nummercel hetzelfde effect hebben als de klik op de &MMB;.</para>
+        </listitem>
+    </varlistentry>
+</variablelist>
+
+<para
+>Op de tweede pagina kunt u een nieuwe thema selecteren. Selecteer de naam van het thema uit de lijst. Elk item in de lijst toont een klein voorbeeld links van de naam van het thema. Een selectie wordt onmiddellijk toegepast. </para>
+
+<para
+>Op het derde tabblad kunt u de hoogte en de breedte van het bord en het aantal mijnen instellen in het aangepaste niveau. </para>
+
+</chapter>
+
+<chapter id="credits"
+><title
+>Dankbetuigingen en licentie</title>
+
+<para
+>&kmines; Copyright 1996-2007 </para>
+
+<itemizedlist>
+<title
+>Auteurs</title>
+<listitem>
+<para
+>&Nicolas.Hadacek; &Nicolas.Hadacek.mail; </para>
+</listitem>
+<listitem>
+<para
+>Mikhail Kourinny </para>
+</listitem>
+<listitem>
+<para
+>Mauricio Piacentini <email
+>mauricio@tabuleiro.com</email
+> </para>
+</listitem>
+<listitem>
+<para
+>Dmitry Suzdalev <email
+>dimsuz@gmail.com</email
+> </para>
+</listitem>
+</itemizedlist>
+
+<para
+>Documentatie copyright 2000 &Nicolas.Hadacek; &Nicolas.Hadacek.mail;</para>
+<para
+>Documentatie bijgewerkt voor &kde; 2.0 door &Mike.McBride; &Mike.McBride.mail;</para>
+<para
+>Enkele aanpassingen voor &kde; 3.2 door &Philip.Rodrigues; &Philip.Rodrigues.mail;</para>
+&meld.fouten;&vertaling.niels;&vertaling.rinse;&vertaling.freek; &underFDL; &underGPL; </chapter>
+
+</book>
+<!--
+Local Variables:
+mode: sgml
+sgml-omittag: nil
+sgml-shorttag: t
+End:
+-->

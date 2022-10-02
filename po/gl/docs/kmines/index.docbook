@@ -1,0 +1,652 @@
+<?xml version="1.0" ?>
+<!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.5-Based Variant V1.1//EN" "dtd/kdedbx45.dtd" [
+  <!ENTITY kappname "&kmines;">
+  <!ENTITY package "kdegames">
+  <!ENTITY % addindex "IGNORE">
+  <!ENTITY % Galician  "INCLUDE"
+> <!-- change language only here -->
+]>
+
+<book lang="&language;">
+
+<bookinfo>
+<title
+>Manual do &kmines;</title>
+
+<authorgroup>
+<author
+><firstname
+>Nicolas</firstname
+> <surname
+>Hadacek</surname
+> <affiliation
+> <address
+>&Nicolas.Hadacek.mail;</address>
+</affiliation>
+</author>
+<author
+><firstname
+>Michael</firstname
+> <surname
+>McBride</surname
+> <affiliation
+><address
+><email
+>mmcbride@ematic.org</email
+></address
+></affiliation>
+</author>
+<author
+><firstname
+>Anton</firstname
+> <surname
+>Brondz</surname
+> <affiliation
+> <address
+><email
+>dinolinux@gmail.com</email
+></address>
+</affiliation>
+</author>
+<othercredit role="developer"
+><firstname
+>Nicolas</firstname
+> <surname
+>Hadacek</surname
+> <affiliation
+> <address
+>&Nicolas.Hadacek.mail;</address>
+</affiliation>
+<contrib
+>Desenvolvedor</contrib>
+</othercredit>
+<othercredit role="reviewer"
+><firstname
+>Lauri</firstname
+> <surname
+>Watts</surname
+> <affiliation
+><address
+>&Lauri.Watts.mail;</address
+></affiliation>
+<contrib
+>Revisor</contrib>
+</othercredit>
+<othercredit role="translator"
+><firstname
+>Xosé</firstname
+><surname
+>Calvo</surname
+><affiliation
+><address
+><email
+></email
+></address
+></affiliation
+><contrib
+>Tradutor do proxecto Trasno</contrib
+></othercredit
+> 
+</authorgroup>
+
+<copyright>
+<year
+>2000</year>
+<holder
+>&Nicolas.Hadacek;, Michael McBride</holder>
+</copyright>
+
+<legalnotice
+>&FDLNotice;</legalnotice>
+
+<date
+>2007-11-13</date>
+<releaseinfo
+>3.0</releaseinfo>
+
+<abstract
+><para
+>O &kmines; é a versión para o &kde; do xogo clásico das minas.</para
+></abstract>
+
+<keywordset>
+<keyword
+>KDE</keyword>
+<keyword
+>xogo</keyword>
+<keyword
+>buscaminas</keyword>
+</keywordset>
+
+</bookinfo>
+
+<chapter id="introduction">
+<title
+>Introdución</title>
+<note
+><title
+>Tipo de xogo:</title
+><para
+>Estratexia, Taboleiro</para
+></note
+><!-- Game genre. Use as many as necessary. Available game types are: Arcade, Board, Card, Dice, Toys, Logic, Strategy.-->
+<note
+><title
+>Número de xogadores posíbeis:</title
+><para
+>Un</para
+></note
+><!--Number of possible players. It can be: One, Two,..., Multiplayer-->
+
+<para
+>O &kmines; é o xogo clásico do Buscaminas. A idea é descubrir todos os cadrados sen estourar ningunha mina. Cando unha mina estoura acaba a partida. os números indican cantas minas hai na contorna. </para>
+
+</chapter>
+
+<chapter id="how-to-play">
+<title
+>Como xogar</title>
+<note
+><title
+>Obxectivo:</title
+><para
+>Localizar todas as minas agochadas no campo de minas.</para
+></note
+><!--Describe the objective of the game.-->
+
+<para
+>Para xogar ao &kmines; hai que empregar o rato e os seus tres botóns para descubrir ou marcar os cadrados (cun rato de dous botóns, premer o &MMB; faise normalmente premendo simultaneamente &LMB; e &RMB;). </para>
+
+<para
+>Premendo o &LMB; descobre un cadrado. Se houber unha mina nel, detónase e a partida remata. De non haber unha mina baixo o cadrado, este límpase e se non hai outras minas na contorna, o cadrado desaparece, incluídos os cadrados sen minas da contorna. De haber minas na contorna, aparece un número que mostra cantos cadrados as conteñen. Para cada cadrado (excluídos os dos bordos e das esquinas) hai oito na contorna. </para>
+
+<note>
+<para
+>O &LMB; premido nun cadrado con marca é seguro e non fai nado. </para>
+</note>
+
+<para
+>O &RMB; marca un cadrado como que contén unha mina (colocando unha bandeira vermella nel). Premer o botón dúas veces márcao como incerto (colocando un signo de interrogación nel). A bandeira de incerto pode ser útil cando un non ten certeza de onde están as minas. O &MMB; limpa os cadrados da contorna se xa se marcou o número correcto de cadrados. É moi útil porque é moito máis rápido que ir descubrindo todos os cadrados individuais. Asegúrate de que as bandeiras están ben colocadas porque, se non, poderías facer detonar unha mina. </para>
+</chapter>
+
+<chapter id="rulestips">
+<title
+>Regras do xogo, estratexias e suxestións</title>
+<sect1 id="rules">
+<title
+>Regras</title>
+<itemizedlist>
+<listitem
+><para
+>Hai que limpar todas as minas antes de poder gañar unha partida.</para
+></listitem>
+<listitem
+><para
+>O xogador non pode saber o sitio exacto das minas antes de que remate a partida.</para
+></listitem>
+<listitem
+><para
+>Se unha mina é detonada, acabouse o xogo.</para
+></listitem>
+<listitem
+><para
+>Os números indican as minas da contorna.</para
+></listitem>
+</itemizedlist>
+</sect1>
+
+<sect1 id="strattips">
+<title
+>Estratexias e suxestións</title>
+<itemizedlist>
+<listitem
+><para
+>Emprega os números para descubrir onde están as minas da contorna.</para
+></listitem>
+<listitem
+><para
+>Coloca bandeiras onde sospeites que haxa minas. Fíxate en que, mesmo se o número de minas indicado baixa cando se coloca unha bandeira, podería non haber unha mina debaixo da bandeira.</para
+></listitem>
+<listitem
+><para
+>Pensa antes de faceres clic porque un clic errado podería detonar unha mina.</para
+></listitem>
+<listitem
+><para
+>Cando sospeites que un cadrado contén unha mina, traballa arredor dese cadrado para descubrir números que podan axudar.</para
+></listitem>
+<listitem
+><para
+>Tenta limpar o taboleiro o máis rápido posíbel; cando menos tarde máis alta será a puntuación.</para
+></listitem>
+</itemizedlist>
+</sect1>
+
+</chapter>
+
+<chapter id="command">
+<title
+>Ordes/Atallos de teclado</title>
+
+<para
+>As seccións seguintes describen brevemente cada unha das opcións da barra de menú.</para>
+
+<sect1 id="game-menu">
+<title
+>Menú <guimenu
+>Partida</guimenu
+></title>
+
+<para
+>O menú <guimenu
+>Partida</guimenu
+> consiste en catro opcións.</para>
+
+<variablelist>
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;<keycap
+></keycap
+></keycombo
+></shortcut
+><guimenu
+>Partida</guimenu
+> <guimenuitem
+>Nova</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Inicia unha partida nova.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>H</keycap
+></keycombo
+></shortcut
+> <guimenu
+>Partida</guimenu
+> <guimenuitem
+>Mostrar as mellores puntuacións</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Isto mostra a puntuación máis alta (o temo máis curto) de cada nivel de dificultade.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>Q</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Partida</guimenu
+> <guimenuitem
+>Saír</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+><action
+>Sae</action
+> do &kmines;</para
+></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+
+<sect1 id="settings-menu"
+><title
+>Menú <guimenu
+>Configuración</guimenu
+> </title>
+<variablelist>
+<varlistentry>
+<term>
+<menuchoice
+><guimenu
+>Configuración</guimenu
+> <guimenuitem
+>Mostrar a barra de ferramentas</guimenuitem
+> </menuchoice>
+</term>
+<listitem>
+<para
+><action
+>Mostrar ou agochar a barra de ferramentas.</action
+> Por omisión móstraa. </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>
+<menuchoice
+><guimenu
+>Configuración</guimenu
+> <guimenuitem
+>Mostrar a barra de estado</guimenuitem
+> </menuchoice>
+</term>
+<listitem>
+<para
+><action
+>Mostrar ou agochar a barra de estado</action
+> Por omisión móstraa. </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Configuración</guimenu
+> <guisubmenu
+>Dificultade</guisubmenu
+> </menuchoice
+></term>
+<listitem>
+<para
+>Permite configurar o nivel de dificultade desde un submenú.</para>
+<para
+>Hai tres niveis de dificultade por omisión: <guimenuitem
+>Doado</guimenuitem
+> (cadrados de 9x9, 10 minas), <guimenuitem
+>Medio</guimenuitem
+> (cadrados de16x16, 40 minas) e <guimenuitem
+>Difícil</guimenuitem
+> (cadrados de30x16, 99 minas). Tamén hai un nivel <guimenuitem
+>Personalizado</guimenuitem
+>.</para>
+<para
+>Se escolles <guimenuitem
+>Personalizado</guimenuitem
+>, empréganse as opcións configuradas en <guimenuitem
+>Configurar o &kmines;</guimenuitem
+>.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Configuración</guimenu
+> <guimenuitem
+>Configurar os atallos de teclado...</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+>Este elemento permite cambiar os atallos de teclado que emprega o &kmines;.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term>
+<menuchoice
+><guimenu
+>Configuración</guimenu
+> <guimenuitem
+>Configurar as barras de ferramentas...</guimenuitem
+> </menuchoice>
+</term>
+<listitem>
+<para
+><action
+>Configurar</action
+> as barras de ferramentas fornecidas polo &kmines;. </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Configuración</guimenu
+> <guimenuitem
+>Configurar o &kmines;</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Permite axustar as opcións do xogo. Para unha información máis detallada, consulta a sección titulada <link linkend="settings"
+>Opcións de xogo</link
+>.</para
+></listitem>
+</varlistentry>
+
+</variablelist>
+</sect1>
+
+<sect1 id="help-menu">
+<title
+>O menú <guimenu
+>Axuda</guimenu
+></title>
+&help.menu.documentation; </sect1>
+
+<sect1 id="keys"
+><title
+>Atallos de teclado predeterminados</title>
+<para
+>A táboa seguinte mostra os atallos de teclado predeterminados.</para>
+
+
+<table>
+<title
+>Atallos de teclado</title>
+<tgroup cols="2">
+<thead
+><row
+><entry
+>Combinación de teclas</entry
+><entry
+>Acción</entry
+></row
+></thead>
+<tbody>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>N</keycap
+></keycombo
+></entry
+><entry
+>Partida nova</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>Q</keycap
+></keycombo
+></entry
+><entry
+>Saír do &kmines;</entry
+></row>
+<row
+><entry
+><keycap
+>F1</keycap
+></entry
+><entry
+>Manual do &kmines;</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Shift;<keycap
+>F1</keycap
+></keycombo
+></entry
+><entry
+>Axuda «Que é isto?»</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>H</keycap
+></keycombo
+></entry
+><entry
+>Mostrar as mellores puntuacións</entry
+></row>
+
+</tbody>
+</tgroup>
+</table>
+
+<para
+>Pódense cambiar estes atallos escollendo <menuchoice
+> <guimenu
+>Configuración</guimenu
+> <guimenuitem
+>Configurar os atallos de teclado...</guimenuitem
+></menuchoice
+> na barra de menú.</para>
+
+</sect1>
+
+</chapter>
+
+<chapter id="faq">
+<title
+>Preguntas frecuentes</title>
+<qandaset>
+
+<qandaentry>
+<question>
+<para
+>Podo mudar a aparencia do xogo? </para>
+</question>
+<answer>
+<para
+>Si; preme o menú <guimenu
+>Configuración</guimenu
+> e escolle <guimenuitem
+>Configurar o &kmines;...</guimenuitem
+>. </para>
+</answer>
+</qandaentry>
+
+<qandaentry>
+<question>
+<para
+>Hai maneira de engadir máis minas e cadrados? </para>
+</question>
+<answer>
+<para
+>Si, o máis doado é empregar a caixa despregábel do recanto inferior dereito. </para>
+</answer>
+</qandaentry>
+
+</qandaset>
+</chapter>
+
+<chapter id="settings">
+<title
+>Configuración do xogo</title>
+<para
+>Pódense configurar as opcións do xogo escollendo <menuchoice
+><guimenu
+>Configuración</guimenu
+> <guimenuitem
+>Configurar o &kmines;;...</guimenuitem
+></menuchoice
+> na barra de menú. Aparece un diálogo. </para>
+
+<para
+>Na primeira lapela pódese escoller un tema. Selecciónao na lista para ver unha vista previa á dereita. Pódelo escoller premendo <guibutton
+>Aplicar</guibutton
+> e <guibutton
+>Aceptar</guibutton
+>. </para>
+
+<para
+>Na segunda lapela pódese configurar a altura e a largura do taboleiro e o número de minas do nivel personalizado.  </para>
+
+</chapter>
+
+<chapter id="credits"
+><title
+>Créditos e licenza</title>
+
+<para
+>&kmines; Copyright 1996-2007 </para>
+
+<itemizedlist>
+<title
+>Autores</title>
+<listitem>
+<para
+>&Nicolas.Hadacek; &Nicolas.Hadacek.mail; </para>
+</listitem>
+<listitem>
+<para
+>Mikhail Kourinny </para>
+</listitem>
+<listitem>
+<para
+>Mauricio Piacentini <email
+>mauricio@tabuleiro.com</email
+> </para>
+</listitem>
+<listitem>
+<para
+>Dmitry Suzdalev <email
+>dimsuz@gmail.com</email
+> </para>
+</listitem>
+</itemizedlist>
+
+<para
+>Copyright da documentación 2000 &Nicolas.Hadacek; &Nicolas.Hadacek.mail;</para>
+<para
+>Documentación actualizada para o &kde; 2.0 by &Mike.McBride; &Mike.McBride.mail;</para>
+<para
+>Algúns cambios para o &kde; 3.2 by &Philip.Rodrigues; &Philip.Rodrigues.mail;</para>
+<para
+>Tradución da documentación: Xosé Calvo - http://trasno.net/</para
+> 
+&underFDL; &underGPL; </chapter>
+
+<appendix id="installation">
+<title
+>Instalación</title>
+
+<sect1 id="getting-kmines">
+<title
+>Como obter o &kmines;</title>
+&install.intro.documentation; </sect1>
+
+<sect1 id="compilation">
+<title
+>Compilación e instalación</title>
+&install.compile.documentation; </sect1>
+</appendix>
+
+</book>
+<!--
+Local Variables:
+mode: sgml
+sgml-omittag: nil
+sgml-shorttag: t
+End:
+-->

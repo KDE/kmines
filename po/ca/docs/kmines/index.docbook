@@ -1,0 +1,601 @@
+<?xml version="1.0" ?>
+<!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.5-Based Variant V1.1//EN" "dtd/kdedbx45.dtd" [
+  <!ENTITY % addindex "IGNORE">
+  <!ENTITY % Catalan  "INCLUDE"
+> <!-- change language only here -->
+]>
+
+<book id="kmines" lang="&language;">
+
+<bookinfo>
+<title
+>El manual del &kmines;</title>
+
+<authorgroup>
+<author
+><firstname
+>Nicolas</firstname
+> <surname
+>Hadacek</surname
+> <affiliation
+> <address
+>&Nicolas.Hadacek.mail;</address>
+</affiliation>
+</author>
+<author
+><firstname
+>Michael</firstname
+> <surname
+>McBride</surname
+> <affiliation
+><address
+><email
+>mmcbride@ematic.org</email
+></address
+></affiliation>
+</author>
+<author
+><firstname
+>Anton</firstname
+> <surname
+>Brondz</surname
+> <affiliation
+> <address
+><email
+>dinolinux@gmail.com</email
+></address>
+</affiliation>
+</author>
+<othercredit role="developer"
+><firstname
+>Nicolas</firstname
+> <surname
+>Hadacek</surname
+> <affiliation
+> <address
+>&Nicolas.Hadacek.mail;</address>
+</affiliation>
+<contrib
+>Desenvolupador</contrib>
+</othercredit>
+<othercredit role="reviewer"
+><firstname
+>Lauri</firstname
+> <surname
+>Watts</surname
+> <affiliation
+><address
+>&Lauri.Watts.mail;</address
+></affiliation>
+<contrib
+>Revisor</contrib>
+</othercredit>
+&traductor.Antoni.Bella; 
+</authorgroup>
+
+<copyright>
+<year
+>2000</year>
+<holder
+>&Nicolas.Hadacek;, Michael McBride</holder>
+</copyright>
+
+<legalnotice
+>&FDLNotice;</legalnotice>
+
+<date
+>11 de juliol de 2021</date>
+<releaseinfo
+>4.0 (KDE Gear 21.04)</releaseinfo>
+
+<abstract
+><para
+>El &kmines; és la versió &kde; del joc clàssic del Pescamines.</para
+></abstract>
+
+<keywordset>
+<keyword
+>KDE</keyword>
+<keyword
+>joc</keyword>
+<keyword
+>dragamines</keyword>
+</keywordset>
+
+</bookinfo>
+
+<chapter id="introduction">
+<title
+>Introducció</title>
+<note
+><title
+>Tipus de joc:</title
+><para
+>Estratègia, tauler</para
+></note
+><!-- Game genre. Use as many as necessary. Available game types are: Arcade, Board, Card, Dice, Toys, Logic, Strategy.-->
+<note
+><title
+>Nombre de possibles jugadors:</title
+><para
+>Un</para
+></note
+><!--Number of possible players. It can be: One, Two,..., Multiplayer-->
+
+<para
+>El &kmines; és un joc clàssic de dragamines. La idea és descobrir tots els quadrats sense que exploti cap mina. Quan una mina explota, el joc acaba. Els números indiquen quantes mines hi ha a prop. </para>
+
+</chapter>
+
+<chapter id="how-to-play">
+<title
+>Com jugar</title>
+<note
+><title
+>Objectiu:</title
+><para
+>Localitzar totes les mines ocultes en el camp minat.</para
+></note
+><!--Describe the objective of the game.-->
+
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="gameboard.png" format="PNG"/>
+</imageobject>
+<textobject>
+<phrase
+>Tauler de joc del &kmines;</phrase>
+</textobject>
+</mediaobject>
+</screenshot>
+
+<para
+>Per a jugar al &kmines;, haureu d'utilitzar el ratolí i els seus tres botons per a descobrir o marcar els quadrats (amb els ratolins de dos botons, fer clic amb el &BMR; generalment s'aconsegueix prement simultàniament el &BER; i el &BDR;). </para>
+
+<para
+>En fer clic amb el &BER; descobrireu un quadrat. Si hi ha una mina, es detonarà i la partida acabarà. Si no hi ha una mina a sota, el quadrat estarà buit i, si no hi ha altres mines properes, el quadrat desapareixerà, inclosos els propers sense mines. Si hi ha mines properes, apareixerà un número que mostrarà quants quadrats veïns contenen mines. Per a cada quadrat (excloent els quadrats a les vores i cantonades), hi ha vuit quadrats veïns. </para>
+
+<note>
+<para
+>Fer clic amb el &BER; sobre un quadrat marcat és segur i no farà res. </para>
+</note>
+
+<para
+>El &BDR; marcarà un quadrat com que conté una mina (col·locant una bandera vermella). En fer doble clic al botó, l'establirà com a incert (col·locant un signe d'interrogació). L'etiqueta incerta pot ser útil quan esteu desconcertat per les posicions de les mines. El &BMR; netejarà els quadrats circumdants si el nombre correcte de quadrats ja està marcat. És molt útil, ja que és molt més ràpid que descobrir tots els quadrats individualment. Assegureu-vos que les seves banderes estiguin col·locades correctament, si no, podríeu detonar una mina. </para>
+</chapter>
+
+<chapter id="rulestips">
+<title
+>Les regles del joc, estratègies i consells</title>
+<sect1 id="rules">
+<title
+>Regles</title>
+<itemizedlist>
+<listitem
+><para
+>S'han de netejar totes les mines abans que un jugador pugui guanyar una partida.</para
+></listitem>
+<listitem
+><para
+>El jugador no pot conèixer la ubicació exacta de les mines abans que acabi la partida.</para
+></listitem>
+<listitem
+><para
+>Si es detona una mina, la partida ha acabat.</para
+></listitem>
+<listitem
+><para
+>Els números indiquen les mines properes.</para
+></listitem>
+</itemizedlist>
+</sect1>
+
+<sect1 id="strattips">
+<title
+>Les estratègies i consells</title>
+<itemizedlist>
+<listitem
+><para
+>Utilitzeu els números per a esbrinar on es troben les mines properes.</para
+></listitem>
+<listitem
+><para
+>Col·loqueu banderes on sospiteu que hi ha mines. Recordeu que tot i que disminueix el nombre indicat de mines quan col·loqueu una bandera, és possible que no n'hi hagi cap a sota de la bandera.</para
+></listitem>
+<listitem
+><para
+>Penseu abans de fer clic, un clic incorrecte podria detonar una mina.</para
+></listitem>
+<listitem
+><para
+>Quan sospiteu que un quadrat conté una mina, treballeu al voltant seu per a descobrir qualsevol número que pugui ajudar.</para
+></listitem>
+<listitem
+><para
+>Intenteu netejar el tauler el més ràpid possible, com menys temps gasteu, més gran serà la vostra puntuació.</para
+></listitem>
+</itemizedlist>
+</sect1>
+
+</chapter>
+
+<chapter id="command">
+<title
+>Ordres/Dreceres de teclat</title>
+
+<para
+>Les seccions següents descriuen breument algunes opcions de la barra de menús.</para>
+
+<sect1 id="menu">
+<title
+>Elements de menú</title>
+
+<variablelist>
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;<keycap
+>N</keycap
+></keycombo
+></shortcut
+> <guimenu
+>Joc</guimenu
+> <guimenuitem
+>Nova</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Comença una partida nova.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycap
+>P</keycap
+> </shortcut
+> <guimenu
+>Joc</guimenu
+> <guimenuitem
+>Pausa</guimenuitem
+></menuchoice
+></term>
+<listitem>
+<para
+>Posa en pausa el temps de la partida. Torneu a fer clic sobre l'element de menú per a reprendre-la. Recordeu que quan la partida estigui en pausa, el tauler desapareixerà, ja que seria injust si poguéssiu cercar moviments bons sense la pressió del temps. </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;<keycap
+>H</keycap
+></keycombo
+></shortcut
+> <guimenu
+>Joc</guimenu
+> <guimenuitem
+>Mostra les puntuacions</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Mostra la puntuació més alta (el temps més curt) per a cada nivell de dificultat.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;<keycap
+>Q</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Joc</guimenu
+> <guimenuitem
+>Surt</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+><action
+>Surt</action
+> del &kmines;.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Arranjament</guimenu
+> <guisubmenu
+>Dificultat</guisubmenu
+> </menuchoice
+></term>
+<listitem>
+<para
+>Permet establir el nivell de dificultat des d'un submenú.</para>
+<para
+>Hi ha tres nivells de dificultat predeterminats: <guimenuitem
+>Fàcil</guimenuitem
+> (quadrats 9x9, 10 mines), <guimenuitem
+>Mitjana</guimenuitem
+> (quadrats de 16x16, 40 mines) i <guimenuitem
+>Difícil</guimenuitem
+> (quadrats de 30x16, 99 mines). També hi ha una configuració de nivell <guimenuitem
+>A mida</guimenuitem
+>.</para>
+<para
+>Si seleccioneu <guimenuitem
+>A mida</guimenuitem
+>, s'utilitzaran les opcions de configuració en el diàleg <guimenuitem
+>Configuració - &kmines;</guimenuitem
+>.</para
+></listitem>
+</varlistentry>
+
+</variablelist>
+
+<para
+>De manera addicional, el &kmines; té la configuració comuna al &kde; i els elements dels menús <guimenu
+>Arranjament</guimenu
+> i <guimenu
+>Ajuda</guimenu
+>. Per a obtenir més informació, llegiu les seccions sobre <ulink url="help:/fundamentals/menus.html#menus-settings"
+>El menú Arranjament</ulink
+> i <ulink url="help:/fundamentals/menus.html#menus-help"
+>El menú Ajuda</ulink
+> en els Fonaments del &kde;. </para>
+
+</sect1>
+
+<sect1 id="keys"
+><title
+>Dreceres predeterminades</title>
+<para
+>La taula següent mostra les dreceres de teclat predeterminades.</para>
+
+<table>
+<title
+>Dreceres de teclat</title>
+<tgroup cols="2">
+<thead
+><row
+><entry
+>Combinació de tecles&nbsp;</entry
+><entry
+>Acció</entry
+></row
+></thead>
+<tbody>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>N</keycap
+></keycombo
+></entry
+><entry
+>Partida nova</entry
+></row>
+<row
+><entry
+><keycap
+>P</keycap
+></entry
+><entry
+>Pausa</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>Q</keycap
+></keycombo
+></entry
+><entry
+>Surt del &kmines;</entry
+></row>
+<row
+><entry
+><keycap
+>F1</keycap
+></entry
+><entry
+>Manual del &kmines;</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Maj;<keycap
+>F1</keycap
+></keycombo
+></entry
+><entry
+>L'ajuda «Què és això?»</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>H</keycap
+></keycombo
+></entry
+><entry
+>Mostra les millors puntuacions</entry
+></row>
+
+</tbody>
+</tgroup>
+</table>
+
+<para
+>Aquestes dreceres es poden canviar seleccionant l'element de menú <menuchoice
+><guimenu
+>Arranjament</guimenu
+> <guimenuitem
+>Configura les dreceres de teclat...</guimenuitem
+></menuchoice
+>.</para>
+
+</sect1>
+
+</chapter>
+
+<chapter id="faq">
+<title
+>Preguntes més freqüents</title>
+<qandaset>
+
+<qandaentry>
+<question>
+<para
+>Puc canviar l'aparença del joc? </para>
+</question>
+<answer>
+<para
+>Sí, feu clic sobre l'element de menú <menuchoice
+><guimenu
+>Arranjament</guimenu
+> <guimenuitem
+>Configura el &kmines;...</guimenuitem
+></menuchoice
+>. </para>
+</answer>
+</qandaentry>
+
+<qandaentry>
+<question>
+<para
+>Hi ha alguna manera d'afegir més mines i quadrats? </para>
+</question>
+<answer>
+<para
+>Sí, la forma més fàcil és utilitzar la llista desplegable que hi ha a la cantonada inferior dreta. </para>
+</answer>
+</qandaentry>
+
+</qandaset>
+</chapter>
+
+<chapter id="settings">
+<title
+>Paràmetres del joc</title>
+<para
+>Les opcions de configuració del joc es poden establir seleccionant l'element de menú <menuchoice
+><guimenu
+>Arranjament</guimenu
+> <guimenuitem
+>Configura el &kmines;...</guimenuitem
+></menuchoice
+> des de la barra de menús. Apareixerà un diàleg. </para>
+<para
+>A la pàgina <guilabel
+>General</guilabel
+>, podreu configurar els paràmetres següents del joc. </para>
+<variablelist>
+    <varlistentry>
+        <term
+>Habilita les marques «?»</term>
+        <listitem>
+            <para
+>Quan està marcada, permet utilitzar el símbol del signe d'interrogació per a marcar els quadrats incerts. La marca en el quadrat es pot canviar fent clic amb el &BDR;.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term
+>Permet el reinici del &kmines;</term>
+        <listitem>
+            <para
+>Quan està marcada, permet restablir la partida al &kmines; quan és impossible fer quelcom més que endevinar i la vostra última suposició està malament.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term
+>Inhabilita la puntuació en reiniciar</term>
+        <listitem>
+            <para
+>Quan està marcada, permet inhabilitar la puntuació en reiniciar.</para>
+        </listitem>
+    </varlistentry>
+        <varlistentry>
+        <term
+>Explora amb un clic esquerre a les cel·les dels nombres</term>
+        <listitem>
+            <para
+>Quan està marcada, el clic del &BER; sobre una cel·la de número tindrà el mateix efecte que el clic del &BMR;.</para>
+        </listitem>
+    </varlistentry>
+</variablelist>
+
+<para
+>A la segona pàgina, podreu establir el tema. Seleccioneu un tema de la llista. Cada element a la llista mostra una petita vista prèvia. Una selecció s'aplicarà immediatament. </para>
+
+<para
+>A la tercera pàgina, podreu configurar l'alçada i l'amplada del tauler, i el nombre de mines en el nivell personalitzat. </para>
+
+</chapter>
+
+<chapter id="credits"
+><title
+>Crèdits i llicència</title>
+
+<para
+>&kmines; Copyright 1996-2007 </para>
+
+<itemizedlist>
+<title
+>Autors</title>
+<listitem>
+<para
+>&Nicolas.Hadacek; &Nicolas.Hadacek.mail; </para>
+</listitem>
+<listitem>
+<para
+>Mikhail Kourinny </para>
+</listitem>
+<listitem>
+<para
+>Mauricio Piacentini <email
+>mauricio@tabuleiro.com</email
+> </para>
+</listitem>
+<listitem>
+<para
+>Dmitry Suzdalev <email
+>dimsuz@gmail.com</email
+> </para>
+</listitem>
+</itemizedlist>
+
+<para
+>Copyright de la documentació 2000 &Nicolas.Hadacek; &Nicolas.Hadacek.mail;</para>
+<para
+>Documentació actualitzada per al &kde; 2.0 per en &Mike.McBride; &Mike.McBride.mail;</para>
+<para
+>Alguns canvis per al &kde; 3.2 per en &Philip.Rodrigues; &Philip.Rodrigues.mail;</para>
+<para
+>Traductor de la documentació: &credits.Antoni.Bella;</para
+> &underFDL; &underGPL; </chapter>
+
+</book>
+<!--
+Local Variables:
+mode: sgml
+sgml-omittag: nil
+sgml-shorttag: t
+End:
+-->

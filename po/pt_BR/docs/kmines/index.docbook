@@ -1,0 +1,621 @@
+<?xml version="1.0" ?>
+<!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.5-Based Variant V1.1//EN" "dtd/kdedbx45.dtd" [
+  <!ENTITY % addindex "IGNORE">
+  <!ENTITY % Brazilian-Portuguese "INCLUDE"
+> <!-- change language only here -->
+]>
+
+<book id="kmines" lang="&language;">
+
+<bookinfo>
+<title
+>Manual do &kmines;</title>
+
+<authorgroup>
+<author
+><firstname
+>Nicolas</firstname
+> <surname
+>Hadacek</surname
+> <affiliation
+> <address
+>&Nicolas.Hadacek.mail;</address>
+</affiliation>
+</author>
+<author
+><firstname
+>Michael</firstname
+> <surname
+>McBride</surname
+> <affiliation
+><address
+><email
+>mmcbride@ematic.org</email
+></address
+></affiliation>
+</author>
+<author
+><firstname
+>Anton</firstname
+> <surname
+>Brondz</surname
+> <affiliation
+> <address
+><email
+>dinolinux@gmail.com</email
+></address>
+</affiliation>
+</author>
+<othercredit role="developer"
+><firstname
+>Nicolas</firstname
+> <surname
+>Hadacek</surname
+> <affiliation
+> <address
+>&Nicolas.Hadacek.mail;</address>
+</affiliation>
+<contrib
+>Desenvolvimento</contrib>
+</othercredit>
+<othercredit role="reviewer"
+><firstname
+>Lauri</firstname
+> <surname
+>Watts</surname
+> <affiliation
+><address
+>&Lauri.Watts.mail;</address
+></affiliation>
+<contrib
+>Revisão</contrib>
+</othercredit>
+<othercredit role="translator"
+><firstname
+>Marcus</firstname
+><surname
+>Gama</surname
+><affiliation
+><address
+><email
+>marcus.gama@gmail.com</email
+></address
+></affiliation
+><contrib
+>Tradução</contrib
+></othercredit
+> <othercredit role="translator"
+><firstname
+>Mauricio</firstname
+><surname
+>Piacentini</surname
+><affiliation
+><address
+><email
+>piacentini@kde.org</email
+></address
+></affiliation
+><contrib
+>Tradução</contrib
+></othercredit
+> 
+</authorgroup>
+
+<copyright>
+<year
+>2000</year>
+<holder
+>&Nicolas.Hadacek;, Michael McBride</holder>
+</copyright>
+
+<legalnotice
+>&FDLNotice;</legalnotice>
+
+<date
+>07/01/2019</date>
+<releaseinfo
+>4.0 (Applications 19.04)</releaseinfo>
+
+<abstract
+><para
+>O &kmines; é a versão para o &kde; do jogo clássico do Campo Minado.</para
+></abstract>
+
+<keywordset>
+<keyword
+>KDE</keyword>
+<keyword
+>jogo</keyword>
+<keyword
+>minas</keyword>
+</keywordset>
+
+</bookinfo>
+
+<chapter id="introduction">
+<title
+>Introdução</title>
+<note
+><title
+>Tipo de jogo:</title
+><para
+>Estratégia, tabuleiro</para
+></note
+><!-- Game genre. Use as many as necessary. Available game types are: Arcade, Board, Card, Dice, Toys, Logic, Strategy.-->
+<note
+><title
+>Número de jogadores possível:</title
+><para
+>Um</para
+></note
+><!--Number of possible players. It can be: One, Two,..., Multiplayer-->
+
+<para
+>O &kmines; é o jogo clássico do Campo Minado. Você precisa descobrir as zonas vazias sem estourar nenhuma mina. Quando uma mina é estourada, o jogo termina. Os números no campo indicam quantas minas estão na vizinhança. </para>
+
+</chapter>
+
+<chapter id="how-to-play">
+<title
+>Como jogar</title>
+<note
+><title
+>Objetivo:</title
+><para
+>Localize todas as minas escondidas no campo minado.</para
+></note
+><!--Describe the objective of the game.-->
+
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="gameboard.png" format="PNG"/>
+</imageobject>
+<textobject>
+<phrase
+>Tabuleiro do jogo &kmines;</phrase>
+</textobject>
+</mediaobject>
+</screenshot>
+
+<para
+>Para jogar o &kmines;, você deve usar o mouse e seus três botões para revelar e marcar os quadrados (com mouse de dois botões, o &MMB; é geralmente conseguido pressionando-se simultaneamente o &LMB; e o &RMB;). </para>
+
+<para
+>Clicando o &LMB; do seu mouse vai revelar um quadrado. Se existir uma mina ali, ela vai explodir, e o jogo estará terminado. Se não houver uma mina no quadrado, ela será limpa e se não houver nenhuma outra mina na vizinhança, o quadrado irá desaparecer, levando com ele qualquer quadrado vizinho que também não tenha minas vizinhas. Se existirem minas na vizinhança, um número irá indicar quantos quadrados vizinhos contém minas. Para cada quadrado existem oito quadrados vizinhos, excluindo os quadrados dos cantos e bordas. </para>
+
+<note>
+<para
+>Clicando com o &LMB; em um quadrado marcado é seguro e não faz nada. </para>
+</note>
+
+<para
+>O &RMB; marcará um quadrado como contendo uma mina, colocando uma bandeira vermelha sobre o mesmo. Clicando o botão duas vezes marcará o quadrado como incerto, com um ponto de interrogação. A marca de incerto pode ser útil quando você estiver em dúvida sobre a posição das minas. O &MMB; limpará os quadrados vizinhos se o número certo de quadrados já estiver marcado. É muito útil, já que é mais rápido do que revelar cada quadrado individualmente. Certifique-se de que suas bandeiras estejam posicionadas corretamente, senão você poderá detonar uma mina. </para>
+</chapter>
+
+<chapter id="rulestips">
+<title
+>Regras do jogo, estratégias e dicas</title>
+<sect1 id="rules">
+<title
+>Regras</title>
+<itemizedlist>
+<listitem
+><para
+>Todas as minas tem que ser limpas para que o jogo seja ganho.</para
+></listitem>
+<listitem
+><para
+>O jogador não pode saber a localização exata das minas antes do fim do jogo.</para
+></listitem>
+<listitem
+><para
+>Se uma mina é detonada, o jogo acaba.</para
+></listitem>
+<listitem
+><para
+>Números indicam minas vizinhas.</para
+></listitem>
+</itemizedlist>
+</sect1>
+
+<sect1 id="strattips">
+<title
+>Estratégias e dicas</title>
+<itemizedlist>
+<listitem
+><para
+>Use os números para descobrir onde as minas vizinhas estão.</para
+></listitem>
+<listitem
+><para
+>Coloque bandeiras onde você suspeita que as minas estejam. Note que ainda que o número indicado de minas diminua quando você coloca uma bandeira, pode não haver uma mina embaixo da mesma.</para
+></listitem>
+<listitem
+><para
+>Pense antes de clicar, um clique errado pode detonar uma mina.</para
+></listitem>
+<listitem
+><para
+>Quando você suspeitar que um quadrado contém uma mina, explore em volta do quadrado para revelar outros números que possam ajudar.</para
+></listitem>
+<listitem
+><para
+>Tente limpar o tabuleiro o mais rápido possível, quanto menos tempo você gastar, mais alto será o seu placar.</para
+></listitem>
+</itemizedlist>
+</sect1>
+
+</chapter>
+
+<chapter id="command">
+<title
+>Comandos/atalhos do teclado</title>
+
+<para
+>As seções a seguir descrevem brevemente algumas opções da barra de menus.</para>
+
+<sect1 id="menu">
+<title
+>Itens dos menus</title>
+
+<variablelist>
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>N</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Jogo</guimenu
+> <guimenuitem
+>Novo</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Inicia um novo jogo.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycap
+>P</keycap
+></shortcut
+> <guimenu
+>Jogo</guimenu
+> <guimenuitem
+>Pausa</guimenuitem
+></menuchoice
+></term>
+<listitem>
+<para
+>Coloca o tempo de jogo em pausa. Clique de novo no item do menu para prosseguir com o jogo. Repare que o tabuleiro desaparece quando o jogo fica em pausa, uma vez que seria injusto poder descobrir jogadas boas sem ter a pressão do tempo. </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>H</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Jogo</guimenu
+> <guimenuitem
+>Mostrar recordes</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Isto mostra-lhe o recorde (o tempo mais curto) para cada nível de dificuldade.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>Q</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Jogo</guimenu
+> <guimenuitem
+>Sair</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+><action
+>Sai</action
+> do &kmines;</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Configurações</guimenu
+> <guisubmenu
+>Dificuldade</guisubmenu
+> </menuchoice
+></term>
+<listitem>
+<para
+>Permite-lhe definir o nível de dificuldade a partir de um submenu.</para>
+<para
+>Existem três níveis de dificuldade padrão: o <guimenuitem
+>Fácil</guimenuitem
+> (81 quadrados, 10 minas), o <guimenuitem
+>Normal</guimenuitem
+> (256 quadrados, 40 minas) e o <guimenuitem
+>Perito</guimenuitem
+> (480 quadrados, 99 minas). Existe também uma configuração de nível <guimenuitem
+>Personalizado...</guimenuitem
+>.</para>
+<para
+>Se você selecionar o <guimenuitem
+>Personalizado</guimenuitem
+>, então a configuração feita por você no diálogo <guimenuitem
+>Configurar o &kmines;</guimenuitem
+> será usada.</para
+></listitem>
+</varlistentry>
+
+</variablelist>
+
+<para
+>O &kmines; possui os itens dos menus <guimenu
+>Configurações</guimenu
+> e <guimenu
+>Ajuda</guimenu
+>, comuns do &kde;. Para mais informações, consulte as seções sobre o <ulink url="help:/fundamentals/menus.html#menus-settings"
+>Menu Configurações</ulink
+> e o <ulink url="help:/fundamentals/menus.html#menus-help"
+>Menu Ajuda</ulink
+> dos Fundamentos do &kde;. </para>
+
+</sect1>
+
+<sect1 id="keys"
+><title
+>Atalhos de teclado padrão</title>
+<para
+>A seguinte tabela mostra-lhe os atalhos de teclado padrão.</para>
+
+<table>
+<title
+>Atalhos de teclado</title>
+<tgroup cols="2">
+<thead
+><row
+><entry
+>Combinação de teclas</entry
+><entry
+>Ação</entry
+></row
+></thead>
+<tbody>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>N</keycap
+></keycombo
+></entry
+><entry
+>Novo jogo</entry
+></row>
+<row
+><entry
+><keycap
+>P</keycap
+></entry
+><entry
+>Pausa</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>Q</keycap
+></keycombo
+></entry
+><entry
+>Sai do &kmines;</entry
+></row>
+<row
+><entry
+><keycap
+>F1</keycap
+></entry
+><entry
+>Manual do &kmines;</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Shift;<keycap
+>F1</keycap
+></keycombo
+></entry
+><entry
+>A ajuda o que é isto?</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>H</keycap
+></keycombo
+></entry
+><entry
+>Exibir recordes</entry
+></row>
+
+</tbody>
+</tgroup>
+</table>
+
+<para
+>Estas configurações de teclas podem ser alteradas selecionando a opção <menuchoice
+> <guimenu
+>Configurações</guimenu
+> <guimenuitem
+>Configurar atalhos...</guimenuitem
+> </menuchoice
+> na barra de menu.</para>
+
+</sect1>
+
+</chapter>
+
+<chapter id="faq">
+<title
+>Perguntas frequentes</title>
+<qandaset>
+
+<qandaentry>
+<question>
+<para
+>Eu posso alterar o visual do jogo? </para>
+</question>
+<answer>
+<para
+>Sim, clique no menu <guimenu
+>Configurações</guimenu
+> e selecione <guimenuitem
+>Configurar o &kmines;</guimenuitem
+>. </para>
+</answer>
+</qandaentry>
+
+<qandaentry>
+<question>
+<para
+>Existe uma maneira de se adicionar mais minas e quadrados? </para>
+</question>
+<answer>
+<para
+>Sim, a maneira mais fácil é usar a caixa de escolha de dificuldade no canto inferior direito. </para>
+</answer>
+</qandaentry>
+
+</qandaset>
+</chapter>
+
+<chapter id="settings">
+<title
+>Opções do jogo</title>
+<para
+>Estas configurações de teclas podem ser alteradas selecionando a opção <menuchoice
+> <guimenu
+>Configurações</guimenu
+> <guimenuitem
+>Configurar o &kmines;</guimenuitem
+> </menuchoice
+> no menu. Uma caixa de diálogo será mostrada. </para>
+<para
+>Na página <guilabel
+>Geral</guilabel
+> você pode ajustar as seguintes configurações do jogo. </para>
+<variablelist>
+    <varlistentry>
+        <term
+>Usar '?' como marcador</term>
+        <listitem>
+            <para
+>Quando marcado, permite usar o símbolo do ponto de interrogação para identificar os quadrados de incerteza. A marca no quadrado pode ser alterada clicando com o &RMB;.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term
+>Permitir reinício do &kmines;</term>
+        <listitem>
+            <para
+>Quando marcado, permite reiniciar o jogo &kmines; quando é impossível fazer qualquer coisa depois de ter errado sua última tentativa.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term
+>Desativar pontuação ao reiniciar</term>
+        <listitem>
+            <para
+>Quando marcado, permite desativar pontuação ao reiniciar.</para>
+        </listitem>
+    </varlistentry>
+</variablelist>
+
+<para
+>Na segunda página, você pode selecionar o tema, escolhendo-o a partir da lista. Cada item da lista mostra uma pequena imagem à esquerda do nome do tema. A seleção é imediatamente aplicada. </para>
+
+<para
+>Na terceira aba, você pode selecionar a altura e largura do tabuleiro e o número de minas no seu jogo personalizado. </para>
+
+</chapter>
+
+<chapter id="credits"
+><title
+>Créditos e Licença</title>
+
+<para
+>Direitos autorais do &kmines; 1996-2007 </para>
+
+<itemizedlist>
+<title
+>Autores</title>
+<listitem>
+<para
+>&Nicolas.Hadacek; &Nicolas.Hadacek.mail; </para>
+</listitem>
+<listitem>
+<para
+>Mikhail Kourinny </para>
+</listitem>
+<listitem>
+<para
+>Mauricio Piacentini <email
+>mauricio@tabuleiro.com</email
+> </para>
+</listitem>
+<listitem>
+<para
+>Dmitry Suzdalev <email
+>dimsuz@gmail.com</email
+> </para>
+</listitem>
+</itemizedlist>
+
+<para
+>Direitos autorais da documentação 2000 &Nicolas.Hadacek; &Nicolas.Hadacek.mail;</para>
+<para
+>Documentação atualizada para o &kde; 2.0 por &Mike.McBride; &Mike.McBride.mail;</para>
+<para
+>Algumas alterações para o &kde; 3.2 por &Philip.Rodrigues; &Philip.Rodrigues.mail;</para>
+<para
+>Tradução de Marcus Gama <email
+>marcus.gama@gmail.com</email
+></para
+> &underFDL; &underGPL; </chapter>
+
+</book>
+<!--
+Local Variables:
+mode: sgml
+sgml-omittag: nil
+sgml-shorttag: t
+End:
+-->

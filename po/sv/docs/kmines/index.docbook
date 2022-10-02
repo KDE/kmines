@@ -1,0 +1,623 @@
+<?xml version="1.0" ?>
+<!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.5-Based Variant V1.1//EN" "dtd/kdedbx45.dtd" [
+  <!ENTITY % addindex "IGNORE">
+  <!ENTITY % Swedish "INCLUDE"
+> <!-- change language only here -->
+]>
+
+<book id="kmines" lang="&language;">
+
+<bookinfo>
+<title
+>Handbok Minröjaren</title>
+
+<authorgroup>
+<author
+><firstname
+>Nicolas</firstname
+> <surname
+>Hadacek</surname
+> <affiliation
+> <address
+>&Nicolas.Hadacek.mail;</address>
+</affiliation>
+</author>
+<author
+><firstname
+>Michael</firstname
+> <surname
+>McBride</surname
+> <affiliation
+><address
+><email
+>mmcbride@ematic.org</email
+></address
+></affiliation>
+</author>
+<author
+><firstname
+>Anton</firstname
+> <surname
+>Brondz</surname
+> <affiliation
+> <address
+><email
+>dinolinux@gmail.com</email
+></address>
+</affiliation>
+</author>
+<othercredit role="developer"
+><firstname
+>Nicolas</firstname
+> <surname
+>Hadacek</surname
+> <affiliation
+> <address
+>&Nicolas.Hadacek.mail;</address>
+</affiliation>
+<contrib
+>Utvecklare</contrib>
+</othercredit>
+<othercredit role="reviewer"
+><firstname
+>Lauri</firstname
+> <surname
+>Watts</surname
+> <affiliation
+><address
+>&Lauri.Watts.mail;</address
+></affiliation>
+<contrib
+>Granskare</contrib>
+</othercredit>
+<othercredit role="translator"
+> <firstname
+>Stefan</firstname
+> <surname
+>Asserhäll</surname
+> <affiliation
+><address
+><email
+>stefan.asserhall@bredband.net</email
+></address
+></affiliation
+> <contrib
+>Översättare</contrib
+></othercredit
+> 
+</authorgroup>
+
+<copyright>
+<year
+>2000</year>
+<holder
+>&Nicolas.Hadacek;, Michael McBride</holder>
+</copyright>
+
+<legalnotice
+>&FDLNotice;</legalnotice>
+
+<date
+>2021-07-11</date>
+<releaseinfo
+>4.0 (KDE Gear 21.04)</releaseinfo>
+
+<abstract
+><para
+>Minröjaren är KDE-versionen av det klassiska minröjarspelet.</para
+></abstract>
+
+<keywordset>
+<keyword
+>KDE</keyword>
+<keyword
+>spel</keyword>
+<keyword
+>minröjare</keyword>
+</keywordset>
+
+</bookinfo>
+
+<chapter id="introduction">
+<title
+>Inledning</title>
+<note
+><title
+>Speltyp:</title
+><para
+>Strategi, brädspel</para
+></note
+><!-- Game genre. Use as many as necessary. Available game types are: Arcade, Board, Card, Dice, Toys, Logic, Strategy.-->
+<note
+><title
+>Antal möjliga spelare:</title
+><para
+>En</para
+></note
+><!--Number of possible players. It can be: One, Two,..., Multiplayer-->
+
+<para
+>Minröjaren är det klassiska minröjarspelet. Idén är att avtäcka alla tomma rutor utan att spränga en mina. När en mina sprängs är spelet slut. Nummer anger hur många minor som finns i närheten. </para>
+
+</chapter>
+
+<chapter id="how-to-play">
+<title
+>Hur man spelar</title>
+<note
+><title
+>Syfte:</title
+><para
+>Hitta alla dolda minor i minfältet.</para
+></note
+><!--Describe the objective of the game.-->
+
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="gameboard.png" format="PNG"/>
+</imageobject>
+<textobject>
+<phrase
+>Spelbrädet i Minröjaren</phrase>
+</textobject>
+</mediaobject>
+</screenshot>
+
+<para
+>För att spela Minröjaren måste du använda musen och dess tre knappar för att avtäcka eller flagga rutorna (med en mus som har två knappar, åstadkommer man i allmänhet ett klick på mittenknappen genom att samtidigt trycka på <mousebutton
+>vänster</mousebutton
+> och <mousebutton
+>höger</mousebutton
+> musknapp). </para>
+
+<para
+>Att klicka med musens vänsterknapp avtäcker en ruta. Om det finns en mina där, sprängs den och spelet är slut. Om det inte finns en mina under rutan, rensas rutan och om det inte finns andra minor i närheten, försvinner rutan inklusive alla rutor i närheten utan minor. Om det finns minor i närheten visas e siffra som ange hur många grannrutor som innehåller minor. Det finns åtta grannrutor till varje ruta (med undantag för kant- och hörnrutor). </para>
+
+<note>
+<para
+><mousebutton
+>Vänster</mousebutton
+>klicka på en flaggad ruta är säkert och gör ingenting. </para>
+</note>
+
+<para
+>Att klicka med höger musknapp markerar att en ruta innehåller en mina (genom att placera ut en röd flagga på den). Att klicka två gånger med knappen markerar den som osäker (genom att placera ett frågetecken på den). Markering som osäker kan vara användbar när du är förbryllad över minornas positioner. Musens mittenknapp rensar omgivande rutor om rätt antal rutor redan är flaggade. Den är mycket användbar eftersom det går mycket snabbare än att avtäcka varje enskild ruta. Försäkra dig om att flaggorna är placerade rätt, om inte skulle du kunna spränga en mina. </para>
+</chapter>
+
+<chapter id="rulestips">
+<title
+>Spelets regler, strategi och tips</title>
+<sect1 id="rules">
+<title
+>Regler</title>
+<itemizedlist>
+<listitem
+><para
+>Alla minor måste rensas bort innan en spelare kan vinna spelet.</para
+></listitem>
+<listitem
+><para
+>Spelaren kan inte känna till minornas exakta platser innan spelet är slut.</para
+></listitem>
+<listitem
+><para
+>Om en mina sprängs är spelet slut.</para
+></listitem>
+<listitem
+><para
+>Siffror anger näraliggande minor.</para
+></listitem>
+</itemizedlist>
+</sect1>
+
+<sect1 id="strattips">
+<title
+>Strategi och tips</title>
+<itemizedlist>
+<listitem
+><para
+>Använd siffrorna för att ta reda på var näraliggande minor finns.</para
+></listitem>
+<listitem
+><para
+>Placera flaggor där du misstänker att det finns minor. Observera att även om antalet angivna minor minskas när du placerar ut en flagga, kanske det ändå inte finns en mina under flaggen.</para
+></listitem>
+<listitem
+><para
+>Tänk innan du klickar. Ett felaktigt klick skulle kunna detonera en mina.</para
+></listitem>
+<listitem
+><para
+>När du misstänker att en ruta innehåller en mina, arbeta dig runt rutan för att avslöja eventuella siffror som kan vara till hjälp.</para
+></listitem>
+<listitem
+><para
+>Försök att rensa spelplanen så snabbt som möjligt. Ju kortare tid du använder, desto högre poäng får du.</para
+></listitem>
+</itemizedlist>
+</sect1>
+
+</chapter>
+
+<chapter id="command">
+<title
+>Kommandon/snabbtangenter</title>
+
+<para
+>Följande avsnitt beskriver kortfattat vissa alternativ i menyraden.</para>
+
+<sect1 id="menu">
+<title
+>Menyalternativ</title>
+
+<variablelist>
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>N</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Spel</guimenu
+> <guimenuitem
+>Ny</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Startar ett nytt spel.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycap
+>P</keycap
+></shortcut
+> <guimenu
+>Spel</guimenu
+> <guimenuitem
+>Paus</guimenuitem
+></menuchoice
+></term>
+<listitem>
+<para
+>Gör paus i speltidtagningen. Klicka på menyalternativet igen för att återuppta spelet. Observera att spelbrädet försvinner när spelet gör paus, eftersom det vore ojust om du kunde leta efter bra drag utan tidspress. </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>H</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Spel</guimenu
+> <guimenuitem
+>Visa poängtoppen</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Det här visar poängtoppen (den kortaste tiden) för varje svårighetsgrad.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>Q</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Spel</guimenu
+> <guimenuitem
+>Avsluta</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+><action
+>Avslutar</action
+> Minröjaren.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Inställningar</guimenu
+> <guisubmenu
+>Svårighetsgrad</guisubmenu
+> </menuchoice
+></term>
+<listitem>
+<para
+>Låter dig ange svårighetsnivån från en undermeny.</para>
+<para
+>Det finns tre förvalda svårighetsgrader: <guimenuitem
+>Lätt</guimenuitem
+> (9x9 rutor, 10 minor), <guimenuitem
+>Normal</guimenuitem
+> (16x16 rutor, 40 minor), och <guimenuitem
+>Svår</guimenuitem
+> (30x16 rutor, 99 minor). Det finns också nivåinställningen <guimenuitem
+>Eget</guimenuitem
+>.</para>
+<para
+>Om du väljer <guimenuitem
+>Eget</guimenuitem
+>, används inställningarna som du har angett i dialogrutan <guilabel
+>Anpassa Minröjaren</guilabel
+>.</para
+></listitem>
+</varlistentry>
+
+</variablelist>
+
+<para
+>Dessutom har Minröjaren de vanliga menyalternativen <guimenu
+>Inställningar</guimenu
+> och <guimenu
+>Hjälp</guimenu
+> i &kde;. För mer information, läs avsnitten  <ulink url="help:/fundamentals/menus.html#menus-settings"
+>Menyn Inställningar</ulink
+> och <ulink url="help:/fundamentals/menus.html#menus-help"
+>Menyn Hjälp</ulink
+> i &kde;:s Grunder. </para>
+
+</sect1>
+
+<sect1 id="keys"
+><title
+>Förvalda snabbtangenter</title>
+<para
+>Följande tabell visar dig de förvalda snabbtangenterna.</para>
+
+<table>
+<title
+>Snabbtangenter</title>
+<tgroup cols="2">
+<thead
+><row
+><entry
+>Tangentkombination</entry
+><entry
+>Åtgärd</entry
+></row
+></thead>
+<tbody>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>N</keycap
+></keycombo
+></entry
+><entry
+>Nytt spel</entry
+></row>
+<row
+><entry
+><keycap
+>P</keycap
+></entry
+><entry
+>Paus</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>Q</keycap
+></keycombo
+></entry
+><entry
+>Avsluta Minröjaren</entry
+></row>
+<row
+><entry
+><keycap
+>F1</keycap
+></entry
+><entry
+>Handbok Minröjaren</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Shift;<keycap
+>F1</keycap
+></keycombo
+></entry
+><entry
+>Vad är det här? hjälp</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>H</keycap
+></keycombo
+></entry
+><entry
+>Visa bästa resultat</entry
+></row>
+
+</tbody>
+</tgroup>
+</table>
+
+<para
+>De här genvägarna kan ändras genom att välja menyalternativet <menuchoice
+><guimenu
+>Inställningar</guimenu
+> <guimenuitem
+>Anpassa genvägar...</guimenuitem
+></menuchoice
+>.</para>
+
+</sect1>
+
+</chapter>
+
+<chapter id="faq">
+<title
+>Vanliga frågor</title>
+<qandaset>
+
+<qandaentry>
+<question>
+<para
+>Kan man ändra hur spelet ser ut? </para>
+</question>
+<answer>
+<para
+>Ja, klicka på menyalternativet <menuchoice
+><guimenu
+>Inställningar</guimenu
+> <guimenuitem
+>Anpassa Minröjaren...</guimenuitem
+></menuchoice
+>. </para>
+</answer>
+</qandaentry>
+
+<qandaentry>
+<question>
+<para
+>Finns det något sätt att lägga till fler minor och rutor? </para>
+</question>
+<answer>
+<para
+>Ja, det enklaste sättet är att använda kombinationsrutan i nedre högra hörnet. </para>
+</answer>
+</qandaentry>
+
+</qandaset>
+</chapter>
+
+<chapter id="settings">
+<title
+>Spelalternativ</title>
+<para
+>Spelets inställningar kan anpassas genom att välja menyalternativet <menuchoice
+><guimenu
+>Inställningar</guimenu
+> <guimenuitem
+>Anpassa Minröjaren...</guimenuitem
+></menuchoice
+>. En dialogruta visas då. </para>
+<para
+>På sidan <guilabel
+>Allmänt</guilabel
+> går det att anpassa följande spelinställningar. </para>
+<variablelist>
+    <varlistentry>
+        <term
+>Använd markörer med '?'</term>
+        <listitem>
+            <para
+>När markerad, tillåts användning av frågetecken för att markera rutor som är osäkra. Markören på en ruta kan stängas av eller sättas på genom att klicka med musens högerknapp.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term
+>Tillåt nollställning av Minröjaren</term>
+        <listitem>
+            <para
+>När markerad, tillåts du nollställa Minröjarspelet när det är omöjligt att göra någonting annat än att gissa och din sista gissning är fel.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term
+>Inaktivera poäng vid nollställning</term>
+        <listitem>
+            <para
+>När markerad, tillåts du inaktivera poäng vid nollställning.</para>
+        </listitem>
+    </varlistentry>
+        <varlistentry>
+        <term
+>Utforska med vänsterklick på nummerrutor</term>
+        <listitem>
+            <para
+>När markerad, har ett vänsterklick på en nummerruta samma effekt som mittenklick.</para>
+        </listitem>
+    </varlistentry>
+</variablelist>
+
+<para
+>Temat kan ställas in på den andra sidan. Markera ett tema i listan. Varje objekt i listan visar en liten förhandsgranskning till vänster om temats namn. En markering verkställs omedelbart. </para>
+
+<para
+>Du kan ställa in spelplanens höjd och bredd, samt antal minor, för din egen nivå på den tredje sidan. </para>
+
+</chapter>
+
+<chapter id="credits"
+><title
+>Tack till och licens</title>
+
+<para
+>&kmines; Copyright 1996-2007 </para>
+
+<itemizedlist>
+<title
+>Upphovsmän</title>
+<listitem>
+<para
+>&Nicolas.Hadacek; &Nicolas.Hadacek.mail; </para>
+</listitem>
+<listitem>
+<para
+>Mikhail Kourinny </para>
+</listitem>
+<listitem>
+<para
+>Mauricio Piacentini <email
+>mauricio@tabuleiro.com</email
+> </para>
+</listitem>
+<listitem>
+<para
+>Dmitry Suzdalev <email
+>dimsuz@gmail.com</email
+> </para>
+</listitem>
+</itemizedlist>
+
+<para
+>Dokumentation copyright 2000 &Nicolas.Hadacek; &Nicolas.Hadacek.mail;</para>
+<para
+>Dokumentation uppdaterad för &kde; 2.0 av &Mike.McBride; &Mike.McBride.mail;</para>
+<para
+>Några ändringar för &kde; 3.2 av &Philip.Rodrigues; &Philip.Rodrigues.mail;</para>
+<para
+>Översättning Stefan Asserhäll <email
+>stefan.asserhall@bredband.net</email
+></para
+> &underFDL; &underGPL; </chapter>
+
+</book>
+<!--
+Local Variables:
+mode: sgml
+sgml-omittag: nil
+sgml-shorttag: t
+End:
+-->

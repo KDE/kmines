@@ -1,0 +1,264 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: kmines\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-06-15 00:44+0000\n"
+"PO-Revision-Date: 2021-07-13 12:41+0100\n"
+"Last-Translator: José Nuno Pires <zepires@gmail.com>\n"
+"Language-Team: pt <kde-i18n-pt@kde.org>\n"
+"Language: pt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-POFile-SpellExtra: Nº  QGraphicsView Mauricio Capricelli Piacentini\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-POFile-SpellExtra: Kourinny Mikhail Suzdalev Andreas Dmitry Hadacek\n"
+"X-POFile-SpellExtra: Zehender KGameRenderer Brian Croom KMines\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "José Nuno Pires,Pedro Morais"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "zepires@gmail.com,morais@kde.org"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: customgame.ui:16
+#, kde-format
+msgid "Width:"
+msgstr "Largura:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: customgame.ui:26
+#, kde-format
+msgid "Height:"
+msgstr "Altura:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: customgame.ui:36
+#, kde-format
+msgid "Mines:"
+msgstr "Minas:"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_UseQuestionMarks)
+#: generalopts.ui:17
+#, kde-format
+msgid "Use '?' marks"
+msgstr "Usar as marcas '?'"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_AllowKminesReset)
+#: generalopts.ui:24
+#, kde-format
+msgid "Allow KMines reset"
+msgstr "Permitir o reinício do KMines"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_DisableScoreOnReset)
+#: generalopts.ui:37
+#, kde-format
+msgid "Disable score on reset"
+msgstr "Desactivar a pontuação ao reiniciar"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ExploreWithLeftClickOnNumberCells)
+#: generalopts.ui:44
+#, kde-format
+msgid "Explore with left click on number cells"
+msgstr "Explorar com o botão esquerdo nas células de números"
+
+#. i18n: ectx: label, entry (UseQuestionMarks), group (General)
+#: kmines.kcfg:9
+#, kde-format
+msgid "Whether the \"unsure\" marker may be used."
+msgstr "Permitir ou não a utilização do marcador \"incerto\"."
+
+#. i18n: ectx: label, entry (ExploreWithLeftClickOnNumberCells), group (General)
+#: kmines.kcfg:21
+#, kde-format
+msgid "Left click on a number cell will have the same effect as mid click."
+msgstr ""
+"Se carregar com o botão esquerdo sobre uma célula de número terá o mesmo "
+"efeito que o botão do meio."
+
+#. i18n: ectx: label, entry (CustomWidth), group (Options)
+#: kmines.kcfg:27
+#, kde-format
+msgid "The width of the playing field."
+msgstr "A largura do campo de jogo."
+
+#. i18n: ectx: label, entry (CustomHeight), group (Options)
+#: kmines.kcfg:33
+#, kde-format
+msgid "The height of the playing field."
+msgstr "A altura do campo de jogo."
+
+#. i18n: ectx: label, entry (CustomMines), group (Options)
+#: kmines.kcfg:39
+#, kde-format
+msgid "The number of mines in the playing field."
+msgstr "A quantidade de minas no campo de jogo."
+
+#. i18n: ectx: ToolBar (mainToolBar)
+#: kminesui.rc:12
+#, kde-format
+msgid "Main Toolbar"
+msgstr "Barra Principal"
+
+#: main.cpp:43
+#, kde-format
+msgid "KMines"
+msgstr "Campo Minado"
+
+#: main.cpp:45
+#, kde-format
+msgid "KMines is a classic minesweeper game"
+msgstr "O Campo Minado é o clássico jogo de busca de minas"
+
+#: main.cpp:47
+#, kde-format
+msgid ""
+"(c) 1996-2005, Nicolas Hadacek\n"
+"(c) 2001, Mikhail Kourinny\n"
+"(c) 2006-2007, Mauricio Piacentini\n"
+"(c) 2007, Dmitry Suzdalev"
+msgstr ""
+"(c) 1996-2005, Nicolas Hadacek\n"
+"(c) 2001, Mikhail Kourinny\n"
+"(c) 2006-2007, Mauricio Piacentini\n"
+"(c) 2007, Dmitry Suzdalev"
+
+#: main.cpp:50
+#, kde-format
+msgid "Nicolas Hadacek"
+msgstr "Nicolas Hadacek"
+
+#: main.cpp:51
+#, kde-format
+msgid "Original author"
+msgstr "Autor original"
+
+#: main.cpp:52
+#, kde-format
+msgid "Mauricio Piacentini"
+msgstr "Mauricio Piacentini"
+
+#: main.cpp:53
+#, kde-format
+msgid "Code refactoring and SVG support. Current maintainer"
+msgstr "Organização do código e suporte para SVG. Manutenção actual"
+
+#: main.cpp:55
+#, kde-format
+msgid "Dmitry Suzdalev"
+msgstr "Dmitry Suzdalev"
+
+#: main.cpp:56
+#, kde-format
+msgid "Rewrite to use QGraphicsView framework. Current maintainer"
+msgstr "Alteração para usar a plataforma do QGraphicsView. Manutenção actual"
+
+#: main.cpp:58
+#, kde-format
+msgid "Andreas Zehender"
+msgstr "Andreas Zehender"
+
+#: main.cpp:58
+#, kde-format
+msgid "Smiley pixmaps"
+msgstr "Imagens da Cara Sorridente"
+
+#: main.cpp:59
+#, kde-format
+msgid "Mikhail Kourinny"
+msgstr "Mikhail Kourinny"
+
+#: main.cpp:59
+#, kde-format
+msgid "Solver/Adviser"
+msgstr "Resolução/Conselhos"
+
+#: main.cpp:60
+#, kde-format
+msgid "Thomas Capricelli"
+msgstr "Thomas Capricelli"
+
+#: main.cpp:60
+#, kde-format
+msgid "Magic reveal mode"
+msgstr "Modo de revelação mágica"
+
+#: main.cpp:61
+#, kde-format
+msgid "Brian Croom"
+msgstr "Brian Croom"
+
+#: main.cpp:61
+#, kde-format
+msgid "Port to use KGameRenderer"
+msgstr "Modificações para usar o KGameRenderer"
+
+#: mainwindow.cpp:101
+#, kde-format
+msgid "Mines: 0/0"
+msgstr "Minas: 0/0"
+
+#: mainwindow.cpp:102 mainwindow.cpp:173
+#, kde-format
+msgid "Time: 00:00"
+msgstr "Tempo: 00:00"
+
+#: mainwindow.cpp:125
+#, kde-format
+msgid "Custom"
+msgstr "Personalizado"
+
+#: mainwindow.cpp:135
+#, kde-format
+msgid "Mines: %1/%2"
+msgstr "Minas: %1/%2"
+
+#: mainwindow.cpp:201
+#, kde-format
+msgid "Reset?"
+msgstr "Reiniciar?"
+
+#: mainwindow.cpp:201
+#, kde-format
+msgid "Reset the Game?"
+msgstr "Reiniciar o Jogo?"
+
+#: mainwindow.cpp:212
+#, kde-format
+msgid "Time: %1"
+msgstr "Tempo: %1"
+
+#: mainwindow.cpp:238
+#, kde-format
+msgid "General"
+msgstr "Geral"
+
+#: mainwindow.cpp:239
+#, kde-format
+msgid "Theme"
+msgstr "Tema"
+
+#: mainwindow.cpp:240
+#, kde-format
+msgid "Custom Game"
+msgstr "Jogo Personalizado"
+
+#: scene.cpp:122
+#, kde-format
+msgid "Game is paused."
+msgstr "O jogo está em pausa."
+
+#: scene.cpp:130
+#, kde-format
+msgid "Congratulations! You have won!"
+msgstr "Parabéns! Você ganhou!"
+
+#: scene.cpp:132
+#, kde-format
+msgid "You have lost."
+msgstr "Você perdeu."

@@ -1,0 +1,540 @@
+# translation of kmines.po to English
+# translation of kmines.po to
+# translation of kmines.po to
+# Copyright (C) 2004 Free Software Foundation, Inc.
+# Ambalam <tamilpc@ambalam.com>, 2004.
+# root <root@localhost.localdomain>, 2004.
+# root <root@intranet.ddsl>, 2004.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: kmines\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-06-15 00:44+0000\n"
+"PO-Revision-Date: 2005-03-22 22:18-0800\n"
+"Last-Translator: Tamil PC <tamilpc@ambalam.com>\n"
+"Language-Team: English <en@li.org>\n"
+"Language: ta\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "விஜய்"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "jvijay_loyola@hotmail.com"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: customgame.ui:16
+#, kde-format
+msgid "Width:"
+msgstr "அகலம்:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: customgame.ui:26
+#, kde-format
+msgid "Height:"
+msgstr "உயரம்:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: customgame.ui:36
+#, fuzzy, kde-format
+#| msgid "KMines"
+msgid "Mines:"
+msgstr "கேமைன்ஸ்"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_UseQuestionMarks)
+#: generalopts.ui:17
+#, fuzzy, kde-format
+#| msgid "Enable ? mark"
+msgid "Use '?' marks"
+msgstr "குறிப்பீடை செயல்படுத்தவா?"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_AllowKminesReset)
+#: generalopts.ui:24
+#, kde-format
+msgid "Allow KMines reset"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_DisableScoreOnReset)
+#: generalopts.ui:37
+#, kde-format
+msgid "Disable score on reset"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ExploreWithLeftClickOnNumberCells)
+#: generalopts.ui:44
+#, kde-format
+msgid "Explore with left click on number cells"
+msgstr ""
+
+#. i18n: ectx: label, entry (UseQuestionMarks), group (General)
+#: kmines.kcfg:9
+#, fuzzy, kde-format
+#| msgid "Whether the \"uncertain\" marker may be used."
+msgid "Whether the \"unsure\" marker may be used."
+msgstr " \"uncertain\" குறிப்பீடை உபயோகிக்கலாமா?"
+
+#. i18n: ectx: label, entry (ExploreWithLeftClickOnNumberCells), group (General)
+#: kmines.kcfg:21
+#, kde-format
+msgid "Left click on a number cell will have the same effect as mid click."
+msgstr ""
+
+#. i18n: ectx: label, entry (CustomWidth), group (Options)
+#: kmines.kcfg:27
+#, kde-format
+msgid "The width of the playing field."
+msgstr "விளையாட்டு தளத்தின் அகலம்"
+
+#. i18n: ectx: label, entry (CustomHeight), group (Options)
+#: kmines.kcfg:33
+#, kde-format
+msgid "The height of the playing field."
+msgstr "விளையாட்டு தளத்தின் உயரம்"
+
+#. i18n: ectx: label, entry (CustomMines), group (Options)
+#: kmines.kcfg:39
+#, kde-format
+msgid "The number of mines in the playing field."
+msgstr "விளையாட்டு தளத்தில் கண்ணிவெடியின் எண்ணிக்கை."
+
+#. i18n: ectx: ToolBar (mainToolBar)
+#: kminesui.rc:12
+#, fuzzy, kde-format
+#| msgid "Mine Color"
+msgid "Main Toolbar"
+msgstr "கண்ணிவெடியின் வண்ணம்"
+
+#: main.cpp:43
+#, kde-format
+msgid "KMines"
+msgstr "கேமைன்ஸ்"
+
+#: main.cpp:45
+#, fuzzy, kde-format
+#| msgid "KMines is a classic mine sweeper game"
+msgid "KMines is a classic minesweeper game"
+msgstr "கேமைன்ஸ் அற்புதமான கண்ணி வெடி விளையாட்டு"
+
+#: main.cpp:47
+#, kde-format
+msgid ""
+"(c) 1996-2005, Nicolas Hadacek\n"
+"(c) 2001, Mikhail Kourinny\n"
+"(c) 2006-2007, Mauricio Piacentini\n"
+"(c) 2007, Dmitry Suzdalev"
+msgstr ""
+
+#: main.cpp:50
+#, kde-format
+msgid "Nicolas Hadacek"
+msgstr ""
+
+#: main.cpp:51
+#, kde-format
+msgid "Original author"
+msgstr ""
+
+#: main.cpp:52
+#, kde-format
+msgid "Mauricio Piacentini"
+msgstr ""
+
+#: main.cpp:53
+#, kde-format
+msgid "Code refactoring and SVG support. Current maintainer"
+msgstr ""
+
+#: main.cpp:55
+#, kde-format
+msgid "Dmitry Suzdalev"
+msgstr ""
+
+#: main.cpp:56
+#, kde-format
+msgid "Rewrite to use QGraphicsView framework. Current maintainer"
+msgstr ""
+
+#: main.cpp:58
+#, kde-format
+msgid "Andreas Zehender"
+msgstr ""
+
+#: main.cpp:58
+#, kde-format
+msgid "Smiley pixmaps"
+msgstr "ஸ்மைலி பிக்ஸ்மாப்ஸ்"
+
+#: main.cpp:59
+#, kde-format
+msgid "Mikhail Kourinny"
+msgstr ""
+
+#: main.cpp:59
+#, kde-format
+msgid "Solver/Adviser"
+msgstr "தீர்ப்பவர்/ஆலோசகர்"
+
+#: main.cpp:60
+#, kde-format
+msgid "Thomas Capricelli"
+msgstr ""
+
+#: main.cpp:60
+#, kde-format
+msgid "Magic reveal mode"
+msgstr "மாயாஜாலத்தை தெரியப்படுத்தும் பாங்கு"
+
+#: main.cpp:61
+#, kde-format
+msgid "Brian Croom"
+msgstr ""
+
+#: main.cpp:61
+#, kde-format
+msgid "Port to use KGameRenderer"
+msgstr ""
+
+#: mainwindow.cpp:101
+#, fuzzy, kde-format
+#| msgid "KMines"
+msgid "Mines: 0/0"
+msgstr "கேமைன்ஸ்"
+
+#: mainwindow.cpp:102 mainwindow.cpp:173
+#, kde-format
+msgid "Time: 00:00"
+msgstr ""
+
+#: mainwindow.cpp:125
+#, kde-format
+msgid "Custom"
+msgstr "ஆயத்த"
+
+#: mainwindow.cpp:135
+#, fuzzy, kde-format
+#| msgid "Mines (%1%):"
+msgid "Mines: %1/%2"
+msgstr "கண்ணிவெடி(%1%):"
+
+#: mainwindow.cpp:201
+#, kde-format
+msgid "Reset?"
+msgstr ""
+
+#: mainwindow.cpp:201
+#, kde-format
+msgid "Reset the Game?"
+msgstr ""
+
+#: mainwindow.cpp:212
+#, kde-format
+msgid "Time: %1"
+msgstr ""
+
+#: mainwindow.cpp:238
+#, kde-format
+msgid "General"
+msgstr "பொதுவாக"
+
+#: mainwindow.cpp:239
+#, kde-format
+msgid "Theme"
+msgstr ""
+
+#: mainwindow.cpp:240
+#, kde-format
+msgid "Custom Game"
+msgstr "ஆயத்த விளையாட்டு"
+
+#: scene.cpp:122
+#, kde-format
+msgid "Game is paused."
+msgstr ""
+
+#: scene.cpp:130
+#, kde-format
+msgid "Congratulations! You have won!"
+msgstr ""
+
+#: scene.cpp:132
+#, kde-format
+msgid "You have lost."
+msgstr ""
+
+#~ msgid "The difficulty level."
+#~ msgstr "கடினமான நிலை"
+
+#, fuzzy
+#~| msgid "Normal"
+#~ msgid "Form"
+#~ msgstr "இயல்பான"
+
+#~ msgid "The size of a square."
+#~ msgstr "சதுரத்தின் அளவு."
+
+#~ msgid "Whether the game can be played using the keyboard."
+#~ msgstr "விசைப்பலகையின் மூலம் விளையாட்டை விளையாட முடியுமா."
+
+#~ msgid "Whether the game is paused when the window loses focus."
+#~ msgstr "சாளரங்கள் தெளிவிழந்தால் தற்காலிகமாக விளையாட்டு நிறுத்தப்படுமா?"
+
+#~ msgid "Whether to set flags and reveal squares in trivial situations."
+#~ msgstr ""
+#~ "தவிர்க்க முடியாத சந்தர்ப்பங்களில் குறிகளை செயல்படுத்தி கொடிகள் மற்றும் சதுரங்கத்தை "
+#~ "அமைக்கலாம்."
+
+#~ msgid "Mouse button actions"
+#~ msgstr "சுட்டி பொத்தானின் செயல்கள்"
+
+#~ msgid "Color"
+#~ msgstr "வண்ணம்"
+
+#~ msgid "Whether the menubar is visible."
+#~ msgstr "பட்டியல் பட்டி தெரிகிறதா?"
+
+#~ msgid "&Move"
+#~ msgstr "&நகர்த்து"
+
+#~ msgid "Easy"
+#~ msgstr "எளிமையான"
+
+#~ msgid "Normal"
+#~ msgstr "இயல்பான"
+
+#~ msgid "Expert"
+#~ msgstr "கைதேர்ந்த"
+
+#~ msgid "No. of mines:"
+#~ msgstr "கண்ணிவெடியின் எண்ணிக்கை"
+
+#~ msgid "Choose level:"
+#~ msgstr "நிலைகளை தேர்ந்தெடு"
+
+#~ msgid "Mines (%1%):"
+#~ msgstr "கண்ணிவெடி(%1%):"
+
+#~ msgid "Left button:"
+#~ msgstr "இட பொத்தான்"
+
+#~ msgid "Middle button:"
+#~ msgstr "நடு பொத்தான்"
+
+#~ msgid "Right button:"
+#~ msgstr "வல பொத்தான்"
+
+#~ msgid "Reveal"
+#~ msgstr "தெரியப்படுத்து"
+
+#~ msgid "Autoreveal"
+#~ msgstr "தானாகத் தெரியப்படுத்து"
+
+#~ msgid "Toggle Flag"
+#~ msgstr "குறியை மாற்று"
+
+#~ msgid "Toggle ? Flag"
+#~ msgstr "குறியை மாற்ற வேண்டுமா? "
+
+#~ msgid "Enable keyboard"
+#~ msgstr "விசைப்பலகையை செயல்படுத்தவா?"
+
+#~ msgid "Pause if window loses focus"
+#~ msgstr "சாளரங்கள் முன்னிறுத்தை விடுத்தால் நிறுத்தவும்"
+
+#~ msgid "\"Magic\" reveal"
+#~ msgstr "\"மாயாஜாலம்\" வெளிப்படுத்து"
+
+#~ msgid "Set flags and reveal squares where they are trivial."
+#~ msgstr "தவிர்க்க முடியாத சந்தர்ப்பங்களில் குறிகளை கொடிகள் மற்றும் சதுரங்கள் அமைக்கவும்."
+
+#~ msgid "Mouse Bindings"
+#~ msgstr "சுட்டியின் தொடர்புகள்"
+
+#~ msgid ""
+#~ "When the \"magic\" reveal is on, you lose the ability to enter the "
+#~ "highscores."
+#~ msgstr ""
+#~ "\"மாயாஜாலம்\" வெளிப்படும் போழ்து, நீங்கள் மிக அதிக மதிப்பெண்கள் எடுக்கும் தகுதியை "
+#~ "இழக்கிறீர்கள்"
+
+#~ msgid "Flag color:"
+#~ msgstr "குறியின் வண்ணம்"
+
+#~ msgid "Explosion color:"
+#~ msgstr "அதிர்வெடியின் வண்ணம்"
+
+#~ msgid "Error color:"
+#~ msgstr "பிழையின் வண்ணம்"
+
+#, fuzzy
+#~ msgid "%1 mine color:"
+#~ msgid_plural "%1 mines color:"
+#~ msgstr[0] "%1 வெடிகளின் வண்ணம்:"
+
+#~ msgid "Case revealed"
+#~ msgstr "எழுத்துரு தீர்க்கப்பட்டுள்ளது"
+
+#~ msgid "Case autorevealed"
+#~ msgstr "தானாகத் தெரியப்படுத்து"
+
+#~ msgid "Flag set"
+#~ msgstr "கொடியை அமை"
+
+#~ msgid "Flag unset"
+#~ msgstr "கொடியை நீக்கு"
+
+#~ msgid "Question mark set"
+#~ msgstr "கேள்விக்குறி அமைப்பு"
+
+#~ msgid "Question mark unset"
+#~ msgstr "கேள்விக்குறி அமைக்கவில்லை"
+
+#~ msgid "Move Up"
+#~ msgstr "மேலே நகர்த்து"
+
+#~ msgid "Move Down"
+#~ msgstr "கீழே நகர்த்து"
+
+#~ msgid "Move Right"
+#~ msgstr "வலப்பக்கமாக நகர்த்து"
+
+#~ msgid "Move Left"
+#~ msgstr "இடப்பக்கமாக நகர்த்து"
+
+#~ msgid "Move at Left Edge"
+#~ msgstr "இடது வரம்பில் நகர்த்தவும்"
+
+#~ msgid "Move at Right Edge"
+#~ msgstr "வலது வரம்பில் நகர்த்தவும்"
+
+#~ msgid "Move at Top Edge"
+#~ msgstr "மேல் வரம்பில் நகர்த்தவும்"
+
+#~ msgid "Move at Bottom Edge"
+#~ msgstr "கீழ் வரம்பில் நகர்த்தவும்"
+
+#~ msgid "Reveal Mine"
+#~ msgstr "கண்ணிவெடியை தெரியப்படுத்து"
+
+#~ msgid "Mark Mine"
+#~ msgstr "கண்ணிவெடியை குறிப்பபிடு"
+
+#~ msgid "Automatic Reveal"
+#~ msgstr "தானாகத் தெரியப்படுத்து"
+
+#~ msgid "Replay Log"
+#~ msgstr "கோப்பினை மறுபடி தொடங்கு"
+
+#~ msgid "Save Log..."
+#~ msgstr "கோப்பினை சேமி"
+
+#~ msgid "Load Log..."
+#~ msgstr "கோப்பினை உள்வாங்கு"
+
+#~ msgid "Game"
+#~ msgstr "விளையாட்டு"
+
+#~ msgid "Keyboard game"
+#~ msgstr "விசைப்பலகை விளையாட்டு"
+
+#~ msgid "Press to start a new game"
+#~ msgstr "புது விளையாட்டைத் துவங்க அழுத்தவும்"
+
+#~ msgid "Mines field."
+#~ msgstr "கண்ணிவெடிகளின் தளம்"
+
+#~ msgid "Press to Resume"
+#~ msgstr "மீண்டும் துவங்க அழுத்தவும்"
+
+#~ msgid "Explosion!"
+#~ msgstr "வெடிப்பு!"
+
+#~ msgid "Game won!"
+#~ msgstr "விளையாட்டில் வெற்றி!"
+
+#~ msgid "Game lost!"
+#~ msgstr "விளையாட்டில் தோல்வி!"
+
+#~ msgid ""
+#~ "When the solver gives you advice, your score will not be added to the "
+#~ "highscores."
+#~ msgstr ""
+#~ "உங்களுக்கு ஆலோசனைகள் வந்தால், நீங்கள் பெற்ற மதிப்பெண்கள் மிக அதிக மதிப்பெண்களுடன் "
+#~ "சேர்க்கப்படமாட்டாது."
+
+#~ msgid "Overwrite"
+#~ msgstr "மேல் எழுது"
+
+#~ msgid "The file already exists. Overwrite?"
+#~ msgstr "கோப்பு முன்பே உள்ளது. மேலே எழுத வேண்டுமா?"
+
+#~ msgid "File Exists"
+#~ msgstr "கோப்பு உள்ளது"
+
+#~ msgid "Cannot read XML file on line %1"
+#~ msgstr "%1 வரியில் XML கோப்பினை படிக்க இயலவில்லை"
+
+#~ msgid "Cannot load file."
+#~ msgstr "கோப்பினை உள்வாங்க இயலவில்லை."
+
+#~ msgid "Log file not recognized."
+#~ msgstr "கோப்புப் பதிவேடு அங்கீகரிக்கப்படவில்லை."
+
+#~ msgid "Clicks"
+#~ msgstr "கிளிக்ஸ்"
+
+#~ msgid "anonymous"
+#~ msgstr "அடையாளம் தெரியாத"
+
+#~ msgid "Solving Rate..."
+#~ msgstr "தீர்வுகாணும் விகிதம்"
+
+#~ msgid "View Log"
+#~ msgstr "கோப்பினை பார்"
+
+#~ msgid ""
+#~ "<qt>Mines left.<br/>It turns <font color=\"red\">red</font> when you have "
+#~ "flagged more cases than present mines.</qt>"
+#~ msgstr ""
+#~ "<qt>மீதமுள்ள கண்ணிவெடிகள்.<br/>தற்போதைய கண்ணிவெடிகளை விட நீங்கள் அதிகமாக "
+#~ "குறியிட்டுள்ளீர்.</qt><font color=\"red\">சிவப்பு</font> நிறத்துக்கு திரும்பும்."
+
+#~ msgid ""
+#~ "<qt>Time elapsed.<br/>It turns <font color=\"blue\">blue</font> if it is "
+#~ "a highscore and <font color=\"red\">red</font> if it is the best time.</"
+#~ "qt>"
+#~ msgstr ""
+#~ "<qt>நேரம் முடிந்தது.மிக அதிக மதிப்பெண்கள் எடுக்கும்போது <font color=\"blue"
+#~ "\">நீலம்</font> நிறம்<br/>நல்ல நேரமாக இருந்தால்<font color=\"red\">சிவப்பு</"
+#~ "font> நிறம்</qt>"
+
+#~ msgid "View Game Log"
+#~ msgstr "விளையாட்டு கோப்பினை பார்க்கவும்"
+
+#~ msgid "Compute Solving Rate"
+#~ msgstr "தீர்க்கும் விகிததை கணக்கிடவும்"
+
+#~ msgid "Start"
+#~ msgstr "துவங்கு"
+
+#~ msgid "Width: %1"
+#~ msgstr "அகலம்:%1"
+
+#~ msgid "Height: %1"
+#~ msgstr "உயரம்:%1"
+
+#~ msgid "Mines: %1 (%2%)"
+#~ msgstr "கண்ணிவெடி:%1(%2%)"
+
+#~ msgid "Success rate:"
+#~ msgstr "வெற்றியின் விகிதம்:"
+
+#~ msgid "Success rate: %1%"
+#~ msgstr "வெற்றியின் விகிதம்: %1%"

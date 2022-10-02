@@ -1,0 +1,274 @@
+# translation of kmines.po to Swedish
+# Copyright (C).
+# Christer Gustavsson <f93-cgn@sm.luth.se>, 1998.
+# Per Lindström <per.lindstrom@osd.privataccess.nu>, 2000.
+# Stefan Asserhäll <stefan.asserhall@bredband.net>, 2004, 2007, 2008, 2009, 2010, 2019, 2020, 2021.
+msgid ""
+msgstr ""
+"Project-Id-Version: kmines\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-06-15 00:44+0000\n"
+"PO-Revision-Date: 2021-07-13 11:38+0200\n"
+"Last-Translator: Stefan Asserhäll <stefan.asserhall@bredband.net>\n"
+"Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
+"Language: sv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 20.08.1\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "Christer Gustavsson,Per Lindström"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "f93-cgn@sm.luth.se,per.lindstrom@osd.privataccess.nu"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: customgame.ui:16
+#, kde-format
+msgid "Width:"
+msgstr "Bredd:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: customgame.ui:26
+#, kde-format
+msgid "Height:"
+msgstr "Höjd:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: customgame.ui:36
+#, kde-format
+msgid "Mines:"
+msgstr "Minor:"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_UseQuestionMarks)
+#: generalopts.ui:17
+#, kde-format
+msgid "Use '?' marks"
+msgstr "Använd markörer med '?'"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_AllowKminesReset)
+#: generalopts.ui:24
+#, kde-format
+msgid "Allow KMines reset"
+msgstr "Tillåt nollställning av Minröjaren"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_DisableScoreOnReset)
+#: generalopts.ui:37
+#, kde-format
+msgid "Disable score on reset"
+msgstr "Inaktivera poäng vid nollställning"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ExploreWithLeftClickOnNumberCells)
+#: generalopts.ui:44
+#, kde-format
+msgid "Explore with left click on number cells"
+msgstr "Utforska med vänsterklick på nummerrutor"
+
+#. i18n: ectx: label, entry (UseQuestionMarks), group (General)
+#: kmines.kcfg:9
+#, kde-format
+msgid "Whether the \"unsure\" marker may be used."
+msgstr "Om markören för \"osäker\" får användas."
+
+#. i18n: ectx: label, entry (ExploreWithLeftClickOnNumberCells), group (General)
+#: kmines.kcfg:21
+#, kde-format
+msgid "Left click on a number cell will have the same effect as mid click."
+msgstr "Vänsterklick på en nummerruta har samma effekt som mittenklick"
+
+#. i18n: ectx: label, entry (CustomWidth), group (Options)
+#: kmines.kcfg:27
+#, kde-format
+msgid "The width of the playing field."
+msgstr "Spelfältets bredd."
+
+#. i18n: ectx: label, entry (CustomHeight), group (Options)
+#: kmines.kcfg:33
+#, kde-format
+msgid "The height of the playing field."
+msgstr "Spelfältets höjd."
+
+#. i18n: ectx: label, entry (CustomMines), group (Options)
+#: kmines.kcfg:39
+#, kde-format
+msgid "The number of mines in the playing field."
+msgstr "Antal minor på spelfältet."
+
+#. i18n: ectx: ToolBar (mainToolBar)
+#: kminesui.rc:12
+#, kde-format
+msgid "Main Toolbar"
+msgstr "Huvudverktygsrad"
+
+#: main.cpp:43
+#, kde-format
+msgid "KMines"
+msgstr "Minröjaren"
+
+#: main.cpp:45
+#, kde-format
+msgid "KMines is a classic minesweeper game"
+msgstr "Minröjaren är ett klassiskt minröjarspel"
+
+#: main.cpp:47
+#, kde-format
+msgid ""
+"(c) 1996-2005, Nicolas Hadacek\n"
+"(c) 2001, Mikhail Kourinny\n"
+"(c) 2006-2007, Mauricio Piacentini\n"
+"(c) 2007, Dmitry Suzdalev"
+msgstr ""
+"© 1996-2005, Nicolas Hadacek\n"
+"© 2001, Mikhail Kourinny\n"
+"© 2006-2007, Mauricio Piacentini\n"
+"© 2007, Dmitry Suzdalev"
+
+#: main.cpp:50
+#, kde-format
+msgid "Nicolas Hadacek"
+msgstr "Nicolas Hadacek"
+
+#: main.cpp:51
+#, kde-format
+msgid "Original author"
+msgstr "Ursprunglig upphovsman"
+
+#: main.cpp:52
+#, kde-format
+msgid "Mauricio Piacentini"
+msgstr "Mauricio Piacentini"
+
+#: main.cpp:53
+#, kde-format
+msgid "Code refactoring and SVG support. Current maintainer"
+msgstr "Omstrukturering av kod och stöd för SVG. Nuvarande underhåll"
+
+#: main.cpp:55
+#, kde-format
+msgid "Dmitry Suzdalev"
+msgstr "Dmitry Suzdalev"
+
+#: main.cpp:56
+#, kde-format
+msgid "Rewrite to use QGraphicsView framework. Current maintainer"
+msgstr "Omskrivning för att använda QGraphicsView ramverk. Nuvarande underhåll"
+
+#: main.cpp:58
+#, kde-format
+msgid "Andreas Zehender"
+msgstr "Andreas Zehender"
+
+#: main.cpp:58
+#, kde-format
+msgid "Smiley pixmaps"
+msgstr "Punktavbildningar av smilisar"
+
+#: main.cpp:59
+#, kde-format
+msgid "Mikhail Kourinny"
+msgstr "Mikhail Kourinny"
+
+#: main.cpp:59
+#, kde-format
+msgid "Solver/Adviser"
+msgstr "Lösning/rådgivare"
+
+#: main.cpp:60
+#, kde-format
+msgid "Thomas Capricelli"
+msgstr "Thomas Capricelli"
+
+#: main.cpp:60
+#, kde-format
+msgid "Magic reveal mode"
+msgstr "Avslöja magiskt"
+
+#: main.cpp:61
+#, kde-format
+msgid "Brian Croom"
+msgstr "Brian Croom"
+
+#: main.cpp:61
+#, kde-format
+msgid "Port to use KGameRenderer"
+msgstr "Anpassning för att använda KGameRenderer"
+
+#: mainwindow.cpp:101
+#, kde-format
+msgid "Mines: 0/0"
+msgstr "Minor: 0/0"
+
+#: mainwindow.cpp:102 mainwindow.cpp:173
+#, kde-format
+msgid "Time: 00:00"
+msgstr "Tid: 00:00"
+
+#: mainwindow.cpp:125
+#, kde-format
+msgid "Custom"
+msgstr "Eget"
+
+#: mainwindow.cpp:135
+#, kde-format
+msgid "Mines: %1/%2"
+msgstr "Minor: %1/%2"
+
+#: mainwindow.cpp:201
+#, kde-format
+msgid "Reset?"
+msgstr "Nollställ?"
+
+#: mainwindow.cpp:201
+#, kde-format
+msgid "Reset the Game?"
+msgstr "Nollställ spelet?"
+
+#: mainwindow.cpp:212
+#, kde-format
+msgid "Time: %1"
+msgstr "Tid: %1"
+
+#: mainwindow.cpp:238
+#, kde-format
+msgid "General"
+msgstr "Allmänt"
+
+#: mainwindow.cpp:239
+#, kde-format
+msgid "Theme"
+msgstr "Tema"
+
+#: mainwindow.cpp:240
+#, kde-format
+msgid "Custom Game"
+msgstr "Eget spel"
+
+#: scene.cpp:122
+#, kde-format
+msgid "Game is paused."
+msgstr "Paus i spelet."
+
+#: scene.cpp:130
+#, kde-format
+msgid "Congratulations! You have won!"
+msgstr "Gratulerar! Du har vunnit!"
+
+#: scene.cpp:132
+#, kde-format
+msgid "You have lost."
+msgstr "Du har förlorat."
+
+#~ msgid "The graphical theme to be used."
+#~ msgstr "Det grafiska temat att använda."
+
+#~ msgid "The difficulty level."
+#~ msgstr "Svårighetsgraden."
+
+#~ msgid "Failed to load \"%1\" theme. Please check your installation."
+#~ msgstr "Misslyckades ladda temat \"%1\". Kontrollera installationen."

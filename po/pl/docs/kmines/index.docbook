@@ -1,0 +1,668 @@
+<?xml version="1.0" ?>
+<!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.5-Based Variant V1.1//EN" "dtd/kdedbx45.dtd" [
+  <!ENTITY kappname "&kmines;">
+  <!ENTITY package "kdegames">
+  <!ENTITY % addindex "IGNORE">
+  <!ENTITY % Polish "INCLUDE"
+> <!-- change language only here -->
+]>
+
+<book lang="&language;">
+
+<bookinfo>
+<title
+>Podręcznik programu &kmines;</title>
+
+<authorgroup>
+<author
+><firstname
+>Nicolas</firstname
+> <surname
+>Hadacek</surname
+> <affiliation
+> <address
+>&Nicolas.Hadacek.mail;</address>
+</affiliation>
+</author>
+<author
+><firstname
+>Michael</firstname
+> <surname
+>McBride</surname
+> <affiliation
+><address
+><email
+>mmcbride@ematic.org</email
+></address
+></affiliation>
+</author>
+<author
+><firstname
+>Anton</firstname
+> <surname
+>Brondz</surname
+> <affiliation
+> <address
+><email
+>dinolinux@gmail.com</email
+></address>
+</affiliation>
+</author>
+<othercredit role="developer"
+><firstname
+>Nicolas</firstname
+> <surname
+>Hadacek</surname
+> <affiliation
+> <address
+>&Nicolas.Hadacek.mail;</address>
+</affiliation>
+<contrib
+>Programista</contrib>
+</othercredit>
+<othercredit role="reviewer"
+><firstname
+>Lauri</firstname
+> <surname
+>Watts</surname
+> <affiliation
+><address
+>&Lauri.Watts.mail;</address
+></affiliation>
+<contrib
+>Recenzent</contrib>
+</othercredit>
+<othercredit role="translator"
+><firstname
+>Suse</firstname
+><surname
+>Polska</surname
+><affiliation
+><address
+><email
+>suse@suse.pl</email
+></address
+></affiliation
+><contrib
+>Polskie tłumaczenie</contrib
+></othercredit
+> <othercredit role="translator"
+><firstname
+>Paweł</firstname
+><surname
+>Dąbek</surname
+><affiliation
+><address
+><email
+>pdabek@onet.pl</email
+></address
+></affiliation
+><contrib
+>Weryfikacja polskiego tłumaczenia</contrib
+></othercredit
+> 
+</authorgroup>
+
+<copyright>
+<year
+>2000</year>
+<holder
+>&Nicolas.Hadacek;, Michael McBride</holder>
+</copyright>
+
+<legalnotice
+>&FDLNotice;</legalnotice>
+
+<date
+>2007-11-13</date>
+<releaseinfo
+>3.0</releaseinfo>
+
+<abstract
+><para
+>Program &kmines; to przeznaczona dla &kde; odmiana klasycznej gry Saper.</para
+></abstract>
+
+<keywordset>
+<keyword
+>KDE</keyword>
+<keyword
+>gra</keyword>
+<keyword
+>saper</keyword>
+</keywordset>
+
+</bookinfo>
+
+<chapter id="introduction">
+<title
+>Wprowadzenie</title>
+<note
+><title
+>Rodzaj gry:</title
+><para
+>Strategiczna, Planszowa</para
+></note
+><!-- Game genre. Use as many as necessary. Available game types are: Arcade, Board, Card, Dice, Toys, Logic, Strategy.-->
+<note
+><title
+>Liczba graczy:</title
+><para
+>Jeden</para
+></note
+><!--Number of possible players. It can be: One, Two,..., Multiplayer-->
+
+<para
+>&kmines; jest odmianą klasycznej gry Saper. Twoim zadaniem jest odkrycie wszystkie pustych kwadratów, tak aby nie zdetonować żadnej z min. Gdy mina zostaje zdetonowana, gra kończy się. Liczby informują jak dużo min jest w okolicy danego kwadratu. </para>
+
+</chapter>
+
+<chapter id="how-to-play">
+<title
+>Zasady gry</title>
+<note
+><title
+>Cel gry:</title
+><para
+>Znajdź wszystkie miny ukryte na polu minowym.</para
+></note
+><!--Describe the objective of the game.-->
+
+<para
+>Do gry w &kmines; musisz użyć myszki i jej trzech przycisków aby odsłonić lub oznaczyć flagą kwadraty, W przypadku myszy dwuklawiszowych, kliknięcie środkowym przyciskiem jest zazwyczaj osiągane przez jednoczesne naciśnięcie lewego i  prawego przycisku myszy. </para>
+
+<para
+>Kliknięcie lewym klawiszem myszki odsłoni kwadrat. Jeżeli znajdowała się tam mina, to jest ona detonowana, a gra kończy się. Jeżeli nie było miny w danym kwadracie, jest on odsłaniany. Jeżeli w okolicy odsłanianego kwadratu nie było żadnej miny, to odsłaniane są także wszystkie sąsiadujące kwadraty bez min. Jeżeli w okolicy znajdują się jakieś miny, pojawia się liczba pokazująca w ilu sąsiadujących kwadratach znajduje się mina. Każdy kwadrat (z wyjątkiem kwadratów na krawędziach i rogach planszy) sąsiaduje z ośmioma innymi kwadratami. </para>
+
+<note>
+<para
+>Kliknięcie lewym przyciskiem myszki na kwadrat oznaczony flagą jest bezpieczne i nie powoduje niczego. </para>
+</note>
+
+<para
+>Prawy przycisk mysz oznacza kwadrat, jako taki, który zawiera mine (poprzez umieszczenie na nim czerwonej flagi). Dwukrotne kliknięcie oznaczy go jako niepewnego (umieszczając na nim pytajnik). Znacznik niepewności może być przydatny gdy lokalizacja min jest trudna do wydedukowania. Środkowy przycisk myszy oczyszcza sąsiadujące kwadraty, jeżeli prawidłowa liczba kwadratów została zaznaczona flagą. Jest to przydatne, gdyż jest znacznie szybsze od pojedynczego odkrywania wszystkich kwadratów. Upewnij się wcześniej, czy czerwone flagi są prawidłowo umieszczone, bo jeżeli nie to możesz zdetonować minę. </para>
+</chapter>
+
+<chapter id="rulestips">
+<title
+>Zasady gry, strategia gry i sztuczki</title>
+<sect1 id="rules">
+<title
+>Zasady</title>
+<itemizedlist>
+<listitem
+><para
+>Wszystkie miny muszą być odkryte aby gracz mógł zwyciężyć w grze.</para
+></listitem>
+<listitem
+><para
+>Gracz nie zna dokładnej lokalizacji min przed zakończeniem gry.</para
+></listitem>
+<listitem
+><para
+>Po zdetonowaniu miny gra kończy się.</para
+></listitem>
+<listitem
+><para
+>Liczby wskazują na liczbę min w pobliżu.</para
+></listitem>
+</itemizedlist>
+</sect1>
+
+<sect1 id="strattips">
+<title
+>Strategia i wskazówki</title>
+<itemizedlist>
+<listitem
+><para
+>Wykorzystaj liczby aby wywnioskować, gdzie mogą znajdować się miny.</para
+></listitem>
+<listitem
+><para
+>Umieść flagi w miejscach, w których podejrzewasz istnienie miny. Pamiętaj, że mimo tego że wskazywana liczba min zmniejsza się po umieszczeniu flagi, pod flagą może nie być żadnej miny.</para
+></listitem>
+<listitem
+><para
+>Pomyśl zanim klikniesz, błędne kliknięcie może zdetonować minę.</para
+></listitem>
+<listitem
+><para
+>Kiedy podejrzewasz, że w jakimś kwadracie znajduje się mina, staraj się odsłaniać kwadraty wokół niego aby uzyskać liczby mogące pomóc w lokalizacji miny.</para
+></listitem>
+<listitem
+><para
+>Staraj się oczyścić planszę tak szybko jak to jest możliwe. Im mniej czasu spędzisz na wykrywaniu min, tym wyższy będzie uzyskany wynik.</para
+></listitem>
+</itemizedlist>
+</sect1>
+
+</chapter>
+
+<chapter id="command">
+<title
+>Polecenia/skróty klawiszowe</title>
+
+<para
+>Poniższa sekcje skrótowo opisuje poszczególne opcje menu.</para>
+
+<sect1 id="game-menu">
+<title
+>Menu <guimenu
+>Gra</guimenu
+></title>
+
+<para
+>Menu <guimenu
+>Gra</guimenu
+> składa się z 4 opcji.</para>
+
+<variablelist>
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>N</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Gra</guimenu
+> <guimenuitem
+>Nowa</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Rozpoczyna nową grę.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>H</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Gra</guimenu
+> <guimenuitem
+>Pokaż najlepsze wyniki</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Pokazuje najlepsze wyniki (najkrótszy czas) dla każdego poziomu trudności.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>Q</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Gra</guimenu
+> <guimenuitem
+>Zakończ</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+><action
+>Zamyka</action
+> program &kmines;</para
+></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+
+<sect1 id="settings-menu"
+><title
+>Menu <guimenu
+>Ustawienia</guimenu
+> </title>
+<variablelist>
+<varlistentry>
+<term>
+<menuchoice
+><guimenu
+>Ustawienia</guimenu
+> <guimenuitem
+>Wyświetl pasek narzędzi</guimenuitem
+> </menuchoice>
+</term>
+<listitem>
+<para
+><action
+>Włącza lub wyłącza wyświetlanie paska narzędzi.</action
+> Domyślna wartość to: włączony. </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>
+<menuchoice
+><guimenu
+>Ustawienia</guimenu
+> <guimenuitem
+>Wyświetl pasek stanu</guimenuitem
+> </menuchoice>
+</term>
+<listitem>
+<para
+><action
+>Włącza lub wyłącza wyświetlanie paska stanu.</action
+> Domyślna wartość to: włączony. </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Ustawienia</guimenu
+><guisubmenu
+>Poziom trudności</guisubmenu
+> </menuchoice
+></term>
+<listitem>
+<para
+>Wybierz poziom trudności z podmenu.</para>
+<para
+>Są trzy podstawowe poziomy trudności: <guimenuitem
+>Łatwy</guimenuitem
+> (9x9kwadratów, 10 min), <guimenuitem
+>Średni</guimenuitem
+> (16x16 kwadratów, 40 min), i <guimenuitem
+>Trudny</guimenuitem
+> (30x16 kwadratów, 99 min). Jest także poziom <guimenuitem
+>Własny</guimenuitem
+> ustawiany samodzielnie przez użytkownika.</para>
+<para
+>Jeśli wybierzesz poziom <guimenuitem
+>Własny</guimenuitem
+>, wtedy musisz określić jego ustawienia w oknie <guimenuitem
+>Konfiguracja: &kmines;</guimenuitem
+>.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Ustawienia</guimenu
+><guimenuitem
+>Konfiguracja skrótów...</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+>W tym miejscu można zmienić skróty klawiszowe używane przez program &kmines;.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term>
+<menuchoice
+><guimenu
+>Ustawienia</guimenu
+> <guimenuitem
+>Konfiguracja pasków narzędzi...</guimenuitem
+> </menuchoice>
+</term>
+<listitem>
+<para
+><action
+>Konfiguruje</action
+> paski narzędzi programu &kmines;. </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Ustawienia</guimenu
+> <guimenuitem
+>Konfiguracja: &kmines;...</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Opcja pozwala na zmianę ustawień gry. Więcej na ten temat w sekcji <link linkend="settings"
+>Ustawienia gry</link
+>.</para
+></listitem>
+</varlistentry>
+
+</variablelist>
+</sect1>
+
+<sect1 id="help-menu">
+<title
+>Menu <guimenu
+>Pomoc</guimenu
+></title>
+&help.menu.documentation; </sect1>
+
+<sect1 id="keys"
+><title
+>Domyślne skróty klawiszowe</title>
+<para
+>Tabela ta pokazuje domyślne skróty klawiszowe.</para>
+
+
+<table>
+<title
+>Skróty klawiszowe</title>
+<tgroup cols="2">
+<thead
+><row
+><entry
+>Kombinacja klawiszy</entry
+><entry
+>Działanie</entry
+></row
+></thead>
+<tbody>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>N</keycap
+></keycombo
+></entry
+><entry
+>Nowa gra</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>Q</keycap
+></keycombo
+></entry
+><entry
+>Zakończenie programu &kmines;</entry
+></row>
+<row
+><entry
+><keycap
+>F1</keycap
+></entry
+><entry
+>Podręcznik programu &kmines;</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Shift;<keycap
+>F1</keycap
+></keycombo
+></entry
+><entry
+>Co to jest? </entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>H</keycap
+></keycombo
+></entry
+><entry
+>Pokaż najlepsze wyniki</entry
+></row>
+
+</tbody>
+</tgroup>
+</table>
+
+<para
+>Skróty klawiszowe mogą być zmienione w menu <menuchoice
+> <guimenu
+>Ustawienia</guimenu
+> <guimenuitem
+>Konfiguracja skrótów...</guimenuitem
+> </menuchoice
+>.</para>
+
+</sect1>
+
+</chapter>
+
+<chapter id="faq">
+<title
+>Najczęściej zadawane pytania</title>
+<qandaset>
+
+<qandaentry>
+<question>
+<para
+>Chciałbym zmienić wygląd gry. Czy mogę? </para>
+</question>
+<answer>
+<para
+>Tak, wybierz menu <guimenu
+>Ustawienia</guimenu
+> i <guimenuitem
+>Konfiguracja &kmines;...</guimenuitem
+>. </para>
+</answer>
+</qandaentry>
+
+<qandaentry>
+<question>
+<para
+>Czy jest sposób na to, aby było więcej min i pól? </para>
+</question>
+<answer>
+<para
+>Tak, najłatwiej jest użyć listy rozwijanej znajdującej się prawym dolnym rogu. </para>
+</answer>
+</qandaentry>
+
+</qandaset>
+</chapter>
+
+<chapter id="settings">
+<title
+>Ustawienia gry</title>
+<para
+>Ustawienia gry mogą być zmieniane za pomocą okna dialogowego wyświetlanego po wybraniu opcji <menuchoice
+><guimenu
+>Ustawienia</guimenu
+> <guimenuitem
+>Konfiguracja &kmines;...</guimenuitem
+></menuchoice
+>. </para>
+
+<para
+>Na pierwszej karcie, możesz ustawić motyw wyglądu. Wybierz motyw z listy aby zobaczyć jego podgląd po prawej stronie. Możesz go włączyć poprzez kliknięcie przycisków<guibutton
+>Zastosuj</guibutton
+> oraz <guibutton
+>OK</guibutton
+>. </para>
+
+<para
+>Na drugiej karcie, możesz ustawiać szerokość i wysokość planszy oraz liczbę min na samodzielnie utworzonym poziomie gry. </para>
+
+</chapter>
+
+<chapter id="credits"
+><title
+>Zasługi i licencje</title>
+
+<para
+>&kmines; Prawa autorskie (c) 1996-2007 </para>
+
+<itemizedlist>
+<title
+>Autorzy</title>
+<listitem>
+<para
+>&Nicolas.Hadacek; &Nicolas.Hadacek.mail; </para>
+</listitem>
+<listitem>
+<para
+>Mikhail Kourinny </para>
+</listitem>
+<listitem>
+<para
+>Mauricio Piacentini <email
+>mauricio@tabuleiro.com</email
+> </para>
+</listitem>
+<listitem>
+<para
+>Dmitry Suzdalev <email
+>dimsuz@gmail.com</email
+> </para>
+</listitem>
+</itemizedlist>
+
+<para
+>Prawa autorskie do dokumentacji 2000 &Nicolas.Hadacek; &Nicolas.Hadacek.mail;</para>
+<para
+>Dokumentacja aktualizowana dla &kde; 2.0 przez &Mike.McBride; &Mike.McBride.mail;</para>
+<para
+>Niektóre zmiany dla &kde; 3.2 od &Philip.Rodrigues; &Philip.Rodrigues.mail;</para>
+<para
+>Weryfikacja i uaktualnienie polskiego tłumaczenia: Paweł Dąbek<email
+>pdabek@onet.pl</email
+></para
+> 
+&underFDL; &underGPL; </chapter>
+
+<appendix id="installation">
+<title
+>Instalacja</title>
+
+<sect1 id="getting-kmines">
+<title
+>Jak zdobyć program &kmines;</title>
+&install.intro.documentation; </sect1>
+
+<sect1 id="compilation">
+<title
+>Kompilacja i instalacja</title>
+&install.compile.documentation; </sect1>
+</appendix>
+
+</book>
+<!--
+Local Variables:
+mode: sgml
+sgml-omittag: nil
+sgml-shorttag: t
+End:
+-->

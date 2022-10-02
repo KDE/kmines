@@ -1,0 +1,392 @@
+# translation of kmines.po to Thai
+# Copyright (C) 2007 Free Software Foundation, Inc.
+#
+# Sahachart Anukulkitch <drrider@gmail.com>, 2007.
+# Thanomsub Noppaburana <donga.nb@gmail.com>, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: kmines\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-06-15 00:44+0000\n"
+"PO-Revision-Date: 2010-03-23 15:40+0700\n"
+"Last-Translator: Thanomsub Noppaburana <donga.nb@gmail.com>\n"
+"Language-Team: Thai <thai-l10n@googlegroups.com>\n"
+"Language: th\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 1.0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "สหชาติ อนุกูลกิจ, ถนอมทรัพย์ นพบูรณ์"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "drrider@gmail.com, donga.nb@gmail.com"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: customgame.ui:16
+#, kde-format
+msgid "Width:"
+msgstr "กว้าง:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: customgame.ui:26
+#, kde-format
+msgid "Height:"
+msgstr "สูง:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: customgame.ui:36
+#, kde-format
+msgid "Mines:"
+msgstr "จำนวนกับระเบิด:"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_UseQuestionMarks)
+#: generalopts.ui:17
+#, kde-format
+msgid "Use '?' marks"
+msgstr "ใช้เครื่องหมาย '?'"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_AllowKminesReset)
+#: generalopts.ui:24
+#, kde-format
+msgid "Allow KMines reset"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_DisableScoreOnReset)
+#: generalopts.ui:37
+#, kde-format
+msgid "Disable score on reset"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ExploreWithLeftClickOnNumberCells)
+#: generalopts.ui:44
+#, kde-format
+msgid "Explore with left click on number cells"
+msgstr ""
+
+#. i18n: ectx: label, entry (UseQuestionMarks), group (General)
+#: kmines.kcfg:9
+#, kde-format
+msgid "Whether the \"unsure\" marker may be used."
+msgstr "ใช้เพื่อทำเครื่องหมายเพื่อบ่งถึงช่องที่ \"น่าจะมีกับระเบิด\""
+
+#. i18n: ectx: label, entry (ExploreWithLeftClickOnNumberCells), group (General)
+#: kmines.kcfg:21
+#, kde-format
+msgid "Left click on a number cell will have the same effect as mid click."
+msgstr ""
+
+#. i18n: ectx: label, entry (CustomWidth), group (Options)
+#: kmines.kcfg:27
+#, kde-format
+msgid "The width of the playing field."
+msgstr "ความกว้างของสนามที่จะเล่น"
+
+#. i18n: ectx: label, entry (CustomHeight), group (Options)
+#: kmines.kcfg:33
+#, kde-format
+msgid "The height of the playing field."
+msgstr "ความสูงของสนามที่จะเล่น"
+
+#. i18n: ectx: label, entry (CustomMines), group (Options)
+#: kmines.kcfg:39
+#, kde-format
+msgid "The number of mines in the playing field."
+msgstr "จำนวนกับระเบิดในสนามที่จะเล่น"
+
+#. i18n: ectx: ToolBar (mainToolBar)
+#: kminesui.rc:12
+#, kde-format
+msgid "Main Toolbar"
+msgstr "แถบเครื่องมือหลัก"
+
+#: main.cpp:43
+#, kde-format
+msgid "KMines"
+msgstr "กู้กับระเบิด-K"
+
+#: main.cpp:45
+#, kde-format
+msgid "KMines is a classic minesweeper game"
+msgstr "กู้กับระเบิด-K คือเกมกู้กับระเบิดสุดคลาสสิก"
+
+#: main.cpp:47
+#, kde-format
+msgid ""
+"(c) 1996-2005, Nicolas Hadacek\n"
+"(c) 2001, Mikhail Kourinny\n"
+"(c) 2006-2007, Mauricio Piacentini\n"
+"(c) 2007, Dmitry Suzdalev"
+msgstr ""
+
+#: main.cpp:50
+#, kde-format
+msgid "Nicolas Hadacek"
+msgstr "Nicolas Hadacek"
+
+#: main.cpp:51
+#, kde-format
+msgid "Original author"
+msgstr "ผู้เขียนแรกเริ่ม"
+
+#: main.cpp:52
+#, kde-format
+msgid "Mauricio Piacentini"
+msgstr "Mauricio Piacentini"
+
+#: main.cpp:53
+#, kde-format
+msgid "Code refactoring and SVG support. Current maintainer"
+msgstr "ปรับโค้ดใหม่และเพิ่มส่วนรองรับ SVG, ผู้ดูแลปัจจุบัน"
+
+#: main.cpp:55
+#, kde-format
+msgid "Dmitry Suzdalev"
+msgstr "Dmitry Suzdalev"
+
+#: main.cpp:56
+#, kde-format
+msgid "Rewrite to use QGraphicsView framework. Current maintainer"
+msgstr "เขียนโค้ดใหม่เพื่อใช้เฟรมเวิร์ก QGraphicsView, ผู้ดูแลปัจจุบัน"
+
+#: main.cpp:58
+#, kde-format
+msgid "Andreas Zehender"
+msgstr "Andreas Zehender"
+
+#: main.cpp:58
+#, kde-format
+msgid "Smiley pixmaps"
+msgstr "ภาพไอคอนหน้ายิ้ม"
+
+#: main.cpp:59
+#, kde-format
+msgid "Mikhail Kourinny"
+msgstr "Mikhail Kourinny"
+
+#: main.cpp:59
+#, kde-format
+msgid "Solver/Adviser"
+msgstr "ตัวแก้ปัญหา/ตัวให้คำแนะนำ"
+
+#: main.cpp:60
+#, kde-format
+msgid "Thomas Capricelli"
+msgstr "Thomas Capricelli"
+
+#: main.cpp:60
+#, kde-format
+msgid "Magic reveal mode"
+msgstr "โหมดเฉลย"
+
+#: main.cpp:61
+#, kde-format
+msgid "Brian Croom"
+msgstr ""
+
+#: main.cpp:61
+#, kde-format
+msgid "Port to use KGameRenderer"
+msgstr ""
+
+#: mainwindow.cpp:101
+#, kde-format
+msgid "Mines: 0/0"
+msgstr "การเก็บกู้กับระเบิด: 0/0"
+
+#: mainwindow.cpp:102 mainwindow.cpp:173
+#, kde-format
+msgid "Time: 00:00"
+msgstr "เวลา: 00:00"
+
+#: mainwindow.cpp:125
+#, kde-format
+msgid "Custom"
+msgstr "ปรับค่าเอง"
+
+#: mainwindow.cpp:135
+#, kde-format
+msgid "Mines: %1/%2"
+msgstr "การเก็บกู้กับระเบิด: %1/%2"
+
+#: mainwindow.cpp:201
+#, kde-format
+msgid "Reset?"
+msgstr ""
+
+#: mainwindow.cpp:201
+#, kde-format
+msgid "Reset the Game?"
+msgstr ""
+
+#: mainwindow.cpp:212
+#, kde-format
+msgid "Time: %1"
+msgstr "เวลา: %1"
+
+#: mainwindow.cpp:238
+#, kde-format
+msgid "General"
+msgstr "ค่าทั่วไป"
+
+#: mainwindow.cpp:239
+#, kde-format
+msgid "Theme"
+msgstr "ชุดตกแต่ง"
+
+#: mainwindow.cpp:240
+#, kde-format
+msgid "Custom Game"
+msgstr "ปรับแต่งเกมเอง"
+
+#: scene.cpp:122
+#, kde-format
+msgid "Game is paused."
+msgstr "เกมถูกหยุดไว้ชั่วคราว"
+
+#: scene.cpp:130
+#, kde-format
+msgid "Congratulations! You have won!"
+msgstr "ยินดีด้วย ! คุณชนะแล้ว !"
+
+#: scene.cpp:132
+#, kde-format
+msgid "You have lost."
+msgstr "เสียใจด้วย คุณแพ้แล้ว"
+
+#~ msgid "The graphical theme to be used."
+#~ msgstr "ชุดตกแต่งกราฟิกที่จะใช้"
+
+#~ msgid "The difficulty level."
+#~ msgstr "ระดับความยาก"
+
+#~ msgid "Failed to load \"%1\" theme. Please check your installation."
+#~ msgstr "ล้มเหลวในการโหลดชุดตกแต่ง \"%1\" โปรดตรวจสอบการติดตั้งของคุณ"
+
+#, fuzzy
+#~| msgid "Normal"
+#~ msgid "Form"
+#~ msgstr "ธรรมดา"
+
+#~ msgid "The size of a square."
+#~ msgstr "ขนาดของสี่เหลี่ยมจตุรัส"
+
+#~ msgid "Color"
+#~ msgstr "สี"
+
+#~ msgid "&Move"
+#~ msgstr "ย้า&ย"
+
+#~ msgid "Easy"
+#~ msgstr "ง่าย"
+
+#~ msgid "Expert"
+#~ msgstr "เชี่ยวชาญ"
+
+#~ msgid "No. of mines:"
+#~ msgstr "จำนวนกับระเบิด:"
+
+#~ msgid "Choose level:"
+#~ msgstr "เลือกระดับ:"
+
+#~ msgid "Mines (%1%):"
+#~ msgstr "กับระเบิด (%1%):"
+
+#~ msgid "Left button:"
+#~ msgstr "ปุ่มซ้าย:"
+
+#~ msgid "Middle button:"
+#~ msgstr "ปุ่มกลาง:"
+
+#~ msgid "Right button:"
+#~ msgstr "ปุ่มขวา:"
+
+#~ msgid "Autoreveal"
+#~ msgstr "เผยอัตโนมัติ"
+
+#~ msgid "Toggle Flag"
+#~ msgstr "เปิด/ปิดธง"
+
+#~ msgid "Move Up"
+#~ msgstr "เลื่อนขึ้น"
+
+#~ msgid "Move Down"
+#~ msgstr "เลื่อนลง"
+
+#~ msgid "Move Right"
+#~ msgstr "เลื่อนขวา"
+
+#~ msgid "Move Left"
+#~ msgstr "เลื่อนซ้าย"
+
+#~ msgid "Move at Left Edge"
+#~ msgstr "เลื่อนที่ขอบซ้าย"
+
+#~ msgid "Move at Right Edge"
+#~ msgstr "เลื่อนที่ขอบขวา"
+
+#~ msgid "Move at Top Edge"
+#~ msgstr "เลื่อนที่ขอบบน"
+
+#~ msgid "Move at Bottom Edge"
+#~ msgstr "เลื่อนที่ขอบล่าง"
+
+#~ msgid "Reveal Mine"
+#~ msgstr "เผยกับระเบิด"
+
+#~ msgid "Mark Mine"
+#~ msgstr "ทำเครื่องหมายกับระเบิด"
+
+#~ msgid "Game"
+#~ msgstr "เกม"
+
+#~ msgid "Time: "
+#~ msgstr "เวลา:"
+
+#~ msgid "Game won!"
+#~ msgstr "ชนะ!"
+
+#~ msgid "Game lost!"
+#~ msgstr "แพ้!"
+
+#~ msgid "Overwrite"
+#~ msgstr "เขียนทับ"
+
+#~ msgid "The file already exists. Overwrite?"
+#~ msgstr "มีแฟ้มอยู่แล้ว เขียนทับหรือไม่?"
+
+#~ msgid "File Exists"
+#~ msgstr "มีแฟ้มอยู่แล้ว"
+
+#~ msgid "Cannot read XML file on line %1"
+#~ msgstr "ไม่สามารถอ่านแฟ้ม XML ที่บรรทัด %1"
+
+#~ msgid "Cannot load file."
+#~ msgstr "ไม่สามารถเปิดแฟ้มได้"
+
+#~ msgid "Log file not recognized."
+#~ msgstr "ไม่รู้จักแฟ้มบันทึกการทำงานแบบนี้"
+
+#~ msgid "&Get New Themes"
+#~ msgstr "โหลดชุดตกแต่งใหม่"
+
+#~ msgid "Preview"
+#~ msgstr "แสดงตัวอย่าง"
+
+#~ msgid "Properties"
+#~ msgstr "คุณสมบัติ"
+
+#~ msgid "Author:"
+#~ msgstr "ผู้เขียน:"
+
+#~ msgid "Contact:"
+#~ msgstr "ที่อยู่ติดต่อ:"
+
+#~ msgid "Description:"
+#~ msgstr "คำอธิบาย:"

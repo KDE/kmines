@@ -1,0 +1,540 @@
+# translation of kmines.po to Cymraeg
+# Penbwrdd yn Gymraeg.
+# Copyright (C) 2003, 2005 Free Software Foundation, Inc.
+# www.kyfieithu.co.uk<kyfieithu@dotmon.com>, www.gyfieithu.co.uk<kyfieithu@dotmon.com>, 2003.
+# Kevin Donnelly <kevin@dotmon.com>, 2005.
+#
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: kmines\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-06-15 00:44+0000\n"
+"PO-Revision-Date: 2005-09-21 09:18+0100\n"
+"Last-Translator: Kevin Donnelly <kevin@dotmon.com>\n"
+"Language-Team: Cymraeg <cy@li.org>\n"
+"Language: cy\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.10\n"
+"\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "Kyfieithu: KD, pixelM, dylunio, Thierry Vignaud"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "kyfieithu@dotmon.com,,,"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: customgame.ui:16
+#, kde-format
+msgid "Width:"
+msgstr "Lled:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: customgame.ui:26
+#, kde-format
+msgid "Height:"
+msgstr "Uchder:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: customgame.ui:36
+#, fuzzy, kde-format
+#| msgid "KMines"
+msgid "Mines:"
+msgstr "KMines"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_UseQuestionMarks)
+#: generalopts.ui:17
+#, fuzzy, kde-format
+#| msgid "Enable ? mark"
+msgid "Use '?' marks"
+msgstr "Galluogi'r marc ?"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_AllowKminesReset)
+#: generalopts.ui:24
+#, kde-format
+msgid "Allow KMines reset"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_DisableScoreOnReset)
+#: generalopts.ui:37
+#, kde-format
+msgid "Disable score on reset"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ExploreWithLeftClickOnNumberCells)
+#: generalopts.ui:44
+#, kde-format
+msgid "Explore with left click on number cells"
+msgstr ""
+
+#. i18n: ectx: label, entry (UseQuestionMarks), group (General)
+#: kmines.kcfg:9
+#, fuzzy, kde-format
+#| msgid "Whether the \"uncertain\" marker may be used."
+msgid "Whether the \"unsure\" marker may be used."
+msgstr "A ddylid defnyddio'r marciwr \"ansicr\"."
+
+#. i18n: ectx: label, entry (ExploreWithLeftClickOnNumberCells), group (General)
+#: kmines.kcfg:21
+#, kde-format
+msgid "Left click on a number cell will have the same effect as mid click."
+msgstr ""
+
+#. i18n: ectx: label, entry (CustomWidth), group (Options)
+#: kmines.kcfg:27
+#, kde-format
+msgid "The width of the playing field."
+msgstr "Lled y maes chwarae."
+
+#. i18n: ectx: label, entry (CustomHeight), group (Options)
+#: kmines.kcfg:33
+#, kde-format
+msgid "The height of the playing field."
+msgstr "Uchder y maes chwarae."
+
+#. i18n: ectx: label, entry (CustomMines), group (Options)
+#: kmines.kcfg:39
+#, kde-format
+msgid "The number of mines in the playing field."
+msgstr "Nifer ffrwydynnau yn y maes chwarae."
+
+#. i18n: ectx: ToolBar (mainToolBar)
+#: kminesui.rc:12
+#, fuzzy, kde-format
+#| msgid "Mine Color"
+msgid "Main Toolbar"
+msgstr "Lliw Ffrwydrynnau"
+
+#: main.cpp:43
+#, kde-format
+msgid "KMines"
+msgstr "KMines"
+
+#: main.cpp:45
+#, fuzzy, kde-format
+#| msgid "KMines is a classic mine sweeper game"
+msgid "KMines is a classic minesweeper game"
+msgstr "Mae KMines yn gêm clasurol sy'n ymwneud â darganfod ffrwydrynnau"
+
+#: main.cpp:47
+#, kde-format
+msgid ""
+"(c) 1996-2005, Nicolas Hadacek\n"
+"(c) 2001, Mikhail Kourinny\n"
+"(c) 2006-2007, Mauricio Piacentini\n"
+"(c) 2007, Dmitry Suzdalev"
+msgstr ""
+
+#: main.cpp:50
+#, kde-format
+msgid "Nicolas Hadacek"
+msgstr ""
+
+#: main.cpp:51
+#, kde-format
+msgid "Original author"
+msgstr ""
+
+#: main.cpp:52
+#, kde-format
+msgid "Mauricio Piacentini"
+msgstr ""
+
+#: main.cpp:53
+#, kde-format
+msgid "Code refactoring and SVG support. Current maintainer"
+msgstr ""
+
+#: main.cpp:55
+#, kde-format
+msgid "Dmitry Suzdalev"
+msgstr ""
+
+#: main.cpp:56
+#, kde-format
+msgid "Rewrite to use QGraphicsView framework. Current maintainer"
+msgstr ""
+
+#: main.cpp:58
+#, kde-format
+msgid "Andreas Zehender"
+msgstr ""
+
+#: main.cpp:58
+#, kde-format
+msgid "Smiley pixmaps"
+msgstr "Picsfapiau gwynebau hapus"
+
+#: main.cpp:59
+#, kde-format
+msgid "Mikhail Kourinny"
+msgstr ""
+
+#: main.cpp:59
+#, kde-format
+msgid "Solver/Adviser"
+msgstr "Datrysydd/Cynghorydd"
+
+#: main.cpp:60
+#, kde-format
+msgid "Thomas Capricelli"
+msgstr ""
+
+#: main.cpp:60
+#, kde-format
+msgid "Magic reveal mode"
+msgstr "Modd dangos fel hud"
+
+#: main.cpp:61
+#, kde-format
+msgid "Brian Croom"
+msgstr ""
+
+#: main.cpp:61
+#, kde-format
+msgid "Port to use KGameRenderer"
+msgstr ""
+
+#: mainwindow.cpp:101
+#, fuzzy, kde-format
+#| msgid "KMines"
+msgid "Mines: 0/0"
+msgstr "KMines"
+
+#: mainwindow.cpp:102 mainwindow.cpp:173
+#, kde-format
+msgid "Time: 00:00"
+msgstr ""
+
+#: mainwindow.cpp:125
+#, kde-format
+msgid "Custom"
+msgstr "Addasiedig"
+
+#: mainwindow.cpp:135
+#, fuzzy, kde-format
+#| msgid "Mines (%1%):"
+msgid "Mines: %1/%2"
+msgstr "Ffrwydrynnau (%1%):"
+
+#: mainwindow.cpp:201
+#, kde-format
+msgid "Reset?"
+msgstr ""
+
+#: mainwindow.cpp:201
+#, kde-format
+msgid "Reset the Game?"
+msgstr ""
+
+#: mainwindow.cpp:212
+#, kde-format
+msgid "Time: %1"
+msgstr ""
+
+#: mainwindow.cpp:238
+#, kde-format
+msgid "General"
+msgstr "Cyffredinol"
+
+#: mainwindow.cpp:239
+#, kde-format
+msgid "Theme"
+msgstr ""
+
+#: mainwindow.cpp:240
+#, kde-format
+msgid "Custom Game"
+msgstr "Gêm Addasiedig"
+
+#: scene.cpp:122
+#, kde-format
+msgid "Game is paused."
+msgstr ""
+
+#: scene.cpp:130
+#, kde-format
+msgid "Congratulations! You have won!"
+msgstr ""
+
+#: scene.cpp:132
+#, kde-format
+msgid "You have lost."
+msgstr ""
+
+#~ msgid "The difficulty level."
+#~ msgstr "Lefel anhawster."
+
+#, fuzzy
+#~| msgid "Normal"
+#~ msgid "Form"
+#~ msgstr "Arferol"
+
+#~ msgid "The size of a square."
+#~ msgstr "Maint un sgwâr."
+
+#~ msgid "Whether the game can be played using the keyboard."
+#~ msgstr "A ddylid gallu chwarae'r gêm gan ddefnyddio'r bysellfwrdd."
+
+#~ msgid "Whether the game is paused when the window loses focus."
+#~ msgstr "A ddylid seibio'r gêm pan mae'r ffenest yn colli canolbwynt."
+
+#~ msgid "Whether to set flags and reveal squares in trivial situations."
+#~ msgstr "A ddylid gosod baneri a dangos sgwariau mewn sefyllfaoedd dibwys."
+
+#~ msgid "Mouse button actions"
+#~ msgstr "Gweithredoedd botwm llygoden"
+
+#~ msgid "Color"
+#~ msgstr "Lliw"
+
+#~ msgid "Whether the menubar is visible."
+#~ msgstr "A yw'r bar dewislen yn weledol."
+
+#~ msgid "&Move"
+#~ msgstr "Sy&mud"
+
+#~ msgid "Easy"
+#~ msgstr "Hawdd"
+
+#~ msgid "Normal"
+#~ msgstr "Arferol"
+
+#~ msgid "Expert"
+#~ msgstr "Hen law"
+
+#~ msgid "No. of mines:"
+#~ msgstr "Nifer ffrwydrynnau:"
+
+#~ msgid "Choose level:"
+#~ msgstr "Dewis lefel:"
+
+#~ msgid "Mines (%1%):"
+#~ msgstr "Ffrwydrynnau (%1%):"
+
+#~ msgid "Left button:"
+#~ msgstr "Botwm chwith:"
+
+#~ msgid "Middle button:"
+#~ msgstr "Botwm canol:"
+
+#~ msgid "Right button:"
+#~ msgstr "Botwm de:"
+
+#~ msgid "Reveal"
+#~ msgstr "Dangos"
+
+#~ msgid "Autoreveal"
+#~ msgstr "Dangos yn Ymysgogol"
+
+#~ msgid "Toggle Flag"
+#~ msgstr "Dangos/Cuddio'r Baner"
+
+#~ msgid "Toggle ? Flag"
+#~ msgstr "Dangos/Cuddio'r Baner ?"
+
+#~ msgid "Enable keyboard"
+#~ msgstr "Galluogi bysellfwrdd"
+
+#~ msgid "Pause if window loses focus"
+#~ msgstr "Seibio os byddai'r ffenest yn colli canolbwynt"
+
+#~ msgid "\"Magic\" reveal"
+#~ msgstr "Dangos \"fel hud\""
+
+#~ msgid "Set flags and reveal squares where they are trivial."
+#~ msgstr "Gosod baneri a dangos sgwariau pan fyddent yn ddibwys."
+
+#~ msgid "Mouse Bindings"
+#~ msgstr "Rhwymiadau Llygoden"
+
+#~ msgid ""
+#~ "When the \"magic\" reveal is on, you lose the ability to enter the "
+#~ "highscores."
+#~ msgstr ""
+#~ "Pan ddefnyddir dangos \"fel hud\", byddwch yn colli'r gallu o gadw'r "
+#~ "sgorau gorau."
+
+#~ msgid "Flag color:"
+#~ msgstr "Lliw baner:"
+
+#~ msgid "Explosion color:"
+#~ msgstr "Lliw ffrwydriad:"
+
+#~ msgid "Error color:"
+#~ msgstr "Lliw gwall:"
+
+#~ msgid "%1 mine color:"
+#~ msgid_plural "%1 mines color:"
+#~ msgstr[0] " _n: lliw un ffrwydryn %1:"
+#~ msgstr[1] " lliw %1 o ffrwydrynnau:"
+
+#~ msgid "Case revealed"
+#~ msgstr "Dangosir blwch"
+
+#~ msgid "Case autorevealed"
+#~ msgstr "Dangosir blwch yn ymysgogol"
+
+#~ msgid "Flag set"
+#~ msgstr "Gosodwyd baner"
+
+#~ msgid "Flag unset"
+#~ msgstr "Dadosodwyd baner"
+
+#~ msgid "Question mark set"
+#~ msgstr "Gosodwyd gofynnod"
+
+#~ msgid "Question mark unset"
+#~ msgstr "Dadosodwyd gofynnod"
+
+#~ msgid "Move Up"
+#~ msgstr "Symud i Fyny"
+
+#~ msgid "Move Down"
+#~ msgstr "Symud i Lawr"
+
+#~ msgid "Move Right"
+#~ msgstr "Symud i'r Dde"
+
+#~ msgid "Move Left"
+#~ msgstr "Symud i'r Chwith"
+
+#~ msgid "Move at Left Edge"
+#~ msgstr "Symud ar yr Ymyl Chwith"
+
+#~ msgid "Move at Right Edge"
+#~ msgstr "Symud ar yr Ymyl Dde"
+
+#~ msgid "Move at Top Edge"
+#~ msgstr "Symud ar yr Ymyl Top"
+
+#~ msgid "Move at Bottom Edge"
+#~ msgstr "Symud ar yr Ymyl Gwaelod"
+
+#~ msgid "Reveal Mine"
+#~ msgstr "Dangos Ffrwydryn"
+
+#~ msgid "Mark Mine"
+#~ msgstr "Marcio Ffrwydryn"
+
+#~ msgid "Automatic Reveal"
+#~ msgstr "Dangos Ymysgogol"
+
+#~ msgid "Replay Log"
+#~ msgstr "Ailchwarae Cofnod"
+
+#~ msgid "Save Log..."
+#~ msgstr "Cadw Cofnod..."
+
+#~ msgid "Load Log..."
+#~ msgstr "Llwytho Cofnod..."
+
+#~ msgid "Game"
+#~ msgstr "Gêm"
+
+#~ msgid "Keyboard game"
+#~ msgstr "Gêm bysellfwrdd"
+
+#~ msgid "Press to start a new game"
+#~ msgstr "Gwasgwch i ddechrau gêm newydd"
+
+#~ msgid "Mines field."
+#~ msgstr "Maes ffrwydrynnau."
+
+#~ msgid "Press to Resume"
+#~ msgstr "Gwasgwch i Fynd Ymlaen"
+
+#~ msgid "Explosion!"
+#~ msgstr "Ffrwydriad!"
+
+#~ msgid "Game won!"
+#~ msgstr "Enillwyd y gêm!"
+
+#~ msgid "Game lost!"
+#~ msgstr "Collwyd y gêm!"
+
+#~ msgid ""
+#~ "When the solver gives you advice, your score will not be added to the "
+#~ "highscores."
+#~ msgstr ""
+#~ "Pam mae'r datrysydd yn rhoi cyngor i chi, ni fydd eich sgôr yn cael ei "
+#~ "ychwanegu i'r sgoriau gorau."
+
+#~ msgid "Overwrite"
+#~ msgstr "Trosysgrifo"
+
+#~ msgid "The file already exists. Overwrite?"
+#~ msgstr "Mae'r ffeil eisoes mewn bod.  Trosysgrifo?"
+
+#~ msgid "File Exists"
+#~ msgstr "Ffeil yn Bodoli"
+
+#~ msgid "Cannot read XML file on line %1"
+#~ msgstr "Methu darllen y ffeil XML ar linell %1"
+
+#~ msgid "Cannot load file."
+#~ msgstr "Methu llwytho'r ffeil."
+
+#~ msgid "Log file not recognized."
+#~ msgstr "Ni adnabyddir y ffeil gofnod."
+
+#~ msgid "Clicks"
+#~ msgstr "Cliciau"
+
+#~ msgid "anonymous"
+#~ msgstr "dienw"
+
+#~ msgid "Solving Rate..."
+#~ msgstr "Cyfradd Ddatrys..."
+
+#~ msgid "View Log"
+#~ msgstr "Gweld Cofnod"
+
+#~ msgid ""
+#~ "<qt>Mines left.<br/>It turns <font color=\"red\">red</font> when you have "
+#~ "flagged more cases than present mines.</qt>"
+#~ msgstr ""
+#~ " <qt>Ffrwydrynnau yn weddill.<br/>Mae'n troi yn <font color=\"red\">goch</"
+#~ "font> pan rydych wedi rhoi baneri ar fwy o flychau na sydd gan "
+#~ "ffrwydrynnau tu mewn.</qt>"
+
+#~ msgid ""
+#~ "<qt>Time elapsed.<br/>It turns <font color=\"blue\">blue</font> if it is "
+#~ "a highscore and <font color=\"red\">red</font> if it is the best time.</"
+#~ "qt>"
+#~ msgstr ""
+#~ " <qt>Amser a aeth heibio.<br/>Mae'n troi yn <font color=\"blue\">las</"
+#~ "font> os mae'n sgôr gorau, ac yn <font color=\"red\">goch</font> os mae'n "
+#~ "amser gorau.</qt>"
+
+#~ msgid "View Game Log"
+#~ msgstr "Gweld Cofnod Gêm"
+
+#~ msgid "Compute Solving Rate"
+#~ msgstr "Cyfrifiannu Cyfradd Ddatrys"
+
+#~ msgid "Start"
+#~ msgstr "Dechrau"
+
+#~ msgid "Width: %1"
+#~ msgstr "Lled: %1"
+
+#~ msgid "Height: %1"
+#~ msgstr "Uchder: %1"
+
+#~ msgid "Mines: %1 (%2%)"
+#~ msgstr "Ffrwydrynnau: %1 (%2%)"
+
+#~ msgid "Success rate:"
+#~ msgstr "Cyfradd lwyddiant:"
+
+#~ msgid "Success rate: %1%"
+#~ msgstr "Cyfradd lwyddiant: %1%"

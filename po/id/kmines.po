@@ -1,0 +1,264 @@
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the kmines package.
+# Wantoyo <wantoyek@gmail.com>, 2019, 2021, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: kmines\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-06-15 00:44+0000\n"
+"PO-Revision-Date: 2022-08-19 20:36+0700\n"
+"Last-Translator: Wantoyèk <wantoyek@gmail.com>\n"
+"Language-Team: https://t.me/Localizations_KDE_Indonesia\n"
+"Language: id\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 21.12.3\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "Wantoyo"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "wantoyek@gmail.com"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: customgame.ui:16
+#, kde-format
+msgid "Width:"
+msgstr "Lebar:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: customgame.ui:26
+#, kde-format
+msgid "Height:"
+msgstr "Tinggi:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: customgame.ui:36
+#, kde-format
+msgid "Mines:"
+msgstr "Ranjau:"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_UseQuestionMarks)
+#: generalopts.ui:17
+#, kde-format
+msgid "Use '?' marks"
+msgstr "Gunakan tanda tanya '?'"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_AllowKminesReset)
+#: generalopts.ui:24
+#, fuzzy, kde-format
+#| msgid "Allow KMines Reset"
+msgid "Allow KMines reset"
+msgstr "Bolehkan Set Ulang KMines"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_DisableScoreOnReset)
+#: generalopts.ui:37
+#, fuzzy, kde-format
+#| msgid "Disable Score on Reset"
+msgid "Disable score on reset"
+msgstr "Nonfungsikan Skor saat Set Ulang"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ExploreWithLeftClickOnNumberCells)
+#: generalopts.ui:44
+#, kde-format
+msgid "Explore with left click on number cells"
+msgstr ""
+
+#. i18n: ectx: label, entry (UseQuestionMarks), group (General)
+#: kmines.kcfg:9
+#, kde-format
+msgid "Whether the \"unsure\" marker may be used."
+msgstr "Apakah iya atau tidak, penanda \"tak yakin\" kemungkinan digunakan."
+
+#. i18n: ectx: label, entry (ExploreWithLeftClickOnNumberCells), group (General)
+#: kmines.kcfg:21
+#, kde-format
+msgid "Left click on a number cell will have the same effect as mid click."
+msgstr ""
+
+#. i18n: ectx: label, entry (CustomWidth), group (Options)
+#: kmines.kcfg:27
+#, kde-format
+msgid "The width of the playing field."
+msgstr "Lebar pada bidang bermain."
+
+#. i18n: ectx: label, entry (CustomHeight), group (Options)
+#: kmines.kcfg:33
+#, kde-format
+msgid "The height of the playing field."
+msgstr "Tingginya bidang permainan."
+
+#. i18n: ectx: label, entry (CustomMines), group (Options)
+#: kmines.kcfg:39
+#, kde-format
+msgid "The number of mines in the playing field."
+msgstr "Jumlah ranjau pada bidang permainan"
+
+#. i18n: ectx: ToolBar (mainToolBar)
+#: kminesui.rc:12
+#, kde-format
+msgid "Main Toolbar"
+msgstr "Bilah Alat Utama"
+
+#: main.cpp:43
+#, kde-format
+msgid "KMines"
+msgstr "KMines"
+
+#: main.cpp:45
+#, kde-format
+msgid "KMines is a classic minesweeper game"
+msgstr "KMines adalah sebuah permainan minesweeper klasik"
+
+#: main.cpp:47
+#, kde-format
+msgid ""
+"(c) 1996-2005, Nicolas Hadacek\n"
+"(c) 2001, Mikhail Kourinny\n"
+"(c) 2006-2007, Mauricio Piacentini\n"
+"(c) 2007, Dmitry Suzdalev"
+msgstr ""
+
+#: main.cpp:50
+#, kde-format
+msgid "Nicolas Hadacek"
+msgstr "Nicolas Hadacek"
+
+#: main.cpp:51
+#, kde-format
+msgid "Original author"
+msgstr "Penulis asli"
+
+#: main.cpp:52
+#, kde-format
+msgid "Mauricio Piacentini"
+msgstr "Mauricio Piacentini"
+
+#: main.cpp:53
+#, kde-format
+msgid "Code refactoring and SVG support. Current maintainer"
+msgstr "Refaktoring kode dan dukungan SVG. Pemelihara saat ini"
+
+#: main.cpp:55
+#, kde-format
+msgid "Dmitry Suzdalev"
+msgstr "Dmitry Suzdalev"
+
+#: main.cpp:56
+#, kde-format
+msgid "Rewrite to use QGraphicsView framework. Current maintainer"
+msgstr ""
+"Tulis ulang untuk menggunakan kerangka kerja QGraphicsView. Pemelihara saat "
+"ini"
+
+#: main.cpp:58
+#, kde-format
+msgid "Andreas Zehender"
+msgstr "Andreas Zehender"
+
+#: main.cpp:58
+#, kde-format
+msgid "Smiley pixmaps"
+msgstr "Pixmaps senyum"
+
+#: main.cpp:59
+#, kde-format
+msgid "Mikhail Kourinny"
+msgstr "Mikhail Kourinny"
+
+#: main.cpp:59
+#, kde-format
+msgid "Solver/Adviser"
+msgstr "Pemecah solusi/Penasihat"
+
+#: main.cpp:60
+#, kde-format
+msgid "Thomas Capricelli"
+msgstr "Thomas Capricelli"
+
+#: main.cpp:60
+#, kde-format
+msgid "Magic reveal mode"
+msgstr "Mode pengungkapan sulap"
+
+#: main.cpp:61
+#, kde-format
+msgid "Brian Croom"
+msgstr "Brian Croom"
+
+#: main.cpp:61
+#, kde-format
+msgid "Port to use KGameRenderer"
+msgstr "Port untuk menggunakan KGameRenderer"
+
+#: mainwindow.cpp:101
+#, kde-format
+msgid "Mines: 0/0"
+msgstr "Ranjau: 0/0"
+
+#: mainwindow.cpp:102 mainwindow.cpp:173
+#, kde-format
+msgid "Time: 00:00"
+msgstr "Waktu: 00:00"
+
+#: mainwindow.cpp:125
+#, kde-format
+msgid "Custom"
+msgstr "Kustom"
+
+#: mainwindow.cpp:135
+#, kde-format
+msgid "Mines: %1/%2"
+msgstr "Ranjau: %1/%2"
+
+#: mainwindow.cpp:201
+#, kde-format
+msgid "Reset?"
+msgstr "Set Ulang"
+
+#: mainwindow.cpp:201
+#, kde-format
+msgid "Reset the Game?"
+msgstr "Set Ulang Permainan?"
+
+#: mainwindow.cpp:212
+#, kde-format
+msgid "Time: %1"
+msgstr "Waktu: %1"
+
+#: mainwindow.cpp:238
+#, kde-format
+msgid "General"
+msgstr "Umum"
+
+#: mainwindow.cpp:239
+#, kde-format
+msgid "Theme"
+msgstr "Tema"
+
+#: mainwindow.cpp:240
+#, kde-format
+msgid "Custom Game"
+msgstr "Kustom Permainan"
+
+#: scene.cpp:122
+#, kde-format
+msgid "Game is paused."
+msgstr "Permainan dijeda."
+
+#: scene.cpp:130
+#, kde-format
+msgid "Congratulations! You have won!"
+msgstr "Selamat! Kamu menang!"
+
+#: scene.cpp:132
+#, kde-format
+msgid "You have lost."
+msgstr "Kamu kalah."

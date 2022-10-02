@@ -1,0 +1,544 @@
+# translation of kmines.po to Tajik
+# translation of kmines.po to Тоҷикӣ
+# Copyright (C) 2004, 2005 Free Software Foundation, Inc.
+# 2004, infoDev, a World Bank organization
+# 2004, Khujand Computer Technologies, Inc.
+# 2004, KCT1, NGO
+# Dilshod Marupov <dma165@hotmail.com>, 2004.
+# Hiromon <H_Abrorova@rambler.ru>, 2004.
+# Victor Ibragimov <youth_opportunities@tajikngo.org>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: kmines\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-06-15 00:44+0000\n"
+"PO-Revision-Date: 2005-10-22 16:41+0500\n"
+"Last-Translator: Victor Ibragimov <youth_opportunities@tajikngo.org>\n"
+"Language-Team: Tajik\n"
+"Language: tg\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.10\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "Роҷер Ковакс,Виктор Ибрагимов,Абророва Хиромон,Марина Колючева"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr ""
+"rkovacs@khujand.org,youth_opportunities@tajikngo.org,H_Abrorova@rambler.ru,"
+"marinaKL@tajikngo.org"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: customgame.ui:16
+#, kde-format
+msgid "Width:"
+msgstr "Бар:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: customgame.ui:26
+#, kde-format
+msgid "Height:"
+msgstr "Баландӣ:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: customgame.ui:36
+#, fuzzy, kde-format
+#| msgid "KMines"
+msgid "Mines:"
+msgstr "KМинаҳо"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_UseQuestionMarks)
+#: generalopts.ui:17
+#, fuzzy, kde-format
+#| msgid "Enable ? mark"
+msgid "Use '?' marks"
+msgstr "Даргиронидан? нишонагар"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_AllowKminesReset)
+#: generalopts.ui:24
+#, kde-format
+msgid "Allow KMines reset"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_DisableScoreOnReset)
+#: generalopts.ui:37
+#, kde-format
+msgid "Disable score on reset"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ExploreWithLeftClickOnNumberCells)
+#: generalopts.ui:44
+#, kde-format
+msgid "Explore with left click on number cells"
+msgstr ""
+
+#. i18n: ectx: label, entry (UseQuestionMarks), group (General)
+#: kmines.kcfg:9
+#, fuzzy, kde-format
+#| msgid "Whether the \"uncertain\" marker may be used."
+msgid "Whether the \"unsure\" marker may be used."
+msgstr "Оё нишонгари \"нолозима\" истифода шавад."
+
+#. i18n: ectx: label, entry (ExploreWithLeftClickOnNumberCells), group (General)
+#: kmines.kcfg:21
+#, kde-format
+msgid "Left click on a number cell will have the same effect as mid click."
+msgstr ""
+
+#. i18n: ectx: label, entry (CustomWidth), group (Options)
+#: kmines.kcfg:27
+#, kde-format
+msgid "The width of the playing field."
+msgstr "Бари майдони бозӣ."
+
+#. i18n: ectx: label, entry (CustomHeight), group (Options)
+#: kmines.kcfg:33
+#, kde-format
+msgid "The height of the playing field."
+msgstr "Дарозии майдони бозӣ."
+
+#. i18n: ectx: label, entry (CustomMines), group (Options)
+#: kmines.kcfg:39
+#, kde-format
+msgid "The number of mines in the playing field."
+msgstr "Шумораи минаҳо дар майдони бозӣ."
+
+#. i18n: ectx: ToolBar (mainToolBar)
+#: kminesui.rc:12
+#, fuzzy, kde-format
+#| msgid "Mine Color"
+msgid "Main Toolbar"
+msgstr "Ранги Мина"
+
+#: main.cpp:43
+#, kde-format
+msgid "KMines"
+msgstr "KМинаҳо"
+
+#: main.cpp:45
+#, fuzzy, kde-format
+#| msgid "KMines is a classic mine sweeper game"
+msgid "KMines is a classic minesweeper game"
+msgstr "KМинаҳо- ин бозии классикии сапёр аст"
+
+#: main.cpp:47
+#, kde-format
+msgid ""
+"(c) 1996-2005, Nicolas Hadacek\n"
+"(c) 2001, Mikhail Kourinny\n"
+"(c) 2006-2007, Mauricio Piacentini\n"
+"(c) 2007, Dmitry Suzdalev"
+msgstr ""
+
+#: main.cpp:50
+#, kde-format
+msgid "Nicolas Hadacek"
+msgstr ""
+
+#: main.cpp:51
+#, kde-format
+msgid "Original author"
+msgstr ""
+
+#: main.cpp:52
+#, kde-format
+msgid "Mauricio Piacentini"
+msgstr ""
+
+#: main.cpp:53
+#, kde-format
+msgid "Code refactoring and SVG support. Current maintainer"
+msgstr ""
+
+#: main.cpp:55
+#, kde-format
+msgid "Dmitry Suzdalev"
+msgstr ""
+
+#: main.cpp:56
+#, kde-format
+msgid "Rewrite to use QGraphicsView framework. Current maintainer"
+msgstr ""
+
+#: main.cpp:58
+#, kde-format
+msgid "Andreas Zehender"
+msgstr ""
+
+#: main.cpp:58
+#, kde-format
+msgid "Smiley pixmaps"
+msgstr "Тасвирчаҳо-хандандаҳо"
+
+#: main.cpp:59
+#, kde-format
+msgid "Mikhail Kourinny"
+msgstr ""
+
+#: main.cpp:59
+#, kde-format
+msgid "Solver/Adviser"
+msgstr "Ҳалкунанда/Маслиҳатчӣ"
+
+#: main.cpp:60
+#, kde-format
+msgid "Thomas Capricelli"
+msgstr ""
+
+#: main.cpp:60
+#, kde-format
+msgid "Magic reveal mode"
+msgstr "Усули кушодани сеҳрнок"
+
+#: main.cpp:61
+#, kde-format
+msgid "Brian Croom"
+msgstr ""
+
+#: main.cpp:61
+#, kde-format
+msgid "Port to use KGameRenderer"
+msgstr ""
+
+#: mainwindow.cpp:101
+#, fuzzy, kde-format
+#| msgid "KMines"
+msgid "Mines: 0/0"
+msgstr "KМинаҳо"
+
+#: mainwindow.cpp:102 mainwindow.cpp:173
+#, kde-format
+msgid "Time: 00:00"
+msgstr ""
+
+#: mainwindow.cpp:125
+#, kde-format
+msgid "Custom"
+msgstr "Дигар"
+
+#: mainwindow.cpp:135
+#, fuzzy, kde-format
+#| msgid "Mines (%1%):"
+msgid "Mines: %1/%2"
+msgstr "Минаҳо (%1%):"
+
+#: mainwindow.cpp:201
+#, kde-format
+msgid "Reset?"
+msgstr ""
+
+#: mainwindow.cpp:201
+#, kde-format
+msgid "Reset the Game?"
+msgstr ""
+
+#: mainwindow.cpp:212
+#, kde-format
+msgid "Time: %1"
+msgstr ""
+
+#: mainwindow.cpp:238
+#, kde-format
+msgid "General"
+msgstr "Умумӣ"
+
+#: mainwindow.cpp:239
+#, kde-format
+msgid "Theme"
+msgstr ""
+
+#: mainwindow.cpp:240
+#, kde-format
+msgid "Custom Game"
+msgstr "Бозии Худ"
+
+#: scene.cpp:122
+#, kde-format
+msgid "Game is paused."
+msgstr ""
+
+#: scene.cpp:130
+#, kde-format
+msgid "Congratulations! You have won!"
+msgstr ""
+
+#: scene.cpp:132
+#, kde-format
+msgid "You have lost."
+msgstr ""
+
+#~ msgid "The difficulty level."
+#~ msgstr "Сатри мушкил."
+
+#, fuzzy
+#~| msgid "Normal"
+#~ msgid "Form"
+#~ msgstr "Муқаррарӣ"
+
+#~ msgid "The size of a square."
+#~ msgstr "Андозаи майдон."
+
+#~ msgid "Whether the game can be played using the keyboard."
+#~ msgstr "Оё бозӣ бо истифодаи забонак бози карда шавад."
+
+#~ msgid "Whether the game is paused when the window loses focus."
+#~ msgstr "Оё ҳангоми гумкунии фокуси тиреза бизӣ ист намояд."
+
+#~ msgid "Whether to set flags and reveal squares in trivial situations."
+#~ msgstr ""
+#~ "Оё баррасии порчаҳо ва кушодани майдонҳо дар ҳодисаҳои ночиз лозиманд."
+
+#~ msgid "Mouse button actions"
+#~ msgstr "Амалиётҳои тугмаи муш"
+
+#~ msgid "Color"
+#~ msgstr "Ранг"
+
+#~ msgid "Whether the menubar is visible."
+#~ msgstr "Оё панели меню дидашаванда аст."
+
+#~ msgid "&Move"
+#~ msgstr "&Ҳаракат"
+
+#~ msgid "Easy"
+#~ msgstr "Осон"
+
+#~ msgid "Normal"
+#~ msgstr "Муқаррарӣ"
+
+#~ msgid "Expert"
+#~ msgstr "Кордон"
+
+#~ msgid "No. of mines:"
+#~ msgstr "Шумораи минаҳо:"
+
+#~ msgid "Choose level:"
+#~ msgstr "Сатҳро интихоб кунед:"
+
+#~ msgid "Mines (%1%):"
+#~ msgstr "Минаҳо (%1%):"
+
+#~ msgid "Left button:"
+#~ msgstr "Тугмаи чап:"
+
+#~ msgid "Middle button:"
+#~ msgstr "Тугмаи миёна:"
+
+#~ msgid "Right button:"
+#~ msgstr "Тугмаи рост:"
+
+#~ msgid "Reveal"
+#~ msgstr "Кушодан"
+
+#~ msgid "Autoreveal"
+#~ msgstr "Кушодани худкор"
+
+#~ msgid "Toggle Flag"
+#~ msgstr "Гузоштани/Бардоштани Парчам"
+
+#~ msgid "Toggle ? Flag"
+#~ msgstr "Гузоштан/Бардоштан? Парчам"
+
+#~ msgid "Enable keyboard"
+#~ msgstr "Даргиронидани забонак"
+
+#~ msgid "Pause if window loses focus"
+#~ msgstr "Таваққуф ҳангоми гум кардани фокуси тиреза"
+
+#~ msgid "\"Magic\" reveal"
+#~ msgstr "Кушодани \"Сеҳрнок\""
+
+#~ msgid "Set flags and reveal squares where they are trivial."
+#~ msgstr ""
+#~ "Парчамҳоро мегузорад ва майдонҳоро мекушояд, агар ки онҳо мина надошта "
+#~ "бошанд."
+
+#~ msgid "Mouse Bindings"
+#~ msgstr "Пайвандҳои Муш"
+
+#~ msgid ""
+#~ "When the \"magic\" reveal is on, you lose the ability to enter the "
+#~ "highscores."
+#~ msgstr ""
+#~ "Вақте, ки кушодани \"сеҳрнок\" даргирифта бошад, ҳисоби шумо ба китоби "
+#~ "рекордҳо дохил намешавад."
+
+#~ msgid "Flag color:"
+#~ msgstr "Ранги парчам:"
+
+#~ msgid "Explosion color:"
+#~ msgstr "Ранги таркиш:"
+
+#~ msgid "Error color:"
+#~ msgstr "Ранги хатогӣ:"
+
+#~ msgid "%1 mine color:"
+#~ msgid_plural "%1 mines color:"
+#~ msgstr[0] "ранги %1 мина:"
+#~ msgstr[1] "ранги %1 мина:"
+
+#~ msgid "Case autorevealed"
+#~ msgstr "Кушодани худкор"
+
+#~ msgid "Flag set"
+#~ msgstr "Барпосозии парчам"
+
+#~ msgid "Flag unset"
+#~ msgstr "Барпонасозии парчам"
+
+#~ msgid "Question mark set"
+#~ msgstr "Парпосозии нишонаи суол"
+
+#~ msgid "Question mark unset"
+#~ msgstr "Парпонасозии нишонаи суол"
+
+#~ msgid "Move Up"
+#~ msgstr "Ҷойивазкунӣ ба Боло"
+
+#~ msgid "Move Down"
+#~ msgstr "Ҷойивазкунӣ ба Поён"
+
+#~ msgid "Move Right"
+#~ msgstr "Ҷойивазкунӣ ба Рост"
+
+#~ msgid "Move Left"
+#~ msgstr "Ҷойивазкунӣ ба Чап"
+
+#~ msgid "Move at Left Edge"
+#~ msgstr "Ҷойивазкунӣ ба Кунҷи Чап"
+
+#~ msgid "Move at Right Edge"
+#~ msgstr "Ҷойивазкунӣ ба Кунҷи Рост"
+
+#~ msgid "Move at Top Edge"
+#~ msgstr "Ҷойивазкунӣ ба Кунҷи Болоӣ"
+
+#~ msgid "Move at Bottom Edge"
+#~ msgstr "Ҷойивазкунӣ ба Кунҷи Поёнӣ"
+
+#~ msgid "Reveal Mine"
+#~ msgstr "Кушодани Мина"
+
+#~ msgid "Mark Mine"
+#~ msgstr "Ишоракунии Мина"
+
+#~ msgid "Automatic Reveal"
+#~ msgstr "Кушодани Худкор"
+
+#~ msgid "Replay Log"
+#~ msgstr "Бознишондарории Номнавис"
+
+#~ msgid "Save Log..."
+#~ msgstr "Захиракунии Номнавис..."
+
+#~ msgid "Load Log..."
+#~ msgstr "Боркунии Номнавис..."
+
+#~ msgid "Game"
+#~ msgstr "Бозӣ"
+
+#~ msgid "Keyboard game"
+#~ msgstr "Бозӣ бо забонак"
+
+#~ msgid "Press to start a new game"
+#~ msgstr "Барои оғози бозии нав, пахш кунед"
+
+#~ msgid "Mines field."
+#~ msgstr "Майдони минаҳо."
+
+#~ msgid "Press to Resume"
+#~ msgstr "Барои ба Итмомрасонӣ ба тугма ангушт занед"
+
+#~ msgid "Explosion!"
+#~ msgstr "Таркиш!"
+
+#~ msgid "Game won!"
+#~ msgstr "Дар бозӣ Ғолиб омадед!"
+
+#~ msgid "Game lost!"
+#~ msgstr "Дар бозӣ мағлуб шудед!"
+
+#~ msgid ""
+#~ "When the solver gives you advice, your score will not be added to the "
+#~ "highscores."
+#~ msgstr ""
+#~ "Вақте, ки маслиҳатчӣ ба шумо маслиҳат медиҳад, ҳисоби шумо ба китоби "
+#~ "рекордҳо дохил намегардад."
+
+#~ msgid "Overwrite"
+#~ msgstr "Рӯиҳамнависӣ"
+
+#~ msgid "The file already exists. Overwrite?"
+#~ msgstr "Файл аллакай мавҷуд аст. Рӯиҳам нависам?"
+
+#~ msgid "File Exists"
+#~ msgstr "Файл мавҷуд аст"
+
+#~ msgid "Cannot read XML file on line %1"
+#~ msgstr "Файли XML-ро дар сатри %1 хонда нашуда истодааст"
+
+#~ msgid "Cannot load file."
+#~ msgstr "Боркунии файл нашуда истодааст."
+
+#~ msgid "Log file not recognized."
+#~ msgstr "Файли номнавис шинохта нашуд."
+
+#~ msgid "Clicks"
+#~ msgstr "Ангуштзаниҳо"
+
+#~ msgid "anonymous"
+#~ msgstr "номаълум"
+
+#~ msgid "Solving Rate..."
+#~ msgstr "Зиддии Ҳалкунӣ..."
+
+#~ msgid "View Log"
+#~ msgstr "Азназаргузаронии Номнавис"
+
+#~ msgid ""
+#~ "<qt>Mines left.<br/>It turns <font color=\"red\">red</font> when you have "
+#~ "flagged more cases than present mines.</qt>"
+#~ msgstr ""
+#~ "<qt>Минаҳо боқӣ монданд.<br/>Агар шумо бо парчамҳо бисёртар минаҳоро, "
+#~ "назар ба он ки ҳаст қайд карда бошед, он ранги <font color=\"red"
+#~ "\">сурхро</font> мегирад.</qt>"
+
+#~ msgid ""
+#~ "<qt>Time elapsed.<br/>It turns <font color=\"blue\">blue</font> if it is "
+#~ "a highscore and <font color=\"red\">red</font> if it is the best time.</"
+#~ "qt>"
+#~ msgstr ""
+#~ "<qt>Вақти сарфшуда.<br/>Агар шумо ба ҳисоби баландтарин ба ранги <font "
+#~ "color=\"blue\">кабуд</font> ва агар ба вақти беҳтарин ноил гашта бошед, "
+#~ "ранги <font color=\"red\">сурхро</font> мегирад.</qt>"
+
+#~ msgid "View Game Log"
+#~ msgstr "Азназаргузаронии Номнависи Бозӣ"
+
+#~ msgid "Compute Solving Rate"
+#~ msgstr "Ҳисобкунии Зудии Ҳалкунӣ"
+
+#~ msgid "Start"
+#~ msgstr "Оғоз"
+
+#~ msgid "Width: %1"
+#~ msgstr "Бар: %1"
+
+#~ msgid "Height: %1"
+#~ msgstr "Баландӣ: %1"
+
+#~ msgid "Mines: %1 (%2%)"
+#~ msgstr "Минаҳо: %1 (%2%)"
+
+#~ msgid "Success rate:"
+#~ msgstr "Фоизи муваффақият:"
+
+#~ msgid "Success rate: %1%"
+#~ msgstr "Фоизи муваффақият: %1%"

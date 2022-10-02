@@ -1,0 +1,601 @@
+<?xml version="1.0" ?>
+<!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.5-Based Variant V1.1//EN" "dtd/kdedbx45.dtd" [
+  <!ENTITY % addindex "IGNORE">
+  <!ENTITY % French "INCLUDE"
+> <!-- change language only here -->
+]>
+
+<book id="kmines" lang="&language;">
+
+<bookinfo>
+<title
+>Manuel utilisateur de &kmines;</title>
+
+<authorgroup>
+<author
+><firstname
+>Nicolas</firstname
+> <surname
+>Hadacek</surname
+> <affiliation
+> <address
+>&Nicolas.Hadacek.mail;</address>
+</affiliation>
+</author>
+<author
+><firstname
+>Michael</firstname
+> <surname
+>McBride</surname
+> <affiliation
+><address
+><email
+>mmcbride@ematic.org</email
+></address
+></affiliation>
+</author>
+<author
+><firstname
+>Anton</firstname
+> <surname
+>Brondz</surname
+> <affiliation
+> <address
+><email
+>dinolinux@gmail.com</email
+></address>
+</affiliation>
+</author>
+<othercredit role="developer"
+><firstname
+>Nicolas</firstname
+> <surname
+>Hadacek</surname
+> <affiliation
+> <address
+>&Nicolas.Hadacek.mail;</address>
+</affiliation>
+<contrib
+>Développeur</contrib>
+</othercredit>
+<othercredit role="reviewer"
+><firstname
+>Lauri</firstname
+> <surname
+>Watts</surname
+> <affiliation
+><address
+>&Lauri.Watts.mail;</address
+></affiliation>
+<contrib
+>Relecteur</contrib>
+</othercredit>
+&traducteurEquipeKDE; 
+</authorgroup>
+
+<copyright>
+<year
+>2000</year>
+<holder
+>&Nicolas.Hadacek;, Michael McBride</holder>
+</copyright>
+
+<legalnotice
+>&FDLNotice;</legalnotice>
+
+<date
+>07-11-2021</date>
+<releaseinfo
+>4.0 (KDE Gear 21.04)</releaseinfo>
+
+<abstract
+><para
+>&kmines; est la version pour &kde; du classique jeu de détection de mines.</para
+></abstract>
+
+<keywordset>
+<keyword
+>KDE</keyword>
+<keyword
+>jeu</keyword>
+<keyword
+>démineur</keyword>
+</keywordset>
+
+</bookinfo>
+
+<chapter id="introduction">
+<title
+>Introduction</title>
+<note
+><title
+>Type de Jeu : </title
+><para
+>Stratégie, plateau</para
+></note
+><!-- Game genre. Use as many as necessary. Available game types are: Arcade, Board, Card, Dice, Toys, Logic, Strategy.-->
+<note
+><title
+>Nombre possible de joueurs : </title
+><para
+>Un</para
+></note
+><!--Number of possible players. It can be: One, Two,..., Multiplayer-->
+
+<para
+>&kmines; est le jeu classique de détection de mines. Vous devez découvrir toutes les cases vides sans sauter sur une mine. Si une mine est découverte, la partie est terminée. Les nombres indiquent combien de mines sont à proximité. </para>
+
+</chapter>
+
+<chapter id="how-to-play">
+<title
+>Comment jouer</title>
+<note
+><title
+>Objectif : </title
+><para
+>Localiser toutes les mines cachées sur le terrain miné.</para
+></note
+><!--Describe the objective of the game.-->
+
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="gameboard.png" format="PNG"/>
+</imageobject>
+<textobject>
+<phrase
+>Jeu de plateau &kmines;</phrase>
+</textobject>
+</mediaobject>
+</screenshot>
+
+<para
+>Pour jouer à &kmines;, vous devez utiliser la souris et ses trois boutons pour découvrir ou marquer les cases (avec les souris à deux boutons, le fait de cliquer sur le bouton &BCS; se fait simultanément en pressant les &BGS; et &BDS;. </para>
+
+<para
+>En cliquant sur le &BGS;, une case apparaîtra. Si c'est une mine, elle explosera et la partie est terminé. Si ce n'en est pas une, la case est nettoyé et si n'y a pas de mines à proximité, la case disparaîtra incluant d'autres cases vides de mines. S'il y a d'autres mines à proximité, un numéro affichera combien de mines contiennent les cases voisines. Pour chaque case (bords et coins exclus) il y a huit cases voisines. </para>
+
+<note>
+<para
+>Cliquer avec le &BGS; sur une case marquée avec un drapeau peut se faire en toute sécurité, car il ne se passera rien. </para>
+</note>
+
+<para
+>Le &BDS; marque une case qui contient une mine (en plaçant un drapeau rouge sur celle ci). En cliquant deux fois sur le bouton, un point d'interrogation apparaît. Ce symbole est utile quand vous hésitez sur la position des mines. Le &BCS; efface les cases aux alentours si le bon nombre de cases est toujours marqué. C'est utile et plus rapide que de devoir découvrir toutes les cases individuellement. Soyez sur que votre drapeau est correctement placé, sinon la mine va sauter. </para>
+</chapter>
+
+<chapter id="rulestips">
+<title
+>Règle du jeu, stratégies et astuces</title>
+<sect1 id="rules">
+<title
+>Règles</title>
+<itemizedlist>
+<listitem
+><para
+>Toutes les mines doivent être éliminées pour que le joueur remporte la partie.</para
+></listitem>
+<listitem
+><para
+>Le joueur ne peut pas savoir l'emplacement exact des mines avant que la partie ne se termine.</para
+></listitem>
+<listitem
+><para
+>Si une mine explose, la partie est terminée.</para
+></listitem>
+<listitem
+><para
+>Les nombres indiquent les mines proches</para
+></listitem>
+</itemizedlist>
+</sect1>
+
+<sect1 id="strattips">
+<title
+>Stratégies et astuces</title>
+<itemizedlist>
+<listitem
+><para
+>Utilisez les nombres pour trouver où se situent les mines voisines.</para
+></listitem>
+<listitem
+><para
+>Placez un drapeau où vous suspectez la présence de mines. Remarquez que même si le nombre de mines indiqué descend quand vous mettez un drapeau, il est possible qu'il n'y ait pas de mine en dessous du drapeau.</para
+></listitem>
+<listitem
+><para
+>Réfléchissez avant de cliquer. Un mauvais clic fait sauter la mine.</para
+></listitem>
+<listitem
+><para
+>Quand vous suspectez qu'une case contient une mine, analyser le voisinage de la case pour découvrir des nombres peut s'avérer utile.</para
+></listitem>
+<listitem
+><para
+>Essayez d'effacer le plateau le plus rapidement possible. Moins vous passez de temps, plus le score est élevé.</para
+></listitem>
+</itemizedlist>
+</sect1>
+
+</chapter>
+
+<chapter id="command">
+<title
+>Raccourcis clavier pour les commandes</title>
+
+<para
+>Les chapitres suivants décrivent brièvement certaines options de la barre de menus.</para>
+
+<sect1 id="menu">
+<title
+>Éléments de menu</title>
+
+<variablelist>
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>N</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Jeu</guimenu
+><guimenuitem
+>Nouveau</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Débute une nouvelle partie.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycap
+>P</keycap
+></shortcut
+> <guimenu
+>Jeu</guimenu
+> <guimenuitem
+>Pause</guimenuitem
+></menuchoice
+></term>
+<listitem>
+<para
+>Met le compteur de temps du jeu en pause. Cliquez sur l'élément du menu de nouveau pour reprendre le jeu. Veuillez noter que le plateau disparaît lorsque le jeu est mis en pause, ce qui serait déloyal si vous ne pouviez rechercher le bon choix sans la pression du compteur de temps. </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>H</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Jeu</guimenu
+> <guimenuitem
+>Afficher les meilleurs scores...</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Cela vous montre le meilleur score (le temps le plus court) pour chaque niveau de difficulté.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>Q</keycap
+></keycombo
+> </shortcut
+><guimenu
+>Jeu</guimenu
+><guimenuitem
+>Quitter</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+><action
+>Quitte</action
+> &kmines;</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Configuration</guimenu
+> <guisubmenu
+>Difficulté</guisubmenu
+> </menuchoice
+></term>
+<listitem>
+<para
+>Vous permet de choisir le niveau de difficulté depuis un sous-menu.</para>
+<para
+>Il y a trois niveaux de difficulté par défaut : <guimenuitem
+>Facile</guimenuitem
+> (64 cases, 10 mines), <guimenuitem
+>Moyen</guimenuitem
+> (256 cases, 40 mines), et <guimenuitem
+>Expert</guimenuitem
+> (480 cases, 99 mines). Il y a en plus un niveau de configuration <guimenuitem
+>Personnalisé</guimenuitem
+>.</para>
+<para
+>Si vous sélectionnez <guimenuitem
+>Personnalisé</guimenuitem
+>, alors, les réglages que vous avez définis dans la boîte de dialogue <guimenuitem
+>Configurer - &kmines;</guimenuitem
+> seront utilisés.</para
+></listitem>
+</varlistentry>
+
+</variablelist>
+
+<para
+>De plus, &kmines; possède des éléments communs de menu &kde; <guimenu
+>Configuration</guimenu
+> et <guimenu
+>Aide</guimenu
+>. Pour plus d'informations, veuillez consulter les sections <ulink url="help:/fundamentals/menus.html#menus-settings"
+>Menu de configuration</ulink
+> et <ulink url="help:/fundamentals/menus.html#menus-help"
+>Menu d'aide</ulink
+> des fondamentaux de &kde;. </para>
+
+</sect1>
+
+<sect1 id="keys"
+><title
+>Raccourcis clavier par défaut</title>
+<para
+>Le tableau suivant vous montre les raccourcis clavier par défaut.</para>
+
+<table>
+<title
+>Raccourcis clavier</title>
+<tgroup cols="2">
+<thead
+><row
+><entry
+>Combinaison de touches</entry
+><entry
+>Action</entry
+></row
+></thead>
+<tbody>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>N</keycap
+></keycombo
+></entry
+><entry
+>Nouvelle partie</entry
+></row>
+<row
+><entry
+><keycap
+>P</keycap
+></entry
+><entry
+>Pause</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>Q</keycap
+></keycombo
+></entry
+><entry
+>Quitte &kmines;</entry
+></row>
+<row
+><entry
+><keycap
+>F1</keycap
+></entry
+><entry
+>Manuel de &kmines;</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Maj;<keycap
+>F1</keycap
+></keycombo
+></entry
+><entry
+>Qu'est-ce que c'est ? A l'aide.</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>H</keycap
+></keycombo
+></entry
+><entry
+>Afficher les meilleurs scores</entry
+></row>
+
+</tbody>
+</tgroup>
+</table>
+
+<para
+>Ces raccourcis clavier peuvent être modifiés en sélectionnant l'élément de menu <menuchoice
+><guimenu
+>Configuration</guimenu
+><guimenuitem
+>Configurer les raccourcis clavier...</guimenuitem
+> </menuchoice
+>.</para>
+
+</sect1>
+
+</chapter>
+
+<chapter id="faq">
+<title
+>Foire aux questions</title>
+<qandaset>
+
+<qandaentry>
+<question>
+<para
+>Je veux modifier la façon dont le jeux s'affiche. Est-ce possible ? </para>
+</question>
+<answer>
+<para
+>Oui. Cliquez sur l'élément de menu <menuchoice
+><guimenu
+>Configuration</guimenu
+> <guimenuitem
+>Configurer &kmines;...</guimenuitem
+></menuchoice
+>. </para>
+</answer>
+</qandaentry>
+
+<qandaentry>
+<question>
+<para
+>Peut-on ajouter plus de mines ou de cases ? </para>
+</question>
+<answer>
+<para
+>Oui, le plus simple est d'utiliser la petite boîte de dialogue dans le coin en bas à droite. </para>
+</answer>
+</qandaentry>
+
+</qandaset>
+</chapter>
+
+<chapter id="settings">
+<title
+>Configuration du jeu</title>
+<para
+>La configuration du jeu peut être modifiée en sélectionnant l'élément de menu <menuchoice
+><guimenu
+>Configuration</guimenu
+><guimenuitem
+>Configurer &kmines;...</guimenuitem
+> </menuchoice
+>. Une boîte de dialogue apparaîtra. </para>
+<para
+>Dans la page <guilabel
+>Général</guilabel
+>, vous pouvez configurer les paramètres suivants du jeu. </para>
+<variablelist>
+    <varlistentry>
+        <term
+>Utiliser les marqueurs « ? »</term>
+        <listitem>
+            <para
+>Si coché, permet l'utilisation du signe « ? » pour marquer les cases incertaines. Ce signe sur la case peut être changé par un &BDS;.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term
+>Autoriser la réinitialisation de &kmines;.</term>
+        <listitem>
+            <para
+>Si coché, vous permet de ré-initialiser le jeu &kmines; quand il est impossible de faire quoique cela soit sauf deviner et que votre dernier choix était mauvais. </para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term
+>Désactiver le score lors de la réinitialisation.</term>
+        <listitem>
+            <para
+>Si coché, vous permet de désactiver le score après réinitialisation.</para>
+        </listitem>
+    </varlistentry>
+        <varlistentry>
+        <term
+>Explorer avec le clic gauche les cellules avec numéro.</term>
+        <listitem>
+            <para
+>Quand cette option est choisie, un &BGS; sur une cellule à numéro aura le même effet qu'un &BCS;.</para>
+        </listitem>
+    </varlistentry>
+</variablelist>
+
+<para
+>Sur la seconde page, vous pouvez définir le thème. Sélectionner un thème dans la liste. Chaque élément de la liste affiche un aperçu réduit à gauche du nom du thème. </para>
+
+<para
+>Sur le troisième onglet, vous pouvez régler la hauteur et la largeur du plateau et le nombre de mines dans votre niveau personnalisé. </para>
+
+</chapter>
+
+<chapter id="credits"
+><title
+>Remerciements et licence</title>
+
+<para
+>&kmines; Copyright 1996-2007 </para>
+
+<itemizedlist>
+<title
+>Auteurs</title>
+<listitem>
+<para
+>&Nicolas.Hadacek; &Nicolas.Hadacek.mail; </para>
+</listitem>
+<listitem>
+<para
+>Mikhail Kourinny </para>
+</listitem>
+<listitem>
+<para
+>Mauricio Piacentini <email
+>mauricio@tabuleiro.com</email
+> </para>
+</listitem>
+<listitem>
+<para
+>Dmitry Suzdalev <email
+>dimsuz@gmail.com</email
+> </para>
+</listitem>
+</itemizedlist>
+
+<para
+>Documentation sous copyright 2000 &Nicolas.Hadacek; &Nicolas.Hadacek.mail;</para>
+<para
+>Documentation mise à jour pour &kde; 2.0 par &Mike.McBride; &Mike.McBride.mail; ;</para>
+<para
+>Quelques changements pour &kde; 3.2 par &Philip.Rodrigues; &Philip.Rodrigues.mail;</para>
+<para
+>Traduction française par &EquipeKDE;.</para
+> &underFDL; &underGPL; </chapter>
+
+</book>
+<!--
+Local Variables:
+mode: sgml
+sgml-omittag: nil
+sgml-shorttag: t
+End:
+-->

@@ -1,0 +1,615 @@
+<?xml version="1.0" ?>
+<!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.5-Based Variant V1.1//EN" "dtd/kdedbx45.dtd" [
+  <!ENTITY % addindex "IGNORE">
+  <!ENTITY % Ukrainian "INCLUDE"
+> <!-- change language only here -->
+]>
+
+<book id="kmines" lang="&language;">
+
+<bookinfo>
+<title
+>Підручник з &kmines;</title>
+
+<authorgroup>
+<author
+><firstname
+>Nicolas</firstname
+> <surname
+>Hadacek</surname
+> <affiliation
+> <address
+>&Nicolas.Hadacek.mail;</address>
+</affiliation>
+</author>
+<author
+><firstname
+>Michael</firstname
+> <surname
+>McBride</surname
+> <affiliation
+><address
+><email
+>mmcbride@ematic.org</email
+></address
+></affiliation>
+</author>
+<author
+><firstname
+>Anton</firstname
+> <surname
+>Brondz</surname
+> <affiliation
+> <address
+><email
+>dinolinux@gmail.com</email
+></address>
+</affiliation>
+</author>
+<othercredit role="developer"
+><firstname
+>Nicolas</firstname
+> <surname
+>Hadacek</surname
+> <affiliation
+> <address
+>&Nicolas.Hadacek.mail;</address>
+</affiliation>
+<contrib
+>Розробник</contrib>
+</othercredit>
+<othercredit role="reviewer"
+><firstname
+>Lauri</firstname
+> <surname
+>Watts</surname
+> <affiliation
+><address
+>&Lauri.Watts.mail;</address
+></affiliation>
+<contrib
+>Рецензент</contrib>
+</othercredit>
+<othercredit role="translator"
+><firstname
+>Юрій</firstname
+><surname
+>Чорноіван</surname
+><affiliation
+><address
+><email
+>yurchor@ukr.net</email
+></address
+></affiliation
+><contrib
+>Переклад українською</contrib
+></othercredit
+> 
+</authorgroup>
+
+<copyright>
+<year
+>2000</year>
+<holder
+>&Nicolas.Hadacek;, Michael McBride</holder>
+</copyright>
+
+<legalnotice
+>&FDLNotice;</legalnotice>
+
+<date
+>11 липня 2021 року</date>
+<releaseinfo
+>4.0 (KDE Gear 21.04)</releaseinfo>
+
+<abstract
+><para
+>&kmines; — це версія для &kde; класичної гри у сапера.</para
+></abstract>
+
+<keywordset>
+<keyword
+>KDE</keyword>
+<keyword
+>гра</keyword>
+<keyword
+>сапер</keyword>
+</keywordset>
+
+</bookinfo>
+
+<chapter id="introduction">
+<title
+>Вступ</title>
+<note
+><title
+>Тип гри:</title
+><para
+>Стратегія, гра на дошці</para
+></note
+><!-- Game genre. Use as many as necessary. Available game types are: Arcade, Board, Card, Dice, Toys, Logic, Strategy.-->
+<note
+><title
+>Можлива кількість гравців:</title
+><para
+>Один</para
+></note
+><!--Number of possible players. It can be: One, Two,..., Multiplayer-->
+
+<para
+>&kmines; — це класична гра у сапера. Ідея гри полягає у тому, щоб розкрити всі клітинки без підриву жодної з мін. Якщо ви натрапите на міну, гру буде програно. Числа у клітинках показують вам скільки мін знаходиться у сусідніх клітинках. </para>
+
+</chapter>
+
+<chapter id="how-to-play">
+<title
+>Як грати</title>
+<note
+><title
+>Мета:</title
+><para
+>Знайти всі міни, заховані на мінному полі.</para
+></note
+><!--Describe the objective of the game.-->
+
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="gameboard.png" format="PNG"/>
+</imageobject>
+<textobject>
+<phrase
+>Ігрова дошка &kmines;</phrase>
+</textobject>
+</mediaobject>
+</screenshot>
+
+<para
+>Для гри у &kmines; вам слід скористатися мишею, зокрема трьома її кнопками, які надають вам змогу розкривати або позначати клітинки прапорцями (на мишах з двома кнопками сигнал про клацання середньою кнопкою миші можна надіслати одночасним натисканням лівої і правої кнопок миші). </para>
+
+<para
+>Клацання лівою кнопкою миші розкриває клітинку. Якщо на клітинці знаходиться міна, цю міну буде підірвано, а отже, гру буде програно. Якщо на клітинці немає міни, клітинку буде розкрито. Якщо поряд з клітинкою немає мін, також буде розкрито всі сусідні клітинки без мін. Якщо поруч з клітинкою є міни, ви побачите число, зображене у клітинці, це число позначає кількість сусідніх клітинок, у яких знаходяться міни. У кожної клітинки (окрім клітинок поряд з границею та у кутах ігрового поля) є вісім сусідніх клітинок. </para>
+
+<note>
+<para
+>Наведення вказівника миші на клітинку, позначену прапорцем, з наступним клацання лівою кнопкою миші не має ніяких наслідків, отже, є безпечним. </para>
+</note>
+
+<para
+>Клацання правою кнопкою миші, позначає клітинку як таку, що містить міну (на клітинці буде показано червоний прапорець). Повторне клацання цією кнопкою позначає клітинку як таку, щодо вмісту якої ви не маєте певності (клітинку буде позначено знаком питання). Мітка невизначеності корисна, якщо ви заплуталися у розташуванні мін. Клацання середньою кнопкою миші розкриває всі сусідні клітинки, якщо потрібну кількість клітинок вже позначено червоним прапорцем. Ця дія значно спрощує гру, оскільки її виконання набагато швидше за послідовне розкриття окремих клітинок. Але, перш ніж користуватися клацанням середньою кнопкою, вам слід переконатися, що прапорці розставлено правильно, інакше, така дія може призвести до вибуху міни. </para>
+</chapter>
+
+<chapter id="rulestips">
+<title
+>Правила гри, стратегія та поради</title>
+<sect1 id="rules">
+<title
+>Правила</title>
+<itemizedlist>
+<listitem
+><para
+>Для виграшу у грі слід виявити всі міни на мінному полі.</para
+></listitem>
+<listitem
+><para
+>Гравцеві не буде відомим точне розташування мін до того, як гру буде завершено.</para
+></listitem>
+<listitem
+><para
+>Якщо міну буде підірвано, гру буде програно.</para
+></listitem>
+<listitem
+><para
+>Числа на клітинці ігрового поля позначають кількість мін, що знаходяться на сусідніх клітинках.</para
+></listitem>
+</itemizedlist>
+</sect1>
+
+<sect1 id="strattips">
+<title
+>Стратегія та поради</title>
+<itemizedlist>
+<listitem
+><para
+>Використовуйте для виявлення сусідніх мін цифри у відкритих клітинках.</para
+></listitem>
+<listitem
+><para
+>Ставте прапорці у клітинках, де, як ви підозрюєте, є міни. Пам’ятайте, що хоча кількість мін, які показано у індикаторі програми зменшується, коли ви виставляєте прапорець, під прапорцем може і не бути міни.</para
+></listitem>
+<listitem
+><para
+>Думайте перед тим, як клацати на клітинці. Неправильний хід може призвести до вибуху міни.</para
+></listitem>
+<listitem
+><para
+>Якщо ви маєте підозру, що у клітинці міститься міна, обійдіть цю клітинку і спробуйте знайти клітинку з числом, яке допоможе визначити, чи насправді у клітинці є міна.</para
+></listitem>
+<listitem
+><para
+>Намагайтеся діяти якнайшвидше, чим менше часу ви витратите, тим вищим буде ваш результат.</para
+></listitem>
+</itemizedlist>
+</sect1>
+
+</chapter>
+
+<chapter id="command">
+<title
+>Команди і клавіатурні скорочення</title>
+
+<para
+>У цьому розділі коротко описано кожен з пунктів меню.</para>
+
+<sect1 id="menu">
+<title
+>Пункти меню</title>
+
+<variablelist>
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>N</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Гра</guimenu
+> <guimenuitem
+>Створити</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Починає нову гру.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycap
+>P</keycap
+></shortcut
+> <guimenu
+>Гра</guimenu
+> <guimenuitem
+>Пауза</guimenuitem
+></menuchoice
+></term>
+<listitem>
+<para
+>Зупинка ігрового часу. Натисніть той же пункт меню для продовження гри. Зауважте, що ігрове поле недоступне в режимі паузи, бо це б було не чесно, якщо б Ви могли познаходити гарні ходи не витрачаючи час. </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>H</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Гра</guimenu
+> <guimenuitem
+>Показати найкращі результати</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>За допомогою цього пункту можна переглянути список найкращих результатів (найшвидших виграшів) для кожного з рівнів складності.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>Q</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Гра</guimenu
+> <guimenuitem
+>Вийти</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+><action
+>Завершує роботу</action
+> &kmines;.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Параметри</guimenu
+> <guisubmenu
+>Складність</guisubmenu
+> </menuchoice
+></term>
+<listitem>
+<para
+>Встановіть рівень складності за допомогою підменю.</para>
+<para
+>Існує три типових рівні складності: <guimenuitem
+>Простий</guimenuitem
+> (9x9 клітинок, 10 мін), <guimenuitem
+>Середній</guimenuitem
+> (16x16 клітинки, 40 мін) і <guimenuitem
+>Складний</guimenuitem
+> (30x16 клітинок, 99 мін). Існує також і <guimenuitem
+>Нетиповий</guimenuitem
+> рівень складності.</para>
+<para
+>Якщо ви оберете пункт <guimenuitem
+>Нетиповий</guimenuitem
+>, у грі буде використано параметри, які ви встановили за допомогою діалогового вікна <guilabel
+>Налаштувати &kmines;</guilabel
+>.</para
+></listitem>
+</varlistentry>
+
+</variablelist>
+
+<para
+>Крім того, у &kmines; передбачено типові для &kde; пункти меню <guimenu
+>Параметри</guimenu
+> і <guimenu
+>Довідка</guimenu
+>. Щоб дізнатися більше, ознайомтеся з розділами щодо <ulink url="help:/fundamentals/menus.html#menus-settings"
+>меню «Параметри»</ulink
+> та <ulink url="help:/fundamentals/menus.html#menus-help"
+>меню «Довідка»</ulink
+> підручника з основ роботи у &kde;. </para>
+
+</sect1>
+
+<sect1 id="keys"
+><title
+>Типові скорочення клавіатури</title>
+<para
+>У наступній таблиці наведено типові клавіатурні скорочення.</para>
+
+<table>
+<title
+>Комбінації клавіш</title>
+<tgroup cols="2">
+<thead
+><row
+><entry
+>Комбінація клавіш</entry
+><entry
+>Дія</entry
+></row
+></thead>
+<tbody>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>N</keycap
+></keycombo
+></entry
+><entry
+>Нова гра</entry
+></row>
+<row
+><entry
+><keycap
+>P</keycap
+></entry
+><entry
+>Пауза</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>Q</keycap
+></keycombo
+></entry
+><entry
+>Завершує роботу &kmines;</entry
+></row>
+<row
+><entry
+><keycap
+>F1</keycap
+></entry
+><entry
+>Підручник з &kmines;</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Shift;<keycap
+>F1</keycap
+></keycombo
+></entry
+><entry
+>Довідка «Що це?»</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>H</keycap
+></keycombo
+></entry
+><entry
+>Показати рекорди</entry
+></row>
+
+</tbody>
+</tgroup>
+</table>
+
+<para
+>Ці клавіатурні скорочення можна змінити за допомогою пункту меню <menuchoice
+> <guimenu
+>Параметри</guimenu
+> <guimenuitem
+>Налаштувати скорочення...</guimenuitem
+> </menuchoice
+>.</para>
+
+</sect1>
+
+</chapter>
+
+<chapter id="faq">
+<title
+>Часті запитання</title>
+<qandaset>
+
+<qandaentry>
+<question>
+<para
+>Чи можна змінити вигляд гри? </para>
+</question>
+<answer>
+<para
+>Так, натисніть на смужці меню напис <guimenu
+>Параметри</guimenu
+> і виберіть з меню пункт <guimenuitem
+>Налаштувати &kmines;...</guimenuitem
+>. </para>
+</answer>
+</qandaentry>
+
+<qandaentry>
+<question>
+<para
+>Чи існує спосіб додати на дошку ще мін і клітинок? </para>
+</question>
+<answer>
+<para
+>Так, найпростіше це зробити за допомогою спадної панелі у нижньому правому куті вікна програми. </para>
+</answer>
+</qandaentry>
+
+</qandaset>
+</chapter>
+
+<chapter id="settings">
+<title
+>Параметри гри</title>
+<para
+>Параметри гри можна налаштувати за допомогою пункту меню <menuchoice
+><guimenu
+>Параметри</guimenu
+> <guimenuitem
+>Налаштувати &kmines;...</guimenuitem
+></menuchoice
+>. Якщо ви ним скористаєтеся, буде відкрито діалогове вікно. </para>
+<para
+>За допомогою сторінки <guilabel
+>Загальні</guilabel
+> ви зможете налаштувати вказані нижче параметри гри. </para>
+<variablelist>
+    <varlistentry>
+        <term
+>Використовувати позначки «?»</term>
+        <listitem>
+            <para
+>Якщо позначено, надає змогу використовувати знак питання як позначку полів, у вмісті яких ви не впевнені. Перемкнути позначку поля можна за допомогою клацання правою кнопкою миші.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term
+>Дозволити скидання гри</term>
+        <listitem>
+            <para
+>Якщо позначено, надає вам змогу скидати гру &kmines; до початкового стану, якщо логічне продовження гри неможливе, а ваша остання здогадка виявилася хибною.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term
+>Вимикати ведення рахунку при скиданні</term>
+        <listitem>
+            <para
+>Якщо позначено, надає вам змогу вимикати ведення рахунку при скиданні.</para>
+        </listitem>
+    </varlistentry>
+        <varlistentry>
+        <term
+>Вивчати за допомогою клацання лівою на клітинках із цифрами</term>
+        <listitem>
+            <para
+>Якщо позначено, клацання лівою кнопкою на клітинці із цифрою працює як клацання середньою кнопкою миші.</para>
+        </listitem>
+    </varlistentry>
+</variablelist>
+
+<para
+>За допомогою другої сторінки ви можете вибрати нову тему зі списку. Ліворуч від кожного з пунктів у списку буде показано невеличке зображення попереднього перегляду. Вибрану тему буде негайно застосовано. </para>
+
+<para
+>На третій вкладці, ви можете встановити висоту і ширину дошки такі кількість мін для вашого нетипового рівня. </para>
+
+</chapter>
+
+<chapter id="credits"
+><title
+>Подяки і ліцензія</title>
+
+<para
+>&kmines; ©1996-2007 </para>
+
+<itemizedlist>
+<title
+>Автори</title>
+<listitem>
+<para
+>&Nicolas.Hadacek; &Nicolas.Hadacek.mail; </para>
+</listitem>
+<listitem>
+<para
+>Mikhail Kourinny </para>
+</listitem>
+<listitem>
+<para
+>Mauricio Piacentini <email
+>mauricio@tabuleiro.com</email
+> </para>
+</listitem>
+<listitem>
+<para
+>Dmitry Suzdalev <email
+>dimsuz@gmail.com</email
+> </para>
+</listitem>
+</itemizedlist>
+
+<para
+>Авторські права на документацію до програми належать &Nicolas.Hadacek; &Nicolas.Hadacek.mail;, ©2000</para>
+<para
+>Автором оновлення документації для &kde; 2.0 є &Mike.McBride; &Mike.McBride.mail;</para>
+<para
+>Деякі зміни для &kde; 3.2 було зроблено &Philip.Rodrigues; &Philip.Rodrigues.mail;</para>
+<para
+>Переклад українською: Юрій Чорноіван <email
+>yurchor@ukr.net</email
+></para
+> &underFDL; &underGPL; </chapter>
+
+</book>
+<!--
+Local Variables:
+mode: sgml
+sgml-omittag: nil
+sgml-shorttag: t
+End:
+-->

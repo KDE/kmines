@@ -1,0 +1,536 @@
+# Bangla translation of KMines.
+# Copyright (C) 2004, 2005 KDE Foundation.
+# Progga <progga@BengaLinux.Org>, 2004, 2005.
+# Deepayan Sarkar <deepayan@bengalinux.org>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: kmines\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-06-15 00:44+0000\n"
+"PO-Revision-Date: 2005-01-04 11:52-0600\n"
+"Last-Translator: Progga <progga@BengaLinux.Org>\n"
+"Language-Team: Bangla <kde-translation@bengalinux.org>\n"
+"Language: bn\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "প্রজ্ঞা"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "progga@BengaLinux.Org"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: customgame.ui:16
+#, kde-format
+msgid "Width:"
+msgstr "প্রস্থ:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: customgame.ui:26
+#, kde-format
+msgid "Height:"
+msgstr "উচ্চতা:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: customgame.ui:36
+#, fuzzy, kde-format
+#| msgid "KMines"
+msgid "Mines:"
+msgstr "কে-মাইন"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_UseQuestionMarks)
+#: generalopts.ui:17
+#, fuzzy, kde-format
+#| msgid "Enable ? mark"
+msgid "Use '?' marks"
+msgstr "? চিহ্নের ব্যবহার সক্রিয় করো"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_AllowKminesReset)
+#: generalopts.ui:24
+#, kde-format
+msgid "Allow KMines reset"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_DisableScoreOnReset)
+#: generalopts.ui:37
+#, kde-format
+msgid "Disable score on reset"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ExploreWithLeftClickOnNumberCells)
+#: generalopts.ui:44
+#, kde-format
+msgid "Explore with left click on number cells"
+msgstr ""
+
+#. i18n: ectx: label, entry (UseQuestionMarks), group (General)
+#: kmines.kcfg:9
+#, fuzzy, kde-format
+#| msgid "Whether the \"uncertain\" marker may be used."
+msgid "Whether the \"unsure\" marker may be used."
+msgstr "\"অনিশ্চিয়তা\" চিহ্নিতকারী ব্যবহার করা যাবে কিনা।"
+
+#. i18n: ectx: label, entry (ExploreWithLeftClickOnNumberCells), group (General)
+#: kmines.kcfg:21
+#, kde-format
+msgid "Left click on a number cell will have the same effect as mid click."
+msgstr ""
+
+#. i18n: ectx: label, entry (CustomWidth), group (Options)
+#: kmines.kcfg:27
+#, kde-format
+msgid "The width of the playing field."
+msgstr "ক্রীড়াক্ষেত্রের প্রস্থ।"
+
+#. i18n: ectx: label, entry (CustomHeight), group (Options)
+#: kmines.kcfg:33
+#, kde-format
+msgid "The height of the playing field."
+msgstr "ক্রীড়াক্ষেত্রের উচ্চতা।"
+
+#. i18n: ectx: label, entry (CustomMines), group (Options)
+#: kmines.kcfg:39
+#, kde-format
+msgid "The number of mines in the playing field."
+msgstr "ক্রীড়াক্ষেত্রে অবস্থিত মাইনের সংখ্যা।"
+
+#. i18n: ectx: ToolBar (mainToolBar)
+#: kminesui.rc:12
+#, fuzzy, kde-format
+#| msgid "Mine Color"
+msgid "Main Toolbar"
+msgstr "মাইনের রং"
+
+#: main.cpp:43
+#, kde-format
+msgid "KMines"
+msgstr "কে-মাইন"
+
+#: main.cpp:45
+#, fuzzy, kde-format
+#| msgid "KMines is a classic mine sweeper game"
+msgid "KMines is a classic minesweeper game"
+msgstr "কে-মাইন একটি ক্লাসিক মাইন পরিষ্কারক খেলা"
+
+#: main.cpp:47
+#, kde-format
+msgid ""
+"(c) 1996-2005, Nicolas Hadacek\n"
+"(c) 2001, Mikhail Kourinny\n"
+"(c) 2006-2007, Mauricio Piacentini\n"
+"(c) 2007, Dmitry Suzdalev"
+msgstr ""
+
+#: main.cpp:50
+#, kde-format
+msgid "Nicolas Hadacek"
+msgstr ""
+
+#: main.cpp:51
+#, kde-format
+msgid "Original author"
+msgstr ""
+
+#: main.cpp:52
+#, kde-format
+msgid "Mauricio Piacentini"
+msgstr ""
+
+#: main.cpp:53
+#, kde-format
+msgid "Code refactoring and SVG support. Current maintainer"
+msgstr ""
+
+#: main.cpp:55
+#, kde-format
+msgid "Dmitry Suzdalev"
+msgstr ""
+
+#: main.cpp:56
+#, kde-format
+msgid "Rewrite to use QGraphicsView framework. Current maintainer"
+msgstr ""
+
+#: main.cpp:58
+#, kde-format
+msgid "Andreas Zehender"
+msgstr ""
+
+#: main.cpp:58
+#, kde-format
+msgid "Smiley pixmaps"
+msgstr "স্মাইলির পিক্সম্যাপ"
+
+#: main.cpp:59
+#, kde-format
+msgid "Mikhail Kourinny"
+msgstr ""
+
+#: main.cpp:59
+#, kde-format
+msgid "Solver/Adviser"
+msgstr "সমাধানকারী/পরামর্শদাতা"
+
+#: main.cpp:60
+#, kde-format
+msgid "Thomas Capricelli"
+msgstr ""
+
+#: main.cpp:60
+#, kde-format
+msgid "Magic reveal mode"
+msgstr "যাদু উন্মোচন মোড"
+
+#: main.cpp:61
+#, kde-format
+msgid "Brian Croom"
+msgstr ""
+
+#: main.cpp:61
+#, kde-format
+msgid "Port to use KGameRenderer"
+msgstr ""
+
+#: mainwindow.cpp:101
+#, fuzzy, kde-format
+#| msgid "KMines"
+msgid "Mines: 0/0"
+msgstr "কে-মাইন"
+
+#: mainwindow.cpp:102 mainwindow.cpp:173
+#, kde-format
+msgid "Time: 00:00"
+msgstr ""
+
+#: mainwindow.cpp:125
+#, kde-format
+msgid "Custom"
+msgstr "স্বনির্বাচিত"
+
+#: mainwindow.cpp:135
+#, fuzzy, kde-format
+#| msgid "Mines (%1%):"
+msgid "Mines: %1/%2"
+msgstr "মাইন (%1%):"
+
+#: mainwindow.cpp:201
+#, kde-format
+msgid "Reset?"
+msgstr ""
+
+#: mainwindow.cpp:201
+#, kde-format
+msgid "Reset the Game?"
+msgstr ""
+
+#: mainwindow.cpp:212
+#, kde-format
+msgid "Time: %1"
+msgstr ""
+
+#: mainwindow.cpp:238
+#, kde-format
+msgid "General"
+msgstr "সাধারণ"
+
+#: mainwindow.cpp:239
+#, kde-format
+msgid "Theme"
+msgstr ""
+
+#: mainwindow.cpp:240
+#, kde-format
+msgid "Custom Game"
+msgstr "স্বনির্বাচিত খেলা"
+
+#: scene.cpp:122
+#, kde-format
+msgid "Game is paused."
+msgstr ""
+
+#: scene.cpp:130
+#, kde-format
+msgid "Congratulations! You have won!"
+msgstr ""
+
+#: scene.cpp:132
+#, kde-format
+msgid "You have lost."
+msgstr ""
+
+#~ msgid "The difficulty level."
+#~ msgstr "দক্ষতা স্তর।"
+
+#, fuzzy
+#~| msgid "Normal"
+#~ msgid "Form"
+#~ msgstr "স্বাভাবিক"
+
+#~ msgid "The size of a square."
+#~ msgstr "ঘরের আকার।"
+
+#~ msgid "Whether the game can be played using the keyboard."
+#~ msgstr "কীবোর্ড ব্যবহার করে খেলা যাবে কিনা।"
+
+#~ msgid "Whether the game is paused when the window loses focus."
+#~ msgstr "উইন্ডোর ওপর থেকে ফোকাস স্থানান্তরিত হলে খেলা স্থগিত হয়ে যাবে কিনা।"
+
+#~ msgid "Whether to set flags and reveal squares in trivial situations."
+#~ msgstr "গুরুত্বহীন অবস্থায় পতাকা স্থাপন করে ঘর উন্মোচন করা হবে কিনা।"
+
+#~ msgid "Mouse button actions"
+#~ msgstr "মাউস বাটনের কাজ"
+
+#~ msgid "Color"
+#~ msgstr "রং"
+
+#~ msgid "Whether the menubar is visible."
+#~ msgstr "মেনুবার দৃশ্যমান কিনা।"
+
+#~ msgid "&Move"
+#~ msgstr "চা&ল"
+
+#~ msgid "Easy"
+#~ msgstr "সহজ"
+
+#~ msgid "Normal"
+#~ msgstr "স্বাভাবিক"
+
+#~ msgid "Expert"
+#~ msgstr "অভিজ্ঞ"
+
+#~ msgid "No. of mines:"
+#~ msgstr "মাইনের সংখ্যা:"
+
+#~ msgid "Choose level:"
+#~ msgstr "খেলার স্তর বেছে নিন:"
+
+#~ msgid "Mines (%1%):"
+#~ msgstr "মাইন (%1%):"
+
+#~ msgid "Left button:"
+#~ msgstr "বাম বাটন:"
+
+#~ msgid "Middle button:"
+#~ msgstr "মধ্যম বাটন:"
+
+#~ msgid "Right button:"
+#~ msgstr "ডান বাটন:"
+
+#~ msgid "Reveal"
+#~ msgstr "উন্মোচন"
+
+#~ msgid "Autoreveal"
+#~ msgstr "স্বয়ংক্রিয়ভাবে উন্মোচন"
+
+#~ msgid "Toggle Flag"
+#~ msgstr "পতাকা অপসারণ"
+
+#~ msgid "Toggle ? Flag"
+#~ msgstr "? পতাকা অপসারণ করো"
+
+#~ msgid "Enable keyboard"
+#~ msgstr "কীবোর্ড সক্রিয় করো"
+
+#~ msgid "Pause if window loses focus"
+#~ msgstr "উইন্ডো ফোকাস হারালে খেলা স্থগিত করো"
+
+#~ msgid "\"Magic\" reveal"
+#~ msgstr "\"যাদু\" উন্মোচন"
+
+#~ msgid "Set flags and reveal squares where they are trivial."
+#~ msgstr "গুরুত্বহীন হলে পতাকা স্থাপন করো ও ঘর উন্মোচন করো।"
+
+#~ msgid "Mouse Bindings"
+#~ msgstr "মাউস বাটনের কাজ"
+
+#~ msgid ""
+#~ "When the \"magic\" reveal is on, you lose the ability to enter the "
+#~ "highscores."
+#~ msgstr ""
+#~ "\"যাদু\" উন্মোচন সক্রিয় থাকলে আপনি সেরা স্কোরের তালিকায় প্রবেশের সুযোগ হারাবেন।"
+
+#~ msgid "Flag color:"
+#~ msgstr "পতাকার রং:"
+
+#~ msgid "Explosion color:"
+#~ msgstr "বিস্ফোরণের রং:"
+
+#~ msgid "Error color:"
+#~ msgstr "ভুলের রং:"
+
+#~ msgid "%1 mine color:"
+#~ msgid_plural "%1 mines color:"
+#~ msgstr[0] "%1 মাইনের রং:"
+#~ msgstr[1] "%1 মাইনের রং:"
+
+# FIXME
+#~ msgid "Case revealed"
+#~ msgstr "ঘরের বস্তু উন্মোচিত"
+
+# FIXME
+#~ msgid "Case autorevealed"
+#~ msgstr "ঘরের বস্তু স্বয়ংক্রিয়ভাবে উন্মোচিত"
+
+#~ msgid "Flag set"
+#~ msgstr "পতাকা স্থাপিত"
+
+#~ msgid "Flag unset"
+#~ msgstr "পতাকা অপসারিত"
+
+#~ msgid "Question mark set"
+#~ msgstr "প্রশ্নবোধক চিহ্ন স্থাপিত"
+
+#~ msgid "Question mark unset"
+#~ msgstr "প্রশ্নবোধক চিহ্ন অপসারিত"
+
+#~ msgid "Move Up"
+#~ msgstr "উপরে যাও"
+
+#~ msgid "Move Down"
+#~ msgstr "নিচে যাও"
+
+#~ msgid "Move Right"
+#~ msgstr "ডানে যাও"
+
+#~ msgid "Move Left"
+#~ msgstr "বামে যাও"
+
+#~ msgid "Move at Left Edge"
+#~ msgstr "বাম প্রান্তে যাও"
+
+#~ msgid "Move at Right Edge"
+#~ msgstr "ডান প্রান্তে যাও"
+
+#~ msgid "Move at Top Edge"
+#~ msgstr "উপরের প্রান্তে যাও"
+
+#~ msgid "Move at Bottom Edge"
+#~ msgstr "নিচের প্রান্তে যাও"
+
+#~ msgid "Reveal Mine"
+#~ msgstr "মাইন উন্মোচন করো"
+
+#~ msgid "Mark Mine"
+#~ msgstr "মাইন চিহ্নিত করো"
+
+#~ msgid "Automatic Reveal"
+#~ msgstr "স্বয়ংক্রিয় উন্মোচন"
+
+#~ msgid "Replay Log"
+#~ msgstr "লগ পুনঃপ্রদর্শন"
+
+#~ msgid "Save Log..."
+#~ msgstr "লগ সংরক্ষণ করো..."
+
+#~ msgid "Load Log..."
+#~ msgstr "লগ লোড করো..."
+
+#~ msgid "Game"
+#~ msgstr "খেলা"
+
+#~ msgid "Keyboard game"
+#~ msgstr "কীবোর্ড থেকে খেলা"
+
+#~ msgid "Press to start a new game"
+#~ msgstr "নতুন খেলা আরম্ভ করার জন্য এখানে চাপুন"
+
+#~ msgid "Mines field."
+#~ msgstr "মাইন ক্ষেত্র।"
+
+#~ msgid "Press to Resume"
+#~ msgstr "পুনরায় আরম্ভ করার জন্য এখানে চাপুন"
+
+#~ msgid "Explosion!"
+#~ msgstr "বিস্ফোরণ!"
+
+#~ msgid "Game won!"
+#~ msgstr "আপনি জিতেছেন!"
+
+#~ msgid "Game lost!"
+#~ msgstr "আপনি হেরে গিয়েছেন!"
+
+#~ msgid ""
+#~ "When the solver gives you advice, your score will not be added to the "
+#~ "highscores."
+#~ msgstr ""
+#~ "সমাধানকারীর পরামর্শ গ্রহণ করলে আপনার অর্জিত স্কোর সেরা স্কোরের তালিকায় যুক্ত হবে "
+#~ "না।"
+
+#~ msgid "Overwrite"
+#~ msgstr "ওপর দিয়ে লেখো"
+
+#~ msgid "The file already exists. Overwrite?"
+#~ msgstr "এই ফাইলটি ইতিমধ্যেই বিদ্যমান।  এ অবস্থায় এটির ওপর দিয়েই কি লেখা হবে?"
+
+#~ msgid "File Exists"
+#~ msgstr "ফাইল বিদ্যমান"
+
+#~ msgid "Cannot read XML file on line %1"
+#~ msgstr "এক্স.এম.এল ফাইলের %1-তম লাইন পড়া যাচ্ছে না"
+
+#~ msgid "Cannot load file."
+#~ msgstr "ফাইল লোড করা যাচ্ছে না।"
+
+#~ msgid "Log file not recognized."
+#~ msgstr "লগ ফাইল সনাক্ত করা যায় নি।"
+
+#~ msgid "Clicks"
+#~ msgstr "ক্লিক"
+
+#~ msgid "anonymous"
+#~ msgstr "বেনামী"
+
+#~ msgid "Solving Rate..."
+#~ msgstr "সমাধান করার হার..."
+
+#~ msgid "View Log"
+#~ msgstr "লগ প্রদর্শন করো"
+
+#~ msgid ""
+#~ "<qt>Mines left.<br/>It turns <font color=\"red\">red</font> when you have "
+#~ "flagged more cases than present mines.</qt>"
+#~ msgstr ""
+#~ "<qt>অবশিষ্ট মাইন।<br/> উপস্থিত মাইন অপেক্ষাও বেশি সংখ্যক ঘরকে চিহ্নিত করলে "
+#~ "এটির রং <font color=\"red\">লাল</font> হয়ে যায়।</qt>"
+
+#~ msgid ""
+#~ "<qt>Time elapsed.<br/>It turns <font color=\"blue\">blue</font> if it is "
+#~ "a highscore and <font color=\"red\">red</font> if it is the best time.</"
+#~ "qt>"
+#~ msgstr ""
+#~ "<qt>অতিক্রান্ত সময়।<br/> সেরা স্কোর অর্জন করলে এর রং হয় <font color=\"blue"
+#~ "\">নীল</font> আর স্বল্পতম সময়ে সমাধান করলে এর রং হয় <font color=\"red"
+#~ "\">লাল</font>।</qt>"
+
+#~ msgid "View Game Log"
+#~ msgstr "খেলার লগ প্রদর্শন করো"
+
+#~ msgid "Compute Solving Rate"
+#~ msgstr "সমাধানের হার গণনা করো"
+
+#~ msgid "Start"
+#~ msgstr "আরম্ভ"
+
+#~ msgid "Width: %1"
+#~ msgstr "প্রস্থ: %1"
+
+#~ msgid "Height: %1"
+#~ msgstr "উচ্চতা: %1"
+
+#~ msgid "Mines: %1 (%2%)"
+#~ msgstr "মাইন: %1 (%2%)"
+
+#~ msgid "Success rate:"
+#~ msgstr "সমাধানের হার:"
+
+#~ msgid "Success rate: %1%"
+#~ msgstr "সমাধানের হার: %1%"
