@@ -22,6 +22,7 @@
   <name xml:lang="id">KMines</name>
   <name xml:lang="is">KMines</name>
   <name xml:lang="it">KMines</name>
+  <name xml:lang="ka">KMines</name>
   <name xml:lang="ko">KMines</name>
   <name xml:lang="nl">KMines</name>
   <name xml:lang="nn">KMinesveipar</name>
@@ -60,6 +61,7 @@
   <summary xml:lang="id">Permainan Seperti Minesweeper</summary>
   <summary xml:lang="is">KMines er hefðbundinn sprengjuleitarleikur sem líkist Minesweeper</summary>
   <summary xml:lang="it">Gioco simile a Mine</summary>
+  <summary xml:lang="ka">Minesweeper-ის მსგავსი თამაში</summary>
   <summary xml:lang="ko">지뢰찾기 게임</summary>
   <summary xml:lang="nl">Mijnenvegerachtig spel</summary>
   <summary xml:lang="nn">Minesveipar-liknande spel</summary>
