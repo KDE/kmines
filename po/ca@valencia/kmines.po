@@ -73,7 +73,7 @@ msgstr "Inhabilita la puntuació en reiniciar"
 #: generalopts.ui:44
 #, kde-format
 msgid "Explore with left click on number cells"
-msgstr "Explora amb un clic esquerre a les cel·les dels nombres"
+msgstr "Explora amb un clic esquerre en les cel·les dels nombres"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
@@ -86,7 +86,7 @@ msgstr "Si es pot utilitzar o no la marca de «dubtós»."
 #, kde-format
 msgid "Left click on a number cell will have the same effect as mid click."
 msgstr ""
-"Un clic esquerre a una cel·la de nombre tindrà el mateix efecte que un clic "
+"Un clic esquerre en una cel·la de nombre tindrà el mateix efecte que un clic "
 "del mig."
 
 #. i18n: ectx: label, entry (CustomWidth), group (Options)
