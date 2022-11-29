@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-06-15 00:44+0000\n"
-"PO-Revision-Date: 2022-10-07 06:54+0200\n"
+"PO-Revision-Date: 2022-11-28 09:30+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -62,43 +62,43 @@ msgstr "KMines -ის მნიშვნელობების განუ�
 #: generalopts.ui:37
 #, kde-format
 msgid "Disable score on reset"
-msgstr ""
+msgstr "საწყის მნიშვნელობებზე დაბრუნებისას ქულებიც განულდება"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ExploreWithLeftClickOnNumberCells)
 #: generalopts.ui:44
 #, kde-format
 msgid "Explore with left click on number cells"
-msgstr ""
+msgstr "რიცხვიან უჯრეებზე მარცხენა წკაპით ძებნა"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
 #, kde-format
 msgid "Whether the \"unsure\" marker may be used."
-msgstr ""
+msgstr "დაშვებულია თუ არა \"დარწმუნებული არ ვარ\" მარკერის გამოყენება."
 
 #. i18n: ectx: label, entry (ExploreWithLeftClickOnNumberCells), group (General)
 #: kmines.kcfg:21
 #, kde-format
 msgid "Left click on a number cell will have the same effect as mid click."
-msgstr ""
+msgstr "უჯრედზე მარცხენა წკაპს იგივე ეფექტი ექნება, რაც შუა წკაპს."
 
 #. i18n: ectx: label, entry (CustomWidth), group (Options)
 #: kmines.kcfg:27
 #, kde-format
 msgid "The width of the playing field."
-msgstr ""
+msgstr "სათამაშო ველის სიგანე."
 
 #. i18n: ectx: label, entry (CustomHeight), group (Options)
 #: kmines.kcfg:33
 #, kde-format
 msgid "The height of the playing field."
-msgstr ""
+msgstr "სათამაშო ველის სიმაღლე."
 
 #. i18n: ectx: label, entry (CustomMines), group (Options)
 #: kmines.kcfg:39
 #, kde-format
 msgid "The number of mines in the playing field."
-msgstr ""
+msgstr "სათამაშო ველზე ნაღმების რაოდენობა."
 
 #. i18n: ectx: ToolBar (mainToolBar)
 #: kminesui.rc:12
@@ -114,7 +114,7 @@ msgstr "KMines"
 #: main.cpp:45
 #, kde-format
 msgid "KMines is a classic minesweeper game"
-msgstr ""
+msgstr "KMines კლასიკური განნაღმვის თააშია"
 
 #: main.cpp:47
 #, kde-format
@@ -147,7 +147,7 @@ msgstr "Mauricio Piacentini"
 #: main.cpp:53
 #, kde-format
 msgid "Code refactoring and SVG support. Current maintainer"
-msgstr ""
+msgstr "კოდის შელამაზება და SVG-ის მხარდაჭერა. მიმდინარე ლიდერი"
 
 #: main.cpp:55
 #, kde-format
@@ -157,7 +157,7 @@ msgstr "Dmitry Suzdalev"
 #: main.cpp:56
 #, kde-format
 msgid "Rewrite to use QGraphicsView framework. Current maintainer"
-msgstr ""
+msgstr "QGraphicsView -ის გამოყენება. მიმდინარე ლიდერი"
 
 #: main.cpp:58
 #, kde-format
@@ -167,7 +167,7 @@ msgstr "Andreas Zehender"
 #: main.cpp:58
 #, kde-format
 msgid "Smiley pixmaps"
-msgstr ""
+msgstr "სიცილაკის ბიტური რუკები"
 
 #: main.cpp:59
 #, kde-format
@@ -177,7 +177,7 @@ msgstr "Mikhail Kourinny"
 #: main.cpp:59
 #, kde-format
 msgid "Solver/Adviser"
-msgstr ""
+msgstr "ამომხსნელი/დამხმაე"
 
 #: main.cpp:60
 #, kde-format
@@ -187,7 +187,7 @@ msgstr "Thomas Capricelli"
 #: main.cpp:60
 #, kde-format
 msgid "Magic reveal mode"
-msgstr ""
+msgstr "მაგიური გამოჩენის რეჟიმი"
 
 #: main.cpp:61
 #, kde-format
@@ -252,14 +252,14 @@ msgstr "თანაშის მორგება"
 #: scene.cpp:122
 #, kde-format
 msgid "Game is paused."
-msgstr ""
+msgstr "თამაში შეჩერებულია."
 
 #: scene.cpp:130
 #, kde-format
 msgid "Congratulations! You have won!"
-msgstr ""
+msgstr "გილოცავთ! თქვენ მოიგეთ!"
 
 #: scene.cpp:132
 #, kde-format
 msgid "You have lost."
-msgstr ""
+msgstr "წააგეთ."
