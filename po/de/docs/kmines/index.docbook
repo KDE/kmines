@@ -1,87 +1,156 @@
 <?xml version="1.0" ?>
 <!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.5-Based Variant V1.1//EN" "dtd/kdedbx45.dtd" [
   <!ENTITY % addindex "IGNORE">
-  <!ENTITY % English "INCLUDE" > <!-- change language only here -->
+  <!ENTITY % German "INCLUDE"
+> <!-- change language only here -->
 ]>
 
 <book id="kmines" lang="&language;">
 
 <bookinfo>
-<title>The &kmines; Handbook</title>
+<title
+>Das Handbuch zu &kmines;</title>
 
 <authorgroup>
-<author>
-<firstname>Nicolas</firstname>
-<surname>Hadacek</surname>
-<affiliation>
-<address>&Nicolas.Hadacek.mail;</address>
+<author
+><firstname
+>Nicolas</firstname
+> <surname
+>Hadacek</surname
+> <affiliation
+> <address
+>&Nicolas.Hadacek.mail;</address>
 </affiliation>
 </author>
-<author>
-<firstname>Michael</firstname>
-<surname>McBride</surname>
-<affiliation><address><email>mmcbride@ematic.org</email></address></affiliation>
+<author
+><firstname
+>Michael</firstname
+> <surname
+>McBride</surname
+> <affiliation
+><address
+><email
+>mmcbride@ematic.org</email
+></address
+></affiliation>
 </author>
-<author>
-<firstname>Anton</firstname>
-<surname>Brondz</surname>
-<affiliation>
-<address><email>dinolinux@gmail.com</email></address>
+<author
+><firstname
+>Anton</firstname
+> <surname
+>Brondz</surname
+> <affiliation
+> <address
+><email
+>dinolinux@gmail.com</email
+></address>
 </affiliation>
 </author>
-<othercredit role="developer">
-<firstname>Nicolas</firstname>
-<surname>Hadacek</surname>
-<affiliation>
-<address>&Nicolas.Hadacek.mail;</address>
+<othercredit role="developer"
+><firstname
+>Nicolas</firstname
+> <surname
+>Hadacek</surname
+> <affiliation
+> <address
+>&Nicolas.Hadacek.mail;</address>
 </affiliation>
-<contrib>Developer</contrib>
+<contrib
+>Entwickler</contrib>
 </othercredit>
-<othercredit role="reviewer">
-<firstname>Lauri</firstname>
-<surname>Watts</surname>
-<affiliation><address>&Lauri.Watts.mail;</address></affiliation>
-<contrib>Reviewer</contrib>
+<othercredit role="reviewer"
+><firstname
+>Lauri</firstname
+> <surname
+>Watts</surname
+> <affiliation
+><address
+>&Lauri.Watts.mail;</address
+></affiliation>
+<contrib
+>Korrektur</contrib>
 </othercredit>
-<!-- TRANS:ROLES_OF_TRANSLATORS -->
+<othercredit role="translator"
+><firstname
+>Maren</firstname
+><surname
+>Pakura</surname
+><affiliation
+><address
+><email
+>maren@kde.org</email
+></address
+></affiliation
+><contrib
+>Deutsche Übersetzung</contrib
+></othercredit
+> 
 </authorgroup>
 
 <copyright>
-<year>2000</year>
-<holder>&Nicolas.Hadacek;, Michael McBride</holder>
+<year
+>2000</year>
+<holder
+>&Nicolas.Hadacek;, Michael McBride</holder>
 </copyright>
 
-<legalnotice>&FDLNotice;</legalnotice>
+<legalnotice
+>&FDLNotice;</legalnotice>
 
-<date>2021-07-11</date>
-<releaseinfo>4.0 (KDE Gear 21.04)</releaseinfo>
+<date
+>2021-07-11</date>
+<releaseinfo
+>4.0 (KDE Gear 21.04)</releaseinfo>
 
-<abstract><para>&kmines; is the &kde; version of the classic minesweeper
-game.</para></abstract>
+<abstract
+><para
+>&kmines; ist Umsetzung des klassischen Minesweeper-Spiels für &kde;..</para
+></abstract>
 
 <keywordset>
-<keyword>KDE</keyword>
-<keyword>game</keyword>
-<keyword>minesweeper</keyword>
+<keyword
+>KDE</keyword>
+<keyword
+>Spiel</keyword>
+<keyword
+>Minesweeper</keyword>
 </keywordset>
 
 </bookinfo>
 
 <chapter id="introduction">
-<title>Introduction</title>
-<note><title>Gametype:</title><para>Strategy, Board</para></note><!-- Game genre. Use as many as necessary. Available game types are: Arcade, Board, Card, Dice, Toys, Logic, Strategy.-->
-<note><title>Number of possible players:</title><para>One</para></note><!--Number of possible players. It can be: One, Two,..., Multiplayer-->
+<title
+>Einführung</title>
+<note
+><title
+>Spieltyp:</title
+><para
+>Strategiespiel, Brettspiel</para
+></note
+><!-- Game genre. Use as many as necessary. Available game types are: Arcade, Board, Card, Dice, Toys, Logic, Strategy.-->
+<note
+><title
+>Anzahl der Spieler:</title
+><para
+>Einer</para
+></note
+><!--Number of possible players. It can be: One, Two,..., Multiplayer-->
 
-<para>&kmines; is the classic Minesweeper game. The idea is to uncover all the
-squares without blowing up any mines. When a mine is blown up, the game is over.
-Numbers indicate how many mines there are nearby.
-</para>
+<para
+>&kmines; ist das klassische Minesweeper-Spiel. Ziel ist es, alle leeren Felder aufzudecken, ohne dass eine Mine explodiert. Das Spiel ist beendet, wenn eine Mine explodiert. Die Zahlen zeigen die Anzahl der Minen in den angrenzenden Felder an. </para>
 
 </chapter>
 
 <chapter id="how-to-play">
-<title>How to Play</title>
-<note><title>Objective:</title><para>Locate all the mines hidden on the minefield.</para></note><!--Describe the objective of the game.-->
+<title
+>Spielanleitung</title>
+<note
+><title
+>Ziel des Spiels:</title
+><para
+>Finden Sie alle versteckten Minen auf dem Spielfeld.</para
+></note
+><!--Describe the objective of the game.-->
 
 <screenshot>
 <mediaobject>
@@ -89,207 +158,349 @@ Numbers indicate how many mines there are nearby.
 <imagedata fileref="gameboard.png" format="PNG"/>
 </imageobject>
 <textobject>
-<phrase>&kmines; Game Board</phrase>
+<phrase
+>&kmines;-Spielfeld</phrase>
 </textobject>
 </mediaobject>
 </screenshot>
 
-<para>
-To play &kmines;, you need to use the mouse and its three buttons to
-uncover or to flag the squares (with two-buttoned mice, clicking the
-&MMB; is generally achieved by simultaneously pressing the &LMB; and the
-&RMB;).
-</para>
+<para
+>Sie müssen zum Spielen von &kmines; eine Maus mit drei Tasten benutzen, um Felder aufzudecken oder zu markieren. (Bei Mäusen mit zwei Tasten können Sie die &MMB; mit einem gleichzeitigen Klick der &LMBn; und &RMBn; simulieren). Hier sind die Details beschrieben: </para>
 
-<para>Clicking the &LMB; on your mouse will
-uncover a square. If there is a mine there, it will detonate, and the game will be over.
-If there is not a mine under the square, the square is cleared and if there aren't other
-mines nearby, the square will disappear including any nearby squares without mines.
-If there are mines nearby, a number will appear showing how many neighboring squares contain mines.
-For each square (excluding edge and corner squares), there are eight
-neighboring squares.
-</para>
+<para
+>Klicken Sie mit der &LMBn;, um ein Feld aufzudecken. Ist darin eine Mine, so explodiert sie und das Spiel ist beendet. Ein Feld ohne Mine wird aufgedeckt, zusammen mit allen angrenzenden Feldern ohne Mine. Befinden sich in angrenzenden Feldern Minen, wird die Anzahl der benachbarten Felder mit Minen angezeigt. Jedes Feld, ausgenommen Eck- und Randfelder, hat 8 angrenzende Felder.  </para>
 
 <note>
-<para>
-&LMB; clicking a flagged square is safe and does nothing.
-</para>
+<para
+>Ein Klick mit der &LMBn; auf ein Feld mit Fahne ist sicher und es geschieht nichts. </para>
 </note>
 
-<para>
-The &RMB; will mark a square as containing a mine (by placing a red flag on it). Clicking the button twice
-will set it as being uncertain (by placing a question mark on it). The uncertain tag can
-be useful when you are puzzled about the positions of
-mines.
-The &MMB; will clear the surrounding squares if the right number of squares is
-already flagged. It is very useful since it is much quicker than
-uncovering all individual squares.
-Make sure your flags are correctly placed, if not, you might
-detonate a mine.
-</para>
+<para
+>Die &RMB; markiert ein Feld mit einer rote Fahne als Mine, ein weiterer Klick mit einem Fragezeichen als unsicher. Das Fragezeichen kann nützlich sein, wenn Sie sich über die Positionen der Minen nicht sicher sind.Die &MMB; versucht, die acht umgebenden Felder aufzudecken, wenn dort bereits die richtige Anzahl von Feldern als Minenfeld markiert sind. Dies ist sehr nützlich, da es viel schneller geht, als alle Felder einzeln aufzudecken.Wenn aber ihre Fahnen nicht richtig stehen, so explodiert eine Mine. </para>
 </chapter>
 
 <chapter id="rulestips">
-<title>Game Rules, Strategies and Tips</title>
+<title
+>Spielregeln, Spielstrategien und Tipps</title>
 <sect1 id="rules">
-<title>Rules</title>
+<title
+>Spielregeln</title>
 <itemizedlist>
-<listitem><para>All the mines have to be cleared before a player can win a game.</para></listitem>
-<listitem><para>The player cannot know the exact location of the mines before the game is over.</para></listitem>
-<listitem><para>If a mine is detonated, the game is over.</para></listitem>
-<listitem><para>Numbers will indicate nearby mines.</para></listitem>
+<listitem
+><para
+>Der Spieler muss die Lage aller Minen finden, um das Spiel zu gewinnen.</para
+></listitem>
+<listitem
+><para
+>Erst am Ende des Spiels kennt der Spieler die Lage aller Felder mit Minen.</para
+></listitem>
+<listitem
+><para
+>Wenn eine Mine explodiert, ist das Spiel beendet.</para
+></listitem>
+<listitem
+><para
+>Die Zahlen zeigen die Anzahl den Minen in angrenzenden Feldern.</para
+></listitem>
 </itemizedlist>
 </sect1>
 
 <sect1 id="strattips">
-<title>Strategies and Tips</title>
+<title
+>Spielstrategien und Tipps</title>
 <itemizedlist>
-<listitem><para>Use the numbers to find out where nearby mines are.</para></listitem>
-<listitem><para>Place flags where you suspect there are mines. Note that even though the indicated
-number of mines goes down when you place a flag, there might not be a mine under the flag.</para></listitem>
-<listitem><para>Think before you click, a wrong click could detonate a mine.</para></listitem>
-<listitem><para>When you suspect that a square contains a mine, work around the square to uncover any numbers which might help.</para></listitem>
-<listitem><para>Try to clear the board as quickly as possible, the less time you spend, the higher your score will be.</para></listitem>
+<listitem
+><para
+>Benutzen Sie die angezeigten Zahlen, um angrenzende Felder mit Minen zu finden.</para
+></listitem>
+<listitem
+><para
+>Markieren Sie Felder, in denen Sie Minen vermuten. Auch wenn sich dadurch die angezeigte Zahl für die gefundenen Minen ändert, kann Ihre Annahme trotzdem falsch sein.</para
+></listitem>
+<listitem
+><para
+>Überlegen Sie vor jedem Klick, bei einem Fehler kann eine Mine explodieren und Sie haben das Spiel verloren.</para
+></listitem>
+<listitem
+><para
+>Wenn Sie in einem Feld eine Mine vermuten, bearbeiten Sie die umgebenden Felder, um durch die dadurch angezeigten Zahlen Gewissheit zu erhalten. </para
+></listitem>
+<listitem
+><para
+>Versuchen Sie, alle Minen so schnell wie möglich zu finden, je kürzer die Zeit, desto besser ist Ihre Punktwertung.</para
+></listitem>
 </itemizedlist>
 </sect1>
 
 </chapter>
 
 <chapter id="command">
-<title>Commands/Keyboard Shortcuts</title>
+<title
+>Befehle und Tastenkürzel</title>
 
-<para>The following sections briefly describes some menubar options.</para>
+<para
+>Im nächsten Abschnitt werden einige Menüeinträge kurz beschrieben.</para>
 
 <sect1 id="menu">
-<title>Menu Items</title>
+<title
+>Menüeinträge</title>
 
 <variablelist>
 <varlistentry>
-<term><menuchoice>
-<shortcut>
-<keycombo action="simul">&Ctrl;<keycap>N</keycap></keycombo>
-</shortcut>
-<guimenu>Game</guimenu>
-<guimenuitem>New</guimenuitem> </menuchoice></term>
-<listitem><para>Starts a new game.</para></listitem>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>N</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Spiel</guimenu
+> <guimenuitem
+>Neu</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Startet ein neues Spiel.</para
+></listitem>
 </varlistentry>
 
 <varlistentry>
-<term><menuchoice>
-<shortcut><keycap>P</keycap></shortcut>
-<guimenu>Game</guimenu>
-<guimenuitem>Pause</guimenuitem></menuchoice></term>
+<term
+><menuchoice
+><shortcut
+> <keycap
+>P</keycap
+> </shortcut
+> <guimenu
+>Spiel</guimenu
+> <guimenuitem
+>Pause</guimenuitem
+></menuchoice
+></term>
 <listitem>
-<para>
-Pauses the game time. Click on the menu item again to make the game resume. Note that the board disappears when the game is paused as it would be unfair if you could search for good moves without the time pressure.
-</para>
+<para
+>Hält die Spielzeit an. Klicken Sie erneut auf den Menüpunkt, um das Spiel fortzusetzen. Beachten Sie, dass das Spielfeld während der Pause verschwindet, da Sie sich sonst unfairerweise ohne Zeitdruck gute Züge überlegen könnten. </para>
 </listitem>
 </varlistentry>
 
 <varlistentry>
-<term><menuchoice>
-<shortcut>
-<keycombo action="simul">&Ctrl;<keycap>H</keycap></keycombo>
-</shortcut>
-<guimenu>Game</guimenu>
-<guimenuitem>Show High Scores</guimenuitem> </menuchoice></term>
-<listitem><para>This shows you the high score (the shortest time) for each
-difficulty level.</para></listitem>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>H</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Spiel</guimenu
+> <guimenuitem
+>Bestenliste anzeigen</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Zeigt die Bestenliste (die kürzeste Zeit) für jeden Schwierigkeitsgrad an.</para
+></listitem>
 </varlistentry>
 
 <varlistentry>
-<term><menuchoice>
-<shortcut>
-<keycombo action="simul">&Ctrl;<keycap>Q</keycap></keycombo>
-</shortcut>
-<guimenu>Game</guimenu>
-<guimenuitem>Quit</guimenuitem> </menuchoice></term>
-<listitem><para><action>Quits</action> &kmines;.</para></listitem>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;<keycap
+>Q</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Spiel</guimenu
+> <guimenuitem
+>Beenden</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+><action
+>Beendet</action
+> &kmines;.</para
+></listitem>
 </varlistentry>
 
 <varlistentry>
-<term><menuchoice>
-<guimenu>Settings</guimenu>
-<guisubmenu>Difficulty</guisubmenu>
-</menuchoice></term>
+<term
+><menuchoice
+><guimenu
+>Einstellungen</guimenu
+> <guisubmenu
+>Schwierigkeitsgrad</guisubmenu
+> </menuchoice
+></term>
 <listitem>
-<para>Lets you set the difficulty level from a sub-menu.</para>
-<para>There are three default levels of difficulty:
-<guimenuitem>Easy</guimenuitem> (9x9 squares, 10 mines),
-<guimenuitem>Medium</guimenuitem> (16x16 squares, 40 mines), and
-<guimenuitem>Hard</guimenuitem> (30x16 squares, 99 mines).  There is also a
-<guimenuitem>Custom</guimenuitem> level settings.</para>
-<para>If you select <guimenuitem>Custom</guimenuitem>, then the
-settings you have configured in the <guilabel>Configure -
-&kmines;</guilabel> dialog will be used.</para></listitem>
+<para
+>Hier können Sie den Schwierigkeitsgrad aus einem Untermenü wählen.</para>
+<para
+>Es gibt drei Standard-Ebenen <guimenuitem
+>Einfach</guimenuitem
+> (9x9 Felder, 10 Minen), <guimenuitem
+>Mittel</guimenuitem
+> (16x16 Felder, 40 Minen) und <guimenuitem
+>Schwierig</guimenuitem
+> (30x16 Felder, 99 Minen). Es gibt auch die Möglichkeit unter <guimenuitem
+>Benutzerdefiniert</guimenuitem
+> eine individuelle Feldgröße zu wählen.</para>
+<para
+>Falls Sie <guimenuitem
+>Benutzerdefiniert</guimenuitem
+> auswählen, werden die im Dialog <guilabel
+>Einrichten - &kmines;</guilabel
+> eingestellten Werte verwendet.</para
+></listitem>
 </varlistentry>
 
 </variablelist>
 
-<para>
-Additionally &kmines; has the common &kde; <guimenu>Settings</guimenu> and <guimenu>Help</guimenu>
-menu items, for more information read the sections about the <ulink url="help:/fundamentals/menus.html#menus-settings"
->Settings Menu</ulink> and <ulink url="help:/fundamentals/menus.html#menus-help">Help Menu</ulink>
-of the &kde; Fundamentals.
-</para>
+<para
+>Zusätzlich hat &kmines; die bekannten &kde;-Einträge im Menü <guimenu
+>Einstellungen</guimenu
+> und <guimenu
+>Hilfe</guimenu
+>, weitere Informationen dazu finden Sie in den Abschnitten über die Menüs <ulink url="help:/fundamentals/menus.html#menus-settings"
+>Einstellungen</ulink
+> und <ulink url="help:/fundamentals/menus.html#menus-help"
+>Hilfe</ulink
+> der &kde;-Grundlagen. </para>
 
 </sect1>
 
-<sect1 id="keys"><title>Default Keyboard Shortcuts</title>
-<para>The following table shows you the default keyboard shortcuts.</para>
+<sect1 id="keys"
+><title
+>Standard-Tastenkürzel</title>
+<para
+>Die folgende Tabelle zeigt die Standard-Tastenkürzel.</para>
 
 <table>
-<title>Keyboard Shortcuts</title>
+<title
+>Tastenkürzel</title>
 <tgroup cols="2">
-<thead><row><entry>Key Combo</entry><entry>Action</entry></row></thead>
+<thead
+><row
+><entry
+>Tastenkombination</entry
+><entry
+>Aktion</entry
+></row
+></thead>
 <tbody>
-<row><entry><keycombo action="simul">&Ctrl;<keycap>N</keycap></keycombo></entry><entry>New Game</entry></row>
-<row><entry><keycap>P</keycap></entry><entry>Pause</entry></row>
-<row><entry><keycombo action="simul">&Ctrl;<keycap>Q</keycap></keycombo></entry><entry>Quit &kmines;</entry></row>
-<row><entry><keycap>F1</keycap></entry><entry>&kmines; Handbook</entry></row>
-<row><entry><keycombo action="simul">&Shift;<keycap>F1</keycap></keycombo></entry><entry>What's This? help</entry></row>
-<row><entry><keycombo action="simul">&Ctrl;<keycap>H</keycap></keycombo></entry><entry>Show High Scores</entry></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>N</keycap
+></keycombo
+></entry
+><entry
+>Neues Spiel</entry
+></row>
+<row
+><entry
+><keycap
+>P</keycap
+></entry
+><entry
+>Pause</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>Q</keycap
+></keycombo
+></entry
+><entry
+>Beendet &kmines;</entry
+></row>
+<row
+><entry
+><keycap
+>F1</keycap
+></entry
+><entry
+>Handbuch zu &kmines;</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Shift;<keycap
+>F1</keycap
+></keycombo
+></entry
+><entry
+><quote
+>Was ist das?</quote
+>-Hilfe</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>H</keycap
+></keycombo
+></entry
+><entry
+>Bestenliste anzeigen</entry
+></row>
 
 </tbody>
 </tgroup>
 </table>
 
-<para>These shortcuts can be changed by selecting the
-<menuchoice><guimenu>Settings</guimenu> <guimenuitem>Configure
-Shortcuts...</guimenuitem></menuchoice> menu item.</para>
+<para
+>Diese Tastenbelegungen können Sie im Menü <menuchoice
+> <guimenu
+>Einstellungen</guimenu
+> <guimenuitem
+>Kurzbefehle festlegen ...</guimenuitem
+> </menuchoice
+> ändern.</para>
 
 </sect1>
 
 </chapter>
 
 <chapter id="faq">
-<title>Frequently Asked Questions</title>
+<title
+>Häufig gestellte Fragen</title>
 <qandaset>
 
 <qandaentry>
 <question>
-<para>
-Can I change the way the game looks?
-</para>
+<para
+>Kann ich das Erscheinungsbild des Spiels ändern? </para>
 </question>
 <answer>
-<para>
-Yes, click on the <menuchoice><guimenu>Settings</guimenu> <guimenuitem>Configure
-&kmines;...</guimenuitem></menuchoice> menu item.
-</para>
+<para
+>Ja, wählen Sie im Menü <menuchoice
+><guimenu
+>Einstellungen</guimenu
+> <guimenuitem
+>&kmines; einrichten ...</guimenuitem
+></menuchoice
+>. </para>
 </answer>
 </qandaentry>
 
 <qandaentry>
 <question>
-<para>
-Is there a way to add more mines and squares?
-</para>
+<para
+>Kann ich auch mit mehr Minen auf einem größeren Feld spielen? </para>
 </question>
 <answer>
-<para>
-Yes, the easiest way is to use the drop down box in the lower right corner.
-</para>
+<para
+>Ja, wählen Sie im Auswahlfeld unten rechts eine andere Ebene. </para>
 </answer>
 </qandaentry>
 
@@ -297,93 +508,106 @@ Yes, the easiest way is to use the drop down box in the lower right corner.
 </chapter>
 
 <chapter id="settings">
-<title>Game Settings</title>
-<para>
-The game settings can be configured by selecting the <menuchoice><guimenu>Settings</guimenu>
-<guimenuitem>Configure &kmines;...</guimenuitem></menuchoice> menu item. A dialog will appear.
-</para>
-<para>
-    On the <guilabel>General</guilabel> page, you can configure the following game settings.
-</para>
+<title
+>Spieleinstellungen</title>
+<para
+>Um die Einstellungen für das Spiel zu ändern, öffnen Sie mit <menuchoice
+><guimenu
+>Einstellungen</guimenu
+> <guimenuitem
+>&kmines; einrichten ...</guimenuitem
+> </menuchoice
+> einen Dialog. </para>
+<para
+>Aus der Seite <guilabel
+>Allgemein</guilabel
+> können Sie folgende Einstellungen für das Spiel ändern. </para>
 <variablelist>
     <varlistentry>
-        <term>Use '?' marks</term>
+        <term
+>Fragezeichen-Marker (?) verwenden</term>
         <listitem>
-            <para>When checked, allows using the question mark symbol to mark the squares of uncertainty. The mark on the square can be switched by clicking with &RMB;.</para>
+            <para
+>Ist dies aktiviert, dann können Sie das Fragezeichen-Symbol zum Markieren von unsicheren Feldern verwenden. Die Markierung kann mit der &RMBn; umgeschaltet werden.</para>
         </listitem>
     </varlistentry>
     <varlistentry>
-        <term>Allow &kmines; reset</term>
+        <term
+>Zurücksetzen von &kmines; erlauben</term>
         <listitem>
-            <para>When checked, allows you to reset &kmines; game when it is impossible to do anything but guess and your last guess is wrong.</para>
+            <para
+>Ist dies aktiviert, dann können Sie ein &kmines;-Spiel zurücksetzen, wenn Sie nur noch raten können und der letzte Rateversuch falsch war.</para>
         </listitem>
     </varlistentry>
     <varlistentry>
-        <term>Disable score on reset</term>
+        <term
+>Spielstand beim Zurücksetzen deaktivieren</term>
         <listitem>
-            <para>When checked, allows you to disable scoring on reset.</para>
+            <para
+>Ist dies aktiviert, dann können Sie beim Zurücksetzen die Bewertung abschalten.</para>
         </listitem>
     </varlistentry>
         <varlistentry>
-        <term>Explore with left click on number cells</term>
+        <term
+>Markieren mit linkem Mausklick auf ein Feld</term>
         <listitem>
-            <para>When checked, the &LMB; click on a number cell will have the same effect as the &MMB; click.</para>
+            <para
+>Wenn aktiviert, dann hat das Klicken mit der &LMBn; auf ein Feld den gleichen Effekt wie das Klicken mit der &MMBn;.</para>
         </listitem>
     </varlistentry>
 </variablelist>
 
-<para>
-On the second page, you can set the theme. Select a theme from the list.
-Each item in the list shows a small preview left to the theme name. A selection is immediately applied.
-</para>
+<para
+>Auf der zweiten Seite können Sie ein Design einstellen. Wählen Sie ein Design aus der Liste. Für jeden Eintrag in der Liste wird eine kleine Vorschau links vom Namen des Designs angezeigt. Eine Auswahl wird sofort angewendet, </para>
 
-<para>
-On the third page, you can set the height and width of the board and
-the number of mines in your custom level.
-</para>
+<para
+>auf der dritten Seite stellen Sie Höhe und Breite des Spielfeldes sowie die Anzahl der Minen für ein benutzerdefiniertes Spiel ein. </para>
 
 </chapter>
 
-<chapter id="credits"><title>Credits and License</title>
+<chapter id="credits"
+><title
+>Danksagungen und Lizenz</title>
 
-<para>
-&kmines; Copyright 1996-2007
-</para>
+<para
+>&kmines; Copyright 1996-2007 </para>
 
 <itemizedlist>
-<title>Authors</title>
+<title
+>Autoren</title>
 <listitem>
-<para>
-&Nicolas.Hadacek; &Nicolas.Hadacek.mail;
-</para>
+<para
+>&Nicolas.Hadacek; &Nicolas.Hadacek.mail; </para>
 </listitem>
 <listitem>
-<para>
-Mikhail Kourinny
-</para>
+<para
+>Mikhail Kourinny </para>
 </listitem>
 <listitem>
-<para>
-Mauricio Piacentini <email>mauricio@tabuleiro.com</email>
-</para>
+<para
+>Mauricio Piacentini <email
+>mauricio@tabuleiro.com</email
+> </para>
 </listitem>
 <listitem>
-<para>
-Dmitry Suzdalev <email>dimsuz@gmail.com</email>
-</para>
+<para
+>Dmitry Suzdalev <email
+>dimsuz@gmail.com</email
+> </para>
 </listitem>
 </itemizedlist>
 
-<para>Documentation copyright 2000 &Nicolas.Hadacek; &Nicolas.Hadacek.mail;</para>
-<para>Documentation updated for &kde; 2.0 by &Mike.McBride;
-&Mike.McBride.mail;</para>
-<para>Some changes for &kde; 3.2 by &Philip.Rodrigues; &Philip.Rodrigues.mail;</para>
-<!-- TRANS:CREDIT_FOR_TRANSLATORS -->
-
-&underFDL;
-&underGPL;
-
-</chapter>
+<para
+>Copyright für die Dokumentation 2000 &Nicolas.Hadacek; &Nicolas.Hadacek.mail;</para>
+<para
+>Dokumentation für &kde; 2.0 von &Mike.McBride; &Mike.McBride.mail; überarbeitet </para>
+<para
+>Bearbeitung für &kde; 3.2 von &Philip.Rodrigues; &Philip.Rodrigues.mail;.</para>
+<para
+>Deutsche Übersetzung von Maren Pakura <email
+>maren@kde.org</email
+></para
+> &underFDL; &underGPL; </chapter>
 
 </book>
 <!--
