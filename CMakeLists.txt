@@ -28,9 +28,16 @@ include(ECMQtDeclareLoggingCategory)
 include(ECMSetupVersion)
 include(FeatureSummary)
 include(ECMDeprecationSettings)
+if (QT_MAJOR_VERSION STREQUAL "6")
+    set(QT_REQUIRED_VERSION "6.4.0")
+    set(KF_MIN_VERSION "5.240.0")
+    set(KF_MAJOR_VERSION "6")
+else()
+    set(KF_MAJOR_VERSION "5")
+endif()
 
 find_package(Qt${QT_MAJOR_VERSION} ${QT_MIN_VERSION} REQUIRED NO_MODULE COMPONENTS Widgets)
-find_package(KF5 ${KF_MIN_VERSION} REQUIRED COMPONENTS
+find_package(KF${KF_MAJOR_VERSION} ${KF_MIN_VERSION} REQUIRED COMPONENTS
     Config
     ConfigWidgets
     CoreAddons
@@ -41,8 +48,8 @@ find_package(KF5 ${KF_MIN_VERSION} REQUIRED COMPONENTS
     WidgetsAddons
     XmlGui
 )
-find_package(KF5DocTools ${KF_MIN_VERSION})
-set_package_properties(KF5DocTools PROPERTIES DESCRIPTION
+find_package(KF${KF_MAJOR_VERSION}DocTools ${KF_MIN_VERSION})
+set_package_properties(KF${KF_MAJOR_VERSION}DocTools PROPERTIES DESCRIPTION
     "Tools to generate documentation"
     TYPE OPTIONAL
 )
@@ -50,7 +57,7 @@ set_package_properties(KF5DocTools PROPERTIES DESCRIPTION
 find_package(KF5KDEGames 7.3.1 REQUIRED)
 
 ecm_set_disabled_deprecation_versions(
-    QT 5.15.2
+    QT 6.4
     KF 5.101
     KDEGAMES 7.3
 )

@@ -40,12 +40,12 @@ ecm_add_app_icon(kmines ICONS ${ICONS_SRCS})
 
 target_link_libraries(kmines 
     KF5KDEGames
-    KF5::CoreAddons
-    KF5::TextWidgets
-    KF5::WidgetsAddons
-    KF5::DBusAddons
-    KF5::Crash
-    KF5::XmlGui
+    KF${KF_MAJOR_VERSION}::CoreAddons
+    KF${KF_MAJOR_VERSION}::TextWidgets
+    KF${KF_MAJOR_VERSION}::WidgetsAddons
+    KF${KF_MAJOR_VERSION}::DBusAddons
+    KF${KF_MAJOR_VERSION}::Crash
+    KF${KF_MAJOR_VERSION}::XmlGui
 )
 
 install(TARGETS kmines  ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
