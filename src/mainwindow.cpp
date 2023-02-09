@@ -40,9 +40,9 @@ public:
         : QWidget(parent)
     {
         ui.setupUi(this);
-        connect(ui.kcfg_CustomWidth, qOverload<int>(&QSpinBox::valueChanged),
+        connect(ui.kcfg_CustomWidth, &QSpinBox::valueChanged,
                 this, &CustomGameConfig::updateMaxMines);
-        connect(ui.kcfg_CustomHeight, qOverload<int>(&QSpinBox::valueChanged),
+        connect(ui.kcfg_CustomHeight, &QSpinBox::valueChanged,
                 this, &CustomGameConfig::updateMaxMines);
     }
 
