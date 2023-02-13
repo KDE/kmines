@@ -67,7 +67,7 @@ add_subdirectory(themes)
 add_subdirectory(src)
 
 ki18n_install(po)
-if(KF5DocTools_FOUND)
+if(KF${KF_MAJOR_VERSION}DocTools_FOUND)
     add_subdirectory(doc)
     kdoctools_install(po)
 endif()
