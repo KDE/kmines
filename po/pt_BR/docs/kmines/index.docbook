@@ -112,9 +112,9 @@
 >&FDLNotice;</legalnotice>
 
 <date
->07/01/2019</date>
+>11/07/2021</date>
 <releaseinfo
->4.0 (Applications 19.04)</releaseinfo>
+>4.0 (KDE Gear 21.04)</releaseinfo>
 
 <abstract
 ><para
@@ -340,7 +340,7 @@
 ><para
 ><action
 >Sai</action
-> do &kmines;</para
+> do &kmines;.</para
 ></listitem>
 </varlistentry>
 
@@ -369,8 +369,8 @@
 <para
 >Se você selecionar o <guimenuitem
 >Personalizado</guimenuitem
->, então a configuração feita por você no diálogo <guimenuitem
->Configurar o &kmines;</guimenuitem
+>, então a configuração feita por você no diálogo <guilabel
+>Configurar - &kmines;</guilabel
 > será usada.</para
 ></listitem>
 </varlistentry>
@@ -453,7 +453,7 @@
 ></keycombo
 ></entry
 ><entry
->A ajuda o que é isto?</entry
+>Ajuda 'O que é isto?'</entry
 ></row>
 <row
 ><entry
@@ -472,12 +472,12 @@
 
 <para
 >Estas configurações de teclas podem ser alteradas selecionando a opção <menuchoice
-> <guimenu
+><guimenu
 >Configurações</guimenu
 > <guimenuitem
 >Configurar atalhos...</guimenuitem
-> </menuchoice
-> na barra de menu.</para>
+></menuchoice
+>.</para>
 
 </sect1>
 
@@ -495,10 +495,12 @@
 </question>
 <answer>
 <para
->Sim, clique no menu <guimenu
+>Sim, clique no menu <menuchoice
+><guimenu
 >Configurações</guimenu
-> e selecione <guimenuitem
->Configurar o &kmines;</guimenuitem
+> <guimenuitem
+>Configurar o &kmines;...</guimenuitem
+></menuchoice
 >. </para>
 </answer>
 </qandaentry>
@@ -522,11 +524,11 @@
 >Opções do jogo</title>
 <para
 >Estas configurações de teclas podem ser alteradas selecionando a opção <menuchoice
-> <guimenu
+><guimenu
 >Configurações</guimenu
 > <guimenuitem
 >Configurar o &kmines;</guimenuitem
-> </menuchoice
+></menuchoice
 > no menu. Uma caixa de diálogo será mostrada. </para>
 <para
 >Na página <guilabel
@@ -555,6 +557,14 @@
         <listitem>
             <para
 >Quando marcado, permite desativar pontuação ao reiniciar.</para>
+        </listitem>
+    </varlistentry>
+        <varlistentry>
+        <term
+>Explore com clique esquerdo no número de células</term>
+        <listitem>
+            <para
+>Quando marcado, o clique com &LMB; em um número de célula terá o mesmo efeito que o clique com o &MMB;.</para>
         </listitem>
     </varlistentry>
 </variablelist>
