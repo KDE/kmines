@@ -1,14 +1,14 @@
 # translation of kmines.po to Italian
 # Andrea Celli <andrea.celli@libero.it>, 2003, 2004, 2007, 2008, 2010.
 # Andrea Celli <andrea.celli@ilibero.it>, 2011.
-# Paolo Zamponi <zapaolo@email.it>, 2019, 2020, 2021.
+# Paolo Zamponi <feus73@gmail.com>, 2019, 2020, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-06-15 00:44+0000\n"
 "PO-Revision-Date: 2021-07-19 09:53+0200\n"
-"Last-Translator: Paolo Zamponi <zapaolo@email.it>\n"
+"Last-Translator: Paolo Zamponi <feus73@gmail.com>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -25,7 +25,7 @@ msgstr "Paolo Zamponi,Andrea Rizzi,Andrea Celli"
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr "zapaolo@email.it,,"
+msgstr "feus73@gmail.com,,"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: customgame.ui:16
