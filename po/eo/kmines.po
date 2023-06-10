@@ -4,15 +4,15 @@
 # Wolfram Diestel <diestel@rzaix340.rz.uni-leipzig.de>, 1998.
 # Heiko Evermann <heiko@evermann.de>, 2002.
 # Pierre-Marie Pédrot <pedrotpmx@wanadoo.fr>, 2007.
-#
+# Oliver Kellogg <okellogg@users.sourceforge.net>, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-06-15 00:44+0000\n"
-"PO-Revision-Date: 2007-12-05 22:19+0100\n"
-"Last-Translator: Pierre-Marie Pédrot <pedrotpmx@wanadoo.fr>\n"
+"PO-Revision-Date: 2023-06-09 20:56+0100\n"
+"Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
 "MIME-Version: 1.0\n"
@@ -24,12 +24,12 @@ msgstr ""
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
-msgstr "Wolfram Diestel"
+msgstr "Wolfram Diestel,Oliver Kellogg"
 
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr "wolfram@steloj.de"
+msgstr "wolfram@steloj.de,okellogg@users.sourceforge.net"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: customgame.ui:16
@@ -127,6 +127,10 @@ msgid ""
 "(c) 2006-2007, Mauricio Piacentini\n"
 "(c) 2007, Dmitry Suzdalev"
 msgstr ""
+"(c) 1996-2005, Nicolas Hadacek\n"
+"(c) 2001, Mikhail Kourinny\n"
+"(c) 2006-2007, Mauricio Piacentini\n"
+"(c) 2007, Dmitry Suzdalev"
 
 #: main.cpp:50
 #, kde-format
@@ -191,7 +195,7 @@ msgstr "Magia malkovra moduso"
 #: main.cpp:61
 #, kde-format
 msgid "Brian Croom"
-msgstr ""
+msgstr "Brian Croom"
 
 #: main.cpp:61
 #, kde-format
