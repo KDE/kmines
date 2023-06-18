@@ -12,6 +12,7 @@
   <name xml:lang="de">KMines</name>
   <name xml:lang="el">KMines</name>
   <name xml:lang="en-GB">KMines</name>
+  <name xml:lang="eo">KMines</name>
   <name xml:lang="es">KMines</name>
   <name xml:lang="et">KMines</name>
   <name xml:lang="eu">KMines</name>
@@ -51,6 +52,7 @@
   <summary xml:lang="de">„Minesweeper“-Spiel</summary>
   <summary xml:lang="el">Παιχνίδι παρόμοιο με το Ναρκαλιευτή</summary>
   <summary xml:lang="en-GB">Minesweeper-like Game</summary>
+  <summary xml:lang="eo">Ludo simial al Minesweeper</summary>
   <summary xml:lang="es">Juego similar al Buscaminas</summary>
   <summary xml:lang="et">Minesweeperi moodi mäng</summary>
   <summary xml:lang="eu">Mina bilatzailearen antzeko jokoa</summary>
