@@ -53,7 +53,7 @@ msgstr "Minas:"
 #: generalopts.ui:17
 #, kde-format
 msgid "Use '?' marks"
-msgstr "Empregar sinais «?»"
+msgstr "Usar sinais «?»"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_AllowKminesReset)
 #: generalopts.ui:24
@@ -202,7 +202,7 @@ msgstr "Brian Croom"
 #: main.cpp:61
 #, kde-format
 msgid "Port to use KGameRenderer"
-msgstr "Portaxe para empregar o KGameRenderer"
+msgstr "Portaxe para usar o KGameRenderer"
 
 #: mainwindow.cpp:101
 #, kde-format
