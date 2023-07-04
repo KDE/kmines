@@ -634,6 +634,4 @@ QList<CellItem*> MineFieldItem::adjacentItemsFor(int row, int col)
     return resultingList;
 }
 
-
-
-
+#include "moc_minefielditem.cpp"
