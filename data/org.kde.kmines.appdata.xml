@@ -12,6 +12,7 @@
   <name xml:lang="de">KMines</name>
   <name xml:lang="el">KMines</name>
   <name xml:lang="en-GB">KMines</name>
+  <name xml:lang="eo">KMines</name>
   <name xml:lang="es">KMines</name>
   <name xml:lang="et">KMines</name>
   <name xml:lang="eu">KMines</name>
@@ -38,7 +39,7 @@
   <name xml:lang="sr-ijekavian">К‑мине</name>
   <name xml:lang="sr-ijekavianlatin">K‑mine</name>
   <name xml:lang="sv">Minröjaren</name>
-  <name xml:lang="tr">KMines</name>
+  <name xml:lang="tr">K Mayınlar</name>
   <name xml:lang="uk">KMines</name>
   <name xml:lang="x-test">xxKMinesxx</name>
   <name xml:lang="zh-CN">KMines</name>
@@ -51,6 +52,7 @@
   <summary xml:lang="de">„Minesweeper“-Spiel</summary>
   <summary xml:lang="el">Παιχνίδι παρόμοιο με το Ναρκαλιευτή</summary>
   <summary xml:lang="en-GB">Minesweeper-like Game</summary>
+  <summary xml:lang="eo">Ludo simial al Minesweeper</summary>
   <summary xml:lang="es">Juego similar al Buscaminas</summary>
   <summary xml:lang="et">Minesweeperi moodi mäng</summary>
   <summary xml:lang="eu">Mina bilatzailearen antzeko jokoa</summary>
@@ -90,6 +92,7 @@
     <p xml:lang="de">KMines ist ein klassische Minesweeper-Spiel. Ziel ist es, alle leeren Felder aufzudecken, ohne dass eine Mine explodiert. Das Spiel ist beendet, wenn eine Mine explodiert.</p>
     <p xml:lang="el">Το KMines είναι ένα κλασικό παιχνίδι Ναρκαλιευτής. Η ιδέα είναι να αποκαλυφθούν όλα τα τετράγωνα χωρίς να εκραγεί καμία νάρκη. Όταν μία νάρκη εκρήγνυται, το παιχνίδι τελειώνει.</p>
     <p xml:lang="en-GB">KMines is a classic Minesweeper game. The idea is to uncover all the squares without blowing up any mines. When a mine is blown up, the game is over.</p>
+    <p xml:lang="eo">KMines estas klasika Minesweeper-ludo. La ideo estas malkovri ĉiujn kvadratojn sen eksplodigi iujn minojn. Kiam mino estas krevigita, la ludo finiĝas.</p>
     <p xml:lang="es">KMines es el clásico juego de Buscaminas. El objetivo consiste en descubrir todos los cuadrados sin hacer estallar las minas. Si una mina estalla, el juego acaba.</p>
     <p xml:lang="et">KMines on klassikaline Minesweeperi mäng. Selle siht on avada kõik ruudud, ilma ühelgi miinil õhku lendamata. Kui miin plahvatab, on mäng läbi.</p>
     <p xml:lang="eu">KMines mina bilatzaile joko klasikoa da. Ideia nagusia, minak eztandarik egin gabe lauki guztiak estalgabetzea da. Mina batek eztanda egiten badu, jokoa amaitu da.</p>
@@ -116,7 +119,7 @@
     <p xml:lang="sr-ijekavian">К‑мине је класична игра Миноловца. Треба открити сва поља тако да се не активира ниједна мина. Ако мина експлодира, то је крај партије.</p>
     <p xml:lang="sr-ijekavianlatin">K‑mine je klasična igra Minolovca. Treba otkriti sva polja tako da se ne aktivira nijedna mina. Ako mina eksplodira, to je kraj partije.</p>
     <p xml:lang="sv">Minröjaren är ett klassiskt minröjarspel. Idén är att frilägga alla rutor utan att detonera några minor. När en mina detonerar är spelet slut.</p>
-    <p xml:lang="tr">KMines klasik bir Mayın Tarlası oyunudur. Amacı, tüm kareleri herhangi bir mayını patlamadan ortaya çıkarmaktır. Bir mayın patladığında oyun sona erer.</p>
+    <p xml:lang="tr">K Mayınlar klasik bir Mayın Tarlası oyunudur. Amacı, tüm kareleri herhangi bir mayını patlamadan ortaya çıkarmaktır. Bir mayın patladığında oyun sona erer.</p>
     <p xml:lang="uk">KMines — це класична гра у сапера. Ідея гри полягає у тому, щоб розкрити всі клітинки без підриву жодної з мін. Якщо ви натрапите на міну, гру буде програно.</p>
     <p xml:lang="x-test">xxKMines is a classic Minesweeper game. The idea is to uncover all the squares without blowing up any mines. When a mine is blown up, the game is over.xx</p>
     <p xml:lang="zh-CN">KMines 是一款经典扫雷游戏。目标是不引爆地雷的情况下，揭开所有方格。当地雷被引爆时，游戏结束。</p>
