@@ -21,6 +21,14 @@
       <label>Left click on a number cell will have the same effect as mid click.</label>
       <default>false</default>
     </entry>
+    <entry name="PlaceFlagOn" type="Enum" key="place_flag_on">
+      <choices>
+        <choice name="MouseRelease"/>
+        <choice name="MousePress"/>
+      </choices>
+      <label></label>
+      <default>MouseRelease</default>
+    </entry>
   </group>
   <group name="Options">
     <entry name="CustomWidth" type="Int" key="custom width">

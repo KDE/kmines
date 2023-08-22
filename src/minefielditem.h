@@ -147,7 +147,10 @@ private:
      * Sets up border items (positions and properties)
      */
     void setupBorderItems();
-
+    /**
+     * Changes the flag state of a clicked cell and updates mine count
+     */
+    void handleFlag(CellItem* itemUnderMouse);
     /**
      * Return `true` if the game is finished (and possibly restarted) after the call.
      */

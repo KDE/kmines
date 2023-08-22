@@ -323,6 +323,23 @@ void MineFieldItem::revealEmptySpace(int row, int col)
     }
 }
 
+void MineFieldItem::handleFlag(CellItem* itemUnderMouse)
+{
+    bool wasFlagged = itemUnderMouse->isFlagged();
+
+    itemUnderMouse->mark();
+
+    bool flagStateChanged = (itemUnderMouse->isFlagged() != wasFlagged);
+    if(flagStateChanged)
+    {
+        if(itemUnderMouse->isFlagged())
+            m_flaggedMinesCount++;
+        else
+            m_flaggedMinesCount--;
+        Q_EMIT flaggedMinesCountChanged(m_flaggedMinesCount);
+    }
+}
+
 void MineFieldItem::mousePressEvent( QGraphicsSceneMouseEvent *ev )
 {
     if(m_gameOver)
@@ -341,6 +358,7 @@ void MineFieldItem::mousePressEvent( QGraphicsSceneMouseEvent *ev )
     }
 
     bool useFastExplore = Settings::exploreWithLeftClickOnNumberCells();
+    bool placeFlagWhenPressed = Settings::placeFlagOn() == Settings::EnumPlaceFlagOn::MousePress;
     m_emulatingMidButton = ( useFastExplore ? ( (ev->buttons() & Qt::LeftButton) && ( itemUnderMouse->isRevealed() ) ) : ( (ev->buttons() & Qt::LeftButton) && (ev->buttons() & Qt::RightButton) ) );
     bool midButtonPressed = (ev->button() == Qt::MiddleButton || m_emulatingMidButton );
 
@@ -363,6 +381,10 @@ void MineFieldItem::mousePressEvent( QGraphicsSceneMouseEvent *ev )
     {
         itemUnderMouse->press();
         m_leftButtonPos = qMakePair(row,col);
+    }
+    else if(placeFlagWhenPressed && ev->button() == Qt::RightButton && (ev->buttons() & Qt::LeftButton) == false)
+    {
+        handleFlag(itemUnderMouse);
     }
 }
 
@@ -400,6 +422,7 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
 
     CellItem* itemUnderMouse = itemAt(row,col);
 
+    bool placeFlagWhenReleased = Settings::placeFlagOn() == Settings::EnumPlaceFlagOn::MouseRelease;
     bool midButtonReleased = (ev->button() == Qt::MiddleButton || m_emulatingMidButton);
 
     if( midButtonReleased )
@@ -475,21 +498,9 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
         }
         m_leftButtonPos = qMakePair(-1,-1);//reset
     }
-    else if(ev->button() == Qt::RightButton && (ev->buttons() & Qt::LeftButton) == false)
+    else if(placeFlagWhenReleased && ev->button() == Qt::RightButton && (ev->buttons() & Qt::LeftButton) == false)
     {
-        bool wasFlagged = itemUnderMouse->isFlagged();
-
-        itemUnderMouse->mark();
-
-        bool flagStateChanged = (itemUnderMouse->isFlagged() != wasFlagged);
-        if(flagStateChanged)
-        {
-            if(itemUnderMouse->isFlagged())
-                m_flaggedMinesCount++;
-            else
-                m_flaggedMinesCount--;
-            Q_EMIT flaggedMinesCountChanged(m_flaggedMinesCount);
-        }
+        handleFlag(itemUnderMouse);
     }
 }
 
