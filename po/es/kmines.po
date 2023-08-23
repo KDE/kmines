@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-06-15 00:44+0000\n"
+"POT-Creation-Date: 2023-08-23 00:43+0000\n"
 "PO-Revision-Date: 2021-07-14 19:55+0100\n"
 "Last-Translator: Sofia Priego <spriego@darksylvania.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
@@ -81,6 +81,24 @@ msgstr "Desactivar la puntuación al reiniciar"
 msgid "Explore with left click on number cells"
 msgstr "Explorar con clic izquierdo en las celdas con número"
 
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: generalopts.ui:53
+#, kde-format
+msgid "Place flag when mouse button is:"
+msgstr ""
+
+#. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
+#: generalopts.ui:61
+#, kde-format
+msgid "Released"
+msgstr ""
+
+#. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
+#: generalopts.ui:66
+#, kde-format
+msgid "Pressed"
+msgstr ""
+
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
 #, kde-format
@@ -96,19 +114,19 @@ msgstr ""
 "central."
 
 #. i18n: ectx: label, entry (CustomWidth), group (Options)
-#: kmines.kcfg:27
+#: kmines.kcfg:35
 #, kde-format
 msgid "The width of the playing field."
 msgstr "Ancho del tablero."
 
 #. i18n: ectx: label, entry (CustomHeight), group (Options)
-#: kmines.kcfg:33
+#: kmines.kcfg:41
 #, kde-format
 msgid "The height of the playing field."
 msgstr "Alto del tablero."
 
 #. i18n: ectx: label, entry (CustomMines), group (Options)
-#: kmines.kcfg:39
+#: kmines.kcfg:47
 #, kde-format
 msgid "The number of mines in the playing field."
 msgstr "Número de minas en el tablero."

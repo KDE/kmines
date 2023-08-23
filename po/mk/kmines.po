@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-06-15 00:44+0000\n"
+"POT-Creation-Date: 2023-08-23 00:43+0000\n"
 "PO-Revision-Date: 2006-04-26 01:22+0200\n"
 "Last-Translator: Zaklina Gjalevska <gjalevska@yahoo.com>\n"
 "Language-Team: Macedonian <mkde-l10n@lists.sourceforge.net>\n"
@@ -75,6 +75,24 @@ msgstr ""
 msgid "Explore with left click on number cells"
 msgstr ""
 
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: generalopts.ui:53
+#, kde-format
+msgid "Place flag when mouse button is:"
+msgstr ""
+
+#. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
+#: generalopts.ui:61
+#, kde-format
+msgid "Released"
+msgstr ""
+
+#. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
+#: generalopts.ui:66
+#, kde-format
+msgid "Pressed"
+msgstr ""
+
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
 #, fuzzy, kde-format
@@ -89,19 +107,19 @@ msgid "Left click on a number cell will have the same effect as mid click."
 msgstr ""
 
 #. i18n: ectx: label, entry (CustomWidth), group (Options)
-#: kmines.kcfg:27
+#: kmines.kcfg:35
 #, kde-format
 msgid "The width of the playing field."
 msgstr "Ширина на полето за играње."
 
 #. i18n: ectx: label, entry (CustomHeight), group (Options)
-#: kmines.kcfg:33
+#: kmines.kcfg:41
 #, kde-format
 msgid "The height of the playing field."
 msgstr "Висина на полето за играње."
 
 #. i18n: ectx: label, entry (CustomMines), group (Options)
-#: kmines.kcfg:39
+#: kmines.kcfg:47
 #, kde-format
 msgid "The number of mines in the playing field."
 msgstr "Бројот на мини во полето за играње."
