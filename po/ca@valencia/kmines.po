@@ -1,10 +1,10 @@
 # Translation of kmines.po to Catalan (Valencian)
-# Copyright (C) 2000-2021 This_file_is_part_of_KDE
+# Copyright (C) 2000-2023 This_file_is_part_of_KDE
 #
 #
 # Francesc J Devesa i Berenguer <frandeve@hotmail.com>, 2000, 2001.
 # Albert Astals Cid <aacid@kde.org>, 2003, 2004, 2007, 2008.
-# Josep M. Ferrer <txemaq@gmail.com>, 2004, 2009, 2010, 2015, 2019, 2020.
+# Josep M. Ferrer <txemaq@gmail.com>, 2004, 2009, 2010, 2015, 2019, 2020, 2023.
 # Manuel Tortosa <manutortosa@chakra-project.org>, 2009, 2010.
 # Antoni Bella Pérez <antonibella5@yahoo.com>, 2020, 2021.
 msgid ""
@@ -12,14 +12,14 @@ msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-08-23 00:43+0000\n"
-"PO-Revision-Date: 2021-07-13 10:44+0200\n"
-"Last-Translator: Antoni Bella Pérez <antonibella5@yahoo.com>\n"
+"PO-Revision-Date: 2023-08-23 11:12+0200\n"
+"Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca@valencia\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 21.04.3\n"
+"X-Generator: Lokalize 23.04.3\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Accelerator-Marker: &\n"
 
@@ -79,19 +79,19 @@ msgstr "Explora amb un clic esquerre en les cel·les dels nombres"
 #: generalopts.ui:53
 #, kde-format
 msgid "Place flag when mouse button is:"
-msgstr ""
+msgstr "Situa la bandera si el botó del ratolí:"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:61
 #, kde-format
 msgid "Released"
-msgstr ""
+msgstr "Es deixa anar"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:66
 #, kde-format
 msgid "Pressed"
-msgstr ""
+msgstr "Es prem"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
