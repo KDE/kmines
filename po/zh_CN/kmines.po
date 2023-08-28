@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-08-23 00:43+0000\n"
-"PO-Revision-Date: 2023-08-02 12:40\n"
+"PO-Revision-Date: 2023-08-27 03:40\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh_CN\n"
@@ -73,19 +73,19 @@ msgstr "左键单击数字格探雷"
 #: generalopts.ui:53
 #, kde-format
 msgid "Place flag when mouse button is:"
-msgstr ""
+msgstr "放置标志的鼠标键操作："
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:61
 #, kde-format
 msgid "Released"
-msgstr ""
+msgstr "松开鼠标键时"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:66
 #, kde-format
 msgid "Pressed"
-msgstr ""
+msgstr "按下鼠标键时"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
