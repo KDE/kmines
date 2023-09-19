@@ -8,13 +8,13 @@
 # Mauricio Piacentini <piacentini@kde.org>, 2007, 2008, 2009.
 # Eliana Megumi Habiro Boaglio <eliana.habiro@gmail.com>, 2008.
 # André Marcelo Alvarenga <alvarenga@kde.org>, 2010, 2016, 2019.
-# Luiz Fernando Ranghetti <elchevive@opensuse.org>, 2020, 2021.
+# Luiz Fernando Ranghetti <elchevive@opensuse.org>, 2020, 2021, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-08-23 00:43+0000\n"
-"PO-Revision-Date: 2021-07-14 11:43-0300\n"
+"PO-Revision-Date: 2023-09-18 09:44-0300\n"
 "Last-Translator: Luiz Fernando Ranghetti <elchevive@opensuse.org>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
 "Language: pt_BR\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 20.04.2\n"
+"X-Generator: Lokalize 22.12.3\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -84,19 +84,19 @@ msgstr "Explore com clique esquerdo no número de células"
 #: generalopts.ui:53
 #, kde-format
 msgid "Place flag when mouse button is:"
-msgstr ""
+msgstr "Colocar a bandeira onde o botão do mouse for:"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:61
 #, kde-format
 msgid "Released"
-msgstr ""
+msgstr "Solto"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:66
 #, kde-format
 msgid "Pressed"
-msgstr ""
+msgstr "Pressionado"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
