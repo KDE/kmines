@@ -38,19 +38,14 @@ kconfig_add_kcfg_files(kmines settings.kcfgc )
 file(GLOB ICONS_SRCS "${CMAKE_SOURCE_DIR}/data/*-apps-kmines.png")
 ecm_add_app_icon(kmines ICONS ${ICONS_SRCS})
 
-if (QT_MAJOR_VERSION STREQUAL "6")
-    target_link_libraries(kmines KDEGames6)
-else()
-    target_link_libraries(kmines KF5KDEGames)
-endif()
-
 target_link_libraries(kmines 
-    KF${KF_MAJOR_VERSION}::CoreAddons
-    KF${KF_MAJOR_VERSION}::TextWidgets
-    KF${KF_MAJOR_VERSION}::WidgetsAddons
-    KF${KF_MAJOR_VERSION}::DBusAddons
-    KF${KF_MAJOR_VERSION}::Crash
-    KF${KF_MAJOR_VERSION}::XmlGui
+    KDEGames6
+    KF6::CoreAddons
+    KF6::TextWidgets
+    KF6::WidgetsAddons
+    KF6::DBusAddons
+    KF6::Crash
+    KF6::XmlGui
 )
 
 install(TARGETS kmines  ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
