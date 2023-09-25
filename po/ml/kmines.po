@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines trunk\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-08-23 00:43+0000\n"
+"POT-Creation-Date: 2023-09-25 01:39+0000\n"
 "PO-Revision-Date: 2019-12-12 22:09+0000\n"
 "Last-Translator: Vivek KJ Pazhedath <vivekkj2004@gmail.com>\n"
 "Language-Team: SMC <smc.org.in>\n"
@@ -125,17 +125,17 @@ msgstr "കളിക്കളത്തിലെ കുഴിബോംബുക�
 msgid "Main Toolbar"
 msgstr "പ്രധാന ഉപകരണപ്പട്ട"
 
-#: main.cpp:43
+#: main.cpp:27
 #, kde-format
 msgid "KMines"
 msgstr "കെമൈന്‍സ്"
 
-#: main.cpp:45
+#: main.cpp:29
 #, kde-format
 msgid "KMines is a classic minesweeper game"
 msgstr "കെമൈന്‍സ് ഒരു കുഴിബോംബ് കണ്ടെത്തല്‍ കളിയാണ്"
 
-#: main.cpp:47
+#: main.cpp:31
 #, kde-format
 msgid ""
 "(c) 1996-2005, Nicolas Hadacek\n"
@@ -144,72 +144,72 @@ msgid ""
 "(c) 2007, Dmitry Suzdalev"
 msgstr ""
 
-#: main.cpp:50
+#: main.cpp:34
 #, kde-format
 msgid "Nicolas Hadacek"
 msgstr "നിക്കോളാസ് ഹാഡസെക്"
 
-#: main.cpp:51
+#: main.cpp:35
 #, kde-format
 msgid "Original author"
 msgstr "ആദ്യ രചയിതാവ്"
 
-#: main.cpp:52
+#: main.cpp:36
 #, kde-format
 msgid "Mauricio Piacentini"
 msgstr "മൌറിസിയൊ പിയസെന്റിനി"
 
-#: main.cpp:53
+#: main.cpp:37
 #, kde-format
 msgid "Code refactoring and SVG support. Current maintainer"
 msgstr "കോഡ് അടുക്കും ചിട്ടയും വരുത്തുകയും എസ്‌വിജി പിന്തുണയും. ഇപ്പോഴത്തെ പരിപാലകന്‍"
 
-#: main.cpp:55
+#: main.cpp:39
 #, kde-format
 msgid "Dmitry Suzdalev"
 msgstr "ഡിമിട്രി സുസ്ഡാലെവ്"
 
-#: main.cpp:56
+#: main.cpp:40
 #, kde-format
 msgid "Rewrite to use QGraphicsView framework. Current maintainer"
 msgstr "ക്യൂഗ്രാഫിക്സ്‌വ്യു ഉപയോഗിക്കുന്നതിനായി മാറ്റിയെഴുതുക. ഇപ്പോഴത്തെ പരിപാലകന്‍"
 
-#: main.cpp:58
+#: main.cpp:42
 #, kde-format
 msgid "Andreas Zehender"
 msgstr "ആന്ദ്രെയാസ് സെഹെന്റര്‍"
 
-#: main.cpp:58
+#: main.cpp:42
 #, kde-format
 msgid "Smiley pixmaps"
 msgstr "സ്മൈലി പിക്സ്മാപ്സ്"
 
-#: main.cpp:59
+#: main.cpp:43
 #, kde-format
 msgid "Mikhail Kourinny"
 msgstr "മിഖായില്‍ കൌറിന്നി"
 
-#: main.cpp:59
+#: main.cpp:43
 #, kde-format
 msgid "Solver/Adviser"
 msgstr "ഉത്തരം കണ്ടെത്തുന്നയാള്‍/ഉപദേഷ്ടാവ്"
 
-#: main.cpp:60
+#: main.cpp:44
 #, kde-format
 msgid "Thomas Capricelli"
 msgstr "തോമസ് കാപ്രിസെല്ലി"
 
-#: main.cpp:60
+#: main.cpp:44
 #, kde-format
 msgid "Magic reveal mode"
 msgstr "മാന്ത്രിക വെളിപ്പെടുത്തല്‍ രീതി"
 
-#: main.cpp:61
+#: main.cpp:45
 #, kde-format
 msgid "Brian Croom"
 msgstr ""
 
-#: main.cpp:61
+#: main.cpp:45
 #, kde-format
 msgid "Port to use KGameRenderer"
 msgstr ""
@@ -264,17 +264,17 @@ msgstr "പ്രമേയം"
 msgid "Custom Game"
 msgstr "ആവശ്യാനുസരണം മാറ്റം വരുത്തിയ കളി"
 
-#: scene.cpp:122
+#: scene.cpp:117
 #, kde-format
 msgid "Game is paused."
 msgstr "കളി താത്കാലികമായി നിര്‍ത്തിവച്ചിരിക്കുന്നു."
 
-#: scene.cpp:130
+#: scene.cpp:125
 #, kde-format
 msgid "Congratulations! You have won!"
 msgstr "അഭിനന്ദനങ്ങള്‍! താങ്കള്‍ വിജയിച്ചു!"
 
-#: scene.cpp:132
+#: scene.cpp:127
 #, kde-format
 msgid "You have lost."
 msgstr "താങ്കള്‍ പരാജയപ്പെട്ടു."

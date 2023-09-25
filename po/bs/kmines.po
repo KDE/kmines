@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-08-23 00:43+0000\n"
+"POT-Creation-Date: 2023-09-25 01:39+0000\n"
 "PO-Revision-Date: 2013-10-18 20:07+0000\n"
 "Last-Translator: Samir Ribić <Unknown>\n"
 "Language-Team: Bosnian <lokal@lugbih.org>\n"
@@ -125,17 +125,17 @@ msgstr "Broj mina u igračkom polju."
 msgid "Main Toolbar"
 msgstr "Glavna alatna traka"
 
-#: main.cpp:43
+#: main.cpp:27
 #, kde-format
 msgid "KMines"
 msgstr "KMines"
 
-#: main.cpp:45
+#: main.cpp:29
 #, kde-format
 msgid "KMines is a classic minesweeper game"
 msgstr "K‑mine je klasična igra minolovca"
 
-#: main.cpp:47
+#: main.cpp:31
 #, kde-format
 msgid ""
 "(c) 1996-2005, Nicolas Hadacek\n"
@@ -144,72 +144,72 @@ msgid ""
 "(c) 2007, Dmitry Suzdalev"
 msgstr ""
 
-#: main.cpp:50
+#: main.cpp:34
 #, kde-format
 msgid "Nicolas Hadacek"
 msgstr "Nicolas Hadacek"
 
-#: main.cpp:51
+#: main.cpp:35
 #, kde-format
 msgid "Original author"
 msgstr "Originalni autor"
 
-#: main.cpp:52
+#: main.cpp:36
 #, kde-format
 msgid "Mauricio Piacentini"
 msgstr "Mauricio Piacentini"
 
-#: main.cpp:53
+#: main.cpp:37
 #, kde-format
 msgid "Code refactoring and SVG support. Current maintainer"
 msgstr "Sređivanje koda i podrška za SVG, trenutni održavalac"
 
-#: main.cpp:55
+#: main.cpp:39
 #, kde-format
 msgid "Dmitry Suzdalev"
 msgstr "Dimitrij Suzdalev"
 
-#: main.cpp:56
+#: main.cpp:40
 #, kde-format
 msgid "Rewrite to use QGraphicsView framework. Current maintainer"
 msgstr "Pisanje iznova na radni okvir QGraphicsView, trenutni održavalac"
 
-#: main.cpp:58
+#: main.cpp:42
 #, kde-format
 msgid "Andreas Zehender"
 msgstr "Andreas Zehender"
 
-#: main.cpp:58
+#: main.cpp:42
 #, kde-format
 msgid "Smiley pixmaps"
 msgstr "Slika smajlija"
 
-#: main.cpp:59
+#: main.cpp:43
 #, kde-format
 msgid "Mikhail Kourinny"
 msgstr "Mihail Kurinoj"
 
-#: main.cpp:59
+#: main.cpp:43
 #, kde-format
 msgid "Solver/Adviser"
 msgstr "Rješenja/Objašnjenja"
 
-#: main.cpp:60
+#: main.cpp:44
 #, kde-format
 msgid "Thomas Capricelli"
 msgstr "Thomas Capricelli"
 
-#: main.cpp:60
+#: main.cpp:44
 #, kde-format
 msgid "Magic reveal mode"
 msgstr "Način čarobnog otkrivanja"
 
-#: main.cpp:61
+#: main.cpp:45
 #, kde-format
 msgid "Brian Croom"
 msgstr "Brian Croom"
 
-#: main.cpp:61
+#: main.cpp:45
 #, kde-format
 msgid "Port to use KGameRenderer"
 msgstr "Ulaz za korištenje KGameRenderer"
@@ -264,17 +264,17 @@ msgstr "Tema"
 msgid "Custom Game"
 msgstr "Vlastita igra"
 
-#: scene.cpp:122
+#: scene.cpp:117
 #, kde-format
 msgid "Game is paused."
 msgstr "Igra je pauzirana."
 
-#: scene.cpp:130
+#: scene.cpp:125
 #, kde-format
 msgid "Congratulations! You have won!"
 msgstr "Čestitamo! Pobijedili ste!"
 
-#: scene.cpp:132
+#: scene.cpp:127
 #, kde-format
 msgid "You have lost."
 msgstr "Izgubili ste."

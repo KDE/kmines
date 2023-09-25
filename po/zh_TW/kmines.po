@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-08-23 00:43+0000\n"
+"POT-Creation-Date: 2023-09-25 01:39+0000\n"
 "PO-Revision-Date: 2019-01-15 22:40+0800\n"
 "Last-Translator: pan93412 <pan93412@gmail.com>\n"
 "Language-Team: Chinese <zh-l10n@lists.linux.org.tw>\n"
@@ -131,17 +131,17 @@ msgstr "遊戲區內地雷的數目"
 msgid "Main Toolbar"
 msgstr "主工具列"
 
-#: main.cpp:43
+#: main.cpp:27
 #, kde-format
 msgid "KMines"
 msgstr "KMines"
 
-#: main.cpp:45
+#: main.cpp:29
 #, kde-format
 msgid "KMines is a classic minesweeper game"
 msgstr "KMine 是典型的踩地雷遊戲。"
 
-#: main.cpp:47
+#: main.cpp:31
 #, kde-format
 msgid ""
 "(c) 1996-2005, Nicolas Hadacek\n"
@@ -150,72 +150,72 @@ msgid ""
 "(c) 2007, Dmitry Suzdalev"
 msgstr ""
 
-#: main.cpp:50
+#: main.cpp:34
 #, kde-format
 msgid "Nicolas Hadacek"
 msgstr "Nicolas Hadacek"
 
-#: main.cpp:51
+#: main.cpp:35
 #, kde-format
 msgid "Original author"
 msgstr "原始作者"
 
-#: main.cpp:52
+#: main.cpp:36
 #, kde-format
 msgid "Mauricio Piacentini"
 msgstr "Mauricio Piacentini"
 
-#: main.cpp:53
+#: main.cpp:37
 #, kde-format
 msgid "Code refactoring and SVG support. Current maintainer"
 msgstr "整理程式碼，SVG 支援，目前維護者"
 
-#: main.cpp:55
+#: main.cpp:39
 #, kde-format
 msgid "Dmitry Suzdalev"
 msgstr "Dmitry Suzdalev"
 
-#: main.cpp:56
+#: main.cpp:40
 #, kde-format
 msgid "Rewrite to use QGraphicsView framework. Current maintainer"
 msgstr "用 QGraphicsView 架構重寫，目前維護者"
 
-#: main.cpp:58
+#: main.cpp:42
 #, kde-format
 msgid "Andreas Zehender"
 msgstr "Andreas Zehender"
 
-#: main.cpp:58
+#: main.cpp:42
 #, kde-format
 msgid "Smiley pixmaps"
 msgstr "笑臉圖"
 
-#: main.cpp:59
+#: main.cpp:43
 #, kde-format
 msgid "Mikhail Kourinny"
 msgstr "Mikhail Kourinny"
 
-#: main.cpp:59
+#: main.cpp:43
 #, kde-format
 msgid "Solver/Adviser"
 msgstr "解決者/建議者"
 
-#: main.cpp:60
+#: main.cpp:44
 #, kde-format
 msgid "Thomas Capricelli"
 msgstr "Thomas Capricelli"
 
-#: main.cpp:60
+#: main.cpp:44
 #, kde-format
 msgid "Magic reveal mode"
 msgstr "神奇開挖模式"
 
-#: main.cpp:61
+#: main.cpp:45
 #, kde-format
 msgid "Brian Croom"
 msgstr "Brian Croom"
 
-#: main.cpp:61
+#: main.cpp:45
 #, kde-format
 msgid "Port to use KGameRenderer"
 msgstr "移植到 use KGameRenderer"
@@ -270,17 +270,17 @@ msgstr "外觀主題"
 msgid "Custom Game"
 msgstr "自定遊戲"
 
-#: scene.cpp:122
+#: scene.cpp:117
 #, kde-format
 msgid "Game is paused."
 msgstr "遊戲已暫停。"
 
-#: scene.cpp:130
+#: scene.cpp:125
 #, kde-format
 msgid "Congratulations! You have won!"
 msgstr "恭喜，您贏了！"
 
-#: scene.cpp:132
+#: scene.cpp:127
 #, kde-format
 msgid "You have lost."
 msgstr "您輸了。"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2020-05-10 03:23+0200\n"
+"POT-Creation-Date: 2023-09-25 01:39+0000\n"
 "PO-Revision-Date: 2010-12-15 16:51+0100\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -60,13 +60,37 @@ msgstr "Znaci pitanja"
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_AllowKminesReset)
 #: generalopts.ui:24
 #, kde-format
-msgid "Allow KMines Reset"
+msgid "Allow KMines reset"
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_DisableScoreOnReset)
 #: generalopts.ui:37
 #, kde-format
-msgid "Disable Score on Reset"
+msgid "Disable score on reset"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ExploreWithLeftClickOnNumberCells)
+#: generalopts.ui:44
+#, kde-format
+msgid "Explore with left click on number cells"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: generalopts.ui:53
+#, kde-format
+msgid "Place flag when mouse button is:"
+msgstr ""
+
+#. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
+#: generalopts.ui:61
+#, kde-format
+msgid "Released"
+msgstr ""
+
+#. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
+#: generalopts.ui:66
+#, kde-format
+msgid "Pressed"
 msgstr ""
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
@@ -75,20 +99,26 @@ msgstr ""
 msgid "Whether the \"unsure\" marker may be used."
 msgstr "Može li se koristiti marker „nesigurno“."
 
+#. i18n: ectx: label, entry (ExploreWithLeftClickOnNumberCells), group (General)
+#: kmines.kcfg:21
+#, kde-format
+msgid "Left click on a number cell will have the same effect as mid click."
+msgstr ""
+
 #. i18n: ectx: label, entry (CustomWidth), group (Options)
-#: kmines.kcfg:23
+#: kmines.kcfg:35
 #, kde-format
 msgid "The width of the playing field."
 msgstr "Širina polja za igru."
 
 #. i18n: ectx: label, entry (CustomHeight), group (Options)
-#: kmines.kcfg:29
+#: kmines.kcfg:41
 #, kde-format
 msgid "The height of the playing field."
 msgstr "Visina polja za igru."
 
 #. i18n: ectx: label, entry (CustomMines), group (Options)
-#: kmines.kcfg:35
+#: kmines.kcfg:47
 #, kde-format
 msgid "The number of mines in the playing field."
 msgstr "Broj mina u polju za igru."
@@ -99,153 +129,162 @@ msgstr "Broj mina u polju za igru."
 msgid "Main Toolbar"
 msgstr "Glavna traka"
 
-#: main.cpp:33
-#, kde-format
-msgid "KMines is a classic minesweeper game"
-msgstr "K‑mine je klasična igra minolovca"
-
-#: main.cpp:51
+#: main.cpp:27
 #, kde-format
 msgid "KMines"
 msgstr "K‑mine"
 
-#: main.cpp:54
+#: main.cpp:29
+#, kde-format
+msgid "KMines is a classic minesweeper game"
+msgstr "K‑mine je klasična igra minolovca"
+
+#: main.cpp:31
+#, kde-format
+msgid ""
+"(c) 1996-2005, Nicolas Hadacek\n"
+"(c) 2001, Mikhail Kourinny\n"
+"(c) 2006-2007, Mauricio Piacentini\n"
+"(c) 2007, Dmitry Suzdalev"
+msgstr ""
+
+#: main.cpp:34
 #, kde-format
 msgid "Nicolas Hadacek"
 msgstr "Nikola Hadaček"
 
-#: main.cpp:55
+#: main.cpp:35
 #, kde-format
 msgid "Original author"
 msgstr "Prvobitni autor"
 
-#: main.cpp:56
+#: main.cpp:36
 #, kde-format
 msgid "Mauricio Piacentini"
 msgstr "Mauričo Pjaćentini"
 
-#: main.cpp:57
+#: main.cpp:37
 #, kde-format
 msgid "Code refactoring and SVG support. Current maintainer"
 msgstr "Sređivanje koda i podrška za SVG, trenutni održavalac"
 
-#: main.cpp:59
+#: main.cpp:39
 #, kde-format
 msgid "Dmitry Suzdalev"
 msgstr "Dmitrij Suzdaljev"
 
-#: main.cpp:60
+#: main.cpp:40
 #, kde-format
 msgid "Rewrite to use QGraphicsView framework. Current maintainer"
 msgstr "Pisanje iznova na radni okvir QGraphicsView, trenutni održavalac"
 
-#: main.cpp:62
+#: main.cpp:42
 #, kde-format
 msgid "Andreas Zehender"
 msgstr "Andreas Ceender"
 
 # rewrite-msgid: /Smiley/Emoticon/
-#: main.cpp:62
+#: main.cpp:42
 #, kde-format
 msgid "Smiley pixmaps"
 msgstr "Bitmape emotikona"
 
-#: main.cpp:63
+#: main.cpp:43
 #, kde-format
 msgid "Mikhail Kourinny"
 msgstr "Mihail Kurinoj"
 
-#: main.cpp:63
+#: main.cpp:43
 #, kde-format
 msgid "Solver/Adviser"
 msgstr "Rešavač‑savetnik"
 
-#: main.cpp:64
+#: main.cpp:44
 #, kde-format
 msgid "Thomas Capricelli"
 msgstr "Tomas Kapričeli"
 
-#: main.cpp:64
+#: main.cpp:44
 #, kde-format
 msgid "Magic reveal mode"
 msgstr "Režim magičnog otkrivanja"
 
-#: main.cpp:65
+#: main.cpp:45
 #, kde-format
 msgid "Brian Croom"
 msgstr "Brajan Krum"
 
-#: main.cpp:65
+#: main.cpp:45
 #, kde-format
 msgid "Port to use KGameRenderer"
 msgstr "Prenos na KGameRenderer"
 
 # >> @info:status
-#: mainwindow.cpp:110
+#: mainwindow.cpp:101
 #, kde-format
 msgid "Mines: 0/0"
 msgstr "mine: 0/0"
 
 # >> @info:status
-#: mainwindow.cpp:111 mainwindow.cpp:186
+#: mainwindow.cpp:102 mainwindow.cpp:173
 #, kde-format
 msgid "Time: 00:00"
 msgstr "vreme: 00:00"
 
 # >> @item Game difficulty
-#: mainwindow.cpp:134
+#: mainwindow.cpp:125
 #, kde-format
 msgid "Custom"
 msgstr "posebna"
 
 # >> @info:status
-#: mainwindow.cpp:148
+#: mainwindow.cpp:135
 #, kde-format
 msgid "Mines: %1/%2"
 msgstr "mine: %1/%2"
 
-#: mainwindow.cpp:214
+#: mainwindow.cpp:201
 #, kde-format
 msgid "Reset?"
 msgstr ""
 
-#: mainwindow.cpp:214
+#: mainwindow.cpp:201
 #, kde-format
 msgid "Reset the Game?"
 msgstr ""
 
 # >> @info:status
-#: mainwindow.cpp:225
+#: mainwindow.cpp:212
 #, kde-format
 msgid "Time: %1"
 msgstr "vreme: %1"
 
-#: mainwindow.cpp:251
+#: mainwindow.cpp:238
 #, kde-format
 msgid "General"
 msgstr "Opšte"
 
-#: mainwindow.cpp:252
+#: mainwindow.cpp:239
 #, kde-format
 msgid "Theme"
 msgstr "Tema"
 
-#: mainwindow.cpp:253
+#: mainwindow.cpp:240
 #, kde-format
 msgid "Custom Game"
 msgstr "Posebna igra"
 
-#: scene.cpp:126
+#: scene.cpp:117
 #, kde-format
 msgid "Game is paused."
 msgstr "Igra je pauzirana."
 
-#: scene.cpp:134
+#: scene.cpp:125
 #, kde-format
 msgid "Congratulations! You have won!"
 msgstr "Čestitamo! Pobedili ste!"
 
-#: scene.cpp:136
+#: scene.cpp:127
 #, kde-format
 msgid "You have lost."
 msgstr "Izgubili ste."
