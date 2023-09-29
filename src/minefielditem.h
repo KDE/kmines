@@ -9,8 +9,8 @@
 #define MINEFIELDITEM_H
 
 // Qt
-#include <QVector>
 #include <QGraphicsObject>
+#include <QList>
 #include <QPair>
 
 class KGameRenderer;
@@ -164,11 +164,11 @@ private:
     /**
      * Array which holds all child cell items
      */
-    QVector<CellItem*> m_cells;
+    QList<CellItem*> m_cells;
     /**
      * Array which holds border items
      */
-    QVector<BorderItem*> m_borders;
+    QList<BorderItem*> m_borders;
     /**
      * The width and height of minefield cells in scene coordinates
      */
