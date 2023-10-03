@@ -16,7 +16,7 @@
 #include "ui_generalopts.h"
 // KDEGames
 #include <KGameClock>
-#include <KgDifficulty>
+#include <KGameDifficulty>
 #include <KStandardGameAction>
 #include <KgThemeSelector>
 #include <KScoreDialog>
@@ -118,14 +118,14 @@ void KMinesMainWindow::setupActions()
     KStandardAction::preferences(this, &KMinesMainWindow::configureSettings, actionCollection());
     m_actionPause = KStandardGameAction::pause(this, &KMinesMainWindow::pauseGame, actionCollection());
 
-    Kg::difficulty()->addStandardLevelRange(
-        KgDifficultyLevel::Easy, KgDifficultyLevel::Hard
+    KGameDifficulty::global()->addStandardLevelRange(
+        KGameDifficultyLevel::Easy, KGameDifficultyLevel::Hard
     );
-    Kg::difficulty()->addLevel(new KgDifficultyLevel(1000,
+    KGameDifficulty::global()->addLevel(new KGameDifficultyLevel(1000,
         QByteArray( "Custom" ), i18n( "Custom" )
     ));
-    KgDifficultyGUI::init(this);
-    connect(Kg::difficulty(), &KgDifficulty::currentLevelChanged, this, &KMinesMainWindow::newGame);
+    KGameDifficultyGUI::init(this);
+    connect(KGameDifficulty::global(), &KGameDifficulty::currentLevelChanged, this, &KMinesMainWindow::newGame);
 
     setupGUI(screen()->availableGeometry().size() * 0.4);
 }
@@ -149,19 +149,19 @@ void KMinesMainWindow::newGame()
     }
     m_actionPause->setEnabled(false);
 
-    Kg::difficulty()->setGameRunning(false);
-    switch(Kg::difficultyLevel())
+    KGameDifficulty::global()->setGameRunning(false);
+    switch(KGameDifficulty::globalLevel())
     {
-        case KgDifficultyLevel::Easy:
+        case KGameDifficultyLevel::Easy:
             m_scene->startNewGame(9, 9, 10);
             break;
-        case KgDifficultyLevel::Medium:
+        case KGameDifficultyLevel::Medium:
             m_scene->startNewGame(16,16,40);
             break;
-        case KgDifficultyLevel::Hard:
+        case KGameDifficultyLevel::Hard:
             m_scene->startNewGame(16,30,99);
             break;
-        case KgDifficultyLevel::Custom:
+        case KGameDifficultyLevel::Custom:
             m_scene->startNewGame(Settings::customHeight(),
                                   Settings::customWidth(),
                                   Settings::customMines());
@@ -177,11 +177,11 @@ void KMinesMainWindow::onGameOver(bool won)
 {
     m_gameClock->pause();
     m_actionPause->setEnabled(false);
-    Kg::difficulty()->setGameRunning(false);
+    KGameDifficulty::global()->setGameRunning(false);
     if(won && m_scene->canScore())
     {
         QPointer<KScoreDialog> scoreDialog = new KScoreDialog(KScoreDialog::Name | KScoreDialog::Time, this);
-        scoreDialog->initFromDifficulty(Kg::difficulty());
+        scoreDialog->initFromDifficulty(KGameDifficulty::global());
         scoreDialog->hideField(KScoreDialog::Score);
 
         KScoreDialog::FieldInfo scoreInfo;
@@ -218,13 +218,13 @@ void KMinesMainWindow::onFirstClick()
     m_actionPause->setEnabled(true);
     // start clock
     m_gameClock->resume();
-    Kg::difficulty()->setGameRunning(true);
+    KGameDifficulty::global()->setGameRunning(true);
 }
 
 void KMinesMainWindow::showHighscores()
 {
     QPointer<KScoreDialog> scoreDialog = new KScoreDialog(KScoreDialog::Name | KScoreDialog::Time, this);
-    scoreDialog->initFromDifficulty(Kg::difficulty());
+    scoreDialog->initFromDifficulty(KGameDifficulty::global());
     scoreDialog->hideField(KScoreDialog::Score);
     scoreDialog->exec();
     delete scoreDialog;
