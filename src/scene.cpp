@@ -12,7 +12,7 @@
 #include "minefielditem.h"
 // KDEGames
 #include <KGamePopupItem>
-#include <KgThemeProvider>
+#include <KGameThemeProvider>
 // KF
 #include <KLocalizedString>
 // Qt
@@ -32,9 +32,9 @@ void KMinesView::resizeEvent( QResizeEvent *ev )
 
 // -------------- KMinesScene --------------------
 
-static KgThemeProvider* provider()
+static KGameThemeProvider* provider()
 {
-    auto* prov = new KgThemeProvider;
+    auto* prov = new KGameThemeProvider;
     prov->discoverThemes(QStringLiteral("themes"));
 
     return prov;
