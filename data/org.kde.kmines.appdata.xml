@@ -140,10 +140,10 @@
   </provides>
   <project_group>KDE</project_group>
   <releases>
+    <release version="4.0.23082" date="2023-10-12"/>
     <release version="4.0.23081" date="2023-09-14"/>
     <release version="4.0.23080" date="2023-08-24"/>
     <release version="4.0.23043" date="2023-07-06"/>
-    <release version="4.0.23042" date="2023-06-08"/>
   </releases>
   <content_rating type="oars-1.1">
     <content_attribute id="violence-cartoon">mild</content_attribute>
