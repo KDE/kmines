@@ -306,7 +306,7 @@
 
 <chapter id="command">
 <title
->Órdenes y accesos rápidos</title>
+>Órdenes y atajos de teclado</title>
 
 <para
 >Las siguientes secciones describen brevemente cada opción de la barra de menús.</para>
@@ -448,13 +448,13 @@
 
 <sect1 id="keys"
 ><title
->Accesos rápidos de teclado predeterminados</title>
+>Atajos de teclado predeterminados</title>
 <para
 >Las siguientes tablas muestran las asociaciones de teclas predeterminadas.</para>
 
 <table>
 <title
->Accesos rápidos de teclado</title>
+>Atajos de teclado</title>
 <tgroup cols="2">
 <thead
 ><row
@@ -527,11 +527,11 @@
 </table>
 
 <para
->Estos accesos rápidos se pueden cambiar seleccionando la opción del menú <menuchoice
+>Estos atajos de teclado se pueden cambiar seleccionando la opción del menú <menuchoice
 ><guimenu
 >Preferencias</guimenu
 ><guimenuitem
->Configurar accesos rápidos...</guimenuitem
+>Configurar atajos de teclado...</guimenuitem
 ></menuchoice
 >.</para>
 
