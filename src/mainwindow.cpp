@@ -17,7 +17,7 @@
 // KDEGames
 #include <KGameClock>
 #include <KGameDifficulty>
-#include <KStandardGameAction>
+#include <KGameStandardAction>
 #include <KGameThemeSelector>
 #include <KScoreDialog>
 // KF
@@ -111,12 +111,12 @@ KMinesMainWindow::KMinesMainWindow()
 
 void KMinesMainWindow::setupActions()
 {
-    KStandardGameAction::gameNew(this, &KMinesMainWindow::newGame, actionCollection());
-    KStandardGameAction::highscores(this, &KMinesMainWindow::showHighscores, actionCollection());
+    KGameStandardAction::gameNew(this, &KMinesMainWindow::newGame, actionCollection());
+    KGameStandardAction::highscores(this, &KMinesMainWindow::showHighscores, actionCollection());
 
-    KStandardGameAction::quit(this, &KMinesMainWindow::close, actionCollection());
+    KGameStandardAction::quit(this, &KMinesMainWindow::close, actionCollection());
     KStandardAction::preferences(this, &KMinesMainWindow::configureSettings, actionCollection());
-    m_actionPause = KStandardGameAction::pause(this, &KMinesMainWindow::pauseGame, actionCollection());
+    m_actionPause = KGameStandardAction::pause(this, &KMinesMainWindow::pauseGame, actionCollection());
 
     KGameDifficulty::global()->addStandardLevelRange(
         KGameDifficultyLevel::Easy, KGameDifficultyLevel::Hard
