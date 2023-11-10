@@ -17,9 +17,9 @@
 // KDEGames
 #include <KGameClock>
 #include <KGameDifficulty>
+#include <KGameHighScoreDialog>
 #include <KGameStandardAction>
 #include <KGameThemeSelector>
-#include <KScoreDialog>
 // KF
 #include <KActionCollection>
 #include <KConfigDialog>
@@ -180,18 +180,18 @@ void KMinesMainWindow::onGameOver(bool won)
     KGameDifficulty::global()->setGameRunning(false);
     if(won && m_scene->canScore())
     {
-        QPointer<KScoreDialog> scoreDialog = new KScoreDialog(KScoreDialog::Name | KScoreDialog::Time, this);
+        QPointer<KGameHighScoreDialog> scoreDialog = new KGameHighScoreDialog(KGameHighScoreDialog::Name | KGameHighScoreDialog::Time, this);
         scoreDialog->initFromDifficulty(KGameDifficulty::global());
-        scoreDialog->hideField(KScoreDialog::Score);
+        scoreDialog->hideField(KGameHighScoreDialog::Score);
 
-        KScoreDialog::FieldInfo scoreInfo;
+        KGameHighScoreDialog::FieldInfo scoreInfo;
         // score-in-seconds will be hidden
-        scoreInfo[KScoreDialog::Score].setNum(m_gameClock->seconds());
+        scoreInfo[KGameHighScoreDialog::Score].setNum(m_gameClock->seconds());
         //score-as-time will be shown
-        scoreInfo[KScoreDialog::Time] = m_gameClock->timeString();
+        scoreInfo[KGameHighScoreDialog::Time] = m_gameClock->timeString();
 
         // we keep highscores as number of seconds
-        if( scoreDialog->addScore(scoreInfo, KScoreDialog::LessIsMore) != 0 )
+        if( scoreDialog->addScore(scoreInfo, KGameHighScoreDialog::LessIsMore) != 0 )
             scoreDialog->exec();
 
         delete scoreDialog;
@@ -223,9 +223,9 @@ void KMinesMainWindow::onFirstClick()
 
 void KMinesMainWindow::showHighscores()
 {
-    QPointer<KScoreDialog> scoreDialog = new KScoreDialog(KScoreDialog::Name | KScoreDialog::Time, this);
+    QPointer<KGameHighScoreDialog> scoreDialog = new KGameHighScoreDialog(KGameHighScoreDialog::Name | KGameHighScoreDialog::Time, this);
     scoreDialog->initFromDifficulty(KGameDifficulty::global());
-    scoreDialog->hideField(KScoreDialog::Score);
+    scoreDialog->hideField(KGameHighScoreDialog::Score);
     scoreDialog->exec();
     delete scoreDialog;
 }
