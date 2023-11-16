@@ -169,15 +169,15 @@ private:
     /**
      * The width and height of minefield cells in scene coordinates
      */
-    int m_cellSize;
+    int m_cellSize = 1; // dummy init value for non-large boundingRect, non-null because used for divisions
     /**
      * Number of field rows
      */
-    int m_numRows;
+    int m_numRows = 1; // dummy init value for non-large boundingRect, non-null because used for divisions
     /**
      * Number of field columns
      */
-    int m_numCols;
+    int m_numCols = 1; // dummy init value for non-large boundingRect, non-null because used for divisions
     /**
      * Number of mines in field
      */
