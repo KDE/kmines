@@ -24,9 +24,9 @@
 #include <KActionCollection>
 #include <KConfigDialog>
 #include <KLocalizedString>
+#include <KMessageBox>
 // Qt
 #include <QStatusBar>
-#include <QMessageBox>
 #include <QScreen>
 /*
  * Classes for config dlg pages
@@ -198,7 +198,12 @@ void KMinesMainWindow::onGameOver(bool won)
     } else if (!won)
     {
         //ask to reset
-        if (Settings::allowKminesReset() && QMessageBox::question(this, i18n("Reset?"), i18n("Reset the Game?")) == QMessageBox::Yes){
+        if (Settings::allowKminesReset() &&
+            KMessageBox::questionTwoActions(this,
+                                            i18n("Reset the Game?"),
+                                            QString(),
+                                            KGuiItem(i18nc("@action;button", "Reset"), QStringLiteral("view-refresh")),
+                                            KStandardGuiItem::cancel()) == KMessageBox::PrimaryAction) {
             m_scene->reset();
             m_gameClock->restart();
             m_actionPause->setEnabled(true);
