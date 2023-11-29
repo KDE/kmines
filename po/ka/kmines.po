@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-29 01:36+0000\n"
-"PO-Revision-Date: 2023-08-24 05:22+0200\n"
+"PO-Revision-Date: 2023-11-29 05:32+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -243,11 +243,10 @@ msgid "Reset the Game?"
 msgstr "გავანულო თამაში?"
 
 #: mainwindow.cpp:205
-#, fuzzy, kde-format
-#| msgid "Reset?"
+#, kde-format
 msgctxt "@action;button"
 msgid "Reset"
-msgstr "განულება?"
+msgstr "ჩამოყრა"
 
 #: mainwindow.cpp:217
 #, kde-format
