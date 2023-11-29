@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-25 01:39+0000\n"
+"POT-Creation-Date: 2023-11-29 01:36+0000\n"
 "PO-Revision-Date: 2019-11-11 12:52+0200\n"
 "Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
 "Language-Team: Estonian <kde-et@lists.linux.ee>\n"
@@ -237,32 +237,34 @@ msgstr "Kohandatud "
 msgid "Mines: %1/%2"
 msgstr "Miine: %1/%2"
 
-#: mainwindow.cpp:201
-#, kde-format
-msgid "Reset?"
-msgstr "Kas lähtestada?"
-
-#: mainwindow.cpp:201
+#: mainwindow.cpp:203
 #, kde-format
 msgid "Reset the Game?"
 msgstr "Kas lähtestada mäng?"
 
-#: mainwindow.cpp:212
+#: mainwindow.cpp:205
+#, fuzzy, kde-format
+#| msgid "Reset?"
+msgctxt "@action;button"
+msgid "Reset"
+msgstr "Kas lähtestada?"
+
+#: mainwindow.cpp:217
 #, kde-format
 msgid "Time: %1"
 msgstr "Aeg: %1"
 
-#: mainwindow.cpp:238
+#: mainwindow.cpp:243
 #, kde-format
 msgid "General"
 msgstr "Üldine"
 
-#: mainwindow.cpp:239
+#: mainwindow.cpp:244
 #, kde-format
 msgid "Theme"
 msgstr "Teema"
 
-#: mainwindow.cpp:240
+#: mainwindow.cpp:245
 #, kde-format
 msgid "Custom Game"
 msgstr "Kohandatud mäng"

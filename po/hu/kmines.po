@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KDE 4.2\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-25 01:39+0000\n"
+"POT-Creation-Date: 2023-11-29 01:36+0000\n"
 "PO-Revision-Date: 2021-12-10 11:13+0100\n"
 "Last-Translator: Kristof Kiszel <ulysses@fsf.hu>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -240,32 +240,34 @@ msgstr "Egyedi"
 msgid "Mines: %1/%2"
 msgstr "Aknák: %1/%2"
 
-#: mainwindow.cpp:201
-#, kde-format
-msgid "Reset?"
-msgstr "Visszaállítás?"
-
-#: mainwindow.cpp:201
+#: mainwindow.cpp:203
 #, kde-format
 msgid "Reset the Game?"
 msgstr "Visszaállítja a játékot?"
 
-#: mainwindow.cpp:212
+#: mainwindow.cpp:205
+#, fuzzy, kde-format
+#| msgid "Reset?"
+msgctxt "@action;button"
+msgid "Reset"
+msgstr "Visszaállítás?"
+
+#: mainwindow.cpp:217
 #, kde-format
 msgid "Time: %1"
 msgstr "Idő: %1"
 
-#: mainwindow.cpp:238
+#: mainwindow.cpp:243
 #, kde-format
 msgid "General"
 msgstr "Általános"
 
-#: mainwindow.cpp:239
+#: mainwindow.cpp:244
 #, kde-format
 msgid "Theme"
 msgstr "Téma"
 
-#: mainwindow.cpp:240
+#: mainwindow.cpp:245
 #, kde-format
 msgid "Custom Game"
 msgstr "Egyedi játék"

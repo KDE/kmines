@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-25 01:39+0000\n"
+"POT-Creation-Date: 2023-11-29 01:36+0000\n"
 "PO-Revision-Date: 2023-09-18 09:44-0300\n"
 "Last-Translator: Luiz Fernando Ranghetti <elchevive@opensuse.org>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
@@ -250,32 +250,34 @@ msgstr "Personalizado"
 msgid "Mines: %1/%2"
 msgstr "Minas: %1/%2"
 
-#: mainwindow.cpp:201
-#, kde-format
-msgid "Reset?"
-msgstr "Reiniciar?"
-
-#: mainwindow.cpp:201
+#: mainwindow.cpp:203
 #, kde-format
 msgid "Reset the Game?"
 msgstr "Reiniciar o jogo?"
 
-#: mainwindow.cpp:212
+#: mainwindow.cpp:205
+#, fuzzy, kde-format
+#| msgid "Reset?"
+msgctxt "@action;button"
+msgid "Reset"
+msgstr "Reiniciar?"
+
+#: mainwindow.cpp:217
 #, kde-format
 msgid "Time: %1"
 msgstr "Tempo: %1"
 
-#: mainwindow.cpp:238
+#: mainwindow.cpp:243
 #, kde-format
 msgid "General"
 msgstr "Geral"
 
-#: mainwindow.cpp:239
+#: mainwindow.cpp:244
 #, kde-format
 msgid "Theme"
 msgstr "Tema"
 
-#: mainwindow.cpp:240
+#: mainwindow.cpp:245
 #, kde-format
 msgid "Custom Game"
 msgstr "Jogo personalizado"

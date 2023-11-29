@@ -1,4 +1,4 @@
-# Version: $Revision: 1661394 $
+# Version: $Revision: 1666042 $
 # translation of kmines.po to Polish
 # translation of kmines.po to
 # translation of kmines.po to
@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-25 01:39+0000\n"
+"POT-Creation-Date: 2023-11-29 01:36+0000\n"
 "PO-Revision-Date: 2023-09-30 11:04+0200\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -246,32 +246,34 @@ msgstr "Własne"
 msgid "Mines: %1/%2"
 msgstr "Miny %1/%2"
 
-#: mainwindow.cpp:201
-#, kde-format
-msgid "Reset?"
-msgstr "Wyzerować?"
-
-#: mainwindow.cpp:201
+#: mainwindow.cpp:203
 #, kde-format
 msgid "Reset the Game?"
 msgstr "Wyzerować grę?"
 
-#: mainwindow.cpp:212
+#: mainwindow.cpp:205
+#, fuzzy, kde-format
+#| msgid "Reset?"
+msgctxt "@action;button"
+msgid "Reset"
+msgstr "Wyzerować?"
+
+#: mainwindow.cpp:217
 #, kde-format
 msgid "Time: %1"
 msgstr "Czas: %1"
 
-#: mainwindow.cpp:238
+#: mainwindow.cpp:243
 #, kde-format
 msgid "General"
 msgstr "Ogólne"
 
-#: mainwindow.cpp:239
+#: mainwindow.cpp:244
 #, kde-format
 msgid "Theme"
 msgstr "Wystrój"
 
-#: mainwindow.cpp:240
+#: mainwindow.cpp:245
 #, kde-format
 msgid "Custom Game"
 msgstr "Gra użytkownika"
