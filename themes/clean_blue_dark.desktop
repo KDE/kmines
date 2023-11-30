@@ -1,0 +1,11 @@
+[KGameTheme]
+Author=Nathan Upchurch
+AuthorEmail=nathan@upchur.ch
+Copyright=2023 Nathan Upchurch
+Description=A dark, high contrast theme for KMines.
+FileName=kmines_clean_blue_dark.svg
+License=CC-BY-SA-4.0
+Name=Clean Blue Dark
+Preview=clean_blue_dark_preview.png
+Type=SVG
+Version=1.0
