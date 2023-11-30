@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-29 01:36+0000\n"
-"PO-Revision-Date: 2023-08-23 22:21+0100\n"
+"PO-Revision-Date: 2023-11-2922:05+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
@@ -246,11 +246,10 @@ msgid "Reset the Game?"
 msgstr "Ĉu restarigi la Ludon?"
 
 #: mainwindow.cpp:205
-#, fuzzy, kde-format
-#| msgid "Reset?"
+#, kde-format
 msgctxt "@action;button"
 msgid "Reset"
-msgstr "Ĉu Restarigi?"
+msgstr "Restarigi"
 
 #: mainwindow.cpp:217
 #, kde-format
