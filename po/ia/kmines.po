@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-29 01:36+0000\n"
-"PO-Revision-Date: 2023-09-25 18:10+0200\n"
+"PO-Revision-Date: 2023-11-30 09:00+0100\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
@@ -126,7 +126,7 @@ msgstr "Barra de instrumento principal"
 #: main.cpp:27
 #, kde-format
 msgid "KMines"
-msgstr ""
+msgstr "KMines"
 
 #: main.cpp:29
 #, kde-format
@@ -238,11 +238,10 @@ msgid "Reset the Game?"
 msgstr ""
 
 #: mainwindow.cpp:205
-#, fuzzy, kde-format
-#| msgid "Reset?"
+#, kde-format
 msgctxt "@action;button"
 msgid "Reset"
-msgstr "Reinitialisa?"
+msgstr "Reinitialisa"
 
 #: mainwindow.cpp:217
 #, kde-format
@@ -272,9 +271,9 @@ msgstr ""
 #: scene.cpp:125
 #, kde-format
 msgid "Congratulations! You have won!"
-msgstr ""
+msgstr "Congratulationes! Tu ha ganiate!"
 
 #: scene.cpp:127
 #, kde-format
 msgid "You have lost."
-msgstr ""
+msgstr "Tu ha perdite."
