@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-29 01:36+0000\n"
-"PO-Revision-Date: 2023-09-18 09:44-0300\n"
+"PO-Revision-Date: 2023-12-01 17:13-0300\n"
 "Last-Translator: Luiz Fernando Ranghetti <elchevive@opensuse.org>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
 "Language: pt_BR\n"
@@ -256,11 +256,10 @@ msgid "Reset the Game?"
 msgstr "Reiniciar o jogo?"
 
 #: mainwindow.cpp:205
-#, fuzzy, kde-format
-#| msgid "Reset?"
+#, kde-format
 msgctxt "@action;button"
 msgid "Reset"
-msgstr "Reiniciar?"
+msgstr "Reiniciar"
 
 #: mainwindow.cpp:217
 #, kde-format
