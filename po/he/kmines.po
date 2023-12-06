@@ -14,31 +14,32 @@
 # Israel Berger <Israelb@gmail.com>, 2005.
 # Chen Levy <contrib@chenlevy.com>, 2006.
 # Elkana Bardugo <ttv200@gmail.com>, 2017. #zanata
+# SPDX-FileCopyrightText: 2023 Yaron Shahrabani <sh.yaron@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-29 01:36+0000\n"
-"PO-Revision-Date: 2017-05-16 07:01-0400\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Hebrew <kde-l10n-he@kde.org>\n"
+"PO-Revision-Date: 2023-12-05 12:26+0200\n"
+"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
+"Language-Team: צוות התרגום של KDE ישראל\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Zanata 3.9.6\n"
+"X-Generator: Lokalize 23.08.3\n"
 "Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
 "n % 10 == 0) ? 2 : 3));\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
-msgstr "Israel Berger"
+msgstr "Israel Berger,צוות התרגום של KDE ישראל"
 
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr "israelb@gmail.com"
+msgstr "israelb@gmail.com,kde-l10n-he@kde.org"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: customgame.ui:16
@@ -54,63 +55,63 @@ msgstr "גובה:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: customgame.ui:36
-#, fuzzy, kde-format
+#, kde-format
 msgid "Mines:"
-msgstr "KMines"
+msgstr "מוקשים:"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_UseQuestionMarks)
 #: generalopts.ui:17
-#, fuzzy, kde-format
+#, kde-format
 msgid "Use '?' marks"
-msgstr "אפשר סימון ?"
+msgstr "להשתמש בסימוני ‚?’"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_AllowKminesReset)
 #: generalopts.ui:24
 #, kde-format
 msgid "Allow KMines reset"
-msgstr ""
+msgstr "לאפשר את איפוס KMines"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_DisableScoreOnReset)
 #: generalopts.ui:37
 #, kde-format
 msgid "Disable score on reset"
-msgstr ""
+msgstr "השבתת הניקוד בעת איפוס"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ExploreWithLeftClickOnNumberCells)
 #: generalopts.ui:44
 #, kde-format
 msgid "Explore with left click on number cells"
-msgstr ""
+msgstr "אפשר לחקור עם מקש שמאלי על תאי מספרים"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: generalopts.ui:53
 #, kde-format
 msgid "Place flag when mouse button is:"
-msgstr ""
+msgstr "להציג דגל כשסמן העכבר:"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:61
 #, kde-format
 msgid "Released"
-msgstr ""
+msgstr "משוחרר"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:66
 #, kde-format
 msgid "Pressed"
-msgstr ""
+msgstr "נלחץ"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
-#, fuzzy, kde-format
+#, kde-format
 msgid "Whether the \"unsure\" marker may be used."
-msgstr "האם ניתן יהיה להשתמש בסימון \"לא ברור\"."
+msgstr "האם לאפשר שימוש בסימון „ספק”."
 
 #. i18n: ectx: label, entry (ExploreWithLeftClickOnNumberCells), group (General)
 #: kmines.kcfg:21
 #, kde-format
 msgid "Left click on a number cell will have the same effect as mid click."
-msgstr ""
+msgstr "ללחיצה שמאלית על תא עם מספר תהיה אותה השפעה כמו לחיצה אמצעית."
 
 #. i18n: ectx: label, entry (CustomWidth), group (Options)
 #: kmines.kcfg:35
@@ -132,9 +133,9 @@ msgstr "מספר המוקשים בשטח המשחק."
 
 #. i18n: ectx: ToolBar (mainToolBar)
 #: kminesui.rc:12
-#, fuzzy, kde-format
+#, kde-format
 msgid "Main Toolbar"
-msgstr "צבע מוקש"
+msgstr "סרגל כלים ראשי"
 
 #: main.cpp:27
 #, kde-format
@@ -142,9 +143,9 @@ msgid "KMines"
 msgstr "KMines"
 
 #: main.cpp:29
-#, fuzzy, kde-format
+#, kde-format
 msgid "KMines is a classic minesweeper game"
-msgstr "משחק שולה מוקשים קלאסי - KMines"
+msgstr "KMines הוא משחק שולה מוקשים קלסי"
 
 #: main.cpp:31
 #, kde-format
@@ -154,41 +155,45 @@ msgid ""
 "(c) 2006-2007, Mauricio Piacentini\n"
 "(c) 2007, Dmitry Suzdalev"
 msgstr ""
+"(c) 1996‏-2005, ניקולס הדייסק\n"
+"(c) 2001, מיכאיל קוריני\n"
+"(c) 2006‏-2007, מאוריציו פיאצנטיני\n"
+"(c) 2007, דמיטרי סוזדלב"
 
 #: main.cpp:34
 #, kde-format
 msgid "Nicolas Hadacek"
-msgstr ""
+msgstr "ניקולס הדייסק"
 
 #: main.cpp:35
 #, kde-format
 msgid "Original author"
-msgstr ""
+msgstr "היוצר המקורי"
 
 #: main.cpp:36
 #, kde-format
 msgid "Mauricio Piacentini"
-msgstr ""
+msgstr "מאוריציו פיאצנטיני"
 
 #: main.cpp:37
 #, kde-format
 msgid "Code refactoring and SVG support. Current maintainer"
-msgstr ""
+msgstr "שכתוב קוד ותמיכה ב־SVG. מתחזק נוכחי"
 
 #: main.cpp:39
 #, kde-format
 msgid "Dmitry Suzdalev"
-msgstr ""
+msgstr "דמיטרי סוזדלב"
 
 #: main.cpp:40
 #, kde-format
 msgid "Rewrite to use QGraphicsView framework. Current maintainer"
-msgstr ""
+msgstr "שכתוב לשימוש בתשתית QGraphicsView. מתחזק נוכחי"
 
 #: main.cpp:42
 #, kde-format
 msgid "Andreas Zehender"
-msgstr ""
+msgstr "אנדראס זהדנר"
 
 #: main.cpp:42
 #, kde-format
@@ -198,7 +203,7 @@ msgstr "תמונות הסמיילים"
 #: main.cpp:43
 #, kde-format
 msgid "Mikhail Kourinny"
-msgstr ""
+msgstr "מיכאיל קוריני"
 
 #: main.cpp:43
 #, kde-format
@@ -208,7 +213,7 @@ msgstr "פותר/יועץ"
 #: main.cpp:44
 #, kde-format
 msgid "Thomas Capricelli"
-msgstr ""
+msgstr "תומס קפריצ׳לי"
 
 #: main.cpp:44
 #, kde-format
@@ -218,22 +223,22 @@ msgstr "מצב חשיפה קסומה"
 #: main.cpp:45
 #, kde-format
 msgid "Brian Croom"
-msgstr ""
+msgstr "בריאן קרום"
 
 #: main.cpp:45
 #, kde-format
 msgid "Port to use KGameRenderer"
-msgstr ""
+msgstr "הסבה לשימוש ב־KGameRenderer"
 
 #: mainwindow.cpp:101
-#, fuzzy, kde-format
+#, kde-format
 msgid "Mines: 0/0"
-msgstr "KMines"
+msgstr "מוקשים: 0/0"
 
 #: mainwindow.cpp:102 mainwindow.cpp:173
 #, kde-format
 msgid "Time: 00:00"
-msgstr ""
+msgstr "זמן: 00:00"
 
 #: mainwindow.cpp:125
 #, kde-format
@@ -241,25 +246,25 @@ msgid "Custom"
 msgstr "מותאם אישית"
 
 #: mainwindow.cpp:135
-#, fuzzy, kde-format
+#, kde-format
 msgid "Mines: %1/%2"
-msgstr "מוקשים (%1%):"
+msgstr "מוקשים: %1/%2"
 
 #: mainwindow.cpp:203
 #, kde-format
 msgid "Reset the Game?"
-msgstr ""
+msgstr "לאפס את המשחק?"
 
 #: mainwindow.cpp:205
 #, kde-format
 msgctxt "@action;button"
 msgid "Reset"
-msgstr ""
+msgstr "איפוס"
 
 #: mainwindow.cpp:217
 #, kde-format
 msgid "Time: %1"
-msgstr ""
+msgstr "זמן: %1"
 
 #: mainwindow.cpp:243
 #, kde-format
@@ -269,7 +274,7 @@ msgstr "כללי"
 #: mainwindow.cpp:244
 #, kde-format
 msgid "Theme"
-msgstr ""
+msgstr "ערכת עיצוב"
 
 #: mainwindow.cpp:245
 #, kde-format
@@ -279,14 +284,14 @@ msgstr "משחק מותאם אישית"
 #: scene.cpp:117
 #, kde-format
 msgid "Game is paused."
-msgstr ""
+msgstr "המשחק מושהה."
 
 #: scene.cpp:125
 #, kde-format
 msgid "Congratulations! You have won!"
-msgstr ""
+msgstr "מזל טוב! זכית!"
 
 #: scene.cpp:127
 #, kde-format
 msgid "You have lost."
-msgstr ""
+msgstr "הפסדת."
