@@ -20,6 +20,7 @@
   <name xml:lang="fi">KMines</name>
   <name xml:lang="fr">KMines</name>
   <name xml:lang="gl">KMines</name>
+  <name xml:lang="he">KMines</name>
   <name xml:lang="hu">KMines</name>
   <name xml:lang="ia">KMines</name>
   <name xml:lang="id">KMines</name>
@@ -61,6 +62,7 @@
   <summary xml:lang="fi">Miinaharava-tyylinen peli</summary>
   <summary xml:lang="fr">Jeu dans le style du démineur</summary>
   <summary xml:lang="gl">Xogo como o busca minas</summary>
+  <summary xml:lang="he">משחק דמוי שולה מוקשים</summary>
   <summary xml:lang="hu">Aknakeresőszerű játék</summary>
   <summary xml:lang="id">Permainan Seperti Minesweeper</summary>
   <summary xml:lang="is">KMines er hefðbundinn sprengjuleitarleikur sem líkist Minesweeper</summary>
@@ -101,6 +103,7 @@
     <p xml:lang="fi">KMines on perinteinen miinaharavapeli. Tavoitteena on paljastaa kaikki ruudut räjäyttämättä miinoja. Miinan räjähdettyä peli loppuu.</p>
     <p xml:lang="fr">KMines est un jeu dans le style du démineur. L'objectif est de révéler tous les carrés sans faire exploser la moindre mine. Lorsqu'une mine explose, la partie est terminée.</p>
     <p xml:lang="gl">KMines é un xogo clásico de buscar minas. A idea é descubrir todos os cadrados sen estourar ningunha mina. Cando unha mina estoura acaba a partida.</p>
+    <p xml:lang="he">KMines הוא משחק שולה מוקשים קלסי. הרעיון הוא לחשוף את כל הריבועים מבלי לפוצץ מוקשים. פיצוץ מוקש מסיים את המשחק.</p>
     <p xml:lang="hu">A KMines egy klasszikus aknakereső játék. A cél az összes mező felfedése anélkül, hogy egy aknát is felrobbantana. Ha egy akna felrobban, a játék véget ér.</p>
     <p xml:lang="id">KMines adalah permainan Minesweeper klasik. Gagasannya adalah untuk mengungkap semua persegi tanpa meledakkan ranjau apa pun. Ketika sebuah ranjau diledakkan, tamatlah permainan.</p>
     <p xml:lang="is">KMines er hefðbundinn sprengjuleitarleikur sem líkist Minesweeper. Hugmyndin er að afhjúpa alla reiti nema þá sem springa í andlitið á manni. Ef það gerist, er leiknum lokið.</p>
