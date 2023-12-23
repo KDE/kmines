@@ -2,7 +2,7 @@
 # translation of kmines.po to
 # traduction de kmines.po en Français
 # First-Translator : 1999-01-27
-# SPDX-FileCopyrightText: 2013, 2020, 2021, 2023 xavier <xavier.besnard@neuf.fr>
+# SPDX-FileCopyrightText: 2013, 2020, 2021, 2023 Xavier Besnard <xavier.besnard@kde.org>
 # Francois-Xavier Duranceau <Francois-Xavier.Duranceau@loria.fr>
 # Philippe Thomin <Philippe.Thomin@univ-valenciennes.fr>
 # Gérard Delafond <gerard@delafond.org>, 2002, 2004.
