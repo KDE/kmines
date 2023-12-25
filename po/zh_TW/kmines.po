@@ -8,42 +8,43 @@
 # Franklin Weng <franklin at goodhorse dot idv dot tw>, 2007, 2008.
 # Franklin Weng <franklin@mail.everfocus.com.tw>, 2010.
 # pan93412 <pan93412@gmail.com>, 2019.
+# SPDX-FileCopyrightText: 2023 Kisaragi Hiu <mail@kisaragi-hiu.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-29 01:36+0000\n"
-"PO-Revision-Date: 2019-01-15 22:40+0800\n"
-"Last-Translator: pan93412 <pan93412@gmail.com>\n"
-"Language-Team: Chinese <zh-l10n@lists.linux.org.tw>\n"
+"PO-Revision-Date: 2023-12-25 02:03+0900\n"
+"Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
+"Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 18.12.1\n"
+"X-Generator: Lokalize 23.08.4\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
-msgstr "Hydonsingore Sie"
+msgstr "Hydonsingore Sie, Kisaragi Hiu"
 
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr "hydonsingore@mail.educities.edu.tw"
+msgstr "hydonsingore@mail.educities.edu.tw, mail@kisaragi-hiu.com"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: customgame.ui:16
 #, kde-format
 msgid "Width:"
-msgstr "寬度:"
+msgstr "寬度："
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: customgame.ui:26
 #, kde-format
 msgid "Height:"
-msgstr "高度:"
+msgstr "高度："
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: customgame.ui:36
@@ -59,15 +60,13 @@ msgstr "使用問號（不確定）標記"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_AllowKminesReset)
 #: generalopts.ui:24
-#, fuzzy, kde-format
-#| msgid "Allow KMines Reset"
+#, kde-format
 msgid "Allow KMines reset"
 msgstr "允許 KMines 重設"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_DisableScoreOnReset)
 #: generalopts.ui:37
-#, fuzzy, kde-format
-#| msgid "Disable Score on Reset"
+#, kde-format
 msgid "Disable score on reset"
 msgstr "重設時停用分數功能"
 
@@ -75,25 +74,25 @@ msgstr "重設時停用分數功能"
 #: generalopts.ui:44
 #, kde-format
 msgid "Explore with left click on number cells"
-msgstr ""
+msgstr "左鍵點擊數字欄位來探索"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: generalopts.ui:53
 #, kde-format
 msgid "Place flag when mouse button is:"
-msgstr ""
+msgstr "滑鼠按鍵按下或放開時放下旗標："
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:61
 #, kde-format
 msgid "Released"
-msgstr ""
+msgstr "放開時"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:66
 #, kde-format
 msgid "Pressed"
-msgstr ""
+msgstr "按下時"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
@@ -105,25 +104,25 @@ msgstr "是否可以使用「不確定」標記"
 #: kmines.kcfg:21
 #, kde-format
 msgid "Left click on a number cell will have the same effect as mid click."
-msgstr ""
+msgstr "左鍵點擊數字欄位會與中鍵點擊有一樣的效果。"
 
 #. i18n: ectx: label, entry (CustomWidth), group (Options)
 #: kmines.kcfg:35
 #, kde-format
 msgid "The width of the playing field."
-msgstr "遊戲區的寬度"
+msgstr "遊戲區的寬度。"
 
 #. i18n: ectx: label, entry (CustomHeight), group (Options)
 #: kmines.kcfg:41
 #, kde-format
 msgid "The height of the playing field."
-msgstr "遊戲區的高度"
+msgstr "遊戲區的高度。"
 
 #. i18n: ectx: label, entry (CustomMines), group (Options)
 #: kmines.kcfg:47
 #, kde-format
 msgid "The number of mines in the playing field."
-msgstr "遊戲區內地雷的數目"
+msgstr "遊戲區內地雷的數目。"
 
 #. i18n: ectx: ToolBar (mainToolBar)
 #: kminesui.rc:12
@@ -139,7 +138,7 @@ msgstr "KMines"
 #: main.cpp:29
 #, kde-format
 msgid "KMines is a classic minesweeper game"
-msgstr "KMine 是典型的踩地雷遊戲。"
+msgstr "KMine 是典型的踩地雷遊戲"
 
 #: main.cpp:31
 #, kde-format
@@ -149,6 +148,10 @@ msgid ""
 "(c) 2006-2007, Mauricio Piacentini\n"
 "(c) 2007, Dmitry Suzdalev"
 msgstr ""
+"(c) 1996-2005, Nicolas Hadacek\n"
+"(c) 2001, Mikhail Kourinny\n"
+"(c) 2006-2007, Mauricio Piacentini\n"
+"(c) 2007, Dmitry Suzdalev"
 
 #: main.cpp:34
 #, kde-format
@@ -218,7 +221,7 @@ msgstr "Brian Croom"
 #: main.cpp:45
 #, kde-format
 msgid "Port to use KGameRenderer"
-msgstr "移植到 use KGameRenderer"
+msgstr "移植使用 KGameRenderer"
 
 #: mainwindow.cpp:101
 #, kde-format
@@ -246,11 +249,10 @@ msgid "Reset the Game?"
 msgstr "是否重設遊戲？"
 
 #: mainwindow.cpp:205
-#, fuzzy, kde-format
-#| msgid "Reset?"
+#, kde-format
 msgctxt "@action;button"
 msgid "Reset"
-msgstr "是否重設？"
+msgstr "重設"
 
 #: mainwindow.cpp:217
 #, kde-format
@@ -265,12 +267,12 @@ msgstr "一般"
 #: mainwindow.cpp:244
 #, kde-format
 msgid "Theme"
-msgstr "外觀主題"
+msgstr "主題"
 
 #: mainwindow.cpp:245
 #, kde-format
 msgid "Custom Game"
-msgstr "自定遊戲"
+msgstr "自訂遊戲"
 
 #: scene.cpp:117
 #, kde-format
