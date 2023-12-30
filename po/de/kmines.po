@@ -1,8 +1,8 @@
+# SPDX-FileCopyrightText: 2009, 2010, 2023 Johannes Obermayr <johannesobermayr@gmx.de>
 # Stefan Winter <swinter@kde.org>, 2002.
 # Stefan Winter <swinter@kde.org>, 2003, 2004, 2005, 2007.
 # Thomas Reitelbach <tr@erdfunkstelle.de>, 2005, 2009.
 # Burkhard Lück <lueck@hube-lueck.de>, 2006, 2008, 2019, 2020, 2021.
-# Johannes Obermayr <johannesobermayr@gmx.de>, 2009, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
@@ -16,6 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 23.08.4\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
