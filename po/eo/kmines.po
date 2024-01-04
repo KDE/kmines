@@ -259,7 +259,7 @@ msgstr "Tempo: %1"
 #: mainwindow.cpp:243
 #, kde-format
 msgid "General"
-msgstr "Ĝeneralo"
+msgstr "Ĝenerala"
 
 #: mainwindow.cpp:244
 #, kde-format
