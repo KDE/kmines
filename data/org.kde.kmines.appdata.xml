@@ -46,7 +46,7 @@
   <name xml:lang="uk">KMines</name>
   <name xml:lang="x-test">xxKMinesxx</name>
   <name xml:lang="zh-CN">KMines</name>
-  <name xml:lang="zh-TW">KMines</name>
+  <name xml:lang="zh-TW">KMines 踩地雷</name>
   <summary>Minesweeper-like Game</summary>
   <summary xml:lang="ar">لعبة مثل كاسحة الألغام</summary>
   <summary xml:lang="ca">Joc a l'estil del dragamines</summary>
@@ -87,6 +87,7 @@
   <summary xml:lang="uk">Гра у сапера</summary>
   <summary xml:lang="x-test">xxMinesweeper-like Gamexx</summary>
   <summary xml:lang="zh-CN">扫雷游戏</summary>
+  <summary xml:lang="zh-TW">類似踩地雷的遊戲</summary>
   <description>
     <p>KMines is a classic Minesweeper game. The idea is to uncover all the squares without blowing up any mines. When a mine is blown up, the game is over.</p>
     <p xml:lang="ar">الألغام ك هي لعبة كاسحة ألغام كلاسيكية. الفكرة هي الكشف عن جميع المربعات دون تفجير أي ألغام. عندما يتم تفجير لغم ، تنتهي اللعبة.</p>
@@ -128,6 +129,7 @@
     <p xml:lang="uk">KMines — це класична гра у сапера. Ідея гри полягає у тому, щоб розкрити всі клітинки без підриву жодної з мін. Якщо ви натрапите на міну, гру буде програно.</p>
     <p xml:lang="x-test">xxKMines is a classic Minesweeper game. The idea is to uncover all the squares without blowing up any mines. When a mine is blown up, the game is over.xx</p>
     <p xml:lang="zh-CN">KMines 是一款经典扫雷游戏。目标是不引爆地雷的情况下，揭开所有方格。当地雷被引爆时，游戏结束。</p>
+    <p xml:lang="zh-TW">KMines 是典型的踩地雷遊戲。遊戲目標是要打開所有方塊，並避免讓地雷爆炸。地雷爆炸時遊戲即會結束。</p>
   </description>
   <url type="homepage">https://apps.kde.org/kmines</url>
   <url type="bugtracker">https://bugs.kde.org</url>
