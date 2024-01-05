@@ -8,13 +8,13 @@
 # Franklin Weng <franklin at goodhorse dot idv dot tw>, 2007, 2008.
 # Franklin Weng <franklin@mail.everfocus.com.tw>, 2010.
 # pan93412 <pan93412@gmail.com>, 2019.
-# SPDX-FileCopyrightText: 2023 Kisaragi Hiu <mail@kisaragi-hiu.com>
+# SPDX-FileCopyrightText: 2023, 2024 Kisaragi Hiu <mail@kisaragi-hiu.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-29 01:36+0000\n"
-"PO-Revision-Date: 2023-12-25 02:03+0900\n"
+"PO-Revision-Date: 2024-01-05 04:34+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
@@ -133,12 +133,12 @@ msgstr "主工具列"
 #: main.cpp:27
 #, kde-format
 msgid "KMines"
-msgstr "KMines"
+msgstr "KMines 踩地雷"
 
 #: main.cpp:29
 #, kde-format
 msgid "KMines is a classic minesweeper game"
-msgstr "KMine 是典型的踩地雷遊戲"
+msgstr "KMines 是典型的踩地雷遊戲"
 
 #: main.cpp:31
 #, kde-format
