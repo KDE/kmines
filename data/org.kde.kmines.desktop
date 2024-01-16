@@ -186,6 +186,4 @@ Comment[x-test]=xxMinesweeper-like Gamexx
 Comment[zh_CN]=扫雷游戏
 Comment[zh_TW]=類似踩地雷的遊戲
 StartupNotify=true
-X-DBUS-StartupType=Multi
 Categories=Qt;KDE;Game;StrategyGame;
-X-DBUS-ServiceName=org.kde.kmines
