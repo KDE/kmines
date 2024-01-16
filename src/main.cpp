@@ -22,7 +22,7 @@ int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
 
-    KLocalizedString::setApplicationDomain("kmines");
+    KLocalizedString::setApplicationDomain(QByteArrayLiteral("kmines"));
 
     KAboutData aboutData(QStringLiteral("kmines"), i18n("KMines"),
                          QStringLiteral(KMINES_VERSION_STRING),
