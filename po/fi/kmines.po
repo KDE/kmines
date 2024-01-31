@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-29 01:36+0000\n"
-"PO-Revision-Date: 2023-09-26 17:14+0300\n"
+"PO-Revision-Date: 2023-12-11 15:31+0200\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
 "Language: fi\n"
@@ -256,11 +256,10 @@ msgid "Reset the Game?"
 msgstr "Aloitetaanko peli alusta?"
 
 #: mainwindow.cpp:205
-#, fuzzy, kde-format
-#| msgid "Reset?"
+#, kde-format
 msgctxt "@action;button"
 msgid "Reset"
-msgstr "Uudelleen?"
+msgstr "Palauta"
 
 #: mainwindow.cpp:217
 #, kde-format
