@@ -3,13 +3,13 @@
 #
 # Székely Krisztián <szekelyk@edasz.hu>, 1998.
 # Kristóf Kiszel <ulysses@kubuntu.org>, 2012.
-# Kristof Kiszel <ulysses@fsf.hu>, 2021.
+# SPDX-FileCopyrightText: 2021, 2024 Kristof Kiszel <ulysses@fsf.hu>
 msgid ""
 msgstr ""
 "Project-Id-Version: KDE 4.2\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-29 01:36+0000\n"
-"PO-Revision-Date: 2021-12-10 11:13+0100\n"
+"PO-Revision-Date: 2024-02-07 09:56+0100\n"
 "Last-Translator: Kristof Kiszel <ulysses@fsf.hu>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
 "Language: hu\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 21.12.0\n"
+"X-Generator: Lokalize 24.01.95\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -75,19 +75,19 @@ msgstr "Felfedezés számcellákra bal kattintással"
 #: generalopts.ui:53
 #, kde-format
 msgid "Place flag when mouse button is:"
-msgstr ""
+msgstr "Zászló elhelyezése az egérgomb:"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:61
 #, kde-format
 msgid "Released"
-msgstr ""
+msgstr "Elengedésekor"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:66
 #, kde-format
 msgid "Pressed"
-msgstr ""
+msgstr "Megnyomásakor"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
@@ -246,11 +246,10 @@ msgid "Reset the Game?"
 msgstr "Visszaállítja a játékot?"
 
 #: mainwindow.cpp:205
-#, fuzzy, kde-format
-#| msgid "Reset?"
+#, kde-format
 msgctxt "@action;button"
 msgid "Reset"
-msgstr "Visszaállítás?"
+msgstr "Visszaállítás"
 
 #: mainwindow.cpp:217
 #, kde-format
