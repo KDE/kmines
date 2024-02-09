@@ -243,11 +243,10 @@ msgid "Reset the Game?"
 msgstr "Restartovat hru?"
 
 #: mainwindow.cpp:205
-#, fuzzy, kde-format
-#| msgid "Reset?"
+#, kde-format
 msgctxt "@action;button"
 msgid "Reset"
-msgstr "Restartovat?"
+msgstr ""
 
 #: mainwindow.cpp:217
 #, kde-format
