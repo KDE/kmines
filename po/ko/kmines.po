@@ -1,14 +1,14 @@
 # Translation of kmines to Korean.
 # Copyright (C) 1999, 2007 Free Software Foundation, Inc.
 # LinuxKorea Co. <kde@linuxkorea.co.kr>, 1999.
-# Shinjo Park <kde@peremen.name>, 2007, 2011, 2019, 2020, 2021, 2023.
+# SPDX-FileCopyrightText: 2007, 2011, 2019, 2020, 2021, 2023, 2024 Shinjo Park <kde@peremen.name>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-29 01:36+0000\n"
-"PO-Revision-Date: 2023-08-25 22:40+0200\n"
+"PO-Revision-Date: 2024-02-09 23:47+0100\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
 "Language: ko\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 22.12.3\n"
+"X-Generator: Lokalize 23.08.1\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -244,11 +244,10 @@ msgid "Reset the Game?"
 msgstr "게임을 초기화하시겠습니까?"
 
 #: mainwindow.cpp:205
-#, fuzzy, kde-format
-#| msgid "Reset?"
+#, kde-format
 msgctxt "@action;button"
 msgid "Reset"
-msgstr "초기화하시겠습니까?"
+msgstr "초기화"
 
 #: mainwindow.cpp:217
 #, kde-format
