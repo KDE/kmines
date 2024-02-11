@@ -7,19 +7,20 @@
 # Artem Sereda <overmind88@gmail.com>, 2008, 2010.
 # Evgeniy Ivanov <powerfox@kde.ru>, 2008.
 # Olesya Gerasimenko <translation-team@basealt.ru>, 2022.
+# SPDX-FileCopyrightText: 2024 Alexander Yavorsky <kekcuha@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-29 01:36+0000\n"
-"PO-Revision-Date: 2022-09-07 10:51+0300\n"
-"Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
-"Language-Team: Basealt Translation Team\n"
+"PO-Revision-Date: 2024-02-10 13:16+0300\n"
+"Last-Translator: Alexander Yavorsky <kekcuha@gmail.com>\n"
+"Language-Team: Russian <kde-russian@lists.kde.ru>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 22.04.3\n"
+"X-Generator: Lokalize 24.01.95\n"
 "Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
@@ -85,19 +86,19 @@ msgstr "Обследовать с помощью щелчка левой кно�
 #: generalopts.ui:53
 #, kde-format
 msgid "Place flag when mouse button is:"
-msgstr ""
+msgstr "Устанавливать флаг когда кнопка мыши:"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:61
 #, kde-format
 msgid "Released"
-msgstr ""
+msgstr "Отпущена"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:66
 #, kde-format
 msgid "Pressed"
-msgstr ""
+msgstr "Нажата"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
@@ -256,11 +257,10 @@ msgid "Reset the Game?"
 msgstr "Сбросить игру?"
 
 #: mainwindow.cpp:205
-#, fuzzy, kde-format
-#| msgid "Reset?"
+#, kde-format
 msgctxt "@action;button"
 msgid "Reset"
-msgstr "Сбросить?"
+msgstr "Сброс"
 
 #: mainwindow.cpp:217
 #, kde-format
