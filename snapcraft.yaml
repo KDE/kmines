@@ -127,6 +127,11 @@ parts:
         after:
         - kmines
         plugin: nil
+        build-snaps:
+        - core22
+        - kf5-5-108-qt-5-15-10-core22
         override-prime: |
             set -eux
-            #unused libs found by linter
+            for snap in "core22" "kf5-5-108-qt-5-15-10-core22"; do
+                cd "/snap/$snap/current" && find . -type f,l -exec rm -rf "${CRAFT_PRIME}/{}" \;
+            done
