@@ -129,9 +129,9 @@ parts:
         plugin: nil
         build-snaps:
         - core22
-        - kf5-5-108-qt-5-15-10-core22
+        - kf5-5-111-qt-5-15-11-core22
         override-prime: |
             set -eux
-            for snap in "core22" "kf5-5-108-qt-5-15-10-core22"; do
+            for snap in "core22" "kf5-5-111-qt-5-15-11-core22"; do
                 cd "/snap/$snap/current" && find . -type f,l -exec rm -rf "${CRAFT_PRIME}/{}" \;
             done
