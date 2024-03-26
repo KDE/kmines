@@ -1,0 +1,617 @@
+<?xml version="1.0" ?>
+<!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.5-Based Variant V1.1//EN" "dtd/kdedbx45.dtd" [
+  <!ENTITY % addindex "IGNORE">
+  <!ENTITY % Slovenian "INCLUDE"
+> <!-- change language only here -->
+]>
+
+<book id="kmines" lang="&language;">
+
+<bookinfo>
+<title
+>&kmines; Priročnik</title>
+
+<authorgroup>
+<author
+><firstname
+>Nicolas</firstname
+> <surname
+>Hadacek</surname
+> <affiliation
+> <address
+>&Nicolas.Hadacek.mail;</address>
+</affiliation>
+</author>
+<author
+><firstname
+>Michael</firstname
+> <surname
+>McBride</surname
+> <affiliation
+><address
+><email
+>mmcbride@ematic.org</email
+></address
+></affiliation>
+</author>
+<author
+><firstname
+>Anton</firstname
+> <surname
+>Brondz</surname
+> <affiliation
+> <address
+><email
+>dinolinux@gmail.com</email
+></address>
+</affiliation>
+</author>
+<othercredit role="developer"
+><firstname
+>Nicolas</firstname
+> <surname
+>Hadacek</surname
+> <affiliation
+> <address
+>&Nicolas.Hadacek.mail;</address>
+</affiliation>
+<contrib
+>Razvijalec</contrib>
+</othercredit>
+<othercredit role="reviewer"
+><firstname
+>Lauri</firstname
+> <surname
+>Watts</surname
+> <affiliation
+><address
+>&Lauri.Watts.mail;</address
+></affiliation>
+<contrib
+>Recenzent</contrib>
+</othercredit>
+<othercredit role="translator"
+><firstname
+>Matjaž</firstname
+><surname
+>Jeran</surname
+><affiliation
+><address
+><email
+>matjaz.jeran@amis.net</email
+></address
+></affiliation
+><contrib
+>Prevod</contrib
+></othercredit
+> 
+</authorgroup>
+
+<copyright>
+<year
+>2000</year>
+<holder
+>&Nicolas.Hadacek;, Michael McBride</holder>
+</copyright>
+
+<legalnotice
+>&FDLNotice;</legalnotice>
+
+<date
+>11.07.2021</date>
+<releaseinfo
+>4.0 (KDE Gear 21.04)</releaseinfo>
+
+<abstract
+><para
+>&kmines; je &kde; različica klasične igre minolovec.</para
+></abstract>
+
+<keywordset>
+<keyword
+>KDE</keyword>
+<keyword
+>igra</keyword>
+<keyword
+>minolovec</keyword>
+</keywordset>
+
+</bookinfo>
+
+<chapter id="introduction">
+<title
+>Uvod</title>
+<note
+><title
+>Vrsta igre:</title
+><para
+>Strategija, plošča</para
+></note
+><!-- Game genre. Use as many as necessary. Available game types are: Arcade, Board, Card, Dice, Toys, Logic, Strategy.-->
+<note
+><title
+>Število možnih igralcev:</title
+><para
+>Eden</para
+></note
+><!--Number of possible players. It can be: One, Two,..., Multiplayer-->
+
+<para
+>&kmines; je klasična igra Minolovec. Ideja je odkriti vsa polja, ne da bi razstrelili kakšno mino. Ko je mina razstreljena, je igre konec. Številke označujejo, koliko min je v bližini. </para>
+
+</chapter>
+
+<chapter id="how-to-play">
+<title
+>Kako igrati</title>
+<note
+><title
+>Cilj:</title
+><para
+>Poiščite vse mine, skrite na minskem polju.</para
+></note
+><!--Describe the objective of the game.-->
+
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="gameboard.png" format="PNG"/>
+</imageobject>
+<textobject>
+<phrase
+>&kmines; Igralna plošča</phrase>
+</textobject>
+</mediaobject>
+</screenshot>
+
+<para
+>Če želite igrati &kmines;, morate uporabiti miško in njene tri gumbe za odkrivanje ali označevanje kvadratov (pri miškah z dvema gumboma kliknete &MMB; na splošno dosežete s hkratnim pritiskom &LMB; in &RMB;). </para>
+
+<para
+>S klikom &LMB; na vaši miški bo odkril kvadrat. Če je tam mina, bo eksplodirala in igre bo konec. Če pod poljem ni mine, je polje očiščeno in če v bližini ni drugih min, bo polje izginilo, vključno z vsemi bližnjimi polji brez min. Če so v bližini mine, se prikaže številka, ki prikazuje, koliko sosednjih polj vsebuje mine. Za vsak kvadrat (razen robnih in kotnih kvadratov) je osem sosednjih kvadratov. </para>
+
+<note>
+<para
+>&LMB; klik na kvadrat z zastavico je varen in ne naredi ničesar. </para>
+</note>
+
+<para
+>&RMB; bo označil polje, kot da vsebuje mino (tako, da bo nanj postavil rdečo zastavico). Z dvakratnim klikom gumba ga nastavite kot negotovega (tako, da nanj postavite vprašaj). Negotova oznaka je lahko uporabna, ko ste v zadregi glede položaja min. &MMB; počisti okoliška polja, če je pravo število polj že označeno. Je zelo uporabno, saj je veliko hitrejše od odkrivanja vseh posameznih polj. Prepričajte se, da so vaše zastavice pravilno nameščene, če ne, lahko sprožite mino. </para>
+</chapter>
+
+<chapter id="rulestips">
+<title
+>Pravila igre, strategije in nasveti</title>
+<sect1 id="rules">
+<title
+>Pravila</title>
+<itemizedlist>
+<listitem
+><para
+>Vse mine je treba očistiti, preden lahko igralec zmaga v igri.</para
+></listitem>
+<listitem
+><para
+>Pred koncem igre igralec ne more vedeti točne lokacije min.</para
+></listitem>
+<listitem
+><para
+>Če eksplodira mina, je igre konec.</para
+></listitem>
+<listitem
+><para
+>Številke bodo označevale bližnje mine.</para
+></listitem>
+</itemizedlist>
+</sect1>
+
+<sect1 id="strattips">
+<title
+>Strategije in nasveti</title>
+<itemizedlist>
+<listitem
+><para
+>Uporabite številke, da ugotovite, kje so bližnje mine.</para
+></listitem>
+<listitem
+><para
+>Postavite zastavice, kjer sumite, da so mine. Upoštevajte, da čeprav se navedeno število min zmanjša, ko postavite zastavo, pod zastavo morda ne bo mine.</para
+></listitem>
+<listitem
+><para
+>Pomislite, preden kliknete, napačen klik lahko sproži mino.</para
+></listitem>
+<listitem
+><para
+>Ko sumite, da je v kvadratku mina, pojdite okoli kvadrata, da odkrijete številke, ki bi vam lahko pomagale.</para
+></listitem>
+<listitem
+><para
+>Poskusite počistiti ploščo čim hitreje, manj časa boste porabili, višji bo vaš rezultat.</para
+></listitem>
+</itemizedlist>
+</sect1>
+
+</chapter>
+
+<chapter id="command">
+<title
+>Ukazi/Bližnjice na tipkovnici</title>
+
+<para
+>Naslednji razdelki na kratko opisujejo nekatere možnosti menijske vrstice.</para>
+
+<sect1 id="menu">
+<title
+>Elementi menija</title>
+
+<variablelist>
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>N</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Igra</guimenu
+> <guimenuitem
+>Nova</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>Začne novo igro.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycap
+>P</keycap
+></shortcut
+> <guimenu
+>Igra</guimenu
+> <guimenuitem
+>Premor</guimenuitem
+></menuchoice
+></term>
+<listitem>
+<para
+>Začasno ustavi čas igre. Znova kliknite element menija, da se igra nadaljuje. Upoštevajte, da plošča izgine, ko je igra začasno ustavljena, saj bi bilo nepošteno, če bi lahko iskali dobre poteze brez časovnega pritiska. </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>H</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Igra</guimenu
+> <guimenuitem
+>Pokaži najboljše rezultate</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>To vam pokaže visoko oceno (najkrajši čas) za vsako težavnostno stopnjo.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>Q</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>Igra</guimenu
+> <guimenuitem
+>Zapusti</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+><action
+>Zapusti</action
+> &kmines;.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Nastavitve</guimenu
+> <guisubmenu
+>Težavnost</guisubmenu
+> </menuchoice
+></term>
+<listitem>
+<para
+>Omogoča nastavitev težavnostne stopnje iz podmenija.</para>
+<para
+>Obstajajo tri privzete stopnje težavnosti: <guimenuitem
+>Enostavna</guimenuitem
+> (9x9 polj, 10 min), <guimenuitem
+>Srednja</guimenuitem
+> (16x16 polj, 40 min) in <guimenuitem
+>Težka</guimenuitem
+> ( 30x16 kvadratov, 99 min). Obstajajo tudi nastavitve ravni <guimenuitem
+>Po meri</guimenuitem
+>.</para>
+<para
+>Če izberete <guimenuitem
+>Po meri</guimenuitem
+>, bodo uporabljene nastavitve, ki ste jih konfigurirali v pogovornem oknu <guilabel
+>Konfiguriraj - &kmines;</guilabel
+>.</para
+></listitem>
+</varlistentry>
+
+</variablelist>
+
+<para
+>Poleg tega &kmines; ima skupno &kde; Elementi menija <guimenu
+>Nastavitve</guimenu
+> in <guimenu
+>Pomoč</guimenu
+>, za več informacij preberite razdelke o <ulink url="help:/fundamentals/menus.html#menus-settings"
+>meniju z nastavitvami</ulink
+> in <ulink url="help:/fundamentals/menus.html#menus-help"
+>meni Pomoč</ulink
+> v &kde; Osnove. </para>
+
+</sect1>
+
+<sect1 id="keys"
+><title
+>Privzete bližnjice na tipkovnici</title>
+<para
+>Naslednja tabela prikazuje privzete bližnjice na tipkovnici.</para>
+
+<table>
+<title
+>Bližnjice na tipkovnici</title>
+<tgroup cols="2">
+<thead
+><row
+><entry
+>Kombinacija tipk</entry
+><entry
+>Akcija</entry
+></row
+></thead>
+<tbody>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>N</keycap
+></keycombo
+></entry
+><entry
+>Nova igra</entry
+></row>
+<row
+><entry
+><keycap
+>P</keycap
+></entry
+><entry
+>Premor</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>Q</keycap
+></keycombo
+></entry
+><entry
+>Zapusti &kmines;</entry
+></row>
+<row
+><entry
+><keycap
+>F1</keycap
+></entry
+><entry
+>&kmines; Priročnik</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Shift;<keycap
+>F1</keycap
+></keycombo
+></entry
+><entry
+>Kaj je to? pomoč</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>H</keycap
+></keycombo
+></entry
+><entry
+>Pokaži najboljše rezultate</entry
+></row>
+
+</tbody>
+</tgroup>
+</table>
+
+<para
+>Te bližnjice lahko spremenite z izbiro menijske postavke <menuchoice
+><guimenu
+>Nastavitve</guimenu
+> <guimenuitem
+>Konfiguriraj bližnjice...</guimenuitem
+></menuchoice
+>.</para>
+
+</sect1>
+
+</chapter>
+
+<chapter id="faq">
+<title
+>Pogosto zastavljena vprašanja</title>
+<qandaset>
+
+<qandaentry>
+<question>
+<para
+>Ali lahko spremenim videz igre? </para>
+</question>
+<answer>
+<para
+>Da, kliknite na menijsko postavko <menuchoice
+><guimenu
+>Nastavitve</guimenu
+> <guimenuitem
+>Konfiguriraj &kmines;...</guimenuitem
+></menuchoice
+>. </para>
+</answer>
+</qandaentry>
+
+<qandaentry>
+<question>
+<para
+>Ali obstaja način za dodajanje več min in kvadratov? </para>
+</question>
+<answer>
+<para
+>Da, najlažji način je uporaba spustnega menija v spodnjem desnem kotu. </para>
+</answer>
+</qandaentry>
+
+</qandaset>
+</chapter>
+
+<chapter id="settings">
+<title
+>Nastavitve igre</title>
+<para
+>Nastavitve igre lahko konfigurirate z izbiro menijske postavke <menuchoice
+><guimenu
+>Nastavitve</guimenu
+> <guimenuitem
+>Konfiguriraj &kmines;...</guimenuitem
+></menuchoice
+>. Prikaže se pogovorno okno. </para>
+<para
+>Na strani <guilabel
+>Splošno</guilabel
+> lahko konfigurirate naslednje nastavitve igre. </para>
+<variablelist>
+    <varlistentry>
+        <term
+>Uporaba '?' oznake</term>
+        <listitem>
+            <para
+>Ko je označeno, dovoljuje uporabo simbola vprašaja za označevanje kvadratov negotovosti. Oznako na kvadratku lahko zamenjate s klikom z &RMB;.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term
+>Dovoli ponastaviti &kmines;</term>
+        <listitem>
+            <para
+>Ko je označeno, vam omogoča ponastavitev &kmines; igre, ko je nemogoče storiti karkoli drugega kot ugibati in je vaše zadnje ugibanje napačno.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term
+>Onemogoči rezultat ob ponastavitvi</term>
+        <listitem>
+            <para
+>Ko je označeno, vam dovoljuje, da onemogočite točkovanje ob ponastavitvi.</para>
+        </listitem>
+    </varlistentry>
+        <varlistentry>
+        <term
+>Raziščite z levim klikom številske celice</term>
+        <listitem>
+            <para
+>Ko je označeno, &LMB; klik na številsko celico bo imel enak učinek kot klik na &MMB;.</para>
+        </listitem>
+    </varlistentry>
+</variablelist>
+
+<para
+>Na drugi strani lahko nastavite temo. Izberite temo s seznama. Vsak element na seznamu prikazuje majhen predogled levo od imena teme. Izbor se takoj uporabi. </para>
+
+<para
+>Na tretji strani lahko nastavite višino in širino plošče ter število min na ravni po meri. </para>
+
+</chapter>
+
+<chapter id="credits"
+><title
+>Zasluge in licenca</title>
+
+<para
+>&kmines; Avtorske pravice 1996-2007 </para>
+
+<itemizedlist>
+<title
+>Avtorji</title>
+<listitem>
+<para
+>&Nicolas.Hadacek; &Nicolas.Hadacek.mail; </para>
+</listitem>
+<listitem>
+<para
+>Mikhail Kourinny </para>
+</listitem>
+<listitem>
+<para
+>Mauricio Piacentini <email
+>mauricio@tabuleiro.com</email
+> </para>
+</listitem>
+<listitem>
+<para
+>Dmitry Suzdalev <email
+>dimsuz@gmail.com</email
+> </para>
+</listitem>
+</itemizedlist>
+
+<para
+>Avtorske pravice za dokumentacijo 2000 &Nicolas.Hadacek; &Nicolas.Hadacek.mail;</para>
+<para
+>Posodobljena dokumentacija za &kde; 2.0 avtor &Mike.McBride; &Mike.McBride.mail;</para>
+<para
+>Nekaj sprememb za &kde; 3.2 od &Philip.Rodrigues; &Philip.Rodrigues.mail;</para>
+<para
+>Prevod: Matjaž Jeran<email
+>matjaz.jeran@amis.net</email
+></para
+> &underFDL; &underGPL; </chapter>
+
+</book>
+<!--
+Local Variables:
+mode: sgml
+sgml-omittag: nil
+sgml-shorttag: t
+End:
+-->
