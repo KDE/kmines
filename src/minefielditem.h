@@ -84,6 +84,8 @@ private:
     void mouseReleaseEvent( QGraphicsSceneMouseEvent * ) override;
     // reimplemented
     void mouseMoveEvent( QGraphicsSceneMouseEvent * ) override;
+    // reimplemented
+    bool sceneEvent( QEvent * ) override;
 
     /**
      * Returns cell item at (row,col).
@@ -162,6 +164,10 @@ private:
     // instead of hand-computing index from row & col!
     // => not depend on how m_cells is represented
     /**
+     * Long touch timeout, in milliseconds
+     */
+    static constexpr int TOUCH_TIMEOUT = 1000;
+    /**
      * Array which holds all child cell items
      */
     QList<CellItem*> m_cells;
@@ -189,6 +195,18 @@ private:
      * Number of flagged mines
      */
     int m_flaggedMinesCount;
+    /**
+     * Last touched row position
+     */
+    int m_lastTouchedRow = -1;
+    /**
+     * Last touched row position
+     */
+    int m_lastTouchedCol = -1;
+    /**
+     * Last touched timestamp
+     */
+    long m_lastTouchedTimestamp = 0;
     /**
      * row and column where mouse was pressed.
      * (-1,-1) if it is already released

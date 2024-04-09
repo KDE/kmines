@@ -15,13 +15,17 @@
 // Qt
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
+#include <QTouchEvent>
 #include <QRandomGenerator>
+// std
+#include <chrono>
 
 MineFieldItem::MineFieldItem(KGameRenderer* renderer)
     : m_leftButtonPos(-1,-1), m_midButtonPos(-1,-1), m_gameOver(false),
       m_emulatingMidButton(false), m_renderer(renderer)
 {
-	setFlag(QGraphicsItem::ItemHasNoContents);
+    setFlag(QGraphicsItem::ItemHasNoContents);
+    setAcceptTouchEvents(true);
 }
 
 void MineFieldItem::resetMines()
@@ -549,6 +553,126 @@ void MineFieldItem::mouseMoveEvent( QGraphicsSceneMouseEvent *ev )
             m_leftButtonPos = qMakePair(row,col);
         }
     }
+}
+
+// Support for touch screen
+bool MineFieldItem::sceneEvent( QEvent *ev )
+{
+    // Ignore other events
+    switch (ev->type()) {
+    case QEvent::TouchBegin:
+        [[fallthrough]];
+    case QEvent::TouchEnd:
+        [[fallthrough]];
+    case QEvent::TouchUpdate:
+        [[fallthrough]];
+    case QEvent::TouchCancel:
+        break;
+    default:
+        return QGraphicsObject::sceneEvent(ev);
+    }
+
+    if(m_gameOver)
+        return true;
+
+    auto touch_ev = static_cast<QTouchEvent *>(ev);
+
+    // We do not support multipoint touch
+    if (touch_ev->pointCount() != 1)
+        return true;
+
+    int row = static_cast<int>(touch_ev->point(0).position().y() / m_cellSize) - 1;
+    int col = static_cast<int>(touch_ev->point(0).position().x() / m_cellSize) - 1;
+    // Counter for long press
+    long now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+
+    CellItem *lastItem;
+    if (m_lastTouchedCol < 0 || m_lastTouchedCol >= m_numCols || m_lastTouchedRow < 0 || m_lastTouchedRow >= m_numRows)
+        lastItem = nullptr;
+    else
+        lastItem = itemAt(m_lastTouchedRow, m_lastTouchedCol);
+
+    // Is current touch valid?
+    if (row < 0 || row >= m_numRows || col < 0 || col >= m_numCols) {
+        if (lastItem)
+            lastItem->undoPress();
+        m_lastTouchedCol = -1;
+        m_lastTouchedRow = -1;
+        return true;
+    }
+    CellItem *item = itemAt(row, col);
+
+    if (touch_ev->type() == QEvent::TouchBegin) {
+        m_lastTouchedCol = col;
+        m_lastTouchedRow = row;
+        m_lastTouchedTimestamp = now;
+        item->press();
+    }
+    else if (touch_ev->type() == QEvent::TouchEnd) {
+        if (col != m_lastTouchedCol || row != m_lastTouchedRow)
+        {
+            // Ignore dragging
+            if (lastItem)
+                lastItem->undoPress();
+            m_lastTouchedCol = -1;
+            m_lastTouchedRow = -1;
+        }
+        else if (m_firstClick) {
+            // Single touch to begin
+            m_firstClick = false;
+            generateField(row * m_numCols + col);
+            Q_EMIT firstClickDone();
+            itemAt(row, col)->release(true);
+            if(itemAt(row, col)->isRevealed())
+                onItemRevealed(row,col);
+        }
+        else if (now - m_lastTouchedTimestamp >= TOUCH_TIMEOUT) {
+            // Long touch to reveal single cell
+            // Must check revealed
+            if (!item->isRevealed()) {
+                item->release();
+                if(item->isRevealed())
+                    onItemRevealed(item);
+            }
+            else {
+                item->undoPress();
+            }
+        }
+        else {
+            // Short touch
+            if (!item->isRevealed()) {
+                // Short touch on unrevealed cell to make flag
+                item->undoPress();
+                handleFlag(item);
+            }
+            else {
+                // Short touch on digits to reveal neighbor cells
+                int flagged{};
+                auto neighbors = adjacentItemsFor(row, col);
+                for (auto i : neighbors) {
+                    flagged += i->isFlagged();
+                }
+                // flag num matches the digit -- reveal!
+                if (flagged && flagged == item->digit()) {
+                    for (auto i : neighbors) {
+                        if (!i->isRevealed()) {
+                            i->release(true);
+                            if(i->isRevealed() && onItemRevealed(i))
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else if (touch_ev->type() == QEvent::TouchCancel) {
+        if (lastItem)
+            lastItem->undoPress();
+        m_lastTouchedCol = -1;
+        m_lastTouchedRow = -1;
+    }
+
+    return true;
 }
 
 void MineFieldItem::revealAllMines()
