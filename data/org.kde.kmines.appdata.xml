@@ -31,6 +31,7 @@
   <name xml:lang="it">KMines</name>
   <name xml:lang="ka">KMines</name>
   <name xml:lang="ko">KMines</name>
+  <name xml:lang="lv">KMines</name>
   <name xml:lang="nl">KMines</name>
   <name xml:lang="nn">KMinesveipar</name>
   <name xml:lang="pl">KMiny</name>
@@ -72,6 +73,7 @@
   <summary xml:lang="it">Gioco simile a Mine</summary>
   <summary xml:lang="ka">Minesweeper-ის მსგავსი თამაში</summary>
   <summary xml:lang="ko">지뢰찾기 게임</summary>
+  <summary xml:lang="lv">„Minesweeper“ līdzīga spēle</summary>
   <summary xml:lang="nl">Mijnenvegerachtig spel</summary>
   <summary xml:lang="nn">Minesveipar-liknande spel</summary>
   <summary xml:lang="pl">Gra typu saper</summary>
@@ -114,6 +116,7 @@
     <p xml:lang="it">KMines è un classico gioco del campo minato. Si devono individuare tutte le caselle libere senza saltare in aria su una mina. Quando una mina esplode, il gioco termina.</p>
     <p xml:lang="ka">KMines კლასიკური განნაღმვის თამაშია. აზრია გამოაჩინოს კვადრატები ნაღმზე აფეთქების გარეშე. თუ ნაღმი აგიფეთქდათ, თამაში დასრულდება.</p>
     <p xml:lang="ko">KMines는 고전 지뢰찾기 게임입니다. 지뢰를 터트리지 않고 모든 사각형을 드러내십시오. 지뢰가 터지면 게임이 끝납니다.</p>
+    <p xml:lang="lv">„KMines“ ir klasiska mīnu meklēšanas spēle. Spēles mērķis is atklāt visas spēles šūnas, neuzspridzinot mīnas. Ja mīna sprāgst, spēle beidzas.</p>
     <p xml:lang="nl">KMines is het klassieke mijnenvegerspel. Het idee is alle vierkantjes open te maken zonder een mijn op te blazen. Als er een mijn ontploft is het spel afgelopen.</p>
     <p xml:lang="nn">KMinesveipar er eit klassisk minesveiparspel. Målet er å avdekkja alle ruter som ikkje har miner på seg. Treff du derimot på ei rute med ei mine, går mina av og du tapar spelet.</p>
     <p xml:lang="pl">KMiny jest klasyczną grą w sapera. Polega ona na odkryciu wszystkich pól bez wysadzenia żadnej z min. Po napotkaniu na minę, gra się kończy.</p>
