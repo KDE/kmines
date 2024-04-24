@@ -5,7 +5,6 @@ Dependencies:
 - 'on': ['Linux/Qt6', 'FreeBSD/Qt6', 'Windows/Qt6', 'Android/Qt6']
   'require':
     'frameworks/extra-cmake-modules': '@latest-kf6'
-    'games/libkdegames': '@latest-kf6'
     'frameworks/kconfig': '@latest-kf6'
     'frameworks/kconfigwidgets': '@latest-kf6'
     'frameworks/kcoreaddons': '@latest-kf6'
@@ -16,6 +15,7 @@ Dependencies:
     'frameworks/ktextwidgets': '@latest-kf6'
     'frameworks/kwidgetsaddons': '@latest-kf6'
     'frameworks/kxmlgui': '@latest-kf6'
+    'games/libkdegames': '@same'
 
 Options:
   require-passing-tests-on: [ 'Linux', 'FreeBSD', 'Windows']
