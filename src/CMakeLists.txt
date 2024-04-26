@@ -26,7 +26,8 @@ target_sources(kmines PRIVATE
 ecm_qt_declare_logging_category(kmines
     HEADER kmines_debug.h
     IDENTIFIER KMINES_LOG
-    CATEGORY_NAME org.kde.kdegames.kmines
+    CATEGORY_NAME kmines
+    OLD_CATEGORY_NAMES org.kde.kdegames.kmines
     DESCRIPTION "KMines game"
     EXPORT KMINES
 )
