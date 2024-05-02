@@ -240,9 +240,9 @@ void KMinesMainWindow::configureSettings()
     if ( KConfigDialog::showDialog( QStringLiteral(  "settings" ) ) )
         return;
     auto *dialog = new KConfigDialog( this, QStringLiteral( "settings" ), Settings::self() );
-    dialog->addPage( new GeneralOptsConfig( dialog ), i18n("General"), QStringLiteral( "games-config-options" ));
-    dialog->addPage( new KGameThemeSelector( m_scene->renderer().themeProvider() ), i18n( "Theme" ), QStringLiteral( "games-config-theme" ));
-    dialog->addPage( new CustomGameConfig( dialog ), i18n("Custom Game"), QStringLiteral( "games-config-custom" ));
+    dialog->addPage( new GeneralOptsConfig( dialog ), i18nc("@title:tab", "General"), QStringLiteral( "games-config-options" ));
+    dialog->addPage( new KGameThemeSelector( m_scene->renderer().themeProvider() ), i18nc("@title:tab", "Theme"), QStringLiteral( "games-config-theme" ));
+    dialog->addPage( new CustomGameConfig( dialog ), i18nc("@title:tab", "Custom Game"), QStringLiteral( "games-config-custom" ));
     connect( m_scene->renderer().themeProvider(), &KGameThemeProvider::currentThemeChanged, this, &KMinesMainWindow::loadSettings );
     connect(dialog, &KConfigDialog::settingsChanged, this, &KMinesMainWindow::loadSettings);
     
