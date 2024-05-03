@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-29 01:36+0000\n"
+"POT-Creation-Date: 2024-05-03 00:37+0000\n"
 "PO-Revision-Date: 2023-11-06 01:10+0100\n"
 "Last-Translator: Enol P. <enolp@softastur.org>\n"
 "Language-Team: \n"
@@ -250,16 +250,19 @@ msgstr ""
 
 #: mainwindow.cpp:243
 #, kde-format
+msgctxt "@title:tab"
 msgid "General"
 msgstr ""
 
 #: mainwindow.cpp:244
 #, kde-format
+msgctxt "@title:tab"
 msgid "Theme"
 msgstr ""
 
 #: mainwindow.cpp:245
 #, kde-format
+msgctxt "@title:tab"
 msgid "Custom Game"
 msgstr ""
 

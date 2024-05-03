@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-29 01:36+0000\n"
+"POT-Creation-Date: 2024-05-03 00:37+0000\n"
 "PO-Revision-Date: 2007-06-25 11:11+0300\n"
 "Last-Translator: Darafei Praliaskouski <komzpa@licei2.com>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -256,17 +256,23 @@ msgid "Time: %1"
 msgstr "Час: "
 
 #: mainwindow.cpp:243
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "General"
+msgctxt "@title:tab"
 msgid "General"
 msgstr "Агульныя"
 
 #: mainwindow.cpp:244
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Theme"
+msgctxt "@title:tab"
 msgid "Theme"
 msgstr "Тэма"
 
 #: mainwindow.cpp:245
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Custom Game"
+msgctxt "@title:tab"
 msgid "Custom Game"
 msgstr "Сваё поле"
 

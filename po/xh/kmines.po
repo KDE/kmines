@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-29 01:36+0000\n"
+"POT-Creation-Date: 2024-05-03 00:37+0000\n"
 "PO-Revision-Date: 2002-10-11 11:57SAST\n"
 "Last-Translator: Lwandle Mgidlana <lwandle@translate.org.za>\n"
 "Language-Team: Xhosa <xhosa@translate.org.za>\n"
@@ -263,17 +263,22 @@ msgid "Time: %1"
 msgstr ""
 
 #: mainwindow.cpp:243
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "General"
+msgctxt "@title:tab"
 msgid "General"
 msgstr "Ngokubanzi"
 
 #: mainwindow.cpp:244
 #, kde-format
+msgctxt "@title:tab"
 msgid "Theme"
 msgstr ""
 
 #: mainwindow.cpp:245
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Custom Game"
+msgctxt "@title:tab"
 msgid "Custom Game"
 msgstr "Lungisa Umdlalo Wakho"
 

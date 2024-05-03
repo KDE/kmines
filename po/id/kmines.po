@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-29 01:36+0000\n"
+"POT-Creation-Date: 2024-05-03 00:37+0000\n"
 "PO-Revision-Date: 2022-08-19 20:36+0700\n"
 "Last-Translator: Wantoyèk <wantoyek@gmail.com>\n"
 "Language-Team: https://t.me/Localizations_KDE_Indonesia\n"
@@ -254,17 +254,23 @@ msgid "Time: %1"
 msgstr "Waktu: %1"
 
 #: mainwindow.cpp:243
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "General"
+msgctxt "@title:tab"
 msgid "General"
 msgstr "Umum"
 
 #: mainwindow.cpp:244
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Theme"
+msgctxt "@title:tab"
 msgid "Theme"
 msgstr "Tema"
 
 #: mainwindow.cpp:245
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Custom Game"
+msgctxt "@title:tab"
 msgid "Custom Game"
 msgstr "Kustom Permainan"
 

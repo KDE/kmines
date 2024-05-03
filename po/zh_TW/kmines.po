@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-29 01:36+0000\n"
+"POT-Creation-Date: 2024-05-03 00:37+0000\n"
 "PO-Revision-Date: 2024-01-05 04:34+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -260,17 +260,23 @@ msgid "Time: %1"
 msgstr "時間：%1"
 
 #: mainwindow.cpp:243
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "General"
+msgctxt "@title:tab"
 msgid "General"
 msgstr "一般"
 
 #: mainwindow.cpp:244
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Theme"
+msgctxt "@title:tab"
 msgid "Theme"
 msgstr "主題"
 
 #: mainwindow.cpp:245
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Custom Game"
+msgctxt "@title:tab"
 msgid "Custom Game"
 msgstr "自訂遊戲"
 

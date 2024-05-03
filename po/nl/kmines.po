@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-29 01:36+0000\n"
+"POT-Creation-Date: 2024-05-03 00:37+0000\n"
 "PO-Revision-Date: 2023-11-29 17:37+0100\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
@@ -263,17 +263,23 @@ msgid "Time: %1"
 msgstr "Tijd: %1"
 
 #: mainwindow.cpp:243
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "General"
+msgctxt "@title:tab"
 msgid "General"
 msgstr "Algemeen"
 
 #: mainwindow.cpp:244
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Theme"
+msgctxt "@title:tab"
 msgid "Theme"
 msgstr "Thema"
 
 #: mainwindow.cpp:245
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Custom Game"
+msgctxt "@title:tab"
 msgid "Custom Game"
 msgstr "Aangepast spel"
 

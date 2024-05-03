@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines 0\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-29 01:36+0000\n"
+"POT-Creation-Date: 2024-05-03 00:37+0000\n"
 "PO-Revision-Date: 2006-08-21 17:04+0100\n"
 "Last-Translator: Renato Pavicic <renato@translator-shop.org>\n"
 "Language-Team: Croatian <kde-croatia-list@lists.sourceforge.net>\n"
@@ -258,17 +258,22 @@ msgid "Time: %1"
 msgstr ""
 
 #: mainwindow.cpp:243
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "General"
+msgctxt "@title:tab"
 msgid "General"
 msgstr "Opće"
 
 #: mainwindow.cpp:244
 #, kde-format
+msgctxt "@title:tab"
 msgid "Theme"
 msgstr ""
 
 #: mainwindow.cpp:245
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Custom Game"
+msgctxt "@title:tab"
 msgid "Custom Game"
 msgstr "Prilagođena igra"
 

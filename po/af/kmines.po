@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines VERSION\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-29 01:36+0000\n"
+"POT-Creation-Date: 2024-05-03 00:37+0000\n"
 "PO-Revision-Date: 2002-11-07 11:32+0200\n"
 "Last-Translator: WEB-Translator <http://kde.af.org.za>\n"
 "Language-Team: AFRIKAANS <AF@lia.org.za>\n"
@@ -252,17 +252,22 @@ msgid "Time: %1"
 msgstr ""
 
 #: mainwindow.cpp:243
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "General"
+msgctxt "@title:tab"
 msgid "General"
 msgstr "Algemeen"
 
 #: mainwindow.cpp:244
 #, kde-format
+msgctxt "@title:tab"
 msgid "Theme"
 msgstr ""
 
 #: mainwindow.cpp:245
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Custom Game"
+msgctxt "@title:tab"
 msgid "Custom Game"
 msgstr "Pasmaak Speletjie"
 
