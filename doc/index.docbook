@@ -256,7 +256,7 @@ of the &kde; Fundamentals.
 
 <para>These shortcuts can be changed by selecting the
 <menuchoice><guimenu>Settings</guimenu> <guimenuitem>Configure
-Shortcuts...</guimenuitem></menuchoice> menu item.</para>
+Shortcuts…</guimenuitem></menuchoice> menu item.</para>
 
 </sect1>
 
@@ -275,7 +275,7 @@ Can I change the way the game looks?
 <answer>
 <para>
 Yes, click on the <menuchoice><guimenu>Settings</guimenu> <guimenuitem>Configure
-&kmines;...</guimenuitem></menuchoice> menu item.
+&kmines;…</guimenuitem></menuchoice> menu item.
 </para>
 </answer>
 </qandaentry>
@@ -300,7 +300,7 @@ Yes, the easiest way is to use the drop down box in the lower right corner.
 <title>Game Settings</title>
 <para>
 The game settings can be configured by selecting the <menuchoice><guimenu>Settings</guimenu>
-<guimenuitem>Configure &kmines;...</guimenuitem></menuchoice> menu item. A dialog will appear.
+<guimenuitem>Configure &kmines;…</guimenuitem></menuchoice> menu item. A dialog will appear.
 </para>
 <para>
     On the <guilabel>General</guilabel> page, you can configure the following game settings.
