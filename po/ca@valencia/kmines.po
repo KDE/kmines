@@ -1,10 +1,10 @@
 # Translation of kmines.po to Catalan (Valencian)
-# Copyright (C) 2000-2023 This_file_is_part_of_KDE
+# Copyright (C) 2000-2024 This_file_is_part_of_KDE
 #
 #
 # Francesc J Devesa i Berenguer <frandeve@hotmail.com>, 2000, 2001.
 # Albert Astals Cid <aacid@kde.org>, 2003, 2004, 2007, 2008.
-# Josep M. Ferrer <txemaq@gmail.com>, 2004, 2009, 2010, 2015, 2019, 2020, 2023.
+# Josep M. Ferrer <txemaq@gmail.com>, 2004, 2009, 2010, 2015, 2019, 2020, 2023, 2024.
 # Manuel Tortosa <manutortosa@chakra-project.org>, 2009, 2010.
 # Antoni Bella Pérez <antonibella5@yahoo.com>, 2020, 2021.
 msgid ""
@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-03 00:37+0000\n"
-"PO-Revision-Date: 2023-11-29 13:40+0100\n"
+"PO-Revision-Date: 2024-05-03 09:01+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca@valencia\n"
@@ -263,25 +263,22 @@ msgid "Time: %1"
 msgstr "Temps: %1"
 
 #: mainwindow.cpp:243
-#, fuzzy, kde-format
-#| msgid "General"
+#, kde-format
 msgctxt "@title:tab"
 msgid "General"
 msgstr "General"
 
 #: mainwindow.cpp:244
-#, fuzzy, kde-format
-#| msgid "Theme"
+#, kde-format
 msgctxt "@title:tab"
 msgid "Theme"
 msgstr "Tema"
 
 #: mainwindow.cpp:245
-#, fuzzy, kde-format
-#| msgid "Custom Game"
+#, kde-format
 msgctxt "@title:tab"
 msgid "Custom Game"
-msgstr "Joc a mida"
+msgstr "Partida personalitzada"
 
 #: scene.cpp:117
 #, kde-format
