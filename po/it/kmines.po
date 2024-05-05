@@ -2,20 +2,21 @@
 # SPDX-FileCopyrightText: 2019, 2020, 2021, 2023 Paolo Zamponi <feus73@gmail.com>
 # Andrea Celli <andrea.celli@libero.it>, 2003, 2004, 2007, 2008, 2010.
 # Andrea Celli <andrea.celli@ilibero.it>, 2011.
+# SPDX-FileCopyrightText: 2024 Valter Mura <valtermura@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-03 00:37+0000\n"
-"PO-Revision-Date: 2023-11-29 18:12+0100\n"
-"Last-Translator: Paolo Zamponi <feus73@gmail.com>\n"
+"PO-Revision-Date: 2024-05-03 22:23+0200\n"
+"Last-Translator: Valter Mura <valtermura@gmail.com>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 23.08.3\n"
+"X-Generator: Lokalize 23.08.5\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -256,35 +257,32 @@ msgid "Time: %1"
 msgstr "Tempo: %1"
 
 #: mainwindow.cpp:243
-#, fuzzy, kde-format
-#| msgid "General"
+#, kde-format
 msgctxt "@title:tab"
 msgid "General"
 msgstr "Generale"
 
 #: mainwindow.cpp:244
-#, fuzzy, kde-format
-#| msgid "Theme"
+#, kde-format
 msgctxt "@title:tab"
 msgid "Theme"
 msgstr "Tema"
 
 #: mainwindow.cpp:245
-#, fuzzy, kde-format
-#| msgid "Custom Game"
+#, kde-format
 msgctxt "@title:tab"
 msgid "Custom Game"
-msgstr "Gioco personalizzato"
+msgstr "Partita personalizzata"
 
 #: scene.cpp:117
 #, kde-format
 msgid "Game is paused."
-msgstr "Gioco in pausa."
+msgstr "Partita in pausa."
 
 #: scene.cpp:125
 #, kde-format
 msgid "Congratulations! You have won!"
-msgstr "Bravissimo! Hai vinto!"
+msgstr "Congratulazioni! Hai vinto!"
 
 #: scene.cpp:127
 #, kde-format

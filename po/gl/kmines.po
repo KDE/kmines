@@ -1,5 +1,5 @@
 # translation of kmines.po to galician
-# SPDX-FileCopyrightText: 2023 Adrián Chaves (Gallaecio)
+# SPDX-FileCopyrightText: 2023, 2024 Adrián Chaves (Gallaecio)
 # Leandro Regueiro <unho@gulo.org>, 2004.
 # mvillarino <mvillarino@users.sourceforge.net>, 2007, 2008, 2009.
 # Adrián Chaves Fernández <adriyetichaves@gmail.com>, 2009, 2017.
@@ -9,15 +9,15 @@ msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-03 00:37+0000\n"
-"PO-Revision-Date: 2023-12-03 09:51+0100\n"
+"PO-Revision-Date: 2024-05-04 10:43+0200\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
-"Language-Team: Galician <proxecto@trasno.gal>\n"
+"Language-Team: Proxecto Trasno (proxecto@trasno.gal)\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 23.08.3\n"
+"X-Generator: Lokalize 24.02.2\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -260,22 +260,19 @@ msgid "Time: %1"
 msgstr "Tempo: %1"
 
 #: mainwindow.cpp:243
-#, fuzzy, kde-format
-#| msgid "General"
+#, kde-format
 msgctxt "@title:tab"
 msgid "General"
 msgstr "Xeral"
 
 #: mainwindow.cpp:244
-#, fuzzy, kde-format
-#| msgid "Theme"
+#, kde-format
 msgctxt "@title:tab"
 msgid "Theme"
-msgstr "Tema visual"
+msgstr "Tema"
 
 #: mainwindow.cpp:245
-#, fuzzy, kde-format
-#| msgid "Custom Game"
+#, kde-format
 msgctxt "@title:tab"
 msgid "Custom Game"
 msgstr "Partida personalizada"

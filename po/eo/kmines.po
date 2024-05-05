@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-03 00:37+0000\n"
-"PO-Revision-Date: 2023-11-2922:05+0100\n"
+"PO-Revision-Date: 2024-05-04 07:47+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
@@ -257,25 +257,22 @@ msgid "Time: %1"
 msgstr "Tempo: %1"
 
 #: mainwindow.cpp:243
-#, fuzzy, kde-format
-#| msgid "General"
+#, kde-format
 msgctxt "@title:tab"
 msgid "General"
 msgstr "Ĝenerala"
 
 #: mainwindow.cpp:244
-#, fuzzy, kde-format
-#| msgid "Theme"
+#, kde-format
 msgctxt "@title:tab"
 msgid "Theme"
 msgstr "Etoso"
 
 #: mainwindow.cpp:245
-#, fuzzy, kde-format
-#| msgid "Custom Game"
+#, kde-format
 msgctxt "@title:tab"
 msgid "Custom Game"
-msgstr "Propra ludo"
+msgstr "Propra Ludo"
 
 #: scene.cpp:117
 #, kde-format
