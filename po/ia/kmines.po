@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This file is copyright:
 # This file is distributed under the same license as the kmines package.
 #
-# giovanni <g.sora@tiscali.it>, 2023.
+# giovanni <g.sora@tiscali.it>, 2023, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-03 00:37+0000\n"
-"PO-Revision-Date: 2023-11-30 09:00+0100\n"
+"PO-Revision-Date: 2024-05-06 12:26+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
@@ -175,7 +175,7 @@ msgstr ""
 #: main.cpp:42
 #, kde-format
 msgid "Andreas Zehender"
-msgstr ""
+msgstr "Andreas Zehender"
 
 #: main.cpp:42
 #, kde-format
@@ -249,25 +249,22 @@ msgid "Time: %1"
 msgstr "Tempore: %1"
 
 #: mainwindow.cpp:243
-#, fuzzy, kde-format
-#| msgid "General"
+#, kde-format
 msgctxt "@title:tab"
 msgid "General"
 msgstr "General"
 
 #: mainwindow.cpp:244
-#, fuzzy, kde-format
-#| msgid "Theme"
+#, kde-format
 msgctxt "@title:tab"
 msgid "Theme"
 msgstr "Thema"
 
 #: mainwindow.cpp:245
-#, fuzzy, kde-format
-#| msgid "Custom"
+#, kde-format
 msgctxt "@title:tab"
 msgid "Custom Game"
-msgstr "Personalisate"
+msgstr "Joco Personalisate"
 
 #: scene.cpp:117
 #, kde-format
