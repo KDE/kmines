@@ -461,7 +461,7 @@
 > <guimenu
 >Impostazioni</guimenu
 > <guimenuitem
->Configura le scorciatoie</guimenuitem
+>Configura le scorciatoie…</guimenuitem
 > </menuchoice
 >.</para>
 
@@ -485,7 +485,7 @@
 ><guimenu
 >Impostazioni</guimenu
 > <guimenuitem
->Configura &kmines;...</guimenuitem
+>Configura &kmines;…</guimenuitem
 ></menuchoice
 >. </para>
 </answer>
@@ -513,7 +513,7 @@
 > <guimenu
 >Impostazioni</guimenu
 > <guimenuitem
->Configura &kmines;...</guimenuitem
+>Configura &kmines;…</guimenuitem
 > </menuchoice
 >. Apparirà una finestra di dialogo. </para>
 <para
