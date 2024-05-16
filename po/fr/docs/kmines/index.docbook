@@ -467,7 +467,7 @@
 </question>
 <answer>
 <para
->Oui. Cliquez sur l'élément de menu <menuchoice
+>Oui. Veuillez cliquer sur l'élément de menu <menuchoice
 ><guimenu
 >Configuration</guimenu
 > <guimenuitem
@@ -495,7 +495,7 @@
 <title
 >Configuration du jeu</title>
 <para
->La configuration du jeu peut être modifiée en sélectionnant l'élément de menu <menuchoice
+>Le jeu peut être modifiée en sélectionnant l'élément de menu <menuchoice
 ><guimenu
 >Configuration</guimenu
 ><guimenuitem
