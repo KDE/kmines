@@ -4,15 +4,15 @@
 # Wolfram Diestel <diestel@rzaix340.rz.uni-leipzig.de>, 1998.
 # Heiko Evermann <heiko@evermann.de>, 2002.
 # Pierre-Marie Pédrot <pedrotpmx@wanadoo.fr>, 2007.
-# Oliver Kellogg <okellogg@users.sourceforge.net>, 2023.
+# Oliver Kellogg <olivermkellogg@gmail.com>, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-29 01:36+0000\n"
-"PO-Revision-Date: 2023-11-2922:05+0100\n"
-"Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
+"PO-Revision-Date: 2024-05-04 07:47+0100\n"
+"Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
 "MIME-Version: 1.0\n"
@@ -29,7 +29,7 @@ msgstr "Wolfram Diestel,Oliver Kellogg"
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr "wolfram@steloj.de,okellogg@users.sourceforge.net"
+msgstr "wolfram@steloj.de,olivermkellogg@gmail.com"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: customgame.ui:16
@@ -269,7 +269,7 @@ msgstr "Etoso"
 #: mainwindow.cpp:245
 #, kde-format
 msgid "Custom Game"
-msgstr "Propra ludo"
+msgstr "Propra Ludo"
 
 #: scene.cpp:117
 #, kde-format
