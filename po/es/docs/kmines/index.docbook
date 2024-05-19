@@ -68,7 +68,7 @@
 >&Lauri.Watts.mail;</address
 ></affiliation>
 <contrib
->Revisor</contrib>
+>Revisora</contrib>
 </othercredit>
 <othercredit role="translator"
 > <firstname
@@ -154,6 +154,20 @@
 ><contrib
 >Traductora</contrib
 ></othercredit
+> <othercredit role="translator"
+><firstname
+>Eloy</firstname
+> <surname
+>Cuadra</surname
+> <affiliation
+><address
+><email
+>ecuadra@eloihr.net</email
+></address
+></affiliation
+> <contrib
+>Corrección de la traducción</contrib
+></othercredit
 > 
 </authorgroup>
 
@@ -207,7 +221,7 @@
 ><!--Number of possible players. It can be: One, Two,..., Multiplayer-->
 
 <para
->&kmines; es el clásico juego del buscaminas. Debe descubrir todas las casillas vacías sin hacer estallar las minas. Cuando una mina estalla, el juego termina. Los números indican cuántas minas hay alrededor. </para>
+>&kmines; es el clásico juego del buscaminas. Debes descubrir todas las casillas vacías sin hacer estallar las minas. Cuando una mina estalla, el juego termina. Los números indican cuántas minas hay alrededor. </para>
 
 </chapter>
 
@@ -235,10 +249,10 @@
 </screenshot>
 
 <para
->Para jugar a &kmines; tiene que usar el ratón y sus tres botones para descubrir o poner banderas en las casillas (si su ratón tiene solo dos botones, el efecto de pulsar el &MMB; se suele conseguir pulsando simultáneamente el &LMB; y el &RMB;). </para>
+>Para jugar a &kmines; tienes que usar el ratón y sus tres botones para descubrir o poner banderas en las casillas (si tu ratón tiene solo dos botones, el efecto de pulsar el &MMB; se suele conseguir pulsando simultáneamente el &LMB; y el &RMB;). </para>
 
 <para
->Pulsar el &LMB; de su ratón descubrirá una casilla. Si hay una mina, se detonará, y la partida finalizará. Sino hay una mina en la casilla, se limpiará y si no hay minas alrededor, el cuadrado desaparecerá, incluyendo cualquier cuadrado alrededor que no tenga minas. Si hay minas alrededor, aparecerá un número mostrando cuántas minas contienen los cuadrados de alrededor. Para cada cuadrado (excluyendo los del borde y de las esquinas) hay ocho cuadrados alrededor. </para>
+>Pulsa el &LMB; del ratón para descubrir una casilla. Si hay una mina, se detonará y la partida finalizará. Si no hay una mina en la casilla, se limpiará y, si no hay minas alrededor, el cuadrado desaparecerá, incluyendo cualquier cuadrado alrededor que no tenga minas. Si hay minas alrededor, aparecerá un número que muestra cuántas minas contienen los cuadrados de alrededor. Cada cuadrado (excluyendo los del borde y de las esquinas) tiene ocho cuadrados alrededor. </para>
 
 <note>
 <para
@@ -246,7 +260,7 @@
 </note>
 
 <para
->El &RMB; marcará un cuadrado que contenga una mina (situando una bandera roja sobre él). Pulsar el botón dos veces indicará que incertidumbre (colocando un signo de interrogación sobre él). Las etiquetas de incertidumbre son útiles cuando no conoce con certeza la posición de las minas. El &MMB; limpiará los cuadrados circundantes si hay un número correcto de cuadrados con banderas. Es práctico, ya que es mucho más rápido que descubrir todos los cuadrados individuales. Asegúrese de que las banderas están correctamente situadas; si no, detonará una mina. </para>
+>El &RMB; marcará un cuadrado que contenga una mina (situando una bandera roja sobre él). Pulsa el botón dos veces para indicar que tienes dudas (colocando un signo de interrogación sobre él). Las etiquetas de incertidumbre son útiles cuando no conoces con certeza la posición de las minas. El &MMB; limpiará los cuadrados circundantes si hay un número correcto de cuadrados con banderas. Es práctico, ya que es mucho más rápido que descubrir todos los cuadrados individuales. Asegúrate de que las banderas están correctamente situadas; si no, detonarás una mina. </para>
 </chapter>
 
 <chapter id="rulestips">
@@ -281,23 +295,23 @@
 <itemizedlist>
 <listitem
 ><para
->Utilice los números para averiguar dónde están las minas.</para
+>Usa los números para averiguar dónde están las minas.</para
 ></listitem>
 <listitem
 ><para
->Coloque banderas en los lugares en los que sospeche que haya minas. Tenga en cuenta que aunque se indique el número de minas bajo las banderas que coloque no tiene por qué haber minas.</para
+>Coloca banderas en los lugares donde sospeches que hay minas. Ten en cuenta que, aunque se indique el número de minas bajo las banderas que coloques, no tiene por qué haber minas bajo dichas banderas.</para
 ></listitem>
 <listitem
 ><para
->Piense antes de pulsar, una pulsación incorrecta detonará una mina.</para
+>Piensa antes de pulsar: una pulsación incorrecta detonará una mina.</para
 ></listitem>
 <listitem
 ><para
->Cuando sospeche que un cuadrado contiene una mina, trabaje alrededor del cuadrado para descubrir los números que pueden ayudarle.</para
+>Cuando sospeches que un cuadrado contiene una mina, trabaja alrededor de él para descubrir cualquier número que pueda ayudarte.</para
 ></listitem>
 <listitem
 ><para
->Intente limpiar el tablero lo más pronto posible, mientras menos tiempo consuma, más alta será la puntuación.</para
+>Intenta limpiar el tablero lo más pronto posible: cuanto menos tiempo consumas, más alta será tu puntuación.</para
 ></listitem>
 </itemizedlist>
 </sect1>
@@ -313,7 +327,7 @@
 
 <sect1 id="menu">
 <title
->Opciones de menú</title>
+>Opciones del menú</title>
 
 <variablelist>
 <varlistentry>
@@ -333,7 +347,7 @@
 ></term>
 <listitem
 ><para
->Comienza una nueva partida.</para
+>Empieza una partida nueva.</para
 ></listitem>
 </varlistentry>
 
@@ -352,7 +366,7 @@
 ></term>
 <listitem>
 <para
->Pausa el tiempo de la partida. Pulse de nuevo en la opción de menú para reanudar la partida. Tenga en cuenta que el tablero desaparece cuando se pausa la partida, ya que sería injusto que pudiera buscar buenos movimientos sin la presión del tiempo. </para>
+>Pausa el tiempo del juego. Pulsa de nuevo esta opción del menú para continuar el juego. Ten en cuenta que el tablero desaparece cuando el juego está en pausa porque no sería bonito que pudieras pensar un buen movimiento sin estar bajo la presión del tiempo. </para>
 </listitem>
 </varlistentry>
 
@@ -373,7 +387,7 @@
 ></term>
 <listitem
 ><para
->Esto le muestra las mejores puntuaciones (los tiempos más cortos) para cada nivel de dificultad.</para
+>Esto muestra las mejores puntuaciones (los tiempos más cortos) para cada nivel de dificultad.</para
 ></listitem>
 </varlistentry>
 
@@ -411,7 +425,7 @@
 ></term>
 <listitem>
 <para
->Le permite ajustar el nivel de dificultad desde un submenú.</para>
+>Permite establecer el nivel de dificultad usando un submenú.</para>
 <para
 >Hay tres niveles de dificultad predeterminados: <guimenuitem
 >Fácil </guimenuitem
@@ -419,13 +433,13 @@
 >Normal</guimenuitem
 > (16x16 casillas, 40 minas), y <guimenuitem
 >Experto</guimenuitem
-> (30x16 casillas, 99 minas). Hay también una configuración de nivel <guimenuitem
+> (30x16 casillas, 99 minas). También existe una configuración de nivel <guimenuitem
 >Personalizado..</guimenuitem
 >.</para>
 <para
->Si selecciona <guimenuitem
+>Si seleccionas <guimenuitem
 >Personalizado</guimenuitem
->, se usarán las preferencias que haya configurado en el cuadro de diálogo <guilabel
+>, se usarán las preferencias que hayas configurado en el cuadro de diálogo <guilabel
 >Configurar &kmines;</guilabel
 >.</para
 ></listitem>
@@ -434,11 +448,11 @@
 </variablelist>
 
 <para
->Además &kmines; tiene las opciones de menú <guimenu
+>Además, &kmines; tiene las opciones de los menús <guimenu
 >Preferencias</guimenu
 > y <guimenu
 >Ayuda</guimenu
-> comunes de &kde;. Para obtener más información, consulte las secciones sobre el <ulink url="help:/fundamentals/menus.html#menus-settings"
+> comunes de &kde;. Para obtener más información, consulta las secciones sobre el <ulink url="help:/fundamentals/menus.html#menus-settings"
 >Menú «Preferencias»</ulink
 > y <ulink url="help:/fundamentals/menus.html#menus-help"
 >Menú «Ayuda» </ulink
@@ -509,7 +523,7 @@
 ></keycombo
 ></entry
 ><entry
->Ayuda ¿Qué es esto?</entry
+>Ayuda «¿Qué es esto?»</entry
 ></row>
 <row
 ><entry
@@ -519,7 +533,7 @@
 ></keycombo
 ></entry
 ><entry
->Mostrar mejores puntuaciones</entry
+>Mostrar las mejores puntuaciones</entry
 ></row>
 
 </tbody>
@@ -551,7 +565,7 @@
 </question>
 <answer>
 <para
->Sí, pulse la opción del menú <menuchoice
+>Sí. Pulsa la opción del menú <menuchoice
 ><guimenu
 >Preferencias</guimenu
 > <guimenuitem
@@ -568,7 +582,7 @@
 </question>
 <answer>
 <para
->Sí, la forma más sencilla es utilizar el desplegable de la esquina inferior derecha. </para>
+>Sí. La forma más sencilla es utilizar el desplegable de la esquina inferior derecha. </para>
 </answer>
 </qandaentry>
 
@@ -589,14 +603,14 @@
 <para
 >El la página <guilabel
 >General</guilabel
-> puede configurar las siguientes preferencias del juego. </para>
+> puedes configurar las siguientes preferencias del juego. </para>
 <variablelist>
     <varlistentry>
         <term
 >Usar marcas «?»</term>
         <listitem>
             <para
->Cuando de marca, permite usar el símbolo de interrogación para marcar las casillas de incertidumbre. Puede conmutar dicha marca haciendo clic con el &RMB;.</para>
+>Si está marcada, permite usar el símbolo de interrogación para marcar las casillas de incertidumbre. Puedes conmutar dicha marca haciendo clic con el &RMB;.</para>
         </listitem>
     </varlistentry>
     <varlistentry>
@@ -604,7 +618,7 @@
 >Permitir reinicio de &kmines;</term>
         <listitem>
             <para
->Si está marcada, le permite reiniciar el juego de &kmines; cuando es imposible hacer nada más excepto suponer, y su última suposición es errónea.</para>
+>Si está marcada, permite reiniciar el juego de &kmines; cuando es imposible hacer nada más excepto suponer, y tu última suposición es errónea.</para>
         </listitem>
     </varlistentry>
     <varlistentry>
@@ -612,7 +626,7 @@
 >Desactivar la puntuación al reiniciar</term>
         <listitem>
             <para
->Si está marcada, le permite desactivar la puntuación al reiniciar.</para>
+>Si está marcada, permite desactivar la puntuación al reiniciar.</para>
         </listitem>
     </varlistentry>
         <varlistentry>
@@ -626,10 +640,10 @@
 </variablelist>
 
 <para
->En la segunda página, puede configurar el tema. Seleccione un tema de la lista. Cada uno de los elementos de la lista tiene una pequeña vista previa a la izquierda del nombre del tema. El tema seleccionado se aplica inmediatamente. </para>
+>En la segunda página puedes configurar el tema. Selecciona un tema de la lista. Cada uno de los elementos de la lista tiene una pequeña vista previa a la izquierda del nombre del tema. El tema seleccionado se aplica inmediatamente. </para>
 
 <para
->En la tercera pestaña, puede configurar la altura y anchura del tablero, así como el número de minas en el nivel personalizado. </para>
+>En la tercera pestaña puedes configurar la altura y anchura del tablero, así como el número de minas para el nivel personalizado. </para>
 
 </chapter>
 
@@ -638,7 +652,7 @@
 >Créditos y licencia</title>
 
 <para
->&kmines; Derechos de autor 1996-2007 </para>
+>&kmines; Copyright 1996-2007 </para>
 
 <itemizedlist>
 <title
@@ -666,22 +680,26 @@
 </itemizedlist>
 
 <para
->Derechos de autor de la documentación. 2000. &Nicolas.Hadacek; &Nicolas.Hadacek.mail;.</para>
+>Copyright de la documentación 2000 &Nicolas.Hadacek; &Nicolas.Hadacek.mail;.</para>
 <para
 >Documentación actualizada para &kde; 2.0 por &Mike.McBride; &Mike.McBride.mail;.</para>
 <para
 >Algunos cambios para &kde; 3.2 por &Philip.Rodrigues; &Philip.Rodrigues.mail;.</para>
 <para
->Traducido por Rocío Gallego <email
+>Traducción de la documentación por Rocío Gallego <email
 >traducciones@rociogallego.com</email
 >, Pablo de Vicente <email
 >pvicentea@wanadoo.es</email
->, Rafael Osuna<email
+>, Rafael Osuna <email
 >rosuna@wol.es</email
 >, Santiago Fernández <email
 >santi@kde-es.org</email
 > y Kira J. Fernández <email
 >kirajfdez@gmail.com</email
+>.</para
+><para
+>Corregida por Eloy Cuadra <email
+>ecuadra@eloihr.net</email
 >.</para
 > &underFDL; &underGPL; </chapter>
 
