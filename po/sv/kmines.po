@@ -2,14 +2,14 @@
 # Copyright (C).
 # Christer Gustavsson <f93-cgn@sm.luth.se>, 1998.
 # Per Lindström <per.lindstrom@osd.privataccess.nu>, 2000.
-# SPDX-FileCopyrightText: 2004, 2007, 2008, 2009, 2010, 2019, 2020, 2021, 2023, 2024 Stefan Asserhäll <stefan.asserhall@bredband.net>
+# SPDX-FileCopyrightText: 2004, 2007, 2008, 2009, 2010, 2019, 2020, 2021, 2023, 2024 Stefan Asserhäll <stefan.asserhall@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-29 01:36+0000\n"
 "PO-Revision-Date: 2024-06-08 16:47+0200\n"
-"Last-Translator: Stefan Asserhäll <stefan.asserhall@bredband.net>\n"
+"Last-Translator: Stefan Asserhäll <stefan.asserhall@gmail.com>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
