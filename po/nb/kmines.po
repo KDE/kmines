@@ -256,21 +256,18 @@ msgstr "Tid: %1"
 
 #: mainwindow.cpp:243
 #, fuzzy, kde-format
-#| msgid "General"
 msgctxt "@title:tab"
 msgid "General"
 msgstr "Generelt"
 
 #: mainwindow.cpp:244
 #, fuzzy, kde-format
-#| msgid "Theme"
 msgctxt "@title:tab"
 msgid "Theme"
 msgstr "Tema"
 
 #: mainwindow.cpp:245
 #, fuzzy, kde-format
-#| msgid "Custom Game"
 msgctxt "@title:tab"
 msgid "Custom Game"
 msgstr "Selvvalgt spill"
