@@ -249,11 +249,10 @@ msgid "Reset the Game?"
 msgstr "Να γίνει επαναφορά του παιχνιδιού;"
 
 #: mainwindow.cpp:205
-#, fuzzy, kde-format
-#| msgid "Reset?"
+#, kde-format
 msgctxt "@action;button"
 msgid "Reset"
-msgstr "Επαναφορά;"
+msgstr "Επαναφορά"
 
 #: mainwindow.cpp:217
 #, kde-format
