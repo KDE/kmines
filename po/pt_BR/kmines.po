@@ -9,34 +9,35 @@
 # Eliana Megumi Habiro Boaglio <eliana.habiro@gmail.com>, 2008.
 # André Marcelo Alvarenga <alvarenga@kde.org>, 2010, 2016, 2019.
 # Luiz Fernando Ranghetti <elchevive@opensuse.org>, 2020, 2021, 2023.
+# SPDX-FileCopyrightText: 2024 Geraldo Simiao <geraldosimiao@fedoraproject.org>
 msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-03 00:37+0000\n"
-"PO-Revision-Date: 2023-12-01 17:13-0300\n"
-"Last-Translator: Luiz Fernando Ranghetti <elchevive@opensuse.org>\n"
+"PO-Revision-Date: 2024-08-02 01:07-0300\n"
+"Last-Translator: Geraldo Simiao <geraldosimiao@fedoraproject.org>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 22.12.3\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
 msgstr ""
 "Elvis Pfützenreuter, João Emanuel, Mauricio Piacentini, André Marcelo "
-"Alvarenga"
+"Alvarenga, Geraldo Simião"
 
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr ""
 "epx@conectiva.com.br, joaoemanuel@terra.com.br, piacentini@kde.org, "
-"alvarenga@kde.org"
+"alvarenga@kde.org, geraldosimiao@fedoraproject.org"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: customgame.ui:16
@@ -267,22 +268,19 @@ msgid "Time: %1"
 msgstr "Tempo: %1"
 
 #: mainwindow.cpp:243
-#, fuzzy, kde-format
-#| msgid "General"
+#, kde-format
 msgctxt "@title:tab"
 msgid "General"
 msgstr "Geral"
 
 #: mainwindow.cpp:244
-#, fuzzy, kde-format
-#| msgid "Theme"
+#, kde-format
 msgctxt "@title:tab"
 msgid "Theme"
 msgstr "Tema"
 
 #: mainwindow.cpp:245
-#, fuzzy, kde-format
-#| msgid "Custom Game"
+#, kde-format
 msgctxt "@title:tab"
 msgid "Custom Game"
 msgstr "Jogo personalizado"
