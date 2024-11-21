@@ -47,6 +47,7 @@ target_link_libraries(kmines
     KF6::DBusAddons
     KF6::Crash
     KF6::XmlGui
+    KF6::IconThemes
 )
 
 install(TARGETS kmines  ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
