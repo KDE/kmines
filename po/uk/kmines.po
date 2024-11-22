@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-03 00:37+0000\n"
+"POT-Creation-Date: 2024-11-22 00:38+0000\n"
 "PO-Revision-Date: 2024-05-03 07:50+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian\n"
@@ -131,17 +131,17 @@ msgstr "Кількість мін в полі."
 msgid "Main Toolbar"
 msgstr "Головний пенал"
 
-#: main.cpp:27
+#: main.cpp:45
 #, kde-format
 msgid "KMines"
 msgstr "Сапер"
 
-#: main.cpp:29
+#: main.cpp:47
 #, kde-format
 msgid "KMines is a classic minesweeper game"
 msgstr "KMines — це класична гра «сапер»"
 
-#: main.cpp:31
+#: main.cpp:49
 #, kde-format
 msgid ""
 "(c) 1996-2005, Nicolas Hadacek\n"
@@ -154,74 +154,74 @@ msgstr ""
 "© Mauricio Piacentini, 2006–2007,\n"
 "© Dmitry Suzdalev, 2007"
 
-#: main.cpp:34
+#: main.cpp:52
 #, kde-format
 msgid "Nicolas Hadacek"
 msgstr "Nicolas Hadacek"
 
-#: main.cpp:35
+#: main.cpp:53
 #, kde-format
 msgid "Original author"
 msgstr "Автор програми"
 
-#: main.cpp:36
+#: main.cpp:54
 #, kde-format
 msgid "Mauricio Piacentini"
 msgstr "Mauricio Piacentini"
 
-#: main.cpp:37
+#: main.cpp:55
 #, kde-format
 msgid "Code refactoring and SVG support. Current maintainer"
 msgstr ""
 "Зміна структури коду та підтримка SVG. Поточний відповідальний за програму"
 
-#: main.cpp:39
+#: main.cpp:57
 #, kde-format
 msgid "Dmitry Suzdalev"
 msgstr "Dmitry Suzdalev"
 
-#: main.cpp:40
+#: main.cpp:58
 #, kde-format
 msgid "Rewrite to use QGraphicsView framework. Current maintainer"
 msgstr ""
 "Переписування з використанням оболонки QGraphicsView. Поточний відповідальний"
 
-#: main.cpp:42
+#: main.cpp:60
 #, kde-format
 msgid "Andreas Zehender"
 msgstr "Andreas Zehender"
 
-#: main.cpp:42
+#: main.cpp:60
 #, kde-format
 msgid "Smiley pixmaps"
 msgstr "Малюнки посмішок"
 
-#: main.cpp:43
+#: main.cpp:61
 #, kde-format
 msgid "Mikhail Kourinny"
 msgstr "Mikhail Kourinny"
 
-#: main.cpp:43
+#: main.cpp:61
 #, kde-format
 msgid "Solver/Adviser"
 msgstr "Порадник"
 
-#: main.cpp:44
+#: main.cpp:62
 #, kde-format
 msgid "Thomas Capricelli"
 msgstr "Thomas Capricelli"
 
-#: main.cpp:44
+#: main.cpp:62
 #, kde-format
 msgid "Magic reveal mode"
 msgstr "Режим магічного відкриття"
 
-#: main.cpp:45
+#: main.cpp:63
 #, kde-format
 msgid "Brian Croom"
 msgstr "Brian Croom"
 
-#: main.cpp:45
+#: main.cpp:63
 #, kde-format
 msgid "Port to use KGameRenderer"
 msgstr "Портування на KGameRenderer"

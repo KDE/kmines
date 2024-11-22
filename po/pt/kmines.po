@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-03 00:37+0000\n"
+"POT-Creation-Date: 2024-11-22 00:38+0000\n"
 "PO-Revision-Date: 2021-07-13 12:41+0100\n"
 "Last-Translator: José Nuno Pires <zepires@gmail.com>\n"
 "Language-Team: pt <kde-i18n-pt@kde.org>\n"
@@ -123,17 +123,17 @@ msgstr "A quantidade de minas no campo de jogo."
 msgid "Main Toolbar"
 msgstr "Barra Principal"
 
-#: main.cpp:27
+#: main.cpp:45
 #, kde-format
 msgid "KMines"
 msgstr "Campo Minado"
 
-#: main.cpp:29
+#: main.cpp:47
 #, kde-format
 msgid "KMines is a classic minesweeper game"
 msgstr "O Campo Minado é o clássico jogo de busca de minas"
 
-#: main.cpp:31
+#: main.cpp:49
 #, kde-format
 msgid ""
 "(c) 1996-2005, Nicolas Hadacek\n"
@@ -146,72 +146,72 @@ msgstr ""
 "(c) 2006-2007, Mauricio Piacentini\n"
 "(c) 2007, Dmitry Suzdalev"
 
-#: main.cpp:34
+#: main.cpp:52
 #, kde-format
 msgid "Nicolas Hadacek"
 msgstr "Nicolas Hadacek"
 
-#: main.cpp:35
+#: main.cpp:53
 #, kde-format
 msgid "Original author"
 msgstr "Autor original"
 
-#: main.cpp:36
+#: main.cpp:54
 #, kde-format
 msgid "Mauricio Piacentini"
 msgstr "Mauricio Piacentini"
 
-#: main.cpp:37
+#: main.cpp:55
 #, kde-format
 msgid "Code refactoring and SVG support. Current maintainer"
 msgstr "Organização do código e suporte para SVG. Manutenção actual"
 
-#: main.cpp:39
+#: main.cpp:57
 #, kde-format
 msgid "Dmitry Suzdalev"
 msgstr "Dmitry Suzdalev"
 
-#: main.cpp:40
+#: main.cpp:58
 #, kde-format
 msgid "Rewrite to use QGraphicsView framework. Current maintainer"
 msgstr "Alteração para usar a plataforma do QGraphicsView. Manutenção actual"
 
-#: main.cpp:42
+#: main.cpp:60
 #, kde-format
 msgid "Andreas Zehender"
 msgstr "Andreas Zehender"
 
-#: main.cpp:42
+#: main.cpp:60
 #, kde-format
 msgid "Smiley pixmaps"
 msgstr "Imagens da Cara Sorridente"
 
-#: main.cpp:43
+#: main.cpp:61
 #, kde-format
 msgid "Mikhail Kourinny"
 msgstr "Mikhail Kourinny"
 
-#: main.cpp:43
+#: main.cpp:61
 #, kde-format
 msgid "Solver/Adviser"
 msgstr "Resolução/Conselhos"
 
-#: main.cpp:44
+#: main.cpp:62
 #, kde-format
 msgid "Thomas Capricelli"
 msgstr "Thomas Capricelli"
 
-#: main.cpp:44
+#: main.cpp:62
 #, kde-format
 msgid "Magic reveal mode"
 msgstr "Modo de revelação mágica"
 
-#: main.cpp:45
+#: main.cpp:63
 #, kde-format
 msgid "Brian Croom"
 msgstr "Brian Croom"
 
-#: main.cpp:45
+#: main.cpp:63
 #, kde-format
 msgid "Port to use KGameRenderer"
 msgstr "Modificações para usar o KGameRenderer"
