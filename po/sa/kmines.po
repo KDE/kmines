@@ -1,0 +1,285 @@
+# Sanskrit translations for kmines package.
+# Copyright (C) 2024 This file is copyright:
+# This file is distributed under the same license as the kmines package.
+# Kali <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: kmines\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2024-11-22 00:38+0000\n"
+"PO-Revision-Date: 2024-12-13 19:10+0530\n"
+"Last-Translator: Kali <EMAIL@ADDRESS>\n"
+"Language-Team: Sanskrit\n"
+"Language: sa\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr ""
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: customgame.ui:16
+#, kde-format
+msgid "Width:"
+msgstr "विस्तार:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: customgame.ui:26
+#, kde-format
+msgid "Height:"
+msgstr "औनत्यम्‌:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: customgame.ui:36
+#, kde-format
+msgid "Mines:"
+msgstr "खानिः : १."
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_UseQuestionMarks)
+#: generalopts.ui:17
+#, kde-format
+msgid "Use '?' marks"
+msgstr "उपयुञ्जताम्‌ '?' अंकाः"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_AllowKminesReset)
+#: generalopts.ui:24
+#, kde-format
+msgid "Allow KMines reset"
+msgstr "KMines पुनः सेट् कर्तुं अनुमतिं ददातु"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_DisableScoreOnReset)
+#: generalopts.ui:37
+#, kde-format
+msgid "Disable score on reset"
+msgstr "रीसेट् कृत्वा स्कोरं निष्क्रियं कुर्वन्तु"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ExploreWithLeftClickOnNumberCells)
+#: generalopts.ui:44
+#, kde-format
+msgid "Explore with left click on number cells"
+msgstr "संख्याकोष्ठकेषु वामक्लिक् कृत्वा अन्वेषणं कुर्वन्तु"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: generalopts.ui:53
+#, kde-format
+msgid "Place flag when mouse button is:"
+msgstr "यदा मूषकस्य बटनं भवति तदा ध्वजं स्थापयन्तु:"
+
+#. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
+#: generalopts.ui:61
+#, kde-format
+msgid "Released"
+msgstr "अनावृता"
+
+#. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
+#: generalopts.ui:66
+#, kde-format
+msgid "Pressed"
+msgstr "निपीडितम्"
+
+#. i18n: ectx: label, entry (UseQuestionMarks), group (General)
+#: kmines.kcfg:9
+#, kde-format
+msgid "Whether the \"unsure\" marker may be used."
+msgstr "\"अनिश्चित\" चिह्नस्य उपयोगः भवितुं शक्नोति वा।"
+
+#. i18n: ectx: label, entry (ExploreWithLeftClickOnNumberCells), group (General)
+#: kmines.kcfg:21
+#, kde-format
+msgid "Left click on a number cell will have the same effect as mid click."
+msgstr "संख्याकोष्ठके वामक्लिक् कृत्वा mid click इत्यस्य समानः प्रभावः भविष्यति ।"
+
+#. i18n: ectx: label, entry (CustomWidth), group (Options)
+#: kmines.kcfg:35
+#, kde-format
+msgid "The width of the playing field."
+msgstr "क्रीडाक्षेत्रस्य विस्तारः ।"
+
+#. i18n: ectx: label, entry (CustomHeight), group (Options)
+#: kmines.kcfg:41
+#, kde-format
+msgid "The height of the playing field."
+msgstr "क्रीडाक्षेत्रस्य ऊर्ध्वता ।"
+
+#. i18n: ectx: label, entry (CustomMines), group (Options)
+#: kmines.kcfg:47
+#, kde-format
+msgid "The number of mines in the playing field."
+msgstr "क्रीडाक्षेत्रे खनिनां संख्या ।"
+
+#. i18n: ectx: ToolBar (mainToolBar)
+#: kminesui.rc:12
+#, kde-format
+msgid "Main Toolbar"
+msgstr "मुख्य साधनपट्टी"
+
+#: main.cpp:45
+#, kde-format
+msgid "KMines"
+msgstr "KMines"
+
+#: main.cpp:47
+#, kde-format
+msgid "KMines is a classic minesweeper game"
+msgstr "KMines इति एकः क्लासिकः माइनस्वीपरः क्रीडा अस्ति"
+
+#: main.cpp:49
+#, kde-format
+msgid ""
+"(c) 1996-2005, Nicolas Hadacek\n"
+"(c) 2001, Mikhail Kourinny\n"
+"(c) 2006-2007, Mauricio Piacentini\n"
+"(c) 2007, Dmitry Suzdalev"
+msgstr ""
+"(ग) 1996-2005, निकोलस हाडासेक\n"
+"(ग) 2001, मिखाइल कौरिन्नी\n"
+"(ग) 2006-2007, मौरिस पियासेन्टिनी\n"
+"(ग) 2007, दिमित्री सुजदालेव"
+
+#: main.cpp:52
+#, kde-format
+msgid "Nicolas Hadacek"
+msgstr "निकोलस हाडासेक्"
+
+#: main.cpp:53
+#, kde-format
+msgid "Original author"
+msgstr "मूल लेखक"
+
+#: main.cpp:54
+#, kde-format
+msgid "Mauricio Piacentini"
+msgstr "मौरिसिओ पियासेन्टिनी"
+
+#: main.cpp:55
+#, kde-format
+msgid "Code refactoring and SVG support. Current maintainer"
+msgstr "कोड रिफैक्टरिंग् तथा SVG समर्थनम्। वर्तमान परिपालकः"
+
+#: main.cpp:57
+#, kde-format
+msgid "Dmitry Suzdalev"
+msgstr "दिमित्री सुजदालेव"
+
+#: main.cpp:58
+#, kde-format
+msgid "Rewrite to use QGraphicsView framework. Current maintainer"
+msgstr "QGraphicsView framework इत्यस्य उपयोगाय पुनः लिखन्तु । वर्तमान परिपालकः"
+
+#: main.cpp:60
+#, kde-format
+msgid "Andreas Zehender"
+msgstr "आन्द्रियास जेहण्डर्"
+
+#: main.cpp:60
+#, kde-format
+msgid "Smiley pixmaps"
+msgstr "स्माइली पिक्समैप्स"
+
+#: main.cpp:61
+#, kde-format
+msgid "Mikhail Kourinny"
+msgstr "मिखाइल कौरिन्नी"
+
+#: main.cpp:61
+#, kde-format
+msgid "Solver/Adviser"
+msgstr "समाधानकर्ता/सल्लाहकार"
+
+#: main.cpp:62
+#, kde-format
+msgid "Thomas Capricelli"
+msgstr "थोमस कैप्रिसेल्लि"
+
+#: main.cpp:62
+#, kde-format
+msgid "Magic reveal mode"
+msgstr "जादू प्रकट मोड"
+
+#: main.cpp:63
+#, kde-format
+msgid "Brian Croom"
+msgstr "ब्रायन क्रूम"
+
+#: main.cpp:63
+#, kde-format
+msgid "Port to use KGameRenderer"
+msgstr "KGameRenderer इत्यस्य उपयोगाय पोर्ट्"
+
+#: mainwindow.cpp:101
+#, kde-format
+msgid "Mines: 0/0"
+msgstr "खानिः ०/०"
+
+#: mainwindow.cpp:102 mainwindow.cpp:173
+#, kde-format
+msgid "Time: 00:00"
+msgstr "समयः ००:०० वादनम्"
+
+#: mainwindow.cpp:125
+#, kde-format
+msgid "Custom"
+msgstr "आचारः"
+
+#: mainwindow.cpp:135
+#, kde-format
+msgid "Mines: %1/%2"
+msgstr "खानिः %1/%2"
+
+#: mainwindow.cpp:203
+#, kde-format
+msgid "Reset the Game?"
+msgstr "क्रीडां पुनः सेट् कुर्वन्तु?"
+
+#: mainwindow.cpp:205
+#, kde-format
+msgctxt "@action;button"
+msgid "Reset"
+msgstr ""
+
+#: mainwindow.cpp:217
+#, kde-format
+msgid "Time: %1"
+msgstr "समयः %1"
+
+#: mainwindow.cpp:243
+#, kde-format
+msgctxt "@title:tab"
+msgid "General"
+msgstr ""
+
+#: mainwindow.cpp:244
+#, kde-format
+msgctxt "@title:tab"
+msgid "Theme"
+msgstr ""
+
+#: mainwindow.cpp:245
+#, kde-format
+msgctxt "@title:tab"
+msgid "Custom Game"
+msgstr ""
+
+#: scene.cpp:117
+#, kde-format
+msgid "Game is paused."
+msgstr "क्रीडा विरामः भवति।"
+
+#: scene.cpp:125
+#, kde-format
+msgid "Congratulations! You have won!"
+msgstr "अभिनन्दनम् ! त्वं विजयं प्राप्तवान् !"
+
+#: scene.cpp:127
+#, kde-format
+msgid "You have lost."
+msgstr "त्वं नष्टः असि।"
