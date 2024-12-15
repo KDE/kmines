@@ -19,12 +19,12 @@ msgstr ""
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
-msgstr ""
+msgstr "भवतः नामानि"
 
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr ""
+msgstr "भवतः ईमेलपत्राणि"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: customgame.ui:16
@@ -244,7 +244,7 @@ msgstr "क्रीडां पुनः सेट् कुर्वन्त
 #, kde-format
 msgctxt "@action;button"
 msgid "Reset"
-msgstr ""
+msgstr "पुनः सेट् करें"
 
 #: mainwindow.cpp:217
 #, kde-format
@@ -255,19 +255,19 @@ msgstr "समयः %1"
 #, kde-format
 msgctxt "@title:tab"
 msgid "General"
-msgstr ""
+msgstr "सामान्य"
 
 #: mainwindow.cpp:244
 #, kde-format
 msgctxt "@title:tab"
 msgid "Theme"
-msgstr ""
+msgstr "विषयवस्तु"
 
 #: mainwindow.cpp:245
 #, kde-format
 msgctxt "@title:tab"
 msgid "Custom Game"
-msgstr ""
+msgstr "कस्टम गेम"
 
 #: scene.cpp:117
 #, kde-format
