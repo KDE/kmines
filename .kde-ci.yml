@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: CC0-1.0
 
 Dependencies:
-- 'on': ['Linux', 'FreeBSD', 'Windows', 'Android']
-  'require':
+ - 'on': ['Linux', 'FreeBSD', 'Windows', 'Android']
+   'require':
     'frameworks/extra-cmake-modules': '@latest-kf6'
     'frameworks/kconfig': '@latest-kf6'
     'frameworks/kconfigwidgets': '@latest-kf6'
@@ -19,4 +19,4 @@ Dependencies:
     'games/libkdegames': '@same'
 
 Options:
-  require-passing-tests-on: [ 'Linux', 'FreeBSD', 'Windows']
+ require-passing-tests-on: ['Linux', 'FreeBSD', 'Windows']
