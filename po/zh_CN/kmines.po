@@ -245,7 +245,7 @@ msgstr "要重开本局游戏吗？"
 #, kde-format
 msgctxt "@action;button"
 msgid "Reset"
-msgstr ""
+msgstr "重新开始"
 
 #: mainwindow.cpp:217
 #, kde-format
