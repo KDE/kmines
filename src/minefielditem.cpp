@@ -678,7 +678,7 @@ bool MineFieldItem::sceneEvent( QEvent *ev )
 void MineFieldItem::revealAllMines()
 {
     for (CellItem* item : std::as_const(m_cells)) {
-        if( (item->isFlagged() && !item->hasMine()) || (!item->isFlagged() && item->hasMine()) )
+        if (item->isFlagged() != item->hasMine())
         {
             item->reveal();
             m_numUnrevealed--;
