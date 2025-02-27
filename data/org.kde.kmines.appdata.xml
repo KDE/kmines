@@ -155,6 +155,7 @@
   </provides>
   <project_group>KDE</project_group>
   <releases>
+    <release version="4.0.24123" date="2025-03-06"/>
     <release version="4.0.24122" date="2025-02-06"/>
     <release version="4.0.24121" date="2025-01-09"/>
     <release version="4.0.24120" date="2024-12-12"/>
