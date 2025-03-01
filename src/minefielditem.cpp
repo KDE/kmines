@@ -519,8 +519,7 @@ void MineFieldItem::mouseMoveEvent( QGraphicsSceneMouseEvent *ev )
     if( row < 0 || row >= m_numRows || col < 0 || col >= m_numCols )
         return;
 
-    bool midButtonPressed = ((ev->buttons() & Qt::MiddleButton) ||
-                            ( (ev->buttons() & Qt::LeftButton) && (ev->buttons() & Qt::RightButton) ) );
+    const bool midButtonPressed = (ev->buttons() & Qt::MiddleButton) || m_emulatingMidButton;
 
     if(midButtonPressed)
     {
