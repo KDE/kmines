@@ -1,4 +1,6 @@
 # Spanish translations for kmines.po package.
+# Copyright (C) 2002-2025 This file is copyright:
+# This file is distributed under the same license as the kmines package.
 #
 # SPDX-FileCopyrightText: 2002, 2003 Miguel Revilla Rodríguez <yo@miguelrevilla.com>
 # SPDX-FileCopyrightText: 2003 Lucas Garcia <tanke@escomposlinux.org>
@@ -12,7 +14,7 @@ msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-11-22 00:38+0000\n"
-"PO-Revision-Date: 2025-04-02 01:20+0100\n"
+"PO-Revision-Date: 2025-07-07 17:56+0100\n"
 "Last-Translator: Sofía Priego <spriego@darksylvania.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
