@@ -97,7 +97,7 @@
   <summary xml:lang="zh-TW">類似踩地雷的遊戲</summary>
   <description>
     <p>KMines is a classic Minesweeper game. The idea is to uncover all the squares without blowing up any mines. When a mine is blown up, the game is over.</p>
-    <p xml:lang="ar">الألغام ك هي لعبة كاسحة ألغام كلاسيكية. الفكرة هي الكشف عن جميع المربعات دون تفجير أي ألغام. عندما يتم تفجير لغم ، تنتهي اللعبة.</p>
+    <p xml:lang="ar">الألغام ك هي لعبة كاسحة ألغام كلاسيكية. الفكرة هي الكشف عن جميع المربعات دون تفجير أي ألغام. عندما ينفجر لغم، تنتهي اللعبة.</p>
     <p xml:lang="ca">El KMines és un joc clàssic de dragamines. La idea és descobrir tots els quadrats sense que exploti cap mina. Quan una mina explota, el joc acaba.</p>
     <p xml:lang="ca-valencia">KMines és un joc clàssic de dragamines. La idea és descobrir tots els quadrats sense que explote cap mina. Quan una mina explota, el joc acaba.</p>
     <p xml:lang="cs">KMines je klasická hra Miny. Úkolem je odkrýt všechny čtverce aniž byste odpálili jakoukoliv minu. Pokud mina vybuchne, hra skončila.</p>
