@@ -49,7 +49,6 @@
   <name xml:lang="sv">Minröjaren</name>
   <name xml:lang="tr">K Mayın Tarlası</name>
   <name xml:lang="uk">KMines</name>
-  <name xml:lang="x-test">xxKMinesxx</name>
   <name xml:lang="zh-CN">KMines</name>
   <name xml:lang="zh-TW">KMines 踩地雷</name>
   <summary>Minesweeper-like Game</summary>
@@ -92,7 +91,6 @@
   <summary xml:lang="sv">Minröjarliknande spel</summary>
   <summary xml:lang="tr">Mayın Tarlası benzeri Oyun</summary>
   <summary xml:lang="uk">Гра у сапера</summary>
-  <summary xml:lang="x-test">xxMinesweeper-like Gamexx</summary>
   <summary xml:lang="zh-CN">扫雷游戏</summary>
   <summary xml:lang="zh-TW">類似踩地雷的遊戲</summary>
   <description>
@@ -136,7 +134,6 @@
     <p xml:lang="sv">Minröjaren är ett klassiskt minröjarspel. Idén är att frilägga alla rutor utan att detonera några minor. När en mina detonerar är spelet slut.</p>
     <p xml:lang="tr">K Mayın Tarlası klasik bir Mayın Tarlası oyunudur. Amacı, tüm kareleri herhangi bir mayını patlamadan ortaya çıkarmaktır. Bir mayın patladığında oyun sona erer.</p>
     <p xml:lang="uk">KMines — це класична гра у сапера. Ідея гри полягає у тому, щоб розкрити всі клітинки без підриву жодної з мін. Якщо ви натрапите на міну, гру буде програно.</p>
-    <p xml:lang="x-test">xxKMines is a classic Minesweeper game. The idea is to uncover all the squares without blowing up any mines. When a mine is blown up, the game is over.xx</p>
     <p xml:lang="zh-CN">KMines 是一款经典扫雷游戏。目标是不引爆地雷的情况下，揭开所有方格。当地雷被引爆时，游戏结束。</p>
     <p xml:lang="zh-TW">KMines 是典型的踩地雷遊戲。遊戲目標是要打開所有方塊，並避免讓地雷爆炸。地雷爆炸時遊戲即會結束。</p>
   </description>
