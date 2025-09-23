@@ -545,7 +545,7 @@
 ><guimenu
 >Preferencias</guimenu
 ><guimenuitem
->Configurar atajos de teclado...</guimenuitem
+>Configurar atajos de teclado…</guimenuitem
 ></menuchoice
 >.</para>
 
@@ -569,7 +569,7 @@
 ><guimenu
 >Preferencias</guimenu
 > <guimenuitem
->Configurar &kmines;...</guimenuitem
+>Configurar &kmines;…</guimenuitem
 ></menuchoice
 >. </para>
 </answer>
@@ -597,7 +597,7 @@
 ><guimenu
 >Preferencias</guimenu
 > <guimenuitem
->Configurar &kmines;...</guimenuitem
+>Configurar &kmines;…</guimenuitem
 ></menuchoice
 >. Se mostrará un diálogo. </para>
 <para
@@ -692,7 +692,9 @@
 >pvicentea@wanadoo.es</email
 >, Rafael Osuna <email
 >rosuna@wol.es</email
->, Santiago Fernández <email
+>, Pablo Barneo <email
+>pablob@nikhef.nl</email
+> Santiago Fernández <email
 >santi@kde-es.org</email
 > y Kira J. Fernández <email
 >kirajfdez@gmail.com</email
