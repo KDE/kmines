@@ -1,8 +1,8 @@
 # SPDX-FileCopyrightText: 2009, 2010, 2023, 2024 Johannes Obermayr <johannesobermayr@gmx.de>
-# Stefan Winter <swinter@kde.org>, 2002.
-# Stefan Winter <swinter@kde.org>, 2003, 2004, 2005, 2007.
-# Thomas Reitelbach <tr@erdfunkstelle.de>, 2005, 2009.
-# Burkhard Lück <lueck@hube-lueck.de>, 2006, 2008, 2019, 2020, 2021.
+# SPDX-FileCopyrightText: 2002 Stefan Winter <swinter@kde.org>
+# SPDX-FileCopyrightText: 2003, 2004, 2005, 2007 Stefan Winter <swinter@kde.org>
+# SPDX-FileCopyrightText: 2005, 2009 Thomas Reitelbach <tr@erdfunkstelle.de>
+# SPDX-FileCopyrightText: 2006, 2008, 2019, 2020, 2021 Burkhard Lück <lueck@hube-lueck.de>
 msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
