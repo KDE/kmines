@@ -1,10 +1,10 @@
-# Sergiu Bivol <sergiu@cip.md>, 2008, 2009, 2012, 2022, 2024.
+# SPDX-FileCopyrightText: 2008, 2009, 2012, 2022, 2024, 2025 Sergiu Bivol <sergiu@cip.md>
 msgid ""
 msgstr ""
 "Project-Id-Version: kmines-1.0.1a\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-11-22 00:38+0000\n"
-"PO-Revision-Date: 2024-02-27 21:03+0000\n"
+"PO-Revision-Date: 2025-10-19 22:55+0100\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian <kde-i18n-ro@kde.org>\n"
 "Language: ro\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2;\n"
-"X-Generator: Lokalize 21.12.3\n"
+"X-Generator: Lokalize 25.08.1\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -253,22 +253,19 @@ msgid "Time: %1"
 msgstr "Timp: %1"
 
 #: mainwindow.cpp:243
-#, fuzzy, kde-format
-#| msgid "General"
+#, kde-format
 msgctxt "@title:tab"
 msgid "General"
-msgstr "General"
+msgstr "Generale"
 
 #: mainwindow.cpp:244
-#, fuzzy, kde-format
-#| msgid "Theme"
+#, kde-format
 msgctxt "@title:tab"
 msgid "Theme"
 msgstr "Tematică"
 
 #: mainwindow.cpp:245
-#, fuzzy, kde-format
-#| msgid "Custom Game"
+#, kde-format
 msgctxt "@title:tab"
 msgid "Custom Game"
 msgstr "Joc personalizat"
