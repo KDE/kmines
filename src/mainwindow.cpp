@@ -106,6 +106,10 @@ KMinesMainWindow::KMinesMainWindow()
     setCentralWidget(m_view);
     setupActions();
 
+    connect(qApp, &QApplication::focusChanged, this, [this](QWidget* , QWidget* newWidget) { if (!newWidget) { if (!m_actionPause->isChecked()) {
+       m_actionPause->trigger();
+    }}});
+
     newGame();
 }
 
