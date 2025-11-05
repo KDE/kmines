@@ -154,7 +154,7 @@
 >Pour jouer à &kmines;, vous devez utiliser la souris et ses trois boutons pour découvrir ou marquer les cases (avec les souris à deux boutons, le fait de cliquer sur le bouton &BCS; se fait simultanément en pressant les &BGS; et &BDS;. </para>
 
 <para
->En cliquant sur le &BGS;, une case apparaîtra. Si c'est une mine, elle explosera et la partie est terminé. Si ce n'en est pas une, la case est nettoyé et si n'y a pas de mines à proximité, la case disparaîtra incluant d'autres cases vides de mines. S'il y a d'autres mines à proximité, un numéro affichera combien de mines contiennent les cases voisines. Pour chaque case (bords et coins exclus) il y a huit cases voisines. </para>
+>En cliquant sur le &BGS;, une case apparaitra. Si c'est une mine, elle explosera et la partie est terminé. Si ce n'en est pas une, la case est nettoyé et si n'y a pas de mines à proximité, la case disparaitra incluant d'autres cases vides de mines. S'il y a d'autres mines à proximité, un numéro affichera combien de mines contiennent les cases voisines. Pour chaque case (bords et coins exclus) il y a huit cases voisines. </para>
 
 <note>
 <para
@@ -162,7 +162,7 @@
 </note>
 
 <para
->Le &BDS; marque une case qui contient une mine (en plaçant un drapeau rouge sur celle ci). En cliquant deux fois sur le bouton, un point d'interrogation apparaît. Ce symbole est utile quand vous hésitez sur la position des mines. Le &BCS; efface les cases aux alentours si le bon nombre de cases est toujours marqué. C'est utile et plus rapide que de devoir découvrir toutes les cases individuellement. Soyez sur que votre drapeau est correctement placé, sinon la mine va sauter. </para>
+>Le &BDS; marque une case qui contient une mine (en plaçant un drapeau rouge sur celle ci). En cliquant deux fois sur le bouton, un point d'interrogation apparait. Ce symbole est utile quand vous hésitez sur la position des mines. Le &BCS; efface les cases aux alentours si le bon nombre de cases est toujours marqué. C'est utile et plus rapide que de devoir découvrir toutes les cases individuellement. Soyez sur que votre drapeau est correctement placé, sinon la mine va sauter. </para>
 </chapter>
 
 <chapter id="rulestips">
@@ -268,7 +268,7 @@
 ></term>
 <listitem>
 <para
->Met le compteur de temps du jeu en pause. Cliquez sur l'élément du menu de nouveau pour reprendre le jeu. Veuillez noter que le plateau disparaît lorsque le jeu est mis en pause, ce qui serait déloyal si vous ne pouviez rechercher le bon choix sans la pression du compteur de temps. </para>
+>Met le compteur de temps du jeu en pause. Cliquez sur l'élément du menu de nouveau pour reprendre le jeu. Veuillez noter que le plateau disparait lorsque le jeu est mis en pause, ce qui serait déloyal si vous ne pouviez rechercher le bon choix sans la pression du compteur de temps. </para>
 </listitem>
 </varlistentry>
 
@@ -341,7 +341,7 @@
 <para
 >Si vous sélectionnez <guimenuitem
 >Personnalisé</guimenuitem
->, alors, les réglages que vous avez définis dans la boîte de dialogue <guimenuitem
+>, alors, les réglages que vous avez définis dans la boite de dialogue <guimenuitem
 >Configurer - &kmines;</guimenuitem
 > seront utilisés.</para
 ></listitem>
@@ -484,7 +484,7 @@
 </question>
 <answer>
 <para
->Oui, le plus simple est d'utiliser la petite boîte de dialogue dans le coin en bas à droite. </para>
+>Oui, le plus simple est d'utiliser la petite boite de dialogue dans le coin en bas à droite. </para>
 </answer>
 </qandaentry>
 
@@ -501,7 +501,7 @@
 ><guimenuitem
 >Configurer &kmines;...</guimenuitem
 > </menuchoice
->. Une boîte de dialogue apparaîtra. </para>
+>. Une boite de dialogue apparaitra. </para>
 <para
 >Dans la page <guilabel
 >Général</guilabel
