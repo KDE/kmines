@@ -471,11 +471,11 @@
 </table>
 
 <para
->Estas configurações de teclas podem ser alteradas selecionando a opção <menuchoice
+>Estas configurações de atalhos podem ser alteradas selecionando o menu <menuchoice
 ><guimenu
 >Configurações</guimenu
 > <guimenuitem
->Configurar atalhos...</guimenuitem
+>Configurar atalhos…</guimenuitem
 ></menuchoice
 >.</para>
 
@@ -499,7 +499,7 @@
 ><guimenu
 >Configurações</guimenu
 > <guimenuitem
->Configurar o &kmines;...</guimenuitem
+>Configurar &kmines;…</guimenuitem
 ></menuchoice
 >. </para>
 </answer>
@@ -523,13 +523,13 @@
 <title
 >Opções do jogo</title>
 <para
->Estas configurações de teclas podem ser alteradas selecionando a opção <menuchoice
+>Estas configurações de teclas podem ser alteradas selecionando o menu <menuchoice
 ><guimenu
 >Configurações</guimenu
 > <guimenuitem
->Configurar o &kmines;</guimenuitem
+>Configurar &kmines;…</guimenuitem
 ></menuchoice
-> no menu. Uma caixa de diálogo será mostrada. </para>
+> no menu. Uma janela será mostrada. </para>
 <para
 >Na página <guilabel
 >Geral</guilabel
