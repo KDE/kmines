@@ -197,17 +197,43 @@ void KMinesMainWindow::onGameOver(bool won)
         delete scoreDialog;
     } else if (!won)
     {
-        //ask to reset
-        if (Settings::allowKminesReset() &&
-            KMessageBox::questionTwoActions(this,
-                                            i18n("Reset the Game?"),
-                                            QString(),
-                                            KGuiItem(i18nc("@action;button", "Reset"), QStringLiteral("view-refresh")),
-                                            KStandardGuiItem::cancel()) == KMessageBox::PrimaryAction) {
-            m_scene->reset();
-            m_gameClock->restart();
-            m_actionPause->setEnabled(true);
-            m_scene->setCanScore(!Settings::disableScoreOnReset());
+        if (Settings::allowKminesReset()) {
+            // Ask to reset the game, start a new game or cancel
+            switch (KMessageBox::questionTwoActionsCancel(this,
+                                                          i18n("Reset or start a new game?"),
+                                                          i18nc("@title:window", "Game Over"),
+                                                          KGuiItem(i18nc("@action:button", "New Game"), QStringLiteral("document-new-symbolic")),
+                                                          KGuiItem(i18nc("@action:button", "Reset Game"), QStringLiteral("view-refresh-symbolic")),
+                                                          KStandardGuiItem::cancel(),
+                                                          QString(),
+                                                          KMessageBox::Dangerous /* cancel by default */)) {
+            case KMessageBox::PrimaryAction:
+                newGame();
+                break;
+            case KMessageBox::SecondaryAction:
+                m_scene->reset();
+                m_gameClock->restart();
+                m_actionPause->setEnabled(true);
+                m_scene->setCanScore(!Settings::disableScoreOnReset());
+                break;
+            default:
+                return;
+            }
+        } else {
+            // Ask to start a new game or cancel
+            switch (KMessageBox::questionTwoActions(this,
+                                                    i18n("Start a new game?"),
+                                                    i18nc("@title:window", "Game Over"),
+                                                    KGuiItem(i18nc("@action:button", "New Game"), QStringLiteral("document-new-symbolic")),
+                                                    KStandardGuiItem::cancel(),
+                                                    QString(),
+                                                    KMessageBox::Dangerous /* cancel by default */)) {
+            case KMessageBox::PrimaryAction:
+                newGame();
+                break;
+            default:
+                return;
+            }
         }
     }
 }
