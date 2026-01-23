@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines-1.1\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:50+0000\n"
+"POT-Creation-Date: 2026-01-23 00:41+0000\n"
 "PO-Revision-Date: 2004-07-08 23:24+0200\n"
 "Last-Translator: Romuald Texier <texierr@worldnet.fr>\n"
 "Language-Team: Brezhoneg <Suav.Icb@wanadoo.fr>\n"
@@ -237,37 +237,59 @@ msgid "Mines: %1/%2"
 msgstr "Minoù (%1%) :"
 
 #: mainwindow.cpp:203
-#, kde-format
-msgid "Reset the Game?"
-msgstr ""
+#, fuzzy, kde-format
+#| msgid "Press to start a new game"
+msgid "Reset or start a new game?"
+msgstr "Stokit evit loc'hañ ur c'hoari nevez"
 
-#: mainwindow.cpp:205
-#, kde-format
-msgctxt "@action;button"
-msgid "Reset"
-msgstr ""
+#: mainwindow.cpp:204 mainwindow.cpp:226
+#, fuzzy, kde-format
+#| msgid "Game"
+msgctxt "@title:window"
+msgid "Game Over"
+msgstr "C'hoari"
 
-#: mainwindow.cpp:217
+#: mainwindow.cpp:205 mainwindow.cpp:227
+#, fuzzy, kde-format
+#| msgid "Game"
+msgctxt "@action:button"
+msgid "New Game"
+msgstr "C'hoari"
+
+#: mainwindow.cpp:206
+#, fuzzy, kde-format
+#| msgid "Custom Game"
+msgctxt "@action:button"
+msgid "Reset Game"
+msgstr "C'hoari diouzoc'h"
+
+#: mainwindow.cpp:225
+#, fuzzy, kde-format
+#| msgid "Press to start a new game"
+msgid "Start a new game?"
+msgstr "Stokit evit loc'hañ ur c'hoari nevez"
+
+#: mainwindow.cpp:243
 #, fuzzy, kde-format
 #| msgid "Time: "
 msgid "Time: %1"
 msgstr "Eur : "
 
-#: mainwindow.cpp:243
+#: mainwindow.cpp:269
 #, fuzzy, kde-format
 #| msgid "General"
 msgctxt "@title:tab"
 msgid "General"
 msgstr "Pennañ"
 
-#: mainwindow.cpp:244
+#: mainwindow.cpp:270
 #, fuzzy, kde-format
 #| msgid "Theme"
 msgctxt "@title:tab"
 msgid "Theme"
 msgstr "Giz"
 
-#: mainwindow.cpp:245
+#: mainwindow.cpp:271
 #, fuzzy, kde-format
 #| msgid "Custom Game"
 msgctxt "@title:tab"
@@ -389,17 +411,11 @@ msgstr ""
 #~ msgid "Save Log..."
 #~ msgstr "Enrollañ ar c'herzlevr ..."
 
-#~ msgid "Game"
-#~ msgstr "C'hoari"
-
 #~ msgid "Keyboard game"
 #~ msgstr "C'hoarzi stokellaoueg"
 
 #~ msgid "Time: "
 #~ msgstr "Eur : "
-
-#~ msgid "Press to start a new game"
-#~ msgstr "Stokit evit loc'hañ ur c'hoari nevez"
 
 #, fuzzy
 #~ msgid "Mines field."

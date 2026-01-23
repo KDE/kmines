@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:50+0000\n"
+"POT-Creation-Date: 2026-01-23 00:41+0000\n"
 "PO-Revision-Date: 2005-09-21 09:18+0100\n"
 "Last-Translator: Kevin Donnelly <kevin@dotmon.com>\n"
 "Language-Team: Cymraeg <cy@li.org>\n"
@@ -244,35 +244,57 @@ msgid "Mines: %1/%2"
 msgstr "Ffrwydrynnau (%1%):"
 
 #: mainwindow.cpp:203
-#, kde-format
-msgid "Reset the Game?"
-msgstr ""
+#, fuzzy, kde-format
+#| msgid "Press to start a new game"
+msgid "Reset or start a new game?"
+msgstr "Gwasgwch i ddechrau gêm newydd"
 
-#: mainwindow.cpp:205
-#, kde-format
-msgctxt "@action;button"
-msgid "Reset"
-msgstr ""
+#: mainwindow.cpp:204 mainwindow.cpp:226
+#, fuzzy, kde-format
+#| msgid "Game"
+msgctxt "@title:window"
+msgid "Game Over"
+msgstr "Gêm"
 
-#: mainwindow.cpp:217
+#: mainwindow.cpp:205 mainwindow.cpp:227
+#, fuzzy, kde-format
+#| msgid "View Game Log"
+msgctxt "@action:button"
+msgid "New Game"
+msgstr "Gweld Cofnod Gêm"
+
+#: mainwindow.cpp:206
+#, fuzzy, kde-format
+#| msgid "Custom Game"
+msgctxt "@action:button"
+msgid "Reset Game"
+msgstr "Gêm Addasiedig"
+
+#: mainwindow.cpp:225
+#, fuzzy, kde-format
+#| msgid "Press to start a new game"
+msgid "Start a new game?"
+msgstr "Gwasgwch i ddechrau gêm newydd"
+
+#: mainwindow.cpp:243
 #, kde-format
 msgid "Time: %1"
 msgstr ""
 
-#: mainwindow.cpp:243
+#: mainwindow.cpp:269
 #, fuzzy, kde-format
 #| msgid "General"
 msgctxt "@title:tab"
 msgid "General"
 msgstr "Cyffredinol"
 
-#: mainwindow.cpp:244
+#: mainwindow.cpp:270
 #, kde-format
 msgctxt "@title:tab"
 msgid "Theme"
 msgstr ""
 
-#: mainwindow.cpp:245
+#: mainwindow.cpp:271
 #, fuzzy, kde-format
 #| msgid "Custom Game"
 msgctxt "@title:tab"
@@ -461,14 +483,8 @@ msgstr ""
 #~ msgid "Load Log..."
 #~ msgstr "Llwytho Cofnod..."
 
-#~ msgid "Game"
-#~ msgstr "Gêm"
-
 #~ msgid "Keyboard game"
 #~ msgstr "Gêm bysellfwrdd"
-
-#~ msgid "Press to start a new game"
-#~ msgstr "Gwasgwch i ddechrau gêm newydd"
 
 #~ msgid "Mines field."
 #~ msgstr "Maes ffrwydrynnau."
@@ -538,9 +554,6 @@ msgstr ""
 #~ " <qt>Amser a aeth heibio.<br/>Mae'n troi yn <font color=\"blue\">las</"
 #~ "font> os mae'n sgôr gorau, ac yn <font color=\"red\">goch</font> os mae'n "
 #~ "amser gorau.</qt>"
-
-#~ msgid "View Game Log"
-#~ msgstr "Gweld Cofnod Gêm"
 
 #~ msgid "Compute Solving Rate"
 #~ msgstr "Cyfrifiannu Cyfradd Ddatrys"

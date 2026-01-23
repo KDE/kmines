@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:50+0000\n"
+"POT-Creation-Date: 2026-01-23 00:41+0000\n"
 "PO-Revision-Date: 2024-05-21 19:21+0100\n"
 "Last-Translator: Steve Allewell <steve.allewell@gmail.com>\n"
 "Language-Team: British English\n"
@@ -239,34 +239,56 @@ msgid "Mines: %1/%2"
 msgstr "Mines: %1/%2"
 
 #: mainwindow.cpp:203
-#, kde-format
-msgid "Reset the Game?"
+#, fuzzy, kde-format
+#| msgid "Press to start a new game"
+msgid "Reset or start a new game?"
+msgstr "Press to start a new game"
+
+#: mainwindow.cpp:204 mainwindow.cpp:226
+#, fuzzy, kde-format
+#| msgid "Game"
+msgctxt "@title:window"
+msgid "Game Over"
+msgstr "Game"
+
+#: mainwindow.cpp:205 mainwindow.cpp:227
+#, fuzzy, kde-format
+#| msgid "View Game Log"
+msgctxt "@action:button"
+msgid "New Game"
+msgstr "View Game Log"
+
+#: mainwindow.cpp:206
+#, fuzzy, kde-format
+#| msgid "Reset the Game?"
+msgctxt "@action:button"
+msgid "Reset Game"
 msgstr "Reset the Game?"
 
-#: mainwindow.cpp:205
-#, kde-format
-msgctxt "@action;button"
-msgid "Reset"
-msgstr "Reset"
+#: mainwindow.cpp:225
+#, fuzzy, kde-format
+#| msgid "Press to start a new game"
+msgid "Start a new game?"
+msgstr "Press to start a new game"
 
-#: mainwindow.cpp:217
+#: mainwindow.cpp:243
 #, kde-format
 msgid "Time: %1"
 msgstr "Time: %1"
 
-#: mainwindow.cpp:243
+#: mainwindow.cpp:269
 #, kde-format
 msgctxt "@title:tab"
 msgid "General"
 msgstr "General"
 
-#: mainwindow.cpp:244
+#: mainwindow.cpp:270
 #, kde-format
 msgctxt "@title:tab"
 msgid "Theme"
 msgstr "Theme"
 
-#: mainwindow.cpp:245
+#: mainwindow.cpp:271
 #, kde-format
 msgctxt "@title:tab"
 msgid "Custom Game"
@@ -286,6 +308,10 @@ msgstr "Congratulations! You have won!"
 #, kde-format
 msgid "You have lost."
 msgstr "You have lost."
+
+#~ msgctxt "@action;button"
+#~ msgid "Reset"
+#~ msgstr "Reset"
 
 #~ msgid "The graphical theme to be used."
 #~ msgstr "The graphical theme to be used."
@@ -460,14 +486,8 @@ msgstr "You have lost."
 #~ msgid "Load Log..."
 #~ msgstr "Load Log..."
 
-#~ msgid "Game"
-#~ msgstr "Game"
-
 #~ msgid "Keyboard game"
 #~ msgstr "Keyboard game"
-
-#~ msgid "Press to start a new game"
-#~ msgstr "Press to start a new game"
 
 #~ msgid "Mines field."
 #~ msgstr "Mines field."
@@ -536,9 +556,6 @@ msgstr "You have lost."
 #~ "<qt>Time elapsed.<br/>It turns <font color=\"blue\">blue</font> if it is "
 #~ "a highscore and <font color=\"red\">red</font> if it is the best time.</"
 #~ "qt>"
-
-#~ msgid "View Game Log"
-#~ msgstr "View Game Log"
 
 #~ msgid "Compute Solving Rate"
 #~ msgstr "Compute Solving Rate"

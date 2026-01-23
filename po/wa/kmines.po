@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:50+0000\n"
+"POT-Creation-Date: 2026-01-23 00:41+0000\n"
 "PO-Revision-Date: 2011-07-17 16:12+0200\n"
 "Last-Translator: Jean Cayron <jean.cayron@base.be>\n"
 "Language-Team: Walloon <linux@walon.org>\n"
@@ -237,35 +237,53 @@ msgstr "Menes: %1/%2"
 
 #: mainwindow.cpp:203
 #, kde-format
-msgid "Reset the Game?"
+msgid "Reset or start a new game?"
 msgstr ""
 
-#: mainwindow.cpp:205
+#: mainwindow.cpp:204 mainwindow.cpp:226
 #, kde-format
-msgctxt "@action;button"
-msgid "Reset"
+msgctxt "@title:window"
+msgid "Game Over"
 msgstr ""
 
-#: mainwindow.cpp:217
+#: mainwindow.cpp:205 mainwindow.cpp:227
+#, kde-format
+msgctxt "@action:button"
+msgid "New Game"
+msgstr ""
+
+#: mainwindow.cpp:206
+#, fuzzy, kde-format
+#| msgid "Custom Game"
+msgctxt "@action:button"
+msgid "Reset Game"
+msgstr "Djeu a vosse môde"
+
+#: mainwindow.cpp:225
+#, kde-format
+msgid "Start a new game?"
+msgstr ""
+
+#: mainwindow.cpp:243
 #, kde-format
 msgid "Time: %1"
 msgstr "Tins: %1"
 
-#: mainwindow.cpp:243
+#: mainwindow.cpp:269
 #, fuzzy, kde-format
 #| msgid "General"
 msgctxt "@title:tab"
 msgid "General"
 msgstr "Djenerå"
 
-#: mainwindow.cpp:244
+#: mainwindow.cpp:270
 #, fuzzy, kde-format
 #| msgid "Theme"
 msgctxt "@title:tab"
 msgid "Theme"
 msgstr "Tinme"
 
-#: mainwindow.cpp:245
+#: mainwindow.cpp:271
 #, fuzzy, kde-format
 #| msgid "Custom Game"
 msgctxt "@title:tab"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:50+0000\n"
+"POT-Creation-Date: 2026-01-23 00:41+0000\n"
 "PO-Revision-Date: 2024-08-19 23:30+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -239,34 +239,53 @@ msgid "Mines: %1/%2"
 msgstr "지뢰: %1/%2"
 
 #: mainwindow.cpp:203
-#, kde-format
-msgid "Reset the Game?"
+#, fuzzy, kde-format
+#| msgid "Reset the Game?"
+msgid "Reset or start a new game?"
 msgstr "게임을 초기화하시겠습니까?"
 
-#: mainwindow.cpp:205
+#: mainwindow.cpp:204 mainwindow.cpp:226
 #, kde-format
-msgctxt "@action;button"
-msgid "Reset"
-msgstr "초기화"
+msgctxt "@title:window"
+msgid "Game Over"
+msgstr ""
 
-#: mainwindow.cpp:217
+#: mainwindow.cpp:205 mainwindow.cpp:227
+#, kde-format
+msgctxt "@action:button"
+msgid "New Game"
+msgstr ""
+
+#: mainwindow.cpp:206
+#, fuzzy, kde-format
+#| msgid "Reset the Game?"
+msgctxt "@action:button"
+msgid "Reset Game"
+msgstr "게임을 초기화하시겠습니까?"
+
+#: mainwindow.cpp:225
+#, kde-format
+msgid "Start a new game?"
+msgstr ""
+
+#: mainwindow.cpp:243
 #, kde-format
 msgid "Time: %1"
 msgstr "시간: %1"
 
-#: mainwindow.cpp:243
+#: mainwindow.cpp:269
 #, kde-format
 msgctxt "@title:tab"
 msgid "General"
 msgstr "일반"
 
-#: mainwindow.cpp:244
+#: mainwindow.cpp:270
 #, kde-format
 msgctxt "@title:tab"
 msgid "Theme"
 msgstr "테마"
 
-#: mainwindow.cpp:245
+#: mainwindow.cpp:271
 #, kde-format
 msgctxt "@title:tab"
 msgid "Custom Game"
@@ -286,3 +305,7 @@ msgstr "축하합니다! 이겼습니다!"
 #, kde-format
 msgid "You have lost."
 msgstr "졌습니다."
+
+#~ msgctxt "@action;button"
+#~ msgid "Reset"
+#~ msgstr "초기화"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:50+0000\n"
+"POT-Creation-Date: 2026-01-23 00:41+0000\n"
 "PO-Revision-Date: 2005-01-04 11:52-0600\n"
 "Last-Translator: Progga <progga@BengaLinux.Org>\n"
 "Language-Team: Bangla <kde-translation@bengalinux.org>\n"
@@ -240,35 +240,57 @@ msgid "Mines: %1/%2"
 msgstr "মাইন (%1%):"
 
 #: mainwindow.cpp:203
-#, kde-format
-msgid "Reset the Game?"
-msgstr ""
+#, fuzzy, kde-format
+#| msgid "Press to start a new game"
+msgid "Reset or start a new game?"
+msgstr "নতুন খেলা আরম্ভ করার জন্য এখানে চাপুন"
 
-#: mainwindow.cpp:205
-#, kde-format
-msgctxt "@action;button"
-msgid "Reset"
-msgstr ""
+#: mainwindow.cpp:204 mainwindow.cpp:226
+#, fuzzy, kde-format
+#| msgid "Game"
+msgctxt "@title:window"
+msgid "Game Over"
+msgstr "খেলা"
 
-#: mainwindow.cpp:217
+#: mainwindow.cpp:205 mainwindow.cpp:227
+#, fuzzy, kde-format
+#| msgid "View Game Log"
+msgctxt "@action:button"
+msgid "New Game"
+msgstr "খেলার লগ প্রদর্শন করো"
+
+#: mainwindow.cpp:206
+#, fuzzy, kde-format
+#| msgid "Custom Game"
+msgctxt "@action:button"
+msgid "Reset Game"
+msgstr "স্বনির্বাচিত খেলা"
+
+#: mainwindow.cpp:225
+#, fuzzy, kde-format
+#| msgid "Press to start a new game"
+msgid "Start a new game?"
+msgstr "নতুন খেলা আরম্ভ করার জন্য এখানে চাপুন"
+
+#: mainwindow.cpp:243
 #, kde-format
 msgid "Time: %1"
 msgstr ""
 
-#: mainwindow.cpp:243
+#: mainwindow.cpp:269
 #, fuzzy, kde-format
 #| msgid "General"
 msgctxt "@title:tab"
 msgid "General"
 msgstr "সাধারণ"
 
-#: mainwindow.cpp:244
+#: mainwindow.cpp:270
 #, kde-format
 msgctxt "@title:tab"
 msgid "Theme"
 msgstr ""
 
-#: mainwindow.cpp:245
+#: mainwindow.cpp:271
 #, fuzzy, kde-format
 #| msgid "Custom Game"
 msgctxt "@title:tab"
@@ -458,14 +480,8 @@ msgstr ""
 #~ msgid "Load Log..."
 #~ msgstr "লগ লোড করো..."
 
-#~ msgid "Game"
-#~ msgstr "খেলা"
-
 #~ msgid "Keyboard game"
 #~ msgstr "কীবোর্ড থেকে খেলা"
-
-#~ msgid "Press to start a new game"
-#~ msgstr "নতুন খেলা আরম্ভ করার জন্য এখানে চাপুন"
 
 #~ msgid "Mines field."
 #~ msgstr "মাইন ক্ষেত্র।"
@@ -534,9 +550,6 @@ msgstr ""
 #~ "<qt>অতিক্রান্ত সময়।<br/> সেরা স্কোর অর্জন করলে এর রং হয় <font color=\"blue"
 #~ "\">নীল</font> আর স্বল্পতম সময়ে সমাধান করলে এর রং হয় <font color=\"red"
 #~ "\">লাল</font>।</qt>"
-
-#~ msgid "View Game Log"
-#~ msgstr "খেলার লগ প্রদর্শন করো"
 
 #~ msgid "Compute Solving Rate"
 #~ msgstr "সমাধানের হার গণনা করো"

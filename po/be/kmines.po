@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:50+0000\n"
+"POT-Creation-Date: 2026-01-23 00:41+0000\n"
 "PO-Revision-Date: 2007-06-25 11:11+0300\n"
 "Last-Translator: Darafei Praliaskouski <komzpa@licei2.com>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -239,37 +239,58 @@ msgid "Mines: %1/%2"
 msgstr "Міны (%1%):"
 
 #: mainwindow.cpp:203
-#, kde-format
-msgid "Reset the Game?"
-msgstr ""
+#, fuzzy, kde-format
+#| msgid "Press to start a new game"
+msgid "Reset or start a new game?"
+msgstr "Націсніце клавішу, каб пачаць новую гульню"
 
-#: mainwindow.cpp:205
-#, kde-format
-msgctxt "@action;button"
-msgid "Reset"
-msgstr ""
+#: mainwindow.cpp:204 mainwindow.cpp:226
+#, fuzzy, kde-format
+#| msgid "Game"
+msgctxt "@title:window"
+msgid "Game Over"
+msgstr "Гульня"
 
-#: mainwindow.cpp:217
+#: mainwindow.cpp:205 mainwindow.cpp:227
+#, fuzzy, kde-format
+msgctxt "@action:button"
+msgid "New Game"
+msgstr "Прагляд запісу гульні"
+
+#: mainwindow.cpp:206
+#, fuzzy, kde-format
+#| msgid "Custom Game"
+msgctxt "@action:button"
+msgid "Reset Game"
+msgstr "Сваё поле"
+
+#: mainwindow.cpp:225
+#, fuzzy, kde-format
+#| msgid "Press to start a new game"
+msgid "Start a new game?"
+msgstr "Націсніце клавішу, каб пачаць новую гульню"
+
+#: mainwindow.cpp:243
 #, fuzzy, kde-format
 #| msgid "Time: "
 msgid "Time: %1"
 msgstr "Час: "
 
-#: mainwindow.cpp:243
+#: mainwindow.cpp:269
 #, fuzzy, kde-format
 #| msgid "General"
 msgctxt "@title:tab"
 msgid "General"
 msgstr "Агульныя"
 
-#: mainwindow.cpp:244
+#: mainwindow.cpp:270
 #, fuzzy, kde-format
 #| msgid "Theme"
 msgctxt "@title:tab"
 msgid "Theme"
 msgstr "Тэма"
 
-#: mainwindow.cpp:245
+#: mainwindow.cpp:271
 #, fuzzy, kde-format
 #| msgid "Custom Game"
 msgctxt "@title:tab"
@@ -507,17 +528,11 @@ msgstr ""
 #~ msgid "Load Log..."
 #~ msgstr "Загрузіць запіс гульні..."
 
-#~ msgid "Game"
-#~ msgstr "Гульня"
-
 #~ msgid "Keyboard game"
 #~ msgstr "Гульня на клавіятуры"
 
 #~ msgid "Time: "
 #~ msgstr "Час: "
-
-#~ msgid "Press to start a new game"
-#~ msgstr "Націсніце клавішу, каб пачаць новую гульню"
 
 #~ msgid "Mines field."
 #~ msgstr "Міннае поле."
@@ -612,10 +627,6 @@ msgstr ""
 #~ "<qt>Выдаткаваны час.<br/>Выводзіцца <font color=\"blue\">сінім</font>, "
 #~ "калі вы дасягнулі высокага выніку і <font color=\"red\">чырвоным</font>, "
 #~ "вы пабілі рэкорд.</qt>"
-
-#, fuzzy
-#~ msgid "View Game Log"
-#~ msgstr "Прагляд запісу гульні"
 
 #, fuzzy
 #~ msgid "Compute Solving Rate"

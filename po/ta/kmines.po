@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:50+0000\n"
+"POT-Creation-Date: 2026-01-23 00:41+0000\n"
 "PO-Revision-Date: 2005-03-22 22:18-0800\n"
 "Last-Translator: Tamil PC <tamilpc@ambalam.com>\n"
 "Language-Team: English <en@li.org>\n"
@@ -243,35 +243,57 @@ msgid "Mines: %1/%2"
 msgstr "கண்ணிவெடி(%1%):"
 
 #: mainwindow.cpp:203
-#, kde-format
-msgid "Reset the Game?"
-msgstr ""
+#, fuzzy, kde-format
+#| msgid "Press to start a new game"
+msgid "Reset or start a new game?"
+msgstr "புது விளையாட்டைத் துவங்க அழுத்தவும்"
 
-#: mainwindow.cpp:205
-#, kde-format
-msgctxt "@action;button"
-msgid "Reset"
-msgstr ""
+#: mainwindow.cpp:204 mainwindow.cpp:226
+#, fuzzy, kde-format
+#| msgid "Game"
+msgctxt "@title:window"
+msgid "Game Over"
+msgstr "விளையாட்டு"
 
-#: mainwindow.cpp:217
+#: mainwindow.cpp:205 mainwindow.cpp:227
+#, fuzzy, kde-format
+#| msgid "View Game Log"
+msgctxt "@action:button"
+msgid "New Game"
+msgstr "விளையாட்டு கோப்பினை பார்க்கவும்"
+
+#: mainwindow.cpp:206
+#, fuzzy, kde-format
+#| msgid "Custom Game"
+msgctxt "@action:button"
+msgid "Reset Game"
+msgstr "ஆயத்த விளையாட்டு"
+
+#: mainwindow.cpp:225
+#, fuzzy, kde-format
+#| msgid "Press to start a new game"
+msgid "Start a new game?"
+msgstr "புது விளையாட்டைத் துவங்க அழுத்தவும்"
+
+#: mainwindow.cpp:243
 #, kde-format
 msgid "Time: %1"
 msgstr ""
 
-#: mainwindow.cpp:243
+#: mainwindow.cpp:269
 #, fuzzy, kde-format
 #| msgid "General"
 msgctxt "@title:tab"
 msgid "General"
 msgstr "பொதுவாக"
 
-#: mainwindow.cpp:244
+#: mainwindow.cpp:270
 #, kde-format
 msgctxt "@title:tab"
 msgid "Theme"
 msgstr ""
 
-#: mainwindow.cpp:245
+#: mainwindow.cpp:271
 #, fuzzy, kde-format
 #| msgid "Custom Game"
 msgctxt "@title:tab"
@@ -462,14 +484,8 @@ msgstr ""
 #~ msgid "Load Log..."
 #~ msgstr "கோப்பினை உள்வாங்கு"
 
-#~ msgid "Game"
-#~ msgstr "விளையாட்டு"
-
 #~ msgid "Keyboard game"
 #~ msgstr "விசைப்பலகை விளையாட்டு"
-
-#~ msgid "Press to start a new game"
-#~ msgstr "புது விளையாட்டைத் துவங்க அழுத்தவும்"
 
 #~ msgid "Mines field."
 #~ msgstr "கண்ணிவெடிகளின் தளம்"
@@ -538,9 +554,6 @@ msgstr ""
 #~ "<qt>நேரம் முடிந்தது.மிக அதிக மதிப்பெண்கள் எடுக்கும்போது <font color=\"blue"
 #~ "\">நீலம்</font> நிறம்<br/>நல்ல நேரமாக இருந்தால்<font color=\"red\">சிவப்பு</"
 #~ "font> நிறம்</qt>"
-
-#~ msgid "View Game Log"
-#~ msgstr "விளையாட்டு கோப்பினை பார்க்கவும்"
 
 #~ msgid "Compute Solving Rate"
 #~ msgstr "தீர்க்கும் விகிததை கணக்கிடவும்"
