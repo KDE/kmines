@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-01-23 00:41+0000\n"
-"PO-Revision-Date: 2024-05-03 03:54+0200\n"
+"PO-Revision-Date: 2026-01-23 06:23+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.8\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -238,34 +238,32 @@ msgid "Mines: %1/%2"
 msgstr "ნაღმები: %1/%2"
 
 #: mainwindow.cpp:203
-#, fuzzy, kde-format
-#| msgid "Reset the Game?"
+#, kde-format
 msgid "Reset or start a new game?"
-msgstr "გავანულო თამაში?"
+msgstr "ჩამოყრა, თუ ახალი თამაშის დაწყება?"
 
 #: mainwindow.cpp:204 mainwindow.cpp:226
 #, kde-format
 msgctxt "@title:window"
 msgid "Game Over"
-msgstr ""
+msgstr "თამაში დასრულდა"
 
 #: mainwindow.cpp:205 mainwindow.cpp:227
 #, kde-format
 msgctxt "@action:button"
 msgid "New Game"
-msgstr ""
+msgstr "ახალი თამაში"
 
 #: mainwindow.cpp:206
-#, fuzzy, kde-format
-#| msgid "Reset the Game?"
+#, kde-format
 msgctxt "@action:button"
 msgid "Reset Game"
-msgstr "გავანულო თამაში?"
+msgstr "თამაშის გადატვირთვა"
 
 #: mainwindow.cpp:225
 #, kde-format
 msgid "Start a new game?"
-msgstr ""
+msgstr "დაიწყებთ ახალ თამაშს?"
 
 #: mainwindow.cpp:243
 #, kde-format

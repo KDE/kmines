@@ -237,10 +237,9 @@ msgid "Mines: %1/%2"
 msgstr "地雷：%1/%2"
 
 #: mainwindow.cpp:203
-#, fuzzy, kde-format
-#| msgid "Reset the Game?"
+#, kde-format
 msgid "Reset or start a new game?"
-msgstr "要重开本局游戏吗？"
+msgstr ""
 
 #: mainwindow.cpp:204 mainwindow.cpp:226
 #, kde-format
@@ -255,11 +254,10 @@ msgid "New Game"
 msgstr ""
 
 #: mainwindow.cpp:206
-#, fuzzy, kde-format
-#| msgid "Reset the Game?"
+#, kde-format
 msgctxt "@action:button"
 msgid "Reset Game"
-msgstr "要重开本局游戏吗？"
+msgstr ""
 
 #: mainwindow.cpp:225
 #, kde-format
@@ -303,7 +301,3 @@ msgstr "恭喜！您赢了！"
 #, kde-format
 msgid "You have lost."
 msgstr "您输了。"
-
-#~ msgctxt "@action;button"
-#~ msgid "Reset"
-#~ msgstr "重新开始"

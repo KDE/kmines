@@ -1,4 +1,6 @@
 # Spanish translations for kmines.po package.
+# Copyright (C) 2002-2026 This file is copyright:
+# This file is distributed under the same license as the kmines package.
 #
 # SPDX-FileCopyrightText: 2002, 2003 Miguel Revilla Rodríguez <yo@miguelrevilla.com>
 # SPDX-FileCopyrightText: 2003 Lucas Garcia <tanke@escomposlinux.org>
@@ -6,13 +8,13 @@
 # SPDX-FileCopyrightText: 2004, 2006, 2007, 2008 Santiago Fernández Sancho <santi@kde-es.org>
 # SPDX-FileCopyrightText: 2010 Kira J. Fernandez <kirajfdez@gmail.com>
 # SPDX-FileCopyrightText: 2019, 2020, 2021, 2023, 2024 Eloy Cuadra <ecuadra@eloihr.net>
-# SPDX-FileCopyrightText: 2024, 2025 Sofía Priego <spriego@darksylvania.net>
+# SPDX-FileCopyrightText: 2024, 2025, 2026 Sofía Priego <spriego@darksylvania.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-01-23 00:41+0000\n"
-"PO-Revision-Date: 2025-04-02 01:20+0100\n"
+"PO-Revision-Date: 2026-01-23 20:39+0100\n"
 "Last-Translator: Sofía Priego <spriego@darksylvania.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -20,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "First-Translator: Antonio Larrosa <larrosa@kde.org>\n"
-"X-Generator: Lokalize 24.02.2\n"
+"X-Generator: Lokalize 25.12.1\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #, kde-format
@@ -251,34 +253,32 @@ msgid "Mines: %1/%2"
 msgstr "Minas: %1/%2"
 
 #: mainwindow.cpp:203
-#, fuzzy, kde-format
-#| msgid "Reset the Game?"
+#, kde-format
 msgid "Reset or start a new game?"
-msgstr "¿Reiniciar el juego?"
+msgstr "¿Reiniciar o empezar una nueva partida?"
 
 #: mainwindow.cpp:204 mainwindow.cpp:226
 #, kde-format
 msgctxt "@title:window"
 msgid "Game Over"
-msgstr ""
+msgstr "Partida terminada"
 
 #: mainwindow.cpp:205 mainwindow.cpp:227
 #, kde-format
 msgctxt "@action:button"
 msgid "New Game"
-msgstr ""
+msgstr "Nueva partida"
 
 #: mainwindow.cpp:206
-#, fuzzy, kde-format
-#| msgid "Reset the Game?"
+#, kde-format
 msgctxt "@action:button"
 msgid "Reset Game"
-msgstr "¿Reiniciar el juego?"
+msgstr "Reiniciar la partida"
 
 #: mainwindow.cpp:225
 #, kde-format
 msgid "Start a new game?"
-msgstr ""
+msgstr "¿Empezar una nueva partida?"
 
 #: mainwindow.cpp:243
 #, kde-format
@@ -317,7 +317,3 @@ msgstr "¡Enhorabuena! ¡Has ganado!"
 #, kde-format
 msgid "You have lost."
 msgstr "Has perdido."
-
-#~ msgctxt "@action;button"
-#~ msgid "Reset"
-#~ msgstr "Reiniciar"

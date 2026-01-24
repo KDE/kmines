@@ -1,13 +1,13 @@
 # Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the kmines package.
 #
-# SPDX-FileCopyrightText: 2023, 2024 giovanni <g.sora@tiscali.it>
+# SPDX-FileCopyrightText: 2023, 2024, 2026 giovanni <g.sora@tiscali.it>
 msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-01-23 00:41+0000\n"
-"PO-Revision-Date: 2024-07-12 16:00+0200\n"
+"PO-Revision-Date: 2026-01-23 16:13+0100\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
@@ -185,7 +185,7 @@ msgstr ""
 #: main.cpp:61
 #, kde-format
 msgid "Mikhail Kourinny"
-msgstr ""
+msgstr "Mikhail Kourinny"
 
 #: main.cpp:61
 #, kde-format
@@ -195,7 +195,7 @@ msgstr ""
 #: main.cpp:62
 #, kde-format
 msgid "Thomas Capricelli"
-msgstr ""
+msgstr "Thomas Capricelli"
 
 #: main.cpp:62
 #, kde-format
@@ -241,26 +241,24 @@ msgstr ""
 #, kde-format
 msgctxt "@title:window"
 msgid "Game Over"
-msgstr ""
+msgstr "Joco Terminate"
 
 #: mainwindow.cpp:205 mainwindow.cpp:227
 #, kde-format
 msgctxt "@action:button"
 msgid "New Game"
-msgstr ""
+msgstr "Nove Joco"
 
 #: mainwindow.cpp:206
-#, fuzzy, kde-format
-#| msgctxt "@action;button"
-#| msgid "Reset"
+#, kde-format
 msgctxt "@action:button"
 msgid "Reset Game"
-msgstr "Reinitialisa"
+msgstr "Reinitialisa Joco"
 
 #: mainwindow.cpp:225
 #, kde-format
 msgid "Start a new game?"
-msgstr ""
+msgstr "Initia un Nove Joco?"
 
 #: mainwindow.cpp:243
 #, kde-format
