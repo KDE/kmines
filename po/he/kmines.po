@@ -14,20 +14,20 @@
 # Israel Berger <Israelb@gmail.com>, 2005.
 # Chen Levy <contrib@chenlevy.com>, 2006.
 # Elkana Bardugo <ttv200@gmail.com>, 2017. #zanata
-# SPDX-FileCopyrightText: 2023, 2024 Yaron Shahrabani <sh.yaron@gmail.com>
+# SPDX-FileCopyrightText: 2023, 2024, 2026 Yaron Shahrabani <sh.yaron@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-01-23 00:41+0000\n"
-"PO-Revision-Date: 2024-05-03 08:31+0300\n"
+"PO-Revision-Date: 2026-01-23 09:34+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 23.08.5\n"
+"X-Generator: Lokalize 25.12.1\n"
 "Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
 "n % 10 == 0) ? 2 : 3));\n"
 
@@ -251,34 +251,32 @@ msgid "Mines: %1/%2"
 msgstr "מוקשים: %1/%2"
 
 #: mainwindow.cpp:203
-#, fuzzy, kde-format
-#| msgid "Reset the Game?"
+#, kde-format
 msgid "Reset or start a new game?"
-msgstr "לאפס את המשחק?"
+msgstr "לאפס או להתחיל משחק חדש?"
 
 #: mainwindow.cpp:204 mainwindow.cpp:226
 #, kde-format
 msgctxt "@title:window"
 msgid "Game Over"
-msgstr ""
+msgstr "המשחק נגמר"
 
 #: mainwindow.cpp:205 mainwindow.cpp:227
 #, kde-format
 msgctxt "@action:button"
 msgid "New Game"
-msgstr ""
+msgstr "משחק חדש"
 
 #: mainwindow.cpp:206
-#, fuzzy, kde-format
-#| msgid "Reset the Game?"
+#, kde-format
 msgctxt "@action:button"
 msgid "Reset Game"
-msgstr "לאפס את המשחק?"
+msgstr "איפוס משחק"
 
 #: mainwindow.cpp:225
 #, kde-format
 msgid "Start a new game?"
-msgstr ""
+msgstr "להתחיל משחק חדש?"
 
 #: mainwindow.cpp:243
 #, kde-format

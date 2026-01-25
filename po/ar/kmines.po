@@ -3,13 +3,13 @@
 # Isam Bayazidi <bayazidi@arabeyes.org>, 2002.
 # Youssef Chahibi <chahibi@gmail.com>, 2007.
 # Abdalrahim Fakhouri <abdilra7eem@yahoo.com>, 2012.
-# SPDX-FileCopyrightText: 2021, 2024, 2025 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
+# SPDX-FileCopyrightText: 2021, 2024, 2025, 2026 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-01-23 00:41+0000\n"
-"PO-Revision-Date: 2025-08-04 13:43+0400\n"
+"PO-Revision-Date: 2026-01-24 12:05+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -241,34 +241,32 @@ msgid "Mines: %1/%2"
 msgstr "الألغام: %1/%2"
 
 #: mainwindow.cpp:203
-#, fuzzy, kde-format
-#| msgid "Reset the Game?"
+#, kde-format
 msgid "Reset or start a new game?"
-msgstr "أأصفّر اللعبة؟"
+msgstr "أأصفّر اللعبة أم أبدأ لعبة جدية؟"
 
 #: mainwindow.cpp:204 mainwindow.cpp:226
 #, kde-format
 msgctxt "@title:window"
 msgid "Game Over"
-msgstr ""
+msgstr "انتهت اللعبة"
 
 #: mainwindow.cpp:205 mainwindow.cpp:227
 #, kde-format
 msgctxt "@action:button"
 msgid "New Game"
-msgstr ""
+msgstr "لعبة جديدة"
 
 #: mainwindow.cpp:206
-#, fuzzy, kde-format
-#| msgid "Reset the Game?"
+#, kde-format
 msgctxt "@action:button"
 msgid "Reset Game"
-msgstr "أأصفّر اللعبة؟"
+msgstr "صفّر اللعبة"
 
 #: mainwindow.cpp:225
 #, kde-format
 msgid "Start a new game?"
-msgstr ""
+msgstr "ابدأ لعبة جديدة؟"
 
 #: mainwindow.cpp:243
 #, kde-format
