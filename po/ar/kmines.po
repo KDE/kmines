@@ -3,7 +3,7 @@
 # Isam Bayazidi <bayazidi@arabeyes.org>, 2002.
 # Youssef Chahibi <chahibi@gmail.com>, 2007.
 # Abdalrahim Fakhouri <abdilra7eem@yahoo.com>, 2012.
-# SPDX-FileCopyrightText: 2021, 2024, 2025 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
+# SPDX-FileCopyrightText: 2021, 2024, 2025, 2026 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
