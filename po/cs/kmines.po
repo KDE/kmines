@@ -247,13 +247,13 @@ msgstr "Restartovat hru?"
 #, kde-format
 msgctxt "@title:window"
 msgid "Game Over"
-msgstr ""
+msgstr "Konec hry"
 
 #: mainwindow.cpp:205 mainwindow.cpp:227
 #, kde-format
 msgctxt "@action:button"
 msgid "New Game"
-msgstr ""
+msgstr "Nová hra"
 
 #: mainwindow.cpp:206
 #, fuzzy, kde-format
