@@ -306,7 +306,3 @@ msgstr "Gratulerer! Du vann!"
 #, kde-format
 msgid "You have lost."
 msgstr "Du tapte."
-
-#~ msgctxt "@action;button"
-#~ msgid "Reset"
-#~ msgstr "Nullstill"
