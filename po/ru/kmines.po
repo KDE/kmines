@@ -7,20 +7,20 @@
 # Artem Sereda <overmind88@gmail.com>, 2008, 2010.
 # Evgeniy Ivanov <powerfox@kde.ru>, 2008.
 # SPDX-FileCopyrightText: 2022, 2024 Olesya Gerasimenko <translation-team@basealt.ru>
-# SPDX-FileCopyrightText: 2024 Alexander Yavorsky <kekcuha@gmail.com>
+# SPDX-FileCopyrightText: 2024, 2026 Alexander Yavorsky <kekcuha@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-01-23 00:41+0000\n"
-"PO-Revision-Date: 2024-10-04 17:11+0300\n"
-"Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
-"Language-Team: Basealt Translation Team\n"
+"PO-Revision-Date: 2026-01-31 11:20+0300\n"
+"Last-Translator: Alexander Yavorsky <kekcuha@gmail.com>\n"
+"Language-Team: Russian <kde-russian@lists.kde.ru>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 23.08.5\n"
+"X-Generator: Lokalize 25.12.1\n"
 "Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
@@ -252,37 +252,32 @@ msgid "Mines: %1/%2"
 msgstr "Мины: %1/%2"
 
 #: mainwindow.cpp:203
-#, fuzzy, kde-format
-#| msgid "Press to start a new game"
+#, kde-format
 msgid "Reset or start a new game?"
-msgstr "Нажмите клавишу, чтобы начать новую игру"
+msgstr "Сбросить или начать новую игру?"
 
 #: mainwindow.cpp:204 mainwindow.cpp:226
-#, fuzzy, kde-format
-#| msgid "Game"
+#, kde-format
 msgctxt "@title:window"
 msgid "Game Over"
-msgstr "Игра"
+msgstr "Игра окончена"
 
 #: mainwindow.cpp:205 mainwindow.cpp:227
-#, fuzzy, kde-format
-#| msgid "View Game Log"
+#, kde-format
 msgctxt "@action:button"
 msgid "New Game"
-msgstr "Просмотр записи игры"
+msgstr "Новая игра"
 
 #: mainwindow.cpp:206
-#, fuzzy, kde-format
-#| msgid "Reset the Game?"
+#, kde-format
 msgctxt "@action:button"
 msgid "Reset Game"
-msgstr "Сбросить игру?"
+msgstr "Сбросить игру"
 
 #: mainwindow.cpp:225
-#, fuzzy, kde-format
-#| msgid "Press to start a new game"
+#, kde-format
 msgid "Start a new game?"
-msgstr "Нажмите клавишу, чтобы начать новую игру"
+msgstr "Начать новую игру?"
 
 #: mainwindow.cpp:243
 #, kde-format
