@@ -1,5 +1,5 @@
 # translation of kmines.po to Italian
-# SPDX-FileCopyrightText: 2019, 2020, 2021, 2023 Paolo Zamponi <feus73@gmail.com>
+# SPDX-FileCopyrightText: 2019, 2020, 2021, 2023, 2026 Paolo Zamponi <feus73@gmail.com>
 # Andrea Celli <andrea.celli@libero.it>, 2003, 2004, 2007, 2008, 2010.
 # Andrea Celli <andrea.celli@ilibero.it>, 2011.
 # SPDX-FileCopyrightText: 2024 Valter Mura <valtermura@gmail.com>
@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-01-23 00:41+0000\n"
-"PO-Revision-Date: 2024-05-03 22:23+0200\n"
-"Last-Translator: Valter Mura <valtermura@gmail.com>\n"
+"PO-Revision-Date: 2026-01-29 21:05+0100\n"
+"Last-Translator: Paolo Zamponi <feus73@gmail.com>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 23.08.5\n"
+"X-Generator: Lokalize 25.12.1\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -241,34 +241,32 @@ msgid "Mines: %1/%2"
 msgstr "Mine: %1/%2"
 
 #: mainwindow.cpp:203
-#, fuzzy, kde-format
-#| msgid "Reset the Game?"
+#, kde-format
 msgid "Reset or start a new game?"
-msgstr "Reimposto la partita?"
+msgstr "Reimpostare la partita o iniziarne una nuova?"
 
 #: mainwindow.cpp:204 mainwindow.cpp:226
 #, kde-format
 msgctxt "@title:window"
 msgid "Game Over"
-msgstr ""
+msgstr "Partita terminata"
 
 #: mainwindow.cpp:205 mainwindow.cpp:227
 #, kde-format
 msgctxt "@action:button"
 msgid "New Game"
-msgstr ""
+msgstr "Nuova partita"
 
 #: mainwindow.cpp:206
-#, fuzzy, kde-format
-#| msgid "Reset the Game?"
+#, kde-format
 msgctxt "@action:button"
 msgid "Reset Game"
-msgstr "Reimposto la partita?"
+msgstr "Reimposta la partita"
 
 #: mainwindow.cpp:225
 #, kde-format
 msgid "Start a new game?"
-msgstr ""
+msgstr "Iniziare una nuova partita?"
 
 #: mainwindow.cpp:243
 #, kde-format
