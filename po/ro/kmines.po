@@ -1,10 +1,10 @@
-# SPDX-FileCopyrightText: 2008, 2009, 2012, 2022, 2024, 2025 Sergiu Bivol <sergiu@cip.md>
+# SPDX-FileCopyrightText: 2008, 2009, 2012, 2022, 2024, 2025, 2026 Sergiu Bivol <sergiu@cip.md>
 msgid ""
 msgstr ""
 "Project-Id-Version: kmines-1.0.1a\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-01-23 00:41+0000\n"
-"PO-Revision-Date: 2025-10-19 22:55+0100\n"
+"PO-Revision-Date: 2026-02-04 13:08+0000\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian <kde-i18n-ro@kde.org>\n"
 "Language: ro\n"
@@ -237,35 +237,32 @@ msgid "Mines: %1/%2"
 msgstr "Mine: %1/%2"
 
 #: mainwindow.cpp:203
-#, fuzzy, kde-format
-#| msgid "Press to start a new game"
+#, kde-format
 msgid "Reset or start a new game?"
-msgstr "Apăsați o tastă pentru un joc nou"
+msgstr "Reinițializați sau reîncepeți jocul?"
 
 #: mainwindow.cpp:204 mainwindow.cpp:226
 #, kde-format
 msgctxt "@title:window"
 msgid "Game Over"
-msgstr ""
+msgstr "Joc încheiat"
 
 #: mainwindow.cpp:205 mainwindow.cpp:227
 #, kde-format
 msgctxt "@action:button"
 msgid "New Game"
-msgstr ""
+msgstr "Joc nou"
 
 #: mainwindow.cpp:206
-#, fuzzy, kde-format
-#| msgid "Reset the Game?"
+#, kde-format
 msgctxt "@action:button"
 msgid "Reset Game"
-msgstr "Reinițializați jocul?"
+msgstr "Reinițializează jocul"
 
 #: mainwindow.cpp:225
-#, fuzzy, kde-format
-#| msgid "Press to start a new game"
+#, kde-format
 msgid "Start a new game?"
-msgstr "Apăsați o tastă pentru un joc nou"
+msgstr "Începeți un joc nou?"
 
 #: mainwindow.cpp:243
 #, kde-format
