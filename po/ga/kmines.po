@@ -233,37 +233,32 @@ msgid "Mines: %1/%2"
 msgstr "Mianaigh: %1/%2"
 
 #: mainwindow.cpp:203
-#, fuzzy, kde-format
-#| msgid "Press to start a new game"
+#, kde-format
 msgid "Reset or start a new game?"
-msgstr "Brúigh chun cluiche nua a thosú"
+msgstr ""
 
 #: mainwindow.cpp:204 mainwindow.cpp:226
-#, fuzzy, kde-format
-#| msgid "Game"
+#, kde-format
 msgctxt "@title:window"
 msgid "Game Over"
-msgstr "Cluiche"
+msgstr ""
 
 #: mainwindow.cpp:205 mainwindow.cpp:227
-#, fuzzy, kde-format
-#| msgid "Game"
+#, kde-format
 msgctxt "@action:button"
 msgid "New Game"
-msgstr "Cluiche"
+msgstr ""
 
 #: mainwindow.cpp:206
-#, fuzzy, kde-format
-#| msgid "Custom Game"
+#, kde-format
 msgctxt "@action:button"
 msgid "Reset Game"
-msgstr "Cluiche Saincheaptha"
+msgstr ""
 
 #: mainwindow.cpp:225
-#, fuzzy, kde-format
-#| msgid "Press to start a new game"
+#, kde-format
 msgid "Start a new game?"
-msgstr "Brúigh chun cluiche nua a thosú"
+msgstr ""
 
 #: mainwindow.cpp:243
 #, kde-format
@@ -271,25 +266,22 @@ msgid "Time: %1"
 msgstr "Am: %1"
 
 #: mainwindow.cpp:269
-#, fuzzy, kde-format
-#| msgid "General"
+#, kde-format
 msgctxt "@title:tab"
 msgid "General"
-msgstr "Ginearálta"
+msgstr ""
 
 #: mainwindow.cpp:270
-#, fuzzy, kde-format
-#| msgid "Theme"
+#, kde-format
 msgctxt "@title:tab"
 msgid "Theme"
-msgstr "Téama"
+msgstr ""
 
 #: mainwindow.cpp:271
-#, fuzzy, kde-format
-#| msgid "Custom Game"
+#, kde-format
 msgctxt "@title:tab"
 msgid "Custom Game"
-msgstr "Cluiche Saincheaptha"
+msgstr ""
 
 #: scene.cpp:117
 #, kde-format
@@ -305,97 +297,3 @@ msgstr "Comhghairdeas! Bhí an bua agat!"
 #, kde-format
 msgid "You have lost."
 msgstr "Chaill tú."
-
-#~ msgid "The graphical theme to be used."
-#~ msgstr "An téama grafach le húsáid."
-
-#~ msgid "The difficulty level."
-#~ msgstr "An leibhéal deacrachta."
-
-#~ msgid "Failed to load \"%1\" theme. Please check your installation."
-#~ msgstr "Níorbh fhéidir téama \"%1\" a luchtú.  Déan seiceáil ar do chóras."
-
-#~ msgid ""
-#~ "Custom game can not be started.<br />Number of mines is too big for "
-#~ "current field."
-#~ msgstr ""
-#~ "Ní féidir an cluiche saincheaptha a thosú.<br />Tá líon na mianach rómhór "
-#~ "don réimse seo."
-
-#~ msgid "Form"
-#~ msgstr "Foirm"
-
-#~ msgid "Settings"
-#~ msgstr "Socruithe"
-
-#~ msgid "Mouse button actions"
-#~ msgstr "Gníomhartha na gcnaipí luiche"
-
-#~ msgid "Color"
-#~ msgstr "Dath"
-
-#~ msgid "&Move"
-#~ msgstr "&Bog"
-
-#~ msgid "Easy"
-#~ msgstr "Éasca"
-
-#~ msgid "Expert"
-#~ msgstr "Saineolaí"
-
-#~ msgid "Choose level:"
-#~ msgstr "Roghnaigh leibhéal:"
-
-#~ msgid "Left button:"
-#~ msgstr "Cnaipe clé:"
-
-#~ msgid "Middle button:"
-#~ msgstr "Cnaipe sa lár:"
-
-#~ msgid "Right button:"
-#~ msgstr "Cnaipe deas:"
-
-#~ msgid "Move Up"
-#~ msgstr "Bog Suas"
-
-#~ msgid "Move Down"
-#~ msgstr "Bog Síos"
-
-#~ msgid "Move Right"
-#~ msgstr "Bog Faoi Dheis"
-
-#~ msgid "Move Left"
-#~ msgstr "Bog Faoi Chlé"
-
-#~ msgid "Save Log..."
-#~ msgstr "Sábháil Logchomhad..."
-
-#~ msgid "Game won!"
-#~ msgstr "Bhí an bua agat!"
-
-#~ msgid "Overwrite"
-#~ msgstr "Forscríobh"
-
-#~ msgid "The file already exists. Overwrite?"
-#~ msgstr "Tá an comhad ann cheana. Forscríobh?"
-
-#~ msgid "File Exists"
-#~ msgstr "Tá an comhad ann"
-
-#~ msgid "Cannot load file."
-#~ msgstr "Ní féidir comhad a luchtú."
-
-#~ msgid "anonymous"
-#~ msgstr "gan ainm"
-
-#~ msgid "View Log"
-#~ msgstr "Amharc ar Logchomhad"
-
-#~ msgid "Start"
-#~ msgstr "Tosaigh"
-
-#~ msgid "Width: %1"
-#~ msgstr "Leithead: %1"
-
-#~ msgid "Height: %1"
-#~ msgstr "Airde: %1"
