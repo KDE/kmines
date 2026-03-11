@@ -310,7 +310,3 @@ msgstr "Felicitats! Has guanyat!"
 #, kde-format
 msgid "You have lost."
 msgstr "Has perdut."
-
-#~ msgctxt "@action;button"
-#~ msgid "Reset"
-#~ msgstr "Reinicia"
