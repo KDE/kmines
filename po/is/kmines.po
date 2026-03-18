@@ -4,20 +4,20 @@
 #
 # Bjarni R. Einarsson, <bre@mmedia.is>, 1998.
 # Pjetur G. Hjaltason <pjetur@pjetur.net>, 2004.
-# Sveinn í Felli <sveinki@nett.is>, 2009, 2010, 2011, 2021, 2024.
+# SPDX-FileCopyrightText: 2009, 2010, 2011, 2021, 2024, 2026 Sveinn í Felli <sveinki@nett.is>
 msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-01-23 00:41+0000\n"
-"PO-Revision-Date: 2024-05-09 11:18+0000\n"
+"PO-Revision-Date: 2026-03-17 11:23+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic\n"
 "Language: is\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 22.04.3\n"
+"X-Generator: Lokalize 23.08.5\n"
 "Plural-Forms: Plural-Forms: nplurals=2; plural=n != 1;\n"
 "\n"
 "\n"
@@ -243,34 +243,32 @@ msgid "Mines: %1/%2"
 msgstr "Sprengjur: %1/%2"
 
 #: mainwindow.cpp:203
-#, fuzzy, kde-format
-#| msgid "Reset the Game?"
+#, kde-format
 msgid "Reset or start a new game?"
-msgstr "Endurstilla leikinn?"
+msgstr "Endurstilla eða byrja nýjan leik?"
 
 #: mainwindow.cpp:204 mainwindow.cpp:226
 #, kde-format
 msgctxt "@title:window"
 msgid "Game Over"
-msgstr ""
+msgstr "Leik lokið"
 
 #: mainwindow.cpp:205 mainwindow.cpp:227
 #, kde-format
 msgctxt "@action:button"
 msgid "New Game"
-msgstr ""
+msgstr "Nýr leikur"
 
 #: mainwindow.cpp:206
-#, fuzzy, kde-format
-#| msgid "Reset the Game?"
+#, kde-format
 msgctxt "@action:button"
 msgid "Reset Game"
-msgstr "Endurstilla leikinn?"
+msgstr "Endurstilla leikinn"
 
 #: mainwindow.cpp:225
 #, kde-format
 msgid "Start a new game?"
-msgstr ""
+msgstr "Byrja nýjan leik?"
 
 #: mainwindow.cpp:243
 #, kde-format
