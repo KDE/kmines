@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-01-23 00:41+0000\n"
-"PO-Revision-Date: 2015-12-29 17:52+0200\n"
+"PO-Revision-Date: 2026-05-11 12:26+0300\n"
 "Last-Translator: Mindaugas Baranauskas <opensuse.lietuviu.kalba@gmail.com>\n"
 "Language-Team: lt <kde-i18n-lt@kde.org>\n"
 "Language: lt\n"
@@ -17,17 +17,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n%10>=2 && (n%100<10 || n"
 "%100>=20) ? 1 : n%10==0 || (n%100>10 && n%100<20) ? 2 : 3);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 3.8\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
-msgstr "Andrius Štikonas"
+msgstr "Andrius Štikonas, Moo"
 
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr "andrius@stikonas.eu"
+msgstr "andrius@stikonas.eu, <>"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: customgame.ui:16
@@ -51,43 +51,43 @@ msgstr "Minos:"
 #: generalopts.ui:17
 #, kde-format
 msgid "Use '?' marks"
-msgstr "Naudoti '?' žymas"
+msgstr "Naudoti „?“ žymas"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_AllowKminesReset)
 #: generalopts.ui:24
 #, kde-format
 msgid "Allow KMines reset"
-msgstr ""
+msgstr "Leisti atstatyti KMines"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_DisableScoreOnReset)
 #: generalopts.ui:37
 #, kde-format
 msgid "Disable score on reset"
-msgstr ""
+msgstr "Atstačius žaidimą išjungti rekordus"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ExploreWithLeftClickOnNumberCells)
 #: generalopts.ui:44
 #, kde-format
 msgid "Explore with left click on number cells"
-msgstr ""
+msgstr "Tyrinėti spustelėjant kairiuoju pelės mygtuku ant skaitmenų langelių"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: generalopts.ui:53
 #, kde-format
 msgid "Place flag when mouse button is:"
-msgstr ""
+msgstr "Uždėti vėliavėlę, kai pelės mygtukas:"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:61
 #, kde-format
 msgid "Released"
-msgstr ""
+msgstr "Atleidžiamas"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:66
 #, kde-format
 msgid "Pressed"
-msgstr ""
+msgstr "Paspaudžiamas"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
@@ -100,6 +100,8 @@ msgstr "Ar gali būti naudojamos žymos „nesu tikras“."
 #, kde-format
 msgid "Left click on a number cell will have the same effect as mid click."
 msgstr ""
+"Spustelėjimas kairiuoju pelės mygtuku ant skaičiaus turės tokį patį poveikį "
+"kaip spustelėjimas viduriniuoju mygtuku."
 
 #. i18n: ectx: label, entry (CustomWidth), group (Options)
 #: kmines.kcfg:35
@@ -123,7 +125,7 @@ msgstr "Minų skaičius žaidimo lauke."
 #: kminesui.rc:12
 #, kde-format
 msgid "Main Toolbar"
-msgstr "Pagrindinė įrankinė"
+msgstr "Pagrindinė įrankių juosta"
 
 #: main.cpp:45
 #, kde-format
@@ -143,6 +145,10 @@ msgid ""
 "(c) 2006-2007, Mauricio Piacentini\n"
 "(c) 2007, Dmitry Suzdalev"
 msgstr ""
+"(c) 1996–2005, Nicolas Hadacek\n"
+"(c) 2001, Mikhail Kourinny\n"
+"(c) 2006–2007, Mauricio Piacentini\n"
+"(c) 2007, Dmitry Suzdalev"
 
 #: main.cpp:52
 #, kde-format
@@ -203,7 +209,7 @@ msgstr "Thomas Capricelli"
 #: main.cpp:62
 #, kde-format
 msgid "Magic reveal mode"
-msgstr "Magiško atskleidimo režimas"
+msgstr "Stebuklingo atskleidimo veiksena"
 
 #: main.cpp:63
 #, kde-format
@@ -213,7 +219,7 @@ msgstr "Brian Croom"
 #: main.cpp:63
 #, kde-format
 msgid "Port to use KGameRenderer"
-msgstr "KGameRenderer naudojantis variantas"
+msgstr "KGameRenderer realizavimas"
 
 #: mainwindow.cpp:101
 #, kde-format
@@ -228,7 +234,7 @@ msgstr "Laikas: 00:00"
 #: mainwindow.cpp:125
 #, kde-format
 msgid "Custom"
-msgstr "Pasirinktas"
+msgstr "Tinkinta"
 
 #: mainwindow.cpp:135
 #, kde-format
@@ -238,31 +244,30 @@ msgstr "Minos: %1/%2"
 #: mainwindow.cpp:203
 #, kde-format
 msgid "Reset or start a new game?"
-msgstr ""
+msgstr "Atstatyti ar pradėti naują žaidimą?"
 
 #: mainwindow.cpp:204 mainwindow.cpp:226
 #, kde-format
 msgctxt "@title:window"
 msgid "Game Over"
-msgstr ""
+msgstr "Žaidimas baigtas"
 
 #: mainwindow.cpp:205 mainwindow.cpp:227
 #, kde-format
 msgctxt "@action:button"
 msgid "New Game"
-msgstr ""
+msgstr "Naujas žaidimas"
 
 #: mainwindow.cpp:206
-#, fuzzy, kde-format
-#| msgid "Custom Game"
+#, kde-format
 msgctxt "@action:button"
 msgid "Reset Game"
-msgstr "Pasirinktas žaidimas"
+msgstr "Atstatyti žaidimą"
 
 #: mainwindow.cpp:225
 #, kde-format
 msgid "Start a new game?"
-msgstr ""
+msgstr "Pradėti naują žaidimą?"
 
 #: mainwindow.cpp:243
 #, kde-format
@@ -270,30 +275,27 @@ msgid "Time: %1"
 msgstr "Laikas: %1"
 
 #: mainwindow.cpp:269
-#, fuzzy, kde-format
-#| msgid "General"
+#, kde-format
 msgctxt "@title:tab"
 msgid "General"
 msgstr "Bendri"
 
 #: mainwindow.cpp:270
-#, fuzzy, kde-format
-#| msgid "Theme"
+#, kde-format
 msgctxt "@title:tab"
 msgid "Theme"
 msgstr "Apipavidalinimas"
 
 #: mainwindow.cpp:271
-#, fuzzy, kde-format
-#| msgid "Custom Game"
+#, kde-format
 msgctxt "@title:tab"
 msgid "Custom Game"
-msgstr "Pasirinktas žaidimas"
+msgstr "Tinkintas žaidimas"
 
 #: scene.cpp:117
 #, kde-format
 msgid "Game is paused."
-msgstr "Žaidimas pristabdytas"
+msgstr "Žaidimas pristabdytas."
 
 #: scene.cpp:125
 #, kde-format
@@ -303,4 +305,4 @@ msgstr "Sveikiname! Jūs laimėjote!"
 #: scene.cpp:127
 #, kde-format
 msgid "You have lost."
-msgstr "Jūs pralaimėjote"
+msgstr "Jūs pralaimėjote."
