@@ -8,24 +8,25 @@ msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-01-23 00:41+0000\n"
-"PO-Revision-Date: 2013-09-08 07:05+0900\n"
-"Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
+"PO-Revision-Date: 2026-05-31 19:03-0400\n"
+"Last-Translator: Abduqadir Abliz <sahranbay@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
 "Language: ug\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.9\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
-msgstr "ئابدۇقادىر ئابلىز, غەيرەت كەنجى"
+msgstr "ئابدۇقادىر ئابلىز، غەيرەت كەنجى"
 
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr "sahran.ug@gmail.com,  gheyret@gmail.com"
+msgstr "sahranbay@gmail.com, gheyret@gmail.com"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: customgame.ui:16
@@ -79,13 +80,13 @@ msgstr ""
 #: generalopts.ui:61
 #, kde-format
 msgid "Released"
-msgstr ""
+msgstr "تارقىتىلدى"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:66
 #, kde-format
 msgid "Pressed"
-msgstr ""
+msgstr "بېسىلغان"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
@@ -126,7 +127,7 @@ msgstr "ئاساسىي قورال بالداق"
 #: main.cpp:45
 #, kde-format
 msgid "KMines"
-msgstr "KMines"
+msgstr ""
 
 #: main.cpp:47
 #, kde-format
@@ -145,17 +146,17 @@ msgstr ""
 #: main.cpp:52
 #, kde-format
 msgid "Nicolas Hadacek"
-msgstr "Nicolas Hadacek"
+msgstr ""
 
 #: main.cpp:53
 #, kde-format
 msgid "Original author"
-msgstr "ئەسلى ئاپتور"
+msgstr "ئەسلى يازغۇچى"
 
 #: main.cpp:54
 #, kde-format
 msgid "Mauricio Piacentini"
-msgstr "Mauricio Piacentini"
+msgstr ""
 
 #: main.cpp:55
 #, kde-format
@@ -165,7 +166,7 @@ msgstr ""
 #: main.cpp:57
 #, kde-format
 msgid "Dmitry Suzdalev"
-msgstr "Dmitry Suzdalev"
+msgstr ""
 
 #: main.cpp:58
 #, kde-format
@@ -175,7 +176,7 @@ msgstr ""
 #: main.cpp:60
 #, kde-format
 msgid "Andreas Zehender"
-msgstr "Andreas Zehender"
+msgstr ""
 
 #: main.cpp:60
 #, kde-format
@@ -205,7 +206,7 @@ msgstr ""
 #: main.cpp:63
 #, kde-format
 msgid "Brian Croom"
-msgstr "Brian Croom"
+msgstr ""
 
 #: main.cpp:63
 #, kde-format
@@ -241,20 +242,19 @@ msgstr ""
 #, kde-format
 msgctxt "@title:window"
 msgid "Game Over"
-msgstr ""
+msgstr "ئويۇن ئاخىرلاشتى"
 
 #: mainwindow.cpp:205 mainwindow.cpp:227
 #, kde-format
 msgctxt "@action:button"
 msgid "New Game"
-msgstr ""
+msgstr "يېڭى ئويۇن"
 
 #: mainwindow.cpp:206
-#, fuzzy, kde-format
-#| msgid "Custom Game"
+#, kde-format
 msgctxt "@action:button"
 msgid "Reset Game"
-msgstr "ئىختىيارى ئويۇن"
+msgstr "ئويۇننى ئەسلىگە قايتۇر"
 
 #: mainwindow.cpp:225
 #, kde-format
@@ -267,25 +267,22 @@ msgid "Time: %1"
 msgstr "ۋاقىت: %1"
 
 #: mainwindow.cpp:269
-#, fuzzy, kde-format
-#| msgid "General"
+#, kde-format
 msgctxt "@title:tab"
 msgid "General"
 msgstr "ئادەتتىكى"
 
 #: mainwindow.cpp:270
-#, fuzzy, kde-format
-#| msgid "Theme"
+#, kde-format
 msgctxt "@title:tab"
 msgid "Theme"
 msgstr "ئۆرنەك"
 
 #: mainwindow.cpp:271
-#, fuzzy, kde-format
-#| msgid "Custom Game"
+#, kde-format
 msgctxt "@title:tab"
 msgid "Custom Game"
-msgstr "ئىختىيارى ئويۇن"
+msgstr ""
 
 #: scene.cpp:117
 #, kde-format
