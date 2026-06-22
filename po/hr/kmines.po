@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: kmines 0\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-01-23 00:41+0000\n"
-"PO-Revision-Date: 2025-11-02 08:40+0100\n"
-"Last-Translator: Renato Pavicic <renato@translator-shop.org>\n"
+"PO-Revision-Date: 2026-06-21 23:39+0200\n"
+"Last-Translator: Igor Dobrača <igor.dobraca@skole.hr>\n"
 "Language-Team: Croatian <kde-croatia-list@lists.sourceforge.net>\n"
 "Language: hr\n"
 "MIME-Version: 1.0\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 3.9\n"
 "X-Environment: kde\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
@@ -240,37 +240,32 @@ msgid "Mines: %1/%2"
 msgstr "Mine: %1/%2"
 
 #: mainwindow.cpp:203
-#, fuzzy, kde-format
-#| msgid "Press to start a new game"
+#, kde-format
 msgid "Reset or start a new game?"
-msgstr "Kliknite za pokretanje nove igre "
+msgstr "Resetirati ili započeti novu igru?"
 
 #: mainwindow.cpp:204 mainwindow.cpp:226
-#, fuzzy, kde-format
-#| msgid "Game"
+#, kde-format
 msgctxt "@title:window"
 msgid "Game Over"
-msgstr "Igra"
+msgstr "Kraj igre"
 
 #: mainwindow.cpp:205 mainwindow.cpp:227
-#, fuzzy, kde-format
-#| msgid "View Game Log"
+#, kde-format
 msgctxt "@action:button"
 msgid "New Game"
-msgstr "Prikaži zapisnik igre"
+msgstr "Nova igra"
 
 #: mainwindow.cpp:206
-#, fuzzy, kde-format
-#| msgid "Reset the Game?"
+#, kde-format
 msgctxt "@action:button"
 msgid "Reset Game"
-msgstr "Resetirati igru?"
+msgstr "Resetiranje igre"
 
 #: mainwindow.cpp:225
-#, fuzzy, kde-format
-#| msgid "Press to start a new game"
+#, kde-format
 msgid "Start a new game?"
-msgstr "Kliknite za pokretanje nove igre "
+msgstr "Početi novu igru?"
 
 #: mainwindow.cpp:243
 #, kde-format
