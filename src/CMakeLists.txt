@@ -68,3 +68,5 @@ ecm_qt_install_logging_categories(
     FILE kmines.categories
     DESTINATION ${KDE_INSTALL_LOGGINGCATEGORIESDIR}
 )
+
+install(FILES kmines.kcfg DESTINATION ${KDE_INSTALL_KCFGDIR})
