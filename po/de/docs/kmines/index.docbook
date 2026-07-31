@@ -165,7 +165,7 @@
 </screenshot>
 
 <para
->Sie müssen zum Spielen von &kmines; eine Maus mit drei Tasten benutzen, um Felder aufzudecken oder zu markieren. (Bei Mäusen mit zwei Tasten können Sie die &MMB; mit einem gleichzeitigen Klick der &LMBn; und &RMBn; simulieren). Hier sind die Details beschrieben: </para>
+>Sie müssen zum Spielen von &kmines; eine Maus mit drei Tasten verwenden, um Felder aufzudecken oder zu markieren. (Bei Mäusen mit zwei Tasten können Sie die &MMB; mit einem gleichzeitigen Klick der &LMBn; und &RMBn; simulieren). Hier sind die Details beschrieben: </para>
 
 <para
 >Klicken Sie mit der &LMBn;, um ein Feld aufzudecken. Ist darin eine Mine, so explodiert sie und das Spiel ist beendet. Ein Feld ohne Mine wird aufgedeckt, zusammen mit allen angrenzenden Feldern ohne Mine. Befinden sich in angrenzenden Feldern Minen, wird die Anzahl der benachbarten Felder mit Minen angezeigt. Jedes Feld, ausgenommen Eck- und Randfelder, hat 8 angrenzende Felder.  </para>
@@ -211,7 +211,7 @@
 <itemizedlist>
 <listitem
 ><para
->Benutzen Sie die angezeigten Zahlen, um angrenzende Felder mit Minen zu finden.</para
+>Verwenden Sie die angezeigten Zahlen, um angrenzende Felder mit Minen zu finden.</para
 ></listitem>
 <listitem
 ><para
