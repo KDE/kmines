@@ -3,20 +3,21 @@
 # SPDX-FileCopyrightText: 2005, 2009 Thomas Reitelbach <tr@erdfunkstelle.de>
 # SPDX-FileCopyrightText: 2006, 2008, 2019-2021 Burkhard Lück <lueck@hube-lueck.de>
 # SPDX-FileCopyrightText: 2009-2010, 2023-2024 Johannes Obermayr <johannesobermayr@gmx.de>
+# SPDX-FileCopyrightText: 2026 Philipp Kiemle <l10n.daphipz@fastmail.de>
 msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-01-23 00:41+0000\n"
-"PO-Revision-Date: 2024-08-19 23:05+0200\n"
-"Last-Translator: Johannes Obermayr <johannesobermayr@gmx.de>\n"
+"PO-Revision-Date: 2026-08-25 23:46+0200\n"
+"Last-Translator: Philipp Kiemle <l10n.daphipz@fastmail.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Lokalize 26.08.0\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -146,10 +147,10 @@ msgid ""
 "(c) 2006-2007, Mauricio Piacentini\n"
 "(c) 2007, Dmitry Suzdalev"
 msgstr ""
-"(c) 1996-2005, Nicolas Hadacek\n"
-"(c) 2001, Mikhail Kourinny\n"
-"(c) 2006-2007, Mauricio Piacentini\n"
-"(c) 2007, Dmitry Suzdalev"
+"© 1996–2005 Nicolas Hadacek\n"
+"© 2001 Mikhail Kourinny\n"
+"© 2006–2007 Mauricio Piacentini\n"
+"© 2007 Dmitry Suzdalev"
 
 #: main.cpp:52
 #, kde-format
@@ -243,34 +244,32 @@ msgid "Mines: %1/%2"
 msgstr "Minen: %1 / %2"
 
 #: mainwindow.cpp:203
-#, fuzzy, kde-format
-#| msgid "Reset the Game?"
+#, kde-format
 msgid "Reset or start a new game?"
-msgstr "Das Spiel zurücksetzen?"
+msgstr "Zurücksetzen oder ein neues Spiel starten?"
 
 #: mainwindow.cpp:204 mainwindow.cpp:226
 #, kde-format
 msgctxt "@title:window"
 msgid "Game Over"
-msgstr ""
+msgstr "Spiel beendet"
 
 #: mainwindow.cpp:205 mainwindow.cpp:227
 #, kde-format
 msgctxt "@action:button"
 msgid "New Game"
-msgstr ""
+msgstr "Neues Spiel"
 
 #: mainwindow.cpp:206
-#, fuzzy, kde-format
-#| msgid "Reset the Game?"
+#, kde-format
 msgctxt "@action:button"
 msgid "Reset Game"
-msgstr "Das Spiel zurücksetzen?"
+msgstr "Spiel zurücksetzen"
 
 #: mainwindow.cpp:225
 #, kde-format
 msgid "Start a new game?"
-msgstr ""
+msgstr "Ein neues Spiel starten?"
 
 #: mainwindow.cpp:243
 #, kde-format
