@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-01-23 00:41+0000\n"
-"PO-Revision-Date: 2026-01-23 09:22+0100\n"
+"PO-Revision-Date: 2026-09-06 17:58+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca\n"
@@ -43,7 +43,7 @@ msgstr "Amplada:"
 #: customgame.ui:26
 #, kde-format
 msgid "Height:"
-msgstr "Alçada:"
+msgstr "Altura:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: customgame.ui:36
@@ -117,7 +117,7 @@ msgstr "L'amplada del camp de joc."
 #: kmines.kcfg:41
 #, kde-format
 msgid "The height of the playing field."
-msgstr "L'alçada del camp de joc."
+msgstr "L'altura del camp de joc."
 
 #. i18n: ectx: label, entry (CustomMines), group (Options)
 #: kmines.kcfg:47
