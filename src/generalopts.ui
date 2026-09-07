@@ -50,7 +50,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Place flag when mouse button is:</string>
+        <string>Place flag:</string>
        </property>
       </widget>
      </item>
@@ -58,12 +58,12 @@
       <widget class="QComboBox" name="kcfg_PlaceFlagOn">
        <item>
         <property name="text">
-         <string>Released</string>
+         <string>When the mouse button is released</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Pressed</string>
+         <string>When the mouse button is pressed</string>
         </property>
        </item>
       </widget>
