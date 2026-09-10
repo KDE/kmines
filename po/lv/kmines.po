@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-23 00:41+0000\n"
+"POT-Creation-Date: 2026-09-10 00:42+0000\n"
 "PO-Revision-Date: 2024-05-29 16:21+0300\n"
 "Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
@@ -75,20 +75,22 @@ msgstr "Izpētīt, nospiežot kreiso peles taustiņu uz šūnas ar ciparu"
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: generalopts.ui:53
 #, kde-format
-msgid "Place flag when mouse button is:"
-msgstr "Novietot karodziņu, kad peles taustiņš ir:"
+msgid "Place flag:"
+msgstr ""
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:61
-#, kde-format
-msgid "Released"
-msgstr "Atlaists"
+#, fuzzy, kde-format
+#| msgid "Place flag when mouse button is:"
+msgid "When the mouse button is released"
+msgstr "Novietot karodziņu, kad peles taustiņš ir:"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:66
-#, kde-format
-msgid "Pressed"
-msgstr "Nospiests"
+#, fuzzy, kde-format
+#| msgid "Place flag when mouse button is:"
+msgid "When the mouse button is pressed"
+msgstr "Novietot karodziņu, kad peles taustiņš ir:"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
@@ -308,6 +310,12 @@ msgstr "Apsveicu! Jūs uzvarējāt!"
 #, kde-format
 msgid "You have lost."
 msgstr "Jūs zaudējāt."
+
+#~ msgid "Released"
+#~ msgstr "Atlaists"
+
+#~ msgid "Pressed"
+#~ msgstr "Nospiests"
 
 #~ msgctxt "@action;button"
 #~ msgid "Reset"

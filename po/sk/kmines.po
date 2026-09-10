@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-23 00:41+0000\n"
+"POT-Creation-Date: 2026-09-10 00:42+0000\n"
 "PO-Revision-Date: 2022-04-09 20:10+0200\n"
 "Last-Translator: Roman Paholik <wizzardsk@gmail.com>\n"
 "Language-Team: Slovak <kde-sk@linux.sk>\n"
@@ -75,20 +75,22 @@ msgstr "Preskúmať ľavým tlačidlom myši na číselné bunky"
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: generalopts.ui:53
 #, kde-format
-msgid "Place flag when mouse button is:"
-msgstr "Umiestniť vlajku pri tlačidle myši:"
+msgid "Place flag:"
+msgstr ""
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:61
-#, kde-format
-msgid "Released"
-msgstr "Uvoľnenom"
+#, fuzzy, kde-format
+#| msgid "Place flag when mouse button is:"
+msgid "When the mouse button is released"
+msgstr "Umiestniť vlajku pri tlačidle myši:"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:66
-#, kde-format
-msgid "Pressed"
-msgstr "Stlačené"
+#, fuzzy, kde-format
+#| msgid "Place flag when mouse button is:"
+msgid "When the mouse button is pressed"
+msgstr "Umiestniť vlajku pri tlačidle myši:"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
@@ -306,6 +308,12 @@ msgstr "Gratulujeme! Vyhrali ste!"
 #, kde-format
 msgid "You have lost."
 msgstr "Prehrali ste."
+
+#~ msgid "Released"
+#~ msgstr "Uvoľnenom"
+
+#~ msgid "Pressed"
+#~ msgstr "Stlačené"
 
 #, fuzzy
 #~ msgctxt "@action;button"

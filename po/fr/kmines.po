@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-23 00:41+0000\n"
+"POT-Creation-Date: 2026-09-10 00:42+0000\n"
 "PO-Revision-Date: 2026-01-24 10:26+0100\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: \n"
@@ -88,20 +88,22 @@ msgstr "Explorer avec le clic gauche les cellules avec un chiffre"
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: generalopts.ui:53
 #, kde-format
-msgid "Place flag when mouse button is:"
-msgstr "Placer une étiquette lorsque le bouton de souris est :"
+msgid "Place flag:"
+msgstr ""
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:61
-#, kde-format
-msgid "Released"
-msgstr "Relâché"
+#, fuzzy, kde-format
+#| msgid "Place flag when mouse button is:"
+msgid "When the mouse button is released"
+msgstr "Placer une étiquette lorsque le bouton de souris est :"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:66
-#, kde-format
-msgid "Pressed"
-msgstr "Appuyé"
+#, fuzzy, kde-format
+#| msgid "Place flag when mouse button is:"
+msgid "When the mouse button is pressed"
+msgstr "Placer une étiquette lorsque le bouton de souris est :"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
@@ -321,6 +323,12 @@ msgstr "Félicitations ! Vous avez gagné !"
 #, kde-format
 msgid "You have lost."
 msgstr "Vous avez perdu."
+
+#~ msgid "Released"
+#~ msgstr "Relâché"
+
+#~ msgid "Pressed"
+#~ msgstr "Appuyé"
 
 #~ msgctxt "@action;button"
 #~ msgid "Reset"

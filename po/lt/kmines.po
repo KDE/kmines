@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-23 00:41+0000\n"
+"POT-Creation-Date: 2026-09-10 00:42+0000\n"
 "PO-Revision-Date: 2026-05-11 12:26+0300\n"
 "Last-Translator: Mindaugas Baranauskas <opensuse.lietuviu.kalba@gmail.com>\n"
 "Language-Team: lt <kde-i18n-lt@kde.org>\n"
@@ -74,20 +74,22 @@ msgstr "Tyrinėti spustelėjant kairiuoju pelės mygtuku ant skaitmenų langeli�
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: generalopts.ui:53
 #, kde-format
-msgid "Place flag when mouse button is:"
-msgstr "Uždėti vėliavėlę, kai pelės mygtukas:"
+msgid "Place flag:"
+msgstr ""
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:61
-#, kde-format
-msgid "Released"
-msgstr "Atleidžiamas"
+#, fuzzy, kde-format
+#| msgid "Place flag when mouse button is:"
+msgid "When the mouse button is released"
+msgstr "Uždėti vėliavėlę, kai pelės mygtukas:"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:66
-#, kde-format
-msgid "Pressed"
-msgstr "Paspaudžiamas"
+#, fuzzy, kde-format
+#| msgid "Place flag when mouse button is:"
+msgid "When the mouse button is pressed"
+msgstr "Uždėti vėliavėlę, kai pelės mygtukas:"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
@@ -306,3 +308,9 @@ msgstr "Sveikiname! Jūs laimėjote!"
 #, kde-format
 msgid "You have lost."
 msgstr "Jūs pralaimėjote."
+
+#~ msgid "Released"
+#~ msgstr "Atleidžiamas"
+
+#~ msgid "Pressed"
+#~ msgstr "Paspaudžiamas"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-23 00:41+0000\n"
+"POT-Creation-Date: 2026-09-10 00:42+0000\n"
 "PO-Revision-Date: 2026-01-29 21:05+0100\n"
 "Last-Translator: Paolo Zamponi <feus73@gmail.com>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
@@ -73,20 +73,22 @@ msgstr "Esplora con un clic sinistro sui numeri delle celle"
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: generalopts.ui:53
 #, kde-format
-msgid "Place flag when mouse button is:"
-msgstr "Metti una bandiera quando il pulsante del mouse è:"
+msgid "Place flag:"
+msgstr ""
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:61
-#, kde-format
-msgid "Released"
-msgstr "Rilasciato"
+#, fuzzy, kde-format
+#| msgid "Place flag when mouse button is:"
+msgid "When the mouse button is released"
+msgstr "Metti una bandiera quando il pulsante del mouse è:"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:66
-#, kde-format
-msgid "Pressed"
-msgstr "Premuto"
+#, fuzzy, kde-format
+#| msgid "Place flag when mouse button is:"
+msgid "When the mouse button is pressed"
+msgstr "Metti una bandiera quando il pulsante del mouse è:"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
@@ -305,6 +307,12 @@ msgstr "Congratulazioni! Hai vinto!"
 #, kde-format
 msgid "You have lost."
 msgstr "Hai perso."
+
+#~ msgid "Released"
+#~ msgstr "Rilasciato"
+
+#~ msgid "Pressed"
+#~ msgstr "Premuto"
 
 #~ msgctxt "@action;button"
 #~ msgid "Reset"

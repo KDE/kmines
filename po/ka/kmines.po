@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-23 00:41+0000\n"
+"POT-Creation-Date: 2026-09-10 00:42+0000\n"
 "PO-Revision-Date: 2026-01-23 06:23+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -73,20 +73,22 @@ msgstr "რიცხვიან უჯრეებზე მარცხენ�
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: generalopts.ui:53
 #, kde-format
-msgid "Place flag when mouse button is:"
-msgstr "ალმის დასმა, სადაც თაგუნას ღილაკია:"
+msgid "Place flag:"
+msgstr ""
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:61
-#, kde-format
-msgid "Released"
-msgstr "აუშვით"
+#, fuzzy, kde-format
+#| msgid "Place flag when mouse button is:"
+msgid "When the mouse button is released"
+msgstr "ალმის დასმა, სადაც თაგუნას ღილაკია:"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:66
-#, kde-format
-msgid "Pressed"
-msgstr "დააწექით"
+#, fuzzy, kde-format
+#| msgid "Place flag when mouse button is:"
+msgid "When the mouse button is pressed"
+msgstr "ალმის დასმა, სადაც თაგუნას ღილაკია:"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
@@ -302,6 +304,12 @@ msgstr "გილოცავთ! თქვენ მოიგეთ!"
 #, kde-format
 msgid "You have lost."
 msgstr "წააგეთ."
+
+#~ msgid "Released"
+#~ msgstr "აუშვით"
+
+#~ msgid "Pressed"
+#~ msgstr "დააწექით"
 
 #~ msgctxt "@action;button"
 #~ msgid "Reset"

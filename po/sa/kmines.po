@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-23 00:41+0000\n"
+"POT-Creation-Date: 2026-09-10 00:42+0000\n"
 "PO-Revision-Date: 2024-12-24 20:39+0530\n"
 "Last-Translator: kali <shreekantkalwar@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -74,20 +74,22 @@ msgstr "संख्याकोष्ठकेषु वामक्लिक�
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: generalopts.ui:53
 #, kde-format
-msgid "Place flag when mouse button is:"
-msgstr "यदा मूषकस्य बटनं भवति तदा ध्वजं स्थापयन्तु:"
+msgid "Place flag:"
+msgstr ""
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:61
-#, kde-format
-msgid "Released"
-msgstr "अनावृता"
+#, fuzzy, kde-format
+#| msgid "Place flag when mouse button is:"
+msgid "When the mouse button is released"
+msgstr "यदा मूषकस्य बटनं भवति तदा ध्वजं स्थापयन्तु:"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:66
-#, kde-format
-msgid "Pressed"
-msgstr "निपीडितम्"
+#, fuzzy, kde-format
+#| msgid "Place flag when mouse button is:"
+msgid "When the mouse button is pressed"
+msgstr "यदा मूषकस्य बटनं भवति तदा ध्वजं स्थापयन्तु:"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
@@ -305,6 +307,12 @@ msgstr "अभिनन्दनम् ! त्वं विजयं प्र�
 #, kde-format
 msgid "You have lost."
 msgstr "त्वं नष्टः असि।"
+
+#~ msgid "Released"
+#~ msgstr "अनावृता"
+
+#~ msgid "Pressed"
+#~ msgstr "निपीडितम्"
 
 #~ msgctxt "@action;button"
 #~ msgid "Reset"

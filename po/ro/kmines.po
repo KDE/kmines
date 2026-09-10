@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines-1.0.1a\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-23 00:41+0000\n"
+"POT-Creation-Date: 2026-09-10 00:42+0000\n"
 "PO-Revision-Date: 2026-02-04 13:08+0000\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian <kde-i18n-ro@kde.org>\n"
@@ -70,20 +70,22 @@ msgstr "Explorează cu clic stâng pe celule cu număr"
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: generalopts.ui:53
 #, kde-format
-msgid "Place flag when mouse button is:"
-msgstr "Plasează fanion când butonul mausului e:"
+msgid "Place flag:"
+msgstr ""
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:61
-#, kde-format
-msgid "Released"
-msgstr "Eliberat"
+#, fuzzy, kde-format
+#| msgid "Place flag when mouse button is:"
+msgid "When the mouse button is released"
+msgstr "Plasează fanion când butonul mausului e:"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:66
-#, kde-format
-msgid "Pressed"
-msgstr "Apăsat"
+#, fuzzy, kde-format
+#| msgid "Place flag when mouse button is:"
+msgid "When the mouse button is pressed"
+msgstr "Plasează fanion când butonul mausului e:"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
@@ -301,6 +303,12 @@ msgstr "Felicitări! Ați câștigat!"
 #, kde-format
 msgid "You have lost."
 msgstr "Ați pierdut."
+
+#~ msgid "Released"
+#~ msgstr "Eliberat"
+
+#~ msgid "Pressed"
+#~ msgstr "Apăsat"
 
 #~ msgctxt "@action;button"
 #~ msgid "Reset"

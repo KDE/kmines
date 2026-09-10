@@ -1,4 +1,4 @@
-# Version: $Revision: 1728330 $
+# Version: $Revision: 1746075 $
 # translation of kmines.po to Polish
 # translation of kmines.po to
 # translation of kmines.po to
@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-23 00:41+0000\n"
+"POT-Creation-Date: 2026-09-10 00:42+0000\n"
 "PO-Revision-Date: 2024-07-14 13:43+0200\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -78,20 +78,22 @@ msgstr "Badaj naciskając lewym na komórki z liczbą"
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: generalopts.ui:53
 #, kde-format
-msgid "Place flag when mouse button is:"
-msgstr "Umieść flagę, gdy przycisk myszy jest:"
+msgid "Place flag:"
+msgstr ""
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:61
-#, kde-format
-msgid "Released"
-msgstr "Zwolniony"
+#, fuzzy, kde-format
+#| msgid "Place flag when mouse button is:"
+msgid "When the mouse button is released"
+msgstr "Umieść flagę, gdy przycisk myszy jest:"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:66
-#, kde-format
-msgid "Pressed"
-msgstr "Naciśnięty"
+#, fuzzy, kde-format
+#| msgid "Place flag when mouse button is:"
+msgid "When the mouse button is pressed"
+msgstr "Umieść flagę, gdy przycisk myszy jest:"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
@@ -311,6 +313,12 @@ msgstr "Gratulacje! Zwycięstwo!"
 #, kde-format
 msgid "You have lost."
 msgstr "Przegrana."
+
+#~ msgid "Released"
+#~ msgstr "Zwolniony"
+
+#~ msgid "Pressed"
+#~ msgstr "Naciśnięty"
 
 #~ msgctxt "@action;button"
 #~ msgid "Reset"

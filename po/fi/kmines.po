@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-23 00:41+0000\n"
+"POT-Creation-Date: 2026-09-10 00:42+0000\n"
 "PO-Revision-Date: 2026-02-25 16:00+0200\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -80,21 +80,22 @@ msgstr "Tutki numerosoluja hiiren vasemmalla painikkeella"
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: generalopts.ui:53
 #, kde-format
-msgid "Place flag when mouse button is:"
-msgstr "Sijoita lippu, kun hiiren painike:"
+msgid "Place flag:"
+msgstr ""
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:61
-#, kde-format
-msgid "Released"
-msgstr "Vapautetaan"
+#, fuzzy, kde-format
+#| msgid "Place flag when mouse button is:"
+msgid "When the mouse button is released"
+msgstr "Sijoita lippu, kun hiiren painike:"
 
-# HUOM! ”Alas” tarvitaan, koska ”painiketta painetaan” mutta ”painike painetaan alas”.
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:66
-#, kde-format
-msgid "Pressed"
-msgstr "Painetaan alas"
+#, fuzzy, kde-format
+#| msgid "Place flag when mouse button is:"
+msgid "When the mouse button is pressed"
+msgstr "Sijoita lippu, kun hiiren painike:"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
@@ -314,6 +315,13 @@ msgstr "Onnittelut! Voitit pelin!"
 #, kde-format
 msgid "You have lost."
 msgstr "Hävisit."
+
+#~ msgid "Released"
+#~ msgstr "Vapautetaan"
+
+# HUOM! ”Alas” tarvitaan, koska ”painiketta painetaan” mutta ”painike painetaan alas”.
+#~ msgid "Pressed"
+#~ msgstr "Painetaan alas"
 
 #~ msgctxt "@action;button"
 #~ msgid "Reset"

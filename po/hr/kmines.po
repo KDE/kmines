@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines 0\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-23 00:41+0000\n"
+"POT-Creation-Date: 2026-09-10 00:42+0000\n"
 "PO-Revision-Date: 2026-06-21 23:39+0200\n"
 "Last-Translator: Igor Dobrača <igor.dobraca@skole.hr>\n"
 "Language-Team: Croatian <kde-croatia-list@lists.sourceforge.net>\n"
@@ -70,20 +70,22 @@ msgstr "Istražite lijevim klikom brojčane ćelije"
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: generalopts.ui:53
 #, kde-format
-msgid "Place flag when mouse button is:"
-msgstr "Postavi zastavicu kada je tipka miša:"
+msgid "Place flag:"
+msgstr ""
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:61
-#, kde-format
-msgid "Released"
-msgstr "otpuštena"
+#, fuzzy, kde-format
+#| msgid "Place flag when mouse button is:"
+msgid "When the mouse button is released"
+msgstr "Postavi zastavicu kada je tipka miša:"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:66
-#, kde-format
-msgid "Pressed"
-msgstr "pritisnuta"
+#, fuzzy, kde-format
+#| msgid "Place flag when mouse button is:"
+msgid "When the mouse button is pressed"
+msgstr "Postavi zastavicu kada je tipka miša:"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
@@ -300,6 +302,12 @@ msgstr "Čestitam! Pobijedili ste!"
 #, kde-format
 msgid "You have lost."
 msgstr "Izgubili ste."
+
+#~ msgid "Released"
+#~ msgstr "otpuštena"
+
+#~ msgid "Pressed"
+#~ msgstr "pritisnuta"
 
 #~ msgctxt "@action;button"
 #~ msgid "Reset"
