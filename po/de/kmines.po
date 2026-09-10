@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-01-23 00:41+0000\n"
-"PO-Revision-Date: 2026-08-25 23:46+0200\n"
+"PO-Revision-Date: 2026-09-07 22:04+0200\n"
 "Last-Translator: Philipp Kiemle <l10n.daphipz@fastmail.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -69,7 +69,7 @@ msgstr "Spielstand beim Zurücksetzen deaktivieren"
 #: generalopts.ui:44
 #, kde-format
 msgid "Explore with left click on number cells"
-msgstr "Markieren mit linkem Mausklick auf ein Feld"
+msgstr "Benachbarte Felder mit Linksklick auf Zahlenfelder aufdecken"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: generalopts.ui:53
@@ -102,8 +102,8 @@ msgstr ""
 #, kde-format
 msgid "Left click on a number cell will have the same effect as mid click."
 msgstr ""
-"Klicken mit der linken Maustaste auf ein Feld hat den gleichen Effekt wie "
-"ein Mittel-Klick."
+"Mit der linken Maustaste auf ein Feld zu klicken hat den gleichen Effekt wie "
+"ein Mittelklick."
 
 #. i18n: ectx: label, entry (CustomWidth), group (Options)
 #: kmines.kcfg:35
@@ -137,7 +137,7 @@ msgstr "KMines"
 #: main.cpp:47
 #, kde-format
 msgid "KMines is a classic minesweeper game"
-msgstr "KMines ist ein klassisches Minensuchspiel"
+msgstr "KMines ist ein klassisches Minesweeper-Spiel"
 
 #: main.cpp:49
 #, kde-format
@@ -211,7 +211,7 @@ msgstr "Thomas Capricelli"
 #: main.cpp:62
 #, kde-format
 msgid "Magic reveal mode"
-msgstr "„Automatisch“-Aufdecken-Modus"
+msgstr "„Magisch aufdecken“-Modus"
 
 #: main.cpp:63
 #, kde-format
@@ -226,7 +226,7 @@ msgstr "Portierung zu KGameRenderer"
 #: mainwindow.cpp:101
 #, kde-format
 msgid "Mines: 0/0"
-msgstr "Minen: 0 / 0"
+msgstr "Minen: 0/0"
 
 #: mainwindow.cpp:102 mainwindow.cpp:173
 #, kde-format
@@ -241,7 +241,7 @@ msgstr "Benutzerdefiniert"
 #: mainwindow.cpp:135
 #, kde-format
 msgid "Mines: %1/%2"
-msgstr "Minen: %1 / %2"
+msgstr "Minen: %1/%2"
 
 #: mainwindow.cpp:203
 #, kde-format
@@ -297,7 +297,7 @@ msgstr "Benutzerdefiniertes Spiel"
 #: scene.cpp:117
 #, kde-format
 msgid "Game is paused."
-msgstr "Spiel wurde angehalten."
+msgstr "Spiel ist pausiert."
 
 #: scene.cpp:125
 #, kde-format
