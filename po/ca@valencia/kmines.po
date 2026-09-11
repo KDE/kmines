@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-10 00:42+0000\n"
-"PO-Revision-Date: 2026-09-06 17:58+0200\n"
+"PO-Revision-Date: 2026-09-10 12:31+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca@valencia\n"
@@ -79,21 +79,19 @@ msgstr "Explora amb un clic esquerre damunt de les cel·les dels nombres"
 #: generalopts.ui:53
 #, kde-format
 msgid "Place flag:"
-msgstr ""
+msgstr "Situa la bandera:"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:61
-#, fuzzy, kde-format
-#| msgid "Place flag when mouse button is:"
+#, kde-format
 msgid "When the mouse button is released"
-msgstr "Situa la bandera si el botó del ratolí:"
+msgstr "En deixar anar el botó del ratolí"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:66
-#, fuzzy, kde-format
-#| msgid "Place flag when mouse button is:"
+#, kde-format
 msgid "When the mouse button is pressed"
-msgstr "Situa la bandera si el botó del ratolí:"
+msgstr "En prémer el botó del ratolí"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
@@ -313,9 +311,3 @@ msgstr "Felicitats! Has guanyat!"
 #, kde-format
 msgid "You have lost."
 msgstr "Has perdut."
-
-#~ msgid "Released"
-#~ msgstr "Es deixa anar"
-
-#~ msgid "Pressed"
-#~ msgstr "Es prem"

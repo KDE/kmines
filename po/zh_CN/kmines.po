@@ -77,17 +77,15 @@ msgstr ""
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:61
-#, fuzzy, kde-format
-#| msgid "Place flag when mouse button is:"
+#, kde-format
 msgid "When the mouse button is released"
-msgstr "放置标志的鼠标键操作："
+msgstr ""
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:66
-#, fuzzy, kde-format
-#| msgid "Place flag when mouse button is:"
+#, kde-format
 msgid "When the mouse button is pressed"
-msgstr "放置标志的鼠标键操作："
+msgstr ""
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
@@ -303,9 +301,3 @@ msgstr "恭喜！您赢了！"
 #, kde-format
 msgid "You have lost."
 msgstr "您输了。"
-
-#~ msgid "Released"
-#~ msgstr "松开鼠标键时"
-
-#~ msgid "Pressed"
-#~ msgstr "按下鼠标键时"
