@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-10 00:42+0000\n"
-"PO-Revision-Date: 2026-01-24 12:05+0400\n"
+"PO-Revision-Date: 2026-09-11 10:58+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Lokalize 23.08.5\n"
+"X-Generator: Lokalize 25.12.3\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -76,21 +76,19 @@ msgstr "استكشف بالزر الأيسر على خلايا الأرقام"
 #: generalopts.ui:53
 #, kde-format
 msgid "Place flag:"
-msgstr ""
+msgstr "علم المكان:"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:61
-#, fuzzy, kde-format
-#| msgid "Place flag when mouse button is:"
+#, kde-format
 msgid "When the mouse button is released"
-msgstr "ضع العلم عندما يكون زر الفأرة:"
+msgstr "عند تحرير زر الفأرة"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:66
-#, fuzzy, kde-format
-#| msgid "Place flag when mouse button is:"
+#, kde-format
 msgid "When the mouse button is pressed"
-msgstr "ضع العلم عندما يكون زر الفأرة:"
+msgstr "عند ضغط زر الفأرة"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
