@@ -1,5 +1,5 @@
 # translation of kmines.po to Italian
-# SPDX-FileCopyrightText: 2019, 2020, 2021, 2023, 2026 Paolo Zamponi <feus73@gmail.com>
+# SPDX-FileCopyrightText: 2019-2021, 2023, 2026 Paolo Zamponi <feus73@gmail.com>
 # Andrea Celli <andrea.celli@libero.it>, 2003, 2004, 2007, 2008, 2010.
 # Andrea Celli <andrea.celli@ilibero.it>, 2011.
 # SPDX-FileCopyrightText: 2024 Valter Mura <valtermura@gmail.com>
@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-10 00:42+0000\n"
-"PO-Revision-Date: 2026-01-29 21:05+0100\n"
+"PO-Revision-Date: 2026-09-11 09:19+0200\n"
 "Last-Translator: Paolo Zamponi <feus73@gmail.com>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 25.12.1\n"
+"X-Generator: Lokalize 26.08.0\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -74,21 +74,19 @@ msgstr "Esplora con un clic sinistro sui numeri delle celle"
 #: generalopts.ui:53
 #, kde-format
 msgid "Place flag:"
-msgstr ""
+msgstr "Metti una bandiera:"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:61
-#, fuzzy, kde-format
-#| msgid "Place flag when mouse button is:"
+#, kde-format
 msgid "When the mouse button is released"
-msgstr "Metti una bandiera quando il pulsante del mouse è:"
+msgstr "Al rilascio del pulsante del mouse"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:66
-#, fuzzy, kde-format
-#| msgid "Place flag when mouse button is:"
+#, kde-format
 msgid "When the mouse button is pressed"
-msgstr "Metti una bandiera quando il pulsante del mouse è:"
+msgstr "Alla pressione del pulsante del mouse"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
