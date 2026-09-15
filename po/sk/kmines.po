@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-10 00:42+0000\n"
-"PO-Revision-Date: 2022-04-09 20:10+0200\n"
-"Last-Translator: Roman Paholik <wizzardsk@gmail.com>\n"
+"PO-Revision-Date: 2026-09-14 20:10+0200\n"
+"Last-Translator: Roman Paholík <wizzardsk@gmail.com>\n"
 "Language-Team: Slovak <kde-sk@linux.sk>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
@@ -76,21 +76,19 @@ msgstr "Preskúmať ľavým tlačidlom myši na číselné bunky"
 #: generalopts.ui:53
 #, kde-format
 msgid "Place flag:"
-msgstr ""
+msgstr "Umiestniť vlajku:"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:61
-#, fuzzy, kde-format
-#| msgid "Place flag when mouse button is:"
+#, kde-format
 msgid "When the mouse button is released"
-msgstr "Umiestniť vlajku pri tlačidle myši:"
+msgstr "Pri uvoľnení tlačidla myši"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:66
-#, fuzzy, kde-format
-#| msgid "Place flag when mouse button is:"
+#, kde-format
 msgid "When the mouse button is pressed"
-msgstr "Umiestniť vlajku pri tlačidle myši:"
+msgstr "Pri stlačení tlačidla myši"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
