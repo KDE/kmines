@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-10 00:42+0000\n"
-"PO-Revision-Date: 2026-05-11 12:26+0300\n"
+"PO-Revision-Date: 2026-09-17 13:59+0300\n"
 "Last-Translator: Mindaugas Baranauskas <opensuse.lietuviu.kalba@gmail.com>\n"
 "Language-Team: lt <kde-i18n-lt@kde.org>\n"
 "Language: lt\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n%10>=2 && (n%100<10 || n"
 "%100>=20) ? 1 : n%10==0 || (n%100>10 && n%100<20) ? 2 : 3);\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 3.9\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -75,21 +75,19 @@ msgstr "Tyrinėti spustelėjant kairiuoju pelės mygtuku ant skaitmenų langeli�
 #: generalopts.ui:53
 #, kde-format
 msgid "Place flag:"
-msgstr ""
+msgstr "Uždėti vėliavėlę:"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:61
-#, fuzzy, kde-format
-#| msgid "Place flag when mouse button is:"
+#, kde-format
 msgid "When the mouse button is released"
-msgstr "Uždėti vėliavėlę, kai pelės mygtukas:"
+msgstr "Kai pelės mygtukas atleidžiamas"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:66
-#, fuzzy, kde-format
-#| msgid "Place flag when mouse button is:"
+#, kde-format
 msgid "When the mouse button is pressed"
-msgstr "Uždėti vėliavėlę, kai pelės mygtukas:"
+msgstr "Kai pelės mygtukas paspaudžiamas"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
