@@ -7,14 +7,14 @@ msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-10 00:42+0000\n"
-"PO-Revision-Date: 2026-02-26 18:48+0100\n"
+"PO-Revision-Date: 2026-09-18 23:12+0200\n"
 "Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
 "Language-Team: Norwegian Nynorsk <l10n-no@nuug.no>\n"
 "Language: nn\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 26.03.70\n"
+"X-Generator: Lokalize 26.08.1\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Environment: kde\n"
 "X-Accelerator-Marker: &\n"
@@ -76,21 +76,19 @@ msgstr "Utforsk med venstreklikk på talceller"
 #: generalopts.ui:53
 #, kde-format
 msgid "Place flag:"
-msgstr ""
+msgstr "Plasser flagg:"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:61
-#, fuzzy, kde-format
-#| msgid "Place flag when mouse button is:"
+#, kde-format
 msgid "When the mouse button is released"
-msgstr "Plasser flagg når museknappen vert:"
+msgstr "Når museknappen vert sleppt"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:66
-#, fuzzy, kde-format
-#| msgid "Place flag when mouse button is:"
+#, kde-format
 msgid "When the mouse button is pressed"
-msgstr "Plasser flagg når museknappen vert:"
+msgstr "Når museknappen vert trykt inn"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
