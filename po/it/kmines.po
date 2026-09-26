@@ -1,7 +1,7 @@
 # translation of kmines.po to Italian
-# SPDX-FileCopyrightText: 2019-2021, 2023, 2026 Paolo Zamponi <feus73@gmail.com>
 # Andrea Celli <andrea.celli@libero.it>, 2003, 2004, 2007, 2008, 2010.
 # Andrea Celli <andrea.celli@ilibero.it>, 2011.
+# SPDX-FileCopyrightText: 2019-2021, 2023, 2026 Paolo Zamponi <feus73@gmail.com>
 # SPDX-FileCopyrightText: 2024 Valter Mura <valtermura@gmail.com>
 msgid ""
 msgstr ""
