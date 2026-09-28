@@ -1,7 +1,7 @@
 # Translation for kmines.po to Euskara/Basque (eu).
 # Copyright (C) 2003-2026 This file is copyright:
 # This file is distributed under the same license as the kmines package.
-# SPDX-FileCopyrightText: 2023, 2024, 2026 KDE euskaratzeko proiektuaren arduraduna <xalba@ni.eus>
+# SPDX-FileCopyrightText: 2023, 2024, 2026 KDE euskaratzeko proiektuko arduraduna <xalba@ni.eus>
 #
 # Translators:
 # Marcos  <marcos@euskalgnu.org>, 2003, 2005.
