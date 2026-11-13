@@ -1,0 +1,617 @@
+<?xml version="1.0" ?>
+<!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.5-Based Variant V1.1//EN" "dtd/kdedbx45.dtd" [
+  <!ENTITY % addindex "IGNORE">
+  <!ENTITY % Arabic "INCLUDE"
+> <!-- change language only here -->
+]>
+
+<book id="kmines" lang="&language;">
+
+<bookinfo>
+<title
+>دليل لعبة الألغام ك</title>
+
+<authorgroup>
+<author
+><firstname
+>Nicolas</firstname
+> <surname
+>Hadacek</surname
+> <affiliation
+> <address
+>&Nicolas.Hadacek.mail;</address>
+</affiliation>
+</author>
+<author
+><firstname
+>Michael</firstname
+> <surname
+>McBride</surname
+> <affiliation
+><address
+><email
+>mmcbride@ematic.org</email
+></address
+></affiliation>
+</author>
+<author
+><firstname
+>Anton</firstname
+> <surname
+>Brondz</surname
+> <affiliation
+> <address
+><email
+>dinolinux@gmail.com</email
+></address>
+</affiliation>
+</author>
+<othercredit role="developer"
+><firstname
+>Nicolas</firstname
+> <surname
+>Hadacek</surname
+> <affiliation
+> <address
+>&Nicolas.Hadacek.mail;</address>
+</affiliation>
+<contrib
+>مطوّر</contrib>
+</othercredit>
+<othercredit role="reviewer"
+><firstname
+>Lauri</firstname
+> <surname
+>Watts</surname
+> <affiliation
+><address
+>&Lauri.Watts.mail;</address
+></affiliation>
+<contrib
+>مُراجِع</contrib>
+</othercredit>
+<othercredit role="translator"
+><firstname
+>زايد</firstname
+><surname
+>السعيدي</surname
+><affiliation
+><address
+><email
+>zayed.alsaidi@gmail.com</email
+></address
+></affiliation
+><contrib
+>التّرجمة العربيّة</contrib
+></othercredit
+> 
+</authorgroup>
+
+<copyright>
+<year
+>2000</year>
+<holder
+>&Nicolas.Hadacek;, Michael McBride</holder>
+</copyright>
+
+<legalnotice
+>&FDLNotice;</legalnotice>
+
+<date
+>2021-07-11</date>
+<releaseinfo
+>4.0 (ترس كيدي 21.04)</releaseinfo>
+
+<abstract
+><para
+>لعبة الألغام ك هي إصدارة كيدي من لعبة كاسحة الألغام التقليدية.</para
+></abstract>
+
+<keywordset>
+<keyword
+>كيدي</keyword>
+<keyword
+>لعبة</keyword>
+<keyword
+>كاسحة ألغام</keyword>
+</keywordset>
+
+</bookinfo>
+
+<chapter id="introduction">
+<title
+>مقدمة</title>
+<note
+><title
+>نوع اللعبة:</title
+><para
+>إستراتيجية، لوحة</para
+></note
+><!-- Game genre. Use as many as necessary. Available game types are: Arcade, Board, Card, Dice, Toys, Logic, Strategy.-->
+<note
+><title
+>عدد اللاعبين الممكنين:</title
+><para
+>واحد</para
+></note
+><!--Number of possible players. It can be: One, Two,..., Multiplayer-->
+
+<para
+>لعبة الألغام ك هي لعبة كاسحة الألغام التقليدية. تكمن الفكرة في كشف جميع المربعات دون تفجير أي لغم. عندما ينفجر لغم، تنتهي اللعبة. تشير الأرقام إلى عدد الألغام الموجودة في الجوار. </para>
+
+</chapter>
+
+<chapter id="how-to-play">
+<title
+>كيف تلعب</title>
+<note
+><title
+>الهدف:</title
+><para
+>حدد موقع جميع الألغام المخفية في حقل الألغام.</para
+></note
+><!--Describe the objective of the game.-->
+
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="gameboard.png" format="PNG"/>
+</imageobject>
+<textobject>
+<phrase
+>لوحة لعبة لعبة الألغام ك</phrase>
+</textobject>
+</mediaobject>
+</screenshot>
+
+<para
+>للعب لعبة الألغام ك، تحتاج إلى استخدام الفأرة وأزرارها الثلاثة لكشف المربعات أو وضع وسم عليها (باستخدام الفأرة ذات الزرين، يُحقق النقر فوق زر الفأرة الأوسط عادةً عن طريق الضغط في وقت واحد على زري الفأرة الأيسر والأيمن). </para>
+
+<para
+>سيؤدي النقر فوق زر الفأرة الأيسر إلى كشف مربع. إذا كان هناك لغم، فسوف ينفجر وتنتهي اللعبة. إذا لم يكن هناك لغم تحت المربع، فسيُمسح المربع، وإذا لم تكن هناك ألغام أخرى قريبة، فسيختفي المربع بما في ذلك أي مربعات قريبة بدون ألغام. إذا كانت هناك ألغام قريبة، فسيظهر رقم يوضح عدد المربعات المجاورة التي تحتوي على ألغام. لكل مربع (باستثناء مربعات الحواف والزوايا)، هناك ثمانية مربعات مجاورة. </para>
+
+<note>
+<para
+>النقر بزر الفأرة الأيسر على مربع موسوم آمن ولا يفعل شيئًا. </para>
+</note>
+
+<para
+>سيقوم زر الفأرة الأيمن بوسم المربع على أنه يحتوي على لغم (عن طريق وضع علم أحمر عليه). سيؤدي النقر فوق الزر مرتين إلى تعيينه على أنه غير مؤكد (عن طريق وضع علامة استفهام عليه). يمكن أن يكون وسم عدم التأكد مفيدًا عندما تكون محتارًا بشأن مواقع الألغام. سيقوم زر الفأرة الأوسط بمسح المربعات المحيطة إذا وُسم العدد الصحيح من المربعات بالفعل. إنه مفيد جدًا لأنه أسرع بكثير من كشف جميع المربعات الفردية. تأكد من وضع الأعلام بشكل صحيح، وإلا فقد تفجر لغمًا. </para>
+</chapter>
+
+<chapter id="rulestips">
+<title
+>قواعد اللعبة وإستراتيجياتها وتلميحاتها</title>
+<sect1 id="rules">
+<title
+>القواعد</title>
+<itemizedlist>
+<listitem
+><para
+>يجب مسح جميع الألغام قبل أن يتمكن اللاعب من الفوز باللعبة.</para
+></listitem>
+<listitem
+><para
+>لا يمكن للاعب معرفة الموقع الدقيق للألغام قبل انتهاء اللعبة.</para
+></listitem>
+<listitem
+><para
+>إذا انفجر لغم، تنتهي اللعبة.</para
+></listitem>
+<listitem
+><para
+>ستشير الأرقام إلى الألغام القريبة.</para
+></listitem>
+</itemizedlist>
+</sect1>
+
+<sect1 id="strattips">
+<title
+>الإستراتيجيات والتلميحات</title>
+<itemizedlist>
+<listitem
+><para
+>استخدم الأرقام لمعرفة أماكن الألغام القريبة.</para
+></listitem>
+<listitem
+><para
+>ضع أعلامًا حيث تشك في وجود ألغام. لاحظ أنه على الرغم من انخفاض عدد الألغام المشار إليه عند وضع علم، فقد لا يكون هناك لغم تحت العلم.</para
+></listitem>
+<listitem
+><para
+>فكر قبل النقر، فالنقرة الخاطئة قد تفجر لغمًا.</para
+></listitem>
+<listitem
+><para
+>عندما تشك في أن مربعًا يحتوي على لغم، اعمل حول المربع لكشف أي أرقام قد تساعدك.</para
+></listitem>
+<listitem
+><para
+>حاول مسح اللوحة في أسرع وقت ممكن، فكلما قل الوقت الذي تقضيه، زادت نتيجتك.</para
+></listitem>
+</itemizedlist>
+</sect1>
+
+</chapter>
+
+<chapter id="command">
+<title
+>الأوامر/اختصارات لوحة المفاتيح</title>
+
+<para
+>تصف الأقسام التالية بإيجاز بعض خيارات شريط القائمة.</para>
+
+<sect1 id="menu">
+<title
+>عناصر القائمة</title>
+
+<variablelist>
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+> <keycombo action="simul"
+>&Ctrl;<keycap
+>N</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>لعبة</guimenu
+> <guimenuitem
+>جديد</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>يبدأ لعبة جديدة.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycap
+>P</keycap
+></shortcut
+> <guimenu
+>لعبة</guimenu
+> <guimenuitem
+>ألبث</guimenuitem
+></menuchoice
+></term>
+<listitem>
+<para
+>يُلبث وقت اللعبة. انقر فوق عنصر القائمة مرة أخرى لاستئناف اللعبة. لاحظ أن اللوحة تختفي عند إلباث اللعبة لأنه لن يكون من العدل البحث عن نقلات جيدة بدون ضغط الوقت. </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;<keycap
+>H</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>لعبة</guimenu
+> <guimenuitem
+>أظهر أعلى النتائج</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+>يعرض لك هذا أعلى نتيجة (أقصر وقت) لكل مستوى صعوبة.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;<keycap
+>Q</keycap
+></keycombo
+> </shortcut
+> <guimenu
+>لعبة</guimenu
+> <guimenuitem
+>أنهِ</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+><action
+>ينهي</action
+> لعبة الألغام ك.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>الإعدادات</guimenu
+> <guisubmenu
+>الصعوبة</guisubmenu
+> </menuchoice
+></term>
+<listitem>
+<para
+>يتيح لك ضبط مستوى الصعوبة من قائمة فرعية.</para>
+<para
+>هناك ثلاثة مستويات صعوبة مبدئية: <guimenuitem
+>سهل</guimenuitem
+> (9x9 مربعات، 10 ألغام)، و <guimenuitem
+>متوسط</guimenuitem
+> (16x16 مربعًا، 40 لغمًا)، و <guimenuitem
+>صعب</guimenuitem
+> (30x16 مربعًا، 99 لغمًا). هناك أيضًا إعدادات مستوى <guimenuitem
+>مخصص</guimenuitem
+>.</para>
+<para
+>إذا حددت <guimenuitem
+>مخصص</guimenuitem
+>، فستُستخدم الإعدادات التي ضبطتها في مربع حوار <guilabel
+>اضبط - لعبة الألغام ك</guilabel
+>.</para
+></listitem>
+</varlistentry>
+
+</variablelist>
+
+<para
+>بالإضافة إلى ذلك، تتوفر في لعبة الألغام ك عناصر قائمة كيدي الشائعة <guimenu
+>الإعدادات</guimenu
+> و <guimenu
+>مساعدة</guimenu
+>، لمزيد من المعلومات، اقرأ الأقسام حول <ulink url="help:/fundamentals/menus.html#menus-settings"
+>قائمة الإعدادات</ulink
+> و <ulink url="help:/fundamentals/menus.html#menus-help"
+>قائمة المساعدة</ulink
+> في أساسيات كيدي. </para>
+
+</sect1>
+
+<sect1 id="keys"
+><title
+>اختصارات لوحة المفاتيح المبدئية</title>
+<para
+>يوضح الجدول التالي اختصارات لوحة المفاتيح المبدئية.</para>
+
+<table>
+<title
+>اختصارات لوحة المفاتيح</title>
+<tgroup cols="2">
+<thead
+><row
+><entry
+>مزيج المفاتيح</entry
+><entry
+>الإجراء</entry
+></row
+></thead>
+<tbody>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>N</keycap
+></keycombo
+></entry
+><entry
+>لعبة جديدة</entry
+></row>
+<row
+><entry
+><keycap
+>P</keycap
+></entry
+><entry
+>ألبث</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>Q</keycap
+></keycombo
+></entry
+><entry
+>أنهِ لعبة الألغام ك</entry
+></row>
+<row
+><entry
+><keycap
+>F1</keycap
+></entry
+><entry
+>دليل لعبة الألغام ك</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Shift;<keycap
+>F1</keycap
+></keycombo
+></entry
+><entry
+>مساعدة "ما هذا؟"</entry
+></row>
+<row
+><entry
+><keycombo action="simul"
+>&Ctrl;<keycap
+>H</keycap
+></keycombo
+></entry
+><entry
+>أظهر أعلى النتائج</entry
+></row>
+
+</tbody>
+</tgroup>
+</table>
+
+<para
+>يمكن تغيير هذه الاختصارات عن طريق تحديد عنصر قائمة <menuchoice
+><guimenu
+>الإعدادات</guimenu
+> <guimenuitem
+>اضبط الاختصارات…</guimenuitem
+></menuchoice
+>.</para>
+
+</sect1>
+
+</chapter>
+
+<chapter id="faq">
+<title
+>الأسئلة المتكررة</title>
+<qandaset>
+
+<qandaentry>
+<question>
+<para
+>هل يمكنني تغيير مظهر اللعبة؟ </para>
+</question>
+<answer>
+<para
+>نعم، انقر فوق عنصر قائمة <menuchoice
+><guimenu
+>الإعدادات</guimenu
+> <guimenuitem
+>اضبط لعبة الألغام ك…</guimenuitem
+></menuchoice
+>. </para>
+</answer>
+</qandaentry>
+
+<qandaentry>
+<question>
+<para
+>هل هناك طريقة لإضافة المزيد من الألغام والمربعات؟ </para>
+</question>
+<answer>
+<para
+>نعم، أسهل طريقة هي استخدام المربع المنسدل في الزاوية اليمنى السفلية. </para>
+</answer>
+</qandaentry>
+
+</qandaset>
+</chapter>
+
+<chapter id="settings">
+<title
+>إعدادات اللعبة</title>
+<para
+>يمكن ضبط إعدادات اللعبة عن طريق تحديد عنصر قائمة <menuchoice
+><guimenu
+>الإعدادات</guimenu
+> <guimenuitem
+>اضبط لعبة الألغام ك…</guimenuitem
+></menuchoice
+>. سيظهر مربع حوار. </para>
+<para
+>في صفحة <guilabel
+>عام</guilabel
+>، يمكنك ضبط إعدادات اللعبة التالية. </para>
+<variablelist>
+    <varlistentry>
+        <term
+>استخدم علامة '؟'</term>
+        <listitem>
+            <para
+>عند تحديده، يسمح باستخدام رمز علامة الاستفهام لوسم مربعات عدم التأكد. يمكن تبديل الوسم الموجود على المربع عن طريق النقر بزر الفأرة الأيمن.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term
+>اسمح بتصفير الألغام ك</term>
+        <listitem>
+            <para
+>عند تحديده، يسمح لك بتصفير لعبة لعبة الألغام ك عندما يكون من المستحيل القيام بأي شيء سوى التخمين ويكون تخمينك الأخير خاطئًا.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term
+>عطل النتيجة عند التصفير</term>
+        <listitem>
+            <para
+>عند تحديده، يسمح لك بتعطيل احتساب النتائج عند التصفير.</para>
+        </listitem>
+    </varlistentry>
+        <varlistentry>
+        <term
+>استكشف بالزر الأيسر على خلايا الأرقام</term>
+        <listitem>
+            <para
+>عند تحديده، سيكون للنقر بزر الفأرة الأيسر على خلية رقم نفس تأثير النقر بزر الفأرة الأوسط.</para>
+        </listitem>
+    </varlistentry>
+</variablelist>
+
+<para
+>في الصفحة الثانية، يمكنك ضبط السمة. اختر سمة من القائمة. يعرض كل عنصر في القائمة معاينة صغيرة يسار اسم السمة. يُطبق الاختيار فورًا. </para>
+
+<para
+>في الصفحة الثالثة، يمكنك ضبط ارتفاع اللوحة وعرضها وعدد الألغام في مستواك المخصص. </para>
+
+</chapter>
+
+<chapter id="credits"
+><title
+>الحقوق والترخيص</title>
+
+<para
+>حقوق نشر لعبة الألغام ك لعام 1996-2007 </para>
+
+<itemizedlist>
+<title
+>المؤلفون</title>
+<listitem>
+<para
+>&Nicolas.Hadacek; &Nicolas.Hadacek.mail; </para>
+</listitem>
+<listitem>
+<para
+>Mikhail Kourinny </para>
+</listitem>
+<listitem>
+<para
+>Mauricio Piacentini <email
+>mauricio@tabuleiro.com</email
+> </para>
+</listitem>
+<listitem>
+<para
+>Dmitry Suzdalev <email
+>dimsuz@gmail.com</email
+> </para>
+</listitem>
+</itemizedlist>
+
+<para
+>حقوق نشر التوثيق لعام 2000 لـ &Nicolas.Hadacek; &Nicolas.Hadacek.mail;</para>
+<para
+>حُدث التوثيق لـ كيدي 2.0 بواسطة &Mike.McBride; &Mike.McBride.mail;</para>
+<para
+>بعض التغييرات لـ كيدي 3.2 بواسطة &Philip.Rodrigues; &Philip.Rodrigues.mail;</para>
+<para
+>الترجمة: زايد السعيدي <email
+>zayed.alsaidi@gmail.com</email
+></para
+> &underFDL; &underGPL; </chapter>
+
+</book>
+<!--
+Local Variables:
+mode: sgml
+sgml-omittag: nil
+sgml-shorttag: t
+End:
+-->
