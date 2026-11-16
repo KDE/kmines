@@ -11,13 +11,14 @@
 // Qt
 #include <QGraphicsObject>
 #include <QList>
-#include <QPair>
+// Std
+#include <utility>
 
 class KGameRenderer;
 class CellItem;
 class BorderItem;
 
-using FieldPos = QPair<int, int>;
+using FieldPos = std::pair<int, int>;
 
 /**
  * Graphics item that represents MineField.
@@ -93,16 +94,16 @@ private:
      */
     inline CellItem* itemAt(int row, int col) { return m_cells.at( row*m_numCols + col ); }
     /**
-     * Overloaded one, which takes QPair
+     * Overloaded one, which takes std::pair
      */
     inline CellItem* itemAt( FieldPos pos ) { return itemAt(pos.first,pos.second); }
     /**
-     * Calculates (row,col) from given index in m_cells and returns them in QPair
+     * Calculates (row,col) from given index in m_cells and returns them in std::pair
      */
     inline FieldPos rowColFromIndex(int idx)
         {
             int row = idx/m_numCols;
-            return qMakePair(row, idx - row*m_numCols);
+            return std::make_pair(row, idx - row*m_numCols);
         }
     /**
      * Generates game field ensuring that cell at clickedIdx

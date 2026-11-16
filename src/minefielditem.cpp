@@ -81,8 +81,8 @@ void MineFieldItem::initField( int numRows, int numCols, int numMines )
     m_numCols = numCols;
     m_minesCount = numMines;
     m_numUnrevealed = m_numRows*m_numCols;
-    m_midButtonPos = qMakePair(-1, -1);
-    m_leftButtonPos = qMakePair(-1, -1);
+    m_midButtonPos = std::make_pair(-1, -1);
+    m_leftButtonPos = std::make_pair(-1, -1);
 
     for(int i=0; i<newSize; ++i)
     {
@@ -376,15 +376,15 @@ void MineFieldItem::mousePressEvent( QGraphicsSceneMouseEvent *ev )
         for (CellItem* item : neighbours) {
             if(!item->isFlagged() && !item->isQuestioned() && !item->isRevealed())
                 item->press();
-            m_midButtonPos = qMakePair(row,col);
+            m_midButtonPos = std::make_pair(row,col);
 
-            m_leftButtonPos = qMakePair(-1,-1); // reset it
+            m_leftButtonPos = std::make_pair(-1,-1); // reset it
         }
     }
     else if(ev->button() == Qt::LeftButton)
     {
         itemUnderMouse->press();
-        m_leftButtonPos = qMakePair(row,col);
+        m_leftButtonPos = std::make_pair(row,col);
     }
     else if(placeFlagWhenPressed && ev->button() == Qt::RightButton && (ev->buttons() & Qt::LeftButton) == false)
     {
@@ -412,14 +412,14 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
             for (CellItem *item : neighbours) {
                 item->undoPress();
             }
-            m_midButtonPos = qMakePair(-1,-1);
+            m_midButtonPos = std::make_pair(-1,-1);
             m_emulatingMidButton = false;
         }
         // same with left button
         if(m_leftButtonPos.first != -1)
         {
             itemAt(m_leftButtonPos)->undoPress();
-            m_leftButtonPos = qMakePair(-1,-1);
+            m_leftButtonPos = std::make_pair(-1,-1);
         }
         return;
     }
@@ -431,7 +431,7 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
 
     if( midButtonReleased )
     {
-        m_midButtonPos = qMakePair(-1,-1);
+        m_midButtonPos = std::make_pair(-1,-1);
 
         const QList<CellItem*> neighbours = adjacentItemsFor(row,col);
         if(!itemUnderMouse->isRevealed())
@@ -500,7 +500,7 @@ void MineFieldItem::mouseReleaseEvent( QGraphicsSceneMouseEvent * ev)
             if(itemUnderMouse->isRevealed())
                 onItemRevealed(row,col);
         }
-        m_leftButtonPos = qMakePair(-1,-1);//reset
+        m_leftButtonPos = std::make_pair(-1,-1);//reset
     }
     else if(placeFlagWhenReleased && ev->button() == Qt::RightButton && (ev->buttons() & Qt::LeftButton) == false)
     {
@@ -539,7 +539,7 @@ void MineFieldItem::mouseMoveEvent( QGraphicsSceneMouseEvent *ev )
                 item->press();
             }
 
-            m_midButtonPos = qMakePair(row,col);
+            m_midButtonPos = std::make_pair(row,col);
         }
     }
     else if(ev->buttons() & Qt::LeftButton)
@@ -549,7 +549,7 @@ void MineFieldItem::mouseMoveEvent( QGraphicsSceneMouseEvent *ev )
         {
             itemAt(m_leftButtonPos)->undoPress();
             itemAt(row,col)->press();
-            m_leftButtonPos = qMakePair(row,col);
+            m_leftButtonPos = std::make_pair(row,col);
         }
     }
 }
@@ -740,21 +740,21 @@ QList<FieldPos> MineFieldItem::adjacentRowColsFor(int row, int col)
 {
     QList<FieldPos> resultingList;
     if(row != 0 && col != 0) // upper-left diagonal
-        resultingList.append( qMakePair(row-1,col-1) );
+        resultingList.append( std::make_pair(row-1,col-1) );
     if(row != 0) // upper
-        resultingList.append(qMakePair(row-1, col));
+        resultingList.append(std::make_pair(row-1, col));
     if(row != 0 && col != m_numCols-1) // upper-right diagonal
-        resultingList.append(qMakePair(row-1, col+1));
+        resultingList.append(std::make_pair(row-1, col+1));
     if(col != 0) // on the left
-        resultingList.append(qMakePair(row,col-1));
+        resultingList.append(std::make_pair(row,col-1));
     if(col != m_numCols-1) // on the right
-        resultingList.append(qMakePair(row, col+1));
+        resultingList.append(std::make_pair(row, col+1));
     if(row != m_numRows-1 && col != 0) // bottom-left diagonal
-        resultingList.append(qMakePair(row+1, col-1));
+        resultingList.append(std::make_pair(row+1, col-1));
     if(row != m_numRows-1) // bottom
-        resultingList.append(qMakePair(row+1, col));
+        resultingList.append(std::make_pair(row+1, col));
     if(row != m_numRows-1 && col != m_numCols-1) // bottom-right diagonal
-        resultingList.append(qMakePair(row+1, col+1));
+        resultingList.append(std::make_pair(row+1, col+1));
     return resultingList;
 }
 
