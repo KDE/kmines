@@ -1,4 +1,4 @@
-# Version: $Revision: 1746075 $
+# Version: $Revision$
 # translation of kmines.po to Polish
 # translation of kmines.po to
 # translation of kmines.po to
