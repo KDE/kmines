@@ -63,7 +63,7 @@ Q_SIGNALS:
 private Q_SLOTS:
     void onGameOver(bool);
 private:
-    bool m_canScore;
+    bool m_canScore = true;
     KGameRenderer m_renderer;
     /**
      * Game field graphics item

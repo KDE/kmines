@@ -97,6 +97,8 @@ void KMinesScene::resizeScene(int width, int height)
 
 void KMinesScene::startNewGame(int rows, int cols, int numMines)
 {
+    m_canScore = true;
+
     // hide message if any
     m_messageItem->forceHide();
 
