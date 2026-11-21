@@ -1,4 +1,4 @@
-# Version: $Revision$
+# Version: $Revision: 1753788 $
 # translation of kmines.po to Polish
 # translation of kmines.po to
 # translation of kmines.po to
@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-10 00:42+0000\n"
+"POT-Creation-Date: 2026-11-21 01:07+0000\n"
 "PO-Revision-Date: 2024-07-14 13:43+0200\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -299,17 +299,17 @@ msgctxt "@title:tab"
 msgid "Custom Game"
 msgstr "Własna gra"
 
-#: scene.cpp:117
+#: scene.cpp:119
 #, kde-format
 msgid "Game is paused."
 msgstr "Gra jest zatrzymana."
 
-#: scene.cpp:125
+#: scene.cpp:127
 #, kde-format
 msgid "Congratulations! You have won!"
 msgstr "Gratulacje! Zwycięstwo!"
 
-#: scene.cpp:127
+#: scene.cpp:129
 #, kde-format
 msgid "You have lost."
 msgstr "Przegrana."

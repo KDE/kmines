@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-10 00:42+0000\n"
+"POT-Creation-Date: 2026-11-21 01:07+0000\n"
 "PO-Revision-Date: 2007-12-24 12:15+0530\n"
 "Last-Translator: Ravishankar Shrivastava <aviratlami@aol.in>\n"
 "Language-Team: Hindi <indlinux-hindi@lists.sourceforge.net>\n"
@@ -291,18 +291,18 @@ msgctxt "@title:tab"
 msgid "Custom Game"
 msgstr "मनपसंद खेल"
 
-#: scene.cpp:117
+#: scene.cpp:119
 #, kde-format
 msgid "Game is paused."
 msgstr ""
 
-#: scene.cpp:125
+#: scene.cpp:127
 #, fuzzy, kde-format
 #| msgid "Congratulatons! You have won!"
 msgid "Congratulations! You have won!"
 msgstr "बधाईयाँ! आपने खेल जीत लिया!"
 
-#: scene.cpp:127
+#: scene.cpp:129
 #, kde-format
 msgid "You have lost."
 msgstr "आप हार गए."
