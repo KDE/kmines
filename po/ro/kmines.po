@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines-1.0.1a\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-10 00:42+0000\n"
+"POT-Creation-Date: 2026-11-21 03:19+0000\n"
 "PO-Revision-Date: 2026-02-04 13:08+0000\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian <kde-i18n-ro@kde.org>\n"
@@ -289,17 +289,17 @@ msgctxt "@title:tab"
 msgid "Custom Game"
 msgstr "Joc personalizat"
 
-#: scene.cpp:117
+#: scene.cpp:119
 #, kde-format
 msgid "Game is paused."
 msgstr "Jocul este întrerupt."
 
-#: scene.cpp:125
+#: scene.cpp:127
 #, kde-format
 msgid "Congratulations! You have won!"
 msgstr "Felicitări! Ați câștigat!"
 
-#: scene.cpp:127
+#: scene.cpp:129
 #, kde-format
 msgid "You have lost."
 msgstr "Ați pierdut."

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-10 00:42+0000\n"
+"POT-Creation-Date: 2026-11-21 03:19+0000\n"
 "PO-Revision-Date: 2026-09-10 13:24+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -297,17 +297,17 @@ msgctxt "@title:tab"
 msgid "Custom Game"
 msgstr "Нетипова гра"
 
-#: scene.cpp:117
+#: scene.cpp:119
 #, kde-format
 msgid "Game is paused."
 msgstr "Гру призупинено."
 
-#: scene.cpp:125
+#: scene.cpp:127
 #, kde-format
 msgid "Congratulations! You have won!"
 msgstr "Поздоровляємо! Ви виграли!"
 
-#: scene.cpp:127
+#: scene.cpp:129
 #, kde-format
 msgid "You have lost."
 msgstr "Ви програли."

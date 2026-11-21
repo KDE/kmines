@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-10 00:42+0000\n"
+"POT-Creation-Date: 2026-11-21 03:19+0000\n"
 "PO-Revision-Date: 2026-09-11 09:07+0200\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: fr\n"
@@ -307,17 +307,17 @@ msgctxt "@title:tab"
 msgid "Custom Game"
 msgstr "Partie personnalisée"
 
-#: scene.cpp:117
+#: scene.cpp:119
 #, kde-format
 msgid "Game is paused."
 msgstr "Partie mise en pause."
 
-#: scene.cpp:125
+#: scene.cpp:127
 #, kde-format
 msgid "Congratulations! You have won!"
 msgstr "Félicitations ! Vous avez gagné !"
 
-#: scene.cpp:127
+#: scene.cpp:129
 #, kde-format
 msgid "You have lost."
 msgstr "Vous avez perdu."

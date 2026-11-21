@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-10 00:42+0000\n"
+"POT-Creation-Date: 2026-11-21 03:19+0000\n"
 "PO-Revision-Date: 2005-09-21 09:18+0100\n"
 "Last-Translator: Kevin Donnelly <kevin@dotmon.com>\n"
 "Language-Team: Cymraeg <cy@li.org>\n"
@@ -301,17 +301,17 @@ msgctxt "@title:tab"
 msgid "Custom Game"
 msgstr "Gêm Addasiedig"
 
-#: scene.cpp:117
+#: scene.cpp:119
 #, kde-format
 msgid "Game is paused."
 msgstr ""
 
-#: scene.cpp:125
+#: scene.cpp:127
 #, kde-format
 msgid "Congratulations! You have won!"
 msgstr ""
 
-#: scene.cpp:127
+#: scene.cpp:129
 #, kde-format
 msgid "You have lost."
 msgstr ""

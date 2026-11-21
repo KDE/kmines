@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmines\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-10 00:42+0000\n"
+"POT-Creation-Date: 2026-11-21 03:19+0000\n"
 "PO-Revision-Date: 2026-09-16 22:57+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -294,17 +294,17 @@ msgctxt "@title:tab"
 msgid "Custom Game"
 msgstr "自訂遊戲"
 
-#: scene.cpp:117
+#: scene.cpp:119
 #, kde-format
 msgid "Game is paused."
 msgstr "遊戲已暫停。"
 
-#: scene.cpp:125
+#: scene.cpp:127
 #, kde-format
 msgid "Congratulations! You have won!"
 msgstr "恭喜，您贏了！"
 
-#: scene.cpp:127
+#: scene.cpp:129
 #, kde-format
 msgid "You have lost."
 msgstr "您輸了。"
