@@ -7,6 +7,8 @@
 
 #include "borderitem.h"
 
+#include <QHash>
+
 QHash<KMinesState::BorderElement, QString> BorderItem::s_elementNames;
 
 BorderItem::BorderItem( KGameRenderer* renderer, QGraphicsItem* parent )
