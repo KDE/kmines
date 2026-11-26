@@ -14,18 +14,18 @@ msgstr ""
 "X-Crowdin-Project: kdeorg\n"
 "X-Crowdin-Project-ID: 269464\n"
 "X-Crowdin-Language: zh-CN\n"
-"X-Crowdin-File: /kf6-trunk/messages/kmines/kmines.pot\n"
-"X-Crowdin-File-ID: 46173\n"
+"X-Crowdin-File: /kf6-stable/messages/kmines/kmines.pot\n"
+"X-Crowdin-File-ID: 52664\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
-msgstr "KDE 中国"
+msgstr "KDE 中国, Guo Yunhe, Tyson Tan"
 
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr "kde-china@kde.org"
+msgstr "kde-china@kde.org, i@guoyunhe.me, tds00@qq.com"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: customgame.ui:16
@@ -73,19 +73,19 @@ msgstr "左键单击数字格探雷"
 #: generalopts.ui:53
 #, kde-format
 msgid "Place flag:"
-msgstr ""
+msgstr "放置旗标："
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:61
 #, kde-format
 msgid "When the mouse button is released"
-msgstr ""
+msgstr "鼠标键释放时"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_PlaceFlagOn)
 #: generalopts.ui:66
 #, kde-format
 msgid "When the mouse button is pressed"
-msgstr ""
+msgstr "鼠标键按下时"
 
 #. i18n: ectx: label, entry (UseQuestionMarks), group (General)
 #: kmines.kcfg:9
@@ -239,30 +239,30 @@ msgstr "地雷：%1/%2"
 #: mainwindow.cpp:203
 #, kde-format
 msgid "Reset or start a new game?"
-msgstr ""
+msgstr "重置或新开一局游戏？"
 
 #: mainwindow.cpp:204 mainwindow.cpp:226
 #, kde-format
 msgctxt "@title:window"
 msgid "Game Over"
-msgstr ""
+msgstr "游戏结束"
 
 #: mainwindow.cpp:205 mainwindow.cpp:227
 #, kde-format
 msgctxt "@action:button"
 msgid "New Game"
-msgstr ""
+msgstr "新游戏"
 
 #: mainwindow.cpp:206
 #, kde-format
 msgctxt "@action:button"
 msgid "Reset Game"
-msgstr ""
+msgstr "重置游戏"
 
 #: mainwindow.cpp:225
 #, kde-format
 msgid "Start a new game?"
-msgstr ""
+msgstr "新开一局游戏？"
 
 #: mainwindow.cpp:243
 #, kde-format
